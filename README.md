@@ -1,2 +1,2 @@
-# ays-backend
+# ays-be
 Afet Yönetim Sistemi (AYS) Backend
