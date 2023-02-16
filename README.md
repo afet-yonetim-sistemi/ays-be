@@ -26,6 +26,7 @@ Databases :
 Technologies :
 * Lombok
 * Test Containers
+* Docker
 
 Language : 
 * Java 17
