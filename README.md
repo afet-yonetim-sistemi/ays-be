@@ -5,6 +5,7 @@
 Framework: Spring Boot
 Language: Java 17
 Build Tool: Maven
+Database Change Management: Liquibase
 
 # Getting Started
 
