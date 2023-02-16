@@ -2,10 +2,47 @@
 
 ## Tech Stack
 
-Framework: Spring Boot
-Language: Java 17
-Build Tool: Maven
-Database Change Management: Liquibase
+
+Framework : 
+* Core
+    * Spring
+        * Spring Boot 3
+        * Spring Boot Test (Junit)
+        * Spring Boot Dev Tools
+        * Spring Security
+        * Spring Web
+        * Spring Boot JOOQ
+        * Spring Boot Actuator
+    * Spring Data
+        * Spring Data JPA
+        * Spring Data REST
+    * Cache
+        * Spring Cache
+
+Databases :
+* MYSQL
+* H2 Database
+
+Technologies :
+* Lombok
+* Test Containers
+
+Language : 
+* Java 17
+
+Build Tool : 
+* Maven
+
+Software Development Process :
+* TDD
+* Agile Scrum
+
+Version Control :
+* Git
+
+Database Change Management: 
+* Liquibase
+
 
 # Getting Started
 
