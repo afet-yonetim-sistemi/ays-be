@@ -2,6 +2,7 @@
 
 ## Tech Stack
 
+
 Framework : 
 * Core
     * Spring
@@ -38,6 +39,9 @@ Software Development Process :
 
 Version Control :
 * Git
+
+Database Change Management: 
+* Liquibase
 
 
 # Getting Started
