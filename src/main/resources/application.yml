@@ -1,1 +1,15 @@
+liquibase:
+  enabled: true
+  change-log=classpath: /db/changelog/db.changelog-master.xml
 
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/afetdb?createDatabaseIfNotExist=true
+    username: root
+    password: ippavlova_1990
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+      show_sql: true

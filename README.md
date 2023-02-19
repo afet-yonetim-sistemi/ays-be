@@ -2,7 +2,8 @@
 
 ## Tech Stack
 
-Framework : 
+
+Framework :
 * Core
     * Spring
         * Spring Boot 3
@@ -26,10 +27,10 @@ Technologies :
 * Lombok
 * Test Containers
 
-Language : 
+Language :
 * Java 17
 
-Build Tool : 
+Build Tool :
 * Maven
 
 Software Development Process :
@@ -38,6 +39,9 @@ Software Development Process :
 
 Version Control :
 * Git
+
+Database Change Management :
+* Liquibase
 
 
 # Getting Started
