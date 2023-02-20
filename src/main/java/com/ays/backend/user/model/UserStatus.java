@@ -1,6 +1,6 @@
 package com.ays.backend.user.model;
 
-public enum EStatus {
+public enum UserStatus {
     WAITING,
     VERIFIED,
     COMPLETED,

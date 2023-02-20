@@ -29,7 +29,7 @@ public class UserService {
     }
 
 
-    public Optional<User> findByUserId(UUID userId) {
+    public Optional<User> findByUserUUID(UUID userId) {
         return userRepository.findByUserUUID(userId);
     }
 

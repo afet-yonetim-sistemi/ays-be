@@ -1,7 +1,7 @@
 package com.ays.backend.user.service;
 
-import com.ays.backend.user.exception.DeviceNotException;
-import com.ays.backend.user.model.EType;
+import com.ays.backend.user.exception.DeviceNotFoundException;
+import com.ays.backend.user.model.DeviceType;
 import com.ays.backend.user.model.Type;
 import com.ays.backend.user.repository.TypeRepository;
 import jakarta.transaction.Transactional;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -19,64 +20,32 @@ public class TypeService {
     private final TypeRepository typeRepository;
 
 
-    public Set<Type> addTypeToUser(Set<String> strDevices ) {
-
+    public Set<Type> addTypeToUser(Set<String> strDevices) {
         Set<Type> types = new HashSet<>();
 
-        if (strDevices  != null) {
-            strDevices.forEach(role -> {
+        if (strDevices != null) {
+            types = strDevices.stream()
+                    .map(role -> {
+                        switch (role) {
+                            case "DEVICE_1":
+                                return typeRepository.findByName(DeviceType.DEVICE_1)
+                                        .orElseGet(() -> new Type(DeviceType.DEVICE_1));
 
-                switch (role) {
-                    case "DEVICE_1":
+                            case "DEVICE_2":
+                                return typeRepository.findByName(DeviceType.DEVICE_2)
+                                        .orElseGet(() -> new Type(DeviceType.DEVICE_2));
 
-                        Type deviceOne = null;
-
-                        if(typeRepository.findByName(EType.DEVICE_1).isEmpty()){
-                            deviceOne = new Type(EType.DEVICE_1);
-                        }else{
-                            deviceOne = typeRepository.findByName(EType.DEVICE_1)
-                                    .orElseThrow(() -> new DeviceNotException("Error: Device 1 is not found."));
+                            default:
+                                return typeRepository.findByName(DeviceType.DEVICE_1)
+                                        .orElseGet(() -> new Type(DeviceType.DEVICE_1));
                         }
-
-                        types.add(deviceOne);
-                        break;
-
-                    case "DEVICE_2":
-
-                        Type deviceTwo = null;
-
-                        if(typeRepository.findByName(EType.DEVICE_2).isEmpty()){
-                            deviceTwo = new Type(EType.DEVICE_2);
-                        }else{
-                            deviceTwo = typeRepository.findByName(EType.DEVICE_1)
-                                    .orElseThrow(() -> new DeviceNotException("Error: Device 1 is not found."));
-                        }
-
-                        types.add(deviceTwo);
-
-                        break;
-
-                    default:
-
-                        Type deviceDefault = null;
-
-                        if(typeRepository.findByName(EType.DEVICE_1).isEmpty()){
-                            deviceDefault = new Type(EType.DEVICE_1);
-                        }else{
-                            deviceDefault = typeRepository.findByName(EType.DEVICE_1)
-                                    .orElseThrow(() -> new DeviceNotException("Error: VOLUNTARY Role is not found."));
-                        }
-
-                        types.add(deviceDefault);
-
-                }
-
-            });
-        }else{
-
-            typeRepository.findByName(EType.DEVICE_1).ifPresentOrElse(types::add, () -> types.add(new Type(EType.DEVICE_1)));
+                    })
+                    .collect(Collectors.toSet());
+        } else {
+            Set<Type> finalTypes = types;
+            typeRepository.findByName(DeviceType.DEVICE_1)
+                    .ifPresentOrElse(types::add, () -> finalTypes.add(new Type(DeviceType.DEVICE_1)));
         }
-
 
         saveTypes(types);
 

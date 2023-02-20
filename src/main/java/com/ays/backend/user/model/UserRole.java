@@ -1,7 +1,7 @@
 package com.ays.backend.user.model;
 
-public enum ERole {
-    ROLE_VOLUNTARY,
+public enum UserRole {
+    ROLE_VOLUNTEER,
     ROLE_WORKER,
     ROLE_ADMIN
 }

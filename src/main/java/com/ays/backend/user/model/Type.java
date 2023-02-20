@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "type")
+@Table(name = "types")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,5 +16,6 @@ public class Type extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, unique = true)
-    private EType name;
+    private DeviceType name;
+
 }

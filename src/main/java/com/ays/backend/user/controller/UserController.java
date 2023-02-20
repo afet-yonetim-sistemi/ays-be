@@ -1,9 +1,6 @@
 package com.ays.backend.user.controller;
 
-import com.ays.backend.user.model.EStatus;
-import com.ays.backend.user.model.Role;
-import com.ays.backend.user.model.Type;
-import com.ays.backend.user.model.User;
+import com.ays.backend.user.model.*;
 import com.ays.backend.user.payload.request.SignUpRequest;
 import com.ays.backend.user.payload.response.MessageResponse;
 import com.ays.backend.user.payload.response.SignUpResponse;
@@ -53,7 +50,7 @@ public class UserController {
                 .longitude(signUpRequest.getLongitude())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .types(userTypes)
-                .status(EStatus.valueOf(signUpRequest.getStatus()))
+                .status(UserStatus.valueOf(signUpRequest.getStatus()))
                 .build();
 
 

@@ -18,21 +18,24 @@ import java.util.UUID;
 @Builder
 public class User extends BaseEntity {
 
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private UUID userUUID;
 
     @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "userId")
     private PhoneNumber phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, unique = true)
-    private EStatus status;
+    @Column(length = 20, unique = true, nullable = false)
+    private UserStatus status;
 
     @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private Set<Type> types = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -41,7 +44,10 @@ public class User extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @Column(nullable = false)
     private Double latitude;
+
+    @Column(nullable = false)
     private Double longitude;
 
 }

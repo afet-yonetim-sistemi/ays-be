@@ -1,7 +1,6 @@
 package com.ays.backend.user.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +14,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PhoneNumber extends BaseEntity {
 
+    @Column(nullable = false)
     private Integer countryCode;
-    private Integer phoneNumber;
+
+    @Column(nullable = false)
+    private Integer numberOfPhone;
+
+    @OneToOne(mappedBy="phoneNumber", cascade=CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
