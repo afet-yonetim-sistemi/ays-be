@@ -1,5 +1,7 @@
-package com.ays.backend.user.model;
+package com.ays.backend.user.model.entities;
 
+import com.ays.backend.user.model.entities.BaseEntity;
+import com.ays.backend.user.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

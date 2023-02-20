@@ -1,8 +1,7 @@
 package com.ays.backend.user.service;
 
-import com.ays.backend.user.exception.DeviceNotFoundException;
-import com.ays.backend.user.model.DeviceType;
-import com.ays.backend.user.model.Type;
+import com.ays.backend.user.model.enums.DeviceType;
+import com.ays.backend.user.model.entities.Type;
 import com.ays.backend.user.repository.TypeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

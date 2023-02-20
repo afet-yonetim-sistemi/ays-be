@@ -1,6 +1,6 @@
-package com.ays.backend.user.payload.request;
+package com.ays.backend.user.controller.payload.request;
 
-import com.ays.backend.user.model.PhoneNumber;
+import com.ays.backend.user.model.entities.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

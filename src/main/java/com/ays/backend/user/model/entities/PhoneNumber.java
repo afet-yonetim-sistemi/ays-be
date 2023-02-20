@@ -1,5 +1,7 @@
-package com.ays.backend.user.model;
+package com.ays.backend.user.model.entities;
 
+import com.ays.backend.user.model.entities.BaseEntity;
+import com.ays.backend.user.model.entities.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +20,7 @@ public class PhoneNumber extends BaseEntity {
     private Integer countryCode;
 
     @Column(nullable = false)
-    private Integer numberOfPhone;
+    private Integer lineNumber;
 
     @OneToOne(mappedBy="phoneNumber", cascade=CascadeType.ALL)
     @JoinColumn(name = "user_id")

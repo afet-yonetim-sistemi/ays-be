@@ -1,4 +1,4 @@
-package com.ays.backend.user.model;
+package com.ays.backend.user.model.entities;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

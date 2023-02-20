@@ -1,8 +1,7 @@
 package com.ays.backend.user.service;
 
-import com.ays.backend.user.exception.RoleNotFoundException;
-import com.ays.backend.user.model.Role;
-import com.ays.backend.user.model.UserRole;
+import com.ays.backend.user.model.entities.Role;
+import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.repository.RoleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

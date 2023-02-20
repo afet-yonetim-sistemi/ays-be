@@ -1,5 +1,6 @@
-package com.ays.backend.user.model;
+package com.ays.backend.user.model.entities;
 
+import com.ays.backend.user.model.enums.DeviceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.ays.backend.user.payload.response;
+package com.ays.backend.user.controller.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

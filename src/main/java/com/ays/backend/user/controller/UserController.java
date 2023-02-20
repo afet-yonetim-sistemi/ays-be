@@ -1,9 +1,12 @@
 package com.ays.backend.user.controller;
 
-import com.ays.backend.user.model.*;
-import com.ays.backend.user.payload.request.SignUpRequest;
-import com.ays.backend.user.payload.response.MessageResponse;
-import com.ays.backend.user.payload.response.SignUpResponse;
+import com.ays.backend.user.model.entities.Role;
+import com.ays.backend.user.model.entities.Type;
+import com.ays.backend.user.model.entities.User;
+import com.ays.backend.user.model.enums.UserStatus;
+import com.ays.backend.user.controller.payload.request.SignUpRequest;
+import com.ays.backend.user.controller.payload.response.MessageResponse;
+import com.ays.backend.user.controller.payload.response.SignUpResponse;
 import com.ays.backend.user.service.RoleService;
 import com.ays.backend.user.service.TypeService;
 import com.ays.backend.user.service.UserService;

@@ -1,6 +1,6 @@
 package com.ays.backend.user.service;
 
-import com.ays.backend.user.model.User;
+import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="3" author="noyan">
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="create_date" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+            <column name="update_date" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+            <column name="latitude" type="double" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="double" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(20)" >
+                <constraints uniqueConstraintName="UK_ain6rnqaxwdkd2y7039apay37" unique="true" />
+            </column>
+            <column name="useruuid" type="binary(16)" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)" >
+                <constraints uniqueConstraintName="UK_r43af9ap4edm43mmtq01oddj6" unique="true" />
+            </column>
+            <column name="phone_number_id" type="bigint" defaultValueNumeric="NULL"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="phone_number_id"
+                 baseTableName="users"
+                 constraintName="FKsm22r0ln4w8wg55nd1iyddkpv"
+                 referencedColumnNames="id"
+                 referencedTableName="phone_numbers"
+        />
+    </changeSet>
+</databaseChangeLog>

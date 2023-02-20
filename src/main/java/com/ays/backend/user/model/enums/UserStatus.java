@@ -1,4 +1,4 @@
-package com.ays.backend.user.model;
+package com.ays.backend.user.model.enums;
 
 public enum UserStatus {
     WAITING,

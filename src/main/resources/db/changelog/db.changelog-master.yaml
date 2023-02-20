@@ -1,11 +1,3 @@
 databaseChangeLog:
-  - include:
-      file: "/db/changelog/changes/1-create-info-phoneNumber-table-changelog.sql"
-  - include:
-      file: "/db/changelog/changes/2-create-info-role-table-changelog.sql"
-  - include:
-      file: "/db/changelog/changes/3-create-info-user-table-changelog.sql"
-  - include:
-      file: "/db/changelog/changes/4-create-info-type-table-changelog.sql"
-  - include:
-      file: "/db/changelog/changes/5-create-info-user-role-table-changelog.sql"
+  - includeAll:
+      path: "/db/changelog/changes/"
