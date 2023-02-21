@@ -1,5 +1,6 @@
 package com.ays.backend.user.controller;
 
+import com.ays.backend.base.BaseRestControllerTest;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.service.dto.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,8 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = UserController.class)
-class UserControllerTest {
+
+class UserControllerTest extends BaseRestControllerTest {
     private final String USER_CONTROLLER_BASEURL = "/api/v1/user";
     @Autowired
     private MockMvc mockMvc;

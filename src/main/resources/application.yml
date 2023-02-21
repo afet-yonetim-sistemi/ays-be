@@ -13,3 +13,11 @@ spring:
     hibernate:
       ddl-auto: update
       show_sql: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+application:
+  description: Afet Yönetim Sistemi Tanımı (AYS)
+  version: 1.0
