@@ -1,13 +1,18 @@
 package com.ays.backend.user.controller.payload.request;
 
+import java.util.Set;
+
 import com.ays.backend.user.model.entities.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
-import java.util.Set;
-
+/**
+ * Signup request coming to the API layer
+ */
 @Data
+@Builder
 @AllArgsConstructor
 public class SignUpRequest {
 

@@ -1,36 +1,44 @@
 package com.ays.backend.user.service;
 
-import com.ays.backend.user.model.entities.User;
-import com.ays.backend.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-@Transactional
-@RequiredArgsConstructor
-public class UserService {
+import com.ays.backend.user.model.entities.User;
+import com.ays.backend.user.service.dto.UserDTO;
 
-    private final UserRepository userRepository;
+/**
+ * User service to perform user related business operations.
+ */
+public interface UserService {
+    /**
+     * Saves a user to the database.
+     *
+     * @param user the user entity
+     * @return userDto
+     */
+    UserDTO saveUser(User user);
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
+    /**
+     * Finds a user by given username
+     *
+     * @param username the username of the user.
+     * @return the user, if present, empty if not found.
+     */
+    Optional<User> findByUsername(String username);
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
+    /**
+     * Checks if the user by the given parameter exists in the database.
+     *
+     * @param username the given username
+     * @return true if the user exists, false otherwise
+     */
+    Boolean existsByUsername(String username);
 
-    public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-
-    public Optional<User> findByUserUUID(UUID userId) {
-        return userRepository.findByUserUUID(userId);
-    }
-
+    /**
+     * Finds a user by the given uuid of a user.
+     *
+     * @param userUUID the given uuid of the user
+     * @return the user, if present, empty if not found.
+     */
+    Optional<User> findByUserUUID(UUID userUUID);
 }

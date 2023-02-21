@@ -1,17 +1,29 @@
 package com.ays.backend.user.model.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.ays.backend.user.model.enums.UserStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
+/**
+ * Users entity, which holds the information regarding the system user.
+ */
 @Entity
 @Table(name = "users")
 @Data
