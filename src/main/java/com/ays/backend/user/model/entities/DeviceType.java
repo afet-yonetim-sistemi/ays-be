@@ -1,6 +1,6 @@
 package com.ays.backend.user.model.entities;
 
-import com.ays.backend.user.model.enums.DeviceType;
+import com.ays.backend.user.model.enums.DeviceNames;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Type extends BaseEntity {
+public class DeviceType extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, unique = true)
-    private DeviceType name;
+    private DeviceNames name;
 
 }

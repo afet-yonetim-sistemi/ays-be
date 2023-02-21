@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,8 +26,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private UUID userUUID;
+    @Column(nullable = false, columnDefinition = "varchar(60)")
+    private String userUUID;
 
     @OneToOne(cascade=CascadeType.ALL)
     private PhoneNumber phoneNumber;
@@ -37,7 +38,7 @@ public class User extends BaseEntity {
 
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Set<Type> types = new HashSet<>();
+    private Set<DeviceType> types = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

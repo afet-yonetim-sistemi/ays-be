@@ -23,7 +23,7 @@
             <column name="status" type="varchar(20)" >
                 <constraints uniqueConstraintName="UK_ain6rnqaxwdkd2y7039apay37" unique="true" />
             </column>
-            <column name="useruuid" type="binary(16)" >
+            <column name="useruuid" type="varchar(70)" >
                 <constraints nullable="false"/>
             </column>
             <column name="username" type="varchar(255)" >

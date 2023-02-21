@@ -9,5 +9,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SignUpResponse {
 
-    private UUID userId;
+    private String userId;
 }

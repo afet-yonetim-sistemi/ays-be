@@ -1,14 +1,14 @@
 package com.ays.backend.user.controller;
 
+import com.ays.backend.user.model.entities.DeviceType;
 import com.ays.backend.user.model.entities.Role;
-import com.ays.backend.user.model.entities.Type;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
 import com.ays.backend.user.controller.payload.response.SignUpResponse;
+import com.ays.backend.user.service.DeviceTypeService;
 import com.ays.backend.user.service.RoleService;
-import com.ays.backend.user.service.TypeService;
 import com.ays.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,8 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final TypeService typeService;
+
+    private final DeviceTypeService deviceTypeService;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
@@ -42,10 +43,10 @@ public class UserController {
 
         Set<Role> userRoles = roleService.addRoleToUser(strRoles);
 
-        Set<Type> userTypes = typeService.addTypeToUser(signUpRequest.getTypes());
+        Set<DeviceType> userTypes = deviceTypeService.addDeviceTypeToUser(signUpRequest.getTypes());
 
         User user = User.builder()
-                .userUUID(UUID.randomUUID())
+                .userUUID(UUID.randomUUID().toString())
                 .username(username)
                 .password(signUpRequest.getPassword())
                 .roles(userRoles)
