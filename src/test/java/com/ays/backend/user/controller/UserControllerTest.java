@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 class UserControllerTest extends BaseRestControllerTest {
     private final String USER_CONTROLLER_BASEURL = "/api/v1/user";
     @Autowired
