@@ -1,5 +1,11 @@
 package com.ays.backend.user.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Supplier;
+
 import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.user.controller.UserControllerService;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
@@ -14,15 +20,12 @@ import com.ays.backend.user.service.dto.UserDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
+import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-public class UserControllerServiceTest extends BaseServiceTest {
+class UserControllerServiceTest extends BaseServiceTest {
 
     @Mock
     private UserService userService;
@@ -33,20 +36,19 @@ public class UserControllerServiceTest extends BaseServiceTest {
     @Mock
     private DeviceTypeService deviceTypeService;
 
+    @Mock
+    private Supplier<UUID> uuidSupplier;
+
     @InjectMocks
     private UserControllerService userControllerService;
 
     @Test
-    public void testCreateUser() {
-
-        // Generate a unique userUUID
-        String userUUID = "useruuid";
-
-        Set<String> roles = new HashSet<>(Arrays.asList(UserRole.ROLE_VOLUNTEER.name()));
-        Set<String> types = new HashSet<>(Arrays.asList(DeviceNames.DEVICE_1.name()));
-
-        Set<Role> rolesList = new HashSet<>(Arrays.asList(new Role(UserRole.ROLE_VOLUNTEER)));
-        Set<DeviceType> deviceNamesList = new HashSet<>(Arrays.asList(new DeviceType(DeviceNames.DEVICE_1)));
+    void shouldCreateUser() {
+        ReflectionTestUtils.setField(userControllerService, "uuidSupplier", uuidSupplier);
+        Set<String> roles = new HashSet<>(List.of(UserRole.ROLE_VOLUNTEER.name()));
+        Set<String> types = new HashSet<>(List.of(DeviceNames.DEVICE_1.name()));
+        Set<Role> rolesList = new HashSet<>(List.of(new Role(UserRole.ROLE_VOLUNTEER)));
+        Set<DeviceType> deviceNamesList = new HashSet<>(List.of(new DeviceType(DeviceNames.DEVICE_1)));
 
         PhoneNumber phoneNumber = PhoneNumber.builder()
                 .countryCode(90)
@@ -64,14 +66,16 @@ public class UserControllerServiceTest extends BaseServiceTest {
                 .status(UserStatus.WAITING.name())
                 .build();
 
-        when(roleService.addRoleToUser(signUpRequest.getRoles())).thenReturn(rolesList);
+        when(roleService.getUserRoles(signUpRequest.getRoles())).thenReturn(rolesList);
         when(deviceTypeService.addDeviceTypeToUser(signUpRequest.getTypes())).thenReturn(deviceNamesList);
+        var uuid = "7df6b4a2-b28d-11ed-afa1-0242ac120002";
+        when(uuidSupplier.get()).thenReturn(UUID.fromString(uuid));
 
         User user = User.builder()
-                .userUUID(userUUID)
+                .userUUID(uuid)
                 .username(signUpRequest.getUsername())
                 .password(signUpRequest.getPassword())
-                .roles(roleService.addRoleToUser(signUpRequest.getRoles()))
+                .roles(roleService.getUserRoles(signUpRequest.getRoles()))
                 .latitude(signUpRequest.getLatitude())
                 .longitude(signUpRequest.getLongitude())
                 .phoneNumber(signUpRequest.getPhoneNumber())
@@ -97,11 +101,13 @@ public class UserControllerServiceTest extends BaseServiceTest {
         UserDTO savedUserDTO = userControllerService.createUser(signUpRequest);
 
         assertEquals(signUpRequest.getUsername(), savedUserDTO.getUsername());
-        assertEquals(signUpRequest.getRoles(), savedUserDTO.getRoles());
+        var savedRoles = savedUserDTO.getRoles().stream().map(role -> role.getName().getValue()).toList();
+        assertTrue(signUpRequest.getRoles().containsAll(savedRoles));
         assertEquals(signUpRequest.getLatitude(), savedUserDTO.getLatitude(), 0.0);
         assertEquals(signUpRequest.getLongitude(), savedUserDTO.getLongitude(), 0.0);
         assertEquals(signUpRequest.getPhoneNumber(), savedUserDTO.getPhoneNumber());
-        assertEquals(signUpRequest.getTypes(), savedUserDTO.getTypes());
+        var savedTypes = savedUserDTO.getTypes().stream().map(deviceType -> deviceType.getName().name()).toList();
+        assertTrue(signUpRequest.getTypes().containsAll(savedTypes));
         assertEquals(UserStatus.valueOf(signUpRequest.getStatus()), savedUserDTO.getUserStatus());
     }
 }

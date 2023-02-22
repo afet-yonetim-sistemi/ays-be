@@ -2,6 +2,7 @@ package com.ays.backend.user.controller;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.model.entities.DeviceType;
@@ -24,13 +25,15 @@ public class UserControllerService {
     private final UserService userService;
     private final RoleService roleService;
     private final DeviceTypeService deviceTypeService;
+    private final Supplier<UUID> uuidSupplier = UUID::randomUUID;
+
     public UserDTO createUser(SignUpRequest signUpRequest) {
-        Set<Role> userRoles = roleService.addRoleToUser(signUpRequest.getRoles());
+        Set<Role> userRoles = roleService.getUserRoles(signUpRequest.getRoles());
 
         Set<DeviceType> userTypes = deviceTypeService.addDeviceTypeToUser(signUpRequest.getTypes());
 
         User user = User.builder()
-                .userUUID(UUID.randomUUID().toString())
+                .userUUID(uuidSupplier.get().toString())
                 .username(signUpRequest.getUsername())
                 .password(signUpRequest.getPassword())
                 .roles(userRoles)

@@ -25,12 +25,5 @@ public interface RoleService {
      * @param roles set of roles
      * @return added roles to the user.
      */
-    Set<Role> addRoleToUser(Set<String> roles);
-
-    /**
-     * Saves roles to the database.
-     *
-     * @param roles set of roles to be saved
-     */
-    void saveRoles(Set<Role> roles);
+    Set<Role> getUserRoles(Set<String> roles);
 }
