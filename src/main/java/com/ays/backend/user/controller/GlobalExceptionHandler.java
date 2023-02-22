@@ -19,7 +19,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ResponseEntity<Object> handleEntityNotFound(
+    protected ResponseEntity<MessageResponse> handleUserAlreadyExists(
             UserAlreadyExistsException ex) {
         log.warn("Username already exists for the request.");
         MessageResponse messageResponse = new MessageResponse(ex.getMessage());
