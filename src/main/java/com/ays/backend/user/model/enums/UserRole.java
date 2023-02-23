@@ -1,7 +1,7 @@
 package com.ays.backend.user.model.enums;
 
 /**
- * Enumeration keeping user userTypes.
+ * Enumeration keeping user userRoles.
  */
 public enum UserRole {
     ROLE_VOLUNTEER,
