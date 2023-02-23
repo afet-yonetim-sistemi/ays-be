@@ -1,8 +1,7 @@
-liquibase:
-  enabled: false
-  change-log=classpath: /db/changelog/db.changelog-master.yaml
-
 spring:
+  liquibase:
+    enabled: false
+    change-log=classpath: /db/changelog/db.changelog-master.yaml
   datasource:
     url: jdbc:mysql://localhost:3306/afetdb?createDatabaseIfNotExist=true
     username: root
