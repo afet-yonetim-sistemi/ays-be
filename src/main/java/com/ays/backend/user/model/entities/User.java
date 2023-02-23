@@ -45,8 +45,7 @@ public class User extends BaseEntity {
     private String password;
 
     @OneToOne
-    @Column(nullable = false)
-    @JoinColumn(name = "organization_id")
+    @JoinColumn(name = "organization_id", nullable = false)
     private Organization organization;
 
     @Enumerated(EnumType.ORDINAL)
