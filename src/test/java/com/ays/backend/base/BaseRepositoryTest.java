@@ -4,7 +4,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
-@ActiveProfiles(value = "test")
+@ActiveProfiles(value = "dev")
 public abstract class BaseRepositoryTest {
 
 }

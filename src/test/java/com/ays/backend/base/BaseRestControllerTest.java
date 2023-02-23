@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @WebMvcTest
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles(value = "test")
+@ActiveProfiles(value = "dev")
 public abstract class BaseRestControllerTest{
 
 }

@@ -1,7 +1,10 @@
 package com.ays.backend.user.controller;
 
 import com.ays.backend.user.controller.payload.response.MessageResponse;
+import com.ays.backend.user.exception.DeviceNotFoundException;
+import com.ays.backend.user.exception.RoleNotFoundException;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
+import com.ays.backend.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,4 +28,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         MessageResponse messageResponse = new MessageResponse(ex.getMessage());
         return ResponseEntity.badRequest().body(messageResponse);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ResponseEntity<MessageResponse> handleUserNotFound(
+            UserNotFoundException ex) {
+        log.warn("User not found for the request.");
+        MessageResponse messageResponse = new MessageResponse(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(messageResponse);
+    }
+
+    @ExceptionHandler(DeviceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ResponseEntity<MessageResponse> handleDeviceNotFound(
+            DeviceNotFoundException ex) {
+        log.warn("Device not found for the request.");
+        MessageResponse messageResponse = new MessageResponse(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(messageResponse);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ResponseEntity<MessageResponse> handleRoleNotFound(
+            RoleNotFoundException ex) {
+        log.warn("Role not found for the request.");
+        MessageResponse messageResponse = new MessageResponse(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(messageResponse);
+    }
+
 }
