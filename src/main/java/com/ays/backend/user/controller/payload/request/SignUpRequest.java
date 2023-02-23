@@ -1,9 +1,7 @@
 package com.ays.backend.user.controller.payload.request;
 
-import java.util.Set;
-
-import com.ays.backend.user.model.entities.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,21 +20,25 @@ public class SignUpRequest {
     @NotBlank
     private String password;
 
-    @NotBlank
-    private PhoneNumber phoneNumber;
+    @NotNull
+    private int countryCode;
+
+    @NotNull
+    private int lineNumber;
+
+    @NotNull
+    private int statusId;
 
     @NotBlank
-    private Double latitude;
+    private String firstName;
 
     @NotBlank
-    private Double longitude;
+    private String lastName;
 
-    @NotBlank
-    private String status;
+    @NotNull
+    private int userRoleId;
 
-    @NotBlank
-    private Set<String> types;
+    private String email;
 
-    @NotBlank
-    private Set<String> roles;
+    private Long organizationId;
 }

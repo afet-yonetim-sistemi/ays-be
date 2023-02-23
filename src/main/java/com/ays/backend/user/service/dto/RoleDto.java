@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Role DTO to perform data transfer from service layer to the api.
+ * UserType DTO to perform data transfer from service layer to the api.
  */
 @Getter
 @Setter

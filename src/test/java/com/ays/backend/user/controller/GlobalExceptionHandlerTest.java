@@ -30,7 +30,7 @@ class GlobalExceptionHandlerTest extends BaseServiceTest {
     }
 
     @Test
-    void shouldHandleUserNotFoundExistsException() {
+    void shouldHandleUserNotFoundException() {
         // given
         UserNotFoundException ex = new UserNotFoundException("User Not Found!");
         ResponseEntity<MessageResponse> responseEntity = globalExceptionHandler.handleUserNotFound(ex);
@@ -42,19 +42,19 @@ class GlobalExceptionHandlerTest extends BaseServiceTest {
     }
 
     @Test
-    void shouldHandleRoleNotFoundExistsException() {
+    void shouldHandleRoleNotFoundException() {
         // given
-        RoleNotFoundException ex = new RoleNotFoundException("Role Not Found!");
+        RoleNotFoundException ex = new RoleNotFoundException("UserType Not Found!");
         ResponseEntity<MessageResponse> responseEntity = globalExceptionHandler.handleRoleNotFound(ex);
 
         // when && then
         MessageResponse responseBody = responseEntity.getBody();
         assertNotNull(responseBody);
-        assertEquals("Role Not Found!", responseBody.getMessage());
+        assertEquals("UserType Not Found!", responseBody.getMessage());
     }
 
     @Test
-    void shouldHandleDeviceNotFoundExistsException() {
+    void shouldHandleDeviceNotFoundException() {
         // given
         DeviceNotFoundException ex = new DeviceNotFoundException("Device Not Found!");
         ResponseEntity<MessageResponse> responseEntity = globalExceptionHandler.handleDeviceNotFound(ex);

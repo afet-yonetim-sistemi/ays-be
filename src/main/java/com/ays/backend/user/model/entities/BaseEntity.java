@@ -24,8 +24,12 @@ public class BaseEntity {
     private Long id;
 
     @CreationTimestamp
-    private LocalDateTime createDate;
+    private LocalDateTime createdAt;
+
+    private int createdUser;
 
     @UpdateTimestamp
-    private LocalDateTime updateDate;
+    private LocalDateTime updatedAt;
+
+    private int updatedUser;
 }

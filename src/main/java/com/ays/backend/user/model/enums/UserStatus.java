@@ -7,5 +7,9 @@ public enum UserStatus {
     VERIFIED,
     COMPLETED,
     PASSIVE,
-    OCCUPIED
+    OCCUPIED;
+
+    public static UserStatus getById(int userStatusId) {
+        return UserStatus.values()[userStatusId];
+    }
 }

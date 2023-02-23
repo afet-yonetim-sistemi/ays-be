@@ -51,7 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<MessageResponse> handleRoleNotFound(
             RoleNotFoundException ex) {
-        log.warn("Role not found for the request.");
+        log.warn("UserType not found for the request.");
         MessageResponse messageResponse = new MessageResponse(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(messageResponse);
     }

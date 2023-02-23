@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 @Getter
 public class RoleNotFoundException extends RuntimeException {
-    private String message;
+    private final String message;
 
     public RoleNotFoundException(String message) {
         this.message = message;
     }
 
-    public RoleNotFoundException() {
-    }
 }

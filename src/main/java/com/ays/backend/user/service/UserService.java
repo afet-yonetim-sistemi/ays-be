@@ -3,6 +3,7 @@ package com.ays.backend.user.service;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.service.dto.UserDTO;
 
@@ -11,12 +12,12 @@ import com.ays.backend.user.service.dto.UserDTO;
  */
 public interface UserService {
     /**
-     * Saves a user to the database.
+     * Saves a signUpRequest to the database.
      *
-     * @param user the user entity
+     * @param signUpRequest the signUpRequest entity
      * @return userDto
      */
-    UserDTO saveUser(User user);
+    UserDTO saveUser(SignUpRequest signUpRequest);
 
     /**
      * Finds a user by given username
