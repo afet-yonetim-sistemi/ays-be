@@ -29,7 +29,6 @@ class UserServiceTest extends BaseServiceTest {
         SignUpRequest signUpRequest = SignUpRequest.builder()
                 .username("testUser")
                 .password("password")
-                .userRoleId(1)
                 .organizationId(123L)
                 .countryCode(90)
                 .lineNumber(123456789)
@@ -39,12 +38,11 @@ class UserServiceTest extends BaseServiceTest {
         User user = User.builder()
                 .username(signUpRequest.getUsername())
                 .password(signUpRequest.getPassword())
-                .userRole(UserRole.getById(signUpRequest.getUserRoleId()))
+                .userRole(UserRole.ROLE_VOLUNTEER)
                 .status(UserStatus.getById(signUpRequest.getStatusId()))
                 .countryCode(signUpRequest.getCountryCode())
                 .lineNumber(signUpRequest.getLineNumber())
                 .build();
-
 
         when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -53,7 +51,7 @@ class UserServiceTest extends BaseServiceTest {
 
         // then
         assertEquals(signUpRequest.getUsername(), savedUserDTO.getUsername());
-        assertEquals(signUpRequest.getUserRoleId(), savedUserDTO.getUserRole().ordinal());
+        assertEquals(savedUserDTO.getUserRole(), user.getUserRole());
         assertEquals(signUpRequest.getCountryCode(), savedUserDTO.getCountryCode());
         assertEquals(signUpRequest.getLineNumber(), savedUserDTO.getLineNumber());
         assertEquals(signUpRequest.getStatusId(), savedUserDTO.getUserStatus().ordinal());

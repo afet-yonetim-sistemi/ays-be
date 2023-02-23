@@ -35,9 +35,6 @@ public class SignUpRequest {
     @NotBlank
     private String lastName;
 
-    @NotNull
-    private int userRoleId;
-
     private String email;
 
     private Long organizationId;

@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<SignUpResponse> registerUser(@RequestBody @Validated SignUpRequest signUpRequest) {
-        if (userService.existsByUsername(signUpRequest.getUsername())) {
+        if (Boolean.TRUE.equals(userService.existsByUsername(signUpRequest.getUsername()))) {
             throw new UserAlreadyExistsException("Error: Username is already taken!");
         }
 

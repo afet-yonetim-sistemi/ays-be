@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
                 .password(signUpRequest.getPassword())
                 .firstName(signUpRequest.getFirstName())
                 .lastName(signUpRequest.getLastName())
-                .userRole(UserRole.getById(signUpRequest.getUserRoleId()))
+                .userRole(UserRole.ROLE_VOLUNTEER)
                 .countryCode(signUpRequest.getCountryCode())
                 .lineNumber(signUpRequest.getLineNumber())
                 .organization(organization)

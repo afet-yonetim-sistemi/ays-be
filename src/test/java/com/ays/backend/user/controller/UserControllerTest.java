@@ -37,7 +37,6 @@ class UserControllerTest extends BaseRestControllerTest {
                 .statusId(1)
                 .firstName("John")
                 .lastName("Doe")
-                .userRoleId(1)
                 .build();
         var username = "username123";
         var userDto = UserDTO.builder()
