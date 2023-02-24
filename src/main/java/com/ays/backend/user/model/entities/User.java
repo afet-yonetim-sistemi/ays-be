@@ -1,34 +1,36 @@
 package com.ays.backend.user.model.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
 
+import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Users entity, which holds the information regarding the system user.
  */
 @Entity
-@Table(name = "users")
-@Data
+@Table(name = "user",
+        uniqueConstraints={
+                @UniqueConstraint(name = "UniqueMobileNumber", columnNames = {"countryCode", "lineNumber"})
+        })
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 public class User extends BaseEntity {
 
@@ -36,32 +38,38 @@ public class User extends BaseEntity {
     private String username;
 
     @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(unique = true)
+    @Email
+    private String email;
+
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "varchar(60)")
-    private String userUUID;
+    @OneToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 
-    @OneToOne(cascade=CascadeType.ALL)
-    private PhoneNumber phoneNumber;
+    @Enumerated(EnumType.ORDINAL)
+    @JoinColumn(name = "type_id")
+    private UserRole userRole;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20, unique = true, nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    @JoinColumn(name = "status_id")
+    @Column(length = 20, nullable = false)
     private UserStatus status;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private Set<DeviceType> types = new HashSet<>();
-
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Column(nullable = false)
+    private int countryCode;
 
     @Column(nullable = false)
-    private Double latitude;
+    private int lineNumber;
 
-    @Column(nullable = false)
-    private Double longitude;
+    @Column
+    private LocalDateTime lastLoginDate;
 
 }

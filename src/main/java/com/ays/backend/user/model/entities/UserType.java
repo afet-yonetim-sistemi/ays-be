@@ -6,24 +6,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Roles entity, which can be assigned to the users.
+ * User types entity, which can be assigned to the users.
  */
 @Entity
-@Table(name = "roles")
-@Data
+@Table(name = "user_types")
 @RequiredArgsConstructor
-public class Role extends BaseEntity {
+public class UserType extends BaseEntity {
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(length = 30, unique = true, nullable = false)
-    private UserRole name;
-
-    public Role(UserRole name) {
-        this.name = name;
-    }
-
+    private UserRole description;
 }

@@ -1,10 +1,9 @@
 package com.ays.backend.user.service.dto;
 
-import java.util.Set;
+import java.time.LocalDateTime;
 
-import com.ays.backend.user.model.entities.DeviceType;
-import com.ays.backend.user.model.entities.PhoneNumber;
-import com.ays.backend.user.model.entities.Role;
+import com.ays.backend.user.model.entities.Organization;
+import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
@@ -18,11 +17,13 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class UserDTO {
     private String username;
-    private String userUUID;
-    private PhoneNumber phoneNumber;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Organization organization;
+    private UserRole userRole;
     private UserStatus userStatus;
-    private Set<DeviceType> types;
-    private Set<Role> roles;
-    private Double latitude;
-    private Double longitude;
+    private int countryCode;
+    private int lineNumber;
+    private LocalDateTime lastLoginDate;
 }

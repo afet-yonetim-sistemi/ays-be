@@ -8,6 +8,7 @@ import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,7 +31,7 @@ class GlobalExceptionHandlerTest extends BaseServiceTest {
     }
 
     @Test
-    void shouldHandleUserNotFoundExistsException() {
+    void shouldHandleUserNotFoundException() {
         // given
         UserNotFoundException ex = new UserNotFoundException("User Not Found!");
         ResponseEntity<MessageResponse> responseEntity = globalExceptionHandler.handleUserNotFound(ex);
@@ -42,19 +43,19 @@ class GlobalExceptionHandlerTest extends BaseServiceTest {
     }
 
     @Test
-    void shouldHandleRoleNotFoundExistsException() {
+    void shouldHandleRoleNotFoundException() {
         // given
-        RoleNotFoundException ex = new RoleNotFoundException("Role Not Found!");
+        RoleNotFoundException ex = new RoleNotFoundException("UserType Not Found!");
         ResponseEntity<MessageResponse> responseEntity = globalExceptionHandler.handleRoleNotFound(ex);
 
         // when && then
         MessageResponse responseBody = responseEntity.getBody();
         assertNotNull(responseBody);
-        assertEquals("Role Not Found!", responseBody.getMessage());
+        assertEquals("UserType Not Found!", responseBody.getMessage());
     }
 
     @Test
-    void shouldHandleDeviceNotFoundExistsException() {
+    void shouldHandleDeviceNotFoundException() {
         // given
         DeviceNotFoundException ex = new DeviceNotFoundException("Device Not Found!");
         ResponseEntity<MessageResponse> responseEntity = globalExceptionHandler.handleDeviceNotFound(ex);
@@ -63,5 +64,18 @@ class GlobalExceptionHandlerTest extends BaseServiceTest {
         MessageResponse responseBody = responseEntity.getBody();
         assertNotNull(responseBody);
         assertEquals("Device Not Found!", responseBody.getMessage());
+    }
+
+    @Test
+    void shouldHandleDataIntegrityException() {
+        // given
+        DataIntegrityViolationException ex =
+                new DataIntegrityViolationException("Failed on unique constraint!" + ErrorTypes.UNIQUE_MOBILE_NUMBER.getReason());
+        ResponseEntity<MessageResponse> responseEntity = globalExceptionHandler.handleDataIntegrityViolations(ex);
+
+        // when && then
+        MessageResponse responseBody = responseEntity.getBody();
+        assertNotNull(responseBody);
+        assertEquals("The mobile number needs to be unique.", responseBody.getMessage());
     }
 }

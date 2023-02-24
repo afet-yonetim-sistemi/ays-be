@@ -1,8 +1,7 @@
-liquibase:
-  enabled: true
-  change-log=classpath: /db/changelog/db.changelog-master.yaml
-
 spring:
+  liquibase:
+    enabled: true
+    changeLog: "classpath:db/changelog/db.changelog-master.yaml"
   datasource:
     url: jdbc:mysql://localhost:3306/afetdb?createDatabaseIfNotExist=true
     username: root
@@ -14,6 +13,7 @@ spring:
       ddl-auto: update
       show_sql: true
 
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -21,3 +21,6 @@ springdoc:
 application:
   description: Afet Yönetim Sistemi Tanımı (AYS)
   version: 1.0
+  title: "AYS"
+  licenseName: AYS Licence
+

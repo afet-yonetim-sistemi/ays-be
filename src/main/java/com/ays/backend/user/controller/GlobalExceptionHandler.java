@@ -6,6 +6,7 @@ import com.ays.backend.user.exception.RoleNotFoundException;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -51,9 +52,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<MessageResponse> handleRoleNotFound(
             RoleNotFoundException ex) {
-        log.warn("Role not found for the request.");
+        log.warn("UserType not found for the request.");
         MessageResponse messageResponse = new MessageResponse(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(messageResponse);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<MessageResponse> handleDataIntegrityViolations(
+            DataIntegrityViolationException ex) {
+        log.warn("Given fields must be unique.");
+        MessageResponse messageResponse = new MessageResponse();
+        if (ex.getMessage().contains(ErrorTypes.UNIQUE_MOBILE_NUMBER.getReason())) {
+            messageResponse.setMessage("The mobile number needs to be unique.");
+        } else {
+            messageResponse.setMessage(ex.getCause().getLocalizedMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageResponse);
     }
 
 }

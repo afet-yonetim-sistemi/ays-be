@@ -2,8 +2,17 @@
 
 ## Tech Stack
 
+<<<<<<< Updated upstream
 
 Framework :
+=======
+<<<<<<< HEAD
+Framework : 
+=======
+
+Framework :
+>>>>>>> eab4a3f2f16fd402cc6d94b89a7ff21e4cb6c27d
+>>>>>>> Stashed changes
 * Core
     * Spring
         * Spring Boot 3
@@ -26,12 +35,28 @@ Databases :
 Technologies :
 * Lombok
 * Test Containers
+<<<<<<< Updated upstream
+* Swagger
+=======
+<<<<<<< HEAD
+>>>>>>> Stashed changes
+
+Language :
+* Java 17
+
+<<<<<<< Updated upstream
+Build Tool :
+=======
+Build Tool : 
+=======
 * Swagger
 
 Language :
 * Java 17
 
 Build Tool :
+>>>>>>> eab4a3f2f16fd402cc6d94b89a7ff21e4cb6c27d
+>>>>>>> Stashed changes
 * Maven
 
 Software Development Process :
@@ -41,9 +66,18 @@ Software Development Process :
 Version Control :
 * Git
 
+<<<<<<< Updated upstream
 Database Change Management :
 * Liquibase
 
+=======
+<<<<<<< HEAD
+=======
+Database Change Management :
+* Liquibase
+
+>>>>>>> eab4a3f2f16fd402cc6d94b89a7ff21e4cb6c27d
+>>>>>>> Stashed changes
 
 # Getting Started
 
@@ -70,3 +104,65 @@ Don't forget to enable Lombok pre-processing in your IDE.
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
+
+## Running as Docker container
+
+After building the project, run below to build and tag the docker image.
+
+```
+docker build -t ays/ays-be .
+```
+
+For running the docker image, run the following command:
+
+```
+docker run -p 8080:8080 ays/ays-be
+```
+
+
+# How to Contribute
+
+The project is managed by [GitHub projects](https://github.com/orgs/afet-yonetim-sistemi/projects/3). You can assign
+an issue from the Todo list and start working on it.
+
+## Development Standards
+
+This project uses [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) for collaboration.
+You can see open issues [here](https://github.com/afet-yonetim-sistemi/ays-be/issues).
+You can start working one of the open issues by assigning it to yourself.
+
+For your feature branches, please ensure below:
+
+- Make sure to associate your feature branch with the GitHub issue from 'Development' section in each issue page.
+- main branch is protected.
+- Your feature branches can be merged by pull request that is approved by at least one code owner.
+- PR should be squash-merged to avoid having merge commit history.
+- PR title and description should clearly define and explain the aim.
+- PR title should contain the issue/feature/bug number e.g. Issue 7 - Readme Update
+- PR should successfully complete build and any other necessary tests before being merged to main.
+- Branches should follow the below pattern:
+    feature/issue-no-other-desc
+    bugfix/issue-no-other-desc
+    hotfix/issue-no-other-desc (there may also be no issue number for some hotfixes)
+- Each release should be tagged with a version
+- Commit messages should be subjectless
+    e.g. Add README.md
+    e.g. Fix ...
+- PR should be concise; don't try to fix/introduce more than one thing
+- Do not include/push secret/credential information
+
+## Docker Image Name Conventions
+
+Docker images should be tagged as "org-name/project-name:version" e.g. "ays/ays-be:v1.0"
+"ays/ays-be" indicates the latest version.
+
+### Versioning
+
+The project follows [the semantic versioning](https://semver.org/) i.e. MAJOR.MINOR.PATCH e.g. v1.9.9.
+
+## Project Documents
+
+AYS technical analysis can be found [here](https://docs.google.com/document/d/1_GyROvXrsD88udD6z_KfF-Q5Cs77YLHDglqafRXIV_o/edit).
+
+For other information, you can contact the project's [Discord channel](https://discord.gg/HeunQcqg).
+>>>>>>> Stashed changes
