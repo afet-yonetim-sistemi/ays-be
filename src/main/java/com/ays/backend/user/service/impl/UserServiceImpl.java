@@ -11,17 +11,18 @@ import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.service.UserService;
 import com.ays.backend.user.service.dto.UserDTO;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public UserDTO saveUser(SignUpRequest signUpRequest) {
 
         User user = User.builder()
