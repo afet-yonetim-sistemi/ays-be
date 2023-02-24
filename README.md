@@ -109,7 +109,11 @@ kubectl apply -f service.yaml
 ```
 
 You should be able to see the service, deployment and pods. If you want to access the service using internal IP,
-try using NodePort instead of LoadBalancer in service.yaml
+try using NodePort instead of LoadBalancer in service.yaml or simply use port forwarding:
+
+```
+kubectl port-forward service/ays-be 8080:8080
+```
 
 # How to Contribute
 
