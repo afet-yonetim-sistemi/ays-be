@@ -8,6 +8,7 @@ import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -63,5 +64,18 @@ class GlobalExceptionHandlerTest extends BaseServiceTest {
         MessageResponse responseBody = responseEntity.getBody();
         assertNotNull(responseBody);
         assertEquals("Device Not Found!", responseBody.getMessage());
+    }
+
+    @Test
+    void shouldHandleDataIntegrityException() {
+        // given
+        DataIntegrityViolationException ex =
+                new DataIntegrityViolationException("Failed on unique constraint!" + ErrorTypes.UNIQUE_MOBILE_NUMBER.getReason());
+        ResponseEntity<MessageResponse> responseEntity = globalExceptionHandler.handleDataIntegrityViolations(ex);
+
+        // when && then
+        MessageResponse responseBody = responseEntity.getBody();
+        assertNotNull(responseBody);
+        assertEquals("The mobile number needs to be unique.", responseBody.getMessage());
     }
 }

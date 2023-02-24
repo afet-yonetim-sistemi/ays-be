@@ -21,5 +21,5 @@ public interface UserService {
      * @param username the given username
      * @return true if the user exists, false otherwise
      */
-    Boolean existsByUsername(String username);
+    boolean existsByUsername(String username);
 }

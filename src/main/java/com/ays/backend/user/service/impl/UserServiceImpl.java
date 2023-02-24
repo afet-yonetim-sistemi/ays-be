@@ -2,7 +2,6 @@ package com.ays.backend.user.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.model.entities.Organization;
@@ -24,8 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     public UserDTO saveUser(SignUpRequest signUpRequest) {
-        Organization organization = new Organization();
-        organization.setId(signUpRequest.getOrganizationId());
+
         User user = User.builder()
                 .username(signUpRequest.getUsername())
                 .password(signUpRequest.getPassword())
@@ -34,12 +32,16 @@ public class UserServiceImpl implements UserService {
                 .userRole(UserRole.ROLE_VOLUNTEER)
                 .countryCode(signUpRequest.getCountryCode())
                 .lineNumber(signUpRequest.getLineNumber())
-                .organization(organization)
                 .status(UserStatus.getById(signUpRequest.getStatusId()))
                 .email(signUpRequest.getEmail())
                 .lastLoginDate(LocalDateTime.now())
                 .build();
 
+        if(signUpRequest.getOrganizationId() != null) {
+            Organization organization = new Organization();
+            organization.setId(signUpRequest.getOrganizationId());
+            user.setOrganization(organization);
+        }
         var createdUser = userRepository.save(user);
 
         return UserDTO.builder()
@@ -49,7 +51,6 @@ public class UserServiceImpl implements UserService {
                 .userRole(UserRole.getById(createdUser.getUserRole().ordinal()))
                 .countryCode(createdUser.getCountryCode())
                 .lineNumber(createdUser.getLineNumber())
-                .organization(createdUser.getOrganization())
                 .userStatus(createdUser.getStatus())
                 .email(createdUser.getEmail())
                 .lastLoginDate(createdUser.getLastLoginDate())
@@ -60,11 +61,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
 
-    public Boolean existsByUsername(String username) {
+    public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
-    }
-
-    public Optional<User> findByUserUUID(UUID userUUID) {
-        return userRepository.findByUserUUID(userUUID);
     }
 }

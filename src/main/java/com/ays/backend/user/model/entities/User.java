@@ -11,20 +11,26 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Users entity, which holds the information regarding the system user.
  */
 @Entity
-@Table(name = "user")
+@Table(name = "user",
+        uniqueConstraints={
+        @UniqueConstraint(name = "UniqueMobileNumber", columnNames = {"countryCode", "lineNumber"})
+})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 public class User extends BaseEntity {
 
@@ -37,7 +43,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     @Email
     private String email;
 
@@ -45,7 +51,7 @@ public class User extends BaseEntity {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "organization_id", nullable = false)
+    @JoinColumn(name = "organization_id")
     private Organization organization;
 
     @Enumerated(EnumType.ORDINAL)
@@ -54,7 +60,7 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.ORDINAL)
     @JoinColumn(name = "status_id")
-    @Column(length = 20, unique = true, nullable = false)
+    @Column(length = 20, nullable = false)
     private UserStatus status;
 
     @Column(nullable = false)

@@ -9,7 +9,7 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb?mode=MySQL
+    url: jdbc:h2:mem:testdb?mode=MySQL;NON_KEYWORDS=USER
   sql:
     init:
       mode: always
