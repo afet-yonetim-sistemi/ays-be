@@ -12,8 +12,11 @@ import org.jeasy.random.randomizers.text.StringRandomizer;
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
 import static org.jeasy.random.FieldPredicates.named;
-import static org.jeasy.random.FieldPredicates.ofType;
 
+/**
+ * This class is used to generate test data.
+ * After creating a test class on the main class, this class can be used by extending it.
+ */
 public abstract class TestDataBuilder<T> {
 
     private static final PositiveIntegerRandomizer positiveIntegerRandomizer = new PositiveIntegerRandomizer();
@@ -47,8 +50,6 @@ public abstract class TestDataBuilder<T> {
         parameters.excludeField(
                 FieldPredicates.isAnnotatedWith(ManyToOne.class, OneToMany.class, OneToOne.class, ManyToOne.class)
                         .or(named("id"))
-                        .or(field -> field.getType().isEnum())
-                        .or(ofType(Enum.class))
         );
         return parameters;
     }
