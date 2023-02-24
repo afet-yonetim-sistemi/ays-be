@@ -52,7 +52,7 @@ public abstract class TestDataBuilder<T> {
         if (!excludeRelations) return parameters;
 
         parameters.excludeField(
-                FieldPredicates.isAnnotatedWith(ManyToOne.class, OneToMany.class, OneToOne.class, ManyToOne.class)
+                FieldPredicates.isAnnotatedWith(ManyToOne.class, OneToMany.class, OneToOne.class)
                         .or(named("id"))
         );
         return parameters;
