@@ -19,7 +19,7 @@ springdoc:
     path: /swagger-ui.html
 
 application:
-  description: Afet Yönetim Sistemi Tanımı (AYS)
+  description: Afet Yönetim Sistemi Tanimi (AYS)
   version: 1.0
   title: "AYS"
   licenseName: AYS Licence
