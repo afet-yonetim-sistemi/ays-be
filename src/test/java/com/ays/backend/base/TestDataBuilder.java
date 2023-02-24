@@ -19,31 +19,35 @@ import static org.jeasy.random.FieldPredicates.named;
  */
 public abstract class TestDataBuilder<T> {
 
-    private static final PositiveIntegerRandomizer positiveIntegerRandomizer = new PositiveIntegerRandomizer();
-    private static final LongRangeRandomizer positiveLongRandomizer = new LongRangeRandomizer(1L, Long.MAX_VALUE);
-    private static final CharacterRandomizer characterRandomizer = new CharacterRandomizer();
-
-
     protected final EasyRandom generator;
     protected T data;
     protected Class<T> clazz;
+
+
+    private static final PositiveIntegerRandomizer POSITIVE_INTEGER_RANDOMIZER = new PositiveIntegerRandomizer();
+    private static final LongRangeRandomizer LONG_RANGE_RANDOMIZER = new LongRangeRandomizer(1L, Long.MAX_VALUE);
+    private static final CharacterRandomizer CHARACTER_RANDOMIZER = new CharacterRandomizer();
+
 
     public TestDataBuilder(Class<T> clazz) {
         this(clazz, false);
     }
 
     public TestDataBuilder(Class<T> clazz, boolean excludeRelations) {
-        generator = new EasyRandom(getExclusionParameters(excludeRelations));
-
         this.clazz = clazz;
-        data = generator.nextObject(clazz);
+        this.generator = new EasyRandom(this.getExclusionParameters(excludeRelations));
+        this.data = generator.nextObject(clazz);
+    }
+
+    public T build() {
+        return data;
     }
 
     private EasyRandomParameters getExclusionParameters(boolean excludeRelations) {
         EasyRandomParameters parameters = new EasyRandomParameters();
-        parameters.randomize(Integer.class, positiveIntegerRandomizer);
-        parameters.randomize(String.class, characterRandomizer);
-        parameters.randomize(Long.class, positiveLongRandomizer);
+        parameters.randomize(Integer.class, POSITIVE_INTEGER_RANDOMIZER);
+        parameters.randomize(String.class, CHARACTER_RANDOMIZER);
+        parameters.randomize(Long.class, LONG_RANGE_RANDOMIZER);
 
         if (!excludeRelations) return parameters;
 
@@ -52,10 +56,6 @@ public abstract class TestDataBuilder<T> {
                         .or(named("id"))
         );
         return parameters;
-    }
-
-    public T build() {
-        return data;
     }
 }
 
