@@ -56,3 +56,7 @@ build/
 ### VS Code ###
 .vscode/
 
+## Local env file having environment variable definitions for docker-compose.yml and other files
+## We should not commit this to prevent leaking confidential information
+.env.local
+
