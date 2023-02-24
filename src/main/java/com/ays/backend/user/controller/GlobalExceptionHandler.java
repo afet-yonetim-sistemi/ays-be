@@ -58,7 +58,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<MessageResponse> handleDataIntegrityViolations(
             DataIntegrityViolationException ex) {
         log.warn("Given fields must be unique.");
