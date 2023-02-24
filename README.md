@@ -2,17 +2,8 @@
 
 ## Tech Stack
 
-<<<<<<< Updated upstream
 
 Framework :
-=======
-<<<<<<< HEAD
-Framework : 
-=======
-
-Framework :
->>>>>>> eab4a3f2f16fd402cc6d94b89a7ff21e4cb6c27d
->>>>>>> Stashed changes
 * Core
     * Spring
         * Spring Boot 3
@@ -35,28 +26,12 @@ Databases :
 Technologies :
 * Lombok
 * Test Containers
-<<<<<<< Updated upstream
-* Swagger
-=======
-<<<<<<< HEAD
->>>>>>> Stashed changes
-
-Language :
-* Java 17
-
-<<<<<<< Updated upstream
-Build Tool :
-=======
-Build Tool : 
-=======
 * Swagger
 
 Language :
 * Java 17
 
 Build Tool :
->>>>>>> eab4a3f2f16fd402cc6d94b89a7ff21e4cb6c27d
->>>>>>> Stashed changes
 * Maven
 
 Software Development Process :
@@ -66,18 +41,9 @@ Software Development Process :
 Version Control :
 * Git
 
-<<<<<<< Updated upstream
 Database Change Management :
 * Liquibase
 
-=======
-<<<<<<< HEAD
-=======
-Database Change Management :
-* Liquibase
-
->>>>>>> eab4a3f2f16fd402cc6d94b89a7ff21e4cb6c27d
->>>>>>> Stashed changes
 
 # Getting Started
 
@@ -141,13 +107,13 @@ For your feature branches, please ensure below:
 - PR title should contain the issue/feature/bug number e.g. Issue 7 - Readme Update
 - PR should successfully complete build and any other necessary tests before being merged to main.
 - Branches should follow the below pattern:
-    feature/issue-no-other-desc
-    bugfix/issue-no-other-desc
-    hotfix/issue-no-other-desc (there may also be no issue number for some hotfixes)
+  feature/issue-no-other-desc
+  bugfix/issue-no-other-desc
+  hotfix/issue-no-other-desc (there may also be no issue number for some hotfixes)
 - Each release should be tagged with a version
 - Commit messages should be subjectless
-    e.g. Add README.md
-    e.g. Fix ...
+  e.g. Add README.md
+  e.g. Fix ...
 - PR should be concise; don't try to fix/introduce more than one thing
 - Do not include/push secret/credential information
 
@@ -165,4 +131,3 @@ The project follows [the semantic versioning](https://semver.org/) i.e. MAJOR.MI
 AYS technical analysis can be found [here](https://docs.google.com/document/d/1_GyROvXrsD88udD6z_KfF-Q5Cs77YLHDglqafRXIV_o/edit).
 
 For other information, you can contact the project's [Discord channel](https://discord.gg/HeunQcqg).
->>>>>>> Stashed changes
