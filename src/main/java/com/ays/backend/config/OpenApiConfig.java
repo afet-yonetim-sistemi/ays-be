@@ -10,6 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
 
+    @Value("${application.title}")
+    private String title;
+
+    @Value("${application.licenseName}")
+    private String licenseName;
+
     @Bean
     public OpenAPI customOpenAPI(@Value("${application.description}") String description,
                                  @Value("${application.version}") String version) {
