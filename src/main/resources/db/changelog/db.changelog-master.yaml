@@ -1,1 +1,3 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - includeAll:
+      path: "/db/changelog/changes/"
