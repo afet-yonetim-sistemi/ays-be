@@ -4,14 +4,15 @@ import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.response.SignUpResponse;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.service.UserService;
+import com.ays.backend.user.service.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * User controller to perform user related api operations.
@@ -32,5 +33,19 @@ public class UserController {
 
         SignUpResponse signUpResponse = new SignUpResponse(createdUser.getUsername());
         return new ResponseEntity<>(signUpResponse, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public Page<UserDTO> getUsers(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return userService.getAllUsers(pageable);
+    }
+
+
+    @GetMapping("/{id}")
+    public UserDTO getUserById(@PathVariable Long id){
+        return userService.getUserById(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.ays.backend.user.service.dto;
 
 import com.ays.backend.base.TestDataBuilder;
+import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.enums.UserStatus;
 
 /**
@@ -17,6 +18,19 @@ public class UserDTOBuilder extends TestDataBuilder<UserDTO> {
      */
     public UserDTOBuilder withStatus(UserStatus status) {
         data.setUserStatus(status);
+        return this;
+    }
+
+    public UserDTOBuilder withAllInfo(UserDTO userDTO) {
+        data.setUsername(userDTO.getUsername());
+        data.setFirstName(userDTO.getFirstName());
+        data.setLastName(userDTO.getLastName());
+        data.setEmail(userDTO.getEmail());
+        data.setOrganization(userDTO.getOrganization());
+        data.setUserRole(userDTO.getUserRole());
+        data.setCountryCode(userDTO.getCountryCode());
+        data.setLineNumber(userDTO.getLineNumber());
+        data.setLastLoginDate(userDTO.getLastLoginDate());
         return this;
     }
 }

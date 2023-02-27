@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
+import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.Organization;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.enums.UserRole;
@@ -12,6 +13,8 @@ import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.service.UserService;
 import com.ays.backend.user.service.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,5 +67,38 @@ public class UserServiceImpl implements UserService {
 
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(
+                user -> UserDTO.builder()
+                        .username(user.getUsername())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .userRole(UserRole.getById(user.getUserRole().ordinal()))
+                        .countryCode(user.getCountryCode())
+                        .lineNumber(user.getLineNumber())
+                        .userStatus(user.getStatus())
+                        .email(user.getEmail())
+                        .lastLoginDate(user.getLastLoginDate())
+                        .build()
+        );
+    }
+
+    @Override
+    public UserDTO getUserById(Long id) {
+        return userRepository.findById(id).map(
+                user -> UserDTO.builder()
+                        .username(user.getUsername())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .userRole(UserRole.getById(user.getUserRole().ordinal()))
+                        .countryCode(user.getCountryCode())
+                        .lineNumber(user.getLineNumber())
+                        .userStatus(user.getStatus())
+                        .email(user.getEmail())
+                        .lastLoginDate(user.getLastLoginDate())
+                        .build()
+        ).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
 }
