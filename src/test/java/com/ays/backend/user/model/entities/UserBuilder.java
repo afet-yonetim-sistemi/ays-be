@@ -7,6 +7,9 @@ import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.service.dto.UserDTO;
 import com.ays.backend.user.service.dto.UserDTOBuilder;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * This is a class that can be used to generate test data for the User class without the need for manual input.
  */
@@ -36,7 +39,7 @@ public class UserBuilder extends TestDataBuilder<User> {
         return this;
     }
 
-    public UserBuilder withAllInfo(User user) {
+    public UserBuilder from(User user) {
         data.setUsername(user.getUsername());
         data.setFirstName(user.getFirstName());
         data.setLastName(user.getLastName());
@@ -48,4 +51,33 @@ public class UserBuilder extends TestDataBuilder<User> {
         data.setLastLoginDate(user.getLastLoginDate());
         return this;
     }
+
+
+    public List<User> getUsers(){
+
+        User userInfo1 = User.builder()
+                .username("username 1")
+                .firstName("firstname 1")
+                .lastName("lastname 1")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .build();
+
+        User userInfo2 = User.builder()
+                .username("username 2")
+                .firstName("firstname 2")
+                .lastName("lastname 2")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .build();
+
+        User user1 = new UserBuilder()
+                .from(userInfo1)
+                .build();
+
+        User user2 = new UserBuilder()
+                .from(userInfo2)
+                .build();
+
+        return Arrays.asList(user1, user2);
+    }
+
 }

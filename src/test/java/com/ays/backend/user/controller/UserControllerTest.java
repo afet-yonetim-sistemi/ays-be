@@ -62,29 +62,8 @@ class UserControllerTest extends BaseRestControllerTest {
         int page = 1;
         int pageSize = 10;
 
-        UserDTO userDTO1Info = UserDTO.builder()
-                .username("username 1")
-                .firstName("firstname 1")
-                .lastName("lastname 1")
-                .userRole(UserRole.ROLE_VOLUNTEER)
-                .build();
-
-        UserDTO userDTO2Info = UserDTO.builder()
-                .username("username 2")
-                .firstName("firstname 2")
-                .lastName("lastname 2")
-                .userRole(UserRole.ROLE_VOLUNTEER)
-                .build();
-
-        UserDTO userDTO1 = new UserDTOBuilder()
-                .withAllInfo(userDTO1Info)
-                .build();
-
-        UserDTO userDTO2 = new UserDTOBuilder()
-                .withAllInfo(userDTO2Info)
-                .build();
-
-        List<UserDTO> users = Arrays.asList(userDTO1, userDTO2);
+        // given
+        List<UserDTO> users = new UserDTOBuilder().getUserDtos();
         Page<UserDTO> expectedPage = new PageImpl<>(users);
 
         //when

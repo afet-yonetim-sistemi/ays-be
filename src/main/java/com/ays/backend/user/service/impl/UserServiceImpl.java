@@ -71,34 +71,29 @@ public class UserServiceImpl implements UserService {
 
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(
-                user -> UserDTO.builder()
-                        .username(user.getUsername())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
-                        .userRole(UserRole.getById(user.getUserRole().ordinal()))
-                        .countryCode(user.getCountryCode())
-                        .lineNumber(user.getLineNumber())
-                        .userStatus(user.getStatus())
-                        .email(user.getEmail())
-                        .lastLoginDate(user.getLastLoginDate())
-                        .build()
+                this::userToUserDTO
         );
     }
 
     @Override
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id).map(
-                user -> UserDTO.builder()
-                        .username(user.getUsername())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
-                        .userRole(UserRole.getById(user.getUserRole().ordinal()))
-                        .countryCode(user.getCountryCode())
-                        .lineNumber(user.getLineNumber())
-                        .userStatus(user.getStatus())
-                        .email(user.getEmail())
-                        .lastLoginDate(user.getLastLoginDate())
-                        .build()
+                this::userToUserDTO
         ).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
+
+    public UserDTO userToUserDTO(User user) {
+        return UserDTO.builder()
+                .username(user.getUsername())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .userRole(UserRole.getById(user.getUserRole().ordinal()))
+                .countryCode(user.getCountryCode())
+                .lineNumber(user.getLineNumber())
+                .userStatus(user.getStatus())
+                .email(user.getEmail())
+                .lastLoginDate(user.getLastLoginDate())
+                .build();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.ays.backend.user.controller;
 
+import com.ays.backend.user.controller.payload.request.PaginationRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.response.SignUpResponse;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
@@ -36,10 +37,8 @@ public class UserController {
     }
 
     @GetMapping
-    public Page<UserDTO> getUsers(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
+    public Page<UserDTO> getUsers(PaginationRequest paginationRequest) {
+        Pageable pageable = PageRequest.of(paginationRequest.getPage(), paginationRequest.getPageSize());
         return userService.getAllUsers(pageable);
     }
 
