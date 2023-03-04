@@ -85,6 +85,43 @@ For running the docker image, run the following command:
 docker run -p 8080:8080 ays/ays-be
 ```
 
+## Running with Docker Compose
+
+You need to have .env.local file in the same directory with docker-compose.yml which will define
+env variables used by the compose command - this file should not be committed:
+
+```.env.local
+MYSQLDB_USER=root
+MYSQLDB_ROOT_PASSWORD=123456
+MYSQLDB_DATABASE=afetdb
+MYSQLDB_LOCAL_PORT=3307
+MYSQLDB_DOCKER_PORT=3306
+SPRING_PROFILES_ACTIVE=dev
+```
+
+```
+docker compose --env-file .env.local up -d
+```
+
+To terminate the containers:
+
+```
+docker compose --env-file .env.local down
+```
+
+## Running the app with Kubernetes
+
+```
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+```
+
+You should be able to see the service, deployment and pods. If you want to access the service using internal IP,
+try using NodePort instead of LoadBalancer in service.yaml or simply use port forwarding:
+
+```
+kubectl port-forward service/ays-be 8080:8080
+```
 
 # How to Contribute
 
