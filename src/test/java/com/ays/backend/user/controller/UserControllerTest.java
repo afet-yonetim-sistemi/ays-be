@@ -1,5 +1,7 @@
 package com.ays.backend.user.controller;
 
+import java.util.List;
+
 import com.ays.backend.base.BaseRestControllerTest;
 import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
 import com.ays.backend.user.model.enums.UserRole;
@@ -15,16 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Arrays;
-import java.util.List;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,7 +55,7 @@ class UserControllerTest extends BaseRestControllerTest {
     }
 
     @Test
-    public void shouldReturnGetUserDtoListWithPage() throws Exception {
+    void shouldReturnGetUserDtoListWithPage() throws Exception {
 
         int page = 1;
         int pageSize = 10;
@@ -84,12 +82,10 @@ class UserControllerTest extends BaseRestControllerTest {
                 .andExpect(jsonPath("$.content[1].firstName", is("firstname 2")))
                 .andExpect(jsonPath("$.content[1].lastName", is("lastname 2")))
                 .andExpect(jsonPath("$.content[1].userRole", is(UserRole.ROLE_VOLUNTEER.name())));
-
-
     }
 
     @Test
-    public void shouldReturnGetUserDtoById() throws Exception {
+    void shouldReturnGetUserDtoById() throws Exception {
 
         // given
         Long id = 1L;

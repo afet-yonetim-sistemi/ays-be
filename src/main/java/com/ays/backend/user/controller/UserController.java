@@ -24,6 +24,14 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    /**
+     * This endpoint allows users to register and create a new account.
+     *
+     * @param signUpRequest A SignUpRequest object containing the username and password of the new user (required).
+     * @return A ResponseEntity containing a SignUpResponse object with the username of the newly created user and
+     *         the HTTP status code (201 CREATED).
+     * @throws UserAlreadyExistsException If the username provided in the request body already exists in the database.
+     */
     @PostMapping
     public ResponseEntity<SignUpResponse> registerUser(@RequestBody @Valid SignUpRequest signUpRequest) {
         if (Boolean.TRUE.equals(userService.existsByUsername(signUpRequest.getUsername()))) {
@@ -36,15 +44,26 @@ public class UserController {
         return new ResponseEntity<>(signUpResponse, HttpStatus.CREATED);
     }
 
+    /**
+     * This endpoint returns a pageable list of UserDTO objects.
+     *
+     * @param paginationRequest A PaginationRequest object containing the page number and page size for the query (optional).
+     * @return A ResponseEntity containing a Page object with UserDTOs and the HTTP status code (200 OK).
+     */
     @GetMapping
-    public Page<UserDTO> getUsers(PaginationRequest paginationRequest) {
+    public ResponseEntity<Page<UserDTO>> getUsers(PaginationRequest paginationRequest) {
         Pageable pageable = PageRequest.of(paginationRequest.getPage(), paginationRequest.getPageSize());
-        return userService.getAllUsers(pageable);
+        return new ResponseEntity<>(userService.getAllUsers(pageable), HttpStatus.OK);
     }
 
-
+    /**
+     * This endpoint returns a UserDTO object with the specified ID.
+     *
+     * @param id A Long representing the ID of the user to retrieve (required).
+     * @return A ResponseEntity containing a UserDTO object with the specified ID and the HTTP status code (200 OK).
+     */
     @GetMapping("/{id}")
-    public UserDTO getUserById(@PathVariable Long id){
-        return userService.getUserById(id);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 }
