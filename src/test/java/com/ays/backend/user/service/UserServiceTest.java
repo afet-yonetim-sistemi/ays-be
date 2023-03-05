@@ -4,7 +4,6 @@ import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
-import com.ays.backend.user.controller.payload.response.MessageResponse;
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
@@ -21,9 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
