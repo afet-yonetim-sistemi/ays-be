@@ -2,6 +2,8 @@ package com.ays.backend.user.service;
 
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.service.dto.UserDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * User service to perform user related business operations.
@@ -22,4 +24,21 @@ public interface UserService {
      * @return true if the user exists, false otherwise
      */
     boolean existsByUsername(String username);
+
+
+    /**
+     * Checks if the user by the given parameter exists in the database.
+     *
+     * @param pageable covering page and pageSize
+     * @return userDto list
+     */
+    Page<UserDTO> getAllUsers(Pageable pageable);
+
+    /**
+     * Get User DTO by User ID
+     *
+     * @param id the given User ID
+     * @return userDto
+     */
+    UserDTO getUserById(Long id);
 }

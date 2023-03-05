@@ -1,12 +1,11 @@
 package com.ays.backend.user.service.dto;
 
 import com.ays.backend.user.model.entities.Organization;
+import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -28,4 +27,20 @@ public class UserDTO {
     private int countryCode;
     private int lineNumber;
     private LocalDateTime lastLoginDate;
+
+
+    /*public static UserDTO userToUserDTO(User user) {
+        return UserDTO.builder()
+                .username(user.getUsername())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .userRole(UserRole.getById(user.getUserRole().ordinal()))
+                .countryCode(user.getCountryCode())
+                .lineNumber(user.getLineNumber())
+                .userStatus(user.getStatus())
+                .email(user.getEmail())
+                .lastLoginDate(user.getLastLoginDate())
+                .build();
+    }*/
+
 }
