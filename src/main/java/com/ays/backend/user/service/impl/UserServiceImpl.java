@@ -71,29 +71,16 @@ public class UserServiceImpl implements UserService {
 
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(
-                this::userToUserDTO
+                UserDTO::userToUserDTO
         );
     }
 
     @Override
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id).map(
-                this::userToUserDTO
+                UserDTO::userToUserDTO
         ).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
 
-    public UserDTO userToUserDTO(User user) {
-        return UserDTO.builder()
-                .username(user.getUsername())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .userRole(UserRole.getById(user.getUserRole().ordinal()))
-                .countryCode(user.getCountryCode())
-                .lineNumber(user.getLineNumber())
-                .userStatus(user.getStatus())
-                .email(user.getEmail())
-                .lastLoginDate(user.getLastLoginDate())
-                .build();
-    }
 
 }
