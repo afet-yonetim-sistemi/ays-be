@@ -1,6 +1,7 @@
 package com.ays.backend.user.service;
 
 import com.ays.backend.base.BaseServiceTest;
+import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
@@ -36,8 +37,12 @@ class UserServiceTest extends BaseServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private UserMapper userMapper;
+
     @InjectMocks
     private UserServiceImpl userService;
+
 
     @Test
     void shouldCreateUser() {
@@ -72,6 +77,11 @@ class UserServiceTest extends BaseServiceTest {
         // Create a Page object with the sample users
         Page<User> users = new PageImpl<>(userList);
 
+        // mock the mapper to return non-null UserDTO objects
+        for (int i = 0; i < userList.size(); i++) {
+            when(userMapper.mapUsertoUserDTO(userList.get(i))).thenReturn(userDtoList.get(i));
+        }
+
         // when
         when(userRepository.findAll(any(Pageable.class))).thenReturn(users);
 
@@ -99,6 +109,21 @@ class UserServiceTest extends BaseServiceTest {
         User user = new UserBuilder()
                 .withSignUpRequest(signUpRequest)
                 .withUserRole(UserRole.ROLE_VOLUNTEER).build();
+
+        UserDTO mockUserDto = UserDTO.builder()
+                .username(user.getUsername())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .userRole(user.getUserRole())
+                .countryCode(user.getCountryCode())
+                .lineNumber(user.getLineNumber())
+                .userStatus(user.getStatus())
+                .email(user.getEmail())
+                .lastLoginDate(user.getLastLoginDate())
+                .build();
+
+        // mock the mapper to return non-null UserDTO objects
+        when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(mockUserDto);
 
         // when
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));

@@ -29,7 +29,7 @@ public class UserDTO {
     private LocalDateTime lastLoginDate;
 
 
-    public static UserDTO userToUserDTO(User user) {
+    /*public static UserDTO userToUserDTO(User user) {
         return UserDTO.builder()
                 .username(user.getUsername())
                 .firstName(user.getFirstName())
@@ -41,6 +41,6 @@ public class UserDTO {
                 .email(user.getEmail())
                 .lastLoginDate(user.getLastLoginDate())
                 .build();
-    }
+    }*/
 
 }

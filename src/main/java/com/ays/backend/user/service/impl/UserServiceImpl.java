@@ -3,6 +3,7 @@ package com.ays.backend.user.service.impl;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.Organization;
@@ -24,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final UserMapper userMapper;
+
 
     @Transactional
     public UserDTO saveUser(SignUpRequest signUpRequest) {
@@ -71,14 +75,14 @@ public class UserServiceImpl implements UserService {
 
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(
-                UserDTO::userToUserDTO
+                userMapper::mapUsertoUserDTO
         );
     }
 
     @Override
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id).map(
-                UserDTO::userToUserDTO
+                userMapper::mapUsertoUserDTO
         ).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
 
