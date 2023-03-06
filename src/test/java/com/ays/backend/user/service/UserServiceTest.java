@@ -4,7 +4,9 @@ import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
+import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.exception.UserNotFoundException;
+import com.ays.backend.user.model.entities.Organization;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
 import com.ays.backend.user.model.enums.UserRole;
@@ -127,6 +129,7 @@ class UserServiceTest extends BaseServiceTest {
 
         UserDTO userDto = userService.getUserById(1L);
 
+        // then
         assertEquals(user.getUsername(), userDto.getUsername());
         assertEquals(user.getFirstName(), userDto.getFirstName());
         assertEquals(user.getLastName(), userDto.getLastName());
@@ -149,7 +152,102 @@ class UserServiceTest extends BaseServiceTest {
 
         UserNotFoundException actual = assertThrows(UserNotFoundException.class, () -> userService.getUserById(-1L));
 
+        // then
         assertEquals(expectedError.getMessage(), actual.getMessage());
 
+    }
+
+
+    @Test
+    public void shouldSoftDeleteUserById() {
+        Long id = 1L;
+
+        // given
+        User userInfoWithWaitingStatus = new UserBuilder().getUserSamplewithWaitingStatus();
+        User userInfoWithPassiveStatus = new UserBuilder().getUserSamplewithPassiveStatus();
+        UserDTO userDTOInfoWithPassiveStatus = new UserDTOBuilder().getUserDTOwithPassiveStatus();
+
+        // when
+        when(userRepository.findById(id)).thenReturn(Optional.of(userInfoWithWaitingStatus));
+        when(userRepository.save(any(User.class))).thenReturn(userInfoWithPassiveStatus);
+        when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(userDTOInfoWithPassiveStatus);
+
+        UserDTO deactivatedUser = userService.deleteSoftUserById(id);
+
+        // then
+        assertEquals(deactivatedUser.getUserStatus().ordinal(), userDTOInfoWithPassiveStatus.getUserStatus().ordinal());
+
+    }
+
+    @Test
+    public void shouldSoftDeleteUserByIdInvalidId() {
+        Long id = -1L;
+
+        // given
+        UserNotFoundException expectedError = new UserNotFoundException("User with id -1 not found");
+
+        // when
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        UserNotFoundException actual = assertThrows(UserNotFoundException.class, () -> userService.deleteSoftUserById(id));
+
+        // then
+        assertEquals(expectedError.getMessage(), actual.getMessage());
+    }
+
+    @Test
+    public void shouldUpdateUserById() {
+        Long id = 1L;
+
+        // given
+        User sampleUser = new UserBuilder().getUserSample();
+        UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
+                .username("updatedusername")
+                .firstName("updatedfirstname")
+                .lastName("updatedlastname")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .userStatus(UserStatus.VERIFIED)
+                .build();
+
+        User updatedUser = new UserBuilder().getUpdatedUser();
+        UserDTO updatedDTO = new UserDTOBuilder().getUpdatedUserDTO();
+
+
+        // when
+        when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
+        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+        when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(updatedDTO);
+
+        UserDTO updatedUserDTO = userService.updateUserById(id,updateUserRequest);
+
+        // then
+        assertEquals(updatedDTO.getUsername(), updatedUserDTO.getUsername());
+        assertEquals(updatedDTO.getFirstName(), updatedUserDTO.getFirstName());
+        assertEquals(updatedDTO.getLastName(), updatedUserDTO.getLastName());
+        assertEquals(updatedDTO.getUserRole().ordinal(), updatedUserDTO.getUserRole().ordinal());
+        assertEquals(updatedDTO.getUserStatus().ordinal(), updatedUserDTO.getUserStatus().ordinal());
+    }
+
+    @Test
+    public void shouldUpdateUserByIdInvalidId() {
+        Long id = -1L;
+
+        // given
+        UserNotFoundException expectedError = new UserNotFoundException("User with id -1 not found");
+        UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
+                .username("updatedusername")
+                .firstName("updatedfirstname")
+                .lastName("updatedlastname")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .userStatus(UserStatus.VERIFIED)
+                .build();
+
+        // when
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        UserNotFoundException actual = assertThrows(UserNotFoundException.class, () -> userService.updateUserById(id,updateUserRequest));
+
+        // then
+        assertEquals(expectedError.getMessage(), actual.getMessage());
     }
 }

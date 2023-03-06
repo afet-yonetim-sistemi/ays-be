@@ -80,4 +80,52 @@ public class UserBuilder extends TestDataBuilder<User> {
         return Arrays.asList(user1, user2);
     }
 
+
+    public User getUserSamplewithWaitingStatus(){
+
+        return User.builder()
+                .username("username 1")
+                .firstName("firstname 1")
+                .lastName("lastname 1")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .status(UserStatus.WAITING)
+                .build();
+
+    }
+
+    public User getUserSamplewithPassiveStatus(){
+
+        return User.builder()
+                .username("username 1")
+                .firstName("firstname 1")
+                .lastName("lastname 1")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .status(UserStatus.PASSIVE)
+                .build();
+
+    }
+
+    public User getUserSample(){
+
+        return User.builder()
+                .username("username 1")
+                .firstName("firstname 1")
+                .lastName("lastname 1")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .status(UserStatus.COMPLETED)
+                .build();
+
+    }
+
+    public User getUpdatedUser(){
+
+        return User.builder()
+                .username("updatedusername")
+                .firstName("updatedfirstname")
+                .lastName("updatedlastname")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .status(UserStatus.VERIFIED)
+                .build();
+    }
+
 }

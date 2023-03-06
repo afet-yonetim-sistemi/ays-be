@@ -1,6 +1,7 @@
 package com.ays.backend.user.service;
 
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
+import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.service.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,4 +42,20 @@ public interface UserService {
      * @return userDto
      */
     UserDTO getUserById(Long id);
+
+    /**
+     * Delete Soft User by User ID
+     * @param id the given User ID
+     * @return userDto
+     */
+    UserDTO deleteSoftUserById(Long id);
+
+
+    /**
+     * Update User by User ID
+     * @param id the given User ID
+     * @param updateUserRequest the given UpdateUserRequest object
+     * @return userDto
+     */
+    UserDTO updateUserById(Long id, UpdateUserRequest updateUserRequest);
 }

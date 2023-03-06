@@ -2,6 +2,7 @@ package com.ays.backend.user.controller;
 
 import com.ays.backend.user.controller.payload.request.PaginationRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
+import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.controller.payload.response.SignUpResponse;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.service.UserService;
@@ -65,5 +66,30 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+    }
+
+
+    /**
+     * This endpoint returns a UserDTO object by deleting the user softly with the specified ID.
+     *
+     * @param id A Long representing the ID of the user to retrieve (required).
+     * @return A ResponseEntity containing a UserDTO object after implementing the process of deleting user softly
+     *         with the specified ID and the HTTP status code (200 OK).
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserDTO> deleteSoftUserById(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.deleteSoftUserById(id), HttpStatus.OK);
+    }
+
+    /**
+     * This endpoint returns a UserDTO object by updating the user with the specified ID.
+     *
+     * @param id A Long representing the ID of the user to retrieve (required).
+     * @return A ResponseEntity containing a UserDTO object after implementing the process of updating user
+     *         with the specified ID by and the HTTP status code (200 OK).
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUserById(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
+        return new ResponseEntity<>(userService.updateUserById(id,updateUserRequest), HttpStatus.OK);
     }
 }

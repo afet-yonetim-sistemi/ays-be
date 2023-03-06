@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
+import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.Organization;
 import com.ays.backend.user.model.entities.User;
@@ -84,6 +85,41 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).map(
                 userMapper::mapUsertoUserDTO
         ).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+    }
+
+    @Override
+    public UserDTO deleteSoftUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+        user.setStatus(UserStatus.PASSIVE);
+
+        var deactivedUser =userRepository.save(user);
+
+        return userMapper.mapUsertoUserDTO(deactivedUser);
+    }
+
+    @Override
+    public UserDTO updateUserById(Long id, UpdateUserRequest updateUserRequest) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+        user = User.builder()
+                .username(updateUserRequest.getUsername() != null ? updateUserRequest.getUsername() : user.getUsername())
+                .firstName(updateUserRequest.getFirstName() != null ? updateUserRequest.getFirstName() : user.getFirstName())
+                .lastName(updateUserRequest.getLastName() != null ? updateUserRequest.getLastName() : user.getLastName())
+                .email(updateUserRequest.getEmail() != null ? updateUserRequest.getEmail() : user.getEmail())
+                .organization(updateUserRequest.getOrganization() != null ? updateUserRequest.getOrganization() : user.getOrganization())
+                .userRole(updateUserRequest.getUserRole() != null ? updateUserRequest.getUserRole() : user.getUserRole())
+                .status(updateUserRequest.getUserStatus() != null ? updateUserRequest.getUserStatus() : user.getStatus())
+                .countryCode(updateUserRequest.getCountryCode() != 0 ? updateUserRequest.getCountryCode() : user.getCountryCode())
+                .lineNumber(updateUserRequest.getLineNumber() != 0 ? updateUserRequest.getLineNumber() : user.getLineNumber())
+                .build();
+
+        var updatedUser = userRepository.save(user);
+
+        return userMapper.mapUsertoUserDTO(updatedUser);
     }
 
 
