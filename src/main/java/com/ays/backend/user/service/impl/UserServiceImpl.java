@@ -100,22 +100,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUserById(Long id, UpdateUserRequest updateUserRequest) {
+    public UserDTO updateUserById(UpdateUserRequest updateUserRequest) {
 
+        Long id = updateUserRequest.getId();
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
 
-        user = User.builder()
-                .username(updateUserRequest.getUsername() != null ? updateUserRequest.getUsername() : user.getUsername())
-                .firstName(updateUserRequest.getFirstName() != null ? updateUserRequest.getFirstName() : user.getFirstName())
-                .lastName(updateUserRequest.getLastName() != null ? updateUserRequest.getLastName() : user.getLastName())
-                .email(updateUserRequest.getEmail() != null ? updateUserRequest.getEmail() : user.getEmail())
-                .organization(updateUserRequest.getOrganization() != null ? updateUserRequest.getOrganization() : user.getOrganization())
-                .userRole(updateUserRequest.getUserRole() != null ? updateUserRequest.getUserRole() : user.getUserRole())
-                .status(updateUserRequest.getUserStatus() != null ? updateUserRequest.getUserStatus() : user.getStatus())
-                .countryCode(updateUserRequest.getCountryCode() != 0 ? updateUserRequest.getCountryCode() : user.getCountryCode())
-                .lineNumber(updateUserRequest.getLineNumber() != 0 ? updateUserRequest.getLineNumber() : user.getLineNumber())
-                .build();
+
+        user = userMapper.mapUpdateRequestToUser(updateUserRequest, user);
 
         var updatedUser = userRepository.save(user);
 

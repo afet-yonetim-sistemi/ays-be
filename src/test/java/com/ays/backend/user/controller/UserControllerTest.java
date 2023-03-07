@@ -142,6 +142,7 @@ class UserControllerTest extends BaseRestControllerTest {
         // given
         Long id = 1L;
         UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
+                .id(id)
                 .username("updatedusername")
                 .firstName("updatedfirstname")
                 .lastName("updatedlastname")
@@ -151,10 +152,10 @@ class UserControllerTest extends BaseRestControllerTest {
         UserDTO updatedDTO = new UserDTOBuilder().getUpdatedUserDTO();
 
         // when
-        when(userService.updateUserById(id, updateUserRequest)).thenReturn(updatedDTO);
+        when(userService.updateUserById(updateUserRequest)).thenReturn(updatedDTO);
 
         // then - Perform the PUT request and assert the response
-        mockMvc.perform(put(USER_CONTROLLER_BASEURL + "/{id}", id)
+        mockMvc.perform(put(USER_CONTROLLER_BASEURL)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(updateUserRequest)))
                 .andExpect(status().isOk())

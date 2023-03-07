@@ -84,12 +84,12 @@ public class UserController {
     /**
      * This endpoint returns a UserDTO object by updating the user with the specified ID.
      *
-     * @param id A Long representing the ID of the user to retrieve (required).
+     * @param updateUserRequest UpdateUserRequest for updating the user
      * @return A ResponseEntity containing a UserDTO object after implementing the process of updating user
      *         with the specified ID by and the HTTP status code (200 OK).
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUserById(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
-        return new ResponseEntity<>(userService.updateUserById(id,updateUserRequest), HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity<UserDTO> updateUserById(@RequestBody UpdateUserRequest updateUserRequest) {
+        return new ResponseEntity<>(userService.updateUserById(updateUserRequest), HttpStatus.OK);
     }
 }

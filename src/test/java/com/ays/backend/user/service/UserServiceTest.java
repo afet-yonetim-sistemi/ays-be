@@ -29,6 +29,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 class UserServiceTest extends BaseServiceTest {
@@ -202,6 +203,7 @@ class UserServiceTest extends BaseServiceTest {
         // given
         User sampleUser = new UserBuilder().getUserSample();
         UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
+                .id(id)
                 .username("updatedusername")
                 .firstName("updatedfirstname")
                 .lastName("updatedlastname")
@@ -217,8 +219,9 @@ class UserServiceTest extends BaseServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
         when(userRepository.save(any(User.class))).thenReturn(updatedUser);
         when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(updatedDTO);
+        when(userMapper.mapUpdateRequestToUser(eq(updateUserRequest), eq(sampleUser))).thenReturn(updatedUser);
 
-        UserDTO updatedUserDTO = userService.updateUserById(id,updateUserRequest);
+        UserDTO updatedUserDTO = userService.updateUserById(updateUserRequest);
 
         // then
         assertEquals(updatedDTO.getUsername(), updatedUserDTO.getUsername());
@@ -235,6 +238,7 @@ class UserServiceTest extends BaseServiceTest {
         // given
         UserNotFoundException expectedError = new UserNotFoundException("User with id -1 not found");
         UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
+                .id(id)
                 .username("updatedusername")
                 .firstName("updatedfirstname")
                 .lastName("updatedlastname")
@@ -245,7 +249,7 @@ class UserServiceTest extends BaseServiceTest {
         // when
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        UserNotFoundException actual = assertThrows(UserNotFoundException.class, () -> userService.updateUserById(id,updateUserRequest));
+        UserNotFoundException actual = assertThrows(UserNotFoundException.class, () -> userService.updateUserById(updateUserRequest));
 
         // then
         assertEquals(expectedError.getMessage(), actual.getMessage());

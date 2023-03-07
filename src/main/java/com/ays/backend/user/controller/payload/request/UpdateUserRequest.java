@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 public class UpdateUserRequest {
 
+    private Long id;
     private String username;
     private String firstName;
     private String lastName;

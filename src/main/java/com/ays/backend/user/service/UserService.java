@@ -53,9 +53,8 @@ public interface UserService {
 
     /**
      * Update User by User ID
-     * @param id the given User ID
      * @param updateUserRequest the given UpdateUserRequest object
      * @return userDto
      */
-    UserDTO updateUserById(Long id, UpdateUserRequest updateUserRequest);
+    UserDTO updateUserById(UpdateUserRequest updateUserRequest);
 }
