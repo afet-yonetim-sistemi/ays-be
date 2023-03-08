@@ -112,7 +112,7 @@ class UserControllerTest extends BaseRestControllerTest {
     }
 
     @Test
-    void testDeleteSoftUserById() throws Exception {
+    void shouldSoftDeleteUserById() throws Exception {
 
         // given
         Long id = 1L;
@@ -137,7 +137,7 @@ class UserControllerTest extends BaseRestControllerTest {
     }
 
     @Test
-    void testUpdateUserById() throws Exception {
+    void shouldUpdateUserById() throws Exception {
 
         // given
         Long id = 1L;

@@ -160,7 +160,7 @@ class UserServiceTest extends BaseServiceTest {
 
 
     @Test
-    public void shouldSoftDeleteUserById() {
+    void shouldSoftDeleteUserById() {
         Long id = 1L;
 
         // given
@@ -181,7 +181,7 @@ class UserServiceTest extends BaseServiceTest {
     }
 
     @Test
-    public void shouldSoftDeleteUserByIdInvalidId() {
+    void shouldNotSoftDeleteUserWhenIdInvalidId() {
         Long id = -1L;
 
         // given
@@ -197,7 +197,7 @@ class UserServiceTest extends BaseServiceTest {
     }
 
     @Test
-    public void shouldUpdateUserById() {
+    void shouldUpdateUserById() {
         Long id = 1L;
 
         // given
@@ -232,7 +232,7 @@ class UserServiceTest extends BaseServiceTest {
     }
 
     @Test
-    public void shouldUpdateUserByIdInvalidId() {
+    void shouldNotUpdateUserWhenIdInvalidId() {
         Long id = -1L;
 
         // given

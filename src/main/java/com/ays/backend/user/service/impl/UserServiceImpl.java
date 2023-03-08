@@ -100,6 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO updateUserById(UpdateUserRequest updateUserRequest) {
 
         Long id = updateUserRequest.getId();
