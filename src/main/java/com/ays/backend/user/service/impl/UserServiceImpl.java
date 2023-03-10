@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Long id) {
-        return userRepository.findById(id).map(
+        return userRepository.findByIdAndStatusNot(id, UserStatus.PASSIVE).map(
                 userMapper::mapUsertoUserDTO
         ).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }

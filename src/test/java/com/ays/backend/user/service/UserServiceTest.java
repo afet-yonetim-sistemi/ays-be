@@ -104,7 +104,7 @@ class UserServiceTest extends BaseServiceTest {
 
         // given
         SignUpRequest signUpRequest = new SignUpRequestBuilder()
-                .withStatusId(UserStatus.PASSIVE.ordinal()).build();
+                .withStatusId(UserStatus.WAITING.ordinal()).build();
 
         User user = new UserBuilder()
                 .withSignUpRequest(signUpRequest)
@@ -125,8 +125,9 @@ class UserServiceTest extends BaseServiceTest {
         // mock the mapper to return non-null UserDTO objects
         when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(mockUserDto);
 
+
         // when
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndStatusNot(1L,UserStatus.PASSIVE)).thenReturn(Optional.of(user));
 
         UserDTO userDto = userService.getUserById(1L);
 
