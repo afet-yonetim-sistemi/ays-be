@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -116,24 +116,16 @@ class UserControllerTest extends BaseRestControllerTest {
 
         // given
         Long id = 1L;
-        UserDTO deletedSoftUser = UserDTO.builder()
-                .username("username 1")
-                .firstName("firstname 1")
-                .lastName("lastname 1")
-                .userStatus(UserStatus.PASSIVE)
-                .build();
 
         // when
-        when(userService.deleteSoftUserById(id)).thenReturn(deletedSoftUser);
 
         // then - Perform the DELETE request and assert the response
         mockMvc.perform(delete(USER_CONTROLLER_BASEURL + "/{id}", id)
                 .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is(deletedSoftUser.getUsername())))
-                .andExpect(jsonPath("$.firstName", is(deletedSoftUser.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(deletedSoftUser.getLastName())))
-                .andExpect(jsonPath("$.userStatus", is(deletedSoftUser.getUserStatus().name())));
+                .andExpect(status().isOk());
+
+        // Verify that the service method was called with the correct argument
+        verify(userService, times(1)).deleteSoftUserById(id);
     }
 
     @Test

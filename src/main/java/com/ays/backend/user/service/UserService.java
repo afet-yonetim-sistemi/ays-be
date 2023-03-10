@@ -48,7 +48,7 @@ public interface UserService {
      * @param id the given User ID
      * @return userDto
      */
-    UserDTO deleteSoftUserById(Long id);
+    void deleteSoftUserById(Long id);
 
 
     /**

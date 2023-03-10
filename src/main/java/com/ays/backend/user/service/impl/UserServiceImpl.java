@@ -88,15 +88,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO deleteSoftUserById(Long id) {
+    public void deleteSoftUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
 
         user.setStatus(UserStatus.PASSIVE);
 
-        var deactivedUser =userRepository.save(user);
+        userRepository.save(user);
 
-        return userMapper.mapUsertoUserDTO(deactivedUser);
     }
 
     @Override

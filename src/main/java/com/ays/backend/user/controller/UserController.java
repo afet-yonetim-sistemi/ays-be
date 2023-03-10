@@ -71,14 +71,12 @@ public class UserController {
 
     /**
      * This endpoint returns a UserDTO object by deleting the user softly with the specified ID.
-     *
      * @param id A Long representing the ID of the user to retrieve (required).
-     * @return A ResponseEntity containing a UserDTO object after implementing the process of deleting user softly
-     *         with the specified ID and the HTTP status code (200 OK).
+     *
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserDTO> deleteSoftUserById(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.deleteSoftUserById(id), HttpStatus.OK);
+    public void deleteSoftUserById(@PathVariable Long id) {
+        userService.deleteSoftUserById(id);
     }
 
     /**

@@ -171,12 +171,11 @@ class UserServiceTest extends BaseServiceTest {
         // when
         when(userRepository.findById(id)).thenReturn(Optional.of(userInfoWithWaitingStatus));
         when(userRepository.save(any(User.class))).thenReturn(userInfoWithPassiveStatus);
-        when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(userDTOInfoWithPassiveStatus);
 
-        UserDTO deactivatedUser = userService.deleteSoftUserById(id);
+        userService.deleteSoftUserById(id);
 
         // then
-        assertEquals(deactivatedUser.getUserStatus().ordinal(), userDTOInfoWithPassiveStatus.getUserStatus().ordinal());
+        assertEquals(UserStatus.PASSIVE, userInfoWithWaitingStatus.getStatus());
 
     }
 
