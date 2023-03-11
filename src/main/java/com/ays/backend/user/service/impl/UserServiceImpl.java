@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
+import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.Organization;
 import com.ays.backend.user.model.entities.User;
@@ -81,9 +82,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Long id) {
-        return userRepository.findById(id).map(
+        return userRepository.findByIdAndStatusNot(id, UserStatus.PASSIVE).map(
                 userMapper::mapUsertoUserDTO
         ).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+    }
+
+    @Override
+    @Transactional
+    public void deleteSoftUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+        user.setStatus(UserStatus.PASSIVE);
+
+        userRepository.save(user);
+
+    }
+
+    @Override
+    @Transactional
+    public UserDTO updateUserById(UpdateUserRequest updateUserRequest) {
+
+        Long id = updateUserRequest.getId();
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+
+        user = userMapper.mapUpdateRequestToUser(updateUserRequest, user);
+
+        var updatedUser = userRepository.save(user);
+
+        return userMapper.mapUsertoUserDTO(updatedUser);
     }
 
 

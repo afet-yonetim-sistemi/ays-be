@@ -64,4 +64,26 @@ public class UserDTOBuilder extends TestDataBuilder<UserDTO> {
 
         return Arrays.asList(userDTO1, userDTO2);
     }
+
+    public UserDTO getUserDTOwithPassiveStatus(){
+
+        return UserDTO.builder()
+                .username("username 1")
+                .firstName("firstname 1")
+                .lastName("lastname 1")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .userStatus(UserStatus.PASSIVE)
+                .build();
+    }
+
+    public UserDTO getUpdatedUserDTO(){
+
+        return UserDTO.builder()
+                .username("updatedusername")
+                .firstName("updatedfirstname")
+                .lastName("updatedlastname")
+                .userRole(UserRole.ROLE_VOLUNTEER)
+                .userStatus(UserStatus.VERIFIED)
+                .build();
+    }
 }
