@@ -22,3 +22,10 @@ application:
   version: 1.0
   title: "AYS"
   licenseName: AYS Licence
+
+
+afet:
+  app:
+    secret: afet-secret
+  expires:
+    in: 120000 # 2 minutes
