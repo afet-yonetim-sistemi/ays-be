@@ -2,6 +2,7 @@ package com.ays.backend.user.service.impl;
 
 import com.ays.backend.user.controller.payload.request.RegisterRequest;
 import com.ays.backend.user.controller.payload.response.AuthResponse;
+import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.model.entities.Organization;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.enums.UserRole;
@@ -35,6 +36,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponse register(RegisterRequest registerRequest) {
+
+        if (Boolean.TRUE.equals(existsByUsername(registerRequest.getUsername()))) {
+            throw new UserAlreadyExistsException("Error: Username is already taken!");
+        }
 
         User user = User.builder()
                 .username(registerRequest.getUsername())

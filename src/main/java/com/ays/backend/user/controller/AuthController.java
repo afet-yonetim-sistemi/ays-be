@@ -33,10 +33,6 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
 
-        if (Boolean.TRUE.equals(authService.existsByUsername(registerRequest.getUsername()))) {
-            throw new UserAlreadyExistsException("Error: Username is already taken!");
-        }
-
         return new ResponseEntity<>(authService.register(registerRequest), HttpStatus.CREATED);
     }
 

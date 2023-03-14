@@ -1,12 +1,15 @@
 package com.ays.backend.user.model.entities;
 
 import com.ays.backend.base.TestDataBuilder;
+import com.ays.backend.user.controller.payload.request.RegisterRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.service.dto.UserDTO;
 import com.ays.backend.user.service.dto.UserDTOBuilder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -128,4 +131,32 @@ public class UserBuilder extends TestDataBuilder<User> {
                 .build();
     }
 
+    public RegisterRequest getRegisterRequest(){
+        return RegisterRequest.builder()
+                .username("testadmin")
+                .password("testadmin")
+                .countryCode("1")
+                .lineNumber("1234567890")
+                .firstName("First Name Admin")
+                .lastName("Last Name Admin")
+                .email("testadmin@afet.com")
+                .organizationId(1L)
+                .build();
+    }
+
+    /**
+     * It is used to create a UserBuilder object with the data from the RegisterRequest object.
+     */
+    public UserBuilder withRegisterRequest(RegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
+        data.setUsername(registerRequest.getUsername());
+        data.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        data.setFirstName(registerRequest.getFirstName());
+        data.setLastName(registerRequest.getLastName());
+        data.setUserRole(UserRole.ROLE_ADMIN);
+        data.setCountryCode(Integer.parseInt(registerRequest.getCountryCode()));
+        data.setLineNumber(Integer.parseInt(registerRequest.getLineNumber()));
+        data.setEmail(registerRequest.getEmail());
+        data.setLastLoginDate(LocalDateTime.now());
+        return this;
+    }
 }

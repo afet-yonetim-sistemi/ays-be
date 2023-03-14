@@ -12,10 +12,10 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${afet.app.secret}")
+    @Value("${ays.token.secret}")
     private String APP_SECRET;
 
-    @Value("${afet.expires.in}")
+    @Value("${ays.token.expires-in}")
     private long EXPIRES_IN;
 
     public String generateJwtToken(Authentication auth) {
@@ -50,13 +50,7 @@ public class JwtTokenProvider {
         try {
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token);
             return !isTokenExpired(token);
-        } catch (MalformedJwtException e) {
-            return false;
-        } catch (ExpiredJwtException e) {
-            return false;
-        } catch (UnsupportedJwtException e) {
-            return false;
-        } catch (IllegalArgumentException e) {
+        } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
             return false;
         }
     }

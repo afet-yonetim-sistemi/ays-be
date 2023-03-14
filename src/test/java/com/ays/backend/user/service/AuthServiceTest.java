@@ -4,6 +4,7 @@ import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.user.controller.payload.request.RegisterRequest;
 import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.model.entities.User;
+import com.ays.backend.user.model.entities.UserBuilder;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.security.JwtTokenProvider;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class AuthServiceTest extends BaseServiceTest {
+class AuthServiceTest extends BaseServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -48,38 +49,18 @@ public class AuthServiceTest extends BaseServiceTest {
     private Authentication authentication;
 
     @Test
-    public void shouldRegister() {
+    void shouldRegister() {
 
         // Given
-        RegisterRequest registerRequest = RegisterRequest.builder()
-                .username("testadmin")
-                .password("testadmin")
-                .countryCode("1")
-                .lineNumber("1234567890")
-                .firstName("First Name Admin")
-                .lastName("Last Name Admin")
-                .email("testadmin@afet.com")
-                .organizationId(1L)
-                .build();
+        RegisterRequest registerRequest = new UserBuilder().getRegisterRequest();
 
-        User user = User.builder()
-                .username(registerRequest.getUsername())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .firstName(registerRequest.getFirstName())
-                .lastName(registerRequest.getLastName())
-                .userRole(UserRole.ROLE_ADMIN)
-                .countryCode(Integer.parseInt(registerRequest.getCountryCode()))
-                .lineNumber(Integer.parseInt(registerRequest.getLineNumber()))
-                .email(registerRequest.getEmail())
-                .lastLoginDate(LocalDateTime.now())
-                .build();
+        User user = new UserBuilder()
+                .withRegisterRequest(registerRequest,passwordEncoder).build();
 
         // when
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword()));
-        //when(SecurityContextHolder.getContext()).thenReturn(any(SecurityContext.class));
-        //when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authentication);
         when(jwtTokenProvider.generateJwtToken(any(Authentication.class))).thenReturn("test_token");
 
         SecurityContextHolder.setContext(securityContext);

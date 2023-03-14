@@ -24,8 +24,7 @@ application:
   licenseName: AYS Licence
 
 
-afet:
-  app:
+ays:
+  token:
     secret: afet-secret
-  expires:
-    in: 120000 # 2 minutes
+    expires-in: 120000  # 2 minutes

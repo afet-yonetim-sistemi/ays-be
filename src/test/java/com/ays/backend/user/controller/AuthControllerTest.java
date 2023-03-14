@@ -3,6 +3,8 @@ package com.ays.backend.user.controller;
 import com.ays.backend.base.BaseRestControllerTest;
 import com.ays.backend.user.controller.payload.request.RegisterRequest;
 import com.ays.backend.user.controller.payload.response.AuthResponse;
+import com.ays.backend.user.controller.payload.response.AuthResponseBuilder;
+import com.ays.backend.user.model.entities.UserBuilder;
 import com.ays.backend.user.service.AuthService;
 import com.ays.backend.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,20 +41,11 @@ class AuthControllerTest extends BaseRestControllerTest {
     void shouldRegisterForAdmin() throws Exception {
 
         // Given
-        RegisterRequest registerRequest = RegisterRequest.builder()
-                .username("testadmin")
-                .password("testadmin")
-                .countryCode("1")
-                .lineNumber("1234567890")
-                .firstName("First Name Admin")
-                .lastName("Last Name Admin")
-                .email("testadmin@afet.com")
-                .organizationId(1L)
-                .build();
+        RegisterRequest registerRequest = new UserBuilder().getRegisterRequest();
 
-        AuthResponse authResponse = AuthResponse.builder()
-                .accessToken("test_token")
-                .message("success")
+        AuthResponse authResponse = new AuthResponseBuilder()
+                .withMessage("success")
+                .withAccessToken("test_token")
                 .build();
 
         // when
