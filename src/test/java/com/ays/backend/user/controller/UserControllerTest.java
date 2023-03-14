@@ -7,6 +7,7 @@ import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
 import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
+import com.ays.backend.user.service.AuthService;
 import com.ays.backend.user.service.UserService;
 import com.ays.backend.user.service.dto.UserDTO;
 import com.ays.backend.user.service.dto.UserDTOBuilder;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -39,6 +39,8 @@ class UserControllerTest extends BaseRestControllerTest {
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private AuthService authService;
 
     @Test
     void shouldReturnCreatedOnValidInput() throws Exception {
