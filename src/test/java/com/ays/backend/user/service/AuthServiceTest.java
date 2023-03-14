@@ -1,25 +1,18 @@
 package com.ays.backend.user.service;
 
 import com.ays.backend.base.BaseServiceTest;
+import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.RegisterRequest;
-import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
-import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.repository.UserRepository;
-import com.ays.backend.user.security.JwtTokenProvider;
+import com.ays.backend.user.service.dto.UserDTO;
 import com.ays.backend.user.service.impl.AuthServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,12 +23,6 @@ class AuthServiceTest extends BaseServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Mock
-    private AuthenticationManager authenticationManager;
-
     @InjectMocks
     private AuthServiceImpl authService;
 
@@ -43,10 +30,7 @@ class AuthServiceTest extends BaseServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private SecurityContext securityContext;
-
-    @Mock
-    private Authentication authentication;
+    private UserMapper userMapper;
 
     @Test
     void shouldRegister() {
@@ -57,18 +41,33 @@ class AuthServiceTest extends BaseServiceTest {
         User user = new UserBuilder()
                 .withRegisterRequest(registerRequest,passwordEncoder).build();
 
+        UserDTO userDto = UserDTO.builder()
+                .username(user.getUsername())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .userRole(user.getUserRole())
+                .countryCode(user.getCountryCode())
+                .lineNumber(user.getLineNumber())
+                .userStatus(user.getStatus())
+                .email(user.getEmail())
+                .lastLoginDate(user.getLastLoginDate())
+                .build();
+
         // when
         when(userRepository.save(any(User.class))).thenReturn(user);
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword()));
-        when(jwtTokenProvider.generateJwtToken(any(Authentication.class))).thenReturn("test_token");
+        when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(userDto);
 
-        SecurityContextHolder.setContext(securityContext);
-
-        AuthResponse authResponse = authService.register(registerRequest);
+        var registerUser = authService.register(registerRequest);
 
         // then
-        assertEquals(authResponse.getAccessToken(), "test_token");
-        assertEquals(authResponse.getMessage(), "success");
+        assertEquals(user.getUsername(), userDto.getUsername());
+        assertEquals(user.getFirstName(), userDto.getFirstName());
+        assertEquals(user.getLastName(), userDto.getLastName());
+        assertEquals(user.getUserRole().ordinal(), userDto.getUserRole().ordinal());
+        assertEquals(user.getCountryCode(), userDto.getCountryCode());
+        assertEquals(user.getLineNumber(), userDto.getLineNumber());
+        assertEquals(user.getStatus(), userDto.getUserStatus());
+        assertEquals(user.getEmail(), userDto.getEmail());
+        assertEquals(user.getLastLoginDate(), userDto.getLastLoginDate());
     }
 }

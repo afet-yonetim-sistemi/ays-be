@@ -1,5 +1,6 @@
 package com.ays.backend.user.service.impl;
 
+import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.RegisterRequest;
 import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
@@ -9,6 +10,7 @@ import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.security.JwtTokenProvider;
 import com.ays.backend.user.service.AuthService;
+import com.ays.backend.user.service.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,17 +27,19 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final AuthenticationManager authenticationManager;
+    //private final AuthenticationManager authenticationManager;
 
-    private final JwtTokenProvider jwtTokenProvider;
+    //private final JwtTokenProvider jwtTokenProvider;
 
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
+    private final UserMapper userMapper;
+
     @Override
     @Transactional
-    public AuthResponse register(RegisterRequest registerRequest) {
+    public UserDTO register(RegisterRequest registerRequest) {
 
         if (Boolean.TRUE.equals(existsByUsername(registerRequest.getUsername()))) {
             throw new UserAlreadyExistsException("Error: Username is already taken!");
@@ -59,9 +63,13 @@ public class AuthServiceImpl implements AuthService {
             user.setOrganization(organization);
         }
 
-        userRepository.save(user);
+        var registeredUser = userRepository.save(user);
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword());
+        return userMapper.mapUsertoUserDTO(registeredUser);
+
+        //return userRepository.save(user);
+
+        /*UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
@@ -70,6 +78,8 @@ public class AuthServiceImpl implements AuthService {
                 .accessToken(jwtToken)
                 .message("success")
                 .build();
+
+         */
     }
 
     @Override

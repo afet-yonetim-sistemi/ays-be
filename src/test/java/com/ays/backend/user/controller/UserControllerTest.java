@@ -7,7 +7,6 @@ import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
 import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
-import com.ays.backend.user.service.AuthService;
 import com.ays.backend.user.service.UserService;
 import com.ays.backend.user.service.dto.UserDTO;
 import com.ays.backend.user.service.dto.UserDTOBuilder;
@@ -38,9 +37,6 @@ class UserControllerTest extends BaseRestControllerTest {
 
     @MockBean
     private UserService userService;
-
-    @MockBean
-    private AuthService authService;
 
     @Test
     void shouldReturnCreatedOnValidInput() throws Exception {
