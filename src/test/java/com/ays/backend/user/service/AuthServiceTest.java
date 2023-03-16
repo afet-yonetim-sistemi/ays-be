@@ -2,17 +2,15 @@ package com.ays.backend.user.service;
 
 import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.mapper.UserMapper;
-import com.ays.backend.user.controller.payload.request.RegisterRequest;
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.service.dto.UserDTO;
-import com.ays.backend.user.service.impl.AuthServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,7 +22,7 @@ class AuthServiceTest extends BaseServiceTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private AuthServiceImpl authService;
+    private AuthService authService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -36,7 +34,7 @@ class AuthServiceTest extends BaseServiceTest {
     void shouldRegister() {
 
         // Given
-        RegisterRequest registerRequest = new UserBuilder().getRegisterRequest();
+        AdminRegisterRequest registerRequest = new UserBuilder().getRegisterRequest();
 
         User user = new UserBuilder()
                 .withRegisterRequest(registerRequest,passwordEncoder).build();

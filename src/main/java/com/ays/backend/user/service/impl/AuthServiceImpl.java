@@ -1,31 +1,23 @@
 package com.ays.backend.user.service.impl;
 
 import com.ays.backend.mapper.UserMapper;
-import com.ays.backend.user.controller.payload.request.RegisterRequest;
-import com.ays.backend.user.controller.payload.response.AuthResponse;
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
+import com.ays.backend.user.exception.OrganizationNotFoundException;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
-import com.ays.backend.user.model.entities.Organization;
 import com.ays.backend.user.model.entities.User;
-import com.ays.backend.user.model.enums.UserRole;
+import com.ays.backend.user.repository.OrganizationRepository;
 import com.ays.backend.user.repository.UserRepository;
-import com.ays.backend.user.security.JwtTokenProvider;
 import com.ays.backend.user.service.AuthService;
 import com.ays.backend.user.service.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+class AuthServiceImpl implements AuthService {
 
     //private final AuthenticationManager authenticationManager;
 
@@ -37,39 +29,31 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserMapper userMapper;
 
+    private final OrganizationRepository organizationRepository;
+
     @Override
     @Transactional
-    public UserDTO register(RegisterRequest registerRequest) {
+    public UserDTO register(AdminRegisterRequest registerRequest) {
 
-        if (Boolean.TRUE.equals(existsByUsername(registerRequest.getUsername()))) {
+        if (organizationRepository.existsById(registerRequest.getOrganizationId())) {
+            throw new OrganizationNotFoundException("Error: Organization Not Found!");
+        }
+
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(registerRequest.getUsername()))) {
             throw new UserAlreadyExistsException("Error: Username is already taken!");
         }
 
-        User user = User.builder()
-                .username(registerRequest.getUsername())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .firstName(registerRequest.getFirstName())
-                .lastName(registerRequest.getLastName())
-                .userRole(UserRole.ROLE_ADMIN)
-                .countryCode(Integer.parseInt(registerRequest.getCountryCode()))
-                .lineNumber(Integer.parseInt(registerRequest.getLineNumber()))
-                .email(registerRequest.getEmail())
-                .lastLoginDate(LocalDateTime.now())
-                .build();
-
-        if(registerRequest.getOrganizationId() != null) {
-            Organization organization = new Organization();
-            organization.setId(registerRequest.getOrganizationId());
-            user.setOrganization(organization);
-        }
+        User user = User.from(registerRequest, passwordEncoder);
 
         var registeredUser = userRepository.save(user);
 
         return userMapper.mapUsertoUserDTO(registeredUser);
 
-        //return userRepository.save(user);
+    }
 
-        /*UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword());
+    /*public void login(){
+
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
@@ -79,11 +63,6 @@ public class AuthServiceImpl implements AuthService {
                 .message("success")
                 .build();
 
-         */
-    }
 
-    @Override
-    public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
+    }*/
 }

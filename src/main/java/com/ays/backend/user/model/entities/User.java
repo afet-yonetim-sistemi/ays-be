@@ -1,23 +1,14 @@
 package com.ays.backend.user.model.entities;
 
-import java.time.LocalDateTime;
-
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
 
 /**
  * Users entity, which holds the information regarding the system user.
@@ -51,7 +42,7 @@ public class User extends BaseEntity {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "organization_id")
+    @JoinColumn(name = "organization_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Organization organization;
 
     @Enumerated(EnumType.ORDINAL)
@@ -64,12 +55,33 @@ public class User extends BaseEntity {
     private UserStatus status;
 
     @Column(nullable = false)
-    private int countryCode;
+    private Integer countryCode;
 
     @Column(nullable = false)
-    private int lineNumber;
+    private Integer lineNumber;
 
     @Column
     private LocalDateTime lastLoginDate;
+
+    @Column(name = "organization_id")
+    private Long organizationId;
+
+    public static User from(AdminRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
+
+        User user = User.builder()
+                .username(registerRequest.getUsername())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .userRole(UserRole.ROLE_ADMIN)
+                .countryCode(registerRequest.getCountryCode())
+                .lineNumber(registerRequest.getLineNumber())
+                .email(registerRequest.getEmail())
+                .lastLoginDate(LocalDateTime.now())
+                .organizationId(registerRequest.getOrganizationId())
+                .build();
+
+        return user;
+    }
 
 }

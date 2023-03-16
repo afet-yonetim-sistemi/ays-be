@@ -1,7 +1,7 @@
 package com.ays.backend.user.controller;
 
 import com.ays.backend.base.BaseRestControllerTest;
-import com.ays.backend.user.controller.payload.request.RegisterRequest;
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
@@ -42,7 +42,7 @@ class AuthControllerTest extends BaseRestControllerTest {
     void shouldRegisterForAdmin() throws Exception {
 
         // Given
-        RegisterRequest registerRequest = new UserBuilder().getRegisterRequest();
+        AdminRegisterRequest registerRequest = new UserBuilder().getRegisterRequest();
 
         User user = new UserBuilder()
                 .withRegisterRequest(registerRequest,passwordEncoder).build();

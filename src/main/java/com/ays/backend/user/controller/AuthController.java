@@ -1,6 +1,6 @@
 package com.ays.backend.user.controller;
 
-import com.ays.backend.user.controller.payload.request.RegisterRequest;
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
 import com.ays.backend.user.security.JwtTokenProvider;
 import com.ays.backend.user.service.AuthService;
@@ -31,12 +31,12 @@ public class AuthController {
     /**
      * This endpoint allows admin to register to platform.
      *
-     * @param registerRequest A RegisterRequest object required to register to platform .
+     * @param registerRequest A AdminRegisterRequest object required to register to platform .
      * @return A ResponseEntity containing a MessageResponse object with success message of the newly created admin and
-     *         the HTTP status code (201 CREATED).
+     * the HTTP status code (201 CREATED).
      */
     @PostMapping("/register")
-    public ResponseEntity<MessageResponse> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<MessageResponse> register(@RequestBody AdminRegisterRequest registerRequest) {
 
         var registeredUser = authService.register(registerRequest);
 
