@@ -68,7 +68,7 @@ public class User extends BaseEntity {
 
     public static User from(AdminRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
 
-        User user = User.builder()
+        return User.builder()
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .firstName(registerRequest.getFirstName())
@@ -81,7 +81,6 @@ public class User extends BaseEntity {
                 .organizationId(registerRequest.getOrganizationId())
                 .build();
 
-        return user;
     }
 
 }
