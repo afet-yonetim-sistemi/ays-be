@@ -28,3 +28,4 @@ ays:
   token:
     secret: afet-secret
     expires-in: 120000  # 2 minutes
+    refresh-token-expires-in: 120000 # 2 minutes
