@@ -79,6 +79,7 @@ public class User extends BaseEntity {
                 .email(registerRequest.getEmail())
                 .lastLoginDate(LocalDateTime.now())
                 .organizationId(registerRequest.getOrganizationId())
+                .status(UserStatus.getById(registerRequest.getStatusValue()))
                 .build();
 
     }

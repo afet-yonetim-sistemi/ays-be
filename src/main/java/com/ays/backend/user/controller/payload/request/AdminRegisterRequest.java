@@ -16,10 +16,10 @@ public class AdminRegisterRequest {
     @NotBlank
     private String password;
 
-    @NotBlank
+    @NotNull
     private Integer countryCode;
 
-    @NotBlank
+    @NotNull
     private Integer lineNumber;
 
     @NotBlank
@@ -34,5 +34,8 @@ public class AdminRegisterRequest {
 
     @NotNull
     private Long organizationId;
+
+    @NotNull
+    private Integer statusValue;
 
 }

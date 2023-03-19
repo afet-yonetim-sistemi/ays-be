@@ -40,6 +40,11 @@ public class UserBuilder extends TestDataBuilder<User> {
         return this;
     }
 
+    public UserBuilder withUserStatus(UserStatus userStatus) {
+        data.setStatus(userStatus);
+        return this;
+    }
+
     public UserBuilder from(User user) {
         data.setUsername(user.getUsername());
         data.setFirstName(user.getFirstName());
@@ -139,6 +144,7 @@ public class UserBuilder extends TestDataBuilder<User> {
                 .lastName("Last Name Admin")
                 .email("testadmin@afet.com")
                 .organizationId(1L)
+                .statusValue(1)
                 .build();
     }
 

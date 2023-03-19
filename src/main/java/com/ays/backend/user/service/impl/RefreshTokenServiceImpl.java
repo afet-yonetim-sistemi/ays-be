@@ -3,6 +3,7 @@ package com.ays.backend.user.service.impl;
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.RefreshToken;
 import com.ays.backend.user.model.entities.User;
+import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.repository.RefreshTokenRepository;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.service.RefreshTokenService;
@@ -33,10 +34,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
+    @Transactional
     public RefreshToken createRefreshToken(Long userId) {
 
         RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUser(userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found")));
+        refreshToken.setUser(userRepository.findByIdAndStatusNot(userId, UserStatus.PASSIVE).orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found")));
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
 
@@ -45,6 +47,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
+    @Transactional
     public RefreshToken verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
@@ -54,8 +57,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
+    @Transactional
     public int deleteByUserIdForLogout(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+        User user = userRepository.findByIdAndStatusNot(userId, UserStatus.PASSIVE).orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
         return refreshTokenRepository.deleteByUser(user);
     }
 }

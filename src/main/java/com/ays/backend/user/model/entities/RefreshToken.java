@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
+/**
+ * RefreshToken entity, which holds the information regarding the refresh token.
+ */
 @Entity
 @Table(name = "refreshToken")
 @Data

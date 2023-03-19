@@ -5,6 +5,7 @@ import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
+import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.service.dto.UserDTO;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,7 @@ class AuthServiceTest extends BaseServiceTest {
         AdminRegisterRequest registerRequest = new UserBuilder().getRegisterRequest();
 
         User user = new UserBuilder()
+                .withUserStatus(UserStatus.getById(registerRequest.getStatusValue()))
                 .withRegisterRequest(registerRequest,passwordEncoder).build();
 
         UserDTO userDto = UserDTO.builder()

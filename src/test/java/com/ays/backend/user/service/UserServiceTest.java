@@ -14,7 +14,6 @@ import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.service.dto.UserDTO;
 import com.ays.backend.user.service.dto.UserDTOBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,7 +37,8 @@ class UserServiceTest extends BaseServiceTest {
     @Mock
     private UserMapper userMapper;
 
-    @InjectMocks
+    //@InjectMocks
+    @Mock
     private UserService userService;
 
 

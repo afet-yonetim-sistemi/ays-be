@@ -38,6 +38,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> register(@RequestBody AdminRegisterRequest registerRequest) {
 
+        // TODO : return type registeredUser unused temporarily now, perhaps delete it later if it is not used.
         var registeredUser = authService.register(registerRequest);
 
         MessageResponse messageResponse = new MessageResponse("success");
