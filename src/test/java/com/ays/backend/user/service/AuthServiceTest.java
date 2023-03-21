@@ -6,8 +6,10 @@ import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
 import com.ays.backend.user.model.enums.UserStatus;
+import com.ays.backend.user.repository.OrganizationRepository;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.service.dto.UserDTO;
+import com.ays.backend.user.service.impl.AuthServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,8 +24,11 @@ class AuthServiceTest extends BaseServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private OrganizationRepository organizationRepository;
+
     @InjectMocks
-    private AuthService authService;
+    private AuthServiceImpl authService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -54,6 +59,8 @@ class AuthServiceTest extends BaseServiceTest {
                 .build();
 
         // when
+        when(organizationRepository.existsById(registerRequest.getOrganizationId())).thenReturn(true);
+        when(userRepository.existsByUsername(registerRequest.getUsername())).thenReturn(false);
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(userDto);
 

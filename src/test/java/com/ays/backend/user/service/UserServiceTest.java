@@ -13,7 +13,9 @@ import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.service.dto.UserDTO;
 import com.ays.backend.user.service.dto.UserDTOBuilder;
+import com.ays.backend.user.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,9 +39,8 @@ class UserServiceTest extends BaseServiceTest {
     @Mock
     private UserMapper userMapper;
 
-    //@InjectMocks
-    @Mock
-    private UserService userService;
+    @InjectMocks
+    private UserServiceImpl userService;
 
 
     @Test
@@ -144,11 +145,13 @@ class UserServiceTest extends BaseServiceTest {
     @Test
     public void shouldThrowUserNotFoundExceptionWhenUserNotExists() {
 
+        Long id = -1L;
+
         // given
         UserNotFoundException expectedError = new UserNotFoundException("User with id -1 not found");
 
         // when -  action or the behaviour that we are going test
-        when(userRepository.findById(-1L)).thenReturn(Optional.empty());
+        when(userRepository.findByIdAndStatusNot(id, UserStatus.PASSIVE)).thenReturn(Optional.empty());
 
         UserNotFoundException actual = assertThrows(UserNotFoundException.class, () -> userService.getUserById(-1L));
 

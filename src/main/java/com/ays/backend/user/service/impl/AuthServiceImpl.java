@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements AuthService {
 
     //private final AuthenticationManager authenticationManager;
 
@@ -35,7 +35,7 @@ class AuthServiceImpl implements AuthService {
     @Transactional
     public UserDTO register(AdminRegisterRequest registerRequest) {
 
-        if (organizationRepository.existsById(registerRequest.getOrganizationId())) {
+        if (Boolean.FALSE.equals(organizationRepository.existsById(registerRequest.getOrganizationId()))) {
             throw new OrganizationNotFoundException("Error: Organization Not Found!");
         }
 
