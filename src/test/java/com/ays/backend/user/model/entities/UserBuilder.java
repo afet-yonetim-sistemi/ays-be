@@ -1,12 +1,13 @@
 package com.ays.backend.user.model.entities;
 
 import com.ays.backend.base.TestDataBuilder;
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
-import com.ays.backend.user.service.dto.UserDTO;
-import com.ays.backend.user.service.dto.UserDTOBuilder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +37,11 @@ public class UserBuilder extends TestDataBuilder<User> {
      */
     public UserBuilder withUserRole(UserRole userRole) {
         data.setUserRole(userRole);
+        return this;
+    }
+
+    public UserBuilder withUserStatus(UserStatus userStatus) {
+        data.setStatus(userStatus);
         return this;
     }
 
@@ -128,4 +134,33 @@ public class UserBuilder extends TestDataBuilder<User> {
                 .build();
     }
 
+    public AdminRegisterRequest getRegisterRequest() {
+        return AdminRegisterRequest.builder()
+                .username("testadmin")
+                .password("testadmin")
+                .countryCode(1)
+                .lineNumber(1234567890)
+                .firstName("First Name Admin")
+                .lastName("Last Name Admin")
+                .email("testadmin@afet.com")
+                .organizationId(1L)
+                .statusValue(1)
+                .build();
+    }
+
+    /**
+     * It is used to create a UserBuilder object with the data from the AdminRegisterRequest object.
+     */
+    public UserBuilder withRegisterRequest(AdminRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
+        data.setUsername(registerRequest.getUsername());
+        data.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        data.setFirstName(registerRequest.getFirstName());
+        data.setLastName(registerRequest.getLastName());
+        data.setUserRole(UserRole.ROLE_ADMIN);
+        data.setCountryCode(registerRequest.getCountryCode());
+        data.setLineNumber(registerRequest.getLineNumber());
+        data.setEmail(registerRequest.getEmail());
+        data.setLastLoginDate(LocalDateTime.now());
+        return this;
+    }
 }

@@ -6,7 +6,6 @@ import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
 import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.exception.UserNotFoundException;
-import com.ays.backend.user.model.entities.Organization;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
 import com.ays.backend.user.model.enums.UserRole;
@@ -146,11 +145,13 @@ class UserServiceTest extends BaseServiceTest {
     @Test
     public void shouldThrowUserNotFoundExceptionWhenUserNotExists() {
 
+        Long id = -1L;
+
         // given
         UserNotFoundException expectedError = new UserNotFoundException("User with id -1 not found");
 
         // when -  action or the behaviour that we are going test
-        when(userRepository.findById(-1L)).thenReturn(Optional.empty());
+        when(userRepository.findByIdAndStatusNot(id, UserStatus.PASSIVE)).thenReturn(Optional.empty());
 
         UserNotFoundException actual = assertThrows(UserNotFoundException.class, () -> userService.getUserById(-1L));
 

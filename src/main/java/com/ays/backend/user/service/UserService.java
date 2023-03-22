@@ -18,14 +18,6 @@ public interface UserService {
      */
     UserDTO saveUser(SignUpRequest signUpRequest);
 
-    /**
-     * Checks if the user by the given parameter exists in the database.
-     *
-     * @param username the given username
-     * @return true if the user exists, false otherwise
-     */
-    boolean existsByUsername(String username);
-
 
     /**
      * Checks if the user by the given parameter exists in the database.
@@ -45,6 +37,7 @@ public interface UserService {
 
     /**
      * Delete Soft User by User ID
+     *
      * @param id the given User ID
      * @return userDto
      */
@@ -53,6 +46,7 @@ public interface UserService {
 
     /**
      * Update User by User ID
+     *
      * @param updateUserRequest the given UpdateUserRequest object
      * @return userDto
      */

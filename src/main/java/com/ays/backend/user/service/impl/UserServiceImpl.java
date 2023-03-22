@@ -1,11 +1,9 @@
 package com.ays.backend.user.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
+import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.Organization;
 import com.ays.backend.user.model.entities.User;
@@ -20,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -32,6 +33,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public UserDTO saveUser(SignUpRequest signUpRequest) {
+
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            throw new UserAlreadyExistsException("Error: Username is already taken!");
+        }
 
         User user = User.builder()
                 .username(signUpRequest.getUsername())

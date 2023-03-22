@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -38,7 +37,6 @@ class UserControllerTest extends BaseRestControllerTest {
 
     @MockBean
     private UserService userService;
-
 
     @Test
     void shouldReturnCreatedOnValidInput() throws Exception {
