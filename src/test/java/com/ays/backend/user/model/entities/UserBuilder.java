@@ -1,6 +1,7 @@
 package com.ays.backend.user.model.entities;
 
 import com.ays.backend.base.TestDataBuilder;
+import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.model.enums.UserRole;
@@ -162,5 +163,13 @@ public class UserBuilder extends TestDataBuilder<User> {
         data.setEmail(registerRequest.getEmail());
         data.setLastLoginDate(LocalDateTime.now());
         return this;
+    }
+
+
+    public AdminLoginRequest getLoginRequest() {
+        return AdminLoginRequest.builder()
+                .username("adminUsername")
+                .password("adminPassword")
+                .build();
     }
 }

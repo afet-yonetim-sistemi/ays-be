@@ -1,7 +1,9 @@
 package com.ays.backend.user.controller;
 
 import com.ays.backend.base.BaseRestControllerTest;
+import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
+import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Date;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -76,4 +80,34 @@ class AuthControllerTest extends BaseRestControllerTest {
 
     }
 
+    @Test
+    void shouldLoginForAdmin() throws Exception {
+
+        AdminLoginRequest loginRequest = new UserBuilder().getLoginRequest();
+
+
+        AuthResponse authResponse = AuthResponse.builder()
+                .expireDate(new Date().getTime() + 120000)
+                .refreshToken("refreshToken")
+                .message("success")
+                .accessToken("Bearer access-token")
+                .username("adminUsername")
+                .build();
+
+        // when
+        when(authService.login(loginRequest)).thenReturn(authResponse);
+
+
+        // then
+        mockMvc.perform(post(ADMIN_CONTROLLER_BASEURL + "/login")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(loginRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andExpect(jsonPath("$.username").value(loginRequest.getUsername()))
+                .andExpect(jsonPath("$.refreshToken").value(authResponse.getRefreshToken()))
+                .andExpect(jsonPath("$.accessToken").value(authResponse.getAccessToken()));
+
+    }
 }

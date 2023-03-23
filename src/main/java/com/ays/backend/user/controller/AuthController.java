@@ -1,13 +1,13 @@
 package com.ays.backend.user.controller;
 
+import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
+import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
-import com.ays.backend.user.security.JwtTokenProvider;
 import com.ays.backend.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-
-    private final AuthenticationManager authenticationManager;
-
-    private final JwtTokenProvider jwtTokenProvider;
 
 
     /**
@@ -44,6 +40,21 @@ public class AuthController {
         MessageResponse messageResponse = new MessageResponse("success");
 
         return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
+    }
+
+
+    /**
+     * This endpoint allows admin to login to platform.
+     *
+     * @param loginRequest A AdminLoginRequest object required to register to platform .
+     * @return A ResponseEntity containing an AuthResponse object and the HTTP status code (200 OK).
+     */
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody AdminLoginRequest loginRequest) {
+
+        var authResponse = authService.login(loginRequest);
+
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
 }

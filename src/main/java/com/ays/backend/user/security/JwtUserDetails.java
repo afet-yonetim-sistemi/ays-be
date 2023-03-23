@@ -2,9 +2,7 @@ package com.ays.backend.user.security;
 
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.enums.UserRole;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,5 +54,13 @@ public class JwtUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public long getId() {
+        return user.getId();
+    }
+
+    public String getEmail() {
+        return user.getEmail();
     }
 }
