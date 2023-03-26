@@ -3,15 +3,15 @@ package com.ays.backend.user.controller.payload.response;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
 public class AuthResponse {
-    String message;
-    String username;
-    String accessToken;
-    String refreshToken;
-    Long expireDate;
-    private List<String> roles;
+    private String message;
+    private String username;
+    private String accessToken;
+    private String refreshToken;
+    private Long expireDate;
+    private Set<String> roles;
 }

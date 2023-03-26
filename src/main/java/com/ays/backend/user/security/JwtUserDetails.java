@@ -56,7 +56,7 @@ public class JwtUserDetails implements UserDetails {
         return true;
     }
 
-    public long getId() {
+    public Long getId() {
         return user.getId();
     }
 

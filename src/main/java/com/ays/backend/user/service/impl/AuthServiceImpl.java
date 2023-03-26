@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,8 +81,8 @@ public class AuthServiceImpl implements AuthService {
         JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal();
         String accessToken = jwtTokenProvider.generateJwtToken(auth);
 
-        List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+        Set<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+                .collect(Collectors.toSet());
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 

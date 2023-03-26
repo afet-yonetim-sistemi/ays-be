@@ -26,7 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -136,7 +136,7 @@ class AuthServiceTest extends BaseServiceTest {
                 .refreshToken("refreshToken")
                 .message("success")
                 .accessToken("access-token")
-                .roles(List.of("ADMIN", "SUPER_ADMIN"))
+                .roles(Set.of("ADMIN", "SUPER_ADMIN"))
                 .username("adminUsername")
                 .build();
 
