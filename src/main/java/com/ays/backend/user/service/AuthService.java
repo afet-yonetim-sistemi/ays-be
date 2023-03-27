@@ -2,8 +2,8 @@ package com.ays.backend.user.service;
 
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
-import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.service.dto.UserDTO;
+import com.ays.backend.user.service.dto.UserTokenDTO;
 
 /**
  * Auth service to perform user related authentication operations.
@@ -24,5 +24,5 @@ public interface AuthService {
      * @param loginRequest the loginRequest entity
      * @return AuthResponse
      */
-    AuthResponse login(AdminLoginRequest loginRequest);
+    UserTokenDTO login(AdminLoginRequest loginRequest);
 }

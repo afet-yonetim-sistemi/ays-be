@@ -4,7 +4,6 @@ import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
-import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.model.entities.RefreshToken;
 import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
@@ -15,6 +14,7 @@ import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.security.JwtTokenProvider;
 import com.ays.backend.user.security.JwtUserDetails;
 import com.ays.backend.user.service.dto.UserDTO;
+import com.ays.backend.user.service.dto.UserTokenDTO;
 import com.ays.backend.user.service.impl.AuthServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -131,7 +131,7 @@ class AuthServiceTest extends BaseServiceTest {
         JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal();
 
 
-        AuthResponse authResponse = AuthResponse.builder()
+        UserTokenDTO userTokenDTO = UserTokenDTO.builder()
                 .expireDate(new Date().getTime() + 120000)
                 .refreshToken("refreshToken")
                 .message("success")
@@ -141,23 +141,23 @@ class AuthServiceTest extends BaseServiceTest {
                 .build();
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .token(authResponse.getRefreshToken())
+                .token(userTokenDTO.getRefreshToken())
                 .build();
 
         // when
         when(authenticationManager.authenticate(eq(authToken)))
                 .thenReturn(auth);
-        when(jwtTokenProvider.generateJwtToken(eq(auth))).thenReturn(authResponse.getAccessToken());
+        when(jwtTokenProvider.generateJwtToken(eq(auth))).thenReturn(userTokenDTO.getAccessToken());
         when(refreshTokenService.createRefreshToken(eq(userDetails.getId()))).thenReturn(refreshToken);
 
-        AuthResponse authResponseActual = authService.login(loginRequest);
+        UserTokenDTO userTokenDTOActual = authService.login(loginRequest);
 
         // then
-        assertThat(authResponse).isNotNull();
-        assertEquals(authResponseActual.getAccessToken().substring(7), authResponse.getAccessToken());
-        assertEquals(authResponseActual.getUsername(), authResponse.getUsername());
-        assertEquals(authResponseActual.getRefreshToken(), authResponse.getRefreshToken());
-        assertEquals(authResponseActual.getMessage(), authResponse.getMessage());
+        assertThat(userTokenDTOActual).isNotNull();
+        assertEquals(userTokenDTOActual.getAccessToken().substring(7), userTokenDTO.getAccessToken());
+        assertEquals(userTokenDTOActual.getUsername(), userTokenDTO.getUsername());
+        assertEquals(userTokenDTOActual.getRefreshToken(), userTokenDTO.getRefreshToken());
+        assertEquals(userTokenDTOActual.getMessage(), userTokenDTO.getMessage());
 
     }
 }

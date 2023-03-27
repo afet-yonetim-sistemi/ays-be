@@ -3,7 +3,6 @@ package com.ays.backend.user.service.impl;
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
-import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.exception.OrganizationNotFoundException;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.model.entities.RefreshToken;
@@ -15,6 +14,7 @@ import com.ays.backend.user.security.JwtUserDetails;
 import com.ays.backend.user.service.AuthService;
 import com.ays.backend.user.service.RefreshTokenService;
 import com.ays.backend.user.service.dto.UserDTO;
+import com.ays.backend.user.service.dto.UserTokenDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -73,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public AuthResponse login(AdminLoginRequest loginRequest) {
+    public UserTokenDTO login(AdminLoginRequest loginRequest) {
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
@@ -88,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
 
         Date expiryDate = new Date(new Date().getTime() + EXPIRES_IN);
 
-        return AuthResponse.builder()
+        return UserTokenDTO.builder()
                 .username(userDetails.getUsername())
                 .accessToken("Bearer " + accessToken)
                 .roles(roles)
@@ -96,6 +96,17 @@ public class AuthServiceImpl implements AuthService {
                 .message("success")
                 .expireDate(expiryDate.getTime())
                 .build();
+
+        /*return AuthResponse.builder()
+                .username(userDetails.getUsername())
+                .accessToken("Bearer " + accessToken)
+                .roles(roles)
+                .refreshToken(refreshToken.getToken())
+                .message("success")
+                .expireDate(expiryDate.getTime())
+                .build();
+
+         */
     }
 
 }

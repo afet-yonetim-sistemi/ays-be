@@ -9,6 +9,7 @@ import com.ays.backend.user.model.entities.User;
 import com.ays.backend.user.model.entities.UserBuilder;
 import com.ays.backend.user.service.AuthService;
 import com.ays.backend.user.service.dto.UserDTO;
+import com.ays.backend.user.service.dto.UserTokenDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -86,7 +87,7 @@ class AuthControllerTest extends BaseRestControllerTest {
         AdminLoginRequest loginRequest = new UserBuilder().getLoginRequest();
 
 
-        AuthResponse authResponse = AuthResponse.builder()
+        UserTokenDTO userTokenDTO = UserTokenDTO.builder()
                 .expireDate(new Date().getTime() + 120000)
                 .refreshToken("refreshToken")
                 .message("success")
@@ -94,8 +95,16 @@ class AuthControllerTest extends BaseRestControllerTest {
                 .username("adminUsername")
                 .build();
 
+        AuthResponse authResponse = AuthResponse.builder()
+                .expireDate(userTokenDTO.getExpireDate())
+                .refreshToken(userTokenDTO.getRefreshToken())
+                .message(userTokenDTO.getMessage())
+                .accessToken(userTokenDTO.getAccessToken())
+                .username(userTokenDTO.getUsername())
+                .build();
+
         // when
-        when(authService.login(loginRequest)).thenReturn(authResponse);
+        when(authService.login(loginRequest)).thenReturn(userTokenDTO);
 
 
         // then
