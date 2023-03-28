@@ -32,8 +32,8 @@ public class AdminRegisterRequest {
     @Email
     private String email;
 
-    @NotNull
-    private Long organizationId;
+    //@NotNull
+    //private Long organizationId;
 
     @NotNull
     private Integer statusValue;

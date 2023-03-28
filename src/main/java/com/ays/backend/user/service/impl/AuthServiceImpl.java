@@ -3,7 +3,6 @@ package com.ays.backend.user.service.impl;
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
-import com.ays.backend.user.exception.OrganizationNotFoundException;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.model.entities.RefreshToken;
 import com.ays.backend.user.model.entities.User;
@@ -55,9 +54,11 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public UserDTO register(AdminRegisterRequest registerRequest) {
 
+        /*
         if (Boolean.FALSE.equals(organizationRepository.existsById(registerRequest.getOrganizationId()))) {
             throw new OrganizationNotFoundException("Error: Organization Not Found!");
         }
+         */
 
         if (Boolean.TRUE.equals(userRepository.existsByUsername(registerRequest.getUsername()))) {
             throw new UserAlreadyExistsException("Error: Username is already taken!");
