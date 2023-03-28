@@ -97,16 +97,6 @@ public class AuthServiceImpl implements AuthService {
                 .expireDate(expiryDate.getTime())
                 .build();
 
-        /*return AuthResponse.builder()
-                .username(userDetails.getUsername())
-                .accessToken("Bearer " + accessToken)
-                .roles(roles)
-                .refreshToken(refreshToken.getToken())
-                .message("success")
-                .expireDate(expiryDate.getTime())
-                .build();
-
-         */
     }
 
 }
