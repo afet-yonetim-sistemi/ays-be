@@ -11,10 +11,6 @@ public class AuthResponseBuilder extends TestDataBuilder<AuthResponse> {
         super(AuthResponse.class);
     }
 
-    public AuthResponseBuilder withMessage(String message) {
-        data.setMessage(message);
-        return this;
-    }
 
     public AuthResponseBuilder withAccessToken(String accessToken) {
         data.setAccessToken(accessToken);

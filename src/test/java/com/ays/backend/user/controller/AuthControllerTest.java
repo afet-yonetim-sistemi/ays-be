@@ -90,7 +90,6 @@ class AuthControllerTest extends BaseRestControllerTest {
         UserTokenDTO userTokenDTO = UserTokenDTO.builder()
                 .expireDate(new Date().getTime() + 120000)
                 .refreshToken("refreshToken")
-                .message("success")
                 .accessToken("Bearer access-token")
                 .username("adminUsername")
                 .build();
@@ -98,9 +97,7 @@ class AuthControllerTest extends BaseRestControllerTest {
         AuthResponse authResponse = AuthResponse.builder()
                 .expireDate(userTokenDTO.getExpireDate())
                 .refreshToken(userTokenDTO.getRefreshToken())
-                .message(userTokenDTO.getMessage())
                 .accessToken(userTokenDTO.getAccessToken())
-                .username(userTokenDTO.getUsername())
                 .build();
 
         // when
@@ -113,8 +110,7 @@ class AuthControllerTest extends BaseRestControllerTest {
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("success"))
-                .andExpect(jsonPath("$.username").value(loginRequest.getUsername()))
+                .andExpect(jsonPath("$.expireDate").value(authResponse.getExpireDate()))
                 .andExpect(jsonPath("$.refreshToken").value(authResponse.getRefreshToken()))
                 .andExpect(jsonPath("$.accessToken").value(authResponse.getAccessToken()));
 

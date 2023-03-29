@@ -26,7 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -84,7 +83,7 @@ class AuthServiceTest extends BaseServiceTest {
                 .build();
 
         // when
-        when(organizationRepository.existsById(registerRequest.getOrganizationId())).thenReturn(true);
+        //when(organizationRepository.existsById(registerRequest.getOrganizationId())).thenReturn(true);
         when(userRepository.existsByUsername(registerRequest.getUsername())).thenReturn(false);
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(userDto);
@@ -134,9 +133,7 @@ class AuthServiceTest extends BaseServiceTest {
         UserTokenDTO userTokenDTO = UserTokenDTO.builder()
                 .expireDate(new Date().getTime() + 120000)
                 .refreshToken("refreshToken")
-                .message("success")
                 .accessToken("access-token")
-                .roles(Set.of("ADMIN", "SUPER_ADMIN"))
                 .username("adminUsername")
                 .build();
 
@@ -154,10 +151,9 @@ class AuthServiceTest extends BaseServiceTest {
 
         // then
         assertThat(userTokenDTOActual).isNotNull();
-        assertEquals(userTokenDTOActual.getAccessToken().substring(7), userTokenDTO.getAccessToken());
+        assertEquals(userTokenDTOActual.getAccessToken(), userTokenDTO.getAccessToken());
         assertEquals(userTokenDTOActual.getUsername(), userTokenDTO.getUsername());
         assertEquals(userTokenDTOActual.getRefreshToken(), userTokenDTO.getRefreshToken());
-        assertEquals(userTokenDTOActual.getMessage(), userTokenDTO.getMessage());
 
     }
 }

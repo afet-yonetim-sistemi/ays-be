@@ -91,10 +91,8 @@ public class AuthServiceImpl implements AuthService {
 
         return UserTokenDTO.builder()
                 .username(userDetails.getUsername())
-                .accessToken("Bearer " + accessToken)
-                .roles(roles)
+                .accessToken(accessToken)
                 .refreshToken(refreshToken.getToken())
-                .message("success")
                 .expireDate(expiryDate.getTime())
                 .build();
 

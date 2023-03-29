@@ -144,7 +144,7 @@ public class UserBuilder extends TestDataBuilder<User> {
                 .firstName("First Name Admin")
                 .lastName("Last Name Admin")
                 .email("testadmin@afet.com")
-                .organizationId(1L)
+                //.organizationId(1L)
                 .statusValue(1)
                 .build();
     }

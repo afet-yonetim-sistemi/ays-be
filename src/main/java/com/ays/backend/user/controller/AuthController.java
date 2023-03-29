@@ -57,10 +57,7 @@ public class AuthController {
         AuthResponse authResponse = AuthResponse.builder()
                 .expireDate(userTokenDTO.getExpireDate())
                 .refreshToken(userTokenDTO.getRefreshToken())
-                .message(userTokenDTO.getMessage())
                 .accessToken(userTokenDTO.getAccessToken())
-                .roles(userTokenDTO.getRoles())
-                .username(userTokenDTO.getUsername())
                 .build();
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
