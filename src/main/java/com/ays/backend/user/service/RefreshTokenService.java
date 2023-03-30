@@ -7,6 +7,7 @@ import java.util.Optional;
 /**
  * Refresh Token Service to perform the process of refreshing access token.
  */
+@Deprecated
 public interface RefreshTokenService {
 
     Optional<RefreshToken> findByToken(String token);

@@ -52,12 +52,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AdminLoginRequest loginRequest) {
 
-        var userTokenDTO = authService.login(loginRequest);
+        final var aysToken = authService.login(loginRequest);
 
         AuthResponse authResponse = AuthResponse.builder()
-                .expireDate(userTokenDTO.getExpireDate())
-                .refreshToken(userTokenDTO.getRefreshToken())
-                .accessToken(userTokenDTO.getAccessToken())
+                .accessTokenExpireIn(aysToken.getAccessTokenExpireIn())
+                .refreshToken(aysToken.getRefreshToken())
+                .accessToken(aysToken.getAccessToken())
                 .build();
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);

@@ -1,19 +1,17 @@
 package com.ays.backend.user.repository;
 
-import java.util.Optional;
-
-import com.ays.backend.user.model.entities.User;
+import com.ays.backend.user.model.entities.UserEntity;
 import com.ays.backend.user.model.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 /**
  * UserRepository performing DB layer operations.
  */
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    Optional<User> findByUsername(String username);
+    Optional<UserEntity> findByUsername(String username);
 
-    boolean existsByUsername(String username);
-
-    Optional<User> findByIdAndStatusNot(Long id, UserStatus status);
+    Optional<UserEntity> findByIdAndStatusNot(Long id, UserStatus status);
 }

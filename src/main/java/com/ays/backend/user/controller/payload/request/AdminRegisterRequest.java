@@ -35,7 +35,4 @@ public class AdminRegisterRequest {
     //@NotNull
     //private Long organizationId;
 
-    @NotNull
-    private Integer statusValue;
-
 }

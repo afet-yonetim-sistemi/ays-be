@@ -1,6 +1,6 @@
 package com.ays.backend.user.security;
 
-import com.ays.backend.user.model.entities.User;
+import com.ays.backend.user.model.entities.UserEntity;
 import com.ays.backend.user.model.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,11 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtUserDetails implements UserDetails {
 
-    private final User user;
+    private final UserEntity user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRole roles = user.getUserRole();
+        UserRole roles = user.getRole();
 
         List<SimpleGrantedAuthority> authories = new ArrayList<>();
         authories.add(new SimpleGrantedAuthority(roles.name()));

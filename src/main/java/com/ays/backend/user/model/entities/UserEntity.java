@@ -15,15 +15,15 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "user",
-        uniqueConstraints={
-        @UniqueConstraint(name = "UniqueMobileNumber", columnNames = {"countryCode", "lineNumber"})
-})
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UniqueMobileNumber", columnNames = {"countryCode", "lineNumber"})
+        })
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -43,11 +43,11 @@ public class User extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Organization organization;
+    private OrganizationEntity organization;
 
     @Enumerated(EnumType.ORDINAL)
     @JoinColumn(name = "type_id")
-    private UserRole userRole;
+    private UserRole role;
 
     @Enumerated(EnumType.ORDINAL)
     @JoinColumn(name = "status_id")
@@ -66,20 +66,24 @@ public class User extends BaseEntity {
     @Column(name = "organization_id")
     private Long organizationId;
 
-    public static User from(AdminRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
+    public void deleteUser() {
+        this.status = UserStatus.DELETED;
+    }
 
-        return User.builder()
+    public static UserEntity from(AdminRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
+
+        return UserEntity.builder()
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .firstName(registerRequest.getFirstName())
                 .lastName(registerRequest.getLastName())
-                .userRole(UserRole.ROLE_ADMIN)
+                .role(UserRole.ROLE_ADMIN)
                 .countryCode(registerRequest.getCountryCode())
                 .lineNumber(registerRequest.getLineNumber())
                 .email(registerRequest.getEmail())
                 .lastLoginDate(LocalDateTime.now())
                 //.organizationId(registerRequest.getOrganizationId())
-                .status(UserStatus.getById(registerRequest.getStatusValue()))
+                .status(UserStatus.WAITING)
                 .build();
 
     }

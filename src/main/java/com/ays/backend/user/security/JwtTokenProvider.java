@@ -1,6 +1,7 @@
 package com.ays.backend.user.security;
 
 
+import com.ays.backend.user.model.Token;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,27 +21,34 @@ public class JwtTokenProvider {
     private String APP_SECRET;
 
     @Value("${ays.token.expires-in}")
-    private long EXPIRES_IN;
+    private Long TOKEN_EXPIRE_IN;
 
-    public String generateJwtToken(Authentication auth) {
+    public Token generateJwtToken(Authentication auth) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + EXPIRES_IN);
 
-
-        Set<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+        final Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        String token = Jwts.builder()
+        final long currentTimeMillis = System.currentTimeMillis();
+        final Date accessTokenExpireIn = new Date(currentTimeMillis + TOKEN_EXPIRE_IN);
+        final String accessToken = Jwts.builder()
+                .setId(UUID.randomUUID().toString())
                 .setSubject(userDetails.getUsername())
                 .claim("roles", roles)
                 .claim("username", userDetails.getUsername())
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, APP_SECRET)
+                .setIssuedAt(new Date(currentTimeMillis))
+                .setExpiration(accessTokenExpireIn)
+                .signWith(SignatureAlgorithm.HS512, APP_SECRET) // TODO : SignatureAlgorithm and APP_SECRET should be read from the database
                 .compact();
 
-        return token;
+        //RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+
+        return Token.builder()
+                .accessToken(accessToken)
+                .accessTokenExpireIn(currentTimeMillis + TOKEN_EXPIRE_IN)
+//                .refreshToken(refreshToken)
+                .build();
     }
 
     public String getUserNameFromJwtToken(String token) {
@@ -58,7 +67,7 @@ public class JwtTokenProvider {
     boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token);
-            return !isTokenExpired(token);
+            return !this.isTokenExpired(token);
         } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
             return false;
         }

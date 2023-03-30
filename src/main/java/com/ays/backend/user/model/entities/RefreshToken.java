@@ -17,6 +17,7 @@ import java.time.Instant;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Deprecated(since = "Servisi kaldırıldığında silinmeli")
 public class RefreshToken {
 
     @Id
@@ -25,7 +26,7 @@ public class RefreshToken {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private UserEntity user;
 
     @Column(nullable = false, unique = true)
     private String token;

@@ -6,13 +6,13 @@ import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
 import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.exception.UserNotFoundException;
-import com.ays.backend.user.model.entities.User;
-import com.ays.backend.user.model.entities.UserBuilder;
+import com.ays.backend.user.model.User;
+import com.ays.backend.user.model.UserBuilder;
+import com.ays.backend.user.model.entities.UserEntity;
+import com.ays.backend.user.model.entities.UserEntityBuilder;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.repository.UserRepository;
-import com.ays.backend.user.service.dto.UserDTO;
-import com.ays.backend.user.service.dto.UserDTOBuilder;
 import com.ays.backend.user.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -49,46 +49,47 @@ class UserServiceTest extends BaseServiceTest {
         SignUpRequest signUpRequest = new SignUpRequestBuilder()
                 .withStatusId(UserStatus.PASSIVE.ordinal()).build();
 
-        User user = new UserBuilder()
+        UserEntity user = new UserEntityBuilder()
                 .withSignUpRequest(signUpRequest)
                 .withUserRole(UserRole.ROLE_VOLUNTEER).build();
 
-        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(user);
 
         // when
-        UserDTO savedUserDTO = userService.saveUser(signUpRequest);
+        User savedUser = userService.saveUser(signUpRequest);
 
         // then
-        assertEquals(signUpRequest.getUsername(), savedUserDTO.getUsername());
-        assertEquals(savedUserDTO.getUserRole(), user.getUserRole());
-        assertEquals(signUpRequest.getCountryCode(), savedUserDTO.getCountryCode());
-        assertEquals(signUpRequest.getLineNumber(), savedUserDTO.getLineNumber());
-        assertEquals(signUpRequest.getStatusId(), savedUserDTO.getUserStatus().ordinal());
+        assertEquals(signUpRequest.getUsername(), savedUser.getUsername());
+        assertEquals(savedUser.getRole(), user.getRole());
+        assertEquals(signUpRequest.getCountryCode(), savedUser.getCountryCode());
+        assertEquals(signUpRequest.getLineNumber(), savedUser.getLineNumber());
+        assertEquals(signUpRequest.getStatusId(), savedUser.getStatus().ordinal());
     }
 
     @Test
     public void shouldGetAllUsers() {
 
         // given
-        List<User> userList = new UserBuilder().getUsers();
-        List<UserDTO> userDtoList = new UserDTOBuilder().getUserDtos();
+        List<UserEntity> userList = new UserEntityBuilder().getUsers();
+        List<User> userDtoList = new UserBuilder().getUsers();
 
         // Create a Page object with the sample users
-        Page<User> users = new PageImpl<>(userList);
+        Page<UserEntity> users = new PageImpl<>(userList);
 
         // mock the mapper to return non-null UserDTO objects
         for (int i = 0; i < userList.size(); i++) {
-            when(userMapper.mapUsertoUserDTO(userList.get(i))).thenReturn(userDtoList.get(i));
+            when(userMapper.mapUserEntityToUser(userList.get(i))).thenReturn(userDtoList.get(i));
         }
+
 
         // when
         when(userRepository.findAll(any(Pageable.class))).thenReturn(users);
 
         // Call the getAllUsers method of the userService
-        Page<UserDTO> result = userService.getAllUsers(PageRequest.of(1, 10));
+        Page<User> result = userService.getAllUsers(PageRequest.of(1, 10));
 
         // then
-        assertEquals(result.getContent().size(),2);
+        assertEquals(result.getContent().size(), 2);
         assertEquals(result.getContent().get(0).getUsername(), userDtoList.get(0).getUsername());
         assertEquals(result.getContent().get(0).getFirstName(), userDtoList.get(0).getFirstName());
         assertEquals(result.getContent().get(0).getLastName(), userDtoList.get(0).getLastName());
@@ -105,39 +106,39 @@ class UserServiceTest extends BaseServiceTest {
         SignUpRequest signUpRequest = new SignUpRequestBuilder()
                 .withStatusId(UserStatus.WAITING.ordinal()).build();
 
-        User user = new UserBuilder()
+        UserEntity user = new UserEntityBuilder()
                 .withSignUpRequest(signUpRequest)
                 .withUserRole(UserRole.ROLE_VOLUNTEER).build();
 
-        UserDTO mockUserDto = UserDTO.builder()
+        User mockUserDto = User.builder()
                 .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .userRole(user.getUserRole())
+                .role(user.getRole())
                 .countryCode(user.getCountryCode())
                 .lineNumber(user.getLineNumber())
-                .userStatus(user.getStatus())
+                .status(user.getStatus())
                 .email(user.getEmail())
                 .lastLoginDate(user.getLastLoginDate())
                 .build();
 
         // mock the mapper to return non-null UserDTO objects
-        when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(mockUserDto);
+        when(userMapper.mapUserEntityToUser(any(UserEntity.class))).thenReturn(mockUserDto);
 
 
         // when
-        when(userRepository.findByIdAndStatusNot(1L,UserStatus.PASSIVE)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndStatusNot(1L, UserStatus.PASSIVE)).thenReturn(Optional.of(user));
 
-        UserDTO userDto = userService.getUserById(1L);
+        User userDto = userService.getUserById(1L);
 
         // then
         assertEquals(user.getUsername(), userDto.getUsername());
         assertEquals(user.getFirstName(), userDto.getFirstName());
         assertEquals(user.getLastName(), userDto.getLastName());
-        assertEquals(user.getUserRole().ordinal(), userDto.getUserRole().ordinal());
+        assertEquals(user.getRole().ordinal(), userDto.getRole().ordinal());
         assertEquals(user.getCountryCode(), userDto.getCountryCode());
         assertEquals(user.getLineNumber(), userDto.getLineNumber());
-        assertEquals(user.getStatus(), userDto.getUserStatus());
+        assertEquals(user.getStatus(), userDto.getStatus());
         assertEquals(user.getEmail(), userDto.getEmail());
         assertEquals(user.getLastLoginDate(), userDto.getLastLoginDate());
     }
@@ -166,18 +167,18 @@ class UserServiceTest extends BaseServiceTest {
         Long id = 1L;
 
         // given
-        User userInfoWithWaitingStatus = new UserBuilder().getUserSamplewithWaitingStatus();
-        User userInfoWithPassiveStatus = new UserBuilder().getUserSamplewithPassiveStatus();
-        UserDTO userDTOInfoWithPassiveStatus = new UserDTOBuilder().getUserDTOwithPassiveStatus();
+        UserEntity userInfoWithWaitingStatus = new UserEntityBuilder().getUserSamplewithWaitingStatus();
+        UserEntity userInfoWithPassiveStatus = new UserEntityBuilder().getUserSamplewithPassiveStatus();
+        User userDTOInfoWithPassiveStatus = new UserBuilder().getUserDTOwithPassiveStatus();
 
         // when
         when(userRepository.findById(id)).thenReturn(Optional.of(userInfoWithWaitingStatus));
-        when(userRepository.save(any(User.class))).thenReturn(userInfoWithPassiveStatus);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(userInfoWithPassiveStatus);
 
         userService.deleteSoftUserById(id);
 
         // then
-        assertEquals(UserStatus.PASSIVE, userInfoWithWaitingStatus.getStatus());
+        assertEquals(UserStatus.DELETED, userInfoWithWaitingStatus.getStatus());
 
     }
 
@@ -202,7 +203,7 @@ class UserServiceTest extends BaseServiceTest {
         Long id = 1L;
 
         // given
-        User sampleUser = new UserBuilder().getUserSample();
+        UserEntity sampleUser = new UserEntityBuilder().getUserSample();
         UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
                 .id(id)
                 .username("updatedusername")
@@ -212,24 +213,24 @@ class UserServiceTest extends BaseServiceTest {
                 .userStatus(UserStatus.VERIFIED)
                 .build();
 
-        User updatedUser = new UserBuilder().getUpdatedUser();
-        UserDTO updatedDTO = new UserDTOBuilder().getUpdatedUserDTO();
+        UserEntity updatedUser = new UserEntityBuilder().getUpdatedUser();
+        User updatedDTO = new UserBuilder().getUpdatedUserDTO();
 
 
         // when
         when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
-        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
-        when(userMapper.mapUsertoUserDTO(any(User.class))).thenReturn(updatedDTO);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(updatedUser);
+        when(userMapper.mapUserEntityToUser(any(UserEntity.class))).thenReturn(updatedDTO);
         when(userMapper.mapUpdateRequestToUser(eq(updateUserRequest), eq(sampleUser))).thenReturn(updatedUser);
 
-        UserDTO updatedUserDTO = userService.updateUserById(updateUserRequest);
+        User updatedUserDTO = userService.updateUserById(updateUserRequest);
 
         // then
         assertEquals(updatedDTO.getUsername(), updatedUserDTO.getUsername());
         assertEquals(updatedDTO.getFirstName(), updatedUserDTO.getFirstName());
         assertEquals(updatedDTO.getLastName(), updatedUserDTO.getLastName());
-        assertEquals(updatedDTO.getUserRole().ordinal(), updatedUserDTO.getUserRole().ordinal());
-        assertEquals(updatedDTO.getUserStatus().ordinal(), updatedUserDTO.getUserStatus().ordinal());
+        assertEquals(updatedDTO.getRole().ordinal(), updatedUserDTO.getRole().ordinal());
+        assertEquals(updatedDTO.getStatus().ordinal(), updatedUserDTO.getStatus().ordinal());
     }
 
     @Test

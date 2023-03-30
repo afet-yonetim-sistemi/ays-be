@@ -2,7 +2,7 @@ package com.ays.backend.user.service.impl;
 
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.RefreshToken;
-import com.ays.backend.user.model.entities.User;
+import com.ays.backend.user.model.entities.UserEntity;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.repository.RefreshTokenRepository;
 import com.ays.backend.user.repository.UserRepository;
@@ -19,6 +19,7 @@ import java.util.UUID;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Deprecated
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Value("${ays.token.refresh-token-expires-in}")
@@ -59,7 +60,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     @Transactional
     public int deleteByUserIdForLogout(Long userId) {
-        User user = userRepository.findByIdAndStatusNot(userId, UserStatus.PASSIVE).orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+        UserEntity user = userRepository.findByIdAndStatusNot(userId, UserStatus.PASSIVE).orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
         return refreshTokenRepository.deleteByUser(user);
     }
 }

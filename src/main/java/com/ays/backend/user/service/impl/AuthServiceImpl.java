@@ -4,16 +4,13 @@ import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
-import com.ays.backend.user.model.entities.RefreshToken;
-import com.ays.backend.user.model.entities.User;
-import com.ays.backend.user.repository.OrganizationRepository;
+import com.ays.backend.user.model.Token;
+import com.ays.backend.user.model.User;
+import com.ays.backend.user.model.entities.UserEntity;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.security.JwtTokenProvider;
-import com.ays.backend.user.security.JwtUserDetails;
 import com.ays.backend.user.service.AuthService;
 import com.ays.backend.user.service.RefreshTokenService;
-import com.ays.backend.user.service.dto.UserDTO;
-import com.ays.backend.user.service.dto.UserTokenDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserMapper userMapper;
 
-    private final OrganizationRepository organizationRepository;
+//    private final OrganizationRepository organizationRepository;
 
     private final RefreshTokenService refreshTokenService;
 
@@ -52,49 +45,31 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public UserDTO register(AdminRegisterRequest registerRequest) {
+    public User register(AdminRegisterRequest registerRequest) {
 
-        /*
-        if (Boolean.FALSE.equals(organizationRepository.existsById(registerRequest.getOrganizationId()))) {
-            throw new OrganizationNotFoundException("Error: Organization Not Found!");
-        }
-         */
 
-        if (Boolean.TRUE.equals(userRepository.existsByUsername(registerRequest.getUsername()))) {
+//        if (organizationRepository.existsById(registerRequest.getOrganizationId())) {
+//            throw new OrganizationNotFoundException("Error: Organization Not Found!");
+//        }
+
+        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
             throw new UserAlreadyExistsException("Error: Username is already taken!");
         }
 
-        User user = User.from(registerRequest, passwordEncoder);
+        UserEntity user = UserEntity.from(registerRequest, passwordEncoder);
 
-        var registeredUser = userRepository.save(user);
-
-        return userMapper.mapUsertoUserDTO(registeredUser);
-
+        return userMapper.mapUserEntityToUser(userRepository.save(user));
     }
 
     @Override
     @Transactional
-    public UserTokenDTO login(AdminLoginRequest loginRequest) {
+    public Token login(AdminLoginRequest loginRequest) {
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
-        JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal();
-        String accessToken = jwtTokenProvider.generateJwtToken(auth);
 
-        Set<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
-                .collect(Collectors.toSet());
-
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-
-        Date expiryDate = new Date(new Date().getTime() + EXPIRES_IN);
-
-        return UserTokenDTO.builder()
-                .username(userDetails.getUsername())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken.getToken())
-                .expireDate(expiryDate.getTime())
-                .build();
+        return jwtTokenProvider.generateJwtToken(auth);
 
     }
 

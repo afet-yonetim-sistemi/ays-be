@@ -2,20 +2,19 @@ package com.ays.backend.user.controller;
 
 import com.ays.backend.base.BaseRestControllerTest;
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
+import com.ays.backend.user.controller.payload.request.AdminLoginRequestBuilder;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequestBuilder;
 import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
-import com.ays.backend.user.model.entities.User;
-import com.ays.backend.user.model.entities.UserBuilder;
+import com.ays.backend.user.model.Token;
+import com.ays.backend.user.model.User;
+import com.ays.backend.user.model.UserBuilder;
 import com.ays.backend.user.service.AuthService;
-import com.ays.backend.user.service.dto.UserDTO;
-import com.ays.backend.user.service.dto.UserTokenDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
@@ -39,37 +38,20 @@ class AuthControllerTest extends BaseRestControllerTest {
     @MockBean
     private AuthService authService;
 
-    @Mock
-    private PasswordEncoder passwordEncoder;
-
 
     @Test
     void shouldRegisterForAdmin() throws Exception {
 
         // Given
-        AdminRegisterRequest registerRequest = new UserBuilder().getRegisterRequest();
+        AdminRegisterRequest registerRequest = new AdminRegisterRequestBuilder().build();
 
         User user = new UserBuilder()
-                .withRegisterRequest(registerRequest,passwordEncoder).build();
-
-        UserDTO userDto = UserDTO.builder()
-                .username(user.getUsername())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .userRole(user.getUserRole())
-                .countryCode(user.getCountryCode())
-                .lineNumber(user.getLineNumber())
-                .userStatus(user.getStatus())
-                .email(user.getEmail())
-                .lastLoginDate(user.getLastLoginDate())
-                .build();
-
+                .withRegisterRequest(registerRequest).build();
 
         MessageResponse messageResponse = new MessageResponse("success");
 
-
         // when
-        when(authService.register(registerRequest)).thenReturn(userDto);
+        when(authService.register(registerRequest)).thenReturn(user);
 
         // then - Perform the POST request and assert the response
         mockMvc.perform(post(ADMIN_CONTROLLER_BASEURL + "/register")
@@ -84,24 +66,22 @@ class AuthControllerTest extends BaseRestControllerTest {
     @Test
     void shouldLoginForAdmin() throws Exception {
 
-        AdminLoginRequest loginRequest = new UserBuilder().getLoginRequest();
+        AdminLoginRequest loginRequest = new AdminLoginRequestBuilder().build();
 
-
-        UserTokenDTO userTokenDTO = UserTokenDTO.builder()
-                .expireDate(new Date().getTime() + 120000)
+        Token aysToken = Token.builder()
+                .accessTokenExpireIn(new Date().getTime() + 120000)
                 .refreshToken("refreshToken")
                 .accessToken("Bearer access-token")
-                .username("adminUsername")
                 .build();
 
         AuthResponse authResponse = AuthResponse.builder()
-                .expireDate(userTokenDTO.getExpireDate())
-                .refreshToken(userTokenDTO.getRefreshToken())
-                .accessToken(userTokenDTO.getAccessToken())
+                .accessToken(aysToken.getAccessToken())
+                .accessTokenExpireIn(aysToken.getAccessTokenExpireIn())
+                .refreshToken(aysToken.getRefreshToken())
                 .build();
 
         // when
-        when(authService.login(loginRequest)).thenReturn(userTokenDTO);
+        when(authService.login(loginRequest)).thenReturn(aysToken);
 
 
         // then
@@ -110,9 +90,9 @@ class AuthControllerTest extends BaseRestControllerTest {
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.expireDate").value(authResponse.getExpireDate()))
-                .andExpect(jsonPath("$.refreshToken").value(authResponse.getRefreshToken()))
-                .andExpect(jsonPath("$.accessToken").value(authResponse.getAccessToken()));
+                .andExpect(jsonPath("$.accessToken").value(authResponse.getAccessToken()))
+                .andExpect(jsonPath("$.accessTokenExpireIn").value(authResponse.getAccessTokenExpireIn()))
+                .andExpect(jsonPath("$.refreshToken").value(authResponse.getRefreshToken()));
 
     }
 }
