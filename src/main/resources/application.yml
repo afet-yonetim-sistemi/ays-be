@@ -27,5 +27,5 @@ application:
 ays:
   token:
     secret: afet-secret
-    expires-in: 120000  # 2 minutes
-    refresh-token-expires-in: 120000 # 2 minutes
+    access-expire-minute: 120
+    refresh-expire-day: 3

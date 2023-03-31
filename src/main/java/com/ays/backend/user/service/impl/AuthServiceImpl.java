@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(jwtUserDetails.getUsername(), jwtUserDetails.getPassword());
 
-        return jwtTokenProvider.generateJwtToken(auth);
+        return jwtTokenProvider.generateJwtToken(auth, refreshToken);
 
     }
 

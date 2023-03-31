@@ -3,6 +3,7 @@ package com.ays.backend.user.security;
 
 import com.ays.backend.user.model.Token;
 import io.jsonwebtoken.*;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,8 +21,11 @@ public class JwtTokenProvider {
     @Value("${ays.token.secret}")
     private String APP_SECRET;
 
-    @Value("${ays.token.expires-in}")
-    private Long TOKEN_EXPIRE_IN;
+    @Value("${ays.token.access-expire-minute}")
+    private Integer ACCESS_TOKEN_EXPIRE_MINUTE;
+
+    @Value("${ays.token.refresh-expire-day}")
+    private Integer REFRESH_TOKEN_EXPIRE_DAY;
 
     public Token generateJwtToken(Authentication auth) {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
@@ -31,33 +35,53 @@ public class JwtTokenProvider {
                 .collect(Collectors.toSet());
 
         final long currentTimeMillis = System.currentTimeMillis();
-        final Date accessTokenExpireIn = new Date(currentTimeMillis + TOKEN_EXPIRE_IN);
+        final JwtBuilder jwtBuilder = Token.initializeJwtBuilder(userDetails, roles, currentTimeMillis, APP_SECRET);
+        final Date accessTokenExpireIn = DateUtils.addMinutes(new Date(currentTimeMillis), ACCESS_TOKEN_EXPIRE_MINUTE);
+        final String accessToken = this.generateAccessToken(accessTokenExpireIn, jwtBuilder);
 
-        final JwtBuilder token = Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .signWith(SignatureAlgorithm.HS512, APP_SECRET); // TODO : SignatureAlgorithm and APP_SECRET should be read from the database
-
-        final String accessToken = token
-                .setId(UUID.randomUUID().toString())
-                .claim("roles", roles)
-                .claim("username", userDetails.getUsername())
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(accessTokenExpireIn)
-                .compact();
-
-        final String refreshToken = Jwts.builder()
-                .setId(UUID.randomUUID().toString())
-                .claim("roles", roles)
-                .claim("username", userDetails.getUsername())
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(accessTokenExpireIn)
-                .compact();
+        final String refreshToken = this.generateRefreshToken(currentTimeMillis, jwtBuilder);
 
         return Token.builder()
                 .accessToken(accessToken)
-                .accessTokenExpireIn(currentTimeMillis + TOKEN_EXPIRE_IN)
+                .accessTokenExpireIn(accessTokenExpireIn.getTime())
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public Token generateJwtToken(Authentication auth, String refreshToken) {
+
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+
+        final Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        final long currentTimeMillis = System.currentTimeMillis();
+        final JwtBuilder jwtBuilder = Token.initializeJwtBuilder(userDetails, roles, currentTimeMillis, APP_SECRET);
+        final Date accessTokenExpireIn = DateUtils.addMinutes(new Date(currentTimeMillis), ACCESS_TOKEN_EXPIRE_MINUTE);
+        final String accessToken = this.generateAccessToken(accessTokenExpireIn, jwtBuilder);
+
+        return Token.builder()
+                .accessToken(accessToken)
+                .accessTokenExpireIn(accessTokenExpireIn.getTime())
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+
+    private String generateAccessToken(Date accessTokenExpireIn, JwtBuilder jwtBuilder) {
+        return jwtBuilder
+                .setId(UUID.randomUUID().toString())
+                .setExpiration(accessTokenExpireIn)
+                .compact();
+    }
+
+    private String generateRefreshToken(long currentTimeMillis, JwtBuilder jwtBuilder) {
+        final Date refreshTokenExpireIn = DateUtils.addDays(new Date(currentTimeMillis), REFRESH_TOKEN_EXPIRE_DAY);
+        return jwtBuilder
+                .setId(UUID.randomUUID().toString())
+                .setExpiration(refreshTokenExpireIn)
+                .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {

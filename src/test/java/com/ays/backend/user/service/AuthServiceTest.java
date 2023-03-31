@@ -172,7 +172,7 @@ class AuthServiceTest extends BaseServiceTest {
         // when
         when(jwtTokenProvider.getUserNameFromJwtToken(refreshToken)).thenReturn(username);
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(jwtTokenProvider.generateJwtToken(auth)).thenReturn(token);
+        when(jwtTokenProvider.generateJwtToken(auth, refreshToken)).thenReturn(token);
 
 
         Token renewToken = authService.refreshToken(refreshToken);
