@@ -2,10 +2,12 @@ package com.ays.backend.user.service;
 
 import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.mapper.UserMapper;
-import com.ays.backend.user.controller.payload.request.*;
+import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
+import com.ays.backend.user.controller.payload.request.AdminLoginRequestBuilder;
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
+import com.ays.backend.user.controller.payload.request.AdminRegisterRequestBuilder;
 import com.ays.backend.user.model.Token;
 import com.ays.backend.user.model.User;
-import com.ays.backend.user.model.entities.RefreshToken;
 import com.ays.backend.user.model.entities.UserEntity;
 import com.ays.backend.user.model.entities.UserEntityBuilder;
 import com.ays.backend.user.model.enums.UserRole;
@@ -29,7 +31,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 class AuthServiceTest extends BaseServiceTest {
@@ -49,8 +50,6 @@ class AuthServiceTest extends BaseServiceTest {
     @Mock
     private UserMapper userMapper;
 
-    @Mock
-    private RefreshTokenService refreshTokenService;
 
     @Mock
     private JwtTokenProvider jwtTokenProvider;
@@ -108,12 +107,11 @@ class AuthServiceTest extends BaseServiceTest {
 
 
         UserEntity user = UserEntity.builder()
+                .id(1L)
                 .username(loginRequest.getUsername())
                 .password(loginRequest.getPassword())
                 .role(UserRole.ROLE_ADMIN)
                 .build();
-
-        user.setId(1L);
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
@@ -125,24 +123,16 @@ class AuthServiceTest extends BaseServiceTest {
 
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-//        JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal(); // TODO : unused
-
-
         Token token = Token.builder()
                 .accessTokenExpireIn(new Date().getTime() + 120000)
                 .refreshToken("refreshToken")
                 .accessToken("access-token")
                 .build();
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .token(token.getRefreshToken())
-                .build();
 
         // when
-        when(authenticationManager.authenticate(eq(authToken)))
-                .thenReturn(auth);
+        when(authenticationManager.authenticate(authToken)).thenReturn(auth);
         when(jwtTokenProvider.generateJwtToken(auth)).thenReturn(token);
-        //when(refreshTokenService.createRefreshToken(eq(userDetails.getId()))).thenReturn(refreshToken);
 
         Token aysToken = authService.login(loginRequest);
 
@@ -158,11 +148,8 @@ class AuthServiceTest extends BaseServiceTest {
     void shouldRefreshToken() {
 
         // Given
-        AdminRefreshTokenRequest refreshTokenRequest = AdminRefreshTokenRequest.builder()
-                .refreshToken("Refresh Token")
-                .build();
 
-        String refreshToken = refreshTokenRequest.getRefreshToken();
+        String refreshToken = "Refresh token";
         String username = "Admin Username";
         String password = "Admin Password";
 
@@ -188,7 +175,7 @@ class AuthServiceTest extends BaseServiceTest {
         when(jwtTokenProvider.generateJwtToken(auth)).thenReturn(token);
 
 
-        Token renewToken = authService.refreshToken(refreshTokenRequest);
+        Token renewToken = authService.refreshToken(refreshToken);
 
         // then
         assertEquals(token.getAccessToken(), renewToken.getAccessToken());

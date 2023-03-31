@@ -1,5 +1,6 @@
 package com.ays.backend.user.security;
 
+import com.ays.backend.util.HttpServletRequestWrapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,8 +26,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
         try {
-            String jwtToken = extractJwtFromRequest(request);
+            String jwtToken = HttpServletRequestWrapper.getToken(request);
             if (StringUtils.hasText(jwtToken) && jwtTokenProvider.validateToken(jwtToken)) {
                 String username = jwtTokenProvider.getUserNameFromJwtToken(jwtToken);
                 UserDetails user = userDetailsService.loadUserByUsername(username);
@@ -40,13 +42,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         filterChain.doFilter(request, response);
-    }
-
-    private String extractJwtFromRequest(HttpServletRequest request) {
-        String bearer = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer "))
-            return bearer.substring(7, bearer.length());
-        return null;
     }
 
 }

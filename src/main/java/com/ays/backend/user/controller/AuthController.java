@@ -1,11 +1,13 @@
 package com.ays.backend.user.controller;
 
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
-import com.ays.backend.user.controller.payload.request.AdminRefreshTokenRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
+import com.ays.backend.user.model.Token;
 import com.ays.backend.user.service.AuthService;
+import com.ays.backend.util.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,14 +53,14 @@ public class AuthController {
      * @return A ResponseEntity containing an AuthResponse object and the HTTP status code (200 OK).
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AdminLoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AdminLoginRequest loginRequest) { // TODO : username and password send with x-www-url-encoded
 
-        final var aysToken = authService.login(loginRequest);
+        final Token token = authService.login(loginRequest);
 
         AuthResponse authResponse = AuthResponse.builder()
-                .accessTokenExpireIn(aysToken.getAccessTokenExpireIn())
-                .refreshToken(aysToken.getRefreshToken())
-                .accessToken(aysToken.getAccessToken())
+                .accessTokenExpireIn(token.getAccessTokenExpireIn())
+                .refreshToken(token.getRefreshToken())
+                .accessToken(token.getAccessToken())
                 .build();
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
@@ -67,14 +69,15 @@ public class AuthController {
     /**
      * This endpoint allows admin to refresh token.
      *
-     * @param refreshTokenRequest A AdminRefreshTokenRequest object required to refresh to token object  for login process .
+     * @param httpServletRequest A HttpServletRequest object used to send a token through its header .
      * @return A ResponseEntity containing an AuthResponse object and the HTTP status code (200 OK).
      */
     @PostMapping("/refresh-token")
-    public ResponseEntity<AuthResponse> refreshToken(@RequestBody AdminRefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<AuthResponse> refreshToken(HttpServletRequest httpServletRequest) {
 
+        final String refreshToken = HttpServletRequestWrapper.getToken(httpServletRequest);
 
-        final var renewToken = authService.refreshToken(refreshTokenRequest);
+        final Token renewToken = authService.refreshToken(refreshToken);
 
         AuthResponse authResponse = AuthResponse.builder()
                 .accessTokenExpireIn(renewToken.getAccessTokenExpireIn())

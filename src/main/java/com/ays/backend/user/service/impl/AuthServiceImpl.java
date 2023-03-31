@@ -2,7 +2,6 @@ package com.ays.backend.user.service.impl;
 
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
-import com.ays.backend.user.controller.payload.request.AdminRefreshTokenRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.exception.UserNotFoundException;
@@ -13,9 +12,7 @@ import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.security.JwtTokenProvider;
 import com.ays.backend.user.security.JwtUserDetails;
 import com.ays.backend.user.service.AuthService;
-import com.ays.backend.user.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,10 +38,6 @@ public class AuthServiceImpl implements AuthService {
 
 //    private final OrganizationRepository organizationRepository;
 
-    private final RefreshTokenService refreshTokenService;
-
-    @Value("${ays.token.expires-in}")
-    private long EXPIRES_IN;
 
     @Override
     @Transactional
@@ -77,9 +70,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Token refreshToken(AdminRefreshTokenRequest refreshTokenRequest) {
+    public Token refreshToken(final String refreshToken) {
 
-        String refreshToken = refreshTokenRequest.getRefreshToken();
         String username = jwtTokenProvider.getUserNameFromJwtToken(refreshToken);
 
         var userEntity = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Error: User Not Found"));
