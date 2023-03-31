@@ -4,11 +4,13 @@ import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
+import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.Token;
 import com.ays.backend.user.model.User;
 import com.ays.backend.user.model.entities.UserEntity;
 import com.ays.backend.user.repository.UserRepository;
 import com.ays.backend.user.security.JwtTokenProvider;
+import com.ays.backend.user.security.JwtUserDetails;
 import com.ays.backend.user.service.AuthService;
 import com.ays.backend.user.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
@@ -72,5 +74,21 @@ public class AuthServiceImpl implements AuthService {
         return jwtTokenProvider.generateJwtToken(auth);
 
     }
+
+    @Override
+    public Token refreshToken(String refreshToken) {
+
+        String username = jwtTokenProvider.getUserNameFromJwtToken(refreshToken);
+
+        var userEntity = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Error: User Not Found"));
+
+        JwtUserDetails jwtUserDetails = new JwtUserDetails(userEntity);
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(jwtUserDetails.getUsername(), jwtUserDetails.getPassword());
+
+        return jwtTokenProvider.generateJwtToken(auth);
+
+    }
+
 
 }

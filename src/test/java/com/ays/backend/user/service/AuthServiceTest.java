@@ -156,4 +156,43 @@ class AuthServiceTest extends BaseServiceTest {
         assertEquals(aysToken.getAccessTokenExpireIn(), token.getAccessTokenExpireIn());
 
     }
+
+    @Test
+    void shouldRefreshToken() {
+
+        // Given
+        String refreshToken = "Refresh Token";
+        String username = "Admin Username";
+        String password = "Admin Password";
+
+        UserEntity user = UserEntity.builder()
+                .username(username)
+                .password(password)
+                .role(UserRole.ROLE_ADMIN)
+                .build();
+
+        Token token = Token.builder()
+                .accessTokenExpireIn(new Date().getTime() + 120000)
+                .refreshToken("refreshToken")
+                .accessToken("access-token")
+                .build();
+
+        JwtUserDetails jwtUserDetails = new JwtUserDetails(user);
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(jwtUserDetails.getUsername(), jwtUserDetails.getPassword());
+
+        // when
+        when(jwtTokenProvider.getUserNameFromJwtToken(refreshToken)).thenReturn(username);
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        when(jwtTokenProvider.generateJwtToken(auth)).thenReturn(token);
+
+
+        Token renewToken = authService.refreshToken(refreshToken);
+
+        // then
+        assertEquals(token.getAccessToken(), renewToken.getAccessToken());
+        assertEquals(token.getRefreshToken(), renewToken.getRefreshToken());
+        assertEquals(token.getAccessTokenExpireIn(), token.getAccessTokenExpireIn());
+    }
+
 }

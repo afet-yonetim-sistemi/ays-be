@@ -66,6 +66,7 @@ class AuthControllerTest extends BaseRestControllerTest {
     @Test
     void shouldLoginForAdmin() throws Exception {
 
+        // given
         AdminLoginRequest loginRequest = new AdminLoginRequestBuilder().build();
 
         Token aysToken = Token.builder()
@@ -94,5 +95,37 @@ class AuthControllerTest extends BaseRestControllerTest {
                 .andExpect(jsonPath("$.accessTokenExpireIn").value(authResponse.getAccessTokenExpireIn()))
                 .andExpect(jsonPath("$.refreshToken").value(authResponse.getRefreshToken()));
 
+    }
+
+    @Test
+    void shouldRefreshTokenForAdmin() throws Exception {
+
+        // given
+        String refreshToken = "Refresh Token";
+
+        Token aysToken = Token.builder()
+                .accessTokenExpireIn(new Date().getTime() + 120000)
+                .refreshToken(refreshToken)
+                .accessToken("Bearer access-token")
+                .build();
+
+        AuthResponse authResponse = AuthResponse.builder()
+                .accessToken(aysToken.getAccessToken())
+                .accessTokenExpireIn(aysToken.getAccessTokenExpireIn())
+                .refreshToken(aysToken.getRefreshToken())
+                .build();
+
+        // when
+        when(authService.refreshToken(refreshToken)).thenReturn(aysToken);
+
+        // then
+        mockMvc.perform(post(ADMIN_CONTROLLER_BASEURL + "/refresh-token")
+                        .contentType("application/json")
+                        .content(refreshToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").value(authResponse.getAccessToken()))
+                .andExpect(jsonPath("$.accessTokenExpireIn").value(authResponse.getAccessTokenExpireIn()))
+                .andExpect(jsonPath("$.refreshToken").value(authResponse.getRefreshToken()));
     }
 }

@@ -32,22 +32,31 @@ public class JwtTokenProvider {
 
         final long currentTimeMillis = System.currentTimeMillis();
         final Date accessTokenExpireIn = new Date(currentTimeMillis + TOKEN_EXPIRE_IN);
-        final String accessToken = Jwts.builder()
-                .setId(UUID.randomUUID().toString())
+
+        final JwtBuilder token = Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .signWith(SignatureAlgorithm.HS512, APP_SECRET); // TODO : SignatureAlgorithm and APP_SECRET should be read from the database
+
+        final String accessToken = token
+                .setId(UUID.randomUUID().toString())
                 .claim("roles", roles)
                 .claim("username", userDetails.getUsername())
                 .setIssuedAt(new Date(currentTimeMillis))
                 .setExpiration(accessTokenExpireIn)
-                .signWith(SignatureAlgorithm.HS512, APP_SECRET) // TODO : SignatureAlgorithm and APP_SECRET should be read from the database
                 .compact();
 
-        //RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+        final String refreshToken = Jwts.builder()
+                .setId(UUID.randomUUID().toString())
+                .claim("roles", roles)
+                .claim("username", userDetails.getUsername())
+                .setIssuedAt(new Date(currentTimeMillis))
+                .setExpiration(accessTokenExpireIn)
+                .compact();
 
         return Token.builder()
                 .accessToken(accessToken)
                 .accessTokenExpireIn(currentTimeMillis + TOKEN_EXPIRE_IN)
-//                .refreshToken(refreshToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
