@@ -2,6 +2,7 @@ package com.ays.backend.user.service.impl;
 
 import com.ays.backend.mapper.UserMapper;
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
+import com.ays.backend.user.controller.payload.request.AdminRefreshTokenRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.exception.UserNotFoundException;
@@ -76,8 +77,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Token refreshToken(String refreshToken) {
+    public Token refreshToken(AdminRefreshTokenRequest refreshTokenRequest) {
 
+        String refreshToken = refreshTokenRequest.getRefreshToken();
         String username = jwtTokenProvider.getUserNameFromJwtToken(refreshToken);
 
         var userEntity = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Error: User Not Found"));

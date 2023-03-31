@@ -1,10 +1,7 @@
 package com.ays.backend.user.controller;
 
 import com.ays.backend.base.BaseRestControllerTest;
-import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
-import com.ays.backend.user.controller.payload.request.AdminLoginRequestBuilder;
-import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
-import com.ays.backend.user.controller.payload.request.AdminRegisterRequestBuilder;
+import com.ays.backend.user.controller.payload.request.*;
 import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
 import com.ays.backend.user.model.Token;
@@ -18,6 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -101,11 +100,12 @@ class AuthControllerTest extends BaseRestControllerTest {
     void shouldRefreshTokenForAdmin() throws Exception {
 
         // given
-        String refreshToken = "Refresh Token";
+        AdminRefreshTokenRequest refreshTokenRequest = new AdminRefreshTokenRequestBuilder().build();
+
 
         Token aysToken = Token.builder()
                 .accessTokenExpireIn(new Date().getTime() + 120000)
-                .refreshToken(refreshToken)
+                .refreshToken(refreshTokenRequest.getRefreshToken())
                 .accessToken("Bearer access-token")
                 .build();
 
@@ -116,12 +116,12 @@ class AuthControllerTest extends BaseRestControllerTest {
                 .build();
 
         // when
-        when(authService.refreshToken(refreshToken)).thenReturn(aysToken);
+        when(authService.refreshToken(refreshTokenRequest)).thenReturn(aysToken);
 
         // then
         mockMvc.perform(post(ADMIN_CONTROLLER_BASEURL + "/refresh-token")
                         .contentType("application/json")
-                        .content(refreshToken))
+                        .content(objectMapper.writeValueAsString(refreshTokenRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").value(authResponse.getAccessToken()))

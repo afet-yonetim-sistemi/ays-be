@@ -2,10 +2,7 @@ package com.ays.backend.user.service;
 
 import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.mapper.UserMapper;
-import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
-import com.ays.backend.user.controller.payload.request.AdminLoginRequestBuilder;
-import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
-import com.ays.backend.user.controller.payload.request.AdminRegisterRequestBuilder;
+import com.ays.backend.user.controller.payload.request.*;
 import com.ays.backend.user.model.Token;
 import com.ays.backend.user.model.User;
 import com.ays.backend.user.model.entities.RefreshToken;
@@ -161,7 +158,11 @@ class AuthServiceTest extends BaseServiceTest {
     void shouldRefreshToken() {
 
         // Given
-        String refreshToken = "Refresh Token";
+        AdminRefreshTokenRequest refreshTokenRequest = AdminRefreshTokenRequest.builder()
+                .refreshToken("Refresh Token")
+                .build();
+
+        String refreshToken = refreshTokenRequest.getRefreshToken();
         String username = "Admin Username";
         String password = "Admin Password";
 
@@ -187,7 +188,7 @@ class AuthServiceTest extends BaseServiceTest {
         when(jwtTokenProvider.generateJwtToken(auth)).thenReturn(token);
 
 
-        Token renewToken = authService.refreshToken(refreshToken);
+        Token renewToken = authService.refreshToken(refreshTokenRequest);
 
         // then
         assertEquals(token.getAccessToken(), renewToken.getAccessToken());

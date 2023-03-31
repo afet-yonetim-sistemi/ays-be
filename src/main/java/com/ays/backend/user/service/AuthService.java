@@ -1,6 +1,7 @@
 package com.ays.backend.user.service;
 
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
+import com.ays.backend.user.controller.payload.request.AdminRefreshTokenRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.model.Token;
 import com.ays.backend.user.model.User;
@@ -29,8 +30,8 @@ public interface AuthService {
     /**
      * Refresh a Token
      *
-     * @param refreshToken the refreshToken text
+     * @param refreshTokenRequest the AdminRefreshTokenRequest entity
      * @return Token
      */
-    Token refreshToken(String refreshToken);
+    Token refreshToken(AdminRefreshTokenRequest refreshTokenRequest);
 }

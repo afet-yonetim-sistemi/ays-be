@@ -1,10 +1,10 @@
 package com.ays.backend.user.controller;
 
 import com.ays.backend.user.controller.payload.request.AdminLoginRequest;
+import com.ays.backend.user.controller.payload.request.AdminRefreshTokenRequest;
 import com.ays.backend.user.controller.payload.request.AdminRegisterRequest;
 import com.ays.backend.user.controller.payload.response.AuthResponse;
 import com.ays.backend.user.controller.payload.response.MessageResponse;
-import com.ays.backend.user.model.Token;
 import com.ays.backend.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -67,13 +67,14 @@ public class AuthController {
     /**
      * This endpoint allows admin to refresh token.
      *
-     * @param refreshToken A refreshToken required to refresh to accesstoken for login process .
+     * @param refreshTokenRequest A AdminRefreshTokenRequest object required to refresh to token object  for login process .
      * @return A ResponseEntity containing an AuthResponse object and the HTTP status code (200 OK).
      */
     @PostMapping("/refresh-token")
-    public ResponseEntity<AuthResponse> refreshToken(@RequestBody String refreshToken) {
+    public ResponseEntity<AuthResponse> refreshToken(@RequestBody AdminRefreshTokenRequest refreshTokenRequest) {
 
-        final var renewToken = authService.refreshToken(refreshToken);
+
+        final var renewToken = authService.refreshToken(refreshTokenRequest);
 
         AuthResponse authResponse = AuthResponse.builder()
                 .accessTokenExpireIn(renewToken.getAccessTokenExpireIn())
