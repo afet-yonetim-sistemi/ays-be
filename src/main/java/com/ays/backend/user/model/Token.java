@@ -1,13 +1,14 @@
-package com.ays.backend.user.controller.payload.response;
+package com.ays.backend.user.model;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @Builder
-public class AuthResponse {
+public class Token {
 
     private String accessToken;
     private Long accessTokenExpireIn;
     private String refreshToken;
+
 }

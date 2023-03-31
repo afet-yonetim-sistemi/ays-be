@@ -1,15 +1,13 @@
 package com.ays.backend.user.controller;
 
-import java.util.List;
-
 import com.ays.backend.base.BaseRestControllerTest;
 import com.ays.backend.user.controller.payload.request.SignUpRequestBuilder;
 import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
+import com.ays.backend.user.model.User;
+import com.ays.backend.user.model.UserBuilder;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.service.UserService;
-import com.ays.backend.user.service.dto.UserDTO;
-import com.ays.backend.user.service.dto.UserDTOBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -42,7 +42,7 @@ class UserControllerTest extends BaseRestControllerTest {
     void shouldReturnCreatedOnValidInput() throws Exception {
         // given
         var signUpRequest = new SignUpRequestBuilder().build();
-        var userDto = new UserDTOBuilder().withStatus(UserStatus.WAITING).build();
+        var userDto = new UserBuilder().withStatus(UserStatus.WAITING).build();
 
         // when
         when(userService.saveUser(signUpRequest)).thenReturn(userDto);
@@ -63,8 +63,8 @@ class UserControllerTest extends BaseRestControllerTest {
         int pageSize = 10;
 
         // given
-        List<UserDTO> users = new UserDTOBuilder().getUserDtos();
-        Page<UserDTO> expectedPage = new PageImpl<>(users);
+        List<User> users = new UserBuilder().getUsers();
+        Page<User> expectedPage = new PageImpl<>(users);
 
         //when
         when(userService.getAllUsers(any(Pageable.class))).thenReturn(expectedPage);
@@ -79,11 +79,11 @@ class UserControllerTest extends BaseRestControllerTest {
                 .andExpect(jsonPath("$.content[0].username", is("username 1")))
                 .andExpect(jsonPath("$.content[0].firstName", is("firstname 1")))
                 .andExpect(jsonPath("$.content[0].lastName", is("lastname 1")))
-                .andExpect(jsonPath("$.content[0].userRole", is(UserRole.ROLE_VOLUNTEER.name())))
+                .andExpect(jsonPath("$.content[0].role", is(UserRole.ROLE_VOLUNTEER.name())))
                 .andExpect(jsonPath("$.content[1].username", is("username 2")))
                 .andExpect(jsonPath("$.content[1].firstName", is("firstname 2")))
                 .andExpect(jsonPath("$.content[1].lastName", is("lastname 2")))
-                .andExpect(jsonPath("$.content[1].userRole", is(UserRole.ROLE_VOLUNTEER.name())));
+                .andExpect(jsonPath("$.content[1].role", is(UserRole.ROLE_VOLUNTEER.name())));
     }
 
     @Test
@@ -91,7 +91,7 @@ class UserControllerTest extends BaseRestControllerTest {
 
         // given
         Long id = 1L;
-        UserDTO expectedUser = UserDTO.builder()
+        User expectedUser = User.builder()
                 .username("username 1")
                 .firstName("firstname 1")
                 .lastName("lastname 1")
@@ -139,7 +139,7 @@ class UserControllerTest extends BaseRestControllerTest {
                 .userRole(UserRole.ROLE_VOLUNTEER)
                 .userStatus(UserStatus.VERIFIED)
                 .build();
-        UserDTO updatedDTO = new UserDTOBuilder().getUpdatedUserDTO();
+        User updatedDTO = new UserBuilder().getUpdatedUserDTO();
 
         // when
         when(userService.updateUserById(updateUserRequest)).thenReturn(updatedDTO);
@@ -152,8 +152,8 @@ class UserControllerTest extends BaseRestControllerTest {
                 .andExpect(jsonPath("$.username", is(updatedDTO.getUsername())))
                 .andExpect(jsonPath("$.firstName", is(updatedDTO.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(updatedDTO.getLastName())))
-                .andExpect(jsonPath("$.userRole", is(updatedDTO.getUserRole().name())))
-                .andExpect(jsonPath("$.userStatus", is(updatedDTO.getUserStatus().name())));
+                .andExpect(jsonPath("$.role", is(updatedDTO.getRole().name())))
+                .andExpect(jsonPath("$.status", is(updatedDTO.getStatus().name())));
 
     }
 

@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "organization")
-public class Organization extends BaseEntity {
+public class OrganizationEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String name;

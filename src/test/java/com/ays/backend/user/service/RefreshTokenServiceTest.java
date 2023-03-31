@@ -3,8 +3,8 @@ package com.ays.backend.user.service;
 import com.ays.backend.base.BaseServiceTest;
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.entities.RefreshToken;
-import com.ays.backend.user.model.entities.User;
-import com.ays.backend.user.model.entities.UserBuilder;
+import com.ays.backend.user.model.entities.UserEntity;
+import com.ays.backend.user.model.entities.UserEntityBuilder;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.repository.RefreshTokenRepository;
@@ -85,7 +85,7 @@ public class RefreshTokenServiceTest extends BaseServiceTest {
         Long refreshTokenDurationMs = 120000L;
         ReflectionTestUtils.setField(refreshTokenService, "refreshTokenDurationMs", refreshTokenDurationMs);
 
-        User user = new UserBuilder()
+        UserEntity user = new UserEntityBuilder()
                 .withUserStatus(UserStatus.VERIFIED)
                 .withUserRole(UserRole.ROLE_VOLUNTEER).build();
 
@@ -147,7 +147,7 @@ public class RefreshTokenServiceTest extends BaseServiceTest {
         // given
         Long userId = 1L;
 
-        User user = new UserBuilder()
+        UserEntity user = new UserEntityBuilder()
                 .withUserStatus(UserStatus.VERIFIED)
                 .withUserRole(UserRole.ROLE_VOLUNTEER).build();
 

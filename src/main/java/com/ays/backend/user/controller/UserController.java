@@ -5,8 +5,8 @@ import com.ays.backend.user.controller.payload.request.SignUpRequest;
 import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.controller.payload.response.SignUpResponse;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
+import com.ays.backend.user.model.User;
 import com.ays.backend.user.service.UserService;
-import com.ays.backend.user.service.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +30,7 @@ public class UserController {
      *
      * @param signUpRequest A SignUpRequest object containing the username and password of the new user (required).
      * @return A ResponseEntity containing a SignUpResponse object with the username of the newly created user and
-     *         the HTTP status code (201 CREATED).
+     * the HTTP status code (201 CREATED).
      * @throws UserAlreadyExistsException If the username provided in the request body already exists in the database.
      */
     @PostMapping
@@ -50,7 +50,7 @@ public class UserController {
      * @return A ResponseEntity containing a Page object with UserDTOs and the HTTP status code (200 OK).
      */
     @GetMapping
-    public ResponseEntity<Page<UserDTO>> getUsers(PaginationRequest paginationRequest) {
+    public ResponseEntity<Page<User>> getUsers(PaginationRequest paginationRequest) {
         Pageable pageable = PageRequest.of(paginationRequest.getPage(), paginationRequest.getPageSize());
         return new ResponseEntity<>(userService.getAllUsers(pageable), HttpStatus.OK);
     }
@@ -62,15 +62,15 @@ public class UserController {
      * @return A ResponseEntity containing a UserDTO object with the specified ID and the HTTP status code (200 OK).
      */
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
 
     /**
      * This endpoint returns a UserDTO object by deleting the user softly with the specified ID.
-     * @param id A Long representing the ID of the user to retrieve (required).
      *
+     * @param id A Long representing the ID of the user to retrieve (required).
      */
     @DeleteMapping("/{id}")
     public void deleteSoftUserById(@PathVariable Long id) {
@@ -82,10 +82,10 @@ public class UserController {
      *
      * @param updateUserRequest UpdateUserRequest for updating the user
      * @return A ResponseEntity containing a UserDTO object after implementing the process of updating user
-     *         with the specified ID by and the HTTP status code (200 OK).
+     * with the specified ID by and the HTTP status code (200 OK).
      */
     @PutMapping
-    public ResponseEntity<UserDTO> updateUserById(@RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<User> updateUserById(@RequestBody UpdateUserRequest updateUserRequest) {
         return new ResponseEntity<>(userService.updateUserById(updateUserRequest), HttpStatus.OK);
     }
 }

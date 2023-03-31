@@ -14,16 +14,16 @@ import java.util.List;
 /**
  * This is a class that can be used to generate test data for the User class without the need for manual input.
  */
-public class UserBuilder extends TestDataBuilder<User> {
+public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
 
-    public UserBuilder() {
-        super(User.class);
+    public UserEntityBuilder() {
+        super(UserEntity.class);
     }
 
     /**
      * It is used to create a UserBuilder object with the data from the SignUpRequest object.
      */
-    public UserBuilder withSignUpRequest(SignUpRequest signUpRequest) {
+    public UserEntityBuilder withSignUpRequest(SignUpRequest signUpRequest) {
         data.setUsername(signUpRequest.getUsername());
         data.setPassword(signUpRequest.getPassword());
         data.setStatus(UserStatus.getById(signUpRequest.getStatusId()));
@@ -35,23 +35,23 @@ public class UserBuilder extends TestDataBuilder<User> {
     /**
      * To change the userRole field inside the User object according to our preference, this method can be used.
      */
-    public UserBuilder withUserRole(UserRole userRole) {
-        data.setUserRole(userRole);
+    public UserEntityBuilder withUserRole(UserRole userRole) {
+        data.setRole(userRole);
         return this;
     }
 
-    public UserBuilder withUserStatus(UserStatus userStatus) {
+    public UserEntityBuilder withUserStatus(UserStatus userStatus) {
         data.setStatus(userStatus);
         return this;
     }
 
-    public UserBuilder from(User user) {
+    public UserEntityBuilder from(UserEntity user) {
         data.setUsername(user.getUsername());
         data.setFirstName(user.getFirstName());
         data.setLastName(user.getLastName());
         data.setEmail(user.getEmail());
         data.setOrganization(user.getOrganization());
-        data.setUserRole(user.getUserRole());
+        data.setRole(user.getRole());
         data.setCountryCode(user.getCountryCode());
         data.setLineNumber(user.getLineNumber());
         data.setLastLoginDate(user.getLastLoginDate());
@@ -59,27 +59,27 @@ public class UserBuilder extends TestDataBuilder<User> {
     }
 
 
-    public List<User> getUsers(){
+    public List<UserEntity> getUsers() {
 
-        User userInfo1 = User.builder()
+        UserEntity userInfo1 = UserEntity.builder()
                 .username("username 1")
                 .firstName("firstname 1")
                 .lastName("lastname 1")
-                .userRole(UserRole.ROLE_VOLUNTEER)
+                .role(UserRole.ROLE_VOLUNTEER)
                 .build();
 
-        User userInfo2 = User.builder()
+        UserEntity userInfo2 = UserEntity.builder()
                 .username("username 2")
                 .firstName("firstname 2")
                 .lastName("lastname 2")
-                .userRole(UserRole.ROLE_VOLUNTEER)
+                .role(UserRole.ROLE_VOLUNTEER)
                 .build();
 
-        User user1 = new UserBuilder()
+        UserEntity user1 = new UserEntityBuilder()
                 .from(userInfo1)
                 .build();
 
-        User user2 = new UserBuilder()
+        UserEntity user2 = new UserEntityBuilder()
                 .from(userInfo2)
                 .build();
 
@@ -87,76 +87,62 @@ public class UserBuilder extends TestDataBuilder<User> {
     }
 
 
-    public User getUserSamplewithWaitingStatus(){
+    public UserEntity getUserSamplewithWaitingStatus() {
 
-        return User.builder()
+        return UserEntity.builder()
                 .username("username 1")
                 .firstName("firstname 1")
                 .lastName("lastname 1")
-                .userRole(UserRole.ROLE_VOLUNTEER)
+                .role(UserRole.ROLE_VOLUNTEER)
                 .status(UserStatus.WAITING)
                 .build();
 
     }
 
-    public User getUserSamplewithPassiveStatus(){
+    public UserEntity getUserSamplewithPassiveStatus() {
 
-        return User.builder()
+        return UserEntity.builder()
                 .username("username 1")
                 .firstName("firstname 1")
                 .lastName("lastname 1")
-                .userRole(UserRole.ROLE_VOLUNTEER)
+                .role(UserRole.ROLE_VOLUNTEER)
                 .status(UserStatus.PASSIVE)
                 .build();
 
     }
 
-    public User getUserSample(){
+    public UserEntity getUserSample() {
 
-        return User.builder()
+        return UserEntity.builder()
                 .username("username 1")
                 .firstName("firstname 1")
                 .lastName("lastname 1")
-                .userRole(UserRole.ROLE_VOLUNTEER)
+                .role(UserRole.ROLE_VOLUNTEER)
                 .status(UserStatus.COMPLETED)
                 .build();
 
     }
 
-    public User getUpdatedUser(){
+    public UserEntity getUpdatedUser() {
 
-        return User.builder()
+        return UserEntity.builder()
                 .username("updatedusername")
                 .firstName("updatedfirstname")
                 .lastName("updatedlastname")
-                .userRole(UserRole.ROLE_VOLUNTEER)
+                .role(UserRole.ROLE_VOLUNTEER)
                 .status(UserStatus.VERIFIED)
-                .build();
-    }
-
-    public AdminRegisterRequest getRegisterRequest() {
-        return AdminRegisterRequest.builder()
-                .username("testadmin")
-                .password("testadmin")
-                .countryCode(1)
-                .lineNumber(1234567890)
-                .firstName("First Name Admin")
-                .lastName("Last Name Admin")
-                .email("testadmin@afet.com")
-                .organizationId(1L)
-                .statusValue(1)
                 .build();
     }
 
     /**
      * It is used to create a UserBuilder object with the data from the AdminRegisterRequest object.
      */
-    public UserBuilder withRegisterRequest(AdminRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
+    public UserEntityBuilder withRegisterRequest(AdminRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
         data.setUsername(registerRequest.getUsername());
         data.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         data.setFirstName(registerRequest.getFirstName());
         data.setLastName(registerRequest.getLastName());
-        data.setUserRole(UserRole.ROLE_ADMIN);
+        data.setRole(UserRole.ROLE_ADMIN);
         data.setCountryCode(registerRequest.getCountryCode());
         data.setLineNumber(registerRequest.getLineNumber());
         data.setEmail(registerRequest.getEmail());
