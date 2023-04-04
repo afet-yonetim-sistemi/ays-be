@@ -103,6 +103,7 @@ class UserControllerTest extends BaseRestControllerTest {
         // then - Perform the GET request and assert the response
         mockMvc.perform(get(USER_CONTROLLER_BASEURL + "/{id}", id)
                     .contentType("application/json"))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("username 1"))
                 .andExpect(jsonPath("$.firstName").value("firstname 1"))
@@ -120,6 +121,7 @@ class UserControllerTest extends BaseRestControllerTest {
         // then - Perform the DELETE request and assert the response
         mockMvc.perform(delete(USER_CONTROLLER_BASEURL + "/{id}", id)
                 .contentType("application/json"))
+                .andDo(print())
                 .andExpect(status().isOk());
 
         // Verify that the service method was called with the correct argument
@@ -148,6 +150,7 @@ class UserControllerTest extends BaseRestControllerTest {
         mockMvc.perform(put(USER_CONTROLLER_BASEURL)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(updateUserRequest)))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is(updatedDTO.getUsername())))
                 .andExpect(jsonPath("$.firstName", is(updatedDTO.getFirstName())))
