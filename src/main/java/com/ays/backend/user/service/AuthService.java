@@ -22,7 +22,15 @@ public interface AuthService {
      * Login to platform.
      *
      * @param loginRequest the loginRequest entity
-     * @return AuthResponse
+     * @return Token
      */
     Token login(AdminLoginRequest loginRequest);
+
+    /**
+     * Refresh a Token
+     *
+     * @param refreshToken the refreshToken text
+     * @return Token
+     */
+    Token refreshToken(String refreshToken);
 }

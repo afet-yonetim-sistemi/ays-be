@@ -6,6 +6,7 @@ import com.ays.backend.user.controller.payload.request.UpdateUserRequest;
 import com.ays.backend.user.exception.UserAlreadyExistsException;
 import com.ays.backend.user.exception.UserNotFoundException;
 import com.ays.backend.user.model.User;
+import com.ays.backend.user.model.entities.UserEntity;
 import com.ays.backend.user.model.enums.UserRole;
 import com.ays.backend.user.model.enums.UserStatus;
 import com.ays.backend.user.repository.UserRepository;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException("Error: Username is already taken!");
         }
 
-        com.ays.backend.user.model.entities.UserEntity user = com.ays.backend.user.model.entities.UserEntity.builder()
+        UserEntity user = UserEntity.builder()
                 .organizationId(signUpRequest.getOrganizationId())
                 .username(signUpRequest.getUsername())
                 .password(signUpRequest.getPassword())
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteSoftUserById(Long id) {
-        com.ays.backend.user.model.entities.UserEntity user = userRepository.findById(id)
+        UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
 
         user.deleteUser();
@@ -91,7 +92,7 @@ public class UserServiceImpl implements UserService {
     public User updateUserById(UpdateUserRequest updateUserRequest) {
 
         final Long id = updateUserRequest.getId();
-        com.ays.backend.user.model.entities.UserEntity user = userRepository.findById(id)
+        UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
 
         user = userMapper.mapUpdateRequestToUser(updateUserRequest, user);

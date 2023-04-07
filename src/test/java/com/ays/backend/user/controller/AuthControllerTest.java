@@ -11,10 +11,14 @@ import com.ays.backend.user.model.Token;
 import com.ays.backend.user.model.User;
 import com.ays.backend.user.model.UserBuilder;
 import com.ays.backend.user.service.AuthService;
+import com.ays.backend.util.HttpServletRequestWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
@@ -55,7 +59,7 @@ class AuthControllerTest extends BaseRestControllerTest {
 
         // then - Perform the POST request and assert the response
         mockMvc.perform(post(ADMIN_CONTROLLER_BASEURL + "/register")
-                        .contentType("application/json")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerRequest)))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -66,6 +70,7 @@ class AuthControllerTest extends BaseRestControllerTest {
     @Test
     void shouldLoginForAdmin() throws Exception {
 
+        // given
         AdminLoginRequest loginRequest = new AdminLoginRequestBuilder().build();
 
         Token aysToken = Token.builder()
@@ -86,7 +91,7 @@ class AuthControllerTest extends BaseRestControllerTest {
 
         // then
         mockMvc.perform(post(ADMIN_CONTROLLER_BASEURL + "/login")
-                        .contentType("application/json")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -94,5 +99,42 @@ class AuthControllerTest extends BaseRestControllerTest {
                 .andExpect(jsonPath("$.accessTokenExpireIn").value(authResponse.getAccessTokenExpireIn()))
                 .andExpect(jsonPath("$.refreshToken").value(authResponse.getRefreshToken()));
 
+    }
+
+    @Test
+    void shouldRefreshTokenForAdmin() throws Exception {
+
+        // given
+
+        Token token = Token.builder()
+                .accessTokenExpireIn(new Date().getTime() + 120000)
+                .refreshToken("Bearer refresh-token")
+                .accessToken("Bearer access-token")
+                .build();
+
+        AuthResponse authResponse = AuthResponse.builder()
+                .accessToken(token.getAccessToken())
+                .accessTokenExpireIn(token.getAccessTokenExpireIn())
+                .refreshToken(token.getRefreshToken())
+                .build();
+
+
+        // when
+
+        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+        mockHttpServletRequest.addHeader(HttpHeaders.AUTHORIZATION, token.getRefreshToken());
+        String refreshToken = HttpServletRequestWrapper.getToken(mockHttpServletRequest);
+
+        when(authService.refreshToken(refreshToken)).thenReturn(token);
+
+        // then
+        mockMvc.perform(post(ADMIN_CONTROLLER_BASEURL + "/refresh-token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.AUTHORIZATION, token.getRefreshToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").value(authResponse.getAccessToken()))
+                .andExpect(jsonPath("$.accessTokenExpireIn").value(authResponse.getAccessTokenExpireIn()))
+                .andExpect(jsonPath("$.refreshToken").value(authResponse.getRefreshToken()));
     }
 }
