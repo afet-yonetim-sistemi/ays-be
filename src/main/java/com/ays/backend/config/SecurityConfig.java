@@ -78,6 +78,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/v1/admin/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/admin/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/h2-console/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/actuator/**").hasRole("SUPER_ADMIN")
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
