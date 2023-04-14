@@ -1,0 +1,9 @@
+spring:
+  liquibase:
+    drop-first: true
+
+ays:
+  db:
+    username: ${AYS_DB_USERNAME:ays}
+    password: ${AYS_DB_USERNAME:ayspass}
+    url: jdbc:mysql://${AYS_DB_IP:localhost}:${AYS_DB_IP:3306}/ays

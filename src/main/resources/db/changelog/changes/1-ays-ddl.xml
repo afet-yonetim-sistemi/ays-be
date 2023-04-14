@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="1-ays-ddl" author="agitrubard">
+        <createTable tableName="AYS_ORGANIZATION">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql> -- TODO : Add check constraint to status column with liquibase
+        ALTER TABLE `AYS_ORGANIZATION`
+            ADD CONSTRAINT `C__AYS_ORGANIZATION__STATUS` CHECK (`STATUS` IN ('ACTIVE', 'PASSIVE', 'DELETED'));
+        </sql>
+
+        <createTable tableName="AYS_ADMIN_USER">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ORGANIZATION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_ADMIN_USER__ORGANIZATION_ID"
+                             referencedTableName="AYS_ORGANIZATION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="USERNAME" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_ADMIN_USER__USERNAME"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_ADMIN_USER__EMAIL"/>
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTRY_CODE" type="BIGINT">
+                <constraints nullable="false" unique="true"
+                             uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
+            </column>
+            <column name="LINE_NUMBER" type="BIGINT">
+                <constraints nullable="false" unique="true"
+                             uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql> -- TODO : Add check constraint to status column with liquibase
+        ALTER TABLE `AYS_ADMIN_USER`
+            ADD CONSTRAINT `C__AYS_ADMIN_USER__STATUS` CHECK (`STATUS` IN ('NOT_VERIFIED', 'ACTIVE', 'PASSIVE', 'DELETED'));
+        </sql>
+
+        <createTable tableName="AYS_ADMIN_USER_REGISTER_VERIFICATION">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ADMIN_USER_ID" type="VARCHAR(36)">
+                <constraints foreignKeyName="FK__AYS_ADMIN_USER_REGISTER_VERIFICATION__ADMIN_USER_ID"
+                             referencedTableName="AYS_ADMIN_USER"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="REASON" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql> -- TODO : Add check constraint to status column with liquibase
+        ALTER TABLE `AYS_ADMIN_USER_REGISTER_VERIFICATION`
+            ADD CONSTRAINT `C__AYS_ADMIN_USER_REGISTER_VERIFICATION__ADMIN_USER_ID` CHECK (`STATUS` IN ('WAITING', 'COMPLETED', 'VERIFIED', 'REJECTED'));
+        </sql>
+
+        <createTable tableName="AYS_USER">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ORGANIZATION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_USER__ORGANIZATION_ID"
+                             referencedTableName="AYS_ORGANIZATION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="USERNAME" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_USER__USERNAME"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTRY_CODE" type="BIGINT">
+                <constraints nullable="false" unique="true"
+                             uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
+            </column>
+            <column name="LINE_NUMBER" type="BIGINT">
+                <constraints nullable="false" unique="true"
+                             uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
+            </column>
+            <column name="ROLE" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql> -- TODO : Add check constraint to status column with liquibase
+        ALTER TABLE `AYS_USER`
+            ADD CONSTRAINT `C__AYS_USER__STATUS` CHECK (`STATUS` IN ('ACTIVE', 'PASSIVE', 'DELETED'));
+
+        ALTER TABLE `AYS_USER`
+            ADD CONSTRAINT `C__AYS_USER__ROLE` CHECK (`ROLE` IN ('VOLUNTEER'));
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
