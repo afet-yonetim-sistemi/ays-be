@@ -18,7 +18,7 @@ public interface UserService {
     void saveUser(UserSaveRequest saveRequest);
 
     /**
-     * Checks if the user by the given parameter exists in the database.
+     * Get all Users from database.
      *
      * @param listRequest covering page and pageSize
      * @return User list
