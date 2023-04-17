@@ -42,15 +42,15 @@ public class AysTokenConfiguration {
                 .map(Integer::valueOf)
                 .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue()));
 
-        this.privateKey = Optional
+        final String privateKeyPem = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY, configurationParameters))
-                .map(KeyConverter::convertPrivateKey)
-                .orElse(KeyConverter.convertPrivateKey(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY.getDefaultValue()));
+                .orElse(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY.getDefaultValue());
+        this.privateKey = KeyConverter.convertPrivateKey(privateKeyPem);
 
-        this.publicKey = Optional
+        final String publicKeyPem = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY, configurationParameters))
-                .map(KeyConverter::convertPublicKey)
-                .orElse(KeyConverter.convertPublicKey(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY.getDefaultValue()));
+                .orElse(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY.getDefaultValue());
+        this.publicKey = KeyConverter.convertPublicKey(publicKeyPem);
 
         log.info("AYS Token Configuration is initialized!");
     }

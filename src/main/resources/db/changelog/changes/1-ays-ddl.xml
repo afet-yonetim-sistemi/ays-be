@@ -206,7 +206,7 @@
             <column name="NAME" type="VARCHAR(512)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_PARAMETER__NAME"/>
             </column>
-            <column name="DEFINITION" type="LONGVARCHAR">
+            <column name="DEFINITION" type="VARCHAR(2048)">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue='AYS'>

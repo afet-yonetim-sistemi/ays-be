@@ -16,7 +16,8 @@ import java.security.PublicKey;
 public class KeyConverter {
 
     public static PrivateKey convertPrivateKey(String privateKeyPem) {
-        StringReader keyReader = new StringReader(privateKeyPem);
+        final String formattedPrivateKeyPem = privateKeyPem.replace("             ", "\n");
+        StringReader keyReader = new StringReader(formattedPrivateKeyPem);
         try {
             PrivateKeyInfo privateKeyInfo = PrivateKeyInfo
                     .getInstance(new PEMParser(keyReader).readObject());
@@ -27,7 +28,8 @@ public class KeyConverter {
     }
 
     public static PublicKey convertPublicKey(String publicKeyPem) {
-        StringReader keyReader = new StringReader(publicKeyPem);
+        final String formattedPublicKeyPem = publicKeyPem.replace("             ", "\n");
+        StringReader keyReader = new StringReader(formattedPublicKeyPem);
         try {
             SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo
                     .getInstance(new PEMParser(keyReader).readObject());
