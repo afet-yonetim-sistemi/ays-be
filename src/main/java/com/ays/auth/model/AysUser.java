@@ -7,6 +7,9 @@ import lombok.Getter;
 
 import java.util.Set;
 
+/**
+ * Represents an authenticated user in the AYS System.
+ */
 @Getter
 @Builder
 public class AysUser {

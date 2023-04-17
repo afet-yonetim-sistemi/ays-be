@@ -3,6 +3,10 @@ package com.ays.auth.model.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AysConfigurationParameter enum represents the possible configuration parameters for an AYS system.
+ * The enum constants represent the name of the parameter and the associated default value is stored as a final String field.
+ */
 @Getter
 @RequiredArgsConstructor
 public enum AysConfigurationParameter {

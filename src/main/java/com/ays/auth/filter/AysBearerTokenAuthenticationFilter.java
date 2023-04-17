@@ -15,6 +15,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * AysBearerTokenAuthenticationFilter is a filter that intercepts HTTP requests and processes the Bearer tokens included in the Authorization headers.
+ * If the token is valid, the user is authenticated and added to the SecurityContext for the duration of the request.
+ * If the token is invalid, a 401 Unauthorized response is returned.
+ * <p>The filter uses an instance of AysTokenService to verify and validate the token and retrieve the user authentication.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
