@@ -15,23 +15,23 @@ import java.security.PublicKey;
 @UtilityClass
 public class KeyConverter {
 
-    public static PublicKey convertPublicKey(String publicKeyPem) {
-        StringReader keyReader = new StringReader(publicKeyPem);
-        try {
-            SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo
-                    .getInstance(new PEMParser(keyReader).readObject());
-            return new JcaPEMKeyConverter().getPublicKey(publicKeyInfo);
-        } catch (IOException exception) {
-            throw new KeyReadException(exception);
-        }
-    }
-
     public static PrivateKey convertPrivateKey(String privateKeyPem) {
         StringReader keyReader = new StringReader(privateKeyPem);
         try {
             PrivateKeyInfo privateKeyInfo = PrivateKeyInfo
                     .getInstance(new PEMParser(keyReader).readObject());
             return new JcaPEMKeyConverter().getPrivateKey(privateKeyInfo);
+        } catch (IOException exception) {
+            throw new KeyReadException(exception);
+        }
+    }
+
+    public static PublicKey convertPublicKey(String publicKeyPem) {
+        StringReader keyReader = new StringReader(publicKeyPem);
+        try {
+            SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo
+                    .getInstance(new PEMParser(keyReader).readObject());
+            return new JcaPEMKeyConverter().getPublicKey(publicKeyInfo);
         } catch (IOException exception) {
             throw new KeyReadException(exception);
         }

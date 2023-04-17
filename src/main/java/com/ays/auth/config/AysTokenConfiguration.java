@@ -1,13 +1,19 @@
 package com.ays.auth.config;
 
-import com.ays.auth.model.enums.AysConfigurationParameters;
+import com.ays.auth.model.enums.AysConfigurationParameter;
 import com.ays.auth.util.KeyConverter;
+import com.ays.parameter.model.AysParameter;
+import com.ays.parameter.service.AysParameterService;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Optional;
+import java.util.Set;
 
+@Slf4j
 @Getter
 @Configuration
 public class AysTokenConfiguration {
@@ -18,41 +24,35 @@ public class AysTokenConfiguration {
     private final PrivateKey privateKey;
     private final PublicKey publicKey;
 
-    public AysTokenConfiguration() {
+    public AysTokenConfiguration(AysParameterService parameterService) {
 
-        this.issuer = AysConfigurationParameters.AYS.getDefaultValue();
-        this.accessExpireMinute = Integer.valueOf(AysConfigurationParameters.ACCESS_TOKEN_EXPIRE_MINUTE.getDefaultValue());
-        this.refreshExpireDay = Integer.valueOf(AysConfigurationParameters.REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue());
-        this.privateKey = KeyConverter.convertPrivateKey(AysConfigurationParameters.AUTHENTICATION_TOKEN_PRIVATE_KEY.getDefaultValue());
-        this.publicKey = KeyConverter.convertPublicKey(AysConfigurationParameters.AUTHENTICATION_TOKEN_PUBLIC_KEY.getDefaultValue());
+        log.info("AYS Token Configuration is initializing with AYS Parameters...");
 
+        final Set<AysParameter> configurationParameters = parameterService.getParameters("AUTH_");
 
-        // TODO : this parameters should be read from database
+        this.issuer = AysConfigurationParameter.AYS.getDefaultValue();
 
-//    public AysTokenConfiguration(AysParameterService parameterService) {
-//        this.issuer = Optional
-//                .ofNullable(parameterService.getValue(AysConfigurationParameters.AUTHENTICATION_TOKEN_ISSUER.name()))
-//                .orElse(AysConfigurationParameters.AUTHENTICATION_TOKEN_ISSUER.getDefaultValue());
-//
-//        this.refreshExpireDay = Optional
-//                .ofNullable(parameterService.getValue(AysConfigurationParameters.REFRESH_TOKEN_EXPIRE_DAY.name()))
-//                .map(Integer::valueOf)
-//                .orElse(Integer.valueOf(AysConfigurationParameters.REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue()));
-//
-//        this.accessExpireMinute = Optional
-//                .ofNullable(parameterService.getValue(AysConfigurationParameters.ACCESS_TOKEN_EXPIRE_MINUTE.name()))
-//                .map(Integer::valueOf)
-//                .orElse(Integer.valueOf(AysConfigurationParameters.ACCESS_TOKEN_EXPIRE_MINUTE.getDefaultValue()));
-//
-//        this.privateKey = Optional
-//                .ofNullable(parameterService.getValue(AysConfigurationParameters.AUTH_TOKEN_PRIVATE_KEY.name()))
-//                .map(KeyConverter::convertPrivateKey)
-//                .orElse(KeyConverter.convertPrivateKey(AysConfigurationParameters.AUTH_TOKEN_PRIVATE_KEY.getDefaultValue()));
-//
-//        this.publicKey = Optional
-//                .ofNullable(parameterService.getValue(AysConfigurationParameters.AUTH_TOKEN_PUBLIC_KEY.name()))
-//                .map(KeyConverter::convertPublicKey)
-//                .orElse(KeyConverter.convertPublicKey(AysConfigurationParameters.AUTH_TOKEN_PUBLIC_KEY.getDefaultValue()));
+        this.accessExpireMinute = Optional
+                .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE, configurationParameters))
+                .map(Integer::valueOf)
+                .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE.getDefaultValue()));
+
+        this.refreshExpireDay = Optional
+                .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY, configurationParameters))
+                .map(Integer::valueOf)
+                .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue()));
+
+        this.privateKey = Optional
+                .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY, configurationParameters))
+                .map(KeyConverter::convertPrivateKey)
+                .orElse(KeyConverter.convertPrivateKey(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY.getDefaultValue()));
+
+        this.publicKey = Optional
+                .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY, configurationParameters))
+                .map(KeyConverter::convertPublicKey)
+                .orElse(KeyConverter.convertPublicKey(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY.getDefaultValue()));
+
+        log.info("AYS Token Configuration is initialized!");
     }
 
 }

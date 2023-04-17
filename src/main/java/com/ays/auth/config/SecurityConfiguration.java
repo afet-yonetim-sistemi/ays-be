@@ -26,7 +26,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalAuthentication
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+class SecurityConfiguration {
 
     @Bean
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
