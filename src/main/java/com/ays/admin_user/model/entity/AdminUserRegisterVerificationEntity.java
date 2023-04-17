@@ -4,21 +4,21 @@ import com.ays.admin_user.model.enums.AdminUserRegisterVerificationStatus;
 import com.ays.common.model.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 /**
  * Admin Users Verification entity, which holds the verification information regarding the system user.
  */
 @Entity
-@Table(name = "AYS_ADMIN_USER_REGISTER_VERIFICATION")
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "AYS_ADMIN_USER_REGISTER_VERIFICATION")
 public class AdminUserRegisterVerificationEntity extends BaseEntity {
 
     @Id

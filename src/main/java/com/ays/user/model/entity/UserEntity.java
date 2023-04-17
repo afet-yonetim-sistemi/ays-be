@@ -8,9 +8,9 @@ import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.HashMap;
@@ -21,12 +21,12 @@ import java.util.Map;
  * Users entity, which holds the information regarding the system user.
  */
 @Entity
-@Table(name = "AYS_USER")
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "AYS_USER")
 public class UserEntity extends BaseEntity {
 
     @Id
