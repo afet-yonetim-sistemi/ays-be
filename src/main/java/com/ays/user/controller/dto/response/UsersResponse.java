@@ -4,7 +4,9 @@ import com.ays.organization.model.entity.OrganizationEntity;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 @Builder
 public class UsersResponse {
 
