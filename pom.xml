@@ -117,6 +117,11 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>software.aws.rds</groupId>
+            <artifactId>aws-mysql-jdbc</artifactId>
+            <version>1.1.5</version>
+        </dependency>
 
         <!-- Test Dependencies -->
         <dependency>

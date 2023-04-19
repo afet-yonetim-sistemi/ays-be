@@ -21,7 +21,7 @@ public class AysHikariConfigMysqlProfile {
         hikariConfig.setMaximumPoolSize(Integer.parseInt(this.maximumPoolSize));
         hikariConfig.setConnectionTimeout(Long.parseLong(this.connectionTimeout));
         hikariConfig.setMaxLifetime(Long.parseLong(this.maximumLifetime));
-        hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        hikariConfig.setDriverClassName("software.aws.rds.jdbc.mysql.Driver");
         hikariConfig.setAutoCommit(true);
         return hikariConfig;
     }
