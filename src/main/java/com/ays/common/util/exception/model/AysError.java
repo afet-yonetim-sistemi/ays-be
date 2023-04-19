@@ -1,4 +1,4 @@
-package com.ays.common.util.exception.model.enums;
+package com.ays.common.util.exception.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.ConstraintViolation;

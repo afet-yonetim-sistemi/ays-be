@@ -1,6 +1,6 @@
 package com.ays.admin_user.model.mapper;
 
-import com.ays.admin_user.controller.dto.request.AdminUserRegisterRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.common.mapper.BaseMapper;

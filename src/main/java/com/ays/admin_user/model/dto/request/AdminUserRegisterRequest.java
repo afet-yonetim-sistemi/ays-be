@@ -1,4 +1,4 @@
-package com.ays.admin_user.controller.dto.request;
+package com.ays.admin_user.model.dto.request;
 
 import com.ays.common.model.AysPhoneNumber;
 import jakarta.validation.constraints.Email;
