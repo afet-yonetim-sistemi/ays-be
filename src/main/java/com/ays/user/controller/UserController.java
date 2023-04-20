@@ -1,8 +1,8 @@
 package com.ays.user.controller;
 
-import com.ays.common.controller.dto.response.AysPageResponse;
-import com.ays.common.controller.dto.response.AysResponse;
 import com.ays.common.model.AysPage;
+import com.ays.common.model.dto.response.AysPageResponse;
+import com.ays.common.model.dto.response.AysResponse;
 import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserListRequest;
 import com.ays.user.model.dto.request.UserSaveRequest;

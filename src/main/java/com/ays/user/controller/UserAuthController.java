@@ -4,7 +4,7 @@ import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.response.AysTokenResponse;
-import com.ays.common.controller.dto.response.AysResponse;
+import com.ays.common.model.dto.response.AysResponse;
 import com.ays.user.service.UserAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,7 @@ package com.ays.admin_user.model.mapper;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.enums.AdminUserStatus;
-import com.ays.common.mapper.BaseMapper;
+import com.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,4 +1,4 @@
-package com.ays.common.controller.dto.request;
+package com.ays.common.model.dto.request;
 
 import com.ays.common.model.AysSorting;
 import jakarta.validation.Valid;

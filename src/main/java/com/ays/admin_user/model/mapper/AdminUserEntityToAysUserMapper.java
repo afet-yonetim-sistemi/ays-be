@@ -2,7 +2,7 @@ package com.ays.admin_user.model.mapper;
 
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.auth.model.AysUser;
-import com.ays.common.mapper.BaseMapper;
+import com.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

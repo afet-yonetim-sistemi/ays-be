@@ -1,5 +1,6 @@
 package com.ays.common.controller.dto.response;
 
+import com.ays.common.model.dto.response.AysResponse;
 import org.springframework.http.HttpStatus;
 
 public class AysResponseBuilder {

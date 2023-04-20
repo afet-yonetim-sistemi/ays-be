@@ -2,7 +2,7 @@ package com.ays.auth.model.mapper;
 
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.response.AysTokenResponse;
-import com.ays.common.mapper.BaseMapper;
+import com.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

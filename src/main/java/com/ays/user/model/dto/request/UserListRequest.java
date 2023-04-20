@@ -1,6 +1,6 @@
 package com.ays.user.model.dto.request;
 
-import com.ays.common.controller.dto.request.AysPagingRequest;
+import com.ays.common.model.dto.request.AysPagingRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.AssertTrue;
 

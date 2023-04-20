@@ -1,4 +1,4 @@
-package com.ays.common.mapper;
+package com.ays.common.model.mapper;
 
 import java.util.Collection;
 import java.util.List;

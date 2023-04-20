@@ -1,4 +1,4 @@
-package com.ays.common.controller.dto.response;
+package com.ays.common.model.dto.response;
 
 import com.ays.common.model.AysFiltering;
 import com.ays.common.model.AysPage;

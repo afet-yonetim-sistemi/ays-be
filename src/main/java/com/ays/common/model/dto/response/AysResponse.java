@@ -1,4 +1,4 @@
-package com.ays.common.controller.dto.response;
+package com.ays.common.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
