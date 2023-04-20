@@ -2,13 +2,13 @@ package com.ays.admin_user.service.impl;
 
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
-import com.ays.admin_user.model.mapper.AdminUserRegisterRequestToEntityMapper;
+import com.ays.admin_user.model.mapper.AdminUserRegisterRequestToAdminUserEntityMapper;
 import com.ays.admin_user.repository.AdminUserRegisterVerificationRepository;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserAuthService;
 import com.ays.admin_user.util.exception.*;
-import com.ays.auth.controller.dto.request.AysLoginRequest;
 import com.ays.auth.model.AysToken;
+import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;
@@ -26,7 +26,7 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
 
     private final AdminUserRepository adminUserRepository;
     private final AdminUserRegisterVerificationRepository adminUserRegisterVerificationRepository;
-    private final AdminUserRegisterRequestToEntityMapper adminUserRegisterRequestToEntityMapper = AdminUserRegisterRequestToEntityMapper.initialize();
+    private final AdminUserRegisterRequestToAdminUserEntityMapper adminUserRegisterRequestToAdminUserEntityMapper = AdminUserRegisterRequestToAdminUserEntityMapper.initialize();
 
     private final OrganizationRepository organizationRepository;
 
@@ -53,7 +53,7 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
 
 //        TODO : check phone number!
 
-        AdminUserEntity userEntityToBeSave = adminUserRegisterRequestToEntityMapper.mapForSaving(registerRequest, passwordEncoder);
+        AdminUserEntity userEntityToBeSave = adminUserRegisterRequestToAdminUserEntityMapper.mapForSaving(registerRequest, passwordEncoder);
         adminUserRepository.save(userEntityToBeSave);
 
         verificationEntity.complete(userEntityToBeSave.getId());

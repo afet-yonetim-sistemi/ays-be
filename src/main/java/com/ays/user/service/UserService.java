@@ -1,10 +1,10 @@
 package com.ays.user.service;
 
 import com.ays.common.model.AysPage;
-import com.ays.user.controller.dto.request.UserListRequest;
-import com.ays.user.controller.dto.request.UserSaveRequest;
-import com.ays.user.controller.dto.request.UserUpdateRequest;
 import com.ays.user.model.User;
+import com.ays.user.model.dto.request.UserListRequest;
+import com.ays.user.model.dto.request.UserSaveRequest;
+import com.ays.user.model.dto.request.UserUpdateRequest;
 
 /**
  * User service to perform user related business operations.

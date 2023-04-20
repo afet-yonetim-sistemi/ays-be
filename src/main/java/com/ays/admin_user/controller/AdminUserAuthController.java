@@ -2,10 +2,11 @@ package com.ays.admin_user.controller;
 
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.service.AdminUserAuthService;
-import com.ays.auth.controller.dto.request.AysLoginRequest;
-import com.ays.auth.controller.dto.request.AysTokenRefreshRequest;
-import com.ays.auth.controller.dto.response.AysTokenResponse;
 import com.ays.auth.model.AysToken;
+import com.ays.auth.model.dto.request.AysLoginRequest;
+import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
+import com.ays.auth.model.dto.response.AysTokenResponse;
+import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.controller.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/authentication/admin")
 @RequiredArgsConstructor
-public class AdminUserAuthController {
+class AdminUserAuthController {
 
     private final AdminUserAuthService adminUserAuthService;
+    private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
 
     /**
      * This endpoint allows admin to register to platform.
@@ -49,11 +51,7 @@ public class AdminUserAuthController {
 
         final AysToken aysToken = adminUserAuthService.authenticate(loginRequest);
 
-        AysTokenResponse aysTokenResponse = AysTokenResponse.builder()
-                .accessToken(aysToken.getAccessToken())
-                .accessTokenExpiresAt(aysToken.getAccessTokenExpiresAt())
-                .refreshToken(aysToken.getRefreshToken())
-                .build();
+        final AysTokenResponse aysTokenResponse = aysTokenToAysTokenResponseMapper.map(aysToken);
 
         return AysResponse.successOf(aysTokenResponse);
     }
@@ -69,11 +67,7 @@ public class AdminUserAuthController {
 
         final AysToken aysToken = adminUserAuthService.refreshAccessToken(refreshRequest.getRefreshToken());
 
-        AysTokenResponse aysTokenResponse = AysTokenResponse.builder()
-                .accessToken(aysToken.getAccessToken())
-                .accessTokenExpiresAt(aysToken.getAccessTokenExpiresAt())
-                .refreshToken(aysToken.getRefreshToken())
-                .build();
+        final AysTokenResponse aysTokenResponse = aysTokenToAysTokenResponseMapper.map(aysToken);
 
         return AysResponse.successOf(aysTokenResponse);
     }

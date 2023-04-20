@@ -1,8 +1,8 @@
 package com.ays.user.model.mapper;
 
 import com.ays.common.mapper.BaseMapper;
-import com.ays.user.controller.dto.response.UserResponse;
 import com.ays.user.model.User;
+import com.ays.user.model.dto.response.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

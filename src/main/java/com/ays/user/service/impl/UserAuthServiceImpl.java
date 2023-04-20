@@ -1,7 +1,7 @@
 package com.ays.user.service.impl;
 
-import com.ays.auth.controller.dto.request.AysLoginRequest;
 import com.ays.auth.model.AysToken;
+import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;

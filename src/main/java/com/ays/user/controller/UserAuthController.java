@@ -1,9 +1,9 @@
 package com.ays.user.controller;
 
-import com.ays.auth.controller.dto.request.AysLoginRequest;
-import com.ays.auth.controller.dto.request.AysTokenRefreshRequest;
-import com.ays.auth.controller.dto.response.AysTokenResponse;
 import com.ays.auth.model.AysToken;
+import com.ays.auth.model.dto.request.AysLoginRequest;
+import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
+import com.ays.auth.model.dto.response.AysTokenResponse;
 import com.ays.common.controller.dto.response.AysResponse;
 import com.ays.user.service.UserAuthService;
 import jakarta.validation.Valid;
