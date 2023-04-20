@@ -6,4 +6,4 @@ ays:
   db:
     username: ${AYS_DB_USERNAME:ays}
     password: ${AYS_DB_PASSWORD:ayspass}
-    url: jdbc:mysql:aws://${AYS_DB_IP}:63306/ays
+    url: ${AYS_DB_URL:jdbc:mysql://${AYS_DB_IP:localhost}:${AYS_DB_PORT:3306}/ays}
