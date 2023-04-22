@@ -3,10 +3,8 @@ FROM openjdk:17-jdk-slim AS build
 COPY pom.xml mvnw ./
 COPY .mvn .mvn
 RUN chmod +x ./mvnw
-RUN ./mvnw dependency:resolve
-#RUN ./mvnw clean install -Dmaven.test.skip
 COPY src src
-RUN ./mvnw package -Dmaven.test.skip
+RUN ./mvnw clean install
 
 FROM openjdk:17-jdk-slim
 WORKDIR app
