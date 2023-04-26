@@ -21,12 +21,13 @@ import lombok.experimental.SuperBuilder;
 public class AysParameterEntity extends BaseEntity {
 
     @Id
+    @Column(name = "ID")
     private Long id;
 
-    @Column
+    @Column(name = "NAME")
     private String name;
 
-    @Column
+    @Column(name = "DEFINITION")
     private String definition;
 
 }

@@ -30,33 +30,33 @@ import java.util.Map;
 public class UserEntity extends BaseEntity {
 
     @Id
+    @Column(name = "ID")
     private String id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "USERNAME")
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "FIRST_NAME")
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "LAST_NAME")
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "role", nullable = false)
+    @Column(name = "ROLE")
     private UserRole role;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status")
-    @Column(length = 20, nullable = false)
+    @Column(name = "STATUS")
     private UserStatus status;
 
-    @Column(nullable = false)
+    @Column(name = "COUNTRY_CODE")
     private Integer countryCode;
 
-    @Column(nullable = false)
+    @Column(name = "LINE_NUMBER")
     private Integer lineNumber;
 
     @Column(name = "organization_id")

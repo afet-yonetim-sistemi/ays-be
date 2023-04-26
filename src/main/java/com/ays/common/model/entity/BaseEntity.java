@@ -1,6 +1,7 @@
 package com.ays.common.model.entity;
 
 import com.ays.auth.model.enums.AysTokenClaims;
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -23,8 +24,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class BaseEntity {
 
+    @Column(name = "CREATED_USER")
     protected String createdUser;
 
+    @Column(name = "CREATED_AT")
     protected LocalDateTime createdAt;
 
     @PrePersist
@@ -35,9 +38,11 @@ public abstract class BaseEntity {
     }
 
 
-    protected LocalDateTime updatedAt;
-
+    @Column(name = "UPDATED_USER")
     protected String updatedUser;
+
+    @Column(name = "UPDATED_AT")
+    protected LocalDateTime updatedAt;
 
     @PreUpdate
     public void preUpdate() {

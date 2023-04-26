@@ -20,10 +20,16 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 ays:
   db:
     name: mysql
+    username: ${AYS_DB_USERNAME:ays}
+    password: ${AYS_DB_PASSWORD:ayspass}
+    url: jdbc:mysql://${AYS_DB_IP:localhost}:${AYS_DB_PORT:3306}/ays
     maximum-pool-size: 5
     connection-timeout: 180000
     maximum-lifetime: 170000
