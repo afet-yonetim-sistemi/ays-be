@@ -1,6 +1,6 @@
 package com.ays.admin_user.controller;
 
-import com.ays.BaseRestControllerTest;
+import com.ays.AbstractRestControllerTest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
 import com.ays.admin_user.service.AdminUserAuthService;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class AdminUserAuthControllerTest extends BaseRestControllerTest {
+class AdminUserAuthControllerTest extends AbstractRestControllerTest {
 
     @MockBean
     private AdminUserAuthService adminUserAuthService;
