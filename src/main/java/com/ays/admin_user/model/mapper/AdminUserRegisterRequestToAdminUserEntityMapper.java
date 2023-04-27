@@ -10,9 +10,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
+/**
+ * AdminUserRegisterRequestToAdminUserEntityMapper is an interface that defines the mapping between an {@link AdminUserRegisterRequest} and an {@link AdminUserEntity}.
+ * This interface uses the MapStruct annotation @Mapper to generate an implementation of this interface at compile-time.
+ * <p>The class provides a static method {@code initialize()} that returns an instance of the generated mapper implementation.
+ * <p>The interface extends the MapStruct interface {@link BaseMapper}, which defines basic mapping methods.
+ * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
+ */
 @Mapper
 public interface AdminUserRegisterRequestToAdminUserEntityMapper extends BaseMapper<AdminUserRegisterRequest, AdminUserEntity> {
 
+    /**
+     * Maps an {@link AdminUserRegisterRequest} object to an {@link AdminUserEntity} object for saving in the database.
+     *
+     * @param registerRequest the {@link AdminUserRegisterRequest} object to be mapped.
+     * @param passwordEncoder the {@link PasswordEncoder} to be used to encode the password.
+     * @return the mapped {@link AdminUserEntity} object.
+     */
     default AdminUserEntity mapForSaving(AdminUserRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
         return AdminUserEntity.builder()
                 .id(UUID.randomUUID().toString())
@@ -28,6 +42,11 @@ public interface AdminUserRegisterRequestToAdminUserEntityMapper extends BaseMap
                 .build();
     }
 
+    /**
+     * Initializes the mapper.
+     *
+     * @return the initialized mapper object.
+     */
     static AdminUserRegisterRequestToAdminUserEntityMapper initialize() {
         return Mappers.getMapper(AdminUserRegisterRequestToAdminUserEntityMapper.class);
     }

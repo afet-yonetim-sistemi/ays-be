@@ -16,6 +16,11 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AysTokenToAysTokenResponseMapper extends BaseMapper<AysToken, AysTokenResponse> {
 
+    /**
+     * Initializes the mapper.
+     *
+     * @return the initialized mapper object.
+     */
     static AysTokenToAysTokenResponseMapper initialize() {
         return Mappers.getMapper(AysTokenToAysTokenResponseMapper.class);
     }

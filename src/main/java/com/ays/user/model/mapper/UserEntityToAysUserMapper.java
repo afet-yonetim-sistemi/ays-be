@@ -16,6 +16,11 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface UserEntityToAysUserMapper extends BaseMapper<UserEntity, AysUser> {
 
+    /**
+     * Initializes the mapper.
+     *
+     * @return the initialized mapper object.
+     */
     static UserEntityToAysUserMapper initialize() {
         return Mappers.getMapper(UserEntityToAysUserMapper.class);
     }
