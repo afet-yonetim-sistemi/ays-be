@@ -5,9 +5,9 @@ services:
     build: .
     container_name: ays-be
     ports:
-      - "8080:8080"
+      - ${AYS_API_CONTAINER_PORTS}
     environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - SPRING_PROFILES_ACTIVE=${AYS_API_ACTIVE_SPRING_PROFILE}
       - AYS_DB_USERNAME=${AYS_DB_USERNAME}
       - AYS_DB_PASSWORD=${AYS_DB_PASSWORD}
       - AYS_DB_URL=${AYS_DB_URL}
