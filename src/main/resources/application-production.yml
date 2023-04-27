@@ -1,9 +1,3 @@
 spring:
   liquibase:
     drop-first: true
-
-ays:
-  db:
-    username: ${AYS_DB_USERNAME:ays}
-    password: ${AYS_DB_PASSWORD:ayspass}
-    url: ${AYS_DB_URL:jdbc:mysql://${AYS_DB_IP:localhost}:${AYS_DB_PORT:3306}/ays}

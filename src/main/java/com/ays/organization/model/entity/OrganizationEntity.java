@@ -24,8 +24,9 @@ import lombok.experimental.SuperBuilder;
 public class OrganizationEntity extends BaseEntity {
 
     @Id
+    @Column(name = "ID")
     private String id;
 
-    @Column(nullable = false)
+    @Column(name = "NAME")
     private String name;
 }

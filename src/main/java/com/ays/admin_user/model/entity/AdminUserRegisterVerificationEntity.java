@@ -22,13 +22,14 @@ import lombok.experimental.SuperBuilder;
 public class AdminUserRegisterVerificationEntity extends BaseEntity {
 
     @Id
+    @Column(name = "ID")
     private String id;
 
+    @Column(name = "REASON")
     private String reason;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "STATUS")
-    @Column(length = 20, nullable = false)
+    @Column(name = "STATUS")
     private AdminUserRegisterVerificationStatus status;
 
     @Column(name = "ADMIN_USER_ID")

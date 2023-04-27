@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles(value = "test")
 @AutoConfigureMockMvc(addFilters = false)
-public abstract class BaseRestControllerTest {
+public abstract class AbstractRestControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;
