@@ -6,6 +6,9 @@ import com.ays.user.model.enums.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * A DTO (Data Transfer Object) representing a list of users in a paginated response.
+ */
 @Getter
 @Builder
 public class UsersResponse {
