@@ -11,6 +11,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * A JPA entity class that represents a parameter in the system.
+ * The parameters are defined in the AYS_PARAMETER table in the database.
+ */
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
