@@ -1,17 +1,21 @@
 package com.ays.user.repository;
 
 import com.ays.user.model.entity.UserEntity;
-import com.ays.user.model.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 /**
- * UserRepository performing DB layer operations.
+ * Repository interface for performing CRUD operations on UserEntity objects.
  */
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
+    /**
+     * Finds a user by username.
+     *
+     * @param username the username of the user to be found
+     * @return an optional containing the UserEntity with the given username, or an empty optional if not found
+     */
     Optional<UserEntity> findByUsername(String username);
 
-    Optional<UserEntity> findByIdAndStatusNot(Long id, UserStatus status);
 }
