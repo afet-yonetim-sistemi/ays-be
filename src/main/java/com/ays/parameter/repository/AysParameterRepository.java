@@ -14,9 +14,9 @@ public interface AysParameterRepository extends JpaRepository<AysParameterEntity
     /**
      * Finds a set of {@link AysParameterEntity} instances whose names start with the specified prefix.
      *
-     * @param prefix the prefix to search for
+     * @param prefixOfName the prefix to search for
      * @return a set of {@link AysParameterEntity} instances whose names start with the specified prefix
      */
-    Set<AysParameterEntity> findByNameStartingWith(String prefix);
+    Set<AysParameterEntity> findByNameStartingWith(String prefixOfName);
 
 }
