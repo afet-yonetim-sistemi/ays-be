@@ -16,44 +16,110 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * AysError class represents a standard error response object with error details and sub-errors.
+ * It is used to provide consistent and meaningful error responses for API calls.
+ */
 @Getter
 @Builder
 public class AysError {
 
+    /**
+     * The time when the error occurred.
+     */
     @Builder.Default
     private LocalDateTime requestTime = LocalDateTime.now();
+    /**
+     * The header of the error response.
+     */
     private String header;
+    /**
+     * The message describing the error.
+     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
+    /**
+     * Indicates if the API call was successful or not.
+     */
     @Builder.Default
     private final Boolean isSuccess = false;
+    /**
+     * List of sub-errors.
+     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<SubError> subErrors;
 
+    /**
+     * SubError class represents a sub-error with its details.
+     */
     @Getter
     @Builder
     public static class SubError {
+        /**
+         * The error message.
+         */
         private String message;
+        /**
+         * The field that caused the error.
+         */
         private String field;
+        /**
+         * The value of the field that caused the error.
+         */
         @JsonInclude(JsonInclude.Include.NON_NULL)
         private Object value;
+        /**
+         * The type of the error.
+         */
         @JsonInclude(JsonInclude.Include.NON_NULL)
         private String type;
     }
 
+    /**
+     * Header enum represents the different types of error headers.
+     */
     @Getter
     @RequiredArgsConstructor
     public enum Header {
+        /**
+         * API_ERROR header.
+         */
         API_ERROR("API ERROR"),
+        /**
+         * ALREADY_EXIST header.
+         */
         ALREADY_EXIST("ALREADY EXIST"),
+        /**
+         * NOT_FOUND header.
+         */
         NOT_FOUND("NOT EXIST"),
+        /**
+         * VALIDATION_ERROR header.
+         */
         VALIDATION_ERROR("VALIDATION ERROR"),
+        /**
+         * DATABASE_ERROR header.
+         */
         DATABASE_ERROR("DATABASE ERROR"),
+        /**
+         * PROCESS_ERROR header.
+         */
         PROCESS_ERROR("PROCESS ERROR");
 
+        /**
+         * The name of the header.
+         */
         private final String name;
     }
 
+
+    /**
+     * A static method that creates an {@link AysErrorBuilder} instance with the given list of {@link FieldError} objects
+     * as sub-errors.
+     *
+     * @param fieldErrors a {@link List} of {@link FieldError} objects to be used as sub-errors in the {@link AysError} instance
+     * @return an instance of {@link AysErrorBuilder} with the given list of {@link FieldError} objects as sub-errors
+     */
     public static AysError.AysErrorBuilder subErrors(final List<FieldError> fieldErrors) {
 
         if (CollectionUtils.isEmpty(fieldErrors)) {
@@ -83,6 +149,13 @@ public class AysError {
         return AysError.builder().subErrors(subErrorErrors);
     }
 
+    /**
+     * A static method that creates an {@link AysErrorBuilder} instance with the given set of {@link ConstraintViolation} objects
+     * as sub-errors.
+     *
+     * @param constraintViolations a {@link Set} of {@link ConstraintViolation} objects to be used as sub-errors in the {@link AysError} instance
+     * @return an instance of {@link AysErrorBuilder} with the given set of {@link ConstraintViolation} objects as sub-errors
+     */
     public static AysError.AysErrorBuilder subErrors(final Set<ConstraintViolation<?>> constraintViolations) {
 
         if (CollectionUtils.isEmpty(constraintViolations)) {
@@ -104,6 +177,13 @@ public class AysError {
         return AysError.builder().subErrors(subErrors);
     }
 
+    /**
+     * A static method that creates an {@link AysErrorBuilder} instance with the given {@link MethodArgumentTypeMismatchException}
+     * as a sub-error.
+     *
+     * @param exception a {@link MethodArgumentTypeMismatchException} object to be used as a sub-error in the {@link AysError} instance
+     * @return an instance of {@link AysErrorBuilder} with the given {@link MethodArgumentTypeMismatchException} object as a sub-error
+     */
     public static AysError.AysErrorBuilder subErrors(final MethodArgumentTypeMismatchException exception) {
         return AysError.builder()
                 .subErrors(List.of(
