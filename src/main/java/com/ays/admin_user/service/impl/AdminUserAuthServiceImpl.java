@@ -56,6 +56,7 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
      * @throws AysOrganizationNotExistException                      if the requested organization does not exist
      * @throws AysAdminUserAlreadyExistsByEmailException             if an admin user with the same email already exists
      * @throws AysAdminUserAlreadyExistsByUsernameException          if an admin user with the same username already exists
+     * @throws AysAdminUserAlreadyExistsByPhoneNumberException       if an admin user with the same phone number already exists
      */
     @Override
     public void register(final AdminUserRegisterRequest registerRequest) {
