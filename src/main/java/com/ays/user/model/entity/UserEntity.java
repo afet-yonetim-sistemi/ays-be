@@ -59,11 +59,11 @@ public class UserEntity extends BaseEntity {
     @Column(name = "LINE_NUMBER")
     private Integer lineNumber;
 
-    @Column(name = "organization_id")
+    @Column(name = "ORGANIZATION_ID")
     private String organizationId;
 
     @OneToOne
-    @JoinColumn(name = "organization_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private OrganizationEntity organization;
 
     public boolean isActive() {
