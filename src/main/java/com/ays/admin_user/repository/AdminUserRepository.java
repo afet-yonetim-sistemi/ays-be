@@ -14,4 +14,6 @@ public interface AdminUserRepository extends JpaRepository<AdminUserEntity, Stri
 
     Optional<AdminUserEntity> findByEmail(String email);
 
+    Optional<AdminUserEntity> findByCountryCodeAndLineNumber(Integer countryCode, Integer lineNumber);
+
 }

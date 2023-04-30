@@ -13,6 +13,7 @@ import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;
+import com.ays.common.model.AysPhoneNumber;
 import com.ays.organization.repository.OrganizationRepository;
 import com.ays.organization.util.exception.AysOrganizationNotExistException;
 import lombok.RequiredArgsConstructor;
@@ -75,9 +76,12 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
             throw new AysAdminUserAlreadyExistsByUsernameException(registerRequest.getUsername());
         }
 
-//        TODO : check phone number!
+        final AysPhoneNumber phoneNumber = registerRequest.getPhoneNumber();
+        if (adminUserRepository.findByCountryCodeAndLineNumber(phoneNumber.getCountryCode(), phoneNumber.getLineNumber()).isPresent()) {
+            throw new AysAdminUserAlreadyExistsByPhoneNumberException(phoneNumber);
+        }
 
-        AdminUserEntity userEntityToBeSave = adminUserRegisterRequestToAdminUserEntityMapper.mapForSaving(registerRequest, passwordEncoder);
+        final AdminUserEntity userEntityToBeSave = adminUserRegisterRequestToAdminUserEntityMapper.mapForSaving(registerRequest, passwordEncoder);
         adminUserRepository.save(userEntityToBeSave);
 
         verificationEntity.complete(userEntityToBeSave.getId());
