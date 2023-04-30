@@ -1,5 +1,6 @@
 package com.ays.user.model;
 
+import com.ays.common.model.AysPhoneNumber;
 import com.ays.organization.model.entity.OrganizationEntity;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
@@ -23,8 +24,7 @@ public class User {
     private OrganizationEntity organization;
     private UserRole role;
     private UserStatus status;
-    private Integer countryCode; // TODO : create PhoneNumber object
-    private Integer lineNumber; // TODO : create PhoneNumber object
+    private AysPhoneNumber phoneNumber;
     private LocalDateTime lastLoginDate;
 
 }
