@@ -190,8 +190,8 @@ public class AysError {
                         SubError.builder()
                                 .message(exception.getMessage().split(";")[0])
                                 .field(exception.getName())
-                                .value(exception.getValue() != null ? exception.getValue().toString() : null)
-                                .type(exception.getRequiredType().getSimpleName()).build()
+                                .value(Objects.requireNonNull(exception.getValue()).toString())
+                                .type(Objects.requireNonNull(exception.getRequiredType()).getSimpleName()).build()
                 ));
     }
 }
