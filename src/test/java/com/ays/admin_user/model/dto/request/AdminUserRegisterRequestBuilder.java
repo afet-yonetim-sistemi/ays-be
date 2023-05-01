@@ -9,6 +9,16 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
         super(AdminUserRegisterRequest.class);
     }
 
+    public AdminUserRegisterRequestBuilder withVerificationId(String verificationId) {
+        data.setVerificationId(verificationId);
+        return this;
+    }
+
+    public AdminUserRegisterRequestBuilder withOrganizationId(String organizationId) {
+        data.setOrganizationId(organizationId);
+        return this;
+    }
+
     public AdminUserRegisterRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
