@@ -13,6 +13,7 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByEmailExcepti
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberException;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNotValidException;
+import com.ays.auth.service.AysTokenService;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.organization.repository.OrganizationRepository;
 import com.ays.organization.util.exception.AysOrganizationNotExistException;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -38,6 +40,11 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
 
     @Mock
     private OrganizationRepository organizationRepository;
+
+    @Mock
+    private AysTokenService tokenService;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void givenValidAdminUserRegisterRequest_thenAdminUserRegistered() {
