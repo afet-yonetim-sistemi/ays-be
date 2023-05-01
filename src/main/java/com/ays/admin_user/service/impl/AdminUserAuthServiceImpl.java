@@ -17,6 +17,7 @@ import com.ays.common.model.AysPhoneNumber;
 import com.ays.organization.repository.OrganizationRepository;
 import com.ays.organization.util.exception.AysOrganizationNotExistException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,13 +32,14 @@ import org.springframework.transaction.annotation.Transactional;
  * Authentication is handled using the {@link PasswordEncoder} and the {@link AysTokenService} is used for
  * generating and refreshing access tokens.
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 class AdminUserAuthServiceImpl implements AdminUserAuthService {
 
     private final AdminUserRepository adminUserRepository;
     private final AdminUserRegisterVerificationRepository adminUserRegisterVerificationRepository;
-    private final AdminUserRegisterRequestToAdminUserEntityMapper adminUserRegisterRequestToAdminUserEntityMapper = AdminUserRegisterRequestToAdminUserEntityMapper.initialize();
+    private static final AdminUserRegisterRequestToAdminUserEntityMapper adminUserRegisterRequestToAdminUserEntityMapper = AdminUserRegisterRequestToAdminUserEntityMapper.initialize();
 
     private final OrganizationRepository organizationRepository;
 
@@ -60,6 +62,7 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
      */
     @Override
     public void register(final AdminUserRegisterRequest registerRequest) {
+        log.trace("Admin User Register Flow call starting for email of {}", registerRequest.getEmail());
 
         final AdminUserRegisterVerificationEntity verificationEntity = adminUserRegisterVerificationRepository
                 .findById(registerRequest.getVerificationId())
@@ -69,24 +72,27 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
             throw new AysOrganizationNotExistException(registerRequest.getOrganizationId());
         }
 
-        if (adminUserRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+        if (adminUserRepository.existsByEmail(registerRequest.getEmail())) {
             throw new AysAdminUserAlreadyExistsByEmailException(registerRequest.getEmail());
         }
 
-        if (adminUserRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
+        if (adminUserRepository.existsByUsername(registerRequest.getUsername())) {
             throw new AysAdminUserAlreadyExistsByUsernameException(registerRequest.getUsername());
         }
 
         final AysPhoneNumber phoneNumber = registerRequest.getPhoneNumber();
-        if (adminUserRepository.findByCountryCodeAndLineNumber(phoneNumber.getCountryCode(), phoneNumber.getLineNumber()).isPresent()) {
+        if (adminUserRepository.existsByCountryCodeAndLineNumber(phoneNumber.getCountryCode(), phoneNumber.getLineNumber())) {
             throw new AysAdminUserAlreadyExistsByPhoneNumberException(phoneNumber);
         }
+        log.trace("Admin User Register Request checked successfully!");
 
         final AdminUserEntity userEntityToBeSave = adminUserRegisterRequestToAdminUserEntityMapper.mapForSaving(registerRequest, passwordEncoder);
         adminUserRepository.save(userEntityToBeSave);
+        log.trace("Admin User saved successfully!");
 
         verificationEntity.complete(userEntityToBeSave.getId());
         adminUserRegisterVerificationRepository.save(verificationEntity);
+        log.trace("Admin User Register Verification complete successfully!");
     }
 
     /**
