@@ -4,6 +4,7 @@ import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.response.AysTokenResponse;
+import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.user.service.UserAuthService;
 import jakarta.validation.Valid;
@@ -23,6 +24,8 @@ class UserAuthController {
 
     private final UserAuthService userAuthService;
 
+    private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
+
 
     /**
      * This endpoint allows user to login to platform.
@@ -35,13 +38,9 @@ class UserAuthController {
 
         final AysToken aysToken = userAuthService.authenticate(loginRequest);
 
-        AysTokenResponse authResponse = AysTokenResponse.builder()
-                .accessToken(aysToken.getAccessToken())
-                .accessTokenExpiresAt(aysToken.getAccessTokenExpiresAt())
-                .refreshToken(aysToken.getRefreshToken())
-                .build();
+        final AysTokenResponse aysTokenResponse = aysTokenToAysTokenResponseMapper.map(aysToken);
 
-        return AysResponse.successOf(authResponse);
+        return AysResponse.successOf(aysTokenResponse);
     }
 
     /**
@@ -55,11 +54,7 @@ class UserAuthController {
 
         final AysToken aysToken = userAuthService.refreshAccessToken(refreshRequest.getRefreshToken());
 
-        AysTokenResponse aysTokenResponse = AysTokenResponse.builder()
-                .accessToken(aysToken.getAccessToken())
-                .accessTokenExpiresAt(aysToken.getAccessTokenExpiresAt())
-                .refreshToken(aysToken.getRefreshToken())
-                .build();
+        final AysTokenResponse aysTokenResponse = aysTokenToAysTokenResponseMapper.map(aysToken);
 
         return AysResponse.successOf(aysTokenResponse);
     }
