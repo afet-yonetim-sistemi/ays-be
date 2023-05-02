@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Represents a request object for updating user with its variables.
+ */
 @Builder
 @Data
 @AllArgsConstructor
