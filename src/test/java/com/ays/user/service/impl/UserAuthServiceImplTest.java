@@ -2,6 +2,7 @@ package com.ays.user.service.impl;
 
 import com.ays.AbstractUnitTest;
 import com.ays.auth.model.AysToken;
+import com.ays.auth.model.AysTokenBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysTokenService;
@@ -28,6 +29,9 @@ import static org.mockito.Mockito.when;
 
 class UserAuthServiceImplTest extends AbstractUnitTest {
 
+    @InjectMocks
+    private UserAuthServiceImpl userAuthService;
+
     @Mock
     private UserRepository userRepository;
 
@@ -36,9 +40,6 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
-
-    @InjectMocks
-    private UserAuthServiceImpl userAuthService;
 
     @Test
     void shouldAuthenticateForUser() {
@@ -52,11 +53,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         userEntity.setFirstName("First Name");
         userEntity.setLastName("Last Name");
 
-        final AysToken token = AysToken.builder()
-                .accessToken("accessToken")
-                .refreshToken("refreshToken")
-                .accessTokenExpiresAt(10000L)
-                .build();
+        final AysToken token = AysTokenBuilder.VALID_FOR_USER;
 
         // When
         when(userRepository.findByUsername(mockRequest.getUsername())).thenReturn(Optional.of(userEntity));
@@ -72,7 +69,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    public void shouldAuthenticate_UserNotExist() {
+    void shouldAuthenticate_UserNotExist() {
 
         // Given
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
@@ -89,7 +86,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    public void shouldAuthenticate_UserNotActive() {
+    void shouldAuthenticate_UserNotActive() {
         // Given
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
         final UserEntity userEntity = new UserEntity();
@@ -111,7 +108,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    public void shouldAuthenticate_PasswordNotValid() {
+    void shouldAuthenticate_PasswordNotValid() {
         // Given
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
         final UserEntity userEntity = new UserEntity();

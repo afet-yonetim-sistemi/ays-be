@@ -30,14 +30,14 @@ import static org.mockito.Mockito.when;
 
 class UserServiceImplTest extends AbstractUnitTest {
 
+    @InjectMocks
+    private UserServiceImpl userService;
+
     @Mock
     private UserRepository userRepository;
 
     @Mock
     private UserEntityToUserMapper userEntityToUserMapper;
-
-    @InjectMocks
-    private UserServiceImpl userService;
 
     @Disabled
     @Test
@@ -129,12 +129,11 @@ class UserServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void shouldDeleteUserWithNonexistentUser() {
+    void shouldDeleteUserWithNonExistentUser() {
         // Given
         String id = "1";
 
-        AysUserNotExistByIdException expectedError =
-                new AysUserNotExistByIdException(id);
+        AysUserNotExistByIdException expectedError = new AysUserNotExistByIdException(id);
 
         // When
         when(userRepository.findById(id)).thenReturn(Optional.empty());
