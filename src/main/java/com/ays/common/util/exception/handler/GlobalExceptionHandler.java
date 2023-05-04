@@ -88,6 +88,16 @@ class GlobalExceptionHandler {
         return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<Object> handleProcessError(final Exception exception) {
+        log.error(exception.getMessage(), exception);
+
+        AysError aysError = AysError.builder()
+                .header(AysError.Header.PROCESS_ERROR.getName())
+                .build();
+        return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(AysAuthException.class)
     protected ResponseEntity<Object> handleAuthError(final AysAuthException exception) {
         log.error(exception.getMessage(), exception);
