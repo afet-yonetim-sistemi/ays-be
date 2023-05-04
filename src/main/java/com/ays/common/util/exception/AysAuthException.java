@@ -25,4 +25,8 @@ public abstract class AysAuthException extends RuntimeException {
         super(message);
     }
 
+    protected AysAuthException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
 }
