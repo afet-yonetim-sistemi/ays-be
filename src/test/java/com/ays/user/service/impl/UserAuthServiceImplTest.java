@@ -71,7 +71,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenInvalidAysLoginRequest_whenUserNotFound_thenReturnUsernameNotValidException() {
+    void givenInvalidAysLoginRequest_whenUserNotFound_thenThrowUsernameNotValidException() {
         // Given
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
 
@@ -85,7 +85,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenInvalidAysLoginRequest_whenUserStatusNotActive_thenReturnUserNotActiveException() {
+    void givenInvalidAysLoginRequest_whenUserStatusNotActive_thenThrowUserNotActiveException() {
         // Given
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
         final UserEntity userEntity = new UserEntityBuilder()
@@ -102,7 +102,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenInvalidAysLoginRequest_whenUserPasswordWrong_thenReturnPasswordNotValidException() {
+    void givenInvalidAysLoginRequest_whenUserPasswordWrong_thenThrowPasswordNotValidException() {
         // Given
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
         final UserEntity userEntity = new UserEntityBuilder()
@@ -157,7 +157,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenRefreshTokenWithUsername_whenUserNotFound_thenReturnUsernameNotValidException() {
+    void givenRefreshTokenWithUsername_whenUserNotFound_thenThrowUsernameNotValidException() {
         // Given
         final String refreshToken = AysTokenBuilder.VALID_FOR_USER.getRefreshToken();
         final UserEntity userEntity = new UserEntityBuilder()

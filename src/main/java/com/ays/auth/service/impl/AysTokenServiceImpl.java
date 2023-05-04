@@ -5,6 +5,7 @@ import com.ays.auth.model.AysToken;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.auth.service.AysTokenService;
+import com.ays.auth.util.exception.TokenNotValidException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -95,8 +96,7 @@ class AysTokenServiceImpl implements AysTokenService {
                     .parseClaimsJws(jwt)
                     .getBody(); // TODO burada sadece doğrulama yapılabilir mi?
         } catch (MalformedJwtException | ExpiredJwtException exception) {
-            log.trace("Token is invalid! {}", jwt);
-            throw exception;
+            throw new TokenNotValidException(jwt, exception);
         }
     }
 
