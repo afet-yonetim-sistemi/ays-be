@@ -2,6 +2,7 @@ package com.ays.admin_user.controller;
 
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.service.AdminUserAuthService;
+import com.ays.admin_user.service.AdminUserRegisterService;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 class AdminUserAuthController {
 
     private final AdminUserAuthService adminUserAuthService;
+    private final AdminUserRegisterService adminUserRegisterService;
     private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
 
     /**
@@ -35,7 +37,7 @@ class AdminUserAuthController {
      */
     @PostMapping("/register")
     public AysResponse<Void> register(@RequestBody @Valid AdminUserRegisterRequest registerRequest) {
-        adminUserAuthService.register(registerRequest);
+        adminUserRegisterService.register(registerRequest);
         return AysResponse.SUCCESS;
     }
 

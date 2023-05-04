@@ -4,6 +4,7 @@ import com.ays.AbstractRestControllerTest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
 import com.ays.admin_user.service.AdminUserAuthService;
+import com.ays.admin_user.service.AdminUserRegisterService;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.AysTokenBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
@@ -29,6 +30,9 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     @MockBean
     private AdminUserAuthService adminUserAuthService;
 
+    @MockBean
+    private AdminUserRegisterService adminUserRegisterService;
+
     private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1/authentication/admin";
@@ -40,7 +44,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
         // When
-        Mockito.doNothing().when(adminUserAuthService).register(Mockito.any());
+        Mockito.doNothing().when(adminUserRegisterService).register(Mockito.any());
 
         // Then
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
@@ -53,7 +57,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.isSuccess").value(mockResponse.getIsSuccess()))
                 .andExpect(jsonPath("$.response").doesNotExist());
 
-        Mockito.verify(adminUserAuthService, Mockito.times(1)).register(Mockito.any());
+        Mockito.verify(adminUserRegisterService, Mockito.times(1)).register(Mockito.any());
     }
 
     @Test

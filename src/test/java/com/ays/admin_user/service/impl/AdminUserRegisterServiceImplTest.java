@@ -13,7 +13,6 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByEmailExcepti
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberException;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNotValidException;
-import com.ays.auth.service.AysTokenService;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.organization.repository.OrganizationRepository;
 import com.ays.organization.util.exception.AysOrganizationNotExistException;
@@ -28,10 +27,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 import java.util.UUID;
 
-class AdminUserAuthServiceImplTest extends AbstractUnitTest {
+class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks
-    private AdminUserAuthServiceImpl adminUserAuthService;
+    private AdminUserRegisterServiceImpl adminUserRegisterService;
 
     @Mock
     private AdminUserRepository adminUserRepository;
@@ -42,8 +41,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     private OrganizationRepository organizationRepository;
 
     @Mock
-    private AysTokenService tokenService;
-    @Mock
+    @SuppressWarnings("This field unused in test methods but it's required for encode the password")
     private PasswordEncoder passwordEncoder;
 
     @Test
@@ -81,6 +79,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminUserRepository.save(Mockito.any(AdminUserEntity.class)))
                 .thenReturn(mockAdminUserEntityToBeSaved);
 
+        assert mockAdminUserRegisterVerificationEntity != null;
         mockAdminUserRegisterVerificationEntity.complete(mockAdminUserEntityToBeSaved.getId());
         Mockito.when(adminUserRegisterVerificationRepository.save(
                         Mockito.any(AdminUserRegisterVerificationEntity.class))
@@ -88,7 +87,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 .thenReturn(mockAdminUserRegisterVerificationEntity);
 
         // Then
-        adminUserAuthService.register(mockAdminUserRegisterRequest);
+        adminUserRegisterService.register(mockAdminUserRegisterRequest);
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
@@ -120,7 +119,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserRegisterVerificationCodeNotValidException.class,
-                () -> adminUserAuthService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
         );
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
@@ -146,7 +145,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysOrganizationNotExistException.class,
-                () -> adminUserAuthService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
         );
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
@@ -178,7 +177,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserAlreadyExistsByEmailException.class,
-                () -> adminUserAuthService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
         );
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
@@ -215,7 +214,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserAlreadyExistsByUsernameException.class,
-                () -> adminUserAuthService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
         );
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
@@ -262,7 +261,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserAlreadyExistsByPhoneNumberException.class,
-                () -> adminUserAuthService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
         );
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
