@@ -7,13 +7,13 @@ import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;
+import com.ays.auth.util.exception.UserNotActiveException;
+import com.ays.auth.util.exception.UsernameNotValidException;
 import com.ays.user.model.dto.request.AysUserLoginRequestBuilder;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.model.enums.UserStatus;
 import com.ays.user.repository.UserRepository;
-import com.ays.user.util.exception.AysUserNotActiveException;
-import com.ays.user.util.exception.AysUserNotExistByUsernameException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.Test;
@@ -71,44 +71,32 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenInvalidAysLoginRequest_whenUserNotFound_thenReturnAysUserNotExistByUsernameException() {
-
+    void givenInvalidAysLoginRequest_whenUserNotFound_thenReturnUsernameNotValidException() {
         // Given
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
-        AysUserNotExistByUsernameException expectedError =
-                new AysUserNotExistByUsernameException(mockRequest.getUsername());
 
         // When
         when(userRepository.findByUsername(mockRequest.getUsername())).thenReturn(Optional.empty());
 
         // Then
-        AysUserNotExistByUsernameException actual =
-                assertThrows(AysUserNotExistByUsernameException.class, () -> userAuthService.authenticate(mockRequest));
-        assertEquals(expectedError.getMessage(), actual.getMessage());
+        assertThrows(UsernameNotValidException.class, () -> userAuthService.authenticate(mockRequest));
 
         Mockito.verify(userRepository, Mockito.times(1)).findByUsername(mockRequest.getUsername());
-
     }
 
     @Test
-    void givenInvalidAysLoginRequest_whenUserStatusNotActive_thenReturnAysUserNotActiveException() {
+    void givenInvalidAysLoginRequest_whenUserStatusNotActive_thenReturnUserNotActiveException() {
         // Given
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
         final UserEntity userEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.PASSIVE)
                 .build();
 
-        AysUserNotActiveException expectedError =
-                new AysUserNotActiveException(mockRequest.getUsername());
-
         // When
         when(userRepository.findByUsername(mockRequest.getUsername())).thenReturn(Optional.of(userEntity));
 
         // Then
-        AysUserNotActiveException actual =
-                assertThrows(AysUserNotActiveException.class, () -> userAuthService.authenticate(mockRequest));
-
-        assertEquals(expectedError.getMessage(), actual.getMessage());
+        assertThrows(UserNotActiveException.class, () -> userAuthService.authenticate(mockRequest));
 
         Mockito.verify(userRepository, Mockito.times(1)).findByUsername(mockRequest.getUsername());
     }
@@ -169,16 +157,13 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenRefreshTokenWithUsername_whenUserNotFound_thenReturnAysUserNotExistByUsernameException() {
+    void givenRefreshTokenWithUsername_whenUserNotFound_thenReturnUsernameNotValidException() {
         // Given
         final String refreshToken = AysTokenBuilder.VALID_FOR_USER.getRefreshToken();
         final UserEntity userEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.ACTIVE)
                 .build();
         final String username = userEntity.getUsername();
-
-        AysUserNotExistByUsernameException expectedError =
-                new AysUserNotExistByUsernameException(username);
 
         final Claims mockClaims = Jwts.claims();
         mockClaims.put(AysTokenClaims.USERNAME.getValue(), username);
@@ -188,9 +173,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
         // Then
-        AysUserNotExistByUsernameException actual =
-                assertThrows(AysUserNotExistByUsernameException.class, () -> userAuthService.refreshAccessToken(refreshToken));
-        assertEquals(expectedError.getMessage(), actual.getMessage());
+        assertThrows(UsernameNotValidException.class, () -> userAuthService.refreshAccessToken(refreshToken));
 
         Mockito.verify(tokenService, Mockito.times(1)).getClaims(refreshToken);
         Mockito.verify(userRepository, Mockito.times(1)).findByUsername(username);

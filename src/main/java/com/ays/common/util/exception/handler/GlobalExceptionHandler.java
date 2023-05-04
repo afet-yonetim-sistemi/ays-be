@@ -1,6 +1,7 @@
 package com.ays.common.util.exception.handler;
 
 import com.ays.common.util.exception.AysAlreadyException;
+import com.ays.common.util.exception.AysAuthException;
 import com.ays.common.util.exception.AysNotExistException;
 import com.ays.common.util.exception.AysProcessException;
 import com.ays.common.util.exception.model.AysError;
@@ -85,6 +86,16 @@ class GlobalExceptionHandler {
                 .message(exception.getMessage())
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AysAuthException.class)
+    protected ResponseEntity<Object> handleAuthError(final AysAuthException exception) {
+        log.error(exception.getMessage(), exception);
+
+        AysError aysError = AysError.builder()
+                .header(AysError.Header.AUTH_ERROR.getName())
+                .build();
+        return new ResponseEntity<>(aysError, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(SQLException.class)

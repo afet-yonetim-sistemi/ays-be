@@ -5,11 +5,11 @@ import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;
+import com.ays.auth.util.exception.UserNotActiveException;
+import com.ays.auth.util.exception.UsernameNotValidException;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.service.UserAuthService;
-import com.ays.user.util.exception.AysUserNotActiveException;
-import com.ays.user.util.exception.AysUserNotExistByUsernameException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,10 +30,10 @@ class UserAuthServiceImpl implements UserAuthService {
     public AysToken authenticate(AysLoginRequest loginRequest) {
 
         final UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new AysUserNotExistByUsernameException(loginRequest.getUsername()));
+                .orElseThrow(() -> new UsernameNotValidException(loginRequest.getUsername()));
 
         if (!userEntity.isActive()) {
-            throw new AysUserNotActiveException(loginRequest.getUsername());
+            throw new UserNotActiveException(loginRequest.getUsername());
         }
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), userEntity.getPassword())) {
@@ -52,7 +52,7 @@ class UserAuthServiceImpl implements UserAuthService {
                 .get(AysTokenClaims.USERNAME.getValue()).toString();
 
         final UserEntity userEntity = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AysUserNotExistByUsernameException(username));
+                .orElseThrow(() -> new UsernameNotValidException(username));
 
         return tokenService.generate(userEntity.getClaims(), refreshToken);
     }

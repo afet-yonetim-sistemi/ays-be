@@ -5,14 +5,14 @@ import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.admin_user.repository.AdminUserRepository;
-import com.ays.admin_user.util.exception.AysAdminUserNotActiveException;
-import com.ays.admin_user.util.exception.AysAdminUserNotVerifiedException;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.AysTokenBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;
+import com.ays.auth.util.exception.UserNotActiveException;
+import com.ays.auth.util.exception.UserNotVerifiedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -67,7 +67,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidLoginRequest_whenAdminUserNotAuthenticated_thenReturnPasswordNotValidException() {
+    void givenInvalidLoginRequest_whenAdminUserNotAuthenticated_thenReturnPasswordNotValidException() {
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder().build();
 
@@ -92,7 +92,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidLoginRequest_whenAdminUserNotActive_thenReturnAysAdminUserNotActiveException() {
+    void givenValidLoginRequest_whenAdminUserNotActive_thenReturnUserNotActiveException() {
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder().build();
 
@@ -105,7 +105,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminUserNotActiveException.class,
+                UserNotActiveException.class,
                 () -> adminUserAuthService.authenticate(mockLoginRequest)
         );
 
@@ -113,7 +113,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidLoginRequest_whenAdminUserNotVerified_thenReturnAysAdminUserNotVerifiedException() {
+    void givenValidLoginRequest_whenAdminUserNotVerified_thenReturnUserNotVerifiedException() {
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder().build();
 
@@ -126,7 +126,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminUserNotVerifiedException.class,
+                UserNotVerifiedException.class,
                 () -> adminUserAuthService.authenticate(mockLoginRequest)
         );
 

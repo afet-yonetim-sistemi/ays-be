@@ -5,14 +5,14 @@ import com.ays.admin_user.model.mapper.AdminUserRegisterRequestToAdminUserEntity
 import com.ays.admin_user.repository.AdminUserRegisterVerificationRepository;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserAuthService;
-import com.ays.admin_user.util.exception.AysAdminUserNotActiveException;
-import com.ays.admin_user.util.exception.AysAdminUserNotExistByUsernameException;
-import com.ays.admin_user.util.exception.AysAdminUserNotVerifiedException;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;
+import com.ays.auth.util.exception.UserNotActiveException;
+import com.ays.auth.util.exception.UserNotVerifiedException;
+import com.ays.auth.util.exception.UsernameNotValidException;
 import com.ays.organization.repository.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,25 +46,17 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
      * token is generated using the {@link AysTokenService} and returned.
      *
      * @param loginRequest the request object containing the username and password for authentication
-     * @return an access token for the authenticated admin user
-     * @throws UsernameNotFoundException        if an admin user with the provided username is not found
-     * @throws AysAdminUserNotVerifiedException if the admin user is not verified
-     * @throws AysAdminUserNotActiveException   if the admin user is not active
-     * @throws PasswordNotValidException        if the provided password is not valid
+     * @return an access and refresh tokens for the authenticated admin user
+     * @throws UsernameNotFoundException if an admin user with the provided username is not found
+     * @throws UserNotVerifiedException  if the admin user is not verified
+     * @throws UserNotActiveException    if the admin user is not active
+     * @throws PasswordNotValidException if the provided password is not valid
      */
     @Override
     @Transactional
     public AysToken authenticate(final AysLoginRequest loginRequest) {
 
-        final AdminUserEntity adminUserEntity = adminUserRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Admin User not found with username: " + loginRequest.getUsername()));
-
-        if (!adminUserEntity.isActive()) {
-            if (adminUserEntity.isNotVerified()) {
-                throw new AysAdminUserNotVerifiedException(loginRequest.getUsername());
-            }
-            throw new AysAdminUserNotActiveException(loginRequest.getUsername());
-        }
+        final AdminUserEntity adminUserEntity = this.findUser(loginRequest.getUsername());
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), adminUserEntity.getPassword())) {
             throw new PasswordNotValidException();
@@ -81,8 +73,10 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
      *
      * @param refreshToken the refresh token used for generating a new access token
      * @return a new access token for the authenticated admin user
-     * @throws AysAdminUserNotExistByUsernameException if an admin user with the username stored in the refresh
-     *                                                 token's claims is not found
+     * @throws UsernameNotFoundException if an admin user with the provided username is not found
+     * @throws UserNotVerifiedException  if the admin user is not verified
+     * @throws UserNotActiveException    if the admin user is not active
+     * @throws PasswordNotValidException if the provided password is not valid
      */
     @Override
     public AysToken refreshAccessToken(final String refreshToken) {
@@ -92,10 +86,26 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
                 .getClaims(refreshToken)
                 .get(AysTokenClaims.USERNAME.getValue()).toString();
 
-        final AdminUserEntity adminUserEntity = adminUserRepository.findByUsername(username)
-                .orElseThrow(() -> new AysAdminUserNotExistByUsernameException(username));
+        final AdminUserEntity adminUserEntity = this.findUser(username);
 
         return tokenService.generate(adminUserEntity.getClaims(), refreshToken);
+    }
+
+
+    private AdminUserEntity findUser(String username) {
+        final AdminUserEntity adminUserEntity = adminUserRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotValidException(username));
+
+        if (!adminUserEntity.isActive()) {
+
+            if (adminUserEntity.isNotVerified()) {
+                throw new UserNotVerifiedException(username);
+            }
+
+            throw new UserNotActiveException(username);
+        }
+
+        return adminUserEntity;
     }
 
 }

@@ -23,7 +23,7 @@ public class AysAdminUserNotActiveException extends RuntimeException {
      * @param username The username of the inactive admin user.
      */
     public AysAdminUserNotActiveException(String username) {
-        super("USER IS NOT ACTIVE! username:{}" + username);
+        super("USER IS NOT ACTIVE! username:" + username);
     }
 
 }

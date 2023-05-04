@@ -104,7 +104,11 @@ public class AysError {
         /**
          * PROCESS_ERROR header.
          */
-        PROCESS_ERROR("PROCESS ERROR");
+        PROCESS_ERROR("PROCESS ERROR"),
+        /**
+         * AUTH_ERROR header.
+         */
+        AUTH_ERROR("AUTH ERROR");
 
         /**
          * The name of the header.
