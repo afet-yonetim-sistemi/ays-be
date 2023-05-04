@@ -23,31 +23,38 @@ public class AysMockMvcRequestBuilders {
 
     public MockHttpServletRequestBuilder get(String endpoint, String token) {
         return MockMvcRequestBuilders.get(endpoint)
-                .header(HttpHeaders.AUTHORIZATION, token);
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+    }
+
+    public MockHttpServletRequestBuilder get(String endpoint, String token, Object requestBody) {
+        return MockMvcRequestBuilders.get(endpoint)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .content(GSON.toJson(requestBody))
+                .contentType(MediaType.APPLICATION_JSON);
     }
 
     public MockHttpServletRequestBuilder post(String endpoint, String token, Object requestBody) {
         return MockMvcRequestBuilders.post(endpoint)
-                .header(HttpHeaders.AUTHORIZATION, token)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .content(GSON.toJson(requestBody))
                 .contentType(MediaType.APPLICATION_JSON);
     }
 
     public MockHttpServletRequestBuilder put(String endpoint, String token, Object requestBody) {
         return MockMvcRequestBuilders.put(endpoint)
-                .header(HttpHeaders.AUTHORIZATION, token)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .content(GSON.toJson(requestBody))
                 .contentType(MediaType.APPLICATION_JSON);
     }
 
     public MockHttpServletRequestBuilder delete(String endpoint, String token) {
         return MockMvcRequestBuilders.delete(endpoint)
-                .header(HttpHeaders.AUTHORIZATION, token);
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
     }
 
     public MockHttpServletRequestBuilder delete(String endpoint, String token, Object requestBody) {
         return MockMvcRequestBuilders.delete(endpoint)
-                .header(HttpHeaders.AUTHORIZATION, token)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .content(GSON.toJson(requestBody))
                 .contentType(MediaType.APPLICATION_JSON);
     }
