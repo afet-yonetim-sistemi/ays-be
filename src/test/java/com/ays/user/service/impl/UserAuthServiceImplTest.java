@@ -2,7 +2,6 @@ package com.ays.user.service.impl;
 
 import com.ays.AbstractUnitTest;
 import com.ays.auth.model.AysToken;
-import com.ays.auth.model.AysTokenBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysTokenService;
@@ -51,19 +50,17 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .withStatus(UserStatus.ACTIVE)
                 .build();
 
-        final AysToken mockToken = AysTokenBuilder.VALID_FOR_USER;
-
         // When
         when(userRepository.findByUsername(mockRequest.getUsername())).thenReturn(Optional.of(userEntity));
         when(passwordEncoder.matches(mockRequest.getPassword(), userEntity.getPassword())).thenReturn(true);
-        when(tokenService.generate(userEntity.getClaims())).thenReturn(mockToken);
+        when(tokenService.generate(userEntity.getClaims())).thenReturn(mockUserToken);
 
         // Then
         final AysToken token = userAuthService.authenticate(mockRequest);
 
-        assertEquals(mockToken.getAccessToken(), token.getAccessToken());
-        assertEquals(mockToken.getRefreshToken(), token.getRefreshToken());
-        assertEquals(mockToken.getAccessTokenExpiresAt(), token.getAccessTokenExpiresAt());
+        assertEquals(mockUserToken.getAccessToken(), token.getAccessToken());
+        assertEquals(mockUserToken.getRefreshToken(), token.getRefreshToken());
+        assertEquals(mockUserToken.getAccessTokenExpiresAt(), token.getAccessTokenExpiresAt());
 
         Mockito.verify(userRepository, Mockito.times(1)).findByUsername(mockRequest.getUsername());
         Mockito.verify(passwordEncoder, Mockito.times(1)).matches(mockRequest.getPassword(), userEntity.getPassword());
@@ -126,14 +123,14 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     @Test
     void givenValidRefreshToken_whenAccessTokenGenerated_thenReturnAysToken() {
         // Given
-        final String refreshToken = AysTokenBuilder.VALID_FOR_USER.getRefreshToken();
+        final String refreshToken = mockUserToken.getRefreshToken();
 
         final UserEntity userEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.ACTIVE)
                 .build();
         final String username = userEntity.getUsername();
 
-        final AysToken mockToken = AysTokenBuilder.VALID_FOR_USER;
+        final AysToken mockToken = mockUserToken;
 
         final Claims mockClaims = Jwts.claims();
         mockClaims.put(AysTokenClaims.USERNAME.getValue(), username);
@@ -159,7 +156,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     @Test
     void givenRefreshTokenWithUsername_whenUserNotFound_thenThrowUsernameNotValidException() {
         // Given
-        final String refreshToken = AysTokenBuilder.VALID_FOR_USER.getRefreshToken();
+        final String refreshToken = mockUserToken.getRefreshToken();
         final UserEntity userEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.ACTIVE)
                 .build();

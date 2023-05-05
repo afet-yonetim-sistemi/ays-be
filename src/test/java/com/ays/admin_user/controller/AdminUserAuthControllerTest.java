@@ -5,8 +5,6 @@ import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
 import com.ays.admin_user.service.AdminUserAuthService;
 import com.ays.admin_user.service.AdminUserRegisterService;
-import com.ays.auth.model.AysToken;
-import com.ays.auth.model.AysTokenBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
@@ -66,11 +64,10 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         AysLoginRequest mockRequest = new AysLoginRequestBuilder().build();
 
         // When
-        AysToken mockAysToken = AysTokenBuilder.VALID_FOR_ADMIN;
-        Mockito.when(adminUserAuthService.authenticate(Mockito.any())).thenReturn(mockAysToken);
+        Mockito.when(adminUserAuthService.authenticate(Mockito.any())).thenReturn(mockAdminUserToken);
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAysToken);
+        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), mockRequest))
@@ -93,11 +90,10 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         AysTokenRefreshRequest mockRequest = AysTokenRefreshRequestBuilder.VALID_FOR_ADMIN;
 
         // When
-        AysToken mockAysToken = AysTokenBuilder.VALID_FOR_ADMIN;
-        Mockito.when(adminUserAuthService.refreshAccessToken(Mockito.any())).thenReturn(mockAysToken);
+        Mockito.when(adminUserAuthService.refreshAccessToken(Mockito.any())).thenReturn(mockAdminUserToken);
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAysToken);
+        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), mockRequest))

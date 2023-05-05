@@ -1,8 +1,6 @@
 package com.ays.user.controller;
 
 import com.ays.AbstractRestControllerTest;
-import com.ays.auth.model.AysToken;
-import com.ays.auth.model.AysTokenBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequestBuilder;
@@ -36,11 +34,10 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
 
         // when
-        AysToken mockAysToken = AysTokenBuilder.VALID_FOR_USER;
-        Mockito.when(userAuthService.authenticate(Mockito.any())).thenReturn(mockAysToken);
+        Mockito.when(userAuthService.authenticate(Mockito.any())).thenReturn(mockUserToken);
 
         // then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAysToken);
+        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockUserToken);
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), mockRequest))
@@ -63,11 +60,10 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         AysTokenRefreshRequest mockRequest = AysTokenRefreshRequestBuilder.VALID_FOR_USER;
 
         // When
-        AysToken mockAysToken = AysTokenBuilder.VALID_FOR_USER;
-        Mockito.when(userAuthService.refreshAccessToken(Mockito.any())).thenReturn(mockAysToken);
+        Mockito.when(userAuthService.refreshAccessToken(Mockito.any())).thenReturn(mockUserToken);
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAysToken);
+        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockUserToken);
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), mockRequest))
