@@ -11,6 +11,7 @@ import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.*;
+import com.ays.user.model.dto.request.AysUserLoginRequestBuilder;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -58,9 +59,31 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
 
         Assertions.assertEquals(mockAdminUserToken, token);
 
-        Mockito.verify(adminUserRepository, Mockito.times(1)).findByUsername(mockLoginRequest.getUsername());
-        Mockito.verify(passwordEncoder, Mockito.times(1)).matches(Mockito.anyString(), Mockito.anyString());
-        Mockito.verify(tokenService, Mockito.times(1)).generate(Mockito.anyMap());
+        Mockito.verify(adminUserRepository, Mockito.times(1))
+                .findByUsername(mockLoginRequest.getUsername());
+        Mockito.verify(passwordEncoder, Mockito.times(1))
+                .matches(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(tokenService, Mockito.times(1))
+                .generate(Mockito.anyMap());
+    }
+
+    @Test
+    void givenInvalidLoginRequest_whenAdminUserNotFound_thenThrowUsernameNotValidException() {
+        // Given
+        AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
+
+        // When
+        Mockito.when(adminUserRepository.findByUsername(mockRequest.getUsername()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                UsernameNotValidException.class,
+                () -> adminUserAuthService.authenticate(mockRequest)
+        );
+
+        Mockito.verify(adminUserRepository, Mockito.times(1))
+                .findByUsername(mockRequest.getUsername());
     }
 
     @Test
@@ -84,8 +107,11 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 () -> adminUserAuthService.authenticate(mockLoginRequest)
         );
 
-        Mockito.verify(adminUserRepository, Mockito.times(1)).findByUsername(mockLoginRequest.getUsername());
-        Mockito.verify(passwordEncoder, Mockito.times(1)).matches(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(adminUserRepository, Mockito.times(1))
+                .findByUsername(mockLoginRequest.getUsername());
+
+        Mockito.verify(passwordEncoder, Mockito.times(1))
+                .matches(Mockito.anyString(), Mockito.anyString());
     }
 
     @Test
@@ -106,7 +132,8 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 () -> adminUserAuthService.authenticate(mockLoginRequest)
         );
 
-        Mockito.verify(adminUserRepository, Mockito.times(1)).findByUsername(mockLoginRequest.getUsername());
+        Mockito.verify(adminUserRepository, Mockito.times(1))
+                .findByUsername(mockLoginRequest.getUsername());
     }
 
     @Test
@@ -155,9 +182,11 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.doNothing().when(tokenService).verifyAndValidate(mockRefreshToken);
+        Mockito.doNothing().when(tokenService)
+                .verifyAndValidate(mockRefreshToken);
 
-        Mockito.when(tokenService.getClaims(mockRefreshToken)).thenReturn(mockClaims);
+        Mockito.when(tokenService.getClaims(mockRefreshToken))
+                .thenReturn(mockClaims);
 
         Mockito.when(adminUserRepository.findByUsername(mockAdminUserEntity.getUsername()))
                 .thenReturn(Optional.of(mockAdminUserEntity));
@@ -223,9 +252,11 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Claims mockClaims = AysTokenBuilder.getValidClaims(mockAdminUserEntity.getUsername());
 
         // When
-        Mockito.doNothing().when(tokenService).verifyAndValidate(mockRefreshToken);
+        Mockito.doNothing().when(tokenService)
+                .verifyAndValidate(mockRefreshToken);
 
-        Mockito.when(tokenService.getClaims(mockRefreshToken)).thenReturn(mockClaims);
+        Mockito.when(tokenService.getClaims(mockRefreshToken))
+                .thenReturn(mockClaims);
 
         Mockito.when(adminUserRepository.findByUsername(mockAdminUserEntity.getUsername()))
                 .thenReturn(Optional.empty());
@@ -301,9 +332,11 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Claims mockClaims = AysTokenBuilder.getValidClaims(mockAdminUserEntity.getUsername());
 
         // When
-        Mockito.doNothing().when(tokenService).verifyAndValidate(mockRefreshToken);
+        Mockito.doNothing().when(tokenService)
+                .verifyAndValidate(mockRefreshToken);
 
-        Mockito.when(tokenService.getClaims(mockRefreshToken)).thenReturn(mockClaims);
+        Mockito.when(tokenService.getClaims(mockRefreshToken))
+                .thenReturn(mockClaims);
 
         Mockito.when(adminUserRepository.findByUsername(mockAdminUserEntity.getUsername()))
                 .thenReturn(Optional.of(mockAdminUserEntity));
@@ -321,6 +354,5 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findByUsername(mockAdminUserEntity.getUsername());
     }
-
 
 }

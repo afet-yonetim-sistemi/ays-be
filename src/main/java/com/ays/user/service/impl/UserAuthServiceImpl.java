@@ -29,12 +29,7 @@ class UserAuthServiceImpl implements UserAuthService {
     @Transactional
     public AysToken authenticate(AysLoginRequest loginRequest) {
 
-        final UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new UsernameNotValidException(loginRequest.getUsername()));
-
-        if (!userEntity.isActive()) {
-            throw new UserNotActiveException(loginRequest.getUsername());
-        }
+        final UserEntity userEntity = this.findUser(loginRequest.getUsername());
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), userEntity.getPassword())) {
             throw new PasswordNotValidException();
@@ -51,9 +46,20 @@ class UserAuthServiceImpl implements UserAuthService {
                 .getClaims(refreshToken)
                 .get(AysTokenClaims.USERNAME.getValue()).toString();
 
+        final UserEntity userEntity = this.findUser(username);
+
+        return tokenService.generate(userEntity.getClaims(), refreshToken);
+    }
+
+
+    private UserEntity findUser(String username) {
         final UserEntity userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotValidException(username));
 
-        return tokenService.generate(userEntity.getClaims(), refreshToken);
+        if (!userEntity.isActive()) {
+            throw new UserNotActiveException(username);
+        }
+
+        return userEntity;
     }
 }
