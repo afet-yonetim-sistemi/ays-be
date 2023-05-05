@@ -47,7 +47,7 @@ public abstract class AbstractRestControllerTest {
     private AysParameterService parameterService;
 
     @BeforeEach
-    public void generateToken() {
+    public void initializeAuth() {
         Set<AysParameter> parameters = AysParameterBuilder.getParameters();
         Mockito.when(parameterService.getParameters(Mockito.anyString()))
                 .thenReturn(parameters);
