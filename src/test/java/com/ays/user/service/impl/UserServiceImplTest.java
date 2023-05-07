@@ -177,4 +177,24 @@ class UserServiceImplTest extends AbstractUnitTest {
         Mockito.verify(userRepository, Mockito.times(1))
                 .save(mockUserEntity);
     }
+
+    @Test
+    void givenUserUpdateRequest_whenUserIsNotExistForDeleting_thenThrowAysUserNotExistByIdException() {
+        // given
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+        String mockUserId = mockUpdateRequest.getId();
+
+        // When
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.empty());
+
+        // then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userService.updateUser(mockUpdateRequest)
+        );
+
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
+    }
 }

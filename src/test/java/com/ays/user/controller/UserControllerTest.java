@@ -272,4 +272,23 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         Mockito.verify(userService, Mockito.times(1)).updateUser(mockUpdateRequest);
     }
+
+    @Test
+    void givenValidUserUpdateRequest_whenUserUnauthorizedForDeleting_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+
+        // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(BASE_PATH, mockUserToken.getAccessToken(), mockUpdateRequest);
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
 }
