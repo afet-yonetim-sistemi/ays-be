@@ -83,7 +83,9 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
         }
         log.trace("Admin User Register Request checked successfully!");
 
-        final AdminUserEntity userEntityToBeSave = adminUserRegisterRequestToAdminUserEntityMapper.mapForSaving(registerRequest, passwordEncoder);
+        final AdminUserEntity userEntityToBeSave = adminUserRegisterRequestToAdminUserEntityMapper
+                .mapForSaving(registerRequest, passwordEncoder.encode(registerRequest.getPassword()));
+
         adminUserRepository.save(userEntityToBeSave);
         log.trace("Admin User saved successfully!");
 

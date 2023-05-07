@@ -22,7 +22,7 @@ public class AysAdminUserAlreadyExistsByPhoneNumberException extends AysAlreadyE
      * @param phoneNumber The phone number that already exists in the system.
      */
     public AysAdminUserAlreadyExistsByPhoneNumberException(AysPhoneNumber phoneNumber) {
-        super("ADMIN USER ALREADY EXIST! lineNumber:" + phoneNumber.getCountryCode() + " , " + "countryCode:" + phoneNumber.getLineNumber());
+        super("ADMIN USER ALREADY EXIST! countryCode:" + phoneNumber.getCountryCode() + " , " + "lineNumber:" + phoneNumber.getLineNumber());
     }
 
 }

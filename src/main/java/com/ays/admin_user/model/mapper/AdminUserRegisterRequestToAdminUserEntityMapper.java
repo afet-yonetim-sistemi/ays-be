@@ -4,11 +4,9 @@ import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.common.model.mapper.BaseMapper;
+import com.ays.common.util.AysRandomUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.UUID;
 
 /**
  * AdminUserRegisterRequestToAdminUserEntityMapper is an interface that defines the mapping between an {@link AdminUserRegisterRequest} and an {@link AdminUserEntity}.
@@ -24,16 +22,16 @@ public interface AdminUserRegisterRequestToAdminUserEntityMapper extends BaseMap
      * Maps an {@link AdminUserRegisterRequest} object to an {@link AdminUserEntity} object for saving in the database.
      *
      * @param registerRequest the {@link AdminUserRegisterRequest} object to be mapped.
-     * @param passwordEncoder the {@link PasswordEncoder} to be used to encode the password.
+     * @param encodedPassword the {@link String} object.
      * @return the mapped {@link AdminUserEntity} object.
      */
-    default AdminUserEntity mapForSaving(AdminUserRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
+    default AdminUserEntity mapForSaving(AdminUserRegisterRequest registerRequest, String encodedPassword) {
         return AdminUserEntity.builder()
-                .id(UUID.randomUUID().toString())
+                .id(AysRandomUtil.generateUUID())
                 .organizationId(registerRequest.getOrganizationId())
                 .username(registerRequest.getUsername())
                 .email(registerRequest.getEmail())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .password(encodedPassword)
                 .firstName(registerRequest.getFirstName())
                 .lastName(registerRequest.getLastName())
                 .countryCode(registerRequest.getPhoneNumber().getCountryCode())
