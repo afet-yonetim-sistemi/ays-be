@@ -1,44 +1,47 @@
 package com.ays.admin_user.model.dto.request;
 
 import com.ays.common.model.AysPhoneNumber;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Represents a request to register a new administrator user. The request includes fields for the required user
+ * information, such as the user's username, email, password, and phone number, as well as their first and last name.
+ */
 @Data
 @Builder
 public class AdminUserRegisterRequest {
 
-    /* verificationId should be not null and its trimmed length should be greather than zero */
+    /**
+     * Registration Verification ID for Registering Admin User
+     */
     @NotBlank
     private String verificationId;
 
-    /* organizationId should be not null and its trimmed length should be greather than zero */
     @NotBlank
     private String organizationId;
 
-    /* username should be not null and its trimmed length should be greather than zero */
     @NotBlank
     private String username;
 
-    /* email should be not null and its trimmed length should be greather than zero */
-    /* email should be valid */
     @NotBlank
     @Email
     private String email;
 
-    /* password should be not null and its trimmed length should be greather than zero */
     @NotBlank
     private String password;
 
+    @Valid
+    @NotNull
     private AysPhoneNumber phoneNumber;
 
-    /* firstName should be not null and its trimmed length should be greather than zero */
     @NotBlank
     private String firstName;
 
-    /* lastName should be not null and its trimmed length should be greather than zero */
     @NotBlank
     private String lastName;
 
