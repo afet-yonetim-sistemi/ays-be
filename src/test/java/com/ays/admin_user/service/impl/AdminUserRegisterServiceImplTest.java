@@ -35,6 +35,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
     @Mock
     private AdminUserRepository adminUserRepository;
+
     @Mock
     private AdminUserRegisterVerificationRepository adminUserRegisterVerificationRepository;
 
@@ -42,7 +43,6 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     private OrganizationRepository organizationRepository;
 
     @Mock
-    @SuppressWarnings("This field unused in test methods but it's required for encode the password")
     private PasswordEncoder passwordEncoder;
 
     @Test
@@ -75,6 +75,9 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                         mockPhoneNumber.getLineNumber()
                 ))
                 .thenReturn(false);
+
+        Mockito.when(passwordEncoder.encode(Mockito.anyString()))
+                .thenReturn("encodedPassword");
 
         AdminUserEntity mockAdminUserEntityToBeSaved = new AdminUserEntityBuilder().build();
         Mockito.when(adminUserRepository.save(Mockito.any(AdminUserEntity.class)))

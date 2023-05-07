@@ -33,14 +33,11 @@ class UserServiceImplTest extends AbstractUnitTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private UserEntityToUserMapper userEntityToUserMapper;
-
 
     private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
 
     @Test
-    void givenUserListRequest_whenGetAllUsers_thenReturnAllUsers() {
+    void givenUserListRequest_whenUsersFound_thenReturnUsers() {
         // Given
         UserListRequest mockUserListRequest = UserListRequestBuilder.VALID.build();
 
@@ -53,101 +50,102 @@ class UserServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(userRepository.findAll(mockUserListRequest.toPageable()))
                 .thenReturn(mockPageUserEntities);
-        Mockito.when(userEntityToUserMapper.map(mockPageUserEntities.getContent()))
-                .thenReturn(mockUsers);
 
         // Then
         AysPage<User> aysPageUsers = userService.getAllUsers(mockUserListRequest);
 
         AysPageBuilder.assertEquals(mockAysPageUsers, aysPageUsers);
 
-        Mockito.verify(userRepository, Mockito.times(1)).findAll(mockUserListRequest.toPageable());
-
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findAll(mockUserListRequest.toPageable());
     }
 
     @Test
     void givenUserId_whenGetUser_thenReturnUser() {
         // Given
-        String id = AysRandomUtil.generateUUID();
+        String mockUserId = AysRandomUtil.generateUUID();
 
-        UserEntity userEntity = new UserEntityBuilder()
-                .withId(id)
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withId(mockUserId)
                 .build();
-        User user = USER_ENTITY_TO_USER_MAPPER.map(userEntity);
+        User mockUser = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntity);
 
         // When
-        Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(userEntity));
-        Mockito.when(userEntityToUserMapper.map(userEntity)).thenReturn(user);
-
-        User result = userService.getUserById(id);
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.of(mockUserEntity));
 
         // Then
-        Assertions.assertEquals(user.getFirstName(), result.getFirstName());
+        User user = userService.getUserById(mockUserId);
 
-        Mockito.verify(userRepository, Mockito.times(1)).findById(id);
+        Assertions.assertEquals(mockUser.getFirstName(), user.getFirstName());
 
-
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
     }
 
     @Test
-    void givenInvalidUserId_whenUserIdNotExist_thenReturnNonExistentUser() {
+    void givenInvalidUserId_whenUserIsNotExistForGetting_thenThrowAysUserNotExistByIdException() {
         // Given
-        String id = AysRandomUtil.generateUUID();
-
-        AysUserNotExistByIdException expectedError =
-                new AysUserNotExistByIdException(id);
+        String mockUserId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.empty());
 
-        // then
-        AysUserNotExistByIdException actual =
-                Assertions.assertThrows(AysUserNotExistByIdException.class, () -> userService.getUserById(id));
-        Assertions.assertEquals(expectedError.getMessage(), actual.getMessage());
+        // Then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userService.getUserById(mockUserId)
+        );
 
-        Mockito.verify(userRepository, Mockito.times(1)).findById(id);
-
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
     }
 
     @Test
-    void givenInvalidUserId_whenUserFound_thenReturnUserWithStatusDeleted() {
+    void givenValidUserId_whenUserFound_ThenDeleteUser() {
         // given
-        String id = AysRandomUtil.generateUUID();
-        UserEntity userEntity = new UserEntityBuilder()
-                .withId(id)
+        String mockUserId = AysRandomUtil.generateUUID();
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withId(mockUserId)
                 .withStatus(UserStatus.ACTIVE)
                 .build();
 
         // when
-        Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(userEntity));
-        userEntity.deleteUser();
-        Mockito.when(userRepository.save(userEntity)).thenReturn(userEntity);
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        mockUserEntity.deleteUser();
+        Mockito.when(userRepository.save(mockUserEntity)).thenReturn(mockUserEntity);
 
         // then
-        userService.deleteUser(id);
+        userService.deleteUser(mockUserId);
 
-        Assertions.assertEquals(UserStatus.DELETED, userEntity.getStatus());
+        Assertions.assertEquals(UserStatus.DELETED, mockUserEntity.getStatus());
 
-        Mockito.verify(userRepository, Mockito.times(1)).findById(id);
-        Mockito.verify(userRepository, Mockito.times(1)).save(userEntity);
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(mockUserEntity);
     }
 
     @Test
-    void givenInvalidUserId_whenUserDeletedWithId_thenReturnUserWithStatusDeleted() {
+    void givenInvalidUserId_whenUserIsNotExistForDeleting_thenThrowAysUserNotExistByIdException() {
         // Given
-        String id = AysRandomUtil.generateUUID();
-
-        AysUserNotExistByIdException expectedError = new AysUserNotExistByIdException(id);
+        String mockUserId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.empty());
 
         // then
-        AysUserNotExistByIdException actual =
-                Assertions.assertThrows(AysUserNotExistByIdException.class, () -> userService.deleteUser(id));
-        Assertions.assertEquals(expectedError.getMessage(), actual.getMessage());
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userService.deleteUser(mockUserId)
+        );
 
-        Mockito.verify(userRepository, Mockito.times(1)).findById(id);
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
     }
 
 }

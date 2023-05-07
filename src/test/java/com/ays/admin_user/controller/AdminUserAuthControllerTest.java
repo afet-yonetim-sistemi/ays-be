@@ -31,7 +31,8 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     @MockBean
     private AdminUserRegisterService adminUserRegisterService;
 
-    private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
+
+    private static final AysTokenToAysTokenResponseMapper AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER = AysTokenToAysTokenResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1/authentication/admin";
 
@@ -67,7 +68,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         Mockito.when(adminUserAuthService.authenticate(Mockito.any())).thenReturn(mockAdminUserToken);
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
+        AysTokenResponse mockResponse = AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER.map(mockAdminUserToken);
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), mockRequest))
@@ -93,7 +94,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         Mockito.when(adminUserAuthService.refreshAccessToken(Mockito.any())).thenReturn(mockAdminUserToken);
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
+        AysTokenResponse mockResponse = AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER.map(mockAdminUserToken);
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), mockRequest))
