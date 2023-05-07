@@ -6,9 +6,11 @@ public class AysPagingBuilder extends TestDataBuilder<AysPaging> {
         super(AysPaging.class);
     }
 
-    public static final AysPagingBuilder VALID = new AysPagingBuilder()
-            .withPage(1L)
-            .withPageSize(10L);
+    public AysPagingBuilder withValidValues() {
+        return this
+                .withPage(1L)
+                .withPageSize(10L);
+    }
 
     public AysPagingBuilder withPage(Long page) {
         data.setPage(page);

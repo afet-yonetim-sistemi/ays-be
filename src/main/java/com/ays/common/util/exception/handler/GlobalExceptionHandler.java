@@ -9,6 +9,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,6 +30,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.subErrors(exception)
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysError.Header.VALIDATION_ERROR.getName())
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.BAD_REQUEST);
@@ -40,6 +42,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.subErrors(exception.getBindingResult().getFieldErrors())
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysError.Header.VALIDATION_ERROR.getName())
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.BAD_REQUEST);
@@ -50,6 +53,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.subErrors(exception.getConstraintViolations())
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysError.Header.VALIDATION_ERROR.getName())
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.BAD_REQUEST);
@@ -60,6 +64,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
                 .header(AysError.Header.NOT_FOUND.getName())
                 .message(exception.getMessage())
                 .build();
@@ -71,6 +76,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.CONFLICT)
                 .header(AysError.Header.ALREADY_EXIST.getName())
                 .message(exception.getMessage())
                 .build();
@@ -82,6 +88,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysError.Header.PROCESS_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
@@ -93,6 +100,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysError.Header.PROCESS_ERROR.getName())
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -103,6 +111,18 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .header(AysError.Header.AUTH_ERROR.getName())
+                .build();
+        return new ResponseEntity<>(aysError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<Object> handleAccessDeniedError(final AccessDeniedException exception) {
+        log.error(exception.getMessage(), exception);
+
+        AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED)
                 .header(AysError.Header.AUTH_ERROR.getName())
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.UNAUTHORIZED);
@@ -113,6 +133,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysError.Header.DATABASE_ERROR.getName())
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);

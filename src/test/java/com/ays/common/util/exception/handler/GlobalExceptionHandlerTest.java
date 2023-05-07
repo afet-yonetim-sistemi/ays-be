@@ -39,7 +39,7 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     }
 
     private void checkAysError(AysError mockAysError, AysError aysError) {
-        Assertions.assertNotNull(aysError.getRequestTime());
+        Assertions.assertNotNull(aysError.getTime());
         Assertions.assertEquals(mockAysError.getHeader(), aysError.getHeader());
         Assertions.assertEquals(mockAysError.getMessage(), aysError.getMessage());
         Assertions.assertEquals(mockAysError.getIsSuccess(), aysError.getIsSuccess());

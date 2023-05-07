@@ -39,7 +39,7 @@ class UserServiceImplTest extends AbstractUnitTest {
     @Test
     void givenUserListRequest_whenUsersFound_thenReturnUsers() {
         // Given
-        UserListRequest mockUserListRequest = UserListRequestBuilder.VALID.build();
+        UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
 
         List<UserEntity> mockUserEntities = Collections.singletonList(new UserEntityBuilder().build());
         Page<UserEntity> mockPageUserEntities = new PageImpl<>(mockUserEntities);

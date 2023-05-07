@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -28,7 +29,11 @@ public class AysError {
      * The time when the error occurred.
      */
     @Builder.Default
-    private LocalDateTime requestTime = LocalDateTime.now();
+    private LocalDateTime time = LocalDateTime.now();
+    /**
+     * The httpStatus of the error response.
+     */
+    private HttpStatus httpStatus;
     /**
      * The header of the error response.
      */

@@ -14,7 +14,6 @@ import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
-import com.ays.util.AysTestData;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -40,7 +39,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     void givenValidAdminUserRegisterRequest_whenAdminUserRegistered_thenReturnSuccessResponse() throws Exception {
         // Given
         AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
-                .withEmail(AysTestData.VALID_EMAIL).build();
+                .withValidFields().build();
 
         // When
         Mockito.doNothing().when(adminUserRegisterService).register(Mockito.any());

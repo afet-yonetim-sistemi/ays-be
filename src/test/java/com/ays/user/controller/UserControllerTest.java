@@ -7,6 +7,7 @@ import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.AysRandomUtil;
+import com.ays.common.util.exception.model.AysError;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
 import com.ays.user.model.dto.request.UserListRequest;
@@ -26,11 +27,14 @@ import com.ays.user.model.mapper.UserToUsersResponseMapper;
 import com.ays.user.service.UserSaveService;
 import com.ays.user.service.UserService;
 import com.ays.util.AysMockMvcRequestBuilders;
+import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
@@ -60,22 +64,20 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .build();
 
+        // When
         User mockUser = new UserBuilder()
                 .withUsername("123456")
                 .withPassword("987654")
                 .withStatus(UserStatus.ACTIVE).build();
+        Mockito.when(userSaveService.saveUser(Mockito.any(UserSaveRequest.class)))
+                .thenReturn(mockUser);
 
+        // Then
         UserSavedResponse mockUserSavedResponse = new UserSavedResponseBuilder()
                 .withUsername(mockUser.getUsername())
                 .withPassword(mockUser.getPassword())
                 .build();
         AysResponse<UserSavedResponse> mockResponse = AysResponseBuilder.successOf(mockUserSavedResponse);
-
-        // When
-        Mockito.when(userSaveService.saveUser(Mockito.any(UserSaveRequest.class)))
-                .thenReturn(mockUser);
-
-        // Then
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
                 .andDo(print())
@@ -92,24 +94,42 @@ class UserControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
+    void givenValidUserSaveRequest_whenUserUnauthorizedForSaving_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
+                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .build();
+
+        // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(BASE_PATH, mockUserToken.getAccessToken(), mockUserSaveRequest);
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
+
+    @Test
     void givenValidUserListRequest_whenUsersFound_thenReturnUsersResponse() throws Exception {
         // Given
-        final UserListRequest mockUserListRequest = UserListRequestBuilder.VALID
-                .withSort(null).build();
+        UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
 
+        // When
         Page<UserEntity> mockUserEntities = new PageImpl<>(
                 UserEntityBuilder.generateValidUserEntities(1)
         );
         List<User> mockUsers = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntities.getContent());
         AysPage<User> mockAysPageOfUsers = AysPage.of(mockUserEntities, mockUsers);
-
-        List<UsersResponse> mockUsersResponses = USER_TO_USERS_RESPONSE_MAPPER.map(mockAysPageOfUsers.getContent());
-
-        // when
         Mockito.when(userService.getAllUsers(mockUserListRequest))
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
+        List<UsersResponse> mockUsersResponses = USER_TO_USERS_RESPONSE_MAPPER.map(mockAysPageOfUsers.getContent());
         AysPageResponse<UsersResponse> pageOfUsersResponse = AysPageResponse.<UsersResponse>builder()
                 .of(mockAysPageOfUsers)
                 .content(mockUsersResponses)
@@ -129,12 +149,31 @@ class UserControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
+    void givenValidUserListRequest_whenUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
+
+        // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(BASE_PATH, mockUserToken.getAccessToken(), mockUserListRequest);
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
+
+    @Test
     void givenValidUserId_whenUserFound_thenReturnUserResponse() throws Exception {
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
-        User mockUser = new UserBuilder().build();
 
         // When
+        User mockUser = new UserBuilder().build();
         Mockito.when(userService.getUserById(mockUserId))
                 .thenReturn(mockUser);
 
@@ -152,6 +191,25 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         Mockito.verify(userService, Mockito.times(1))
                 .getUserById(mockUserId);
+    }
+
+    @Test
+    void givenValidValidUserId_whenUserUnauthorizedForGetting_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+
+        // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(BASE_PATH.concat("/".concat(mockUserId)), mockUserToken.getAccessToken());
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
     @Test
@@ -174,6 +232,25 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.response").doesNotExist());
 
         Mockito.verify(userService, Mockito.times(1)).deleteUser(mockUserId);
+    }
+
+    @Test
+    void givenValidValidUserId_whenUserUnauthorizedForDeleting_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+
+        // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(BASE_PATH.concat("/".concat(mockUserId)), mockUserToken.getAccessToken());
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
 }

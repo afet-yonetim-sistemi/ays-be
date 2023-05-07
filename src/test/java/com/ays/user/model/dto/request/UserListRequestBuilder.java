@@ -13,8 +13,11 @@ public class UserListRequestBuilder extends TestDataBuilder<UserListRequest> {
         super(UserListRequest.class);
     }
 
-    public static final UserListRequestBuilder VALID = new UserListRequestBuilder()
-            .withPagination(AysPagingBuilder.VALID.build());
+    public UserListRequestBuilder withValidValues() {
+        return this
+                .withPagination(new AysPagingBuilder().withValidValues().build())
+                .withSort(null);
+    }
 
     public UserListRequestBuilder withPagination(AysPaging aysPaging) {
         data.setPagination(aysPaging);
