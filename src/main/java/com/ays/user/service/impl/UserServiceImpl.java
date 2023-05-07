@@ -3,7 +3,6 @@ package com.ays.user.service.impl;
 import com.ays.common.model.AysPage;
 import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserListRequest;
-import com.ays.user.model.dto.request.UserSaveRequest;
 import com.ays.user.model.dto.request.UserUpdateRequest;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.mapper.UserEntityToUserMapper;
@@ -25,43 +24,6 @@ class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
-
-
-    @Transactional
-    public void saveUser(UserSaveRequest saveRequest) {
-//
-//        if (userRepository.findByUsername(saveRequest.getUsername()).isPresent()) {
-//            throw new UserAlreadyExistsException("Error: Username is already taken!");
-//        }
-//
-//        UserEntity user = UserEntity.builder()
-//                .organizationId(saveRequest.getOrganizationId())
-//                .username(saveRequest.getUsername())
-//                .password(saveRequest.getPassword())
-//                .firstName(saveRequest.getFirstName())
-//                .lastName(saveRequest.getLastName())
-//                .role(UserRole.ROLE_VOLUNTEER)
-//                .countryCode(saveRequest.getCountryCode())
-//                .lineNumber(saveRequest.getLineNumber())
-//                .status(UserStatus.getById(saveRequest.getStatusId()))
-//                .email(saveRequest.getEmail())
-//                .lastLoginDate(LocalDateTime.now())
-//                .build();
-//
-//        var createdUser = userRepository.save(user);
-//
-//        return User.builder()
-//                .username(createdUser.getUsername())
-//                .firstName(createdUser.getFirstName())
-//                .lastName(createdUser.getLastName())
-//                .role(UserRole.getById(createdUser.getRole().ordinal()))
-//                .countryCode(createdUser.getCountryCode())
-//                .lineNumber(createdUser.getLineNumber())
-//                .status(createdUser.getStatus())
-//                .email(createdUser.getEmail())
-//                .lastLoginDate(createdUser.getLastLoginDate())
-//                .build();
-    }
 
     public AysPage<User> getAllUsers(UserListRequest listRequest) {
         Page<UserEntity> userEntities = userRepository.findAll(listRequest.toPageable());

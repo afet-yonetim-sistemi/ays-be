@@ -6,6 +6,7 @@ import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * User DTO to perform data transfer from service layer to the api.
  */
 @Getter
+@Setter
 @Builder
 public class User {
 
