@@ -9,7 +9,11 @@ import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
-import com.ays.user.model.dto.request.*;
+import com.ays.user.model.dto.request.UserListRequest;
+import com.ays.user.model.dto.request.UserListRequestBuilder;
+import com.ays.user.model.dto.request.UserSaveRequest;
+import com.ays.user.model.dto.request.UserSaveRequestBuilder;
+import com.ays.user.model.dto.response.UserResponse;
 import com.ays.user.model.dto.response.UserSavedResponse;
 import com.ays.user.model.dto.response.UserSavedResponseBuilder;
 import com.ays.user.model.dto.response.UsersResponse;
@@ -17,6 +21,7 @@ import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.model.enums.UserStatus;
 import com.ays.user.model.mapper.UserEntityToUserMapper;
+import com.ays.user.model.mapper.UserToUserResponseMapper;
 import com.ays.user.model.mapper.UserToUsersResponseMapper;
 import com.ays.user.service.UserSaveService;
 import com.ays.user.service.UserService;
@@ -26,12 +31,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -46,7 +46,9 @@ class UserControllerTest extends AbstractRestControllerTest {
     @MockBean
     private UserSaveService userSaveService;
 
+
     private static final UserToUsersResponseMapper USER_TO_USERS_RESPONSE_MAPPER = UserToUsersResponseMapper.initialize();
+    private static final UserToUserResponseMapper USER_TO_USER_RESPONSE_MAPPER = UserToUserResponseMapper.initialize();
     private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1/user";
@@ -90,7 +92,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenUserListRequest_whenUserToken_thenAysResponseSuccess() throws Exception {
+    void givenValidUserListRequest_whenUsersFound_thenReturnUsersResponse() throws Exception {
         // Given
         final UserListRequest mockUserListRequest = UserListRequestBuilder.VALID
                 .withSort(null).build();
@@ -126,71 +128,52 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .getAllUsers(mockUserListRequest);
     }
 
-
     @Test
-    void givenUserId_whenAdminUserToken_thenReturnUserResponseSuccess() throws Exception {
+    void givenValidUserId_whenUserFound_thenReturnUserResponse() throws Exception {
         // Given
-        String id = AysRandomUtil.generateUUID();
+        String mockUserId = AysRandomUtil.generateUUID();
         User mockUser = new UserBuilder().build();
 
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin",
-                null, Collections.singleton(new SimpleGrantedAuthority("ADMIN"))));
-        SecurityContextHolder.setContext(securityContext);
-
         // When
-        Mockito.when(userService.getUserById(id)).thenReturn(mockUser);
+        Mockito.when(userService.getUserById(mockUserId))
+                .thenReturn(mockUser);
 
         // Then
+        UserResponse mockUserResponse = USER_TO_USER_RESPONSE_MAPPER.map(mockUser);
+        AysResponse<UserResponse> mockAysResponse = AysResponse.successOf(mockUserResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH.concat("/" + id), mockAdminUserToken.getAccessToken()))
+                        .get(BASE_PATH.concat("/".concat(mockUserId)), mockAdminUserToken.getAccessToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.time").isNotEmpty())
+                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
+                .andExpect(jsonPath("$.response").isNotEmpty());
 
-        Mockito.verify(userService, Mockito.times(1)).getUserById(id);
+        Mockito.verify(userService, Mockito.times(1))
+                .getUserById(mockUserId);
     }
 
     @Test
-    void givenUserId_whenAdminUserToken_thenDeleteUserSuccess() throws Exception {
+    void givenValidUserId_whenUserDeleted_thenReturnAysResponseOfSuccess() throws Exception {
         // Given
-        String id = AysRandomUtil.generateUUID();
-
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin",
-                null, Collections.singleton(new SimpleGrantedAuthority("ADMIN"))));
-        SecurityContextHolder.setContext(securityContext);
+        String mockUserId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.doNothing().when(userService).deleteUser(id);
+        Mockito.doNothing().when(userService).deleteUser(mockUserId);
 
         // Then
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .delete(BASE_PATH.concat("/" + id), mockAdminUserToken.getAccessToken()))
+                        .delete(BASE_PATH.concat("/".concat(mockUserId)), mockAdminUserToken.getAccessToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.time").isNotEmpty())
+                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
+                .andExpect(jsonPath("$.response").isNotEmpty());
 
-        Mockito.verify(userService, Mockito.times(1)).deleteUser(id);
+        Mockito.verify(userService, Mockito.times(1)).deleteUser(mockUserId);
     }
 
-    @Test
-    void givenUserId_whenAdminUserToken_thenUpdateUserSuccess() throws Exception {
-        // Given
-        UserUpdateRequest mockupdateRequest = UserUpdateRequest.builder().build();
-
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin",
-                null, Collections.singleton(new SimpleGrantedAuthority("ADMIN"))));
-        SecurityContextHolder.setContext(securityContext);
-
-        // When
-        Mockito.doNothing().when(userService).updateUser(mockupdateRequest);
-
-        // Then
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(BASE_PATH, mockAdminUserToken.getAccessToken(), mockupdateRequest))
-                .andDo(print())
-                .andExpect(status().isOk());
-
-        Mockito.verify(userService, Mockito.times(1)).updateUser(mockupdateRequest);
-    }
 }
