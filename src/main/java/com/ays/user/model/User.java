@@ -1,32 +1,31 @@
 package com.ays.user.model;
 
 import com.ays.common.model.AysPhoneNumber;
-import com.ays.organization.model.entity.OrganizationEntity;
+import com.ays.common.model.BaseDomainModel;
+import com.ays.organization.model.Organization;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 /**
- * User DTO to perform data transfer from service layer to the api.
+ * User Domain Model to perform data transfer from service layer to controller
  */
-@Getter
-@Setter
-@Builder
-public class User {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+public class User extends BaseDomainModel {
 
+    private String id;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
-    private String email;
-    private OrganizationEntity organization;
     private UserRole role;
     private UserStatus status;
     private AysPhoneNumber phoneNumber;
-    private LocalDateTime lastLoginDate;
+
+    private Organization organization;
 
 }

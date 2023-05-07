@@ -4,6 +4,7 @@ import com.ays.common.model.mapper.BaseMapper;
 import com.ays.user.model.User;
 import com.ays.user.model.entity.UserEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -15,6 +16,11 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface UserEntityToUserMapper extends BaseMapper<UserEntity, User> {
+
+    @Override
+    @Mapping(target = "phoneNumber.countryCode", source = "source.countryCode")
+    @Mapping(target = "phoneNumber.lineNumber", source = "source.lineNumber")
+    User map(UserEntity source);
 
     /**
      * Initializes the mapper.
