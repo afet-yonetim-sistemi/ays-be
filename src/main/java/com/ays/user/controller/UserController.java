@@ -23,7 +23,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * User controller to perform user related api operations.
+ * REST controller class for managing user-related operations via HTTP requests.
+ * This controller handles the CRUD operations for users in the system.
+ * The mapping path for this controller is "/api/v1/user".
  */
 @RestController
 @RequestMapping("/api/v1/user")
@@ -39,25 +41,11 @@ class UserController {
     private final UserToUsersResponseMapper userToUsersResponseMapper = UserToUsersResponseMapper.initialize();
 
     /**
-     * This endpoint allows users to register and create a new account.
+     * Gets a list of users in the system.
+     * Requires ADMIN authority.
      *
-     * @param saveRequest A UserSaveRequest object containing the username and password of the new user (required).
-     * @return A ResponseEntity containing a SignUpResponse object with the username of the newly created user and
-     * the HTTP status code (201 CREATED).
-     */
-    @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public AysResponse<UserSavedResponse> saveUser(@RequestBody @Valid UserSaveRequest saveRequest) {
-        User user = userSaveService.saveUser(saveRequest);
-        UserSavedResponse userSavedResponse = userToUserSavedResponseMapper.map(user);
-        return AysResponse.successOf(userSavedResponse);
-    }
-
-    /**
-     * This endpoint returns a pageable list of UsersResponse objects.
-     *
-     * @param listRequest A UserListRequest object containing the page number and page size for the query (optional).
-     * @return A AysApiResponse containing a AysPageResponse with UsersResponse and the HTTP status code (200 OK).
+     * @param listRequest The request object containing the list criteria.
+     * @return A response object containing a paginated list of users.
      */
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -72,10 +60,11 @@ class UserController {
     }
 
     /**
-     * This endpoint returns a UserResponse object with the specified ID.
+     * Gets a user by ID.
+     * Requires ADMIN authority.
      *
-     * @param id A Long representing the ID of the user to retrieve (required).
-     * @return A AysApiResponse containing a UserResponse object with the specified ID and the HTTP status code (200 OK).
+     * @param id The ID of the user to retrieve.
+     * @return A response object containing the retrieved user data.
      */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -86,28 +75,45 @@ class UserController {
     }
 
     /**
-     * This endpoint returns a Void object by deleting the user softly with the specified ID.
+     * Saves a new user to the system.
+     * Requires ADMIN authority.
      *
-     * @param id A Long representing the ID of the user to retrieve (required).
+     * @param saveRequest The request object containing the user data to be saved.
+     * @return A response object containing the saved user data.
      */
-    @DeleteMapping("/{id}")
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public AysResponse<Void> deleteSoftUserById(@PathVariable @UUID String id) {
-        userService.deleteUser(id);
-        return AysResponse.SUCCESS;
+    public AysResponse<UserSavedResponse> saveUser(@RequestBody @Valid UserSaveRequest saveRequest) {
+        User user = userSaveService.saveUser(saveRequest);
+        UserSavedResponse userSavedResponse = userToUserSavedResponseMapper.map(user);
+        return AysResponse.successOf(userSavedResponse);
     }
 
     /**
-     * This endpoint returns a Void object by updating the user with the specified ID.
+     * Updates an existing user with the specified user update request.
+     * Requires ADMIN authority.
      *
-     * @param updateRequest UserUpdateRequest for updating the user
-     * @return A ResponseEntity containing a UserDTO object after implementing the process of updating user
-     * with the specified ID by and the HTTP status code (200 OK).
+     * @param updateRequest the user update request containing the updated user information
+     * @return a success response if the user was updated successfully
      */
     @PutMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<Void> updateUserById(@RequestBody UserUpdateRequest updateRequest) {
         userService.updateUser(updateRequest);
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Soft-deletes a user by ID.
+     * Requires ADMIN authority.
+     *
+     * @param id The ID of the user to delete.
+     * @return A response object indicating a successful deletion.
+     */
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<Void> deleteUserById(@PathVariable @UUID String id) {
+        userService.deleteUser(id);
         return AysResponse.SUCCESS;
     }
 }
