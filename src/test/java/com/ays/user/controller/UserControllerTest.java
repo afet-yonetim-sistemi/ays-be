@@ -171,7 +171,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.time").isNotEmpty())
                 .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
                 .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").isNotEmpty());
+                .andExpect(jsonPath("$.response").doesNotExist());
 
         Mockito.verify(userService, Mockito.times(1)).deleteUser(mockUserId);
     }

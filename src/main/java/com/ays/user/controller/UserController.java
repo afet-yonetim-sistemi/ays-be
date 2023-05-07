@@ -38,7 +38,6 @@ class UserController {
     private final UserToUserResponseMapper userToUserResponseMapper = UserToUserResponseMapper.initialize();
     private final UserToUsersResponseMapper userToUsersResponseMapper = UserToUsersResponseMapper.initialize();
 
-
     /**
      * This endpoint allows users to register and create a new account.
      *
@@ -86,7 +85,6 @@ class UserController {
         return AysResponse.successOf(userResponse);
     }
 
-
     /**
      * This endpoint returns a Void object by deleting the user softly with the specified ID.
      *
@@ -94,10 +92,10 @@ class UserController {
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public void deleteSoftUserById(@PathVariable @UUID String id) {
+    public AysResponse<Void> deleteSoftUserById(@PathVariable @UUID String id) {
         userService.deleteUser(id);
+        return AysResponse.SUCCESS;
     }
-
 
     /**
      * This endpoint returns a Void object by updating the user with the specified ID.
