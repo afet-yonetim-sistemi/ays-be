@@ -7,6 +7,8 @@ import com.ays.common.util.AysRandomUtil;
 import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserListRequest;
 import com.ays.user.model.dto.request.UserListRequestBuilder;
+import com.ays.user.model.dto.request.UserUpdateRequest;
+import com.ays.user.model.dto.request.UserUpdateRequestBuilder;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.model.enums.UserStatus;
@@ -148,4 +150,31 @@ class UserServiceImplTest extends AbstractUnitTest {
                 .findById(mockUserId);
     }
 
+    @Test
+    void givenUserUpdateRequest_whenUserFound_ThenDeleteUser() {
+        // given
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+        String mockUserId = mockUpdateRequest.getId();
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withId(mockUserId)
+                .withStatus(UserStatus.ACTIVE)
+                .build();
+
+        // When
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        mockUserEntity.updateUser(mockUpdateRequest);
+        Mockito.when(userRepository.save(mockUserEntity)).thenReturn(mockUserEntity);
+
+        // then
+        userService.updateUser(mockUpdateRequest);
+
+        Assertions.assertEquals(mockUpdateRequest.getFirstName(), mockUserEntity.getFirstName());
+
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(mockUserEntity);
+    }
 }

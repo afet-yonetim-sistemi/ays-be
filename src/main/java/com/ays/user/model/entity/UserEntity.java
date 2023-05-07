@@ -4,6 +4,7 @@ import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.entity.BaseEntity;
 import com.ays.organization.model.entity.OrganizationEntity;
+import com.ays.user.model.dto.request.UserUpdateRequest;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import jakarta.persistence.*;
@@ -85,4 +86,14 @@ public class UserEntity extends BaseEntity {
         return claims;
     }
 
+    public void updateUser(UserUpdateRequest updateRequest) {
+        setOrganizationId(updateRequest.getOrganizationId());
+        setUsername(updateRequest.getUsername());
+        setFirstName(updateRequest.getFirstName());
+        setLastName(updateRequest.getLastName());
+        setRole(updateRequest.getUserRole());
+        setStatus(updateRequest.getUserStatus());
+        setCountryCode(updateRequest.getCountryCode().longValue());
+        setLineNumber(updateRequest.getLineNumber().longValue());
+    }
 }

@@ -60,7 +60,7 @@ class UserServiceImpl implements UserService {
         final UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
-        // userEntity.update(); TODO : user update method must be written
+        userEntity.updateUser(updateRequest); // TODO : user update method must be written
         userRepository.save(userEntity);
     }
 

@@ -10,10 +10,7 @@ import com.ays.common.util.AysRandomUtil;
 import com.ays.common.util.exception.model.AysError;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
-import com.ays.user.model.dto.request.UserListRequest;
-import com.ays.user.model.dto.request.UserListRequestBuilder;
-import com.ays.user.model.dto.request.UserSaveRequest;
-import com.ays.user.model.dto.request.UserSaveRequestBuilder;
+import com.ays.user.model.dto.request.*;
 import com.ays.user.model.dto.response.UserResponse;
 import com.ays.user.model.dto.response.UserSavedResponse;
 import com.ays.user.model.dto.response.UserSavedResponseBuilder;
@@ -253,4 +250,26 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
+    @Test
+    void givenValidUserUpdateRequest_whenUsersFound_thenReturnUpdatedUserResponse() throws Exception {
+
+        // Given
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+
+        // When
+        Mockito.doNothing().when(userService).updateUser(mockUpdateRequest);
+
+        // Then
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .put(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUpdateRequest))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.time").isNotEmpty())
+                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
+                .andExpect(jsonPath("$.response").doesNotExist());
+
+        Mockito.verify(userService, Mockito.times(1)).updateUser(mockUpdateRequest);
+    }
 }
