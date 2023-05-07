@@ -6,7 +6,10 @@ import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.TokenNotValidException;
+import com.ays.common.util.AysListUtil;
+import com.ays.common.util.AysRandomUtil;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
@@ -17,7 +20,10 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -34,7 +40,7 @@ class AysTokenServiceImpl implements AysTokenService {
 
         final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessExpireMinute());
         final String accessToken = Jwts.builder()
-                .setId(UUID.randomUUID().toString())
+                .setId(AysRandomUtil.generateUUID())
                 .setIssuer(tokenConfiguration.getIssuer())
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(accessTokenExpiresAt)
@@ -46,7 +52,7 @@ class AysTokenServiceImpl implements AysTokenService {
         final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshExpireDay());
         final JwtBuilder refreshTokenBuilder = Jwts.builder();
         final String refreshToken = refreshTokenBuilder
-                .setId(UUID.randomUUID().toString())
+                .setId(AysRandomUtil.generateUUID())
                 .setIssuer(tokenConfiguration.getIssuer())
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(refreshTokenExpiresAt)
@@ -71,7 +77,7 @@ class AysTokenServiceImpl implements AysTokenService {
         final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessExpireMinute());
 
         final String accessToken = Jwts.builder()
-                .setId(UUID.randomUUID().toString())
+                .setId(AysRandomUtil.generateUUID())
                 .setIssuer(tokenConfiguration.getIssuer())
                 .setIssuedAt(accessTokenIssuedAt)
                 .setExpiration(accessTokenExpiresAt)
@@ -94,8 +100,8 @@ class AysTokenServiceImpl implements AysTokenService {
                     .setSigningKey(tokenConfiguration.getPublicKey())
                     .build()
                     .parseClaimsJws(jwt)
-                    .getBody(); // TODO burada sadece doğrulama yapılabilir mi?
-        } catch (MalformedJwtException | ExpiredJwtException exception) {
+                    .getBody();
+        } catch (MalformedJwtException | ExpiredJwtException | SignatureException exception) {
             throw new TokenNotValidException(jwt, exception);
         }
     }
@@ -132,7 +138,7 @@ class AysTokenServiceImpl implements AysTokenService {
         switch (userType) {
             case ADMIN -> authorities.add(new SimpleGrantedAuthority("ADMIN"));
             case USER -> {
-                final List<String> roles = (List<String>) claims.get(AysTokenClaims.ROLES.getValue());
+                final List<String> roles = AysListUtil.to(claims.get(AysTokenClaims.ROLES.getValue()), String.class);
                 roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
             }
             default -> throw new IllegalArgumentException("User type is not valid!");
