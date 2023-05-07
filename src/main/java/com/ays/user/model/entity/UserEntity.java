@@ -81,6 +81,8 @@ public class UserEntity extends BaseEntity {
         claims.put(AysTokenClaims.ROLES.getValue(), List.of(this.role));
         claims.put(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claims.put(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
+        claims.put(AysTokenClaims.ORGANIZATION_ID.getValue(), this.organizationId);
         return claims;
     }
+
 }
