@@ -1,6 +1,7 @@
 package com.ays.common.model;
 
 import com.ays.common.util.validation.PhoneNumber;
+import com.google.gson.Gson;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,4 +30,11 @@ public class AysPhoneNumber {
     @NotNull
     private Long lineNumber;
 
+    /**
+     * This method returns a JSON representation of the object for validation exception messages.
+     */
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 }
