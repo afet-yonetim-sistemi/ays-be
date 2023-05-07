@@ -2,24 +2,30 @@ package com.ays.user.controller;
 
 import com.ays.AbstractRestControllerTest;
 import com.ays.common.model.AysPage;
+import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
+import com.ays.common.util.AysRandomUtil;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
 import com.ays.user.model.dto.request.*;
+import com.ays.user.model.dto.response.UserSavedResponse;
+import com.ays.user.model.dto.response.UserSavedResponseBuilder;
 import com.ays.user.model.dto.response.UsersResponse;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
+import com.ays.user.model.enums.UserStatus;
 import com.ays.user.model.mapper.UserEntityToUserMapper;
-import com.ays.user.model.mapper.UserToUserResponseMapper;
 import com.ays.user.model.mapper.UserToUsersResponseMapper;
+import com.ays.user.service.UserSaveService;
 import com.ays.user.service.UserService;
 import com.ays.util.AysMockMvcRequestBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -27,7 +33,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,33 +44,34 @@ class UserControllerTest extends AbstractRestControllerTest {
     private UserService userService;
 
     @MockBean
-    private UserToUserResponseMapper userToUserResponseMapper;
+    private UserSaveService userSaveService;
 
-    @MockBean
-    private UserToUsersResponseMapper userToUsersResponseMapper;
-
-    private static final UserToUserResponseMapper USER_TO_USER_RESPONSE_MAPPER = UserToUserResponseMapper.initialize();
     private static final UserToUsersResponseMapper USER_TO_USERS_RESPONSE_MAPPER = UserToUsersResponseMapper.initialize();
     private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
+
     private static final String BASE_PATH = "/api/v1/user";
 
-
     @Test
-    void givenUserSaveRequest_whenAdminUserToken_thenReturnAysResponseSuccess() throws Exception {
+    void givenValidUserSaveRequest_whenUserSaved_thenReturnUserSavedResponse() throws Exception {
         // Given
         UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
-                .withFirstName("First Name")
-                .withLastName("Last Name")
+                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .build();
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin",
-                null, Collections.singleton(new SimpleGrantedAuthority("ADMIN"))));
-        SecurityContextHolder.setContext(securityContext);
+        User mockUser = new UserBuilder()
+                .withUsername("123456")
+                .withPassword("987654")
+                .withStatus(UserStatus.ACTIVE).build();
+
+        UserSavedResponse mockUserSavedResponse = new UserSavedResponseBuilder()
+                .withUsername(mockUser.getUsername())
+                .withPassword(mockUser.getPassword())
+                .build();
+        AysResponse<UserSavedResponse> mockResponse = AysResponseBuilder.successOf(mockUserSavedResponse);
 
         // When
-        Mockito.doNothing().when(userService).saveUser(mockUserSaveRequest);
+        Mockito.when(userSaveService.saveUser(Mockito.any(UserSaveRequest.class)))
+                .thenReturn(mockUser);
 
         // Then
         mockMvc.perform(AysMockMvcRequestBuilders
@@ -75,10 +81,12 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.time").isNotEmpty())
                 .andExpect(jsonPath("$.httpStatus").value(mockResponse.getHttpStatus().getReasonPhrase()))
                 .andExpect(jsonPath("$.isSuccess").value(mockResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").doesNotExist());
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response.username").value(mockResponse.getResponse().getUsername()))
+                .andExpect(jsonPath("$.response.password").value(mockResponse.getResponse().getPassword()));
 
-        Mockito.verify(userService, Mockito.times(1)).saveUser(mockUserSaveRequest);
-
+        Mockito.verify(userSaveService, Mockito.times(1))
+                .saveUser(Mockito.any(UserSaveRequest.class));
     }
 
     @Test
@@ -87,7 +95,9 @@ class UserControllerTest extends AbstractRestControllerTest {
         final UserListRequest mockUserListRequest = UserListRequestBuilder.VALID
                 .withSort(null).build();
 
-        Page<UserEntity> mockUserEntities = UserEntityBuilder.VALID_PAGE_OF_USER_ENTITIES;
+        Page<UserEntity> mockUserEntities = new PageImpl<>(
+                UserEntityBuilder.generateValidUserEntities(1)
+        );
         List<User> mockUsers = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntities.getContent());
         AysPage<User> mockAysPageOfUsers = AysPage.of(mockUserEntities, mockUsers);
 
@@ -96,8 +106,6 @@ class UserControllerTest extends AbstractRestControllerTest {
         // when
         Mockito.when(userService.getAllUsers(mockUserListRequest))
                 .thenReturn(mockAysPageOfUsers);
-        Mockito.when(userToUsersResponseMapper.map(mockAysPageOfUsers.getContent()))
-                .thenReturn(mockUsersResponses);
 
         // Then
         AysPageResponse<UsersResponse> pageOfUsersResponse = AysPageResponse.<UsersResponse>builder()
@@ -122,7 +130,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     @Test
     void givenUserId_whenAdminUserToken_thenReturnUserResponseSuccess() throws Exception {
         // Given
-        String id = UUID.randomUUID().toString();
+        String id = AysRandomUtil.generateUUID();
         User mockUser = new UserBuilder().build();
 
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
@@ -145,7 +153,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     @Test
     void givenUserId_whenAdminUserToken_thenDeleteUserSuccess() throws Exception {
         // Given
-        String id = UUID.randomUUID().toString();
+        String id = AysRandomUtil.generateUUID();
 
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin",

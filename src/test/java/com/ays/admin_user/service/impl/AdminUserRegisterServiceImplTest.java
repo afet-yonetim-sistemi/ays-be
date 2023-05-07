@@ -14,6 +14,8 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberE
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNotValidException;
 import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.AysPhoneNumberBuilder;
+import com.ays.common.util.AysRandomUtil;
 import com.ays.organization.repository.OrganizationRepository;
 import com.ays.organization.util.exception.AysOrganizationNotExistException;
 import com.ays.util.AysTestData;
@@ -25,7 +27,6 @@ import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
-import java.util.UUID;
 
 class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
@@ -48,10 +49,10 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenValidAdminUserRegisterRequest_thenAdminUserRegistered() {
 
         // Given
-        AysPhoneNumber mockPhoneNumber = AysTestData.VALID_PHONE_NUMBER;
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
-                .withVerificationId(UUID.randomUUID().toString())
-                .withOrganizationId(UUID.randomUUID().toString())
+                .withVerificationId(AysRandomUtil.generateUUID())
+                .withOrganizationId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -131,7 +132,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
-                .withVerificationId(UUID.randomUUID().toString())
+                .withVerificationId(AysRandomUtil.generateUUID())
                 .withOrganizationId("Invalid").build();
 
         // When
@@ -159,8 +160,8 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
-                .withVerificationId(UUID.randomUUID().toString())
-                .withOrganizationId(UUID.randomUUID().toString())
+                .withVerificationId(AysRandomUtil.generateUUID())
+                .withOrganizationId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
         // When
@@ -193,8 +194,8 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
-                .withVerificationId(UUID.randomUUID().toString())
-                .withOrganizationId(UUID.randomUUID().toString())
+                .withVerificationId(AysRandomUtil.generateUUID())
+                .withOrganizationId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
         // When
@@ -231,10 +232,10 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenExistingPhoneNumberFromAdminUserRegisterRequest_whenAdminUserExist_thenThrowAysAdminUserAlreadyExistsByPhoneNumberException() {
 
         // Given
-        AysPhoneNumber mockPhoneNumber = AysTestData.VALID_PHONE_NUMBER;
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
-                .withVerificationId(UUID.randomUUID().toString())
-                .withOrganizationId(UUID.randomUUID().toString())
+                .withVerificationId(AysRandomUtil.generateUUID())
+                .withOrganizationId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 

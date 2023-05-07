@@ -1,5 +1,7 @@
 package com.ays.user.model.dto.request;
 
+import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
 
 public class UserSaveRequestBuilder extends TestDataBuilder<UserSaveRequest> {
@@ -8,13 +10,14 @@ public class UserSaveRequestBuilder extends TestDataBuilder<UserSaveRequest> {
         super(UserSaveRequest.class);
     }
 
-    public UserSaveRequestBuilder withFirstName(String firstName) {
-        data.setFirstName(firstName);
+    public UserSaveRequestBuilder withValidFields() {
+        this.withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build());
         return this;
     }
 
-    public UserSaveRequestBuilder withLastName(String lastName) {
-        data.setLastName(lastName);
+    public UserSaveRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
+        data.setPhoneNumber(phoneNumber);
         return this;
     }
+
 }

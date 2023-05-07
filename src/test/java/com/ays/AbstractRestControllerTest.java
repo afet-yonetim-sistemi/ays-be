@@ -4,6 +4,7 @@ import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.auth.config.AysTokenConfiguration;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.enums.AysTokenClaims;
+import com.ays.common.util.AysRandomUtil;
 import com.ays.parameter.model.AysParameter;
 import com.ays.parameter.model.AysParameterBuilder;
 import com.ays.parameter.service.AysParameterService;
@@ -27,12 +28,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles(value = "test")
 @AutoConfigureMockMvc
+@ActiveProfiles(value = "test")
 public abstract class AbstractRestControllerTest {
 
     @Autowired
@@ -63,7 +63,7 @@ public abstract class AbstractRestControllerTest {
 
         final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessExpireMinute());
         final String accessToken = Jwts.builder()
-                .setId(UUID.randomUUID().toString())
+                .setId(AysRandomUtil.generateUUID())
                 .setIssuer(tokenConfiguration.getIssuer())
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(accessTokenExpiresAt)
@@ -75,7 +75,7 @@ public abstract class AbstractRestControllerTest {
         final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshExpireDay());
         final JwtBuilder refreshTokenBuilder = Jwts.builder();
         final String refreshToken = refreshTokenBuilder
-                .setId(UUID.randomUUID().toString())
+                .setId(AysRandomUtil.generateUUID())
                 .setIssuer(tokenConfiguration.getIssuer())
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(refreshTokenExpiresAt)

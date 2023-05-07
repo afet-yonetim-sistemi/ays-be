@@ -3,6 +3,7 @@ package com.ays.user.service.impl;
 import com.ays.AbstractUnitTest;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
+import com.ays.common.util.AysRandomUtil;
 import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserListRequest;
 import com.ays.user.model.dto.request.UserListRequestBuilder;
@@ -13,7 +14,6 @@ import com.ays.user.model.mapper.UserEntityToUserMapper;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.util.exception.AysUserNotExistByIdException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,7 +24,6 @@ import org.springframework.data.domain.PageImpl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 class UserServiceImplTest extends AbstractUnitTest {
 
@@ -39,16 +38,6 @@ class UserServiceImplTest extends AbstractUnitTest {
 
 
     private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
-
-    @Disabled
-    @Test
-    void shouldSaveUser() {
-        // Given
-
-        // When
-
-        // Then
-    }
 
     @Test
     void givenUserListRequest_whenGetAllUsers_thenReturnAllUsers() {
@@ -79,7 +68,7 @@ class UserServiceImplTest extends AbstractUnitTest {
     @Test
     void givenUserId_whenGetUser_thenReturnUser() {
         // Given
-        String id = UUID.randomUUID().toString();
+        String id = AysRandomUtil.generateUUID();
 
         UserEntity userEntity = new UserEntityBuilder()
                 .withId(id)
@@ -103,7 +92,7 @@ class UserServiceImplTest extends AbstractUnitTest {
     @Test
     void givenInvalidUserId_whenUserIdNotExist_thenReturnNonExistentUser() {
         // Given
-        String id = UUID.randomUUID().toString();
+        String id = AysRandomUtil.generateUUID();
 
         AysUserNotExistByIdException expectedError =
                 new AysUserNotExistByIdException(id);
@@ -123,7 +112,7 @@ class UserServiceImplTest extends AbstractUnitTest {
     @Test
     void givenInvalidUserId_whenUserFound_thenReturnUserWithStatusDeleted() {
         // given
-        String id = UUID.randomUUID().toString();
+        String id = AysRandomUtil.generateUUID();
         UserEntity userEntity = new UserEntityBuilder()
                 .withId(id)
                 .withStatus(UserStatus.ACTIVE)
@@ -146,7 +135,7 @@ class UserServiceImplTest extends AbstractUnitTest {
     @Test
     void givenInvalidUserId_whenUserDeletedWithId_thenReturnUserWithStatusDeleted() {
         // Given
-        String id = UUID.randomUUID().toString();
+        String id = AysRandomUtil.generateUUID();
 
         AysUserNotExistByIdException expectedError = new AysUserNotExistByIdException(id);
 
@@ -161,13 +150,4 @@ class UserServiceImplTest extends AbstractUnitTest {
         Mockito.verify(userRepository, Mockito.times(1)).findById(id);
     }
 
-    @Disabled
-    @Test
-    void updateUser() {
-        // Given
-
-        // When
-
-        // Then
-    }
 }

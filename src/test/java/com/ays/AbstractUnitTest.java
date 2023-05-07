@@ -9,10 +9,10 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "test")
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
+@ActiveProfiles(value = "test")
 public abstract class AbstractUnitTest {
 
     protected AysToken mockAdminUserToken = AysToken.builder()

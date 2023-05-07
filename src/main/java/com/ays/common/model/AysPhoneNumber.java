@@ -4,6 +4,7 @@ import com.ays.common.util.validation.PhoneNumber;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 /**
@@ -12,6 +13,7 @@ import org.hibernate.validator.constraints.Range;
  * This class is immutable and can be constructed using the Builder pattern.
  */
 @Getter
+@Setter
 @Builder
 @PhoneNumber
 public class AysPhoneNumber {
