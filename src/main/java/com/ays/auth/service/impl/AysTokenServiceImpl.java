@@ -47,7 +47,7 @@ class AysTokenServiceImpl implements AysTokenService {
 
         final Date tokenIssuedAt = new Date(currentTimeMillis);
 
-        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessExpireMinute());
+        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
         final String accessToken = Jwts.builder()
                 .setId(AysRandomUtil.generateUUID())
                 .setIssuer(tokenConfiguration.getIssuer())
@@ -58,7 +58,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .addClaims(claims)
                 .compact();
 
-        final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshExpireDay());
+        final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireDay());
         final JwtBuilder refreshTokenBuilder = Jwts.builder();
         final String refreshToken = refreshTokenBuilder
                 .setId(AysRandomUtil.generateUUID())
@@ -89,7 +89,7 @@ class AysTokenServiceImpl implements AysTokenService {
 
         final long currentTimeMillis = System.currentTimeMillis();
         final Date accessTokenIssuedAt = new Date(currentTimeMillis);
-        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessExpireMinute());
+        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
 
         final String accessToken = Jwts.builder()
                 .setId(AysRandomUtil.generateUUID())

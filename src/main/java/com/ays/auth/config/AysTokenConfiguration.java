@@ -28,11 +28,11 @@ public class AysTokenConfiguration {
     /**
      * The number of minutes until access tokens expire.
      */
-    private final Integer accessExpireMinute;
+    private final Integer accessTokenExpireMinute;
     /**
      * The number of days until refresh tokens expire.
      */
-    private final Integer refreshExpireDay;
+    private final Integer refreshTokenExpireDay;
     /**
      * The private key used for token signing and verification.
      */
@@ -55,12 +55,12 @@ public class AysTokenConfiguration {
 
         this.issuer = AysConfigurationParameter.AYS.getDefaultValue();
 
-        this.accessExpireMinute = Optional
+        this.accessTokenExpireMinute = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE, configurationParameters))
                 .map(Integer::valueOf)
                 .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE.getDefaultValue()));
 
-        this.refreshExpireDay = Optional
+        this.refreshTokenExpireDay = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY, configurationParameters))
                 .map(Integer::valueOf)
                 .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue()));
