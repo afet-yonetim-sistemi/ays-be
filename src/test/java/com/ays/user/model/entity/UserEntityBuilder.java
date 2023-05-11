@@ -4,6 +4,8 @@ import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
+import com.ays.organization.model.entity.OrganizationEntity;
+import com.ays.organization.model.entity.OrganizationEntityBuilder;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 
@@ -26,18 +28,25 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
     }
 
     public UserEntityBuilder withValidFields() {
+        OrganizationEntity organizationEntity = new OrganizationEntityBuilder().withValidFields().build();
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withUsername(String.valueOf(AysRandomUtil.generateNumber(6)))
                 .withPassword("$2a$10$H/lKEaKsusQztOaJmYTAi.4MAmjvnxWOh0DY.XrgwHy5D2gENVIky")
-                .withOrganizationId(AysRandomUtil.generateUUID())
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .withRole(UserRole.VOLUNTEER)
-                .withStatus(UserStatus.ACTIVE);
+                .withStatus(UserStatus.ACTIVE)
+                .withOrganizationId(organizationEntity.getId())
+                .withOrganization(organizationEntity);
     }
 
     public UserEntityBuilder withId(String id) {
         data.setId(id);
+        return this;
+    }
+
+    public UserEntityBuilder withOrganizationId(String organizationId) {
+        data.setOrganizationId(organizationId);
         return this;
     }
 
@@ -48,11 +57,6 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
 
     public UserEntityBuilder withPassword(String password) {
         data.setPassword(password);
-        return this;
-    }
-
-    public UserEntityBuilder withOrganizationId(String organizationId) {
-        data.setOrganizationId(organizationId);
         return this;
     }
 
@@ -69,6 +73,11 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
 
     public UserEntityBuilder withRole(UserRole role) {
         data.setRole(role);
+        return this;
+    }
+
+    public UserEntityBuilder withOrganization(OrganizationEntity organization) {
+        data.setOrganization(organization);
         return this;
     }
 
