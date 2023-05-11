@@ -12,21 +12,31 @@ public class AysParameterBuilder extends TestDataBuilder<AysParameter> {
 
     public static Set<AysParameter> getParameters() {
         return Set.of(
-                AysParameter.builder().name("AUTH_TOKEN_PRIVATE_KEY").definition(TEST_PRIVATE_KEY_PEM).build(),
-                AysParameter.builder().name("AUTH_TOKEN_PUBLIC_KEY").definition(TEST_PUBLIC_KEY_PEM).build(),
-                AysParameter.builder().name("AUTH_ACCESS_TOKEN_EXPIRE_MINUTE").definition(ACCESS_EXPIRE_MINUTE).build(),
-                AysParameter.builder().name("AUTH_REFRESH_TOKEN_EXPIRE_DAY").definition(REFRESH_EXPIRE_DAY).build(),
-                AysParameter.builder().name("AUTH_LOGIN_MAX_TRY_COUNT").definition(LOGIN_MAX_TRY_COUNT).build()
+                AysParameter.builder()
+                        .name("AUTH_TOKEN_PRIVATE_KEY")
+                        .definition(AUTH_TOKEN_PRIVATE_KEY).build(),
+                AysParameter.builder()
+                        .name("AUTH_TOKEN_PUBLIC_KEY")
+                        .definition(AUTH_TOKEN_PUBLIC_KEY).build(),
+                AysParameter.builder()
+                        .name("AUTH_ACCESS_TOKEN_EXPIRE_MINUTE")
+                        .definition(AUTH_ACCESS_TOKEN_EXPIRE_MINUTE).build(),
+                AysParameter.builder()
+                        .name("AUTH_REFRESH_TOKEN_EXPIRE_DAY")
+                        .definition(AUTH_REFRESH_TOKEN_EXPIRE_DAY).build(),
+                AysParameter.builder()
+                        .name("AUTH_LOGIN_MAX_TRY_COUNT")
+                        .definition(AUTH_LOGIN_MAX_TRY_COUNT).build()
         );
     }
 
-    private static final String ACCESS_EXPIRE_MINUTE = "120";
+    private static final String AUTH_ACCESS_TOKEN_EXPIRE_MINUTE = "120";
 
-    private static final String REFRESH_EXPIRE_DAY = "1";
+    private static final String AUTH_REFRESH_TOKEN_EXPIRE_DAY = "1";
 
-    private static final String LOGIN_MAX_TRY_COUNT = "3";
+    private static final String AUTH_LOGIN_MAX_TRY_COUNT = "3";
 
-    private static final String TEST_PRIVATE_KEY_PEM = """
+    private static final String AUTH_TOKEN_PRIVATE_KEY = """
             -----BEGIN PRIVATE KEY-----
             MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDH+MUShIcE42+v
             eixv8iUJ0+Pd76HWgX2iHhaSftXQs9O5doCOKCMVVkK1H8ORN6ZgDIVIhao5MTCP
@@ -57,7 +67,7 @@ public class AysParameterBuilder extends TestDataBuilder<AysParameter> {
             -----END PRIVATE KEY-----
             """;
 
-    private static final String TEST_PUBLIC_KEY_PEM = """
+    private static final String AUTH_TOKEN_PUBLIC_KEY = """
             -----BEGIN PUBLIC KEY-----
             MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx/jFEoSHBONvr3osb/Il
             CdPj3e+h1oF9oh4Wkn7V0LPTuXaAjigjFVZCtR/DkTemYAyFSIWqOTEwj8D7x/OW
