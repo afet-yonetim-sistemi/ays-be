@@ -8,6 +8,7 @@ import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.TokenNotValidException;
 import com.ays.common.util.AysListUtil;
 import com.ays.common.util.AysRandomUtil;
+import com.ays.common.util.exception.AysUnexpectedArgumentException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
@@ -178,7 +179,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 final List<String> roles = AysListUtil.to(claims.get(AysTokenClaims.ROLES.getValue()), String.class);
                 roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
             }
-            default -> throw new IllegalArgumentException("User type is not valid!");
+            default -> throw new AysUnexpectedArgumentException(userType);
         }
 
         return UsernamePasswordAuthenticationToken.authenticated(jwt, null, authorities);
