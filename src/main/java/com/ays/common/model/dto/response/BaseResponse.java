@@ -7,6 +7,9 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
+/**
+ * BaseResponse is a base class for response objects that contain common fields for auditing purposes.
+ */
 @Data
 @SuperBuilder
 @NoArgsConstructor
