@@ -7,6 +7,9 @@ import java.io.Serial;
  */
 public abstract class AysNotExistException extends RuntimeException {
 
+    /**
+     * Unique identifier for serialization.
+     */
     @Serial
     private static final long serialVersionUID = -3046469863777315718L;
 

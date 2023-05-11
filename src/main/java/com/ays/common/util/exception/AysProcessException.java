@@ -7,6 +7,9 @@ import java.io.Serial;
  */
 public abstract class AysProcessException extends RuntimeException {
 
+    /**
+     * Unique identifier for serialization.
+     */
     @Serial
     private static final long serialVersionUID = 7261195193622257525L;
 
