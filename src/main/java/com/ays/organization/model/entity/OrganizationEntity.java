@@ -1,10 +1,8 @@
 package com.ays.organization.model.entity;
 
 import com.ays.common.model.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.ays.organization.model.enums.OrganizationStatus;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,4 +27,9 @@ public class OrganizationEntity extends BaseEntity {
 
     @Column(name = "NAME")
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private OrganizationStatus status;
+
 }
