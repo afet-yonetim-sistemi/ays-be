@@ -175,10 +175,11 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockUser);
 
         // Then
+        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
         UserResponse mockUserResponse = USER_TO_USER_RESPONSE_MAPPER.map(mockUser);
         AysResponse<UserResponse> mockAysResponse = AysResponse.successOf(mockUserResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH.concat("/".concat(mockUserId)), mockAdminUserToken.getAccessToken()))
+                        .get(endpoint, mockAdminUserToken.getAccessToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.time").isNotEmpty())
@@ -221,10 +222,10 @@ class UserControllerTest extends AbstractRestControllerTest {
         Mockito.doNothing().when(userService).updateUser(mockUserId, mockUpdateRequest);
 
         // Then
+        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUpdateRequest)
-                        .param("id", mockUserId))
+                        .put(endpoint, mockAdminUserToken.getAccessToken(), mockUpdateRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.time").isNotEmpty())
@@ -243,9 +244,9 @@ class UserControllerTest extends AbstractRestControllerTest {
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
 
         // Then
+        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(BASE_PATH, mockUserToken.getAccessToken(), mockUpdateRequest)
-                .param("id", mockUserId);
+                .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -266,9 +267,10 @@ class UserControllerTest extends AbstractRestControllerTest {
         Mockito.doNothing().when(userService).deleteUser(mockUserId);
 
         // Then
+        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .delete(BASE_PATH.concat("/".concat(mockUserId)), mockAdminUserToken.getAccessToken()))
+                        .delete(endpoint, mockAdminUserToken.getAccessToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.time").isNotEmpty())
@@ -286,8 +288,9 @@ class UserControllerTest extends AbstractRestControllerTest {
         String mockUserId = AysRandomUtil.generateUUID();
 
         // Then
+        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH.concat("/".concat(mockUserId)), mockUserToken.getAccessToken());
+                .get(endpoint, mockUserToken.getAccessToken());
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
         mockMvc.perform(mockHttpServletRequestBuilder)
