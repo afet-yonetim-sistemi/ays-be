@@ -11,9 +11,13 @@ import com.ays.user.model.dto.request.UserUpdateRequest;
 import com.ays.user.model.dto.request.UserUpdateRequestBuilder;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
+import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import com.ays.user.model.mapper.UserEntityToUserMapper;
 import com.ays.user.repository.UserRepository;
+import com.ays.user.util.exception.AysUserAlreadyActiveException;
+import com.ays.user.util.exception.AysUserAlreadyDeletedException;
+import com.ays.user.util.exception.AysUserAlreadyPassiveException;
 import com.ays.user.util.exception.AysUserNotExistByIdException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -104,31 +108,181 @@ class UserServiceImplTest extends AbstractUnitTest {
                 .findById(mockUserId);
     }
 
+
     @Test
-    void givenValidUserId_whenUserFound_ThenDeleteUser() {
-        // given
+    void givenValidUserIdAndUserUpdateRequest_whenUserActive_thenUpdateUser() {
+        // Given
         String mockUserId = AysRandomUtil.generateUUID();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
+                .withRole(UserRole.VOLUNTEER)
+                .withStatus(UserStatus.PASSIVE)
+                .build();
+
+        // When
         UserEntity mockUserEntity = new UserEntityBuilder()
+                .withValidFields()
                 .withId(mockUserId)
                 .withStatus(UserStatus.ACTIVE)
                 .build();
+        Mockito.when(userRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUserEntity));
 
-        // when
+        UserEntity mockUserEntityToBeUpdated = new UserEntityBuilder()
+                .withValidFields()
+                .withId(mockUserId)
+                .build();
+        mockUserEntityToBeUpdated.updateUser(mockUpdateRequest);
+        Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
+                .thenReturn(mockUserEntityToBeUpdated);
+
+        // Then
+        userService.updateUser(mockUserId, mockUpdateRequest);
+
+        Assertions.assertEquals(mockUpdateRequest.getRole(), mockUserEntity.getRole());
+        Assertions.assertEquals(mockUpdateRequest.getStatus(), mockUserEntity.getStatus());
+
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(Mockito.anyString());
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(Mockito.any(UserEntity.class));
+    }
+
+    @Test
+    void givenValidUserIdAndUserUpdateRequest_whenUserIsNotExistForSaving_thenThrowAysUserNotExistByIdException() {
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
+                .withRole(UserRole.VOLUNTEER)
+                .withStatus(UserStatus.PASSIVE)
+                .build();
+
+        // When
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userService.updateUser(mockUserId, mockUpdateRequest)
+        );
+
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
+    }
+
+    @Test
+    void givenValidUserIdAndUserUpdateRequest_whenUserAlreadyActive_thenThrowAysUserAlreadyActiveException() {
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
+                .withRole(UserRole.VOLUNTEER)
+                .withStatus(UserStatus.ACTIVE)
+                .build();
+
+
+        // When
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withValidFields()
+                .withId(mockUserId)
+                .withStatus(UserStatus.ACTIVE)
+                .build();
         Mockito.when(userRepository.findById(mockUserId))
                 .thenReturn(Optional.of(mockUserEntity));
 
-        mockUserEntity.deleteUser();
-        Mockito.when(userRepository.save(mockUserEntity)).thenReturn(mockUserEntity);
+        // Then
+        Assertions.assertThrows(
+                AysUserAlreadyActiveException.class,
+                () -> userService.updateUser(mockUserId, mockUpdateRequest)
+        );
 
-        // then
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
+    }
+
+    @Test
+    void givenValidUserIdAndUserUpdateRequest_whenUserAlreadyPassive_thenThrowAysUserAlreadyPassiveException() {
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
+                .withRole(UserRole.VOLUNTEER)
+                .withStatus(UserStatus.PASSIVE)
+                .build();
+
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withId(mockUserId)
+                .withStatus(UserStatus.PASSIVE)
+                .withRole(UserRole.VOLUNTEER)
+                .build();
+
+        // When
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserAlreadyPassiveException.class,
+                () -> userService.updateUser(mockUserId, mockUpdateRequest)
+        );
+
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
+    }
+
+    @Test
+    void givenValidUserId_whenUserIsExistAndNotDeleted_thenDeleteUser() {
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+
+        // When
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withValidFields()
+                .withId(mockUserId)
+                .withStatus(UserStatus.ACTIVE)
+                .build();
+        Mockito.when(userRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        UserEntity mockUserEntityToBeDeleted = new UserEntityBuilder()
+                .withValidFields()
+                .withId(mockUserId)
+                .build();
+        mockUserEntityToBeDeleted.deleteUser();
+        Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
+                .thenReturn(mockUserEntityToBeDeleted);
+
+        // Then
         userService.deleteUser(mockUserId);
 
         Assertions.assertEquals(UserStatus.DELETED, mockUserEntity.getStatus());
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
+                .findById(Mockito.anyString());
         Mockito.verify(userRepository, Mockito.times(1))
-                .save(mockUserEntity);
+                .save(Mockito.any(UserEntity.class));
+    }
+
+    @Test
+    void givenValidUserId_whenUserAlreadyDeleted_thenThrowAysUserAlreadyDeletedException() {
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withId(mockUserId)
+                .withStatus(UserStatus.DELETED)
+                .build();
+
+        // When
+        Mockito.when(userRepository.findById(mockUserId))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserAlreadyDeletedException.class,
+                () -> userService.deleteUser(mockUserId)
+        );
+
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findById(mockUserId);
     }
 
     @Test
@@ -140,58 +294,10 @@ class UserServiceImplTest extends AbstractUnitTest {
         Mockito.when(userRepository.findById(mockUserId))
                 .thenReturn(Optional.empty());
 
-        // then
+        // Then
         Assertions.assertThrows(
                 AysUserNotExistByIdException.class,
                 () -> userService.deleteUser(mockUserId)
-        );
-
-        Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
-    }
-
-    @Test
-    void givenUserUpdateRequest_whenUserFound_ThenDeleteUser() {
-        // given
-        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
-        String mockUserId = mockUpdateRequest.getId();
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withId(mockUserId)
-                .withStatus(UserStatus.ACTIVE)
-                .build();
-
-        // When
-        Mockito.when(userRepository.findById(mockUserId))
-                .thenReturn(Optional.of(mockUserEntity));
-
-        mockUserEntity.updateUser(mockUpdateRequest);
-        Mockito.when(userRepository.save(mockUserEntity)).thenReturn(mockUserEntity);
-
-        // then
-        userService.updateUser(mockUpdateRequest);
-
-        Assertions.assertEquals(mockUpdateRequest.getFirstName(), mockUserEntity.getFirstName());
-
-        Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
-        Mockito.verify(userRepository, Mockito.times(1))
-                .save(mockUserEntity);
-    }
-
-    @Test
-    void givenUserUpdateRequest_whenUserIsNotExistForDeleting_thenThrowAysUserNotExistByIdException() {
-        // given
-        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
-        String mockUserId = mockUpdateRequest.getId();
-
-        // When
-        Mockito.when(userRepository.findById(mockUserId))
-                .thenReturn(Optional.empty());
-
-        // then
-        Assertions.assertThrows(
-                AysUserNotExistByIdException.class,
-                () -> userService.updateUser(mockUpdateRequest)
         );
 
         Mockito.verify(userRepository, Mockito.times(1))
