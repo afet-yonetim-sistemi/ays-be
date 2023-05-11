@@ -25,6 +25,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * AYS Token service to handle with JWT processes
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,12 @@ class AysTokenServiceImpl implements AysTokenService {
 
     private final AysTokenConfiguration tokenConfiguration;
 
+    /**
+     * Generates an access token and a refresh token based on the provided claims.
+     *
+     * @param claims The claims to be included in the tokens.
+     * @return AysToken object containing the access token and refresh token.
+     */
     @Override
     public AysToken generate(final Map<String, Object> claims) {
         final long currentTimeMillis = System.currentTimeMillis();
@@ -68,7 +77,13 @@ class AysTokenServiceImpl implements AysTokenService {
                 .build();
     }
 
-
+    /**
+     * Generates an access token based on the provided claims and refresh token.
+     *
+     * @param claims       The claims to be included in the access token.
+     * @param refreshToken The refresh token.
+     * @return AysToken object containing the generated access token and refresh token.
+     */
     @Override
     public AysToken generate(final Map<String, Object> claims, final String refreshToken) {
 
@@ -93,6 +108,14 @@ class AysTokenServiceImpl implements AysTokenService {
                 .build();
     }
 
+    /**
+     * Verifies and validates the given JWT (JSON Web Token).
+     * This method parses the token using the public key from the {@link AysTokenConfiguration},
+     * and throws a {@link TokenNotValidException} if the token is not valid due to being malformed, expired or having an invalid signature.
+     *
+     * @param jwt The JWT (JSON Web Token) to be verified and validated.
+     * @throws TokenNotValidException If the token is not valid due to being malformed, expired or having an invalid signature.
+     */
     @Override
     public void verifyAndValidate(String jwt) {
         try {
@@ -106,6 +129,12 @@ class AysTokenServiceImpl implements AysTokenService {
         }
     }
 
+    /**
+     * Parses the given JWT and returns its claims as a {@link Claims} object.
+     *
+     * @param jwt the JWT string to parse
+     * @return the parsed JWT claims as a {@link Claims} object
+     */
     @Override
     public Claims getClaims(String jwt) {
         return Jwts.parserBuilder()
@@ -115,6 +144,14 @@ class AysTokenServiceImpl implements AysTokenService {
                 .getBody();
     }
 
+    /**
+     * Retrieves the authentication object {@link UsernamePasswordAuthenticationToken} based on the provided token.
+     * This method parses the token using the public key from the {@link AysTokenConfiguration} and extracts the necessary information from the token claims,
+     * such as user type and roles, to construct the authentication object.
+     *
+     * @param token The token string used for authentication.
+     * @return The constructed {@link UsernamePasswordAuthenticationToken} object.
+     */
     @Override
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
 
