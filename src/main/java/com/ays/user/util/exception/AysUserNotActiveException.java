@@ -1,11 +1,13 @@
 package com.ays.user.util.exception;
 
+import com.ays.common.util.exception.AysNotActiveException;
+
 import java.io.Serial;
 
 /**
  * Exception thrown when a user is not active and attempting to perform an action that requires an active user.
  */
-public class AysUserNotActiveException extends RuntimeException {
+public class AysUserNotActiveException extends AysNotActiveException {
 
     /**
      * Unique serial version ID.
