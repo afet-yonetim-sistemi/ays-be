@@ -209,6 +209,54 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
+
+    @Test
+    void givenValidUserIdAndUserUpdateRequest_whenUserUpdated_thenReturnAysResponseOfSuccess() throws Exception {
+
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+
+        // When
+        Mockito.doNothing().when(userService).updateUser(mockUserId, mockUpdateRequest);
+
+        // Then
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .put(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUpdateRequest)
+                        .param("id", mockUserId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.time").isNotEmpty())
+                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
+                .andExpect(jsonPath("$.response").doesNotExist());
+
+        Mockito.verify(userService, Mockito.times(1))
+                .updateUser(mockUserId, mockUpdateRequest);
+    }
+
+    @Test
+    void givenValidUserIdAndUserUpdateRequest_whenUserUnauthorizedForUpdating_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+
+        // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(BASE_PATH, mockUserToken.getAccessToken(), mockUpdateRequest)
+                .param("id", mockUserId);
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
+
     @Test
     void givenValidUserId_whenUserDeleted_thenReturnAysResponseOfSuccess() throws Exception {
         // Given
@@ -228,7 +276,8 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
                 .andExpect(jsonPath("$.response").doesNotExist());
 
-        Mockito.verify(userService, Mockito.times(1)).deleteUser(mockUserId);
+        Mockito.verify(userService, Mockito.times(1))
+                .deleteUser(mockUserId);
     }
 
     @Test
@@ -239,48 +288,6 @@ class UserControllerTest extends AbstractRestControllerTest {
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(BASE_PATH.concat("/".concat(mockUserId)), mockUserToken.getAccessToken());
-
-        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
-    }
-
-    @Test
-    void givenValidUserUpdateRequest_whenUsersFound_thenReturnUpdatedUserResponse() throws Exception {
-
-        // Given
-        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
-
-        // When
-        Mockito.doNothing().when(userService).updateUser(mockUpdateRequest);
-
-        // Then
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUpdateRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").doesNotExist());
-
-        Mockito.verify(userService, Mockito.times(1)).updateUser(mockUpdateRequest);
-    }
-
-    @Test
-    void givenValidUserUpdateRequest_whenUserUnauthorizedForDeleting_thenReturnAccessDeniedException() throws Exception {
-        // Given
-        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
-
-        // Then
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(BASE_PATH, mockUserToken.getAccessToken(), mockUpdateRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
         mockMvc.perform(mockHttpServletRequestBuilder)
