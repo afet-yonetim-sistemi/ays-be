@@ -28,7 +28,7 @@ class UserServiceImpl implements UserService {
 
     private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
 
-    public AysPage<User> getAllUsers(UserListRequest listRequest) {
+    public AysPage<User> getAllUsers(final UserListRequest listRequest) {
         Page<UserEntity> userEntities = userRepository.findAll(listRequest.toPageable());
         List<User> users = userEntityToUserMapper.map(userEntities.getContent());
         return AysPage.of(
@@ -38,7 +38,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(String id) {
+    public User getUserById(final String id) {
         final UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
