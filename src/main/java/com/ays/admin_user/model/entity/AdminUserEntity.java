@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Admin Users entity, which holds the information regarding the system user.
+ * Admin User entity, which holds the information regarding the system user.
  */
 @Entity
 @Data

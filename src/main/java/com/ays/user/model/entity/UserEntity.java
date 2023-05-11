@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Users entity, which holds the information regarding the system user.
+ * User entity, which holds the information regarding the system user.
  */
 @Entity
 @Data
