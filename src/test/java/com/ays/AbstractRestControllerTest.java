@@ -61,7 +61,7 @@ public abstract class AbstractRestControllerTest {
 
         final Date tokenIssuedAt = new Date(currentTimeMillis);
 
-        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessExpireMinute());
+        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
         final String accessToken = Jwts.builder()
                 .setId(AysRandomUtil.generateUUID())
                 .setIssuer(tokenConfiguration.getIssuer())
@@ -72,7 +72,7 @@ public abstract class AbstractRestControllerTest {
                 .addClaims(claims)
                 .compact();
 
-        final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshExpireDay());
+        final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireDay());
         final JwtBuilder refreshTokenBuilder = Jwts.builder();
         final String refreshToken = refreshTokenBuilder
                 .setId(AysRandomUtil.generateUUID())
