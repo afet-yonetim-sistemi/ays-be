@@ -34,6 +34,9 @@ public class UserEntity extends BaseEntity {
     @Column(name = "ID")
     private String id;
 
+    @Column(name = "ORGANIZATION_ID")
+    private String organizationId;
+
     @Column(name = "USERNAME")
     private String username;
 
@@ -60,15 +63,16 @@ public class UserEntity extends BaseEntity {
     @Column(name = "LINE_NUMBER")
     private Long lineNumber;
 
-    @Column(name = "ORGANIZATION_ID")
-    private String organizationId;
-
     @OneToOne
     @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private OrganizationEntity organization;
 
     public boolean isActive() {
         return UserStatus.ACTIVE.equals(this.status);
+    }
+
+    public boolean isDeleted() {
+        return UserStatus.DELETED.equals(this.status);
     }
 
     public void deleteUser() {
@@ -87,13 +91,7 @@ public class UserEntity extends BaseEntity {
     }
 
     public void updateUser(UserUpdateRequest updateRequest) {
-        setOrganizationId(updateRequest.getOrganizationId());
-        setUsername(updateRequest.getUsername());
-        setFirstName(updateRequest.getFirstName());
-        setLastName(updateRequest.getLastName());
-        setRole(updateRequest.getUserRole());
-        setStatus(updateRequest.getUserStatus());
-        setCountryCode(updateRequest.getCountryCode().longValue());
-        setLineNumber(updateRequest.getLineNumber().longValue());
+        this.role = updateRequest.getRole();
+        this.status = updateRequest.getStatus();
     }
 }

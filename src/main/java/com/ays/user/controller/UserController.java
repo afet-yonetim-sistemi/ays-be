@@ -96,10 +96,12 @@ class UserController {
      * @param updateRequest the user update request containing the updated user information
      * @return a success response if the user was updated successfully
      */
-    @PutMapping
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public AysResponse<Void> updateUserById(@RequestBody UserUpdateRequest updateRequest) {
-        userService.updateUser(updateRequest);
+    public AysResponse<Void> updateUser(@PathVariable @UUID String id,
+                                        @RequestBody UserUpdateRequest updateRequest) {
+
+        userService.updateUser(id, updateRequest);
         return AysResponse.SUCCESS;
     }
 

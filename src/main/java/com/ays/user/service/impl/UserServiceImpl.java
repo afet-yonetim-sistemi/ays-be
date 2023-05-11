@@ -1,6 +1,7 @@
 package com.ays.user.service.impl;
 
 import com.ays.common.model.AysPage;
+import com.ays.common.util.exception.AysUnexpectedArgumentException;
 import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserListRequest;
 import com.ays.user.model.dto.request.UserUpdateRequest;
@@ -47,11 +48,27 @@ class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(String id) {
+    public void updateUser(final String id, final UserUpdateRequest updateRequest) {
+
         final UserEntity userEntity = userRepository.findById(id)
+                .filter(user -> !user.isDeleted())
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
-        userEntity.deleteUser();
+        switch (updateRequest.getStatus()) {
+            case ACTIVE -> {
+                if (userEntity.isActive()) {
+                    throw new AysUserAlreadyActiveException(id);
+                }
+            }
+            case PASSIVE -> {
+                if (!userEntity.isActive()) {
+                    throw new AysUserAlreadyPassiveException(id);
+                }
+            }
+            default -> throw new AysUnexpectedArgumentException(updateRequest.getStatus());
+        }
+
+        userEntity.updateUser(updateRequest);
         userRepository.save(userEntity);
     }
 

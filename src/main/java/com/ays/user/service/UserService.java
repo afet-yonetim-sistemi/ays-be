@@ -27,17 +27,18 @@ public interface UserService {
     User getUserById(String id);
 
     /**
+     * Update User by User ID
+     *
+     * @param id            the given User ID
+     * @param updateRequest the given UserUpdateRequest object
+     */
+    void updateUser(String id, UserUpdateRequest updateRequest);
+
+    /**
      * Delete Soft User by User ID
      *
      * @param id the given User ID
      */
     void deleteUser(String id);
 
-
-    /**
-     * Update User by User ID
-     *
-     * @param updateRequest the given UserUpdateRequest object
-     */
-    void updateUser(UserUpdateRequest updateRequest);
 }
