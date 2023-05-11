@@ -8,6 +8,9 @@ import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.mapper.UserEntityToUserMapper;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.service.UserService;
+import com.ays.user.util.exception.AysUserAlreadyActiveException;
+import com.ays.user.util.exception.AysUserAlreadyDeletedException;
+import com.ays.user.util.exception.AysUserAlreadyPassiveException;
 import com.ays.user.util.exception.AysUserNotExistByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -54,13 +57,16 @@ class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(UserUpdateRequest updateRequest) {
+    public void deleteUser(final String id) {
 
-        final String id = updateRequest.getId();
         final UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
-        userEntity.updateUser(updateRequest); // TODO : user update method must be written
+        if (userEntity.isDeleted()) {
+            throw new AysUserAlreadyDeletedException(id);
+        }
+
+        userEntity.deleteUser();
         userRepository.save(userEntity);
     }
 
