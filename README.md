@@ -90,17 +90,15 @@ docker run -p 8080:8080 ays/ays-be
 You need to have .env.local file in the same directory with docker-compose.yml which will define
 env variables used by the compose command - this file should not be committed:
 
-```.env.local
-MYSQLDB_USER=root
-MYSQLDB_ROOT_PASSWORD=123456
-MYSQLDB_DATABASE=afetdb
-MYSQLDB_LOCAL_PORT=3307
-MYSQLDB_DOCKER_PORT=3306
-SPRING_PROFILES_ACTIVE=dev
+```.env
+SPRING_PROFILES_ACTIVE=development
+AYS_DB_USERNAME=ays
+AYS_DB_PASSWORD=ayspass
+AYS_DB_URL=jdbc:mysql://localhost:3306/ays
 ```
 
 ```
-docker compose --env-file .env.local up -d
+docker compose --env-file .env up -d
 ```
 
 To terminate the containers:

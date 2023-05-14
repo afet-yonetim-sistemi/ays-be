@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: ays-be
+    ports:
+      - ${AYS_API_CONTAINER_PORTS}
+    environment:
+      - SPRING_PROFILES_ACTIVE=${AYS_API_ACTIVE_SPRING_PROFILE}
+      - AYS_DB_USERNAME=${AYS_DB_USERNAME}
+      - AYS_DB_PASSWORD=${AYS_DB_PASSWORD}
+      - AYS_DB_URL=${AYS_DB_URL}

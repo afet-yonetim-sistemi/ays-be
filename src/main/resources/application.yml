@@ -1,31 +1,39 @@
+server:
+  port: 9790
+
+logging:
+  level:
+    web: debug
+
+application:
+  description: Afet Yönetim Sistemi (AYS)
+  version: 1.0.0
+  title: AYS
+  licenseName: AYS Licence
+
 spring:
   liquibase:
     enabled: true
     changeLog: "classpath:db/changelog/db.changelog-master.yaml"
-  datasource:
-    url: jdbc:mysql://localhost:3306/afetdb?createDatabaseIfNotExist=true
-    username: root
-    password: ippavlova_1990
-    driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
     hibernate:
-      ddl-auto: update
-      show_sql: true
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+ays:
+  db:
+    name: mysql
+    username: ${AYS_DB_USERNAME:ays}
+    password: ${AYS_DB_PASSWORD:ayspass}
+    url: jdbc:mysql://${AYS_DB_IP:localhost}:${AYS_DB_PORT:3306}/ays
+    maximum-pool-size: 5
+    connection-timeout: 180000
+    maximum-lifetime: 170000
 
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-
-application:
-  description: Afet Yönetim Sistemi Tanimi (AYS)
-  version: 1.0
-  title: "AYS"
-  licenseName: AYS Licence
-
-
-ays:
-  token:
-    secret: afet-secret
-    access-expire-minute: 120
-    refresh-expire-day: 3

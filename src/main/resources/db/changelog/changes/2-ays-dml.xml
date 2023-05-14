@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="2-ays-ddl" author="agitrubard">
+        <!-- ==================== -->
+        <!-- DML of AYS_PARAMETER -->
+        <!-- ==================== -->
+        <insert tableName="AYS_PARAMETER">
+            <column name="NAME" value="AUTH_TOKEN_PRIVATE_KEY"/>
+            <column name="DEFINITION" value="-----BEGIN PRIVATE KEY-----
+            MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDH+MUShIcE42+v
+            eixv8iUJ0+Pd76HWgX2iHhaSftXQs9O5doCOKCMVVkK1H8ORN6ZgDIVIhao5MTCP
+            wPvH85YU2Y2ukILfXps2PCdLMQg45b2t8HFqJJAaqzQQ5ACAVWx3hbVWFQs5g7yL
+            eB/tagY+QaElDXpNk85Xh6EIIOjQLyqSHa12Fhi9PRaqJM5kC/HQY+E8YtHOAout
+            aUG/C78l/sTMg3sPGB/4AcTd3cKiHu3Aauy0pstqdzJ6niMSO1L004MXYaMmBl8I
+            g9b60JwVxF2fC1ZHCH+BlckYbQUJ9JCqhr7qnoFbg7ngLe3iqcLmLmPowNm8kpLK
+            hkV5AwdPAgMBAAECggEARs+hwW/qe+Gpv+Ksb6u4T+WXcBSWI2ZRPaIX7iI5xqCX
+            HbqHxU8TNVAJaSfpUbf6E1L7s3WZlI0FnDIDNofcIl/zWthTb5OJtMfSRj8DoVpB
+            M6HMF4EBAmCTnFOQleEp+pz/XI8xHVm3309XRvPfaBZHYN6H64amb7pYXI+CwY0A
+            xTAntPO4uKwvrzTc+rHtVLRjA2fRUHZ+QJ+IObXwVxFUFMGS7b98jk2LuzTsQoLx
+            dNFaE3XtEpUNyKePnfly2lmBv6obIuxr3Dnppzdye6+u3iJ+TD5uNFAT/ZF24pE/
+            oP71rmdPhJCuxK219AJoC15Z5dsBOm1za/synNEnwQKBgQD/VzizN6z1Rt9rk9Vt
+            X1apiLpgWhx5USDBcTwya03AtZTrH7hVqkpLFnCOFnyprV3MauztNSpWXOWLljs4
+            MtJO+Vfx4YzRS013w8bSp7ZrcFfZNXKa0zkx4rCiaUxzC5LKSN0q3NZxKjC37OYS
+            cUHS5knpV19UNSj2sunC3xUj4QKBgQDIfPMnWVgTscqvbdjm/yNwbSYrbYXduuPm
+            axrcMe4LiHQ6nabNSM1otkH/tsrQnrhfMDKtsWnDu40Jb8iFvoO8I3/vOhdI3oLG
+            oZcPXYljKtrbE0NHt2aRiANto+/GRRy6kH6EKjseerksq4SLLCBbEgjNKrnhViPR
+            OXswhK+RLwKBgC5TMrRBG538V7h6v7PyIhTr+3RTpOrVry2pT5SOJzMZPoVR4e2Y
+            0ZXB4nXE2qUmEOhvVcDLbnzwqayjeub9QW6WikAV/ahTEyDxYfcB+nSPk0CTE9HH
+            FI9aY1Vz6SzOIrmUcpu+KSGq19/mmO8roReUNECjW2Y5ps7rMsHqGznBAoGALzln
+            WPRtj64ITQw11Cty4I+FNyOELbdQ6Tx/RjConqTUo93wpVgpsimEIEShP0SzrxA+
+            T7WDcSxjSz6+X+qBQzalcucfBvYKndkAKQliTC6TAJln9qOXkF4WWKQN3Yj3/GX+
+            twjvhf1oUsJP5SxOrsTvt8wBnrdYlnbQspv+ctcCgYEA4M/Wvbo0MAurrtJ76tfE
+            lzvj79/cGU7xNBKODn/PBzgdbE8QnQ5Je+V9ItFPUaT6gUr8zHGyKwcBpZDAsBZk
+            fMhHTTgkOI/loUvUo6RuJk+HZm0sWkVk1BvIs478HHgu+8RYVqmkHVhGcFcc3Ghr
+            7400PzFngOk2CgDXBijQS+Y=
+            -----END PRIVATE KEY-----"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <insert tableName="AYS_PARAMETER">
+            <column name="NAME" value="AUTH_TOKEN_PUBLIC_KEY"/>
+            <column name="DEFINITION" value="-----BEGIN PUBLIC KEY-----
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx/jFEoSHBONvr3osb/Il
+            CdPj3e+h1oF9oh4Wkn7V0LPTuXaAjigjFVZCtR/DkTemYAyFSIWqOTEwj8D7x/OW
+            FNmNrpCC316bNjwnSzEIOOW9rfBxaiSQGqs0EOQAgFVsd4W1VhULOYO8i3gf7WoG
+            PkGhJQ16TZPOV4ehCCDo0C8qkh2tdhYYvT0WqiTOZAvx0GPhPGLRzgKLrWlBvwu/
+            Jf7EzIN7Dxgf+AHE3d3Coh7twGrstKbLancyep4jEjtS9NODF2GjJgZfCIPW+tCc
+            FcRdnwtWRwh/gZXJGG0FCfSQqoa+6p6BW4O54C3t4qnC5i5j6MDZvJKSyoZFeQMH
+            TwIDAQAB
+            -----END PUBLIC KEY-----"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <insert tableName="AYS_PARAMETER">
+            <column name="NAME" value="AUTH_ACCESS_TOKEN_EXPIRE_MINUTE"/>
+            <column name="DEFINITION" value="120"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <insert tableName="AYS_PARAMETER">
+            <column name="NAME" value="AUTH_REFRESH_TOKEN_EXPIRE_DAY"/>
+            <column name="DEFINITION" value="1"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <insert tableName="AYS_PARAMETER">
+            <column name="NAME" value="AUTH_LOGIN_MAX_TRY_COUNT"/>
+            <column name="DEFINITION" value="3"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <!-- ==================== -->
+        <!-- DML of AYS_PARAMETER -->
+        <!-- ==================== -->
+
+
+        <!-- ======================= -->
+        <!-- DML of AYS_ORGANIZATION -->
+        <!-- ======================= -->
+        <insert tableName="AYS_ORGANIZATION">
+            <column name="ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="NAME" value="AYS"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <!-- ======================= -->
+        <!-- DML of AYS_ORGANIZATION -->
+        <!-- ======================= -->
+
+
+        <!-- ======================= -->
+        <!-- DML of AYS_ORGANIZATION -->
+        <!-- ======================= -->
+        <insert tableName="AYS_ADMIN_USER">
+            <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b206"/>
+            <column name="ORGANIZATION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="USERNAME" value="ays-admin"/>
+            <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
+            <column name="EMAIL" value="admin@ays.com"/>
+            <column name="FIRST_NAME" value="Afet Yönetim"/>
+            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="COUNTRY_CODE" value="90"/>
+            <column name="LINE_NUMBER" value="1234567890"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <!-- ======================= -->
+        <!-- DML of AYS_ORGANIZATION -->
+        <!-- ======================= -->
+
+
+        <!-- =========================================== -->
+        <!-- DML of AYS_ADMIN_USER_REGISTER_VERIFICATION -->
+        <!-- =========================================== -->
+        <insert tableName="AYS_ADMIN_USER_REGISTER_VERIFICATION">
+            <column name="ID" value="3cfeb994-88f4-48d0-b105-309f42f91412"/>
+            <column name="REASON" value="Ahbap Kurucusu Haluk Levent İçin Oluşturuldu."/>
+            <column name="STATUS" value="WAITING"/>
+            <column name="CREATED_USER" value="Agit Rubar Demir"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <!-- =========================================== -->
+        <!-- DML of AYS_ADMIN_USER_REGISTER_VERIFICATION -->
+        <!-- =========================================== -->
+
+
+        <!-- =============== -->
+        <!-- DML of AYS_USER -->
+        <!-- =============== -->
+        <insert tableName="AYS_USER">
+            <column name="ID" value="c4b4e4db-5641-41f7-8222-a76deb1c065c"/>
+            <column name="ORGANIZATION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="USERNAME" value="232180"/>
+            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
+            <column name="FIRST_NAME" value="Afet Yönetim"/>
+            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="COUNTRY_CODE" value="90"/>
+            <column name="LINE_NUMBER" value="1234567890"/>
+            <column name="ROLE" value="VOLUNTEER"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <!-- =============== -->
+        <!-- DML of AYS_USER -->
+        <!-- =============== -->
+    </changeSet>
+
+</databaseChangeLog>
