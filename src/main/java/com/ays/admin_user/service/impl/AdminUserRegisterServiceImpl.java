@@ -12,7 +12,6 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByEmailExcepti
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberException;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNotValidException;
-import com.ays.auth.service.AysTokenService;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.organization.repository.OrganizationRepository;
 import com.ays.organization.util.exception.AysOrganizationNotExistException;
@@ -27,8 +26,7 @@ import org.springframework.stereotype.Service;
  * {@link AdminUserRegisterVerificationRepository} for persistence operations and the
  * {@link AdminUserRegisterRequestToAdminUserEntityMapper} for mapping the request to entity objects.
  * It also uses the {@link OrganizationRepository} to check if the requested organization exists.
- * Authentication is handled using the {@link PasswordEncoder} and the {@link AysTokenService} is used for
- * generating and refreshing access tokens.
+ * Authentication is handled using the {@link PasswordEncoder}
  */
 @Slf4j
 @Service
