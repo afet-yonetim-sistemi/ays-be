@@ -11,14 +11,19 @@ import com.ays.admin_user.service.AdminUserService;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
+import com.ays.common.model.dto.response.AysResponseBuilder;
+import com.ays.common.util.exception.model.AysError;
 import com.ays.user.model.dto.request.UserListRequest;
 import com.ays.user.model.dto.request.UserListRequestBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
+import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
@@ -70,5 +75,24 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
 
         Mockito.verify(adminUserService, Mockito.times(1))
                 .getAllAdminUsers(mockUserListRequest);
+    }
+
+    @Test
+    void givenValidUserListRequest_whenAdminUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
+
+        // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(BASE_PATH, mockUserToken.getAccessToken(), mockUserListRequest);
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 }
