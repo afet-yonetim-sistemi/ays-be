@@ -1,8 +1,12 @@
 package com.ays.admin_user.repository;
 
+import com.ays.admin_user.model.AdminUser;
 import com.ays.admin_user.model.entity.AdminUserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,5 +46,8 @@ public interface AdminUserRepository extends JpaRepository<AdminUserEntity, Stri
      * @return true if an {@link AdminUserEntity} exists with the given country code and phone number, false otherwise
      */
     boolean existsByCountryCodeAndLineNumber(Long countryCode, Long lineNumber);
+
+
+    Page<AdminUserEntity> findAllByOrganizationId(String organization, Pageable pageable);
 
 }
