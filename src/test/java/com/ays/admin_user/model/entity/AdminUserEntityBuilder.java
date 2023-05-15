@@ -14,12 +14,14 @@ import com.ays.user.model.enums.UserStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.ays.common.model.TestDataBuilder;
 
 public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
 
     public AdminUserEntityBuilder() {
         super(AdminUserEntity.class);
     }
+
 
     public static List<AdminUserEntity> generateValidUserEntities(int size) {
         List<AdminUserEntity> userEntities = new ArrayList<>();
@@ -63,10 +65,12 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
         return this;
     }
 
+
     public AdminUserEntityBuilder withStatus(AdminUserStatus status) {
         data.setStatus(status);
         return this;
     }
+
 
     public AdminUserEntityBuilder withOrganizationId(String organizationId) {
         data.setOrganizationId(organizationId);
