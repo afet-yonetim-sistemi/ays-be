@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Admin User controller to perform admin api operations.
+ */
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
@@ -29,7 +32,7 @@ class AdminUserController {
 
     /**
      * Gets a list of users in the system.
-     * Requires ADMIN authority.
+     * Requires ADMIN and SUPER_ADMIN authority.
      *
      * @param listRequest The request object containing the list criteria.
      * @return A response object containing a paginated list of users.
