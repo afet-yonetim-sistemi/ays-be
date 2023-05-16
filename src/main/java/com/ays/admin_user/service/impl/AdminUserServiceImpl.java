@@ -15,6 +15,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,7 +55,8 @@ public class AdminUserServiceImpl implements AdminUserService {
                     adminUsers
             );
         } else if (authorities.contains("ADMIN")) {
-            String username = authentication.getName();
+            String username = authentication.getPrincipal() instanceof UserDetails userDetails ?
+                    userDetails.getUsername() : authentication.getPrincipal().toString();
             AdminUserEntity adminUserEntity = adminUserRepository.findByUsername(username).orElseThrow(() -> new AysAdminUserNotFoundException(username));
             Page<AdminUserEntity> adminUserEntities = adminUserRepository.findAllByOrganizationId(adminUserEntity.getOrganizationId(), listRequest.toPageable());
             List<AdminUser> adminUsers = adminEntityToAdminMapper.map(adminUserEntities.getContent());
