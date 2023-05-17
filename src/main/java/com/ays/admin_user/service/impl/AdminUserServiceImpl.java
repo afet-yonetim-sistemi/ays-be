@@ -3,7 +3,7 @@ package com.ays.admin_user.service.impl;
 import com.ays.admin_user.model.AdminUser;
 import com.ays.admin_user.model.dto.request.AdminUserListRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
-import com.ays.admin_user.model.mapper.AdminEntityToAdminUserMapper;
+import com.ays.admin_user.model.mapper.AdminUserEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserService;
 import com.ays.admin_user.util.exception.AysAdminUserNotFoundException;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * This service class implements the {@link AdminUserService} interface and provides methods for
  * performing admin operations. It uses the {@link AdminUserRepository} and the
- * {@link AdminEntityToAdminUserMapper} for mapping the request to entity objects.
+ * {@link AdminUserEntityToAdminUserMapper} for mapping the request to entity objects.
  */
 @Slf4j
 @Service
@@ -32,7 +32,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     private final AdminUserRepository adminUserRepository;
 
-    private final AdminEntityToAdminUserMapper adminEntityToAdminMapper = AdminEntityToAdminUserMapper.initialize();
+    private final AdminUserEntityToAdminUserMapper adminEntityToAdminMapper = AdminUserEntityToAdminUserMapper.initialize();
 
     /**
      * Get All admin users based on the given {@link AdminUserListRequest} object. First, it is determined whether

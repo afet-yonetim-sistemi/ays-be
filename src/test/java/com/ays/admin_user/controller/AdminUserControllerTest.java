@@ -7,7 +7,7 @@ import com.ays.admin_user.model.dto.request.AdminUserListRequestBuilder;
 import com.ays.admin_user.model.dto.response.AdminUsersResponse;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
-import com.ays.admin_user.model.mapper.AdminEntityToAdminUserMapper;
+import com.ays.admin_user.model.mapper.AdminUserEntityToAdminUserMapper;
 import com.ays.admin_user.model.mapper.AdminUserToAdminUsersResponseMapper;
 import com.ays.admin_user.service.AdminUserService;
 import com.ays.common.model.AysPage;
@@ -38,7 +38,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
 
     private final AdminUserToAdminUsersResponseMapper ADMIN_USER_TO_ADMIN_USER_RESPONSE_MAPPER = AdminUserToAdminUsersResponseMapper.initialize();
 
-    private static final AdminEntityToAdminUserMapper ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER = AdminEntityToAdminUserMapper.initialize();
+    private static final AdminUserEntityToAdminUserMapper ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1/admin";
 

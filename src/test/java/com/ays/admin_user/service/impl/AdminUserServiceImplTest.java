@@ -6,7 +6,7 @@ import com.ays.admin_user.model.dto.request.AdminUserListRequest;
 import com.ays.admin_user.model.dto.request.AdminUserListRequestBuilder;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
-import com.ays.admin_user.model.mapper.AdminEntityToAdminUserMapper;
+import com.ays.admin_user.model.mapper.AdminUserEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
@@ -34,7 +34,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
     @InjectMocks
     private AdminUserServiceImpl adminUserService;
 
-    private static final AdminEntityToAdminUserMapper ADMIN_ENTITY_TO_ADMIN_MAPPER = AdminEntityToAdminUserMapper.initialize();
+    private static final AdminUserEntityToAdminUserMapper ADMIN_ENTITY_TO_ADMIN_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
 
     @Test
     void givenUserListRequest_whenAdminwithRoleIsSuperAdmin_thenReturnAllAdminUsers() {
