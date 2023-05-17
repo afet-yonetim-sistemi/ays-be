@@ -21,10 +21,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 class AdminUserServiceImplTest extends AbstractUnitTest {
 
@@ -82,13 +85,16 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         List<AdminUser> mockAdminUsers = ADMIN_ENTITY_TO_ADMIN_MAPPER.map(mockAdminUserEntities);
         AysPage<AdminUser> mockAysPageAdminUsers = AysPage.of(mockPageAdminUserEntities, mockAdminUsers);
 
+        final Map<String, Object> claims = mockAdminUserEntity.getClaims();
+
         // Set up authentication
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ADMIN"));
-        Authentication authentication = new UsernamePasswordAuthenticationToken("admin", "password", authorities);
+        Jwt jwt = new Jwt("token", Instant.now(), Instant.now().plusSeconds(3600), Collections.singletonMap("sub", "admin"), claims);
+        Authentication authentication = new JwtAuthenticationToken(jwt, Collections.singletonList(new SimpleGrantedAuthority("ADMIN")));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Mockito.when(adminUserRepository.findByUsername(username)).thenReturn(Optional.of(mockAdminUserEntity));
-        Mockito.when(adminUserRepository.findAllByOrganizationId(mockAdminUserEntity.getOrganizationId(), mockAdminUserListRequest.toPageable()))
+        String organizationId = mockAdminUserEntity.getOrganizationId();
+
+        Mockito.when(adminUserRepository.findAllByOrganizationId(organizationId, mockAdminUserListRequest.toPageable()))
                 .thenReturn(mockPageAdminUserEntities);
 
         // When
@@ -97,8 +103,6 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         // Then
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
-        Mockito.verify(adminUserRepository, Mockito.times(1))
-                .findByUsername(username);
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findAllByOrganizationId(mockAdminUserEntity.getOrganizationId(), mockAdminUserListRequest.toPageable());
     }
