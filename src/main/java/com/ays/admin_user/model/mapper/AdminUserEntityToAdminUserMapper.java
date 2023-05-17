@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface AdminEntityToAdminUserMapper extends BaseMapper<AdminUserEntity, AdminUser> {
+public interface AdminUserEntityToAdminUserMapper extends BaseMapper<AdminUserEntity, AdminUser> {
 
 
     @Override
@@ -16,7 +16,7 @@ public interface AdminEntityToAdminUserMapper extends BaseMapper<AdminUserEntity
     @Mapping(target = "phoneNumber.lineNumber", source = "source.lineNumber")
     AdminUser map(AdminUserEntity source);
 
-    static AdminEntityToAdminUserMapper initialize() {
-        return Mappers.getMapper(AdminEntityToAdminUserMapper.class);
+    static AdminUserEntityToAdminUserMapper initialize() {
+        return Mappers.getMapper(AdminUserEntityToAdminUserMapper.class);
     }
 }
