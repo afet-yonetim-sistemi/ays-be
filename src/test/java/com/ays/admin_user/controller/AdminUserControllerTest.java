@@ -2,6 +2,8 @@ package com.ays.admin_user.controller;
 
 import com.ays.AbstractRestControllerTest;
 import com.ays.admin_user.model.AdminUser;
+import com.ays.admin_user.model.dto.request.AdminUserListRequest;
+import com.ays.admin_user.model.dto.request.AdminUserListRequestBuilder;
 import com.ays.admin_user.model.dto.response.AdminUsersResponse;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
@@ -13,8 +15,6 @@ import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
-import com.ays.user.model.dto.request.UserListRequest;
-import com.ays.user.model.dto.request.UserListRequestBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
     void givenValidUserListRequest_whenAdminUsersFound_thenReturnAdminUsersResponse() throws Exception {
 
         // Given
-        UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
+        AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
 
         // When
         Page<AdminUserEntity> mockAdminUserEntities = new PageImpl<>(
@@ -54,7 +54,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
         );
         List<AdminUser> mockAdminUsers = ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER.map(mockAdminUserEntities.getContent());
         AysPage<AdminUser> mockAysPageOfUsers = AysPage.of(mockAdminUserEntities, mockAdminUsers);
-        Mockito.when(adminUserService.getAllAdminUsers(mockUserListRequest))
+        Mockito.when(adminUserService.getAdminUsers(mockAdminUserListRequest))
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
@@ -65,7 +65,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
                 .build();
         AysResponse<AysPageResponse<AdminUsersResponse>> mockAysResponse = AysResponse.successOf(pageOfAdminUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserListRequest))
+                        .get(BASE_PATH, mockAdminUserToken.getAccessToken(), mockAdminUserListRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.time").isNotEmpty())
@@ -74,17 +74,17 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
         Mockito.verify(adminUserService, Mockito.times(1))
-                .getAllAdminUsers(mockUserListRequest);
+                .getAdminUsers(mockAdminUserListRequest);
     }
 
     @Test
     void givenValidUserListRequest_whenAdminUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
         // Given
-        UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
+        AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH, mockUserToken.getAccessToken(), mockUserListRequest);
+                .get(BASE_PATH, mockUserToken.getAccessToken(), mockAdminUserListRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
         mockMvc.perform(mockHttpServletRequestBuilder)

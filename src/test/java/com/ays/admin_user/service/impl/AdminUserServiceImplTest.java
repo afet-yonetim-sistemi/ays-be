@@ -2,14 +2,14 @@ package com.ays.admin_user.service.impl;
 
 import com.ays.AbstractUnitTest;
 import com.ays.admin_user.model.AdminUser;
+import com.ays.admin_user.model.dto.request.AdminUserListRequest;
+import com.ays.admin_user.model.dto.request.AdminUserListRequestBuilder;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.mapper.AdminEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
-import com.ays.user.model.dto.request.UserListRequest;
-import com.ays.user.model.dto.request.UserListRequestBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,7 +39,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
     @Test
     void givenUserListRequest_whenAdminwithRoleIsSuperAdmin_thenReturnAllAdminUsers() {
         // Given
-        UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
+        AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
 
         List<AdminUserEntity> mockAdminUserEntities = Collections.singletonList(new AdminUserEntityBuilder().build());
         Page<AdminUserEntity> mockPageAdminUserEntities = new PageImpl<>(mockAdminUserEntities);
@@ -53,22 +53,22 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // When
-        Mockito.when(adminUserRepository.findAll(mockUserListRequest.toPageable()))
+        Mockito.when(adminUserRepository.findAll(mockAdminUserListRequest.toPageable()))
                 .thenReturn(mockPageAdminUserEntities);
 
         // Then
-        AysPage<AdminUser> aysPageAdminUsers = adminUserService.getAllAdminUsers(mockUserListRequest);
+        AysPage<AdminUser> aysPageAdminUsers = adminUserService.getAdminUsers(mockAdminUserListRequest);
 
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
         Mockito.verify(adminUserRepository, Mockito.times(1))
-                .findAll(mockUserListRequest.toPageable());
+                .findAll(mockAdminUserListRequest.toPageable());
     }
 
     @Test
     void givenUserListRequest_whenAdminwithRoleIsAdmin_thenReturnAllAdminUsers() {
         // Given
-        UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
+        AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
 
         String username = "admin";
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
@@ -88,11 +88,11 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Mockito.when(adminUserRepository.findByUsername(username)).thenReturn(Optional.of(mockAdminUserEntity));
-        Mockito.when(adminUserRepository.findAllByOrganizationId(mockAdminUserEntity.getOrganizationId(), mockUserListRequest.toPageable()))
+        Mockito.when(adminUserRepository.findAllByOrganizationId(mockAdminUserEntity.getOrganizationId(), mockAdminUserListRequest.toPageable()))
                 .thenReturn(mockPageAdminUserEntities);
 
         // When
-        AysPage<AdminUser> aysPageAdminUsers = adminUserService.getAllAdminUsers(mockUserListRequest);
+        AysPage<AdminUser> aysPageAdminUsers = adminUserService.getAdminUsers(mockAdminUserListRequest);
 
         // Then
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
@@ -100,6 +100,6 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findByUsername(username);
         Mockito.verify(adminUserRepository, Mockito.times(1))
-                .findAllByOrganizationId(mockAdminUserEntity.getOrganizationId(), mockUserListRequest.toPageable());
+                .findAllByOrganizationId(mockAdminUserEntity.getOrganizationId(), mockAdminUserListRequest.toPageable());
     }
 }
