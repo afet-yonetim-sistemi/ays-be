@@ -1,13 +1,13 @@
 package com.ays.admin_user.controller;
 
 import com.ays.admin_user.model.AdminUser;
+import com.ays.admin_user.model.dto.request.AdminUserListRequest;
 import com.ays.admin_user.model.dto.response.AdminUsersResponse;
 import com.ays.admin_user.model.mapper.AdminUserToAdminUsersResponseMapper;
 import com.ays.admin_user.service.AdminUserService;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
-import com.ays.user.model.dto.request.UserListRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,8 +39,8 @@ class AdminUserController {
      */
     @GetMapping
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
-    public AysResponse<AysPageResponse<AdminUsersResponse>> getAllAdminUsers(@RequestBody @Valid UserListRequest listRequest) {
-        final AysPage<AdminUser> pageOfAdminUsers = adminUserService.getAllAdminUsers(listRequest);
+    public AysResponse<AysPageResponse<AdminUsersResponse>> getAllAdminUsers(@RequestBody @Valid AdminUserListRequest listRequest) {
+        final AysPage<AdminUser> pageOfAdminUsers = adminUserService.getAdminUsers(listRequest);
 
         final AysPageResponse<AdminUsersResponse> pageOfAdminUsersResponse = AysPageResponse.<AdminUsersResponse>builder()
                 .of(pageOfAdminUsers)

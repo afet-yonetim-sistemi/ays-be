@@ -1,8 +1,8 @@
 package com.ays.admin_user.service;
 
 import com.ays.admin_user.model.AdminUser;
+import com.ays.admin_user.model.dto.request.AdminUserListRequest;
 import com.ays.common.model.AysPage;
-import com.ays.user.model.dto.request.UserListRequest;
 
 /**
  * Admin User service to perform admin user related business operations.
@@ -15,5 +15,5 @@ public interface AdminUserService {
      * @param listRequest covering page and pageSize
      * @return Admin User list
      */
-    AysPage<AdminUser> getAllAdminUsers(UserListRequest listRequest);
+    AysPage<AdminUser> getAdminUsers(AdminUserListRequest listRequest);
 }

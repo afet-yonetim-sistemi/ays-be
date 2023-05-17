@@ -1,13 +1,13 @@
 package com.ays.admin_user.service.impl;
 
 import com.ays.admin_user.model.AdminUser;
+import com.ays.admin_user.model.dto.request.AdminUserListRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.mapper.AdminEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserService;
 import com.ays.admin_user.util.exception.AysAdminUserNotFoundException;
 import com.ays.common.model.AysPage;
-import com.ays.user.model.dto.request.UserListRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,7 +35,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final AdminEntityToAdminUserMapper adminEntityToAdminMapper = AdminEntityToAdminUserMapper.initialize();
 
     /**
-     * Get All admin users based on the given {@link UserListRequest} object. First, it is determined whether
+     * Get All admin users based on the given {@link AdminUserListRequest} object. First, it is determined whether
      * ADMIN or SUPER_ADMIN in terms of admin role. Next, it returns the list of all admins in all organizations
      * for SUPER_ADMIN role or return the list of all admins in the same organization for ADMIN role.
      *
@@ -44,7 +44,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      * @throws AccessDeniedException if an admin user role cannot be accessed
      */
     @Override
-    public AysPage<AdminUser> getAllAdminUsers(UserListRequest listRequest) {
+    public AysPage<AdminUser> getAdminUsers(AdminUserListRequest listRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<String> authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (authorities.contains("SUPER_ADMIN")) {
