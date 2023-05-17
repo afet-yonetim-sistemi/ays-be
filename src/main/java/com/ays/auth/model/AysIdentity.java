@@ -5,9 +5,13 @@ import com.ays.common.model.enums.BeanScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * This class provides a representation of the identity of the authenticated user in the AYS service.
@@ -34,6 +38,16 @@ public class AysIdentity {
      */
     private Jwt getJwt() {
         return ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+    }
+
+
+    private Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public List<String> getUsersType() {
+        Authentication authentication = getAuthentication();
+        return authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
     }
 
 }
