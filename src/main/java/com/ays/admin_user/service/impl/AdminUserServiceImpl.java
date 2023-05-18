@@ -7,6 +7,7 @@ import com.ays.admin_user.model.mapper.AdminUserEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserService;
 import com.ays.auth.model.AysIdentity;
+import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.AysPage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,22 +44,13 @@ public class AdminUserServiceImpl implements AdminUserService {
      */
     @Override
     public AysPage<AdminUser> getAdminUsers(AdminUserListRequest listRequest) {
-        List<String> authorities = aysIdentity.getUsersType();
-        String userType = authorities.stream()
-                .filter(auth -> auth.equals("SUPER_ADMIN") || auth.equals("ADMIN"))
-                .findFirst()
-                .orElseThrow(() -> new AccessDeniedException("User does not have the required authority to access admin users."));
+        AysUserType aysUserType = aysIdentity.getUserType();
 
-        switch (userType) {
-            case "SUPER_ADMIN":
-                return handleSuperAdmin(listRequest);
-
-            case "ADMIN":
-                return handleAdmin(listRequest);
-
-            default:
-                throw new IllegalStateException("Invalid user type: " + userType);
-        }
+        return switch (aysUserType) {
+            case SUPER_ADMIN -> getAdminUsersWithAdmin(listRequest);
+            case ADMIN -> getAdminUsersWithSuperAdminUsers(listRequest);
+            default -> throw new IllegalStateException("Invalid user type: " + aysUserType.name());
+        };
     }
 
 
@@ -68,7 +60,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      * @param listRequest the request object covering page and pageSize
      * @return super admin user list
      */
-    private AysPage<AdminUser> handleSuperAdmin(AdminUserListRequest listRequest) {
+    private AysPage<AdminUser> getAdminUsersWithAdmin(AdminUserListRequest listRequest) {
         Page<AdminUserEntity> adminUserEntities = adminUserRepository.findAll(listRequest.toPageable());
         List<AdminUser> adminUsers = adminEntityToAdminMapper.map(adminUserEntities.getContent());
         return AysPage.of(adminUserEntities, adminUsers);
@@ -80,7 +72,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      * @param listRequest the request object covering page and pageSize
      * @return super admin user list
      */
-    private AysPage<AdminUser> handleAdmin(AdminUserListRequest listRequest) {
+    private AysPage<AdminUser> getAdminUsersWithSuperAdminUsers(AdminUserListRequest listRequest) {
         String organizationId = aysIdentity.getOrganizationId();
         Page<AdminUserEntity> adminUserEntitiesByOrganization =
                 adminUserRepository.findAllByOrganizationId(organizationId, listRequest.toPageable());
