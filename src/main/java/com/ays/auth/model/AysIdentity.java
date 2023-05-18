@@ -39,10 +39,20 @@ public class AysIdentity {
     }
 
 
+    /**
+     * Retrieves authentication object
+     *
+     * @return Authentication as authentication object
+     */
     private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    /**
+     * Retrieves user type from the JWT token.
+     *
+     * @return AysUserType as an admin user type
+     */
     public AysUserType getUserType() {
         return AysUserType.valueOf(this.getJwt().getClaim(AysTokenClaims.USER_TYPE.getValue()));
     }
