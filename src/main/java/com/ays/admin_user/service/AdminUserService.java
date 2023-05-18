@@ -10,7 +10,7 @@ import com.ays.common.model.AysPage;
 public interface AdminUserService {
 
     /**
-     * Get all Admin Users from database.
+     * Get all Admin Users by all organizations or by their own organization from database based on admin user type.
      *
      * @param listRequest covering page and pageSize
      * @return Admin User list
