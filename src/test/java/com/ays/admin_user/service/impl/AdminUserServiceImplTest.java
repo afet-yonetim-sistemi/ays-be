@@ -8,6 +8,7 @@ import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.mapper.AdminUserEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
+import com.ays.admin_user.repository.specification.AdminUserSpecifications;
 import com.ays.auth.model.AysIdentity;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.AysPage;
@@ -18,18 +19,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.data.jpa.domain.Specification;
 
-import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 class AdminUserServiceImplTest extends AbstractUnitTest {
 
@@ -55,11 +48,6 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         List<AdminUser> mockAdminUsers = ADMIN_ENTITY_TO_ADMIN_MAPPER.map(mockAdminUserEntities);
         AysPage<AdminUser> mockAysPageAdminUsers = AysPage.of(mockPageAdminUserEntities, mockAdminUsers);
 
-        // Set up authentication
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("SUPER_ADMIN"));
-        Authentication authentication = new UsernamePasswordAuthenticationToken("user", "password", authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
         AysUserType aysUserType = AysUserType.SUPER_ADMIN;
 
         // When
@@ -82,11 +70,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         // Given
         AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
 
-        String username = "admin";
-        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
-                .withUsername(username)
-                .withOrganizationId("org-123")
-                .build();
+        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().withValidFields().build();
 
         List<AdminUserEntity> mockAdminUserEntities = Collections.singletonList(mockAdminUserEntity);
         Page<AdminUserEntity> mockPageAdminUserEntities = new PageImpl<>(mockAdminUserEntities);
@@ -94,24 +78,14 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         List<AdminUser> mockAdminUsers = ADMIN_ENTITY_TO_ADMIN_MAPPER.map(mockAdminUserEntities);
         AysPage<AdminUser> mockAysPageAdminUsers = AysPage.of(mockPageAdminUserEntities, mockAdminUsers);
 
-        final Map<String, Object> claims = mockAdminUserEntity.getClaims();
-
-        // Set up authentication
-        Jwt jwt = new Jwt("token", Instant.now(), Instant.now().plusSeconds(3600), Collections.singletonMap("sub", "admin"), claims);
-        Authentication authentication = new JwtAuthenticationToken(jwt, Collections.singletonList(new SimpleGrantedAuthority("ADMIN")));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
         AysUserType aysUserType = AysUserType.ADMIN;
-        String organizationId = mockAdminUserEntity.getOrganizationId();
+        Specification<AdminUserEntity> specification = Specification.where(AdminUserSpecifications.hasOrganizationId(mockAdminUserEntity.getOrganizationId()));
 
         // When
-        Mockito.when(aysIdentity.getUserType())
-                .thenReturn(aysUserType);
-        Mockito.when(aysIdentity.getOrganizationId())
-                .thenReturn(organizationId);
-        Mockito.when(adminUserRepository.findAllByOrganizationId(organizationId, mockAdminUserListRequest.toPageable()))
+        Mockito.when(aysIdentity.getUserType()).thenReturn(aysUserType);
+        Mockito.when(aysIdentity.getOrganizationId()).thenReturn(mockAdminUserEntity.getOrganizationId());
+        Mockito.when(adminUserRepository.findAll(specification, mockAdminUserListRequest.toPageable()))
                 .thenReturn(mockPageAdminUserEntities);
-
 
         AysPage<AdminUser> aysPageAdminUsers = adminUserService.getAdminUsers(mockAdminUserListRequest);
 
@@ -119,6 +93,6 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
         Mockito.verify(adminUserRepository, Mockito.times(1))
-                .findAllByOrganizationId(mockAdminUserEntity.getOrganizationId(), mockAdminUserListRequest.toPageable());
+                .findAll(specification, mockAdminUserListRequest.toPageable());
     }
 }
