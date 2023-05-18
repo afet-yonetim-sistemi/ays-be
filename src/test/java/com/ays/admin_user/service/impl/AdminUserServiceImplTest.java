@@ -8,6 +8,7 @@ import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.mapper.AdminUserEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
+import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
     @Mock
     private AdminUserRepository adminUserRepository;
 
+    @Mock
+    private AysIdentity aysIdentity;
+
     @InjectMocks
     private AdminUserServiceImpl adminUserService;
 
@@ -55,7 +59,11 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken("user", "password", authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        List<String> authoritiesType = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
         // When
+        Mockito.when(aysIdentity.getUsersType())
+                .thenReturn(authoritiesType);
         Mockito.when(adminUserRepository.findAll(mockAdminUserListRequest.toPageable()))
                 .thenReturn(mockPageAdminUserEntities);
 
@@ -92,12 +100,19 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         Authentication authentication = new JwtAuthenticationToken(jwt, Collections.singletonList(new SimpleGrantedAuthority("ADMIN")));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        List<String> authoritiesType = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
         String organizationId = mockAdminUserEntity.getOrganizationId();
 
+        // When
+        Mockito.when(aysIdentity.getUsersType())
+                .thenReturn(authoritiesType);
+        Mockito.when(aysIdentity.getOrganizationId())
+                .thenReturn(organizationId);
         Mockito.when(adminUserRepository.findAllByOrganizationId(organizationId, mockAdminUserListRequest.toPageable()))
                 .thenReturn(mockPageAdminUserEntities);
 
-        // When
+
         AysPage<AdminUser> aysPageAdminUsers = adminUserService.getAdminUsers(mockAdminUserListRequest);
 
         // Then

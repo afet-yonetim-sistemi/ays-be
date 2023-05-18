@@ -30,6 +30,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     private final AdminUserEntityToAdminUserMapper adminEntityToAdminMapper = AdminUserEntityToAdminUserMapper.initialize();
 
+    private final AysIdentity aysIdentity;
+
     /**
      * Get All admin users based on the given {@link AdminUserListRequest} object. First, it is determined whether
      * ADMIN or SUPER_ADMIN in terms of admin role. Next, it returns the list of all admins in all organizations
@@ -41,7 +43,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      */
     @Override
     public AysPage<AdminUser> getAdminUsers(AdminUserListRequest listRequest) {
-        List<String> authorities = new AysIdentity().getUsersType();
+        List<String> authorities = aysIdentity.getUsersType();
         String userType = authorities.stream()
                 .filter(auth -> auth.equals("SUPER_ADMIN") || auth.equals("ADMIN"))
                 .findFirst()
@@ -79,7 +81,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      * @return super admin user list
      */
     private AysPage<AdminUser> handleAdmin(AdminUserListRequest listRequest) {
-        String organizationId = new AysIdentity().getOrganizationId();
+        String organizationId = aysIdentity.getOrganizationId();
         Page<AdminUserEntity> adminUserEntitiesByOrganization =
                 adminUserRepository.findAllByOrganizationId(organizationId, listRequest.toPageable());
         List<AdminUser> adminUsersByOrganization = adminEntityToAdminMapper.map(adminUserEntitiesByOrganization.getContent());
