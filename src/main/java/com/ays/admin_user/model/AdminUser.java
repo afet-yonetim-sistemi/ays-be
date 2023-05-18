@@ -21,6 +21,7 @@ public class AdminUser extends BaseDomainModel {
     private String password;
     private String firstName;
     private String lastName;
+    private String email;
     private AdminUserStatus status;
     private AysPhoneNumber phoneNumber;
 
