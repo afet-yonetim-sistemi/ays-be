@@ -9,6 +9,7 @@ import com.ays.admin_user.service.AdminUserService;
 import com.ays.auth.model.AysIdentity;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.AysPage;
+import com.ays.common.util.exception.AysUnexpectedArgumentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -49,7 +50,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         return switch (aysUserType) {
             case SUPER_ADMIN -> getAdminUsersWithAdmin(listRequest);
             case ADMIN -> getAdminUsersWithSuperAdminUsers(listRequest);
-            default -> throw new IllegalStateException("Invalid user type: " + aysUserType.name());
+            default -> throw new AysUnexpectedArgumentException("Invalid user type: " + aysUserType.name());
         };
     }
 
