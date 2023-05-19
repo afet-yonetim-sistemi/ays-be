@@ -6,7 +6,6 @@ import com.ays.common.model.enums.BeanScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
@@ -30,31 +29,21 @@ public class AysIdentity {
     }
 
     /**
-     * Retrieves the JWT token for the authenticated user from the security context.
-     *
-     * @return the JWT token as a Jwt object
-     */
-    private Jwt getJwt() {
-        return ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-    }
-
-
-    /**
-     * Retrieves authentication object
-     *
-     * @return Authentication as authentication object
-     */
-    private Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-    /**
      * Retrieves user type from the JWT token.
      *
      * @return AysUserType as an admin user type
      */
     public AysUserType getUserType() {
         return AysUserType.valueOf(this.getJwt().getClaim(AysTokenClaims.USER_TYPE.getValue()));
+    }
+
+    /**
+     * Retrieves the JWT token for the authenticated user from the security context.
+     *
+     * @return the JWT token as a Jwt object
+     */
+    private Jwt getJwt() {
+        return ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
 }
