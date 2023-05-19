@@ -16,10 +16,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 class UserAuthControllerTest extends AbstractRestControllerTest {
 
@@ -45,8 +42,8 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), mockRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
@@ -55,11 +52,11 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
-                .andExpect(jsonPath("$.response.accessToken")
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
                         .value(mockAysResponse.getResponse().getAccessToken()))
-                .andExpect(jsonPath("$.response.accessTokenExpiresAt")
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
                         .value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
-                .andExpect(jsonPath("$.response.refreshToken")
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(userAuthService, Mockito.times(1))
@@ -80,8 +77,8 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), mockRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
@@ -90,11 +87,11 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
-                .andExpect(jsonPath("$.response.accessToken")
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
                         .value(mockAysResponse.getResponse().getAccessToken()))
-                .andExpect(jsonPath("$.response.accessTokenExpiresAt")
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
                         .value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
-                .andExpect(jsonPath("$.response.refreshToken")
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(userAuthService, Mockito.times(1))
@@ -114,8 +111,8 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockUserToken.getAccessToken(), mockRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
