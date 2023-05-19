@@ -1,19 +1,21 @@
 package com.ays.user.controller;
 
 import com.ays.AbstractRestControllerTest;
-import com.ays.auth.model.dto.request.AysLoginRequest;
-import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
-import com.ays.auth.model.dto.request.AysTokenRefreshRequestBuilder;
+import com.ays.auth.model.dto.request.*;
 import com.ays.auth.model.dto.response.AysTokenResponse;
 import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
+import com.ays.common.util.exception.model.AysError;
 import com.ays.user.model.dto.request.AysUserLoginRequestBuilder;
 import com.ays.user.service.UserAuthService;
 import com.ays.util.AysMockMvcRequestBuilders;
+import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -35,7 +37,8 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
 
         // when
-        Mockito.when(userAuthService.authenticate(Mockito.any())).thenReturn(mockUserToken);
+        Mockito.when(userAuthService.authenticate(Mockito.any()))
+                .thenReturn(mockUserToken);
 
         // then
         AysTokenResponse mockResponse = AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER.map(mockUserToken);
@@ -52,7 +55,8 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
                 .andExpect(jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
 
-        Mockito.verify(userAuthService, Mockito.times(1)).authenticate(Mockito.any());
+        Mockito.verify(userAuthService, Mockito.times(1))
+                .authenticate(Mockito.any());
     }
 
     @Test
@@ -61,7 +65,8 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         AysTokenRefreshRequest mockRequest = AysTokenRefreshRequestBuilder.VALID_FOR_USER;
 
         // When
-        Mockito.when(userAuthService.refreshAccessToken(Mockito.any())).thenReturn(mockUserToken);
+        Mockito.when(userAuthService.refreshAccessToken(Mockito.any()))
+                .thenReturn(mockUserToken);
 
         // Then
         AysTokenResponse mockResponse = AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER.map(mockUserToken);
@@ -78,7 +83,52 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
                 .andExpect(jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
 
-        Mockito.verify(userAuthService, Mockito.times(1)).refreshAccessToken(Mockito.any());
-
+        Mockito.verify(userAuthService, Mockito.times(1))
+                .refreshAccessToken(Mockito.any());
     }
+
+    @Test
+    void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
+        // Given
+        AysTokenInvalidateRequest mockRequest = AysTokenInvalidateRequestBuilder.VALID_FOR_USER;
+
+        // When
+        Mockito.doNothing().when(userAuthService).invalidateTokens(Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/token/invalidate");
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockUserToken.getAccessToken(), mockRequest))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.time").isNotEmpty())
+                .andExpect(jsonPath("$.httpStatus").value(mockResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath("$.isSuccess").value(mockResponse.getIsSuccess()))
+                .andExpect(jsonPath("$.response").doesNotExist());
+
+        Mockito.verify(userAuthService, Mockito.times(1))
+                .invalidateTokens(Mockito.any());
+    }
+
+    @Test
+    void givenValidAysTokenInvalidateRequest_whenUserUnauthorizedForTokensInvalidating_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        AysTokenInvalidateRequest mockRequest = AysTokenInvalidateRequestBuilder.VALID_FOR_USER;
+
+        // Then
+        String endpoint = BASE_PATH.concat("/token/invalidate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest);
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
+
 }
