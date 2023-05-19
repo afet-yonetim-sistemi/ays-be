@@ -1,0 +1,9 @@
+package com.ays.auth.model.dto.request;
+
+public class AysTokenInvalidateRequestBuilder {
+
+    public static final AysTokenInvalidateRequest VALID_FOR_USER = AysTokenInvalidateRequest.builder()
+            .refreshToken("eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI5OGQ4MDBhMy0yMGYzLTQyOGQtYWNhNi0zNzE3NzBhNjZmMGEiLCJpc3MiOiJBWVMiLCJpYXQiOjE2ODIwMTk1MTksImV4cCI6MTY4MjEwNTkxOSwidHlwZSI6IkJlYXJlciIsInVzZXJuYW1lIjoiMjMyMTgwIn0.edhZL1P8mzG3HC6MxwL0PQ6ZYo6gKoRecV7AzE04KMNQ1JZayobtJFyrMyoeXzwVv6WgKR9Dw-j_SO13uxJxNKKw-ZMJvqgnSl_elZ31g4Hev05mR6KclE_yl22SG_rt54CzZl8ebQRY19m9Ryustmurr9jGaNT2vqPC2EJgrHSWB3meSwnfJm0fp6qtt0lBpsoFCiRrAWo2w8M_-BkMYjmcvmYSsitIEUk_dKrp5WaTaitZVp9Z6qRc8VGSE0ssVRXTlmSuDYBTP7KBJRCFdHvIvl2vpSBZQmYpmkLMhBjRJz803jBFK-CNJSMaW3-VCtRsRc1O_j66dJvW1iF-zQ")
+            .build();
+
+}
