@@ -8,6 +8,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * AysInvalidTokenEntity is an entity class that represents an invalid token.
+ * It extends the BaseEntity class and maps to the "AYS_INVALID_TOKEN" table in the database.
+ */
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
