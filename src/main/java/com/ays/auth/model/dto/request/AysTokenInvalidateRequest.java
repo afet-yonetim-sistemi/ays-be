@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * AysTokenInvalidateRequest is a request class used for invalidating a token.
+ * It includes a refresh token field.
+ */
 @Getter
 @Builder
 @NoArgsConstructor
