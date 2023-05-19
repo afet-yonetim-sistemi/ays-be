@@ -70,7 +70,7 @@ class UserAuthController {
      */
     @PostMapping("/token/invalidate")
     @PreAuthorize("hasAnyAuthority('USER')")
-    public AysResponse<Void> invalidateToken(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
+    public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
         userAuthService.invalidateTokens(invalidateRequest.getRefreshToken());
         return AysResponse.SUCCESS;
     }
