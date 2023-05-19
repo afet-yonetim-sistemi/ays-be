@@ -5,7 +5,6 @@ import com.ays.admin_user.model.dto.request.AdminUserListRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.mapper.AdminUserEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
-import com.ays.admin_user.repository.specification.AdminUserSpecifications;
 import com.ays.admin_user.service.AdminUserService;
 import com.ays.auth.model.AysIdentity;
 import com.ays.auth.model.enums.AysUserType;
@@ -77,8 +76,12 @@ public class AdminUserServiceImpl implements AdminUserService {
      */
     private AysPage<AdminUser> getAdminUsersWithAdmin(AdminUserListRequest listRequest) {
         String organizationId = aysIdentity.getOrganizationId();
-        Specification<AdminUserEntity> specification = Specification
-                .where(AdminUserSpecifications.hasOrganizationId(organizationId));
+        //Specification<AdminUserEntity> specification = Specification
+        //        .where(AdminUserSpecifications.hasOrganizationId(organizationId));
+
+        Specification<AdminUserEntity> specification = (root, query, criteriaBuilder) -> criteriaBuilder
+                .equal(root.get("organizationId"), organizationId);
+
         Page<AdminUserEntity> adminUserEntitiesByOrganization = adminUserRepository.findAll(specification, listRequest.toPageable());
         List<AdminUser> adminUsersByOrganization = adminEntityToAdminMapper.map(adminUserEntitiesByOrganization.getContent());
         return AysPage.of(adminUserEntitiesByOrganization, adminUsersByOrganization);

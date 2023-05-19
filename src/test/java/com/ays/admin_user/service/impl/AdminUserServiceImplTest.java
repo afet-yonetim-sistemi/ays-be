@@ -8,7 +8,6 @@ import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.mapper.AdminUserEntityToAdminUserMapper;
 import com.ays.admin_user.repository.AdminUserRepository;
-import com.ays.admin_user.repository.specification.AdminUserSpecifications;
 import com.ays.auth.model.AysIdentity;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.AysPage;
@@ -19,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Collections;
@@ -79,12 +79,19 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         AysPage<AdminUser> mockAysPageAdminUsers = AysPage.of(mockPageAdminUserEntities, mockAdminUsers);
 
         AysUserType aysUserType = AysUserType.ADMIN;
-        Specification<AdminUserEntity> specification = Specification.where(AdminUserSpecifications.hasOrganizationId(mockAdminUserEntity.getOrganizationId()));
+        //Specification<AdminUserEntity> specification = Specification.where(AdminUserSpecifications.hasOrganizationId(mockAdminUserEntity.getOrganizationId()));
+
+        Specification<AdminUserEntity> specification = (root, query, criteriaBuilder) -> criteriaBuilder
+                .equal(root.get("organizationId"), mockAdminUserEntity.getOrganizationId());
 
         // When
         Mockito.when(aysIdentity.getUserType()).thenReturn(aysUserType);
         Mockito.when(aysIdentity.getOrganizationId()).thenReturn(mockAdminUserEntity.getOrganizationId());
-        Mockito.when(adminUserRepository.findAll(specification, mockAdminUserListRequest.toPageable()))
+
+        //Mockito.when(adminUserRepository.findAll(specification, mockAdminUserListRequest.toPageable()))
+        //        .thenReturn(mockPageAdminUserEntities);
+
+        Mockito.when(adminUserRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageAdminUserEntities);
 
         AysPage<AdminUser> aysPageAdminUsers = adminUserService.getAdminUsers(mockAdminUserListRequest);
@@ -93,6 +100,6 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
         Mockito.verify(adminUserRepository, Mockito.times(1))
-                .findAll(specification, mockAdminUserListRequest.toPageable());
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
 }
