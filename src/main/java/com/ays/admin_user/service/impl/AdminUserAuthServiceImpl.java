@@ -113,6 +113,13 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
     }
 
 
+    /**
+     * Invalidates the access token and refresh token associated with the specified refresh token.
+     * It verifies and validates the refresh token first before proceeding with invalidation.
+     * If either the access token or refresh token is already marked as invalid, a TokenAlreadyInvalidatedException is thrown.
+     *
+     * @param refreshToken the refresh token used to invalidate the associated access token and refresh token
+     */
     @Override
     public void invalidateTokens(final String refreshToken) {
 
