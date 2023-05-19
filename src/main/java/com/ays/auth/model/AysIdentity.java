@@ -27,6 +27,11 @@ public class AysIdentity {
         return this.getJwt().getClaim(AysTokenClaims.ORGANIZATION_ID.getValue());
     }
 
+    /**
+     * Retrieves the access token value.
+     *
+     * @return the access token value
+     */
     public String getAccessToken() {
         return this.getJwt().getTokenValue();
     }
