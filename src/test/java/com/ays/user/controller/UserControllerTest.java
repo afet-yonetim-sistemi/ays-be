@@ -32,12 +32,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserControllerTest extends AbstractRestControllerTest {
 
@@ -77,14 +74,20 @@ class UserControllerTest extends AbstractRestControllerTest {
         AysResponse<UserSavedResponse> mockResponse = AysResponseBuilder.successOf(mockUserSavedResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").isNotEmpty())
-                .andExpect(jsonPath("$.response.username").value(mockResponse.getResponse().getUsername()))
-                .andExpect(jsonPath("$.response.password").value(mockResponse.getResponse().getPassword()));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.username")
+                        .value(mockResponse.getResponse().getUsername()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.password")
+                        .value(mockResponse.getResponse().getPassword()));
 
         Mockito.verify(userSaveService, Mockito.times(1))
                 .saveUser(Mockito.any(UserSaveRequest.class));
@@ -105,10 +108,14 @@ class UserControllerTest extends AbstractRestControllerTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
     }
 
     @Test
@@ -134,12 +141,16 @@ class UserControllerTest extends AbstractRestControllerTest {
         AysResponse<AysPageResponse<UsersResponse>> mockAysResponse = AysResponse.successOf(pageOfUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserListRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").isNotEmpty());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
 
         Mockito.verify(userService, Mockito.times(1))
                 .getAllUsers(mockUserListRequest);
@@ -158,10 +169,14 @@ class UserControllerTest extends AbstractRestControllerTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
     }
 
     @Test
@@ -180,12 +195,16 @@ class UserControllerTest extends AbstractRestControllerTest {
         AysResponse<UserResponse> mockAysResponse = AysResponse.successOf(mockUserResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(endpoint, mockAdminUserToken.getAccessToken()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").isNotEmpty());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
 
         Mockito.verify(userService, Mockito.times(1))
                 .getUserById(mockUserId);
@@ -204,10 +223,14 @@ class UserControllerTest extends AbstractRestControllerTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
     }
 
 
@@ -226,12 +249,16 @@ class UserControllerTest extends AbstractRestControllerTest {
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .put(endpoint, mockAdminUserToken.getAccessToken(), mockUpdateRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").doesNotExist());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
 
         Mockito.verify(userService, Mockito.times(1))
                 .updateUser(mockUserId, mockUpdateRequest);
@@ -252,10 +279,14 @@ class UserControllerTest extends AbstractRestControllerTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
     }
 
     @Test
@@ -271,12 +302,16 @@ class UserControllerTest extends AbstractRestControllerTest {
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .delete(endpoint, mockAdminUserToken.getAccessToken()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").doesNotExist());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
 
         Mockito.verify(userService, Mockito.times(1))
                 .deleteUser(mockUserId);
@@ -296,9 +331,13 @@ class UserControllerTest extends AbstractRestControllerTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
     }
 }
