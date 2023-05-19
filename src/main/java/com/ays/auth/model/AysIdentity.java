@@ -27,6 +27,10 @@ public class AysIdentity {
         return this.getJwt().getClaim(AysTokenClaims.ORGANIZATION_ID.getValue());
     }
 
+    public String getAccessToken() {
+        return this.getJwt().getTokenValue();
+    }
+
     /**
      * Retrieves the JWT token for the authenticated user from the security context.
      *
