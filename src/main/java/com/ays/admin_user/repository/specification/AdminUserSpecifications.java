@@ -14,7 +14,6 @@ public class AdminUserSpecifications {
      * @param organizationId the organization identifier
      */
     public static Specification<AdminUserEntity> hasOrganizationId(String organizationId) {
-        return (root, query, criteriaBuilder) ->
-                SearchSpecificationBuilder.eq(criteriaBuilder, root.get("organizationId"), organizationId);
+        return new AdminUserEntityHasOrganizationIdSpecification(organizationId);
     }
 }
