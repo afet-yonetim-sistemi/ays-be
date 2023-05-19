@@ -17,10 +17,8 @@ import com.ays.util.AysMockMvcRequestBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 class AdminUserAuthControllerTest extends AbstractRestControllerTest {
 
@@ -48,12 +46,12 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/register"), mockRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").doesNotExist());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.time").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value(mockResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(mockResponse.getIsSuccess()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response").doesNotExist());
 
         Mockito.verify(adminUserRegisterService, Mockito.times(1)).register(Mockito.any());
     }
@@ -71,15 +69,15 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), mockRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").isNotEmpty())
-                .andExpect(jsonPath("$.response.accessToken").value(mockAysResponse.getResponse().getAccessToken()))
-                .andExpect(jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
-                .andExpect(jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.time").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken").value(mockAysResponse.getResponse().getAccessToken()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(adminUserAuthService, Mockito.times(1)).authenticate(Mockito.any());
     }
@@ -97,15 +95,15 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), mockRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").isNotEmpty())
-                .andExpect(jsonPath("$.response.accessToken").value(mockAysResponse.getResponse().getAccessToken()))
-                .andExpect(jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
-                .andExpect(jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.time").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken").value(mockAysResponse.getResponse().getAccessToken()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(adminUserAuthService, Mockito.times(1)).refreshAccessToken(Mockito.any());
 
