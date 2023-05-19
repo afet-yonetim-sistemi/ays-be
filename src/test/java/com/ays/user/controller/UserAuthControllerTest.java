@@ -47,13 +47,20 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                         .post(BASE_PATH.concat("/token"), mockRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").isNotEmpty())
-                .andExpect(jsonPath("$.response.accessToken").value(mockAysResponse.getResponse().getAccessToken()))
-                .andExpect(jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
-                .andExpect(jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(jsonPath("$.response.accessToken")
+                        .value(mockAysResponse.getResponse().getAccessToken()))
+                .andExpect(jsonPath("$.response.accessTokenExpiresAt")
+                        .value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
+                .andExpect(jsonPath("$.response.refreshToken")
+                        .value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(userAuthService, Mockito.times(1))
                 .authenticate(Mockito.any());
@@ -75,13 +82,20 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                         .post(BASE_PATH.concat("/token/refresh"), mockRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockAysResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").isNotEmpty())
-                .andExpect(jsonPath("$.response.accessToken").value(mockAysResponse.getResponse().getAccessToken()))
-                .andExpect(jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
-                .andExpect(jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(jsonPath("$.response.accessToken")
+                        .value(mockAysResponse.getResponse().getAccessToken()))
+                .andExpect(jsonPath("$.response.accessTokenExpiresAt")
+                        .value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
+                .andExpect(jsonPath("$.response.refreshToken")
+                        .value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(userAuthService, Mockito.times(1))
                 .refreshAccessToken(Mockito.any());
@@ -102,10 +116,14 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                         .post(endpoint, mockUserToken.getAccessToken(), mockRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.time").isNotEmpty())
-                .andExpect(jsonPath("$.httpStatus").value(mockResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.isSuccess").value(mockResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.response").doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
 
         Mockito.verify(userAuthService, Mockito.times(1))
                 .invalidateTokens(Mockito.any());
@@ -125,10 +143,14 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
     }
 
 }
