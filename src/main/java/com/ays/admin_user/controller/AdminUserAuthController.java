@@ -76,6 +76,13 @@ class AdminUserAuthController {
         return AysResponse.successOf(aysTokenResponse);
     }
 
+    /**
+     * Endpoint for invalidating tokens. Only users with the 'ADMIN' authority are allowed to access this endpoint.
+     * It invalidates the access token and refresh token associated with the provided refresh token.
+     *
+     * @param invalidateRequest the request object containing the refresh token to invalidate
+     * @return AysResponse with a success message and no data
+     */
     @PostMapping("/token/invalidate")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
