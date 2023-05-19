@@ -5,9 +5,11 @@ import com.ays.admin_user.model.mapper.AdminUserRegisterRequestToAdminUserEntity
 import com.ays.admin_user.repository.AdminUserRegisterVerificationRepository;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserAuthService;
+import com.ays.auth.model.AysIdentity;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
+import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;
 import com.ays.auth.util.exception.UserNotActiveException;
@@ -15,11 +17,12 @@ import com.ays.auth.util.exception.UserNotVerifiedException;
 import com.ays.auth.util.exception.UsernameNotValidException;
 import com.ays.organization.repository.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 /**
  * This service class implements the {@link AdminUserAuthService} interface and provides methods for
@@ -30,14 +33,16 @@ import org.springframework.transaction.annotation.Transactional;
  * Authentication is handled using the {@link PasswordEncoder} and the {@link AysTokenService} is used for
  * generating and refreshing access tokens.
  */
-@Slf4j
 @Service
 @RequiredArgsConstructor
 class AdminUserAuthServiceImpl implements AdminUserAuthService {
 
     private final AdminUserRepository adminUserRepository;
     private final AysTokenService tokenService;
+    private final AysInvalidTokenService tokenInvalidateService;
     private final PasswordEncoder passwordEncoder;
+
+    private final AysIdentity identity;
 
     /**
      * Authenticates an admin user based on the given {@link AysLoginRequest} object. First, it retrieves the
@@ -91,7 +96,6 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
         return tokenService.generate(adminUserEntity.getClaims(), refreshToken);
     }
 
-
     private AdminUserEntity findUser(String username) {
         final AdminUserEntity adminUserEntity = adminUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotValidException(username));
@@ -106,6 +110,23 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
         }
 
         return adminUserEntity;
+    }
+
+
+    @Override
+    public void invalidateTokens(final String refreshToken) {
+
+        tokenService.verifyAndValidate(refreshToken);
+
+        final String accessTokenId = tokenService.getClaims(identity.getAccessToken())
+                .get(AysTokenClaims.JWT_ID.getValue()).toString();
+        tokenInvalidateService.checkForInvalidityOfToken(accessTokenId);
+
+        final String refreshTokenId = tokenService.getClaims(refreshToken)
+                .get(AysTokenClaims.JWT_ID.getValue()).toString();
+        tokenInvalidateService.checkForInvalidityOfToken(refreshTokenId);
+
+        tokenInvalidateService.invalidateTokens(Set.of(accessTokenId, refreshTokenId));
     }
 
 }
