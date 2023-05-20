@@ -124,15 +124,12 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
     public void invalidateTokens(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
-
-        final String accessTokenId = tokenService.getClaims(identity.getAccessToken())
-                .get(AysTokenClaims.JWT_ID.getValue()).toString();
-        invalidTokenService.checkForInvalidityOfToken(accessTokenId);
-
         final String refreshTokenId = tokenService.getClaims(refreshToken)
                 .get(AysTokenClaims.JWT_ID.getValue()).toString();
         invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
 
+        final String accessTokenId = tokenService.getClaims(identity.getAccessToken())
+                .get(AysTokenClaims.JWT_ID.getValue()).toString();
         invalidTokenService.invalidateTokens(Set.of(accessTokenId, refreshTokenId));
     }
 
