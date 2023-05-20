@@ -1,14 +1,16 @@
 package com.ays.user.service.impl;
 
 import com.ays.AbstractUnitTest;
+import com.ays.admin_user.model.entity.AdminUserEntity;
+import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
+import com.ays.admin_user.model.enums.AdminUserStatus;
+import com.ays.auth.model.AysIdentity;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.AysTokenBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
+import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
-import com.ays.auth.util.exception.PasswordNotValidException;
-import com.ays.auth.util.exception.TokenNotValidException;
-import com.ays.auth.util.exception.UserNotActiveException;
-import com.ays.auth.util.exception.UsernameNotValidException;
+import com.ays.auth.util.exception.*;
 import com.ays.user.model.dto.request.AysUserLoginRequestBuilder;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
@@ -23,6 +25,7 @@ import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
+import java.util.Set;
 
 class UserAuthServiceImplTest extends AbstractUnitTest {
 
@@ -36,7 +39,13 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     private AysTokenService tokenService;
 
     @Mock
+    private AysInvalidTokenService invalidTokenService;
+
+    @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private AysIdentity identity;
 
     @Test
     void givenValidLoginRequest_whenUserAuthenticated_thenReturnAysToken() {
@@ -296,6 +305,125 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .getClaims(mockRefreshToken);
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByUsername(mockUserEntity.getUsername());
+    }
+
+    @Test
+    void givenValidRefreshToken_whenRefreshTokenAndAccessTokenValidated_thenInvalidateToken() {
+        // Given
+        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
+                .withStatus(AdminUserStatus.ACTIVE).build();
+
+        String mockAccessToken = mockUserToken.getAccessToken();
+        Claims mockAccessTokenClaims = AysTokenBuilder.getValidClaims(mockAdminUserEntity.getUsername());
+        String mockAccessTokenId = mockAccessTokenClaims.getId();
+
+        String mockRefreshToken = mockUserToken.getRefreshToken();
+        Claims mockRefreshTokenClaims = AysTokenBuilder.getValidClaims(mockAdminUserEntity.getUsername());
+        String mockRefreshTokenId = mockRefreshTokenClaims.getId();
+
+        // When
+        Mockito.doNothing().when(tokenService)
+                .verifyAndValidate(mockRefreshToken);
+
+        Mockito.when(tokenService.getClaims(mockRefreshToken))
+                .thenReturn(mockRefreshTokenClaims);
+        Mockito.doNothing().when(invalidTokenService)
+                .checkForInvalidityOfToken(mockRefreshTokenId);
+
+        Mockito.when(identity.getAccessToken())
+                .thenReturn(mockAccessToken);
+        Mockito.when(tokenService.getClaims(mockAccessToken))
+                .thenReturn(mockAccessTokenClaims);
+
+        Mockito.doNothing().when(invalidTokenService)
+                .invalidateTokens(Set.of(mockAccessTokenId, mockRefreshTokenId));
+
+        // Then
+        userAuthService.invalidateTokens(mockRefreshToken);
+
+        Mockito.verify(tokenService, Mockito.times(1))
+                .verifyAndValidate(Mockito.anyString());
+
+        Mockito.verify(tokenService, Mockito.times(2))
+                .getClaims(Mockito.anyString());
+        Mockito.verify(invalidTokenService, Mockito.times(1))
+                .checkForInvalidityOfToken(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getAccessToken();
+
+        Mockito.verify(invalidTokenService, Mockito.times(1))
+                .invalidateTokens(Mockito.anySet());
+    }
+
+    @Test
+    void givenInvalidRefreshToken_whenRefreshTokenNotValid_thenThrowTokenNotValidException() {
+        // Given
+        String mockRefreshToken = "invalid_refresh_token";
+
+        // When
+        Mockito.doThrow(TokenNotValidException.class)
+                .when(tokenService).verifyAndValidate(mockRefreshToken);
+
+        // Then
+        Assertions.assertThrows(
+                TokenNotValidException.class,
+                () -> userAuthService.invalidateTokens(mockRefreshToken)
+        );
+
+        Mockito.verify(tokenService, Mockito.times(1))
+                .verifyAndValidate(Mockito.anyString());
+
+        Mockito.verify(tokenService, Mockito.times(0))
+                .getClaims(Mockito.anyString());
+        Mockito.verify(invalidTokenService, Mockito.times(0))
+                .checkForInvalidityOfToken(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(0))
+                .getAccessToken();
+
+        Mockito.verify(invalidTokenService, Mockito.times(0))
+                .invalidateTokens(Mockito.anySet());
+    }
+
+    @Test
+    void givenInvalidatedRefreshToken_whenRefreshTokenInvalidated_thenThrowTokenAlreadyInvalidatedException() {
+        // Given
+        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
+                .withStatus(AdminUserStatus.ACTIVE).build();
+
+        String mockRefreshToken = mockUserToken.getRefreshToken();
+        Claims mockRefreshTokenClaims = AysTokenBuilder.getValidClaims(mockAdminUserEntity.getUsername());
+        String mockRefreshTokenId = mockRefreshTokenClaims.getId();
+
+        // When
+        Mockito.doNothing().when(tokenService)
+                .verifyAndValidate(mockRefreshToken);
+
+        Mockito.when(tokenService.getClaims(mockRefreshToken))
+                .thenReturn(mockRefreshTokenClaims);
+        Mockito.doThrow(TokenAlreadyInvalidatedException.class)
+                .when(invalidTokenService).checkForInvalidityOfToken(mockRefreshTokenId);
+
+        // Then
+        Assertions.assertThrows(
+                TokenAlreadyInvalidatedException.class,
+                () -> userAuthService.invalidateTokens(mockRefreshToken)
+        );
+
+        Mockito.verify(tokenService, Mockito.times(1))
+                .verifyAndValidate(Mockito.anyString());
+
+        Mockito.verify(tokenService, Mockito.times(1))
+                .getClaims(Mockito.anyString());
+        Mockito.verify(invalidTokenService, Mockito.times(1))
+                .checkForInvalidityOfToken(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(0))
+                .getAccessToken();
+
+        Mockito.verify(invalidTokenService, Mockito.times(0))
+                .invalidateTokens(Mockito.anySet());
     }
 
 }
