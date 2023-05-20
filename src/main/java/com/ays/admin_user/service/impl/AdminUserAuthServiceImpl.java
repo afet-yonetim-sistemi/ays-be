@@ -39,7 +39,7 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
 
     private final AdminUserRepository adminUserRepository;
     private final AysTokenService tokenService;
-    private final AysInvalidTokenService tokenInvalidateService;
+    private final AysInvalidTokenService invalidTokenService;
     private final PasswordEncoder passwordEncoder;
 
     private final AysIdentity identity;
@@ -127,13 +127,13 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
 
         final String accessTokenId = tokenService.getClaims(identity.getAccessToken())
                 .get(AysTokenClaims.JWT_ID.getValue()).toString();
-        tokenInvalidateService.checkForInvalidityOfToken(accessTokenId);
+        invalidTokenService.checkForInvalidityOfToken(accessTokenId);
 
         final String refreshTokenId = tokenService.getClaims(refreshToken)
                 .get(AysTokenClaims.JWT_ID.getValue()).toString();
-        tokenInvalidateService.checkForInvalidityOfToken(refreshTokenId);
+        invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
 
-        tokenInvalidateService.invalidateTokens(Set.of(accessTokenId, refreshTokenId));
+        invalidTokenService.invalidateTokens(Set.of(accessTokenId, refreshTokenId));
     }
 
 }
