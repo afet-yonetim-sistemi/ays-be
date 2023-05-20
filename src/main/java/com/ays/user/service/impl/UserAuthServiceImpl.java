@@ -25,7 +25,7 @@ class UserAuthServiceImpl implements UserAuthService {
     private final UserRepository userRepository;
 
     private final AysTokenService tokenService;
-    private final AysInvalidTokenService tokenInvalidateService;
+    private final AysInvalidTokenService invalidTokenService;
     private final PasswordEncoder passwordEncoder;
 
     private final AysIdentity identity;
@@ -78,16 +78,13 @@ class UserAuthServiceImpl implements UserAuthService {
     public void invalidateTokens(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
+        final String refreshTokenId = tokenService.getClaims(refreshToken)
+                .get(AysTokenClaims.JWT_ID.getValue()).toString();
+        invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
 
         final String accessTokenId = tokenService.getClaims(identity.getAccessToken())
                 .get(AysTokenClaims.JWT_ID.getValue()).toString();
-        tokenInvalidateService.checkForInvalidityOfToken(accessTokenId);
-
-        final String refreshTokenId = tokenService.getClaims(refreshToken)
-                .get(AysTokenClaims.JWT_ID.getValue()).toString();
-        tokenInvalidateService.checkForInvalidityOfToken(refreshTokenId);
-
-        tokenInvalidateService.invalidateTokens(Set.of(accessTokenId, refreshTokenId));
+        invalidTokenService.invalidateTokens(Set.of(accessTokenId, refreshTokenId));
     }
 
 }
