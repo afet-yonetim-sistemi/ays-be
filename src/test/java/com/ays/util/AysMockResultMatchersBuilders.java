@@ -31,4 +31,24 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.response");
     }
 
+    public static JsonPathResultMatchers responseAccessToken() {
+        return MockMvcResultMatchers.jsonPath("$.response.accessToken");
+    }
+
+    public static JsonPathResultMatchers responseAccessTokenExpiresAt() {
+        return MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt");
+    }
+
+    public static JsonPathResultMatchers responseRefreshToken() {
+        return MockMvcResultMatchers.jsonPath("$.response.refreshToken");
+    }
+
+    public static JsonPathResultMatchers responseUsername() {
+        return MockMvcResultMatchers.jsonPath("$.response.username");
+    }
+
+    public static JsonPathResultMatchers responsePassword() {
+        return MockMvcResultMatchers.jsonPath("$.response.password");
+    }
+
 }
