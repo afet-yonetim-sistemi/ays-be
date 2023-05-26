@@ -26,16 +26,17 @@ import java.util.List;
 
 class AdminUserServiceImplTest extends AbstractUnitTest {
 
+    @InjectMocks
+    private AdminUserServiceImpl adminUserService;
+
     @Mock
     private AdminUserRepository adminUserRepository;
 
     @Mock
-    private AysIdentity aysIdentity;
+    private AysIdentity identity;
 
-    @InjectMocks
-    private AdminUserServiceImpl adminUserService;
 
-    private static final AdminUserEntityToAdminUserMapper ADMIN_ENTITY_TO_ADMIN_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
+    private final AdminUserEntityToAdminUserMapper ADMIN_ENTITY_TO_ADMIN_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
 
     @Test
     void givenUserListRequest_whenAdminwithRoleIsSuperAdmin_thenReturnAllAdminUsers() {
@@ -48,11 +49,11 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         List<AdminUser> mockAdminUsers = ADMIN_ENTITY_TO_ADMIN_MAPPER.map(mockAdminUserEntities);
         AysPage<AdminUser> mockAysPageAdminUsers = AysPage.of(mockPageAdminUserEntities, mockAdminUsers);
 
-        AysUserType aysUserType = AysUserType.SUPER_ADMIN;
+        AysUserType userType = AysUserType.SUPER_ADMIN;
 
         // When
-        Mockito.when(aysIdentity.getUserType())
-                .thenReturn(aysUserType);
+        Mockito.when(identity.getUserType())
+                .thenReturn(userType);
         Mockito.when(adminUserRepository.findAll(mockAdminUserListRequest.toPageable()))
                 .thenReturn(mockPageAdminUserEntities);
 
@@ -63,6 +64,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findAll(mockAdminUserListRequest.toPageable());
+
     }
 
     @Test
@@ -78,13 +80,11 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         List<AdminUser> mockAdminUsers = ADMIN_ENTITY_TO_ADMIN_MAPPER.map(mockAdminUserEntities);
         AysPage<AdminUser> mockAysPageAdminUsers = AysPage.of(mockPageAdminUserEntities, mockAdminUsers);
 
-        AysUserType aysUserType = AysUserType.ADMIN;
-        Specification<AdminUserEntity> specification = (root, query, criteriaBuilder) -> criteriaBuilder
-                .equal(root.get("organizationId"), mockAdminUserEntity.getOrganizationId());
+        AysUserType userType = AysUserType.ADMIN;
 
         // When
-        Mockito.when(aysIdentity.getUserType()).thenReturn(aysUserType);
-        Mockito.when(aysIdentity.getOrganizationId()).thenReturn(mockAdminUserEntity.getOrganizationId());
+        Mockito.when(identity.getUserType()).thenReturn(userType);
+        Mockito.when(identity.getOrganizationId()).thenReturn(mockAdminUserEntity.getOrganizationId());
 
         Mockito.when(adminUserRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageAdminUserEntities);
@@ -96,5 +96,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+
     }
+
 }
