@@ -121,6 +121,8 @@ try using NodePort instead of LoadBalancer in service.yaml or simply use port fo
 kubectl port-forward service/ays-be 8080:8080
 ```
 
+---
+
 # How to Contribute
 
 The project is managed by [GitHub projects](https://github.com/orgs/afet-yonetim-sistemi/projects/3). You can assign
@@ -136,6 +138,7 @@ For your feature branches, please ensure below:
 
 - Make sure to associate your feature branch with the GitHub issue from 'Development' section in each issue page.
 - main branch is protected.
+- PR should be linked to the relevant issue within the GitHub Project.
 - Your feature branches can be merged by pull request that is approved by at least one code owner.
 - PR should be squash-merged to avoid having merge commit history.
 - PR title and description should clearly define and explain the aim.
@@ -147,10 +150,14 @@ For your feature branches, please ensure below:
     hotfix/issue-no-other-desc (there may also be no issue number for some hotfixes)
 - Each release should be tagged with a version
 - Commit messages should be subjectless
-    e.g. Add README.md
-    e.g. Fix ...
+  e.g. Add README.md
+  e.g. Fix ...
+- Comments within the PR should only be resolved by the person who made the comment.
 - PR should be concise; don't try to fix/introduce more than one thing
 - Do not include/push secret/credential information
+- The code should comply with the existing code standards and previously established coding standards. No new standards
+  should be introduced, and if they are, the reasons for their addition should be stated, with the expectation that this
+  structure will be applied to the entire project.
 
 ## Docker Image Name Conventions
 
@@ -163,6 +170,28 @@ The project follows [the semantic versioning](https://semver.org/) i.e. MAJOR.MI
 
 ## Project Documents
 
-AYS technical analysis can be found [here](https://docs.google.com/document/d/1_GyROvXrsD88udD6z_KfF-Q5Cs77YLHDglqafRXIV_o/edit).
+AYS technical analysis can be
+found [here](https://docs.google.com/document/d/1_GyROvXrsD88udD6z_KfF-Q5Cs77YLHDglqafRXIV_o/edit).
 
 For other information, you can contact the project's [Discord channel](https://discord.gg/HeunQcqg).
+
+---
+
+## Postman Collections
+
+### AYS Auth APIs
+
+https://documenter.getpostman.com/view/26813504/2s93kz55K3
+
+### AYS APIs
+
+https://documenter.getpostman.com/view/26813504/2s93kz55Jz
+
+---
+
+---
+
+# Project Infrastucture
+
+<img src="https://bit.ly/3MzggX8" width="7000" alt=""/>
+<img src="https://bit.ly/42NeBTQ" width="400" alt=""/>
