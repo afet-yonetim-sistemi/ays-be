@@ -94,7 +94,7 @@
 
 
         <!-- ======================= -->
-        <!-- DML of AYS_ORGANIZATION -->
+        <!-- DML of AYS_ADMIN_USER -->
         <!-- ======================= -->
         <insert tableName="AYS_ADMIN_USER">
             <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b206"/>
@@ -106,12 +106,30 @@
             <column name="LAST_NAME" value="Sistemi"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="LINE_NUMBER" value="1234567890"/>
+            <column name="ROLE" value="ADMIN"/>
             <column name="STATUS" value="ACTIVE"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
+
+        <insert tableName="AYS_ADMIN_USER">
+            <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b299"/>
+            <column name="ORGANIZATION_ID" value="null"/>
+            <column name="USERNAME" value="ays-super-admin"/>
+            <column name="PASSWORD" value="$2a$12$tvvL2n1XLYkYX3X1PRI5Bu35zXXvM4MEgE6jU3.38bqVil3aiGmQS"/>
+            <column name="EMAIL" value="superadmin@ays.com"/>
+            <column name="FIRST_NAME" value="Afet Yönetim"/>
+            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="COUNTRY_CODE" value="90"/>
+            <column name="LINE_NUMBER" value="1234321890"/>
+            <column name="ROLE" value="SUPER_ADMIN"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+
         <!-- ======================= -->
-        <!-- DML of AYS_ORGANIZATION -->
+        <!-- DML of AYS_ADMIN_USER -->
         <!-- ======================= -->
 
 
