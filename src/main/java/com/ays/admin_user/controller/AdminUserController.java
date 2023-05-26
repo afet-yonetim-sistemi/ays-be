@@ -39,7 +39,7 @@ class AdminUserController {
      */
     @GetMapping
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
-    public AysResponse<AysPageResponse<AdminUsersResponse>> getAllAdminUsers(@RequestBody @Valid AdminUserListRequest listRequest) {
+    public AysResponse<AysPageResponse<AdminUsersResponse>> getAdminUsers(@RequestBody @Valid AdminUserListRequest listRequest) {
         final AysPage<AdminUser> pageOfAdminUsers = adminUserService.getAdminUsers(listRequest);
 
         final AysPageResponse<AdminUsersResponse> pageOfAdminUsersResponse = AysPageResponse.<AdminUsersResponse>builder()
