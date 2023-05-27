@@ -38,7 +38,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final AysIdentity identity;
 
     /**
-     * Get All admin users based on the given {@link AdminUserListRequest} object. First, it is determined whether
+     * Get Admin users based on the given {@link AdminUserListRequest} object. First, it is determined whether
      * ADMIN or SUPER_ADMIN in terms of admin role. Next, it returns the list of all admins in all organizations
      * for SUPER_ADMIN role or return the list of all admins in the same organization for ADMIN role.
      *
