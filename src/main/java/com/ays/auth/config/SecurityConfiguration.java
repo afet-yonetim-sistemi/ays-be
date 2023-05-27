@@ -69,7 +69,7 @@ class SecurityConfiguration {
 
         httpSecurity.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/authentication/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
