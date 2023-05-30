@@ -61,7 +61,8 @@ class SecurityConfiguration {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter)
+                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter
+                                            )
             throws Exception {
 
         httpSecurity.cors()

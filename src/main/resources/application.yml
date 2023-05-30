@@ -12,6 +12,8 @@ application:
   licenseName: AYS Licence
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   liquibase:
     enabled: true
     changeLog: "classpath:db/changelog/db.changelog-master.yaml"
