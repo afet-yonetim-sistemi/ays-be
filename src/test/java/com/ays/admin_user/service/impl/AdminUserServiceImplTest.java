@@ -89,9 +89,9 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminUserRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageAdminUserEntities);
 
+        // Then
         AysPage<AdminUser> aysPageAdminUsers = adminUserService.getAdminUsers(mockAdminUserListRequest);
 
-        // Then
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
         Mockito.verify(adminUserRepository, Mockito.times(1))
