@@ -113,10 +113,10 @@
         </insert>
 
         <insert tableName="AYS_ADMIN_USER">
-            <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b299"/>
+            <column name="ID" value="ea29a0bd-ad5d-4068-88c3-a8835b8d555e"/>
             <column name="ORGANIZATION_ID" value="null"/>
             <column name="USERNAME" value="ays-super-admin"/>
-            <column name="PASSWORD" value="$2a$12$tvvL2n1XLYkYX3X1PRI5Bu35zXXvM4MEgE6jU3.38bqVil3aiGmQS"/>
+            <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="superadmin@ays.com"/>
             <column name="FIRST_NAME" value="Afet Yönetim"/>
             <column name="LAST_NAME" value="Sistemi"/>
