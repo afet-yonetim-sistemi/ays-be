@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -58,7 +57,6 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
      * @throws PasswordNotValidException if the provided password is not valid
      */
     @Override
-    @Transactional
     public AysToken authenticate(final AysLoginRequest loginRequest) {
 
         final AdminUserEntity adminUserEntity = this.findUser(loginRequest.getUsername());
