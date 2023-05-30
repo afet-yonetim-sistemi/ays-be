@@ -35,9 +35,9 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
     @MockBean
     private AdminUserService adminUserService;
 
-    private final AdminUserToAdminUsersResponseMapper ADMIN_USER_TO_ADMIN_USER_RESPONSE_MAPPER = AdminUserToAdminUsersResponseMapper.initialize();
+    private static final AdminUserToAdminUsersResponseMapper ADMIN_USER_TO_ADMIN_USER_RESPONSE_MAPPER = AdminUserToAdminUsersResponseMapper.initialize();
 
-    private final AdminUserEntityToAdminUserMapper ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
+    private static final AdminUserEntityToAdminUserMapper ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1/admin";
