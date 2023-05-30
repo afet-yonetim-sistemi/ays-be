@@ -63,6 +63,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
                 .of(mockAysPageOfUsers)
                 .content(mockAdminUsersResponses)
                 .build();
+
         AysResponse<AysPageResponse<AdminUsersResponse>> mockAysResponse = AysResponse.successOf(pageOfAdminUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(BASE_PATH, mockAdminUserToken.getAccessToken(), mockAdminUserListRequest))
