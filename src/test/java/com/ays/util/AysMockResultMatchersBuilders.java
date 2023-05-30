@@ -43,12 +43,4 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.response.refreshToken");
     }
 
-    public static JsonPathResultMatchers responseUsername() {
-        return MockMvcResultMatchers.jsonPath("$.response.username");
-    }
-
-    public static JsonPathResultMatchers responsePassword() {
-        return MockMvcResultMatchers.jsonPath("$.response.password");
-    }
-
 }
