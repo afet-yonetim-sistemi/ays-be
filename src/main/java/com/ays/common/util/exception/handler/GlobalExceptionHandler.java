@@ -117,7 +117,7 @@ class GlobalExceptionHandler {
         return new ResponseEntity<>(aysError, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler({AccessDeniedException.class})
     protected ResponseEntity<Object> handleAccessDeniedError(final AccessDeniedException exception) {
         log.error(exception.getMessage(), exception);
 
