@@ -1,5 +1,6 @@
 package com.ays.common.util.exception.handler;
 
+import com.ays.auth.util.exception.InvalidTransactionException;
 import com.ays.common.util.exception.AysAlreadyException;
 import com.ays.common.util.exception.AysAuthException;
 import com.ays.common.util.exception.AysNotExistException;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
 import java.sql.SQLException;
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 
 /**
  * Global exception handler acting as controller advice for certain use cases happened in the controller.
@@ -111,10 +114,10 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
-                .httpStatus(HttpStatus.FORBIDDEN)
+                .httpStatus(HttpStatus.UNAUTHORIZED)
                 .header(AysError.Header.AUTH_ERROR.getName())
                 .build();
-        return new ResponseEntity<>(aysError, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(aysError, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({AccessDeniedException.class})
@@ -122,10 +125,10 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
-                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .httpStatus(HttpStatus.FORBIDDEN)
                 .header(AysError.Header.AUTH_ERROR.getName())
                 .build();
-        return new ResponseEntity<>(aysError, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(aysError, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(SQLException.class)
@@ -138,5 +141,19 @@ class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(InvalidTransactionException.class)
+    protected ResponseEntity<Object> handleInvalidTransactionException(InvalidTransactionException ex){
+        log.error(ex.getMessage(),ex);
+        AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .header(AysError.Header.AUTH_ERROR.getName())
+                .isSuccess(false)
+                .time(LocalDateTime.now(Clock.systemDefaultZone()))
+                .build();
+        return new ResponseEntity<>(aysError,HttpStatus.UNAUTHORIZED);
+    }
+
+
 
 }
