@@ -5,12 +5,6 @@ logging:
   level:
     web: debug
 
-application:
-  description: Afet Yönetim Sistemi (AYS)
-  version: 1.0.0
-  title: AYS
-  licenseName: AYS Licence
-
 spring:
   liquibase:
     enabled: true
@@ -35,5 +29,10 @@ ays:
     maximum-lifetime: 170000
 
 springdoc:
+  packagesToScan: com.ays
+  cache:
+    disabled: false
   swagger-ui:
-    path: /swagger-ui.html
+    path: /public/api/swagger-ui.html
+  api-docs:
+    path: /public/api/docs
