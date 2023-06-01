@@ -6,13 +6,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.text.DateFormat;
 
 @Component
 public class AysBearerTokenControlFilter extends OncePerRequestFilter {
@@ -31,7 +34,7 @@ public class AysBearerTokenControlFilter extends OncePerRequestFilter {
                     .build();
             ObjectMapper obj = new ObjectMapper();
             obj.registerModule(new JavaTimeModule());
-            byte[] res = obj.writer().writeValueAsBytes(aysError);
+            byte[] res =obj.writer(DateFormat.getDateInstance()).writeValueAsBytes(aysError);
             response.getOutputStream().write(res);
             return;
         }
