@@ -113,7 +113,12 @@ public class AysError {
         /**
          * AUTH_ERROR header.
          */
-        AUTH_ERROR("AUTH ERROR");
+        AUTH_ERROR("AUTH ERROR"),
+
+        /**
+         * FORBIDDEN_ERROR header.
+         */
+        FORBIDDEN_ERROR("FORBIDDEN ERROR");
 
         /**
          * The name of the header.

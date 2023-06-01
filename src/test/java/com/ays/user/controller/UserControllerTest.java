@@ -101,10 +101,10 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(BASE_PATH, mockUserToken.getAccessToken(), mockUserSaveRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
@@ -154,10 +154,10 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(BASE_PATH, mockUserToken.getAccessToken(), mockUserListRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
@@ -200,10 +200,10 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(BASE_PATH.concat("/".concat(mockUserId)), mockUserToken.getAccessToken());
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
@@ -248,10 +248,10 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
@@ -292,10 +292,10 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))

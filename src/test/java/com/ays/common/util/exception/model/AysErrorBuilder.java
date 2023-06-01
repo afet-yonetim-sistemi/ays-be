@@ -10,4 +10,9 @@ public class AysErrorBuilder {
             .header(AysError.Header.AUTH_ERROR.getName())
             .isSuccess(false).build();
 
+    public static final AysError FORBIDDEN = AysError.builder()
+            .httpStatus(HttpStatus.FORBIDDEN)
+            .header(AysError.Header.FORBIDDEN_ERROR.getName())
+            .isSuccess(false).build();
+
 }
