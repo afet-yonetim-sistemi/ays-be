@@ -31,8 +31,9 @@ public class AysBearerTokenControlFilter extends OncePerRequestFilter {
                     .build();
             ObjectMapper obj = new ObjectMapper();
             obj.registerModule(new JavaTimeModule());
-            byte[] res =obj.writer(DateFormat.getDateInstance()).writeValueAsBytes(aysError);
-            response.getOutputStream().write(res);
+            response.setContentType("application/json");
+           String res =obj.writer(DateFormat.getDateInstance()).writeValueAsString(aysError);
+            response.getOutputStream().write(res.getBytes());
             return;
         }
         filterChain.doFilter(request, response);
