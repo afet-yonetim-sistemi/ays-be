@@ -1,7 +1,10 @@
 package com.ays.auth.config;
 
 import com.ays.auth.filter.AysBearerTokenAuthenticationFilter;
+
 import com.ays.auth.filter.AysBearerTokenControlFilter;
+import com.ays.auth.security.CustomAuthenticationEntryPoint;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +46,11 @@ import java.util.List;
 class SecurityConfiguration {
 
     /**
+     * The custom authentication entry point to be used for handling unauthorized requests.
+     */
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+
+    /**
      * Returns a new instance of the {@link RegisterSessionAuthenticationStrategy} class that
      * registers the session authentication strategy with the session registry.
      *
@@ -66,6 +74,9 @@ class SecurityConfiguration {
                                            AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
                                            AysBearerTokenControlFilter aysBearerTokenControlFilter)
             throws Exception {
+
+        httpSecurity.exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint);
 
         httpSecurity.cors()
                 .configurationSource(corsConfigurationSource());
