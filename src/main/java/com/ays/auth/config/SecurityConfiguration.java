@@ -2,7 +2,6 @@ package com.ays.auth.config;
 
 import com.ays.auth.filter.AysBearerTokenAuthenticationFilter;
 
-import com.ays.auth.filter.AysBearerTokenControlFilter;
 import com.ays.auth.security.CustomAuthenticationEntryPoint;
 
 import lombok.RequiredArgsConstructor;
@@ -46,8 +45,8 @@ class SecurityConfiguration {
 
     /**
      * The custom authentication entry point to be used for handling unauthorized requests.
+     * {@link CustomAuthenticationEntryPoint}
      */
-    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     /**
      * Returns a new instance of the {@link RegisterSessionAuthenticationStrategy} class that
@@ -71,11 +70,11 @@ class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
-                                           AysBearerTokenControlFilter aysBearerTokenControlFilter)
+                                           CustomAuthenticationEntryPoint customAuthenticationEntryPoint)
             throws Exception {
 
         httpSecurity.exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint);
+                .authenticationEntryPoint(customAuthenticationEntryPoint);
 
         httpSecurity.cors()
                 .configurationSource(corsConfigurationSource());
@@ -88,9 +87,8 @@ class SecurityConfiguration {
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         httpSecurity.addFilterBefore(bearerTokenAuthenticationFilter, BearerTokenAuthenticationFilter.class);
-        httpSecurity.addFilterBefore(aysBearerTokenControlFilter, BearerTokenAuthenticationFilter.class);
+      //  httpSecurity.addFilterBefore(aysBearerTokenControlFilter, BearerTokenAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

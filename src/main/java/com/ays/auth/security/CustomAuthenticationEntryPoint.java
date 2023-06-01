@@ -1,12 +1,17 @@
 package com.ays.auth.security;
 
+import com.ays.common.util.exception.model.AysError;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.DateFormat;
 
 /**
  * Custom authentication entry point that implements the {@link AuthenticationEntryPoint} interface.
@@ -27,7 +32,17 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        AysError aysError = AysError.builder()
+                .header(AysError.Header.AUTH_ERROR.getName())
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .isSuccess(false)
+                .build();
+        ObjectMapper obj = new ObjectMapper();
+        obj.registerModule(new JavaTimeModule());
+        response.setContentType("application/json");
+        String res = obj.writer(DateFormat.getDateInstance()).writeValueAsString(aysError);
+        response.setStatus(401);
+        response.getOutputStream().write(res.getBytes());
     }
 
 }
