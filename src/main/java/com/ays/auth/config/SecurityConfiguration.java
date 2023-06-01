@@ -1,9 +1,7 @@
 package com.ays.auth.config;
 
 import com.ays.auth.filter.AysBearerTokenAuthenticationFilter;
-
 import com.ays.auth.security.CustomAuthenticationEntryPoint;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,10 +41,6 @@ import java.util.List;
 @RequiredArgsConstructor
 class SecurityConfiguration {
 
-    /**
-     * The custom authentication entry point to be used for handling unauthorized requests.
-     * {@link CustomAuthenticationEntryPoint}
-     */
 
     /**
      * Returns a new instance of the {@link RegisterSessionAuthenticationStrategy} class that
@@ -64,6 +58,7 @@ class SecurityConfiguration {
      *
      * @param httpSecurity                    the {@link HttpSecurity} instance to configure
      * @param bearerTokenAuthenticationFilter the {@link AysBearerTokenAuthenticationFilter} instance to authenticate bearer tokens
+     * @param customAuthenticationEntryPoint  the {@link CustomAuthenticationEntryPoint} instance to handle authentication errors
      * @return the {@link SecurityFilterChain} instance
      * @throws Exception if there is an error setting up the filter chain
      */
