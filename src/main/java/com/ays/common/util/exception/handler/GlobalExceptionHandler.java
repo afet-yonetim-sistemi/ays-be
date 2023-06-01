@@ -1,4 +1,5 @@
 package com.ays.common.util.exception.handler;
+
 import com.ays.common.util.exception.AysAlreadyException;
 import com.ays.common.util.exception.AysAuthException;
 import com.ays.common.util.exception.AysNotExistException;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import java.sql.SQLException;
 
+import java.sql.SQLException;
 
 /**
  * Global exception handler acting as controller advice for certain use cases happened in the controller.
@@ -116,15 +117,15 @@ class GlobalExceptionHandler {
         return new ResponseEntity<>(aysError, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler({AccessDeniedException.class})
+    @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<Object> handleAccessDeniedError(final AccessDeniedException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
-                .httpStatus(HttpStatus.FORBIDDEN)
+                .httpStatus(HttpStatus.UNAUTHORIZED)
                 .header(AysError.Header.AUTH_ERROR.getName())
                 .build();
-        return new ResponseEntity<>(aysError, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(aysError, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(SQLException.class)
@@ -137,7 +138,4 @@ class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
-
 }

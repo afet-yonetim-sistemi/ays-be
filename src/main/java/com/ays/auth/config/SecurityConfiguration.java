@@ -1,6 +1,7 @@
 package com.ays.auth.config;
 
 import com.ays.auth.filter.AysBearerTokenAuthenticationFilter;
+import com.ays.auth.filter.AysBearerTokenControlFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.server.resource.web.authentication.Be
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -61,8 +63,8 @@ class SecurityConfiguration {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter
-                                            )
+                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
+                                           AysBearerTokenControlFilter aysBearerTokenControlFilter)
             throws Exception {
 
         httpSecurity.cors()
@@ -78,6 +80,7 @@ class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(bearerTokenAuthenticationFilter, BearerTokenAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(aysBearerTokenControlFilter, BearerTokenAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
