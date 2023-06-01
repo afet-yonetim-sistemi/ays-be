@@ -24,8 +24,5 @@ jobs:
       - name: Install Maven
         run: sudo apt-get install -y maven
 
-      - name: Print environment variables
-        run: env
-
       - name: Build with Maven
         run: mvn clean install
