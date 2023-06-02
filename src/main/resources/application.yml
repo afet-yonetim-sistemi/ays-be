@@ -9,6 +9,8 @@ spring:
   liquibase:
     enabled: true
     changeLog: "classpath:db/changelog/db.changelog-master.yaml"
+  config:
+    import: optional:file:.env[.properties]
   jpa:
     properties:
       hibernate:

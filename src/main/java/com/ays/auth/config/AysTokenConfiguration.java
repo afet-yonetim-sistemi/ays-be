@@ -6,7 +6,9 @@ import com.ays.parameter.model.AysParameter;
 import com.ays.parameter.service.AysParameterService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.AntPathMatcher;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -77,5 +79,10 @@ public class AysTokenConfiguration {
 
         log.info("AYS Token Configuration is initialized!");
     }
+
+     @Bean
+    public AntPathMatcher antPathMatcher(){
+        return new AntPathMatcher();
+     }
 
 }
