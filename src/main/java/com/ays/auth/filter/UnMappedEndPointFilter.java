@@ -47,8 +47,7 @@ public class UnMappedEndPointFilter extends OncePerRequestFilter {
             String prefix = k.toString().split(" ")[1];
             prefix = prefix.substring(1);
             prefix = prefix.replaceAll("]", "");
-            prefix = prefix.replaceAll("}", " ");
-            prefix = prefix.replaceAll(" ", "");
+            prefix = prefix.replaceAll("}", "");
             prefix = prefix.replaceAll("\\{\\w+","");
             prefix = prefix.endsWith("/") ? prefix.substring(0,prefix.length()-1) : prefix;
             String method = k.toString().split(" ")[0].substring(1);
