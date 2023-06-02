@@ -23,17 +23,17 @@ import java.util.*;
 public class UnMappedEndPointFilter extends OncePerRequestFilter {
 
 
-   private final RequestMappingHandlerMapping requestMappingHandlerMapping;
-   private HashMap<String, List<String>> endpoints;
+    private final RequestMappingHandlerMapping requestMappingHandlerMapping;
+    private HashMap<String, List<String>> endpoints;
+
     /**
      * Constructs a new UnMappedEndPointFilter with the specified RequestMappingHandlerMapping.
      *
      * @param requestMappingHandlerMapping the RequestMappingHandlerMapping to use for mapping information
      */
-    public UnMappedEndPointFilter(RequestMappingHandlerMapping requestMappingHandlerMapping ) {
+    public UnMappedEndPointFilter(RequestMappingHandlerMapping requestMappingHandlerMapping) {
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
     }
-
 
 
     /**
@@ -41,27 +41,29 @@ public class UnMappedEndPointFilter extends OncePerRequestFilter {
      */
     @PostConstruct
     private void init() {
-         endpoints = new HashMap<>();
-        endpoints.put("PUT",new ArrayList<>());
-        endpoints.put("POST",new ArrayList<>());
-        endpoints.put("GET",new ArrayList<>());
-        endpoints.put("DELETE",new ArrayList<>());
-        endpoints.put("OPTIONS",new ArrayList<>());
-        endpoints.put("PATCH",new ArrayList<>());
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+        endpoints = new HashMap<>();
         map.forEach((k, v) -> {
             String prefix = k.toString().split(" ")[1];
             prefix = prefix.substring(1);
-            prefix = prefix.replaceAll("]","");
-            prefix = prefix.replaceAll("}"," ");
-            prefix = prefix.replaceAll(" ","" );
-            if(prefix.contains("{")) {
-                prefix = prefix.concat("}");
-            }
+            prefix = prefix.replaceAll("]", "");
+            prefix = prefix.replaceAll("}", " ");
+            prefix = prefix.replaceAll(" ", "");
+            prefix = prefix.replaceAll("\\{\\w+","");
+            prefix = prefix.endsWith("/") ? prefix.substring(0,prefix.length()-1) : prefix;
             String method = k.toString().split(" ")[0].substring(1);
 
-            if(endpoints.containsKey(method)) endpoints.get(method).add(prefix);
-        } );
+            if (endpoints.containsKey(prefix)) {
+                List<String> list = new ArrayList<>();
+                list.add(method);
+                list.addAll(endpoints.get(prefix));
+                endpoints.replace(prefix, list);
+                 return;
+            }
+            if (!method.equals("")) {
+                endpoints.put(prefix, List.of(method));
+            }
+        });
     }
 
     /**
@@ -77,22 +79,25 @@ public class UnMappedEndPointFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(endpoints.containsKey(request.getMethod())){
-            List<String> urlList = endpoints.get(request.getMethod());
-            Optional<String> ref = urlList.stream().filter(i -> i.contains(request.getServletPath()))
-                    .findFirst();
-
-            if(ref.isPresent()){
-                filterChain.doFilter(request,response);
+        String path = request.getServletPath().split("(\\w*-\\w*$)")[0];
+        path = path.endsWith("/") ? path.substring(0,path.length()-1) : path;
+        if (endpoints.containsKey(path)) {
+            System.out.println(request.getServletPath());
+            List<String> methodList = endpoints.get(path);
+            boolean isMethodTrue = false;
+            for (String method : methodList) {
+                if (method.equals(request.getMethod())) {
+                    isMethodTrue = true;
+                }
+            }
+            if (isMethodTrue) {
+                filterChain.doFilter(request, response);
                 return;
             }
-            response.setStatus(404);
+            response.setStatus(405);
             return;
         }
-        response.setStatus(405);
+        response.setStatus(404);
 
-
-        }
-
-
+    }
 }
