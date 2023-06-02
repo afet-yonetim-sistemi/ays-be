@@ -53,6 +53,7 @@ public class UnMappedEndPointFilter extends OncePerRequestFilter {
             String method = k.toString().split(" ")[0].substring(1);
 
             if (endpoints.containsKey(prefix)) {
+
                 List<String> list = new ArrayList<>();
                 list.add(method);
                 list.addAll(endpoints.get(prefix));
@@ -87,6 +88,7 @@ public class UnMappedEndPointFilter extends OncePerRequestFilter {
             for (String method : methodList) {
                 if (method.equals(request.getMethod())) {
                     isMethodTrue = true;
+                    break;
                 }
             }
             if (isMethodTrue) {
