@@ -79,10 +79,4 @@ public class AysTokenConfiguration {
 
         log.info("AYS Token Configuration is initialized!");
     }
-
-     @Bean
-    public AntPathMatcher antPathMatcher(){
-        return new AntPathMatcher();
-     }
-
 }
