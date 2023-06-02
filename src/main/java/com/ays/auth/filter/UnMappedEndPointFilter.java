@@ -79,12 +79,13 @@ public class UnMappedEndPointFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String path =
-                request.getServletPath().split("(\\w*-\\w*$)").length > 0 ?
-                request.getServletPath().split("(\\w*-\\w*$)")[0]
-                        :null;
-        path = request.getServletPath().split("[0-9]+$")[0];
-
+        String path = request.getServletPath();
+         if(path.split("(\\w*-\\w*)").length>0) {
+             path = path.split("(\\w*-\\w*$)")[0];
+         }
+         if(path.split("/[0-9]+").length>0) {
+             path = path.split("/[0-9]+$")[0];
+         }
         path = path.endsWith("/") ? path.substring(0,path.length()-1) : path;
         if (endpoints.containsKey(path)) {
             System.out.println(request.getServletPath());
