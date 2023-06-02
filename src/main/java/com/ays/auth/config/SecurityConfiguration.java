@@ -1,6 +1,7 @@
 package com.ays.auth.config;
 
 import com.ays.auth.filter.AysBearerTokenAuthenticationFilter;
+import com.ays.auth.filter.UnMappedEndPointFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,7 +62,8 @@ class SecurityConfiguration {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter)
+                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
+                                           UnMappedEndPointFilter unMappedEndPointFilter)
             throws Exception {
 
         httpSecurity.cors()
@@ -77,7 +79,7 @@ class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(bearerTokenAuthenticationFilter, BearerTokenAuthenticationFilter.class);
-
+        httpSecurity.addFilterBefore(unMappedEndPointFilter, BearerTokenAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
