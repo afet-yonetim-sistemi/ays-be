@@ -50,6 +50,7 @@ public class UnMappedEndPointFilter extends OncePerRequestFilter {
             prefix = prefix.replaceAll("}", "");
             prefix = prefix.replaceAll("\\{\\w+","");
             prefix = prefix.endsWith("/") ? prefix.substring(0,prefix.length()-1) : prefix;
+            prefix = prefix.replaceAll(",","");
             String method = k.toString().split(" ")[0].substring(1);
 
             if (endpoints.containsKey(prefix)) {
@@ -80,15 +81,10 @@ public class UnMappedEndPointFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getServletPath();
-         if(path.split("(\\w*-\\w*)").length>0) {
              path = path.split("((\\w*-\\w*)+$)")[0];
-         }
-         if(path.split("/[0-9]+").length>0) {
              path = path.split("/[0-9]+$")[0];
-         }
         path = path.endsWith("/") ? path.substring(0,path.length()-1) : path;
         if (endpoints.containsKey(path)) {
-            System.out.println(request.getServletPath());
             List<String> methodList = endpoints.get(path);
             boolean isMethodTrue = false;
             for (String method : methodList) {

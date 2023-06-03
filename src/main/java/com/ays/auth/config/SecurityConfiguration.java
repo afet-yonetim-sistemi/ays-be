@@ -79,7 +79,7 @@ class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(bearerTokenAuthenticationFilter, BearerTokenAuthenticationFilter.class);
-        httpSecurity.addFilterBefore(unMappedEndPointFilter, BearerTokenAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(unMappedEndPointFilter, AysBearerTokenAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
