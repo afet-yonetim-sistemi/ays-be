@@ -27,6 +27,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+ays-db/
+db/
 
 ### STS ###
 .apt_generated
@@ -60,5 +62,5 @@ build/
 
 ## Local env file having environment variable definitions for docker-compose.yml and other files
 ## We should not commit this to prevent leaking confidential information
-.env*
+.env
 

@@ -1,22 +1,32 @@
 version: "3.9"
-# We can replace DB service later if needed with another one
 services:
-  ays-be:
-    build: .
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-    depends_on:
-      - mysqldb
-  mysqldb:
+  mysql:
     image: mysql:8.0
+    container_name: ays-db
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQLDB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQLDB_DATABASE}
-    ports:
-      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
+      MYSQL_DATABASE: ays
+      MYSQL_USER: ays
+      MYSQL_PASSWORD: ayspass
+      MYSQL_ROOT_PASSWORD: ayspass
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_PORT: 3306
     volumes:
-      - db:/var/lib/mysql
-volumes:
-  db:
+      - ./db:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  ays-be:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ays-be
+    ports:
+      - 9790:9790
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_PROFILES_ACTIVE=development
+      - AYS_DB_USERNAME=ays
+      - AYS_DB_PASSWORD=ayspass
+      - AYS_DB_URL=jdbc:mysql://host.docker.internal:3306/ays
+
