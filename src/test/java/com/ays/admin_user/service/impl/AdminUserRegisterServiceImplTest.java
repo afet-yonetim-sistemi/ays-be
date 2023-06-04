@@ -276,7 +276,6 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 .existsByEmail(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .existsByUsername(Mockito.anyString());
-
     }
 
 }

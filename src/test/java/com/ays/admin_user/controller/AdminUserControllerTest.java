@@ -76,7 +76,6 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
 
         Mockito.verify(adminUserService, Mockito.times(1))
                 .getAdminUsers(mockAdminUserListRequest);
-
     }
 
     @Test
@@ -96,7 +95,6 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
-
     }
 
 }
