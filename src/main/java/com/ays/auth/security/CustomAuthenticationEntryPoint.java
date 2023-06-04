@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -21,28 +22,38 @@ import java.text.DateFormat;
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    static {
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
+    }
+
     /**
      * Handles the unauthorized request by sending an "Unauthorized"
      * response with the HTTP status code 401 (SC_UNAUTHORIZED).
      *
-     * @param request       the {@link HttpServletRequest} object representing the incoming request
-     * @param response      the {@link HttpServletResponse} object used to send the response
-     * @param authException the {@link AuthenticationException} that occurred during authentication
+     * @param httpServletRequest      the {@link HttpServletRequest} object representing the incoming request
+     * @param httpServletResponse     the {@link HttpServletResponse} object used to send the response
+     * @param authenticationException the {@link AuthenticationException} that occurred during authentication
      * @throws IOException if an I/O error occurs while sending the response
      */
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        AysError aysError = AysError.builder()
+    public void commence(HttpServletRequest httpServletRequest,
+                         HttpServletResponse httpServletResponse,
+                         AuthenticationException authenticationException) throws IOException {
+
+        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+
+        final AysError error = AysError.builder()
                 .header(AysError.Header.AUTH_ERROR.getName())
                 .httpStatus(HttpStatus.UNAUTHORIZED)
                 .isSuccess(false)
                 .build();
-        ObjectMapper obj = new ObjectMapper();
-        obj.registerModule(new JavaTimeModule());
-        response.setContentType("application/json");
-        String res = obj.writer(DateFormat.getDateInstance()).writeValueAsString(aysError);
-        response.setStatus(401);
-        response.getOutputStream().write(res.getBytes());
+        final String responseBody = OBJECT_MAPPER
+                .writer(DateFormat.getDateInstance())
+                .writeValueAsString(error);
+        httpServletResponse.getOutputStream().write(responseBody.getBytes());
     }
 
 }
