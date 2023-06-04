@@ -15,6 +15,11 @@ public class AysResponseBuilder {
             .isSuccess(false)
             .response(AysErrorBuilder.UNAUTHORIZED).build();
 
+    public static final AysResponse<AysError> FORBIDDEN = AysResponse.<AysError>builder()
+            .httpStatus(HttpStatus.FORBIDDEN)
+            .isSuccess(false)
+            .response(AysErrorBuilder.FORBIDDEN).build();
+
     public static final AysResponse<Void> NO_CONTENT = AysResponse.<Void>builder()
             .httpStatus(HttpStatus.NO_CONTENT)
             .isSuccess(false).build();

@@ -1,6 +1,7 @@
 package com.ays.auth.config;
 
 import com.ays.auth.filter.AysBearerTokenAuthenticationFilter;
+import com.ays.auth.security.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * This class provides the security configuration for the application.
  * It is annotated with {@link Configuration}, {@link EnableWebSecurity} and {@link EnableGlobalAuthentication}.
- * The {@link SecurityFilterChain} is defined in the {@link #filterChain(HttpSecurity, AysBearerTokenAuthenticationFilter)}
+ * The {@link SecurityFilterChain} is defined in the {@link #filterChain(HttpSecurity, AysBearerTokenAuthenticationFilter ,CustomAuthenticationEntryPoint )} (HttpSecurity, AysBearerTokenAuthenticationFilter)}
  * method which sets up the security configuration for HTTP requests.
  * The {@link SessionAuthenticationStrategy} is defined in the {@link #sessionAuthenticationStrategy()} method which registers
  * the session authentication strategy with the session registry.
@@ -39,6 +40,7 @@ import java.util.List;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 class SecurityConfiguration {
+
 
     /**
      * Returns a new instance of the {@link RegisterSessionAuthenticationStrategy} class that
@@ -56,13 +58,18 @@ class SecurityConfiguration {
      *
      * @param httpSecurity                    the {@link HttpSecurity} instance to configure
      * @param bearerTokenAuthenticationFilter the {@link AysBearerTokenAuthenticationFilter} instance to authenticate bearer tokens
+     * @param customAuthenticationEntryPoint  the {@link CustomAuthenticationEntryPoint} instance to handle authentication errors
      * @return the {@link SecurityFilterChain} instance
      * @throws Exception if there is an error setting up the filter chain
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter)
+                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
+                                           CustomAuthenticationEntryPoint customAuthenticationEntryPoint)
             throws Exception {
+
+        httpSecurity.exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint);
 
         httpSecurity.cors()
                 .configurationSource(corsConfigurationSource());
@@ -75,7 +82,6 @@ class SecurityConfiguration {
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         httpSecurity.addFilterBefore(bearerTokenAuthenticationFilter, BearerTokenAuthenticationFilter.class);
 
         return httpSecurity.build();
