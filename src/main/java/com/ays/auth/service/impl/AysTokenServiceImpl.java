@@ -54,7 +54,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(accessTokenExpiresAt)
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .setHeaderParam(AysTokenClaims.TYPE.getValue(),OAuth2AccessToken.TokenType.BEARER.getValue())
                 .addClaims(claims)
                 .compact();
 
@@ -66,8 +66,8 @@ class AysTokenServiceImpl implements AysTokenService {
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(refreshTokenExpiresAt)
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .claim(AysTokenClaims.USERNAME.getValue(), claims.get(AysTokenClaims.USERNAME.getValue()))
+                .setHeaderParam(AysTokenClaims.TYPE.getValue(),OAuth2AccessToken.TokenType.BEARER.getValue())
                 .compact();
 
         return AysToken.builder()
@@ -96,7 +96,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .setIssuer(tokenConfiguration.getIssuer())
                 .setIssuedAt(accessTokenIssuedAt)
                 .setExpiration(accessTokenExpiresAt)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
                 .addClaims(claims)
                 .compact();
