@@ -147,12 +147,12 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenRefreshTokenValidated_thenReturnAysToken() {
         // Given
         String mockRefreshToken = """
-                eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJmOWE3OTFlZC04ZmJlLTRlMTAtYjMwZC0xYzQ4M2E4MTQyODgiLCJpc3MiOiJBWVMiLCJp
-                YXQiOjE2ODMyMzA1NzQsImV4cCI6MTY4MzMxNjk3NCwidHlwZSI6IkJlYXJlciIsInVzZXJuYW1lIjoiYXlzLWFkbWluIn0.cj0Co
-                k-JmiKwP3CVSSuEkMfnPfv3vSwRhmC0TKAqHmMPb2SlzJBwkKKWwsMH2Tqu3zCCrxUfO1qa4mqTDgNqHIsKYzUQLmMnKhAuKzBx0t
-                CN7fkflGAAz1rqWl2oglQqnP3Xx183Zwm8qTo27M6cGFDZYmK9j106J4L9tSGbpQCuvg9pq4QXiyo7pHzWDgsGD2OuQpE4fqVcMq2
-                ulZbJkqtYK_H0XSbJN8teYulSot4gAlYEryxGkUYSObvEmoMyAULeWBiPHl_riMbfDGIDZ-kEAZzre4a1K9nWDBvoPq_0VuFo4G2F
-                B3pRmC-uK2dxsOMsp3dShHjT6aVUPw6-Zw
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJjYzU2M2M1OS1lNTRkLTRmZWYtODAzOS1kZDZhZmNmZWM2ZDgiL
+                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODU5MDMyMjcsImV4cCI6MTY4NTk4OTYyNywidXNlcm5hbWUiOiIyMzIxODAifQ.ut7tGIFy0T6q
+                cbl_qJk5SPqL2AQn6qTvSkhy5Fuh4f8Matg95deWDDcqJELeO9lZQ8Lbvltw7UVS8-1olgWpgO6OBl0Npd6FXNx7s_WEX8RuBVAsBo
+                itJlbX6T1sDm-pFO8O_tSTi9JzpJqpFq0ZOBKDBWk9r0ykKngeJzjgx33dA3t-9dv_eUeMqx8C8Ru6ZsTvOuO2BIWQpAhjiAXmDUNN
+                8ETrBV1lw1rwOgfeUVqcLlWzCXb7e7BDDIEzrqqf0nO0q8vmjv8k0rMrth7iXhL6UADMcptcKaWq7qRui6mvk_sE1pY5Wqs8M4kQxY
+                tFi6OdrUfXYh8jN78vKHf2OQ
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -160,12 +160,6 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .build();
 
         Claims mockClaims = AysTokenBuilder.getValidClaims(mockUserEntity.getUsername());
-
-        AysToken mockAysToken = AysToken.builder()
-                .accessToken("eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI2NTYzZmMyMi03NGU1LTRmYmEtYTVmYy01MTBlMjg5NDIzOWUiLCJpc3MiOiJBWVMiLCJpYXQiOjE2ODIwMTk0NTEsImV4cCI6MTY4MjAyNjY1MSwidHlwZSI6IkJlYXJlciIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VybmFtZSI6ImF5cy1hZG1pbiJ9.FrJmW11zNJfzeYWhHINqcDTVNfwSCgKP9lmrRc9t4B3qfTSIJeMOQmEz4GfUTFwv26OGcgc7-OCEds9I5zCXP35OlSZ3rT4Wq-z0FgyPAGMmOgqg3J0s1gPn2joMt4ejhPdwKC0882Xq3K0d6baB4cRknB3vBtQcOgLwMeFn9jeWHisfO5cxe4SRc22cHSrrMPIW5KDpZXbUtpQag2BALcszpr62lCd5m1skrkBKr4siprys-XOId9zHTf8byn8mZJrDs3bX8dRNnPyNK8ol2rh1Ic81M_zS1sHd3hUMNTcW97kGZsj58Xc_DhBZZ0s_qXl0IvH4tD9Kv1ho7rYIDQ")
-                .accessTokenExpiresAt(1682026651L)
-                .refreshToken("eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI3ZjljYTNmMy00N2FhLTRkNzQtOTAxYS0xNDdiYTJiNTQ3NGQiLCJpc3MiOiJBWVMiLCJpYXQiOjE2ODIwMTk0NTEsImV4cCI6MTY4MjEwNTg1MSwidHlwZSI6IkJlYXJlciIsInVzZXJuYW1lIjoiYXlzLWFkbWluIn0.XBTCsqoQCs7BRiHkKU8VofJtnpel2iEWM5AJrZkh1SEnDZHt9T7PjLT5znSHCl6UKrpsVDt9yPqOjrvnLYuP4CGrf9l23nTkKQcCEs_M-U0Q1j7Y_eH0AwFvf9uEd5PBaC_Sv9cuwELhFSVTKzL7xh_cG1BBCQhB4NldkC7_OsNCHlYfiz31lo-0wf4F3wou02Gx1jQprMGaWGmOxAueFZE1_Mk-YcnL1SKBFkKSBZU_op4P_sH1FrLJ5VLsnfLhDRQSLteLvZ0mk-wvV6CZsRpfKKov77vjBIQr9aaE0aNLkh15JG8KWTpmBZDFt8e6dbA8TuUTPDWzGBIgrSRnQA")
-                .build();
 
         // When
         Mockito.doNothing().when(tokenService)
@@ -178,14 +172,14 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .thenReturn(Optional.of(mockUserEntity));
 
         Mockito.when(tokenService.generate(mockUserEntity.getClaims(), mockRefreshToken))
-                .thenReturn(mockAysToken);
+                .thenReturn(mockUserToken);
 
         // Then
         AysToken token = userAuthService.refreshAccessToken(mockRefreshToken);
 
-        Assertions.assertEquals(mockAysToken.getAccessToken(), token.getAccessToken());
-        Assertions.assertEquals(mockAysToken.getRefreshToken(), token.getRefreshToken());
-        Assertions.assertEquals(mockAysToken.getAccessTokenExpiresAt(), token.getAccessTokenExpiresAt());
+        Assertions.assertEquals(mockUserToken.getAccessToken(), token.getAccessToken());
+        Assertions.assertEquals(mockUserToken.getRefreshToken(), token.getRefreshToken());
+        Assertions.assertEquals(mockUserToken.getAccessTokenExpiresAt(), token.getAccessTokenExpiresAt());
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .verifyAndValidate(mockRefreshToken);
@@ -224,12 +218,12 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenUsernameNotValid_thenThrowUsernameNotValidException() {
         // Given
         String mockRefreshToken = """
-                eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJmOWE3OTFlZC04ZmJlLTRlMTAtYjMwZC0xYzQ4M2E4MTQyODgiLCJpc3MiOiJBWVMiLCJp
-                YXQiOjE2ODMyMzA1NzQsImV4cCI6MTY4MzMxNjk3NCwidHlwZSI6IkJlYXJlciIsInVzZXJuYW1lIjoiYXlzLWFkbWluIn0.cj0Co
-                k-JmiKwP3CVSSuEkMfnPfv3vSwRhmC0TKAqHmMPb2SlzJBwkKKWwsMH2Tqu3zCCrxUfO1qa4mqTDgNqHIsKYzUQLmMnKhAuKzBx0t
-                CN7fkflGAAz1rqWl2oglQqnP3Xx183Zwm8qTo27M6cGFDZYmK9j106J4L9tSGbpQCuvg9pq4QXiyo7pHzWDgsGD2OuQpE4fqVcMq2
-                ulZbJkqtYK_H0XSbJN8teYulSot4gAlYEryxGkUYSObvEmoMyAULeWBiPHl_riMbfDGIDZ-kEAZzre4a1K9nWDBvoPq_0VuFo4G2F
-                B3pRmC-uK2dxsOMsp3dShHjT6aVUPw6-Zw
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJjYzU2M2M1OS1lNTRkLTRmZWYtODAzOS1kZDZhZmNmZWM2ZDgiL
+                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODU5MDMyMjcsImV4cCI6MTY4NTk4OTYyNywidXNlcm5hbWUiOiIyMzIxODAifQ.ut7tGIFy0T6q
+                cbl_qJk5SPqL2AQn6qTvSkhy5Fuh4f8Matg95deWDDcqJELeO9lZQ8Lbvltw7UVS8-1olgWpgO6OBl0Npd6FXNx7s_WEX8RuBVAsBo
+                itJlbX6T1sDm-pFO8O_tSTi9JzpJqpFq0ZOBKDBWk9r0ykKngeJzjgx33dA3t-9dv_eUeMqx8C8Ru6ZsTvOuO2BIWQpAhjiAXmDUNN
+                8ETrBV1lw1rwOgfeUVqcLlWzCXb7e7BDDIEzrqqf0nO0q8vmjv8k0rMrth7iXhL6UADMcptcKaWq7qRui6mvk_sE1pY5Wqs8M4kQxY
+                tFi6OdrUfXYh8jN78vKHf2OQ
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -261,12 +255,12 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenUserNotActive_thenThrowUserNotActiveException() {
         // Given
         String mockRefreshToken = """
-                eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJmOWE3OTFlZC04ZmJlLTRlMTAtYjMwZC0xYzQ4M2E4MTQyODgiLCJpc3MiOiJBWVMiLCJp
-                YXQiOjE2ODMyMzA1NzQsImV4cCI6MTY4MzMxNjk3NCwidHlwZSI6IkJlYXJlciIsInVzZXJuYW1lIjoiYXlzLWFkbWluIn0.cj0Co
-                k-JmiKwP3CVSSuEkMfnPfv3vSwRhmC0TKAqHmMPb2SlzJBwkKKWwsMH2Tqu3zCCrxUfO1qa4mqTDgNqHIsKYzUQLmMnKhAuKzBx0t
-                CN7fkflGAAz1rqWl2oglQqnP3Xx183Zwm8qTo27M6cGFDZYmK9j106J4L9tSGbpQCuvg9pq4QXiyo7pHzWDgsGD2OuQpE4fqVcMq2
-                ulZbJkqtYK_H0XSbJN8teYulSot4gAlYEryxGkUYSObvEmoMyAULeWBiPHl_riMbfDGIDZ-kEAZzre4a1K9nWDBvoPq_0VuFo4G2F
-                B3pRmC-uK2dxsOMsp3dShHjT6aVUPw6-Zw
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJjYzU2M2M1OS1lNTRkLTRmZWYtODAzOS1kZDZhZmNmZWM2ZDgiL
+                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODU5MDMyMjcsImV4cCI6MTY4NTk4OTYyNywidXNlcm5hbWUiOiIyMzIxODAifQ.ut7tGIFy0T6q
+                cbl_qJk5SPqL2AQn6qTvSkhy5Fuh4f8Matg95deWDDcqJELeO9lZQ8Lbvltw7UVS8-1olgWpgO6OBl0Npd6FXNx7s_WEX8RuBVAsBo
+                itJlbX6T1sDm-pFO8O_tSTi9JzpJqpFq0ZOBKDBWk9r0ykKngeJzjgx33dA3t-9dv_eUeMqx8C8Ru6ZsTvOuO2BIWQpAhjiAXmDUNN
+                8ETrBV1lw1rwOgfeUVqcLlWzCXb7e7BDDIEzrqqf0nO0q8vmjv8k0rMrth7iXhL6UADMcptcKaWq7qRui6mvk_sE1pY5Wqs8M4kQxY
+                tFi6OdrUfXYh8jN78vKHf2OQ
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
