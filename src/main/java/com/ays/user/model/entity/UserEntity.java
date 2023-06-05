@@ -71,6 +71,10 @@ public class UserEntity extends BaseEntity {
         return UserStatus.ACTIVE.equals(this.status);
     }
 
+    public boolean isPassive() {
+        return UserStatus.PASSIVE.equals(this.status);
+    }
+
     public boolean isDeleted() {
         return UserStatus.DELETED.equals(this.status);
     }

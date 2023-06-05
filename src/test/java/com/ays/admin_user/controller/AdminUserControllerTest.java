@@ -88,10 +88,10 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(BASE_PATH, mockUserToken.getAccessToken(), mockAdminUserListRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))

@@ -5,12 +5,14 @@ import com.ays.admin_user.service.AdminUserAuthService;
 import com.ays.admin_user.service.AdminUserRegisterService;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.request.AysLoginRequest;
+import com.ays.auth.model.dto.request.AysTokenInvalidateRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.response.AysTokenResponse;
 import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,5 +76,18 @@ class AdminUserAuthController {
         return AysResponse.successOf(aysTokenResponse);
     }
 
+    /**
+     * Endpoint for invalidating tokens. Only users with the 'ADMIN' authority are allowed to access this endpoint.
+     * It invalidates the access token and refresh token associated with the provided refresh token.
+     *
+     * @param invalidateRequest the request object containing the refresh token to invalidate
+     * @return AysResponse with a success message and no data
+     */
+    @PostMapping("/token/invalidate")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
+        adminUserAuthService.invalidateTokens(invalidateRequest.getRefreshToken());
+        return AysResponse.SUCCESS;
+    }
 
 }

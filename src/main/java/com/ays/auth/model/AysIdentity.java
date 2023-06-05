@@ -29,7 +29,16 @@ public class AysIdentity {
     }
 
     /**
-     * Retrieves user type from the JWT token.
+     * Retrieves the access token value.
+     *
+     * @return the access token value
+     */
+    public String getAccessToken() {
+        return this.getJwt().getTokenValue();
+    }
+
+    /**
+     * Retrieves user type from the JWT token
      *
      * @return AysUserType as an admin user type
      */
