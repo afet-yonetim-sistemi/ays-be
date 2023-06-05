@@ -136,10 +136,10 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.UNAUTHORIZED;
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
