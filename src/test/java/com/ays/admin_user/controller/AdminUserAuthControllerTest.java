@@ -18,6 +18,7 @@ import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,9 +78,9 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus().getReasonPhrase()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.responseAccessToken().value(mockAysResponse.getResponse().getAccessToken()))
-                .andExpect(AysMockResultMatchersBuilders.responseAccessTokenExpiresAt().value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
-                .andExpect(AysMockResultMatchersBuilders.responseRefreshToken().value(mockAysResponse.getResponse().getRefreshToken()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken").value(mockAysResponse.getResponse().getAccessToken()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(adminUserAuthService, Mockito.times(1)).authenticate(Mockito.any());
     }
@@ -103,9 +104,9 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus().getReasonPhrase()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.responseAccessToken().value(mockAysResponse.getResponse().getAccessToken()))
-                .andExpect(AysMockResultMatchersBuilders.responseAccessTokenExpiresAt().value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
-                .andExpect(AysMockResultMatchersBuilders.responseRefreshToken().value(mockAysResponse.getResponse().getRefreshToken()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken").value(mockAysResponse.getResponse().getAccessToken()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt").value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken").value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(adminUserAuthService, Mockito.times(1)).refreshAccessToken(Mockito.any());
     }
