@@ -5,6 +5,7 @@ package com.ays.auth.model.enums;
  */
 public enum AysUserType {
 
+    SUPER_ADMIN,
     ADMIN,
     USER
 

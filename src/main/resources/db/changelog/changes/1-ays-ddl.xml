@@ -45,7 +45,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ORGANIZATION_ID" type="VARCHAR(36)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="FK__AYS_ADMIN_USER__ORGANIZATION_ID"
                              referencedTableName="AYS_ORGANIZATION"
                              referencedColumnNames="ID"
@@ -73,6 +73,9 @@
             <column name="LINE_NUMBER" type="BIGINT">
                 <constraints nullable="false" unique="true"
                              uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
+            </column>
+            <column name="ROLE" type="VARCHAR(50)">
+                <constraints nullable="false"/>
             </column>
             <column name="STATUS" type="VARCHAR(50)">
                 <constraints nullable="false"/>
@@ -142,7 +145,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ORGANIZATION_ID" type="VARCHAR(36)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="FK__AYS_USER__ORGANIZATION_ID"
                              referencedTableName="AYS_ORGANIZATION"
                              referencedColumnNames="ID"
