@@ -277,4 +277,6 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .existsByUsername(Mockito.anyString());
     }
+
 }
+
