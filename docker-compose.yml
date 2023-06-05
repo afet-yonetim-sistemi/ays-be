@@ -13,7 +13,7 @@ services:
     volumes:
       - ./db:/var/lib/mysql
     ports:
-      - 3306:3306
+      - "3306:3306"
 
   ays-be:
     build:
@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile
     container_name: ays-be
     ports:
-      - 9790:9790
+      - "9790:9790"
     depends_on:
       - mysql
     environment:
