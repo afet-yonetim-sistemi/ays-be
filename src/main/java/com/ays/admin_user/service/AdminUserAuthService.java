@@ -24,4 +24,12 @@ public interface AdminUserAuthService {
      */
     AysToken refreshAccessToken(String refreshToken);
 
+
+    /**
+     * Invalidate Tokens
+     *
+     * @param refreshToken the refreshToken text
+     */
+    void invalidateTokens(String refreshToken);
+
 }

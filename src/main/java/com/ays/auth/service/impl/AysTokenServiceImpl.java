@@ -172,12 +172,11 @@ class AysTokenServiceImpl implements AysTokenService {
         final AysUserType userType = AysUserType.valueOf(claims.get(AysTokenClaims.USER_TYPE.getValue()).toString());
 
         final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        switch (userType) {
-            case ADMIN -> authorities.add(new SimpleGrantedAuthority("ADMIN"));
-            case USER -> {
-                final List<String> roles = AysListUtil.to(claims.get(AysTokenClaims.ROLES.getValue()), String.class);
-                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-            }
+        authorities.add(new SimpleGrantedAuthority(userType.name()));
+
+        if (userType == AysUserType.USER) {
+            final List<String> roles = AysListUtil.to(claims.get(AysTokenClaims.ROLES.getValue()), String.class);
+            roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
         }
 
         return UsernamePasswordAuthenticationToken.authenticated(jwt, null, authorities);

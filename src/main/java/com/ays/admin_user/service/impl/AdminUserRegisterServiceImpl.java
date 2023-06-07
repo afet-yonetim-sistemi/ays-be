@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This service class implements the {@link AdminUserAuthService} interface and provides methods for
@@ -56,6 +57,7 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
      * @throws AysAdminUserAlreadyExistsByPhoneNumberException       if an admin user with the same phone number already exists
      */
     @Override
+    @Transactional
     public void register(final AdminUserRegisterRequest registerRequest) {
         log.trace("Admin User Register Flow call starting for email of {}", registerRequest.getEmail());
 
