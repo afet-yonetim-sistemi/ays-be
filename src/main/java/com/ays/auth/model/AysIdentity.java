@@ -25,7 +25,7 @@ public class AysIdentity {
      * @return the organization ID as a string
      */
     public String getOrganizationId() {
-        return this.getJwt().getClaim(AysTokenClaims.ORGANIZATION_ID.getValue());
+        return this.getJwt().getClaim(AysTokenClaims.INSTITUTION_ID.getValue());
     }
 
     /**
