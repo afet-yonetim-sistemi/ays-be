@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * This class represents the response for a single user.
- * It includes information such as the user's username, first and last name, email, organization, role and status.
+ * It includes information such as the user's username, first and last name, email, institution, role and status.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
