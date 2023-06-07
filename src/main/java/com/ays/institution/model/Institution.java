@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class Organization extends BaseDomainModel {
+public class Institution extends BaseDomainModel {
 
     private String id;
 

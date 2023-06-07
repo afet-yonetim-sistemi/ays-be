@@ -3,7 +3,7 @@ package com.ays.admin_user.model;
 import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.BaseDomainModel;
-import com.ays.institution.model.Organization;
+import com.ays.institution.model.Institution;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -25,5 +25,5 @@ public class AdminUser extends BaseDomainModel {
     private AdminUserStatus status;
     private AysPhoneNumber phoneNumber;
 
-    private Organization organization;
+    private Institution institution;
 }

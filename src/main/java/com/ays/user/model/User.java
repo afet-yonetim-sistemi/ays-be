@@ -2,7 +2,7 @@ package com.ays.user.model;
 
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.BaseDomainModel;
-import com.ays.institution.model.Organization;
+import com.ays.institution.model.Institution;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import lombok.Data;
@@ -26,6 +26,6 @@ public class User extends BaseDomainModel {
     private UserStatus status;
     private AysPhoneNumber phoneNumber;
 
-    private Organization organization;
+    private Institution institution;
 
 }
