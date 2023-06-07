@@ -2,7 +2,7 @@ package com.ays.user.model.dto.response;
 
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.dto.response.BaseResponse;
-import com.ays.institution.model.dto.response.OrganizationResponse;
+import com.ays.institution.model.dto.response.InstitutionResponse;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import lombok.Data;
@@ -27,6 +27,6 @@ public class UserResponse extends BaseResponse {
     private UserStatus status;
     private AysPhoneNumber phoneNumber;
 
-    private OrganizationResponse organization;
+    private InstitutionResponse organization;
 
 }

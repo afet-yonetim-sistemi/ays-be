@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class OrganizationResponse extends BaseResponse {
+public class InstitutionResponse extends BaseResponse {
 
     private String id;
 

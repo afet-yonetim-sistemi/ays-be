@@ -1,6 +1,6 @@
 package com.ays.user.model.dto.response;
 
-import com.ays.institution.model.dto.response.OrganizationResponse;
+import com.ays.institution.model.dto.response.InstitutionResponse;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import lombok.Builder;
@@ -20,6 +20,6 @@ public class UsersResponse {
     private UserRole role;
     private UserStatus status;
 
-    private OrganizationResponse organization;
+    private InstitutionResponse organization;
 
 }
