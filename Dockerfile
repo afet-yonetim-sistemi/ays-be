@@ -5,14 +5,11 @@ FROM maven:3.8.4-openjdk-17-slim AS build
 COPY pom.xml ./
 COPY .mvn .mvn
 
-# Resolve project dependencies
-RUN mvn dependency:resolve
-
 # Copy application source code
 COPY src src
 
-# Package the application
-RUN mvn package
+# Build the project and create the executable JAR
+RUN mvn clean install
 
 # Stage 2: Run stage
 FROM openjdk:17-jdk-slim

@@ -1,8 +1,10 @@
 version: "3.9"
+
 services:
   mysql:
     image: mysql:8.0
-    platform: linux/x86_64
+    platform: linux/x86_64     # for Windows or Mac Intel Chips
+    #    platform: linux/arm64/v8    # for Mac Silicon Chips
     container_name: ays-db
     restart: always
     environment:
@@ -13,12 +15,9 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_PORT: 3306
     volumes:
-      - db-data:/var/lib/mysql
+      - ./db:/var/lib/mysql
     ports:
       - "3306:3306"
-    networks:
-      - ays
-
   ays-be:
     build:
       context: .
@@ -32,15 +31,5 @@ services:
       - SPRING_PROFILES_ACTIVE=development
       - AYS_DB_USERNAME=ays
       - AYS_DB_PASSWORD=ayspass
-      - AYS_DB_URL=jdbc:mysql://mysql:3306/ays
-    networks:
-      - ays
+      - AYS_DB_URL=jdbc:mysql://host.docker.internal:3306/ays
     restart: on-failure
-
-
-# Volumes
-volumes:
-  db-data:
-
-networks:
-  ays:

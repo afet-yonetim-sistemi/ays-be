@@ -96,11 +96,7 @@ docker compose down -v mysql
 Before running the project, you need to run the following command to start the project container:
 
 ```
-docker compose up -d --build mysql
-```
-
-```
-docker compose up -d --build ays-be
+docker compose up -d --build
 ```
 
 If you want to recreate the project container, you can run the following command:
@@ -123,16 +119,6 @@ SPRING_PROFILES_ACTIVE=development
 AYS_DB_USERNAME=ays
 AYS_DB_PASSWORD=ayspass
 AYS_DB_URL=jdbc:mysql://localhost:3306/ays
-```
-
-```
-docker compose --env-file .env up -d
-```
-
-To terminate the containers:
-
-```
-docker compose --env-file .env.local down
 ```
 
 ## Running the app with Kubernetes
