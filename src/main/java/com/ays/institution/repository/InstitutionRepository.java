@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * It extends the JpaRepository interface with OrganizationEntity as the entity type and String as the ID type.
  * The default behavior of the repository can be extended by adding custom methods to this interface.
  */
-public interface OrganizationRepository extends JpaRepository<OrganizationEntity, String> {
+public interface InstitutionRepository extends JpaRepository<OrganizationEntity, String> {
 }

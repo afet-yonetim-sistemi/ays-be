@@ -13,7 +13,7 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberE
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNotValidException;
 import com.ays.common.model.AysPhoneNumber;
-import com.ays.institution.repository.OrganizationRepository;
+import com.ays.institution.repository.InstitutionRepository;
 import com.ays.institution.util.exception.AysOrganizationNotExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * registering and authenticating admin users. It uses the {@link AdminUserRepository} and
  * {@link AdminUserRegisterVerificationRepository} for persistence operations and the
  * {@link AdminUserRegisterRequestToAdminUserEntityMapper} for mapping the request to entity objects.
- * It also uses the {@link OrganizationRepository} to check if the requested organization exists.
+ * It also uses the {@link InstitutionRepository} to check if the requested organization exists.
  * Authentication is handled using the {@link PasswordEncoder}
  */
 @Slf4j
@@ -38,7 +38,7 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
     private final AdminUserRegisterVerificationRepository adminUserRegisterVerificationRepository;
     private static final AdminUserRegisterRequestToAdminUserEntityMapper adminUserRegisterRequestToAdminUserEntityMapper = AdminUserRegisterRequestToAdminUserEntityMapper.initialize();
 
-    private final OrganizationRepository organizationRepository;
+    private final InstitutionRepository institutionRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -65,7 +65,7 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
                 .findById(registerRequest.getVerificationId())
                 .orElseThrow(() -> new AysAdminUserRegisterVerificationCodeNotValidException(registerRequest.getVerificationId()));
 
-        if (!organizationRepository.existsById(registerRequest.getOrganizationId())) {
+        if (!institutionRepository.existsById(registerRequest.getOrganizationId())) {
             throw new AysOrganizationNotExistException(registerRequest.getOrganizationId());
         }
 

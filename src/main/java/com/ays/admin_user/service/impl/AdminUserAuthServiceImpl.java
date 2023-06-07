@@ -15,7 +15,7 @@ import com.ays.auth.util.exception.PasswordNotValidException;
 import com.ays.auth.util.exception.UserNotActiveException;
 import com.ays.auth.util.exception.UserNotVerifiedException;
 import com.ays.auth.util.exception.UsernameNotValidException;
-import com.ays.institution.repository.OrganizationRepository;
+import com.ays.institution.repository.InstitutionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +29,7 @@ import java.util.Set;
  * registering and authenticating admin users. It uses the {@link AdminUserRepository} and
  * {@link AdminUserRegisterVerificationRepository} for persistence operations and the
  * {@link AdminUserRegisterRequestToAdminUserEntityMapper} for mapping the request to entity objects.
- * It also uses the {@link OrganizationRepository} to check if the requested organization exists.
+ * It also uses the {@link InstitutionRepository} to check if the requested organization exists.
  * Authentication is handled using the {@link PasswordEncoder} and the {@link AysTokenService} is used for
  * generating and refreshing access tokens.
  */
