@@ -1,7 +1,7 @@
 package com.ays.institution.model.entity;
 
 import com.ays.common.model.entity.BaseEntity;
-import com.ays.institution.model.enums.OrganizationStatus;
+import com.ays.institution.model.enums.InstitutionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +30,6 @@ public class OrganizationEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private OrganizationStatus status;
+    private InstitutionStatus status;
 
 }

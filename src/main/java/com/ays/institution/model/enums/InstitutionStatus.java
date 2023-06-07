@@ -1,9 +1,9 @@
 package com.ays.institution.model.enums;
 
 /**
- * Enumeration keeping organization status.
+ * Enumeration keeping institution status.
  */
-public enum OrganizationStatus {
+public enum InstitutionStatus {
 
     ACTIVE,
     PASSIVE,
