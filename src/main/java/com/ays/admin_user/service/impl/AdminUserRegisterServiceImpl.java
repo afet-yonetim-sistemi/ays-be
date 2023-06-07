@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * registering and authenticating admin users. It uses the {@link AdminUserRepository} and
  * {@link AdminUserRegisterVerificationRepository} for persistence operations and the
  * {@link AdminUserRegisterRequestToAdminUserEntityMapper} for mapping the request to entity objects.
- * It also uses the {@link InstitutionRepository} to check if the requested organization exists.
+ * It also uses the {@link InstitutionRepository} to check if the requested institution exists.
  * Authentication is handled using the {@link PasswordEncoder}
  */
 @Slf4j
@@ -45,13 +45,13 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
     /**
      * Registers a new admin user based on the given {@link AdminUserRegisterRequest} object. First, it retrieves
      * the {@link AdminUserRegisterVerificationEntity} associated with the verificationId provided in the request.
-     * Then, it checks if the requested organization exists, if the email and username are unique, and finally
+     * Then, it checks if the requested institution exists, if the email and username are unique, and finally
      * maps the request to an {@link AdminUserEntity} and saves it to the database. If successful, the verification
      * entity is completed and saved to the database.
      *
      * @param registerRequest the request object containing the information for the new admin user
      * @throws AysAdminUserRegisterVerificationCodeNotValidException if the verificationId provided is not valid
-     * @throws AysInstitutionNotExistException                       if the requested organization does not exist
+     * @throws AysInstitutionNotExistException                       if the requested institution does not exist
      * @throws AysAdminUserAlreadyExistsByEmailException             if an admin user with the same email already exists
      * @throws AysAdminUserAlreadyExistsByUsernameException          if an admin user with the same username already exists
      * @throws AysAdminUserAlreadyExistsByPhoneNumberException       if an admin user with the same phone number already exists
