@@ -1,4 +1,4 @@
-package com.ays.organization.model;
+package com.ays.institution.model;
 
 import com.ays.common.model.BaseDomainModel;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.ays.organization.model.enums;
+package com.ays.institution.model.enums;
 
 /**
  * Enumeration keeping organization status.

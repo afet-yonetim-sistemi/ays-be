@@ -13,8 +13,8 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberE
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNotValidException;
 import com.ays.common.model.AysPhoneNumber;
-import com.ays.organization.repository.OrganizationRepository;
-import com.ays.organization.util.exception.AysOrganizationNotExistException;
+import com.ays.institution.repository.OrganizationRepository;
+import com.ays.institution.util.exception.AysOrganizationNotExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

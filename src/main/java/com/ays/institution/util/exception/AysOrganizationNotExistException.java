@@ -1,4 +1,4 @@
-package com.ays.organization.util.exception;
+package com.ays.institution.util.exception;
 
 import com.ays.common.util.exception.AysNotExistException;
 

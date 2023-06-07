@@ -16,8 +16,8 @@ import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNot
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.util.AysRandomUtil;
-import com.ays.organization.repository.OrganizationRepository;
-import com.ays.organization.util.exception.AysOrganizationNotExistException;
+import com.ays.institution.repository.OrganizationRepository;
+import com.ays.institution.util.exception.AysOrganizationNotExistException;
 import com.ays.util.AysTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

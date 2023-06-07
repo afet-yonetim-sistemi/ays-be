@@ -5,8 +5,8 @@ import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
-import com.ays.organization.model.entity.OrganizationEntity;
-import com.ays.organization.model.entity.OrganizationEntityBuilder;
+import com.ays.institution.model.entity.OrganizationEntity;
+import com.ays.institution.model.entity.OrganizationEntityBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

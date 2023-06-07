@@ -1,6 +1,6 @@
-package com.ays.organization.repository;
+package com.ays.institution.repository;
 
-import com.ays.organization.model.entity.OrganizationEntity;
+import com.ays.institution.model.entity.OrganizationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

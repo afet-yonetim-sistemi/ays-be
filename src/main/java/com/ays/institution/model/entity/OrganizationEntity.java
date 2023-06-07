@@ -1,7 +1,7 @@
-package com.ays.organization.model.entity;
+package com.ays.institution.model.entity;
 
 import com.ays.common.model.entity.BaseEntity;
-import com.ays.organization.model.enums.OrganizationStatus;
+import com.ays.institution.model.enums.OrganizationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

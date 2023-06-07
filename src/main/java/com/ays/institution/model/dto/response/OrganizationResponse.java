@@ -1,4 +1,4 @@
-package com.ays.organization.model.dto.response;
+package com.ays.institution.model.dto.response;
 
 import com.ays.common.model.dto.response.BaseResponse;
 import lombok.Data;

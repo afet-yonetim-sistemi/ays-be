@@ -2,7 +2,7 @@ package com.ays.user.model;
 
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.BaseDomainModel;
-import com.ays.organization.model.Organization;
+import com.ays.institution.model.Organization;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import lombok.Data;

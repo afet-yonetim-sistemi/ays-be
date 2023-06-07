@@ -15,7 +15,7 @@ import com.ays.auth.util.exception.PasswordNotValidException;
 import com.ays.auth.util.exception.UserNotActiveException;
 import com.ays.auth.util.exception.UserNotVerifiedException;
 import com.ays.auth.util.exception.UsernameNotValidException;
-import com.ays.organization.repository.OrganizationRepository;
+import com.ays.institution.repository.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
