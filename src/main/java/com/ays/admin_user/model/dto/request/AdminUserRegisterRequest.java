@@ -23,7 +23,7 @@ public class AdminUserRegisterRequest {
     private String verificationId;
 
     @NotBlank
-    private String organizationId;
+    private String institutionId;
 
     @NotBlank
     private String username;

@@ -26,7 +26,7 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
     }
 
     public AdminUserRegisterRequestBuilder withOrganizationId(String organizationId) {
-        data.setOrganizationId(organizationId);
+        data.setInstitutionId(organizationId);
         return this;
     }
 

@@ -28,7 +28,7 @@ public interface AdminUserRegisterRequestToAdminUserEntityMapper extends BaseMap
     default AdminUserEntity mapForSaving(AdminUserRegisterRequest registerRequest, String encodedPassword) {
         return AdminUserEntity.builder()
                 .id(AysRandomUtil.generateUUID())
-                .organizationId(registerRequest.getOrganizationId())
+                .organizationId(registerRequest.getInstitutionId())
                 .username(registerRequest.getUsername())
                 .email(registerRequest.getEmail())
                 .password(encodedPassword)

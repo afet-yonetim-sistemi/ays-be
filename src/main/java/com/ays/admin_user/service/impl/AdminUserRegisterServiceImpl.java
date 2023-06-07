@@ -65,8 +65,8 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
                 .findById(registerRequest.getVerificationId())
                 .orElseThrow(() -> new AysAdminUserRegisterVerificationCodeNotValidException(registerRequest.getVerificationId()));
 
-        if (!institutionRepository.existsById(registerRequest.getOrganizationId())) {
-            throw new AysInstitutionNotExistException(registerRequest.getOrganizationId());
+        if (!institutionRepository.existsById(registerRequest.getInstitutionId())) {
+            throw new AysInstitutionNotExistException(registerRequest.getInstitutionId());
         }
 
         if (adminUserRepository.existsByEmail(registerRequest.getEmail())) {
