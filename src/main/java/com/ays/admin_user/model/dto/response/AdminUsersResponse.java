@@ -19,5 +19,5 @@ public class AdminUsersResponse {
     private String lastName;
     private AdminUserStatus status;
 
-    private InstitutionResponse organization;
+    private InstitutionResponse institution;
 }
