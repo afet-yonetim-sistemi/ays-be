@@ -14,7 +14,7 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameExce
 import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNotValidException;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.institution.repository.InstitutionRepository;
-import com.ays.institution.util.exception.AysOrganizationNotExistException;
+import com.ays.institution.util.exception.AysInstitutionNotExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,7 +51,7 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
      *
      * @param registerRequest the request object containing the information for the new admin user
      * @throws AysAdminUserRegisterVerificationCodeNotValidException if the verificationId provided is not valid
-     * @throws AysOrganizationNotExistException                      if the requested organization does not exist
+     * @throws AysInstitutionNotExistException                       if the requested organization does not exist
      * @throws AysAdminUserAlreadyExistsByEmailException             if an admin user with the same email already exists
      * @throws AysAdminUserAlreadyExistsByUsernameException          if an admin user with the same username already exists
      * @throws AysAdminUserAlreadyExistsByPhoneNumberException       if an admin user with the same phone number already exists
@@ -66,7 +66,7 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
                 .orElseThrow(() -> new AysAdminUserRegisterVerificationCodeNotValidException(registerRequest.getVerificationId()));
 
         if (!institutionRepository.existsById(registerRequest.getOrganizationId())) {
-            throw new AysOrganizationNotExistException(registerRequest.getOrganizationId());
+            throw new AysInstitutionNotExistException(registerRequest.getOrganizationId());
         }
 
         if (adminUserRepository.existsByEmail(registerRequest.getEmail())) {

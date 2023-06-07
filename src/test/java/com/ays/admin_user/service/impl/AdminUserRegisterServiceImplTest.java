@@ -17,7 +17,7 @@ import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.repository.InstitutionRepository;
-import com.ays.institution.util.exception.AysOrganizationNotExistException;
+import com.ays.institution.util.exception.AysInstitutionNotExistException;
 import com.ays.util.AysTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -148,7 +148,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysOrganizationNotExistException.class,
+                AysInstitutionNotExistException.class,
                 () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
         );
 
