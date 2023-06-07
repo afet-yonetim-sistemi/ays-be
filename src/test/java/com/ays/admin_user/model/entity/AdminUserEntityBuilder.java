@@ -65,7 +65,7 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
     }
 
     public AdminUserEntityBuilder withOrganizationId(String organizationId) {
-        data.setOrganizationId(organizationId);
+        data.setInstitutionId(organizationId);
         return this;
     }
 

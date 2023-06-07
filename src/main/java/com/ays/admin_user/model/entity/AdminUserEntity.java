@@ -59,7 +59,7 @@ public class AdminUserEntity extends BaseEntity {
     private Long lineNumber;
 
     @Column(name = "ORGANIZATION_ID")
-    private String organizationId;
+    private String institutionId;
 
     @OneToOne
     @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
@@ -79,7 +79,7 @@ public class AdminUserEntity extends BaseEntity {
         claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
         claims.put(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claims.put(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        claims.put(AysTokenClaims.ORGANIZATION_ID.getValue(), this.organizationId);
+        claims.put(AysTokenClaims.ORGANIZATION_ID.getValue(), this.institutionId);
         return claims;
     }
 
