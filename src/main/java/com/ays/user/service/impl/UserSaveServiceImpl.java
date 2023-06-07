@@ -41,7 +41,7 @@ class UserSaveServiceImpl implements UserSaveService {
         final UserEntity userEntity = userSaveRequestToUserMapper
                 .mapForSaving(
                         saveRequest,
-                        identity.getOrganizationId(),
+                        identity.getInstitutionId(),
                         username,
                         passwordEncoder.encode(password)
                 );

@@ -77,7 +77,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      */
     private AysPage<AdminUser> getAdminUsersFromDatabase(final AdminUserListRequest listRequest) {
 
-        final Map<String, Object> filter = Map.of("organizationId", identity.getOrganizationId());
+        final Map<String, Object> filter = Map.of("organizationId", identity.getInstitutionId());
         final Specification<AdminUserEntity> specification = AysSpecification.<AdminUserEntity>builder()
                 .and(filter)
                 .build();
