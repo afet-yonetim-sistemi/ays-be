@@ -33,14 +33,14 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     private final AdminUserRepository adminUserRepository;
 
-    private final AdminUserEntityToAdminUserMapper adminEntityToAdminMapper = AdminUserEntityToAdminUserMapper.initialize();
+    private static final AdminUserEntityToAdminUserMapper adminEntityToAdminMapper = AdminUserEntityToAdminUserMapper.initialize();
 
     private final AysIdentity identity;
 
     /**
      * Get Admin users based on the given {@link AdminUserListRequest} object. First, it is determined whether
-     * ADMIN or SUPER_ADMIN in terms of admin role. Next, it returns the list of all admins in all organizations
-     * for SUPER_ADMIN role or return the list of all admins in the same organization for ADMIN role.
+     * ADMIN or SUPER_ADMIN in terms of admin role. Next, it returns the list of all admins in all institutions
+     * for SUPER_ADMIN role or return the list of all admins in the same institution for ADMIN role.
      *
      * @param listRequest the request object covering page and pageSize
      * @return admin user list
@@ -58,7 +58,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     /**
-     * Handle Super Admin method is used for getting all super admins of all organizations
+     * Handle Super Admin method is used for getting all super admins of all institutions
      *
      * @param listRequest the request object covering page and pageSize
      * @return super admin user list
@@ -70,14 +70,14 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     /**
-     * Handle Admin method is used for getting all admins with the same organization
+     * Handle Admin method is used for getting all admins with the same institution
      *
      * @param listRequest the request object covering page and pageSize
      * @return super admin user list
      */
     private AysPage<AdminUser> getAdminUsersFromDatabase(final AdminUserListRequest listRequest) {
 
-        final Map<String, Object> filter = Map.of("organizationId", identity.getInstitutionId());
+        final Map<String, Object> filter = Map.of("institutionId", identity.getInstitutionId());
         final Specification<AdminUserEntity> specification = AysSpecification.<AdminUserEntity>builder()
                 .and(filter)
                 .build();
