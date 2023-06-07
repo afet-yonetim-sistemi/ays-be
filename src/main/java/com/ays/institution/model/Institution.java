@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Organization Domain Model to perform data transfer from service layer to controller
+ * Institution Domain Model to perform data transfer from service layer to controller
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
