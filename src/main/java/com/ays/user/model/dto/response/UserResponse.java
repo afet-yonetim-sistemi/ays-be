@@ -27,6 +27,6 @@ public class UserResponse extends BaseResponse {
     private UserStatus status;
     private AysPhoneNumber phoneNumber;
 
-    private InstitutionResponse organization;
+    private InstitutionResponse institution;
 
 }
