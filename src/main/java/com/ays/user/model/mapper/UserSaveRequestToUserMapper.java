@@ -24,19 +24,19 @@ public interface UserSaveRequestToUserMapper extends BaseMapper<UserSaveRequest,
      * Maps an {@link UserSaveRequest} object to an {@link UserEntity} object for saving in the database.
      *
      * @param saveRequest     the {@link UserSaveRequest} object to be mapped.
-     * @param organizationId  the {@link String} object.
+     * @param institutionId   the {@link String} object.
      * @param username        the {@link String} object.
      * @param encodedPassword the {@link String} object.
      * @return the mapped {@link UserEntity} object.
      */
     default UserEntity mapForSaving(UserSaveRequest saveRequest,
-                                    String organizationId,
+                                    String institutionId,
                                     String username,
                                     String encodedPassword) {
 
         return UserEntity.builder()
                 .id(AysRandomUtil.generateUUID())
-                .organizationId(organizationId)
+                .institutionId(institutionId)
                 .username(username)
                 .password(encodedPassword)
                 .firstName(saveRequest.getFirstName())
