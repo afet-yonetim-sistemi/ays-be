@@ -26,7 +26,7 @@ class UserSaveServiceImpl implements UserSaveService {
     private final PasswordEncoder passwordEncoder;
     private final AysIdentity identity;
 
-    private final UserSaveRequestToUserMapper userSaveRequestToUserMapper = UserSaveRequestToUserMapper.initialize();
+    private static final UserSaveRequestToUserMapper userSaveRequestToUserMapper = UserSaveRequestToUserMapper.initialize();
 
     public User saveUser(final UserSaveRequest saveRequest) {
 
