@@ -3,7 +3,7 @@ package com.ays.user.model.entity;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.entity.BaseEntity;
-import com.ays.institution.model.entity.OrganizationEntity;
+import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.user.model.dto.request.UserUpdateRequest;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
@@ -65,7 +65,7 @@ public class UserEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private OrganizationEntity organization;
+    private InstitutionEntity organization;
 
     public boolean isActive() {
         return UserStatus.ACTIVE.equals(this.status);

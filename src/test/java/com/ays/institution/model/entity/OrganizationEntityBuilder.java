@@ -4,10 +4,10 @@ import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.enums.InstitutionStatus;
 
-public class OrganizationEntityBuilder extends TestDataBuilder<OrganizationEntity> {
+public class OrganizationEntityBuilder extends TestDataBuilder<InstitutionEntity> {
 
     public OrganizationEntityBuilder() {
-        super(OrganizationEntity.class);
+        super(InstitutionEntity.class);
     }
 
     public OrganizationEntityBuilder withValidFields() {

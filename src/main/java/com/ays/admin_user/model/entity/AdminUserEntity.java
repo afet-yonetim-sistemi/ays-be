@@ -4,7 +4,7 @@ import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.entity.BaseEntity;
-import com.ays.institution.model.entity.OrganizationEntity;
+import com.ays.institution.model.entity.InstitutionEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -63,7 +63,7 @@ public class AdminUserEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private OrganizationEntity organization;
+    private InstitutionEntity organization;
 
     public boolean isActive() {
         return AdminUserStatus.ACTIVE.equals(this.status);

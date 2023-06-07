@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Organization entity, which holds the information regarding the organizations of the system.
+ * Institution entity, which holds the information regarding the organizations of the system.
  */
 @Entity
 @Data
@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "AYS_ORGANIZATION")
-public class OrganizationEntity extends BaseEntity {
+public class InstitutionEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")

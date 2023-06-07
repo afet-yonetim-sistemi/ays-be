@@ -5,7 +5,7 @@ import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
-import com.ays.institution.model.entity.OrganizationEntity;
+import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.institution.model.entity.OrganizationEntityBuilder;
 
 import java.util.ArrayList;
@@ -27,15 +27,15 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
     }
 
     public AdminUserEntityBuilder withValidFields() {
-        OrganizationEntity organizationEntity = new OrganizationEntityBuilder().withValidFields().build();
+        InstitutionEntity institutionEntity = new OrganizationEntityBuilder().withValidFields().build();
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withUsername(String.valueOf(AysRandomUtil.generateNumber(6)))
                 .withPassword("$2a$10$H/lKEaKsusQztOaJmYTAi.4MAmjvnxWOh0DY.XrgwHy5D2gENVIky")
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .withStatus(AdminUserStatus.ACTIVE)
-                .withOrganizationId(organizationEntity.getId())
-                .withOrganization(organizationEntity);
+                .withOrganizationId(institutionEntity.getId())
+                .withOrganization(institutionEntity);
     }
 
     public AdminUserEntityBuilder withId(String id) {
@@ -69,7 +69,7 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
         return this;
     }
 
-    public AdminUserEntityBuilder withOrganization(OrganizationEntity organization) {
+    public AdminUserEntityBuilder withOrganization(InstitutionEntity organization) {
         data.setOrganization(organization);
         return this;
     }
