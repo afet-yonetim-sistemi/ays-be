@@ -29,7 +29,7 @@ import java.util.Set;
  * registering and authenticating admin users. It uses the {@link AdminUserRepository} and
  * {@link AdminUserRegisterVerificationRepository} for persistence operations and the
  * {@link AdminUserRegisterRequestToAdminUserEntityMapper} for mapping the request to entity objects.
- * It also uses the {@link InstitutionRepository} to check if the requested organization exists.
+ * It also uses the {@link InstitutionRepository} to check if the requested institution exists.
  * Authentication is handled using the {@link PasswordEncoder} and the {@link AysTokenService} is used for
  * generating and refreshing access tokens.
  */
