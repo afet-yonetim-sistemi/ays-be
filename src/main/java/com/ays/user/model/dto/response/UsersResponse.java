@@ -20,6 +20,6 @@ public class UsersResponse {
     private UserRole role;
     private UserStatus status;
 
-    private InstitutionResponse organization;
+    private InstitutionResponse institution;
 
 }
