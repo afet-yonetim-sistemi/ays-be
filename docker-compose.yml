@@ -2,6 +2,7 @@ version: "3.9"
 services:
   mysql:
     image: mysql:8.0
+    platform: linux/x86_64
     container_name: ays-db
     restart: always
     environment:
