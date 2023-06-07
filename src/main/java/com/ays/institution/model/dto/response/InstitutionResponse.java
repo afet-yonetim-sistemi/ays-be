@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 /**
- * This class represents the response for a single organization.
+ * This class represents the response for a single institution.
  * It includes information such as the institution's id and name.
  */
 @Data
