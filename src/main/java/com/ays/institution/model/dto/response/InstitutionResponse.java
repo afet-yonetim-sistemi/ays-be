@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * This class represents the response for a single organization.
- * It includes information such as the organization's id and name.
+ * It includes information such as the institution's id and name.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
