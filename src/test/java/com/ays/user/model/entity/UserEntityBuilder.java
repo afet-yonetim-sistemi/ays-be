@@ -46,7 +46,7 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
     }
 
     public UserEntityBuilder withOrganizationId(String organizationId) {
-        data.setOrganizationId(organizationId);
+        data.setInstitutionId(organizationId);
         return this;
     }
 

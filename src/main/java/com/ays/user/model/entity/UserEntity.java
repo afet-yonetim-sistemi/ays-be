@@ -35,7 +35,7 @@ public class UserEntity extends BaseEntity {
     private String id;
 
     @Column(name = "ORGANIZATION_ID")
-    private String organizationId;
+    private String institutionId;
 
     @Column(name = "USERNAME")
     private String username;
@@ -90,7 +90,7 @@ public class UserEntity extends BaseEntity {
         claims.put(AysTokenClaims.ROLES.getValue(), List.of(this.role));
         claims.put(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claims.put(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.organizationId);
+        claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
         return claims;
     }
 
