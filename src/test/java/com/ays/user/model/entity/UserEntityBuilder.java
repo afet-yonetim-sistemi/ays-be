@@ -77,7 +77,7 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
     }
 
     public UserEntityBuilder withOrganization(InstitutionEntity organization) {
-        data.setOrganization(organization);
+        data.setInstitution(organization);
         return this;
     }
 
