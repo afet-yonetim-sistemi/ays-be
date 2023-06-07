@@ -131,7 +131,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenInvalidOrganizationIdFromAdminUserRegisterRequest_whenOrganizationNotExist_thenThrowAysOrganizationNotExistException() {
+    void givenInvalidInstitutionIdFromAdminUserRegisterRequest_whenInstitutionNotExist_thenThrowAysInstitutionNotExistException() {
 
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()

@@ -34,8 +34,8 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
                 .withPassword("$2a$10$H/lKEaKsusQztOaJmYTAi.4MAmjvnxWOh0DY.XrgwHy5D2gENVIky")
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .withStatus(AdminUserStatus.ACTIVE)
-                .withOrganizationId(institutionEntity.getId())
-                .withOrganization(institutionEntity);
+                .withInstitutionId(institutionEntity.getId())
+                .withInstitution(institutionEntity);
     }
 
     public AdminUserEntityBuilder withId(String id) {
@@ -64,12 +64,12 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
         return this;
     }
 
-    public AdminUserEntityBuilder withOrganizationId(String institutionId) {
+    public AdminUserEntityBuilder withInstitutionId(String institutionId) {
         data.setInstitutionId(institutionId);
         return this;
     }
 
-    public AdminUserEntityBuilder withOrganization(InstitutionEntity institution) {
+    public AdminUserEntityBuilder withInstitution(InstitutionEntity institution) {
         data.setInstitution(institution);
         return this;
     }

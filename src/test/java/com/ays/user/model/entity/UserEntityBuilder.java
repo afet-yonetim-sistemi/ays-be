@@ -37,7 +37,7 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.ACTIVE)
                 .withInstitutionId(institutionEntity.getId())
-                .withOrganization(institutionEntity);
+                .withInstitution(institutionEntity);
     }
 
     public UserEntityBuilder withId(String id) {
@@ -76,7 +76,7 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
         return this;
     }
 
-    public UserEntityBuilder withOrganization(InstitutionEntity institution) {
+    public UserEntityBuilder withInstitution(InstitutionEntity institution) {
         data.setInstitution(institution);
         return this;
     }
