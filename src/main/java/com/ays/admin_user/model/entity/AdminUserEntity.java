@@ -63,7 +63,7 @@ public class AdminUserEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private InstitutionEntity organization;
+    private InstitutionEntity institution;
 
     public boolean isActive() {
         return AdminUserStatus.ACTIVE.equals(this.status);

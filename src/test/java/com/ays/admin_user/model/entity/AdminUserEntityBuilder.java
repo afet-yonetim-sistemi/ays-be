@@ -70,7 +70,7 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
     }
 
     public AdminUserEntityBuilder withOrganization(InstitutionEntity organization) {
-        data.setOrganization(organization);
+        data.setInstitution(organization);
         return this;
     }
 
