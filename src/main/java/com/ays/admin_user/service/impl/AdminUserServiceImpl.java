@@ -82,11 +82,11 @@ public class AdminUserServiceImpl implements AdminUserService {
                 .and(filter)
                 .build();
 
-        final Page<AdminUserEntity> adminUserEntitiesByOrganization = adminUserRepository
+        final Page<AdminUserEntity> adminUserEntitiesByInstitution = adminUserRepository
                 .findAll(specification, listRequest.toPageable());
 
-        final List<AdminUser> adminUsersByOrganization = adminEntityToAdminMapper
-                .map(adminUserEntitiesByOrganization.getContent());
-        return AysPage.of(adminUserEntitiesByOrganization, adminUsersByOrganization);
+        final List<AdminUser> adminUsersByInstitution = adminEntityToAdminMapper
+                .map(adminUserEntitiesByInstitution.getContent());
+        return AysPage.of(adminUserEntitiesByInstitution, adminUsersByInstitution);
     }
 }

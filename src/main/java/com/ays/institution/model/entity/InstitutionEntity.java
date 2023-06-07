@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "AYS_ORGANIZATION")
+@Table(name = "AYS_INSTITUTION")
 public class InstitutionEntity extends BaseEntity {
 
     @Id

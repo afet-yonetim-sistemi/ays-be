@@ -4,24 +4,24 @@ import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.enums.InstitutionStatus;
 
-public class OrganizationEntityBuilder extends TestDataBuilder<InstitutionEntity> {
+public class InstitutionEntityBuilder extends TestDataBuilder<InstitutionEntity> {
 
-    public OrganizationEntityBuilder() {
+    public InstitutionEntityBuilder() {
         super(InstitutionEntity.class);
     }
 
-    public OrganizationEntityBuilder withValidFields() {
+    public InstitutionEntityBuilder withValidFields() {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withStatus(InstitutionStatus.ACTIVE);
     }
 
-    public OrganizationEntityBuilder withId(String id) {
+    public InstitutionEntityBuilder withId(String id) {
         data.setId(id);
         return this;
     }
 
-    public OrganizationEntityBuilder withStatus(InstitutionStatus status) {
+    public InstitutionEntityBuilder withStatus(InstitutionStatus status) {
         data.setStatus(status);
         return this;
     }

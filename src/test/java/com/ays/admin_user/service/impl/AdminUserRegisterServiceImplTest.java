@@ -52,7 +52,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -136,7 +136,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId("Invalid").build();
+                .withInstitutionId("Invalid").build();
 
         // When
         AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder().build();
@@ -164,7 +164,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
         // When
@@ -198,7 +198,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
         // When
@@ -238,7 +238,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 

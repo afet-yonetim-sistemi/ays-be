@@ -5,7 +5,7 @@ import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
-import com.ays.institution.model.entity.OrganizationEntityBuilder;
+import com.ays.institution.model.entity.InstitutionEntityBuilder;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 
@@ -28,7 +28,7 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
     }
 
     public UserEntityBuilder withValidFields() {
-        InstitutionEntity institutionEntity = new OrganizationEntityBuilder().withValidFields().build();
+        InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidFields().build();
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withUsername(String.valueOf(AysRandomUtil.generateNumber(6)))
@@ -36,7 +36,7 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.ACTIVE)
-                .withOrganizationId(institutionEntity.getId())
+                .withInstitutionId(institutionEntity.getId())
                 .withOrganization(institutionEntity);
     }
 
@@ -45,8 +45,8 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
         return this;
     }
 
-    public UserEntityBuilder withOrganizationId(String organizationId) {
-        data.setInstitutionId(organizationId);
+    public UserEntityBuilder withInstitutionId(String institutionId) {
+        data.setInstitutionId(institutionId);
         return this;
     }
 
@@ -76,8 +76,8 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
         return this;
     }
 
-    public UserEntityBuilder withOrganization(InstitutionEntity organization) {
-        data.setInstitution(organization);
+    public UserEntityBuilder withOrganization(InstitutionEntity institution) {
+        data.setInstitution(institution);
         return this;
     }
 

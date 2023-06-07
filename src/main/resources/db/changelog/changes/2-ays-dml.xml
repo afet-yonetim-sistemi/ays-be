@@ -79,9 +79,9 @@
 
 
         <!-- ======================= -->
-        <!-- DML of AYS_ORGANIZATION -->
+        <!-- DML of AYS_INSTITUTION -->
         <!-- ======================= -->
-        <insert tableName="AYS_ORGANIZATION">
+        <insert tableName="AYS_INSTITUTION">
             <column name="ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
             <column name="NAME" value="AYS"/>
             <column name="STATUS" value="ACTIVE"/>
@@ -89,7 +89,7 @@
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
         <!-- ======================= -->
-        <!-- DML of AYS_ORGANIZATION -->
+        <!-- DML of AYS_INSTITUTION -->
         <!-- ======================= -->
 
 
@@ -98,7 +98,7 @@
         <!-- ======================= -->
         <insert tableName="AYS_ADMIN_USER">
             <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b206"/>
-            <column name="ORGANIZATION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
             <column name="USERNAME" value="ays-admin"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="admin@ays.com"/>
@@ -114,7 +114,7 @@
 
         <insert tableName="AYS_ADMIN_USER">
             <column name="ID" value="ea29a0bd-ad5d-4068-88c3-a8835b8d555e"/>
-            <column name="ORGANIZATION_ID" value="null"/>
+            <column name="INSTITUTION_ID" value="null"/>
             <column name="USERNAME" value="ays-super-admin"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="superadmin@ays.com"/>
@@ -153,7 +153,7 @@
         <!-- =============== -->
         <insert tableName="AYS_USER">
             <column name="ID" value="c4b4e4db-5641-41f7-8222-a76deb1c065c"/>
-            <column name="ORGANIZATION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
             <column name="USERNAME" value="232180"/>
             <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
             <column name="FIRST_NAME" value="Afet Yönetim"/>

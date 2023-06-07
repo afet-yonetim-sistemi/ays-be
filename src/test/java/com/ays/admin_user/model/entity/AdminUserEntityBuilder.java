@@ -6,7 +6,7 @@ import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
-import com.ays.institution.model.entity.OrganizationEntityBuilder;
+import com.ays.institution.model.entity.InstitutionEntityBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
     }
 
     public AdminUserEntityBuilder withValidFields() {
-        InstitutionEntity institutionEntity = new OrganizationEntityBuilder().withValidFields().build();
+        InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidFields().build();
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withUsername(String.valueOf(AysRandomUtil.generateNumber(6)))
@@ -64,13 +64,13 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
         return this;
     }
 
-    public AdminUserEntityBuilder withOrganizationId(String organizationId) {
-        data.setInstitutionId(organizationId);
+    public AdminUserEntityBuilder withOrganizationId(String institutionId) {
+        data.setInstitutionId(institutionId);
         return this;
     }
 
-    public AdminUserEntityBuilder withOrganization(InstitutionEntity organization) {
-        data.setInstitution(organization);
+    public AdminUserEntityBuilder withOrganization(InstitutionEntity institution) {
+        data.setInstitution(institution);
         return this;
     }
 

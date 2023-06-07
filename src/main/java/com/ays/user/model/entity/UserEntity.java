@@ -34,7 +34,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "ID")
     private String id;
 
-    @Column(name = "ORGANIZATION_ID")
+    @Column(name = "INSTITUTION_ID")
     private String institutionId;
 
     @Column(name = "USERNAME")
@@ -64,7 +64,7 @@ public class UserEntity extends BaseEntity {
     private Long lineNumber;
 
     @OneToOne
-    @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private InstitutionEntity institution;
 
     public boolean isActive() {
