@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Institution entity, which holds the information regarding the organizations of the system.
+ * Institution entity, which holds the information regarding the institutions of the system.
  */
 @Entity
 @Data
