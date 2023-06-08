@@ -83,7 +83,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
 
         // When
         Mockito.when(identity.getUserType()).thenReturn(userType);
-        Mockito.when(identity.getOrganizationId()).thenReturn(mockAdminUserEntity.getOrganizationId());
+        Mockito.when(identity.getInstitutionId()).thenReturn(mockAdminUserEntity.getInstitutionId());
 
         Mockito.when(adminUserRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageAdminUserEntities);

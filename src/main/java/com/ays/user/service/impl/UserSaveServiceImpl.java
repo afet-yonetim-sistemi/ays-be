@@ -26,7 +26,7 @@ class UserSaveServiceImpl implements UserSaveService {
     private final PasswordEncoder passwordEncoder;
     private final AysIdentity identity;
 
-    private final UserSaveRequestToUserMapper userSaveRequestToUserMapper = UserSaveRequestToUserMapper.initialize();
+    private static final UserSaveRequestToUserMapper userSaveRequestToUserMapper = UserSaveRequestToUserMapper.initialize();
 
     public User saveUser(final UserSaveRequest saveRequest) {
 
@@ -41,7 +41,7 @@ class UserSaveServiceImpl implements UserSaveService {
         final UserEntity userEntity = userSaveRequestToUserMapper
                 .mapForSaving(
                         saveRequest,
-                        identity.getOrganizationId(),
+                        identity.getInstitutionId(),
                         username,
                         passwordEncoder.encode(password)
                 );

@@ -1,7 +1,7 @@
-package com.ays.organization.model.entity;
+package com.ays.institution.model.entity;
 
 import com.ays.common.model.entity.BaseEntity;
-import com.ays.organization.model.enums.OrganizationStatus;
+import com.ays.institution.model.enums.InstitutionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Organization entity, which holds the information regarding the organizations of the system.
+ * Institution entity, which holds the information regarding the institutions of the system.
  */
 @Entity
 @Data
@@ -18,8 +18,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "AYS_ORGANIZATION")
-public class OrganizationEntity extends BaseEntity {
+@Table(name = "AYS_INSTITUTION")
+public class InstitutionEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
@@ -30,6 +30,6 @@ public class OrganizationEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private OrganizationStatus status;
+    private InstitutionStatus status;
 
 }

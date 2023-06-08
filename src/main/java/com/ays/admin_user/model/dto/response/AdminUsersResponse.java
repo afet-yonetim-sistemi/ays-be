@@ -1,7 +1,7 @@
 package com.ays.admin_user.model.dto.response;
 
 import com.ays.admin_user.model.enums.AdminUserStatus;
-import com.ays.organization.model.dto.response.OrganizationResponse;
+import com.ays.institution.model.dto.response.InstitutionResponse;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,5 +19,5 @@ public class AdminUsersResponse {
     private String lastName;
     private AdminUserStatus status;
 
-    private OrganizationResponse organization;
+    private InstitutionResponse institution;
 }

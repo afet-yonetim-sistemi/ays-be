@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
 public class AysIdentity {
 
     /**
-     * Returns the organization ID associated with the authenticated user's AYS identity.
+     * Returns the institution ID associated with the authenticated user's AYS identity.
      *
-     * @return the organization ID as a string
+     * @return the institution ID as a string
      */
-    public String getOrganizationId() {
-        return this.getJwt().getClaim(AysTokenClaims.ORGANIZATION_ID.getValue());
+    public String getInstitutionId() {
+        return this.getJwt().getClaim(AysTokenClaims.INSTITUTION_ID.getValue());
     }
 
     /**

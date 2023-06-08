@@ -15,7 +15,7 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
     public AdminUserRegisterRequestBuilder withValidFields() {
         return this
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build());
     }
@@ -25,8 +25,8 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
         return this;
     }
 
-    public AdminUserRegisterRequestBuilder withOrganizationId(String organizationId) {
-        data.setOrganizationId(organizationId);
+    public AdminUserRegisterRequestBuilder withInstitutionId(String institutionId) {
+        data.setInstitutionId(institutionId);
         return this;
     }
 
