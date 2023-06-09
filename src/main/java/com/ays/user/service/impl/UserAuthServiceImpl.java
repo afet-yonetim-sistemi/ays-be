@@ -21,7 +21,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 class UserAuthServiceImpl implements UserAuthService {
 
     private final UserRepository userRepository;
