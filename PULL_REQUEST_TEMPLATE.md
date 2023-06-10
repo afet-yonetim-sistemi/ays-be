@@ -25,15 +25,19 @@ If there's any additional information or context that the reviewers should know,
 Please check the following before submitting your pull request:
 
 - [ ] I have tested my changes locally and they are working as expected.
-- [ ] I have added necessary documentation or updated existing documentation.
-- [ ] I have added relevant tests for the proposed changes.
-- [ ] My code follows the project's coding guidelines and style.
-- [ ] I have reviewed my own code and ensured its quality.
+- [ ] The code is formatted according to the project's coding guidelines and style.
+- [ ] Necessary documentation has been added or existing documentation has been updated.
+- [ ] Relevant unit tests have been written and included.
+- [ ] Relevant integration tests have been written and included.
+- [ ] The code has been reviewed to ensure its quality.
+- [ ] The code does not contain any issues flagged by SonarLint.
+- [ ] Default reviewers have been assigned to this pull request.
+- [ ] Assignees have been added if necessary.
+- [ ] Labels have been applied if necessary.
+- [ ] If an issue is opened and this pull request is related to that issue, it should not be associated with any project
+  board or milestone. However, if there is no issue, the pull request should be associated with the appropriate project
+  board (BE Board, In Review column) and milestone to track the progress.
 
 ## Reviewers
 
-Tag the relevant project maintainers or team members who should review this pull request.
-
-@agitrubard
-@skayikci
-@Rapter1990
+The default project maintainers and team members will be automatically assigned as reviewers for this pull request.
