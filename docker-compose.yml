@@ -5,7 +5,7 @@ services:
     container_name: database
     image: mysql:8.0
     platform: linux/x86_64     # for Windows or Mac Intel Chips
-    # platform: linux/arm64/v8    # for Mac Silicon Chips
+#    platform: linux/arm64/v8    # for Mac Silicon Chips
     restart: always
     environment:
       MYSQL_DATABASE: ays
