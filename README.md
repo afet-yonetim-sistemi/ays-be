@@ -109,18 +109,6 @@ If you want to stop the project container, you can run the following command:
 docker compose down -v 
 ```
 
-## Running with Docker Compose
-
-You need to have .env.local file in the same directory with docker-compose.yml which will define
-env variables used by the compose command - this file should not be committed:
-
-```.env
-SPRING_PROFILES_ACTIVE=development
-AYS_DB_USERNAME=ays
-AYS_DB_PASSWORD=ayspass
-AYS_DB_URL=jdbc:mysql://localhost:3306/ays
-```
-
 ## Running the app with Kubernetes
 
 ```
