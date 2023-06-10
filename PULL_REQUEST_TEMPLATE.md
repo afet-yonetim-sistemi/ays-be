@@ -10,7 +10,9 @@ If this pull request is related to any GitHub issue, please mention it here with
 
 ## Proposed Changes
 
-List down the specific changes or features introduced in this pull request.
+Please provide a brief and descriptive title for your pull request, summarizing the changes or features introduced. It
+should be in English and clearly indicate the purpose of the pull request. Optionally, you can provide a more detailed
+description of what you have done.
 
 - Feature/issue-number/feature-description: [Feature Description]
 - Refactor/issue-number/issue-description: [Issue Description]
