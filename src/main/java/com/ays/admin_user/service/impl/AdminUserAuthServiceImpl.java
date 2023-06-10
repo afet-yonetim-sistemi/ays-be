@@ -35,7 +35,7 @@ import java.util.Set;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 class AdminUserAuthServiceImpl implements AdminUserAuthService {
 
     private final AdminUserRepository adminUserRepository;
