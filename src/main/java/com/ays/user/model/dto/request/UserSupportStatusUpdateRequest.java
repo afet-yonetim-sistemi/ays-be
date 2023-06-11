@@ -9,6 +9,9 @@ import lombok.Data;
 
 import java.util.EnumSet;
 
+/**
+ * Request object for updating the support status of a user.
+ */
 @Data
 @Builder
 public class UserSupportStatusUpdateRequest {
