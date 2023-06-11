@@ -4,7 +4,7 @@ services:
   database:
     container_name: database
     image: mysql:8.0
-    platform: linux/x86_64     # for Windows or Mac Intel Chips
+#    platform: linux/x86_64     # for Intel Chips with WSL2 Enabled
 #    platform: linux/arm64/v8    # for Mac Silicon Chips
     restart: always
     environment:
