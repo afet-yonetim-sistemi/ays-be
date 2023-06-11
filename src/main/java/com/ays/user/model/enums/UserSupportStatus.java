@@ -1,5 +1,8 @@
 package com.ays.user.model.enums;
 
+/**
+ * Enumeration keeping the support status of a user.
+ */
 public enum UserSupportStatus {
 
     IDLE,
