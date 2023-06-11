@@ -47,6 +47,15 @@ public class AysIdentity {
     }
 
     /**
+     * Returns the user ID associated with the authenticated user's AYS identity.
+     *
+     * @return user Id value
+     */
+    public String getUserId() {
+        return this.getJwt().getId();
+    }
+
+    /**
      * Retrieves the JWT token for the authenticated user from the security context.
      *
      * @return the JWT token as a Jwt object

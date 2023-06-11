@@ -22,7 +22,8 @@ public enum AysTokenClaims {
     INSTITUTION_ID("institutionId"),
     ISSUED_AT("iat"),
     EXPIRES_AT("exp"),
-    ALGORITHM("alg");
+    ALGORITHM("alg"),
+    USER_ID("userId");
 
     private final String value;
 

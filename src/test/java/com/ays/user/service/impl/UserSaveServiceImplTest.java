@@ -59,6 +59,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
         // Then
         User user = userSaveService.saveUser(mockUserSaveRequest);
 
+
         Assertions.assertNotNull(user.getUsername());
         Assertions.assertEquals(6, user.getUsername().length());
         Assertions.assertNotNull(user.getPassword());
