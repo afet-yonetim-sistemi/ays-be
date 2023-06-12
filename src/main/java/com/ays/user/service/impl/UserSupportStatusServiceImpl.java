@@ -15,7 +15,7 @@ public class UserSupportStatusServiceImpl implements UserSupportStatusService {
 
     private final UserRepository userRepository;
 
-    private AysIdentity identity;
+    private final AysIdentity identity;
 
     @Override
     public void updateUserSupportStatus(UserSupportStatusUpdateRequest updateRequest) {
