@@ -52,7 +52,7 @@ public class AysIdentity {
      * @return user Id value
      */
     public String getUserId() {
-        return this.getJwt().getId();
+        return this.getJwt().getClaim(AysTokenClaims.USER_ID.getValue());
     }
 
     /**
