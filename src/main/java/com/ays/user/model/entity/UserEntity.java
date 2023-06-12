@@ -68,6 +68,7 @@ public class UserEntity extends BaseEntity {
     @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private InstitutionEntity institution;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "SUPPORT_STATUS")
     private UserSupportStatus supportStatus;
 
