@@ -82,7 +82,6 @@ class UserSupportStatusServiceImplTest extends AbstractUnitTest {
         Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
         Mockito.when(userRepository.findById(Mockito.anyString()))
                 .thenThrow(AysUserNotExistByIdException.class);
-        ;
 
         // Then
         Assertions.assertThrows(
