@@ -109,7 +109,8 @@ docker compose up --force-recreate -d --build
 If you want to stop the project container, you can run the following command:
 ```
 docker compose down -v 
-```[README.md](README.md)
+```
+
 
 ## Running the app with Kubernetes
 
