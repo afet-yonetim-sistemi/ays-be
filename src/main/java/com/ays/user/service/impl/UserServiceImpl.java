@@ -1,6 +1,5 @@
 package com.ays.user.service.impl;
 
-import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserListRequest;
@@ -28,7 +27,6 @@ class UserServiceImpl implements UserService {
 
     private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
 
-    private final AysIdentity identity;
 
     public AysPage<User> getAllUsers(final UserListRequest listRequest) {
         Page<UserEntity> userEntities = userRepository.findAll(listRequest.toPageable());
