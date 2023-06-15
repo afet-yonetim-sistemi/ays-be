@@ -8,12 +8,12 @@ assignees: ''
 
 | Name| about |title|labels|
 | ------------- | ------------- |------------- |------------- |
-| Feature Request  | Suggest an idea for this project  |[Short Description] (Version)|enhancement|
+| Feature Request  | Suggest an idea for this project  |[Short Description] (Version: [AYS]) |enhancement|
 
 **Read before creating an issue**
 In general, we close any issues that are
-*unactionable
-*questions best served elsewhere
+* unactionable
+* questions best served elsewhere
 We have a small community of people that manages issues, and we want to ensure that the issues that remain open are high quality
 
 **Is your feature request related to a problem? Please describe.**

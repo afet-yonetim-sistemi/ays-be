@@ -6,13 +6,13 @@ assignees: ''
 
 ---
 
-| Name  | about |title|labels|
-| ------------- | ------------- |------------- |------------- |
-| Bug Names  | Create a report to help us improve stellar-core |[Short Description] (Version: [stellar-core version])|bug|
+| Name  | about                                       |title|labels|
+| ------------- |---------------------------------------------|------------- |------------- |
+| Bug Names  | Create a report to help us improve AYS-core |[Short Description] (Version: [AYS]) |bug|
 ## Read before creating an issue
 In general, we close any issues that are
-*fill the template below under "Description"
-*questions best served elsewhere
+* fill the template below under "Description"
+* questions best served elsewhere
 
 
 
@@ -43,4 +43,5 @@ If applicable, add screenshots to help explain your problem.
 - Version [e.g. 22]
 
 **Description**
-Add any other context about the problem here
+
+Add any other context about the bug here with supporting any gist or attachment that would make it easier to understand the bug which you mention
