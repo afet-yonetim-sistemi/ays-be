@@ -5,7 +5,7 @@ import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 /**
  * User Support Status Service interface for managing the support status of a user.
  */
-public interface UserSupportStatusService {
+public interface UserSelfService {
 
     /**
      * Updates the support status of a user.
