@@ -39,7 +39,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
     private static final AdminUserEntityToAdminUserMapper ADMIN_ENTITY_TO_ADMIN_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
 
     @Test
-    void givenUserListRequest_whenAdminwithRoleIsSuperAdmin_thenReturnAllAdminUsers() {
+    void givenUserListRequest_whenAdminWithRoleIsSuperAdmin_thenReturnAllAdminUsers() {
         // Given
         AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
 
@@ -67,7 +67,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenUserListRequest_whenAdminwithRoleIsAdmin_thenReturnAllAdminUsers() {
+    void givenUserListRequest_whenAdminWithRoleIsAdmin_thenReturnAllAdminUsers() {
         // Given
         AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
 
