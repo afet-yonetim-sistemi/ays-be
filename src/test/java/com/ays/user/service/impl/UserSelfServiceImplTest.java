@@ -16,10 +16,10 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
-class UserSupportStatusServiceImplTest extends AbstractUnitTest {
+class UserSelfServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks
-    private UserSupportStatusServiceImpl userSupportStatusService;
+    private UserSelfServiceImpl userSupportStatusService;
 
     @Mock
     private UserRepository userRepository;
