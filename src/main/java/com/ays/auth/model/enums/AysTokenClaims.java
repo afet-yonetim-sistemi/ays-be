@@ -15,6 +15,7 @@ public enum AysTokenClaims {
     TYPE("typ"),
     SUBJECT("sub"),
     ROLES("roles"),
+    USER_ID("userId"),
     USERNAME("username"),
     USER_TYPE("userType"),
     USER_FIRST_NAME("userFirstName"),
@@ -22,8 +23,7 @@ public enum AysTokenClaims {
     INSTITUTION_ID("institutionId"),
     ISSUED_AT("iat"),
     EXPIRES_AT("exp"),
-    ALGORITHM("alg"),
-    USER_ID("userId");
+    ALGORITHM("alg");
 
     private final String value;
 
