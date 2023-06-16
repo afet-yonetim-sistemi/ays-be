@@ -23,7 +23,7 @@ public class UserSupportStatusUpdateRequest {
     @NotNull
     private UserSupportStatus supportStatus;
 
-    @AssertTrue(message = "IS SUPPORT STATUS NOT VALID")
+    @AssertTrue(message = "SUPPORT STATUS IS NOT ACCEPTED!")
     private boolean isSupportStatusValid() {
 
         if (this.supportStatus == null) {
