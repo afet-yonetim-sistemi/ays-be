@@ -16,12 +16,12 @@ public class UserNotActiveException extends AysAuthException {
     private static final long serialVersionUID = -5218287176856317070L;
 
     /**
-     * Constructs a new UserNotActiveException with the specified username.
+     * Constructs a new UserNotActiveException with the specified userId.
      *
-     * @param username the username of the user that is not active
+     * @param userId the userId of the user that is not active
      */
-    public UserNotActiveException(String username) {
-        super("USER IS NOT ACTIVE! username:" + username);
+    public UserNotActiveException(String userId) {
+        super("USER IS NOT ACTIVE! userId:" + userId);
     }
 
 }

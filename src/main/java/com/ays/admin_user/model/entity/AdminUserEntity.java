@@ -73,13 +73,24 @@ public class AdminUserEntity extends BaseEntity {
         return AdminUserStatus.NOT_VERIFIED.equals(this.status);
     }
 
+    public boolean isSuperAdmin() {
+        return this.institutionId == null;
+    }
+
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
+
+        if (this.isSuperAdmin()) {
+            claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.SUPER_ADMIN);
+        } else {
+            claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
+            claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
+        }
+
+        claims.put(AysTokenClaims.USER_ID.getValue(), this.id);
         claims.put(AysTokenClaims.USERNAME.getValue(), this.username);
-        claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
         claims.put(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claims.put(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
         return claims;
     }
 

@@ -114,7 +114,7 @@ class UserController {
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public AysResponse<Void> deleteUserById(@PathVariable @UUID String id) {
+    public AysResponse<Void> deleteUser(@PathVariable @UUID String id) {
         userService.deleteUser(id);
         return AysResponse.SUCCESS;
     }

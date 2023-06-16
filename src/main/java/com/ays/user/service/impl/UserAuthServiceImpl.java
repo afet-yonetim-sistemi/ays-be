@@ -7,6 +7,7 @@ import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.PasswordNotValidException;
+import com.ays.auth.util.exception.UserIdNotValidException;
 import com.ays.auth.util.exception.UserNotActiveException;
 import com.ays.auth.util.exception.UsernameNotValidException;
 import com.ays.user.model.entity.UserEntity;
@@ -33,40 +34,38 @@ class UserAuthServiceImpl implements UserAuthService {
     private final AysIdentity identity;
 
     @Override
-    public AysToken authenticate(AysLoginRequest loginRequest) {
+    public AysToken authenticate(final AysLoginRequest loginRequest) {
 
-        final UserEntity userEntity = this.findUser(loginRequest.getUsername());
+        final UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new UsernameNotValidException(loginRequest.getUsername()));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), userEntity.getPassword())) {
             throw new PasswordNotValidException();
         }
 
-        return tokenService.generate(userEntity.getClaims());
+        this.validateUserStatus(userEntity);
 
+        return tokenService.generate(userEntity.getClaims());
     }
 
     public AysToken refreshAccessToken(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
-        final String username = tokenService
+        final String userId = tokenService
                 .getClaims(refreshToken)
-                .get(AysTokenClaims.USERNAME.getValue()).toString();
+                .get(AysTokenClaims.USER_ID.getValue()).toString();
 
-        final UserEntity userEntity = this.findUser(username);
+        final UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new UserIdNotValidException(userId));
+        this.validateUserStatus(userEntity);
 
         return tokenService.generate(userEntity.getClaims(), refreshToken);
     }
 
-
-    private UserEntity findUser(String username) {
-        final UserEntity userEntity = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotValidException(username));
-
+    private void validateUserStatus(final UserEntity userEntity) {
         if (!userEntity.isActive()) {
-            throw new UserNotActiveException(username);
+            throw new UserNotActiveException(userEntity.getId());
         }
-
-        return userEntity;
     }
 
     /**

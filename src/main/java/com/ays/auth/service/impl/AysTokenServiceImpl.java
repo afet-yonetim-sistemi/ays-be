@@ -66,7 +66,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(refreshTokenExpiresAt)
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.USERNAME.getValue(), claims.get(AysTokenClaims.USERNAME.getValue()))
+                .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
                 .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .compact();
 

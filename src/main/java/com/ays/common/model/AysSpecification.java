@@ -1,11 +1,14 @@
 package com.ays.common.model;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -16,36 +19,16 @@ public class AysSpecification {
     @SuppressWarnings("unused")
     public static class AysSpecificationBuilder<C> {
 
-        private final Specification<C> specification = Specification.allOf();
+        public Specification<C> and(final Map<String, Object> filter) {
 
-        public Specification<C> build() {
-            return this.specification;
-        }
-
-        public AysSpecificationBuilder<C> and(final Map<String, Object> filter) {
-
-            filter.forEach((name, value) -> {
-
-                Specification<C> tempSpecification = (root, query, criteriaBuilder) -> criteriaBuilder
-                        .equal(root.get(name), value);
-
-                this.specification.and(tempSpecification);
+            List<Predicate> predicates = new ArrayList<>();
+            return ((root, query, criteriaBuilder) -> {
+                filter.forEach((name, value) -> {
+                    Predicate equal = criteriaBuilder.equal(root.get(name), value);
+                    predicates.add(equal);
+                });
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             });
-
-            return this;
-        }
-
-        public AysSpecificationBuilder<C> or(final Map<String, Object> filter) {
-
-            filter.forEach((name, value) -> {
-
-                Specification<C> tempSpecification = (root, query, criteriaBuilder) -> criteriaBuilder
-                        .equal(root.get(name), value);
-
-                this.specification.or(tempSpecification);
-            });
-
-            return this;
         }
 
     }

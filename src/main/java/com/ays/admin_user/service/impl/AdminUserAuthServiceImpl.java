@@ -1,8 +1,6 @@
 package com.ays.admin_user.service.impl;
 
 import com.ays.admin_user.model.entity.AdminUserEntity;
-import com.ays.admin_user.model.mapper.AdminUserRegisterRequestToAdminUserEntityMapper;
-import com.ays.admin_user.repository.AdminUserRegisterVerificationRepository;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserAuthService;
 import com.ays.auth.model.AysIdentity;
@@ -11,11 +9,7 @@ import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
-import com.ays.auth.util.exception.PasswordNotValidException;
-import com.ays.auth.util.exception.UserNotActiveException;
-import com.ays.auth.util.exception.UserNotVerifiedException;
-import com.ays.auth.util.exception.UsernameNotValidException;
-import com.ays.institution.repository.InstitutionRepository;
+import com.ays.auth.util.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,13 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 
 /**
- * This service class implements the {@link AdminUserAuthService} interface and provides methods for
- * registering and authenticating admin users. It uses the {@link AdminUserRepository} and
- * {@link AdminUserRegisterVerificationRepository} for persistence operations and the
- * {@link AdminUserRegisterRequestToAdminUserEntityMapper} for mapping the request to entity objects.
- * It also uses the {@link InstitutionRepository} to check if the requested institution exists.
- * Authentication is handled using the {@link PasswordEncoder} and the {@link AysTokenService} is used for
- * generating and refreshing access tokens.
+ * This class implements the {@link AdminUserAuthService} interface and provides authentication and token-related operations for admin users.
+ * It is annotated with {@code @Service} to indicate that it is a service component in the application.
+ * The class is also annotated with {@code @RequiredArgsConstructor} to automatically generate a constructor based on the declared final fields.
+ * The {@code @Transactional} annotation ensures that all the methods in this class are executed within a transactional context.
  */
 @Service
 @RequiredArgsConstructor
@@ -61,11 +52,14 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
     @Override
     public AysToken authenticate(final AysLoginRequest loginRequest) {
 
-        final AdminUserEntity adminUserEntity = this.findUser(loginRequest.getUsername());
+        final AdminUserEntity adminUserEntity = adminUserRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new UsernameNotValidException(loginRequest.getUsername()));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), adminUserEntity.getPassword())) {
             throw new PasswordNotValidException();
         }
+
+        this.validateUserStatus(adminUserEntity);
 
         return tokenService.generate(adminUserEntity.getClaims());
     }
@@ -87,29 +81,27 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
     public AysToken refreshAccessToken(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
-        final String username = tokenService
+        final String userId = tokenService
                 .getClaims(refreshToken)
-                .get(AysTokenClaims.USERNAME.getValue()).toString();
+                .get(AysTokenClaims.USER_ID.getValue()).toString();
 
-        final AdminUserEntity adminUserEntity = this.findUser(username);
+        final AdminUserEntity adminUserEntity = adminUserRepository.findById(userId)
+                .orElseThrow(() -> new UserIdNotValidException(userId));
+
+        this.validateUserStatus(adminUserEntity);
 
         return tokenService.generate(adminUserEntity.getClaims(), refreshToken);
     }
 
-    private AdminUserEntity findUser(String username) {
-        final AdminUserEntity adminUserEntity = adminUserRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotValidException(username));
+    private void validateUserStatus(final AdminUserEntity adminUserEntity) {
 
-        if (!adminUserEntity.isActive()) {
-
-            if (adminUserEntity.isNotVerified()) {
-                throw new UserNotVerifiedException(username);
-            }
-
-            throw new UserNotActiveException(username);
+        if (adminUserEntity.isNotVerified()) {
+            throw new UserNotVerifiedException(adminUserEntity.getId());
         }
 
-        return adminUserEntity;
+        if (!adminUserEntity.isActive()) {
+            throw new UserNotActiveException(adminUserEntity.getId());
+        }
     }
 
 
