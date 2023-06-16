@@ -25,7 +25,7 @@ class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
+    private static final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
 
 
     public AysPage<User> getAllUsers(final UserListRequest listRequest) {
