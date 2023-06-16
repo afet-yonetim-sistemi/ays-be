@@ -14,9 +14,9 @@ assignees: ''
 In general, we close any issues that are
 * unactionable(fill the template below under "Description")
 * questions best served elsewhere
-We have a small community of people that manages issues, and we want to ensure that the issues that remain open are high quality
+  We have a small community of individuals responsible for managing issues, and our goal is to ensure that the open issues maintain a high level of quality.
 
-**Is your feature request related to a problem? Please describe.**
+* **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is.
 
 # A Description

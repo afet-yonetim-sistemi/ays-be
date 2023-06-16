@@ -12,7 +12,8 @@ assignees: ''
 ## Read before creating an issue
 In general, we close any issues that are
 * unactionable (fill the template below under "Description")
-* questions best served elsewhere
+* questions best served elsewhere 
+We have a small community of individuals responsible for managing issues, and our goal is to ensure that the open issues maintain a high level of quality.
 
 
 
