@@ -12,7 +12,7 @@ assignees: ''
 
 **Read before creating an issue**
 In general, we close any issues that are
-* unactionable
+* unactionable(fill the template below under "Description")
 * questions best served elsewhere
 We have a small community of people that manages issues, and we want to ensure that the issues that remain open are high quality
 

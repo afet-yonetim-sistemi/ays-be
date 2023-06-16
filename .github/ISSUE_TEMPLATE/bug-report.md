@@ -11,7 +11,7 @@ assignees: ''
 | Bug Names  | Create a report to help us improve AYS-core |[Short Description] (Version: [AYS]) |bug|
 ## Read before creating an issue
 In general, we close any issues that are
-* fill the template below under "Description"
+* unactionable (fill the template below under "Description")
 * questions best served elsewhere
 
 
@@ -42,6 +42,6 @@ If applicable, add screenshots to help explain your problem.
 - Browser [e.g. stock browser, safari]
 - Version [e.g. 22]
 
-**Description**
+**Additional context**
 
 Add any other context about the bug here with supporting any gist or attachment that would make it easier to understand the bug which you mention
