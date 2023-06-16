@@ -2,7 +2,7 @@ package com.ays.user.controller;
 
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
-import com.ays.user.service.UserSupportStatusService;
+import com.ays.user.service.UserSelfService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
  * Controller class for managing the support status of a user.
  */
 @RestController
-@RequestMapping("/api/v1/user/self/status/support")
+@RequestMapping("/api/v1/user/self")
 @RequiredArgsConstructor
-public class UserSupportStatusController {
+public class UserSelfController {
 
-    private final UserSupportStatusService supportStatusService;
+    private final UserSelfService supportStatusService;
 
     /**
      * Updates the support status of the current user.
@@ -27,7 +27,7 @@ public class UserSupportStatusController {
      * @param updateRequest the request object containing the updated support status
      * @return a response indicating the success of the operation
      */
-    @PutMapping
+    @PutMapping("/status/support")
     @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<Void> updateUserSupportStatus(@RequestBody @Valid UserSupportStatusUpdateRequest updateRequest) {
         supportStatusService.updateUserSupportStatus(updateRequest);
