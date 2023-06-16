@@ -35,8 +35,7 @@ public class UserSupportStatusUpdateRequest {
                 UserSupportStatus.READY,
                 UserSupportStatus.BUSY,
                 UserSupportStatus.MALFUNCTION,
-                UserSupportStatus.ACCIDENT,
-                UserSupportStatus.OFFLINE
+                UserSupportStatus.ACCIDENT
         );
 
         return EnumValidation.anyOf(this.supportStatus, acceptedUserSupportStatuses);
