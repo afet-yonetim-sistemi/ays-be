@@ -78,34 +78,57 @@
         <!-- ==================== -->
 
 
-        <!-- ======================= -->
+        <!-- ====================== -->
         <!-- DML of AYS_INSTITUTION -->
-        <!-- ======================= -->
+        <!-- ====================== -->
         <insert tableName="AYS_INSTITUTION">
             <column name="ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="NAME" value="AYS"/>
+            <column name="NAME" value="Test Institution 1"/>
             <column name="STATUS" value="ACTIVE"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
-        <!-- ======================= -->
+
+        <insert tableName="AYS_INSTITUTION">
+            <column name="ID" value="91df7ae9-d5b9-44ae-b54f-d5d55359c4a4"/>
+            <column name="NAME" value="Test Institution 2"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <!-- ====================== -->
         <!-- DML of AYS_INSTITUTION -->
-        <!-- ======================= -->
+        <!-- ====================== -->
 
 
-        <!-- ======================= -->
+        <!-- ===================== -->
         <!-- DML of AYS_ADMIN_USER -->
-        <!-- ======================= -->
+        <!-- ===================== -->
         <insert tableName="AYS_ADMIN_USER">
-            <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b206"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="ays-admin"/>
+            <column name="ID" value="ea29a0bd-ad5d-4068-88c3-a8835b8d555e"/>
+            <column name="USERNAME" value="ays-super-admin"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
-            <column name="EMAIL" value="admin@ays.com"/>
+            <column name="EMAIL" value="superadmin@ays.com"/>
             <column name="FIRST_NAME" value="Afet Yönetim"/>
             <column name="LAST_NAME" value="Sistemi"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="LINE_NUMBER" value="1234567890"/>
+            <column name="ROLE" value="SUPER_ADMIN"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="AYS_ADMIN_USER">
+            <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b206"/>
+            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="USERNAME" value="ays-admin-1"/>
+            <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
+            <column name="EMAIL" value="admin1@ays.com"/>
+            <column name="FIRST_NAME" value="Afet Yönetim"/>
+            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="COUNTRY_CODE" value="90"/>
+            <column name="LINE_NUMBER" value="1234567891"/>
             <column name="ROLE" value="ADMIN"/>
             <column name="STATUS" value="ACTIVE"/>
             <column name="CREATED_USER" value="AYS"/>
@@ -113,24 +136,24 @@
         </insert>
 
         <insert tableName="AYS_ADMIN_USER">
-            <column name="ID" value="ea29a0bd-ad5d-4068-88c3-a8835b8d555e"/>
-            <column name="INSTITUTION_ID" value="null"/>
-            <column name="USERNAME" value="ays-super-admin"/>
+            <column name="ID" value="87ab173b-1b7d-4264-abd7-438e5ed2c1fa"/>
+            <column name="INSTITUTION_ID" value="91df7ae9-d5b9-44ae-b54f-d5d55359c4a4"/>
+            <column name="USERNAME" value="ays-admin-2"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
-            <column name="EMAIL" value="superadmin@ays.com"/>
+            <column name="EMAIL" value="admin2@ays.com"/>
             <column name="FIRST_NAME" value="Afet Yönetim"/>
             <column name="LAST_NAME" value="Sistemi"/>
             <column name="COUNTRY_CODE" value="90"/>
-            <column name="LINE_NUMBER" value="1234321890"/>
-            <column name="ROLE" value="SUPER_ADMIN"/>
+            <column name="LINE_NUMBER" value="1234567892"/>
+            <column name="ROLE" value="ADMIN"/>
             <column name="STATUS" value="ACTIVE"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
 
-        <!-- ======================= -->
+        <!-- ===================== -->
         <!-- DML of AYS_ADMIN_USER -->
-        <!-- ======================= -->
+        <!-- ===================== -->
 
 
         <!-- =========================================== -->
