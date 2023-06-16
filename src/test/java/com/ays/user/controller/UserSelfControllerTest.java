@@ -7,7 +7,7 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequestBuilder;
 import com.ays.user.model.enums.UserSupportStatus;
-import com.ays.user.service.UserSupportStatusService;
+import com.ays.user.service.UserSelfService;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -17,13 +17,13 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 
-class UserSupportStatusControllerTest extends AbstractRestControllerTest {
+class UserSelfControllerTest extends AbstractRestControllerTest {
 
     @MockBean
-    private UserSupportStatusService supportStatusService;
+    private UserSelfService supportStatusService;
 
 
-    private static final String BASE_PATH = "/api/v1/user/self/status/support";
+    private static final String BASE_PATH = "/api/v1/user/self";
 
     @Test
     void givenValidUserSupportStatusUpdateRequest_whenUserRole_thenReturnSuccess() throws Exception {
@@ -41,7 +41,7 @@ class UserSupportStatusControllerTest extends AbstractRestControllerTest {
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(BASE_PATH, mockUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest))
+                        .put(BASE_PATH.concat("/status/support"), mockUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -68,7 +68,7 @@ class UserSupportStatusControllerTest extends AbstractRestControllerTest {
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest);
+                .put(BASE_PATH.concat("/status/support"), mockAdminUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
