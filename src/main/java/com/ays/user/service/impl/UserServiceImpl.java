@@ -19,6 +19,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * UserServiceImpl is an implementation of the {@link UserService} interface.
+ * It provides methods for managing user data and operations by admin.
+ */
 @Service
 @RequiredArgsConstructor
 class UserServiceImpl implements UserService {
@@ -28,6 +32,12 @@ class UserServiceImpl implements UserService {
     private static final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
 
 
+    /**
+     * Retrieves a paginated list of all users based on the provided request.
+     *
+     * @param listRequest the request object containing pagination parameters
+     * @return a paginated list of users
+     */
     public AysPage<User> getAllUsers(final UserListRequest listRequest) {
         Page<UserEntity> userEntities = userRepository.findAll(listRequest.toPageable());
         List<User> users = userEntityToUserMapper.map(userEntities.getContent());
@@ -37,6 +47,13 @@ class UserServiceImpl implements UserService {
         );
     }
 
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param id the ID of the user to retrieve
+     * @return the user with the specified ID
+     * @throws AysUserNotExistByIdException if the user does not exist
+     */
     @Override
     public User getUserById(final String id) {
         final UserEntity userEntity = userRepository.findById(id)
@@ -45,6 +62,15 @@ class UserServiceImpl implements UserService {
         return userEntityToUserMapper.map(userEntity);
     }
 
+    /**
+     * Updates a user with the specified ID using the provided update request.
+     *
+     * @param id            the ID of the user to update
+     * @param updateRequest the request object containing the updated user data
+     * @throws AysUserNotExistByIdException   if the user does not exist
+     * @throws AysUserAlreadyActiveException  if the user is already active and the update request sets it to active
+     * @throws AysUserAlreadyPassiveException if the user is already passive and the update request sets it to passive
+     */
     @Override
     public void updateUser(final String id, final UserUpdateRequest updateRequest) {
 
@@ -64,6 +90,13 @@ class UserServiceImpl implements UserService {
         userRepository.save(userEntity);
     }
 
+    /**
+     * Deletes a user with the specified ID.
+     *
+     * @param id the ID of the user to delete
+     * @throws AysUserNotExistByIdException   if the user does not exist
+     * @throws AysUserAlreadyDeletedException if the user is already deleted
+     */
     @Override
     public void deleteUser(final String id) {
 
