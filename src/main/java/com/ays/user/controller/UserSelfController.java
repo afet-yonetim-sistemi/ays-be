@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/user/self")
 @RequiredArgsConstructor
-public class UserSelfController {
+class UserSelfController {
 
-    private final UserSelfService supportStatusService;
+    private final UserSelfService userSelfService;
 
     /**
      * Updates the support status of the current user.
@@ -30,7 +30,7 @@ public class UserSelfController {
     @PutMapping("/status/support")
     @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<Void> updateUserSupportStatus(@RequestBody @Valid UserSupportStatusUpdateRequest updateRequest) {
-        supportStatusService.updateUserSupportStatus(updateRequest);
+        userSelfService.updateUserSupportStatus(updateRequest);
         return AysResponse.SUCCESS;
     }
 
