@@ -9,6 +9,10 @@ import com.ays.user.util.exception.AysUserNotExistByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * UserSelfServiceImpl is an implementation of the UserSelfService interface.
+ * It manages a user's own operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserSelfServiceImpl implements UserSelfService {
@@ -17,6 +21,11 @@ public class UserSelfServiceImpl implements UserSelfService {
 
     private final AysIdentity identity;
 
+    /**
+     * Updates the support status of a user.
+     *
+     * @param updateRequest the request object containing the updated support status
+     */
     @Override
     public void updateUserSupportStatus(UserSupportStatusUpdateRequest updateRequest) {
 
