@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller class for managing the support status of a user.
+ * User Self Controller class for managing user's own operations.
  */
 @RestController
 @RequestMapping("/api/v1/user/self")
