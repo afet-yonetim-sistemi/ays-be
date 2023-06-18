@@ -142,6 +142,9 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.when(userRepository.findByUsername(mockLoginRequest.getUsername()))
                 .thenReturn(Optional.of(mockUserEntity));
 
+        Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(true);
+
         // Then
         Assertions.assertThrows(
                 UserNotActiveException.class,
@@ -150,25 +153,33 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByUsername(mockLoginRequest.getUsername());
+
+        Mockito.verify(passwordEncoder, Mockito.times(1))
+                .matches(Mockito.anyString(), Mockito.anyString());
     }
 
     @Test
     void givenValidRefreshToken_whenRefreshTokenValidated_thenReturnAysToken() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJjYzU2M2M1OS1lNTRkLTRmZWYtODAzOS1kZDZhZmNmZWM2ZDgiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODU5MDMyMjcsImV4cCI6MTY4NTk4OTYyNywidXNlcm5hbWUiOiIyMzIxODAifQ.ut7tGIFy0T6q
-                cbl_qJk5SPqL2AQn6qTvSkhy5Fuh4f8Matg95deWDDcqJELeO9lZQ8Lbvltw7UVS8-1olgWpgO6OBl0Npd6FXNx7s_WEX8RuBVAsBo
-                itJlbX6T1sDm-pFO8O_tSTi9JzpJqpFq0ZOBKDBWk9r0ykKngeJzjgx33dA3t-9dv_eUeMqx8C8Ru6ZsTvOuO2BIWQpAhjiAXmDUNN
-                8ETrBV1lw1rwOgfeUVqcLlWzCXb7e7BDDIEzrqqf0nO0q8vmjv8k0rMrth7iXhL6UADMcptcKaWq7qRui6mvk_sE1pY5Wqs8M4kQxY
-                tFi6OdrUfXYh8jN78vKHf2OQ
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI4YjNmMThmZS05NDE4LTQ5NTItYjFkZi03MThkMjgwNzBiNTUiL
+                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTEwMjIsImV4cCI6MTY4NjUxODIyMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
+                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJyb2xlcyI6WyJWT0xVTlRFRVIiXSwidXNlc
+                lR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiJjNGI0ZTRkYi01NjQxLTQxZjctODI
+                yMi1hNzZkZWIxYzA2NWMiLCJ1c2VybmFtZSI6IjIzMjE4MCJ9.cUXG7s675JpBYVh0FmPKCBd8xdD4OCZV9cW6r6rw7oKgEQGs6BNs
+                Kc5awQcvCUr9R-v4oqC72pZCAZDmRnrjrTye2SxGImJw17xe9gUZiFyqX0DIFLf94fY5P8v-V3qfJW4A_ffwubvjcJg5aFWAZOqleP
+                fj-pI4UECi1UAygLjz-ZOzxHYWolJXS0QfhWwwUJ0JOSc_3F00-L13mWzYi_NtHF9Y0sjk90iQBUTY0VLVs5JEaDHwvDh92Xidmqbo
+                I6mw3G_RJqSyVBsCCpqBx09A4LHhv1u84HBgeh4MjdXDR5GDXS6sEMVLOGqlr7FVXWSD6apUoJZlQf1UrWyrQg
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.ACTIVE)
                 .build();
 
-        Claims mockClaims = AysTokenBuilder.getValidClaims(mockUserEntity.getUsername());
+        Claims mockClaims = AysTokenBuilder.getValidClaims(
+                mockUserEntity.getId(),
+                mockUserEntity.getUsername()
+        );
 
         // When
         Mockito.doNothing().when(tokenService)
@@ -177,7 +188,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.when(tokenService.getClaims(mockRefreshToken))
                 .thenReturn(mockClaims);
 
-        Mockito.when(userRepository.findByUsername(mockUserEntity.getUsername()))
+        Mockito.when(userRepository.findById(mockUserEntity.getId()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         Mockito.when(tokenService.generate(mockUserEntity.getClaims(), mockRefreshToken))
@@ -195,7 +206,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(tokenService, Mockito.times(1))
                 .getClaims(mockRefreshToken);
         Mockito.verify(userRepository, Mockito.times(1))
-                .findByUsername(mockUserEntity.getUsername());
+                .findById(mockUserEntity.getId());
         Mockito.verify(tokenService, Mockito.times(1))
                 .generate(mockUserEntity.getClaims(), mockRefreshToken);
     }
@@ -227,55 +238,65 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenUsernameNotValid_thenThrowUsernameNotValidException() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJjYzU2M2M1OS1lNTRkLTRmZWYtODAzOS1kZDZhZmNmZWM2ZDgiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODU5MDMyMjcsImV4cCI6MTY4NTk4OTYyNywidXNlcm5hbWUiOiIyMzIxODAifQ.ut7tGIFy0T6q
-                cbl_qJk5SPqL2AQn6qTvSkhy5Fuh4f8Matg95deWDDcqJELeO9lZQ8Lbvltw7UVS8-1olgWpgO6OBl0Npd6FXNx7s_WEX8RuBVAsBo
-                itJlbX6T1sDm-pFO8O_tSTi9JzpJqpFq0ZOBKDBWk9r0ykKngeJzjgx33dA3t-9dv_eUeMqx8C8Ru6ZsTvOuO2BIWQpAhjiAXmDUNN
-                8ETrBV1lw1rwOgfeUVqcLlWzCXb7e7BDDIEzrqqf0nO0q8vmjv8k0rMrth7iXhL6UADMcptcKaWq7qRui6mvk_sE1pY5Wqs8M4kQxY
-                tFi6OdrUfXYh8jN78vKHf2OQ
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI4YjNmMThmZS05NDE4LTQ5NTItYjFkZi03MThkMjgwNzBiNTUiL
+                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTEwMjIsImV4cCI6MTY4NjUxODIyMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
+                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJyb2xlcyI6WyJWT0xVTlRFRVIiXSwidXNlc
+                lR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiJjNGI0ZTRkYi01NjQxLTQxZjctODI
+                yMi1hNzZkZWIxYzA2NWMiLCJ1c2VybmFtZSI6IjIzMjE4MCJ9.cUXG7s675JpBYVh0FmPKCBd8xdD4OCZV9cW6r6rw7oKgEQGs6BNs
+                Kc5awQcvCUr9R-v4oqC72pZCAZDmRnrjrTye2SxGImJw17xe9gUZiFyqX0DIFLf94fY5P8v-V3qfJW4A_ffwubvjcJg5aFWAZOqleP
+                fj-pI4UECi1UAygLjz-ZOzxHYWolJXS0QfhWwwUJ0JOSc_3F00-L13mWzYi_NtHF9Y0sjk90iQBUTY0VLVs5JEaDHwvDh92Xidmqbo
+                I6mw3G_RJqSyVBsCCpqBx09A4LHhv1u84HBgeh4MjdXDR5GDXS6sEMVLOGqlr7FVXWSD6apUoJZlQf1UrWyrQg
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.ACTIVE)
                 .build();
 
-        Claims mockClaims = AysTokenBuilder.getValidClaims(mockUserEntity.getUsername());
+        Claims mockClaims = AysTokenBuilder.getValidClaims(
+                mockUserEntity.getId(),
+                mockUserEntity.getUsername()
+        );
 
         // When
         Mockito.when(tokenService.getClaims(mockRefreshToken))
                 .thenReturn(mockClaims);
 
-        Mockito.when(userRepository.findByUsername(mockUserEntity.getUsername()))
+        Mockito.when(userRepository.findById(mockUserEntity.getId()))
                 .thenReturn(Optional.empty());
 
         // Then
         Assertions.assertThrows(
-                UsernameNotValidException.class,
+                UserIdNotValidException.class,
                 () -> userAuthService.refreshAccessToken(mockRefreshToken)
         );
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .getClaims(mockRefreshToken);
         Mockito.verify(userRepository, Mockito.times(1))
-                .findByUsername(mockUserEntity.getUsername());
+                .findById(mockUserEntity.getId());
     }
 
     @Test
     void givenValidRefreshToken_whenUserNotActive_thenThrowUserNotActiveException() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJjYzU2M2M1OS1lNTRkLTRmZWYtODAzOS1kZDZhZmNmZWM2ZDgiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODU5MDMyMjcsImV4cCI6MTY4NTk4OTYyNywidXNlcm5hbWUiOiIyMzIxODAifQ.ut7tGIFy0T6q
-                cbl_qJk5SPqL2AQn6qTvSkhy5Fuh4f8Matg95deWDDcqJELeO9lZQ8Lbvltw7UVS8-1olgWpgO6OBl0Npd6FXNx7s_WEX8RuBVAsBo
-                itJlbX6T1sDm-pFO8O_tSTi9JzpJqpFq0ZOBKDBWk9r0ykKngeJzjgx33dA3t-9dv_eUeMqx8C8Ru6ZsTvOuO2BIWQpAhjiAXmDUNN
-                8ETrBV1lw1rwOgfeUVqcLlWzCXb7e7BDDIEzrqqf0nO0q8vmjv8k0rMrth7iXhL6UADMcptcKaWq7qRui6mvk_sE1pY5Wqs8M4kQxY
-                tFi6OdrUfXYh8jN78vKHf2OQ
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI4YjNmMThmZS05NDE4LTQ5NTItYjFkZi03MThkMjgwNzBiNTUiL
+                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTEwMjIsImV4cCI6MTY4NjUxODIyMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
+                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJyb2xlcyI6WyJWT0xVTlRFRVIiXSwidXNlc
+                lR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiJjNGI0ZTRkYi01NjQxLTQxZjctODI
+                yMi1hNzZkZWIxYzA2NWMiLCJ1c2VybmFtZSI6IjIzMjE4MCJ9.cUXG7s675JpBYVh0FmPKCBd8xdD4OCZV9cW6r6rw7oKgEQGs6BNs
+                Kc5awQcvCUr9R-v4oqC72pZCAZDmRnrjrTye2SxGImJw17xe9gUZiFyqX0DIFLf94fY5P8v-V3qfJW4A_ffwubvjcJg5aFWAZOqleP
+                fj-pI4UECi1UAygLjz-ZOzxHYWolJXS0QfhWwwUJ0JOSc_3F00-L13mWzYi_NtHF9Y0sjk90iQBUTY0VLVs5JEaDHwvDh92Xidmqbo
+                I6mw3G_RJqSyVBsCCpqBx09A4LHhv1u84HBgeh4MjdXDR5GDXS6sEMVLOGqlr7FVXWSD6apUoJZlQf1UrWyrQg
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.PASSIVE).build();
 
-        Claims mockClaims = AysTokenBuilder.getValidClaims(mockUserEntity.getUsername());
+        Claims mockClaims = AysTokenBuilder.getValidClaims(
+                mockUserEntity.getId(),
+                mockUserEntity.getUsername()
+        );
 
         // When
         Mockito.doNothing().when(tokenService)
@@ -284,7 +305,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.when(tokenService.getClaims(mockRefreshToken))
                 .thenReturn(mockClaims);
 
-        Mockito.when(userRepository.findByUsername(mockUserEntity.getUsername()))
+        Mockito.when(userRepository.findById(mockUserEntity.getId()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         // Then
@@ -298,7 +319,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(tokenService, Mockito.times(1))
                 .getClaims(mockRefreshToken);
         Mockito.verify(userRepository, Mockito.times(1))
-                .findByUsername(mockUserEntity.getUsername());
+                .findById(mockUserEntity.getId());
     }
 
     @Test
@@ -308,11 +329,17 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .withStatus(AdminUserStatus.ACTIVE).build();
 
         String mockAccessToken = mockUserToken.getAccessToken();
-        Claims mockAccessTokenClaims = AysTokenBuilder.getValidClaims(mockAdminUserEntity.getUsername());
+        Claims mockAccessTokenClaims = AysTokenBuilder.getValidClaims(
+                mockAdminUserEntity.getId(),
+                mockAdminUserEntity.getUsername()
+        );
         String mockAccessTokenId = mockAccessTokenClaims.getId();
 
         String mockRefreshToken = mockUserToken.getRefreshToken();
-        Claims mockRefreshTokenClaims = AysTokenBuilder.getValidClaims(mockAdminUserEntity.getUsername());
+        Claims mockRefreshTokenClaims = AysTokenBuilder.getValidClaims(
+                mockAdminUserEntity.getId(),
+                mockAdminUserEntity.getUsername()
+        );
         String mockRefreshTokenId = mockRefreshTokenClaims.getId();
 
         // When
@@ -387,7 +414,10 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .withStatus(AdminUserStatus.ACTIVE).build();
 
         String mockRefreshToken = mockUserToken.getRefreshToken();
-        Claims mockRefreshTokenClaims = AysTokenBuilder.getValidClaims(mockAdminUserEntity.getUsername());
+        Claims mockRefreshTokenClaims = AysTokenBuilder.getValidClaims(
+                mockAdminUserEntity.getId(),
+                mockAdminUserEntity.getUsername()
+        );
         String mockRefreshTokenId = mockRefreshTokenClaims.getId();
 
         // When

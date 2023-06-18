@@ -78,9 +78,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private AysPage<AdminUser> getAdminUsersFromDatabase(final AdminUserListRequest listRequest) {
 
         final Map<String, Object> filter = Map.of("institutionId", identity.getInstitutionId());
-        final Specification<AdminUserEntity> specification = AysSpecification.<AdminUserEntity>builder()
-                .and(filter)
-                .build();
+        final Specification<AdminUserEntity> specification = AysSpecification.<AdminUserEntity>builder().and(filter);
 
         final Page<AdminUserEntity> adminUserEntitiesByInstitution = adminUserRepository
                 .findAll(specification, listRequest.toPageable());
