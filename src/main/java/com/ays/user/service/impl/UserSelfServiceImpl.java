@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class UserSelfServiceImpl implements UserSelfService {
+class UserSelfServiceImpl implements UserSelfService {
 
     private final UserRepository userRepository;
 
