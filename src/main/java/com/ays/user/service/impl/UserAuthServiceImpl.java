@@ -19,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-/**
- * UserAuthServiceImpl is an implementation of the {@link UserAuthService} interface.
- * It provides methods for user authentication and token management.
- */
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -36,13 +33,7 @@ class UserAuthServiceImpl implements UserAuthService {
 
     private final AysIdentity identity;
 
-    /**
-     * Authenticates a user based on the provided login request.
-     *
-     * @param loginRequest the request object containing login credentials
-     * @return an access token for the authenticated user
-     * @throws PasswordNotValidException if the provided password is not valid
-     */
+
     @Override
     public AysToken authenticate(AysLoginRequest loginRequest) {
 
@@ -56,12 +47,6 @@ class UserAuthServiceImpl implements UserAuthService {
 
     }
 
-    /**
-     * Generates a new access token based on the provided refresh token.
-     *
-     * @param refreshToken the refresh token used for generating a new access token
-     * @return a new access token
-     */
     public AysToken refreshAccessToken(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
@@ -74,14 +59,6 @@ class UserAuthServiceImpl implements UserAuthService {
         return tokenService.generate(userEntity.getClaims(), refreshToken);
     }
 
-    /**
-     * Finds a user entity based on the provided username.
-     *
-     * @param username the username of the user to find
-     * @return the user entity
-     * @throws UsernameNotValidException if a user with the given username is not found
-     * @throws UserNotActiveException    if the user is not active
-     */
     private UserEntity findUser(String username) {
         final UserEntity userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotValidException(username));
@@ -93,13 +70,6 @@ class UserAuthServiceImpl implements UserAuthService {
         return userEntity;
     }
 
-    /**
-     * Invalidates the access token and refresh token associated with the specified refresh token.
-     * It verifies and validates the refresh token first before proceeding with invalidation.
-     * If either the access token or refresh token is already marked as invalid, a TokenAlreadyInvalidatedException is thrown.
-     *
-     * @param refreshToken the refresh token used to invalidate the associated access token and refresh token
-     */
     @Override
     public void invalidateTokens(final String refreshToken) {
 
