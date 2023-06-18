@@ -19,13 +19,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
 class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
+    private static final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
+
 
     public AysPage<User> getAllUsers(final UserListRequest listRequest) {
         Page<UserEntity> userEntities = userRepository.findAll(listRequest.toPageable());
@@ -36,6 +38,7 @@ class UserServiceImpl implements UserService {
         );
     }
 
+
     @Override
     public User getUserById(final String id) {
         final UserEntity userEntity = userRepository.findById(id)
@@ -43,6 +46,7 @@ class UserServiceImpl implements UserService {
 
         return userEntityToUserMapper.map(userEntity);
     }
+
 
     @Override
     public void updateUser(final String id, final UserUpdateRequest updateRequest) {
@@ -62,6 +66,7 @@ class UserServiceImpl implements UserService {
         userEntity.updateUser(updateRequest);
         userRepository.save(userEntity);
     }
+
 
     @Override
     public void deleteUser(final String id) {

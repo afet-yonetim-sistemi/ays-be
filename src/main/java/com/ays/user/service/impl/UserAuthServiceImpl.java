@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -32,6 +33,7 @@ class UserAuthServiceImpl implements UserAuthService {
 
     private final AysIdentity identity;
 
+
     @Override
     public AysToken authenticate(AysLoginRequest loginRequest) {
 
@@ -44,6 +46,7 @@ class UserAuthServiceImpl implements UserAuthService {
         return tokenService.generate(userEntity.getClaims());
 
     }
+
 
     public AysToken refreshAccessToken(final String refreshToken) {
 
@@ -69,13 +72,7 @@ class UserAuthServiceImpl implements UserAuthService {
         return userEntity;
     }
 
-    /**
-     * Invalidates the access token and refresh token associated with the specified refresh token.
-     * It verifies and validates the refresh token first before proceeding with invalidation.
-     * If either the access token or refresh token is already marked as invalid, a TokenAlreadyInvalidatedException is thrown.
-     *
-     * @param refreshToken the refresh token used to invalidate the associated access token and refresh token
-     */
+
     @Override
     public void invalidateTokens(final String refreshToken) {
 

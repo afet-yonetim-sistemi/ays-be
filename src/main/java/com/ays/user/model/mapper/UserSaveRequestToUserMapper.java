@@ -7,6 +7,7 @@ import com.ays.user.model.dto.request.UserSaveRequest;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -45,6 +46,7 @@ public interface UserSaveRequestToUserMapper extends BaseMapper<UserSaveRequest,
                 .lineNumber(saveRequest.getPhoneNumber().getLineNumber())
                 .role(UserRole.VOLUNTEER)
                 .status(UserStatus.ACTIVE)
+                .supportStatus(UserSupportStatus.IDLE)
                 .build();
     }
 

@@ -8,6 +8,7 @@ import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.institution.model.entity.InstitutionEntityBuilder;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.ACTIVE)
+                .withUserSupportStatus(UserSupportStatus.IDLE)
                 .withInstitutionId(institutionEntity.getId())
                 .withInstitution(institutionEntity);
     }
@@ -62,6 +64,11 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
 
     public UserEntityBuilder withStatus(UserStatus status) {
         data.setStatus(status);
+        return this;
+    }
+
+    public UserEntityBuilder withUserSupportStatus(UserSupportStatus userSupportStatus) {
+        data.setSupportStatus(userSupportStatus);
         return this;
     }
 

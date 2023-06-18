@@ -15,6 +15,7 @@ public enum AysTokenClaims {
     TYPE("typ"),
     SUBJECT("sub"),
     ROLES("roles"),
+    USER_ID("userId"),
     USERNAME("username"),
     USER_TYPE("userType"),
     USER_FIRST_NAME("userFirstName"),
