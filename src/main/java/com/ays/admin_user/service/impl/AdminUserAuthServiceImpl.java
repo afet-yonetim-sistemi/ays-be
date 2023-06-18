@@ -103,7 +103,6 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
         }
     }
 
-
     /**
      * Invalidates the access token and refresh token associated with the specified refresh token.
      * It verifies and validates the refresh token first before proceeding with invalidation.
