@@ -19,7 +19,7 @@ Framework :
         * Spring Cache
 
 Databases :
-* MYSQL
+* MySQL
 * H2 Database
 
 Technologies :
@@ -74,19 +74,21 @@ http://localhost:9790/public/api/swagger-ui.html
 http://localhost:9790/public/api/docs
 ```
 
-## Running as Docker Mysql container
-Before running the project, you need to run the following command to start the mysql container:
+## Running as Docker MySQL container
+
+Before running the project, you need to run the following command to start the MySQL container:
 
 ```
 docker compose up -d --build mysql
 ```
 
-If you want to recreate the mysql container, you can run the following command:
+If you want to recreate the MySQL container, you can run the following command:
+
 ```
 docker compose up --force-recreate -d --build mysql
 ```
 
-If you want to stop the mysql container, you can run the following command:
+If you want to stop the MySQL container, you can run the following command:
 ```
 docker compose down -v mysql
 ```
@@ -109,17 +111,6 @@ If you want to stop the project container, you can run the following command:
 docker compose down -v 
 ```
 
-## Running with Docker Compose
-
-You need to have .env.local file in the same directory with docker-compose.yml which will define
-env variables used by the compose command - this file should not be committed:
-
-```.env
-SPRING_PROFILES_ACTIVE=development
-AYS_DB_USERNAME=ays
-AYS_DB_PASSWORD=ayspass
-AYS_DB_URL=jdbc:mysql://localhost:3306/ays
-```
 
 ## Running the app with Kubernetes
 

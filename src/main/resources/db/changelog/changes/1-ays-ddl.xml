@@ -177,6 +177,9 @@
             <column name="STATUS" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="SUPPORT_STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
                 <constraints nullable="false"/>
             </column>
@@ -193,7 +196,14 @@
 
         ALTER TABLE `AYS_USER`
             ADD CONSTRAINT `C__AYS_USER__ROLE` CHECK (`ROLE` IN ('VOLUNTEER'));
+
+        ALTER TABLE `AYS_USER`
+            ADD CONSTRAINT `C__AYS_USER__SUPPORT_STATUS` CHECK (`SUPPORT_STATUS` IN
+                                                                ('IDLE', 'READY', 'BUSY', 'MALFUNCTION', 'ACCIDENT',
+                                                                 'OFFLINE', 'ON_ROAD', 'RETURN'));
         </sql>
+
+
         <!-- =============== -->
         <!-- DDL of AYS_USER -->
         <!-- =============== -->

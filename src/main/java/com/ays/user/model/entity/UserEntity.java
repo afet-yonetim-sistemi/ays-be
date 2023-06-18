@@ -7,6 +7,7 @@ import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.user.model.dto.request.UserUpdateRequest;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -67,6 +68,10 @@ public class UserEntity extends BaseEntity {
     @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private InstitutionEntity institution;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "SUPPORT_STATUS")
+    private UserSupportStatus supportStatus;
+
     public boolean isActive() {
         return UserStatus.ACTIVE.equals(this.status);
     }
@@ -98,5 +103,9 @@ public class UserEntity extends BaseEntity {
     public void updateUser(UserUpdateRequest updateRequest) {
         this.role = updateRequest.getRole();
         this.status = updateRequest.getStatus();
+    }
+
+    public void updateSupportStatus(UserSupportStatus supportStatus) {
+        this.supportStatus = supportStatus;
     }
 }

@@ -37,7 +37,7 @@ class UserAuthServiceImpl implements UserAuthService {
     private final AysIdentity identity;
 
     /**
-     * Authenticates an user based on the given {@link AysLoginRequest} object. First, it retrieves the
+     * Authenticates a user based on the given {@link AysLoginRequest} object. First, it retrieves the
      * {@link UserEntity} associated with the provided username. Then, it checks if the user is active and
      * verified, and if the provided password matches the one stored in the database. If successful, an access
      * token is generated using the {@link AysTokenService} and returned.
@@ -87,6 +87,7 @@ class UserAuthServiceImpl implements UserAuthService {
 
         final UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new UserIdNotValidException(userId));
+        
         this.validateUserStatus(userEntity);
 
         return tokenService.generate(userEntity.getClaims(), refreshToken);

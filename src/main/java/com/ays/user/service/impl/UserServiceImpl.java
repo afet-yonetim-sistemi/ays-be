@@ -34,7 +34,8 @@ class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AysIdentity identity;
 
-    private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
+    private static final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
+
 
     /**
      * Retrieves a page of users based on the provided UserListRequest.
