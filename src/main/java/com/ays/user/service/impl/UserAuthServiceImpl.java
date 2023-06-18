@@ -47,6 +47,7 @@ class UserAuthServiceImpl implements UserAuthService {
 
     }
 
+
     public AysToken refreshAccessToken(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
@@ -59,6 +60,7 @@ class UserAuthServiceImpl implements UserAuthService {
         return tokenService.generate(userEntity.getClaims(), refreshToken);
     }
 
+
     private UserEntity findUser(String username) {
         final UserEntity userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotValidException(username));
@@ -69,6 +71,7 @@ class UserAuthServiceImpl implements UserAuthService {
 
         return userEntity;
     }
+
 
     @Override
     public void invalidateTokens(final String refreshToken) {
