@@ -11,7 +11,6 @@ import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +43,7 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
      *
      * @param loginRequest the request object containing the username and password for authentication
      * @return an access and refresh tokens for the authenticated admin user
-     * @throws UsernameNotFoundException if an admin user with the provided username is not found
+     * @throws UserIdNotValidException   if an admin user with the provided userId is not valid
      * @throws UserNotVerifiedException  if the admin user is not verified
      * @throws UserNotActiveException    if the admin user is not active
      * @throws PasswordNotValidException if the provided password is not valid
@@ -72,7 +71,7 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
      *
      * @param refreshToken the refresh token used for generating a new access token
      * @return a new access token for the authenticated admin user
-     * @throws UsernameNotFoundException if an admin user with the provided username is not found
+     * @throws UserIdNotValidException   if an admin user with the provided userId is not found
      * @throws UserNotVerifiedException  if the admin user is not verified
      * @throws UserNotActiveException    if the admin user is not active
      * @throws PasswordNotValidException if the provided password is not valid
