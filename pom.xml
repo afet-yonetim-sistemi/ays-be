@@ -14,7 +14,7 @@
     <description>AYS Services</description>
     <groupId>com.ays</groupId>
     <artifactId>ays-be</artifactId>
-    <version>v1.0.0</version>
+    <version>1.0.0</version>
     <name>ays-be</name>
     <packaging>jar</packaging>
 
@@ -83,6 +83,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ays</groupId>
+            <artifactId>ays-be-encryption-utility</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <!-- =================== -->
         <!-- common dependencies -->
@@ -214,6 +220,13 @@
         <!-- test dependencies -->
         <!-- ================= -->
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>com.ays</id>
+            <url>https://maven.pkg.github.com/afet-yonetim-sistemi/ays-be-encryption-utility</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
