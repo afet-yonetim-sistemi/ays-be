@@ -1,6 +1,8 @@
 package com.ays.auth.util;
 
 import com.ays.auth.util.exception.KeyReadException;
+import com.ays.encryption.utility.AysPrivateKeyEncryptionUtil;
+import com.ays.encryption.utility.AysPublicKeyEncryptionUtil;
 import lombok.experimental.UtilityClass;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -19,14 +21,15 @@ import java.security.PublicKey;
 public class KeyConverter {
 
     /**
-     * Converts a private key in PEM format to a Java PrivateKey object.
+     * Converts an encrypted private key in PEM format to a Java PrivateKey object.
      *
-     * @param privateKeyPem the private key in PEM format.
+     * @param encryptedPrivateKeyPem the encrypted private key in PEM format.
      * @return the corresponding Java PrivateKey object.
      * @throws KeyReadException if an error occurs while parsing the key.
      */
-    public static PrivateKey convertPrivateKey(String privateKeyPem) {
-        final String formattedPrivateKeyPem = privateKeyPem.replace("             ", "\n");
+    public static PrivateKey convertPrivateKey(String encryptedPrivateKeyPem) {
+        final String decryptedPrivateKeyPem = AysPrivateKeyEncryptionUtil.decrypt(encryptedPrivateKeyPem);
+        final String formattedPrivateKeyPem = decryptedPrivateKeyPem.replace("             ", "\n");
         StringReader keyReader = new StringReader(formattedPrivateKeyPem);
         try {
             PrivateKeyInfo privateKeyInfo = PrivateKeyInfo
@@ -38,14 +41,15 @@ public class KeyConverter {
     }
 
     /**
-     * Converts a public key in PEM format to a Java PublicKey object.
+     * Converts an encrypted public key in PEM format to a Java PublicKey object.
      *
-     * @param publicKeyPem the public key in PEM format.
+     * @param encryptedPublicKeyPem the encrypted public key in PEM format.
      * @return the corresponding Java PublicKey object.
      * @throws KeyReadException if an error occurs while parsing the key.
      */
-    public static PublicKey convertPublicKey(String publicKeyPem) {
-        final String formattedPublicKeyPem = publicKeyPem.replace("             ", "\n");
+    public static PublicKey convertPublicKey(String encryptedPublicKeyPem) {
+        final String decryptedPublicKeyPem = AysPublicKeyEncryptionUtil.decrypt(encryptedPublicKeyPem);
+        final String formattedPublicKeyPem = decryptedPublicKeyPem.replace("             ", "\n");
         StringReader keyReader = new StringReader(formattedPublicKeyPem);
         try {
             SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo

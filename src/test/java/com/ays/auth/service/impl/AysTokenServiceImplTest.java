@@ -3,7 +3,7 @@ package com.ays.auth.service.impl;
 import com.ays.AbstractUnitTest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
-import com.ays.auth.config.AysTokenConfiguration;
+import com.ays.auth.config.AysTokenConfigurationParameter;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
@@ -41,7 +41,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     private AysTokenServiceImpl tokenService;
 
     @Mock
-    private AysTokenConfiguration tokenConfiguration;
+    private AysTokenConfigurationParameter tokenConfiguration;
 
     @Test
     void givenValidAdminUserClaims_whenTokensGenerated_thenReturnAysToken() {
