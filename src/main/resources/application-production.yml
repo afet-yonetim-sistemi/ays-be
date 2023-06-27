@@ -1,3 +1,0 @@
-#spring:
-#  liquibase:
-#    drop-first: true
