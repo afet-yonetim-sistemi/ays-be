@@ -1,7 +1,7 @@
 name: Maven Build
 
 on:
-  push:
+  pull:
     branches:
       - main
 
@@ -26,14 +26,3 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-        id: maven-build
-
-      - name: Deploy to server
-        if: steps.maven-build.success
-        env:
-          PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
-          HOSTNAME: ${{ secrets.HOSTNAME  }}
-          USER_NAME: ${{ secrets.USER_NAME  }}
-          PATH: ${{ secrets.BACKEND_PATH }}
-        run: |
-          bash ./build/deploy.sh
