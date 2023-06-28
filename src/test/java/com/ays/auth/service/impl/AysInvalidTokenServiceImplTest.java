@@ -42,7 +42,7 @@ class AysInvalidTokenServiceImplTest extends AbstractUnitTest {
         // Then
         invalidTokenService.invalidateTokens(mockTokenIds);
 
-        Mockito.verify(invalidTokenRepository, Mockito.times(5))
+        Mockito.verify(invalidTokenRepository, Mockito.times(1))
                 .saveAll(mockInvalidTokenEntities);
     }
 
