@@ -7,6 +7,7 @@ import com.ays.user.model.dto.request.UserSaveRequest;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -24,19 +25,19 @@ public interface UserSaveRequestToUserMapper extends BaseMapper<UserSaveRequest,
      * Maps an {@link UserSaveRequest} object to an {@link UserEntity} object for saving in the database.
      *
      * @param saveRequest     the {@link UserSaveRequest} object to be mapped.
-     * @param organizationId  the {@link String} object.
+     * @param institutionId   the {@link String} object.
      * @param username        the {@link String} object.
      * @param encodedPassword the {@link String} object.
      * @return the mapped {@link UserEntity} object.
      */
     default UserEntity mapForSaving(UserSaveRequest saveRequest,
-                                    String organizationId,
+                                    String institutionId,
                                     String username,
                                     String encodedPassword) {
 
         return UserEntity.builder()
                 .id(AysRandomUtil.generateUUID())
-                .organizationId(organizationId)
+                .institutionId(institutionId)
                 .username(username)
                 .password(encodedPassword)
                 .firstName(saveRequest.getFirstName())
@@ -45,6 +46,7 @@ public interface UserSaveRequestToUserMapper extends BaseMapper<UserSaveRequest,
                 .lineNumber(saveRequest.getPhoneNumber().getLineNumber())
                 .role(UserRole.VOLUNTEER)
                 .status(UserStatus.ACTIVE)
+                .supportStatus(UserSupportStatus.IDLE)
                 .build();
     }
 

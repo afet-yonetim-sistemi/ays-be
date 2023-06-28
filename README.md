@@ -19,7 +19,7 @@ Framework :
         * Spring Cache
 
 Databases :
-* MYSQL
+* MySQL
 * H2 Database
 
 Technologies :
@@ -74,41 +74,43 @@ http://localhost:9790/public/api/swagger-ui.html
 http://localhost:9790/public/api/docs
 ```
 
+## Running as Docker MySQL container
+
+Before running the project, you need to run the following command to start the MySQL container:
+
+```
+docker compose up -d --build mysql
+```
+
+If you want to recreate the MySQL container, you can run the following command:
+
+```
+docker compose up --force-recreate -d --build mysql
+```
+
+If you want to stop the MySQL container, you can run the following command:
+```
+docker compose down -v mysql
+```
+
 ## Running as Docker container
 
-After building the project, run below to build and tag the docker image.
+Before running the project, you need to run the following command to start the project container:
 
 ```
-docker build -t ays/ays-be .
+docker compose up -d --build
 ```
 
-For running the docker image, run the following command:
-
+If you want to recreate the project container, you can run the following command:
 ```
-docker run -p 9790:9790 ays/ays-be
-```
-
-## Running with Docker Compose
-
-You need to have .env.local file in the same directory with docker-compose.yml which will define
-env variables used by the compose command - this file should not be committed:
-
-```.env
-SPRING_PROFILES_ACTIVE=development
-AYS_DB_USERNAME=ays
-AYS_DB_PASSWORD=ayspass
-AYS_DB_URL=jdbc:mysql://localhost:3306/ays
+docker compose up --force-recreate -d --build 
 ```
 
+If you want to stop the project container, you can run the following command:
 ```
-docker compose --env-file .env up -d
+docker compose down -v 
 ```
 
-To terminate the containers:
-
-```
-docker compose --env-file .env.local down
-```
 
 ## Running the app with Kubernetes
 

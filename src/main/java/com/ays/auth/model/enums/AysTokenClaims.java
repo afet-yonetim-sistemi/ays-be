@@ -12,14 +12,15 @@ import lombok.RequiredArgsConstructor;
 public enum AysTokenClaims {
 
     JWT_ID("jti"),
-    TYPE("type"),
+    TYPE("typ"),
     SUBJECT("sub"),
     ROLES("roles"),
+    USER_ID("userId"),
     USERNAME("username"),
     USER_TYPE("userType"),
     USER_FIRST_NAME("userFirstName"),
     USER_LAST_NAME("userLastName"),
-    ORGANIZATION_ID("organizationId"),
+    INSTITUTION_ID("institutionId"),
     ISSUED_AT("iat"),
     EXPIRES_AT("exp"),
     ALGORITHM("alg");

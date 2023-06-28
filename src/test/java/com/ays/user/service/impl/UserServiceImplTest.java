@@ -1,6 +1,7 @@
 package com.ays.user.service.impl;
 
 import com.ays.AbstractUnitTest;
+import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
 import com.ays.common.util.AysRandomUtil;
@@ -26,6 +27,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +41,9 @@ class UserServiceImplTest extends AbstractUnitTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private AysIdentity identity;
 
 
     private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
@@ -53,8 +59,12 @@ class UserServiceImplTest extends AbstractUnitTest {
         List<User> mockUsers = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntities);
         AysPage<User> mockAysPageUsers = AysPage.of(mockPageUserEntities, mockUsers);
 
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+
         // When
-        Mockito.when(userRepository.findAll(mockUserListRequest.toPageable()))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+        Mockito.when(userRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageUserEntities);
 
         // Then
@@ -63,21 +73,27 @@ class UserServiceImplTest extends AbstractUnitTest {
         AysPageBuilder.assertEquals(mockAysPageUsers, aysPageUsers);
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findAll(mockUserListRequest.toPageable());
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 
     @Test
     void givenUserId_whenGetUser_thenReturnUser() {
         // Given
-        String mockUserId = AysRandomUtil.generateUUID();
+        String mockInstitutionId = AysRandomUtil.generateUUID();
 
         UserEntity mockUserEntity = new UserEntityBuilder()
-                .withId(mockUserId)
-                .build();
+                .withValidFields()
+                .withInstitutionId(mockInstitutionId).build();
+        String mockUserId = mockUserEntity.getId();
+
         User mockUser = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntity);
 
         // When
-        Mockito.when(userRepository.findById(mockUserId))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         // Then
@@ -86,16 +102,21 @@ class UserServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(mockUser.getFirstName(), user.getFirstName());
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
+                .findByIdAndInstitutionId(mockUserId, mockInstitutionId);
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 
     @Test
     void givenInvalidUserId_whenUserIsNotExistForGetting_thenThrowAysUserNotExistByIdException() {
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
+        String mockInstitutionId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(userRepository.findById(mockUserId))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         // Then
@@ -104,32 +125,41 @@ class UserServiceImplTest extends AbstractUnitTest {
                 () -> userService.getUserById(mockUserId)
         );
 
-        Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(Optional.empty());
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
-
 
     @Test
     void givenValidUserIdAndUserUpdateRequest_whenUserActive_thenUpdateUser() {
         // Given
-        String mockUserId = AysRandomUtil.generateUUID();
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.PASSIVE)
                 .build();
 
-        // When
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
-                .withId(mockUserId)
                 .withStatus(UserStatus.ACTIVE)
+                .withInstitutionId(mockInstitutionId)
                 .build();
-        Mockito.when(userRepository.findById(Mockito.anyString()))
+
+        String mockUserId = mockUserEntity.getId();
+
+        // When
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         UserEntity mockUserEntityToBeUpdated = new UserEntityBuilder()
                 .withValidFields()
                 .withId(mockUserId)
+                .withInstitutionId(mockInstitutionId)
                 .build();
         mockUserEntityToBeUpdated.updateUser(mockUpdateRequest);
         Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
@@ -142,14 +172,20 @@ class UserServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(mockUpdateRequest.getStatus(), mockUserEntity.getStatus());
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(Mockito.anyString());
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
         Mockito.verify(userRepository, Mockito.times(1))
                 .save(Mockito.any(UserEntity.class));
+        Mockito.verify(userRepository, Mockito.times(0))
+                .saveAndFlush(Mockito.any(UserEntity.class));
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 
     @Test
     void givenValidUserIdAndUserUpdateRequest_whenUserIsNotExistForSaving_thenThrowAysUserNotExistByIdException() {
         // Given
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+
         String mockUserId = AysRandomUtil.generateUUID();
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
                 .withRole(UserRole.VOLUNTEER)
@@ -157,7 +193,9 @@ class UserServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.when(userRepository.findById(mockUserId))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         // Then
@@ -167,26 +205,37 @@ class UserServiceImplTest extends AbstractUnitTest {
         );
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
+
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 
     @Test
     void givenValidUserIdAndUserUpdateRequest_whenUserAlreadyActive_thenThrowAysUserAlreadyActiveException() {
         // Given
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+
         String mockUserId = AysRandomUtil.generateUUID();
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.ACTIVE)
                 .build();
 
-
         // When
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
                 .withId(mockUserId)
                 .withStatus(UserStatus.ACTIVE)
+                .withInstitutionId(mockInstitutionId)
                 .build();
-        Mockito.when(userRepository.findById(mockUserId))
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         // Then
@@ -196,12 +245,16 @@ class UserServiceImplTest extends AbstractUnitTest {
         );
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 
     @Test
     void givenValidUserIdAndUserUpdateRequest_whenUserAlreadyPassive_thenThrowAysUserAlreadyPassiveException() {
         // Given
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+
         String mockUserId = AysRandomUtil.generateUUID();
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
                 .withRole(UserRole.VOLUNTEER)
@@ -212,10 +265,13 @@ class UserServiceImplTest extends AbstractUnitTest {
                 .withId(mockUserId)
                 .withStatus(UserStatus.PASSIVE)
                 .withRole(UserRole.VOLUNTEER)
+                .withInstitutionId(mockInstitutionId)
                 .build();
 
         // When
-        Mockito.when(userRepository.findById(mockUserId))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         // Then
@@ -225,26 +281,34 @@ class UserServiceImplTest extends AbstractUnitTest {
         );
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 
     @Test
     void givenValidUserId_whenUserIsExistAndNotDeleted_thenDeleteUser() {
         // Given
+        String mockInstitutionId = AysRandomUtil.generateUUID();
         String mockUserId = AysRandomUtil.generateUUID();
 
         // When
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
                 .withId(mockUserId)
                 .withStatus(UserStatus.ACTIVE)
+                .withInstitutionId(mockInstitutionId)
                 .build();
-        Mockito.when(userRepository.findById(Mockito.anyString()))
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         UserEntity mockUserEntityToBeDeleted = new UserEntityBuilder()
                 .withValidFields()
                 .withId(mockUserId)
+                .withInstitutionId(mockInstitutionId)
                 .build();
         mockUserEntityToBeDeleted.deleteUser();
         Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
@@ -256,23 +320,29 @@ class UserServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(UserStatus.DELETED, mockUserEntity.getStatus());
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(Mockito.anyString());
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
         Mockito.verify(userRepository, Mockito.times(1))
                 .save(Mockito.any(UserEntity.class));
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 
     @Test
     void givenValidUserId_whenUserAlreadyDeleted_thenThrowAysUserAlreadyDeletedException() {
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
+        String mockInstitutionId = AysRandomUtil.generateUUID();
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withId(mockUserId)
                 .withStatus(UserStatus.DELETED)
+                .withInstitutionId(mockInstitutionId)
                 .build();
 
         // When
-        Mockito.when(userRepository.findById(mockUserId))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         // Then
@@ -282,16 +352,21 @@ class UserServiceImplTest extends AbstractUnitTest {
         );
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 
     @Test
     void givenInvalidUserId_whenUserIsNotExistForDeleting_thenThrowAysUserNotExistByIdException() {
         // Given
+        String mockInstitutionId = AysRandomUtil.generateUUID();
         String mockUserId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(userRepository.findById(mockUserId))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         // Then
@@ -301,6 +376,8 @@ class UserServiceImplTest extends AbstractUnitTest {
         );
 
         Mockito.verify(userRepository, Mockito.times(1))
-                .findById(mockUserId);
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 }

@@ -4,7 +4,7 @@ import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.entity.BaseEntity;
-import com.ays.organization.model.entity.OrganizationEntity;
+import com.ays.institution.model.entity.InstitutionEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -58,12 +58,12 @@ public class AdminUserEntity extends BaseEntity {
     @Column(name = "LINE_NUMBER")
     private Long lineNumber;
 
-    @Column(name = "ORGANIZATION_ID")
-    private String organizationId;
+    @Column(name = "INSTITUTION_ID")
+    private String institutionId;
 
     @OneToOne
-    @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private OrganizationEntity organization;
+    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private InstitutionEntity institution;
 
     public boolean isActive() {
         return AdminUserStatus.ACTIVE.equals(this.status);
@@ -73,13 +73,24 @@ public class AdminUserEntity extends BaseEntity {
         return AdminUserStatus.NOT_VERIFIED.equals(this.status);
     }
 
+    public boolean isSuperAdmin() {
+        return this.institutionId == null;
+    }
+
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
+
+        if (this.isSuperAdmin()) {
+            claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.SUPER_ADMIN);
+        } else {
+            claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
+            claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
+        }
+
+        claims.put(AysTokenClaims.USER_ID.getValue(), this.id);
         claims.put(AysTokenClaims.USERNAME.getValue(), this.username);
-        claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
         claims.put(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claims.put(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        claims.put(AysTokenClaims.ORGANIZATION_ID.getValue(), this.organizationId);
         return claims;
     }
 

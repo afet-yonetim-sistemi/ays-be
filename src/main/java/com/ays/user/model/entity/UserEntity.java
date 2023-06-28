@@ -3,10 +3,11 @@ package com.ays.user.model.entity;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.entity.BaseEntity;
-import com.ays.organization.model.entity.OrganizationEntity;
+import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.user.model.dto.request.UserUpdateRequest;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,8 +35,8 @@ public class UserEntity extends BaseEntity {
     @Column(name = "ID")
     private String id;
 
-    @Column(name = "ORGANIZATION_ID")
-    private String organizationId;
+    @Column(name = "INSTITUTION_ID")
+    private String institutionId;
 
     @Column(name = "USERNAME")
     private String username;
@@ -64,11 +65,19 @@ public class UserEntity extends BaseEntity {
     private Long lineNumber;
 
     @OneToOne
-    @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private OrganizationEntity organization;
+    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private InstitutionEntity institution;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "SUPPORT_STATUS")
+    private UserSupportStatus supportStatus;
 
     public boolean isActive() {
         return UserStatus.ACTIVE.equals(this.status);
+    }
+
+    public boolean isPassive() {
+        return UserStatus.PASSIVE.equals(this.status);
     }
 
     public boolean isDeleted() {
@@ -81,17 +90,22 @@ public class UserEntity extends BaseEntity {
 
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
+        claims.put(AysTokenClaims.USER_ID.getValue(), this.id);
         claims.put(AysTokenClaims.USERNAME.getValue(), this.username);
         claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.USER);
         claims.put(AysTokenClaims.ROLES.getValue(), List.of(this.role));
         claims.put(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claims.put(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        claims.put(AysTokenClaims.ORGANIZATION_ID.getValue(), this.organizationId);
+        claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
         return claims;
     }
 
     public void updateUser(UserUpdateRequest updateRequest) {
         this.role = updateRequest.getRole();
         this.status = updateRequest.getStatus();
+    }
+
+    public void updateSupportStatus(UserSupportStatus supportStatus) {
+        this.supportStatus = supportStatus;
     }
 }

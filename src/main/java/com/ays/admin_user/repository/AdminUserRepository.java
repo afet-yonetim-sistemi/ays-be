@@ -2,13 +2,15 @@ package com.ays.admin_user.repository;
 
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
 /**
  * Repository interface for performing CRUD operations on {@link AdminUserEntity} in the database.
  */
-public interface AdminUserRepository extends JpaRepository<AdminUserEntity, String> {
+public interface AdminUserRepository extends JpaRepository<AdminUserEntity, String>,
+        JpaSpecificationExecutor<AdminUserEntity> {
 
     /**
      * Finds an {@link AdminUserEntity} by username.

@@ -16,8 +16,8 @@ import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNot
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.util.AysRandomUtil;
-import com.ays.organization.repository.OrganizationRepository;
-import com.ays.organization.util.exception.AysOrganizationNotExistException;
+import com.ays.institution.repository.InstitutionRepository;
+import com.ays.institution.util.exception.AysInstitutionNotExistException;
 import com.ays.util.AysTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     private AdminUserRegisterVerificationRepository adminUserRegisterVerificationRepository;
 
     @Mock
-    private OrganizationRepository organizationRepository;
+    private InstitutionRepository institutionRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -52,7 +52,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -61,7 +61,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 
-        Mockito.when(organizationRepository.existsById(Mockito.anyString()))
+        Mockito.when(institutionRepository.existsById(Mockito.anyString()))
                 .thenReturn(true);
 
         Mockito.when(adminUserRepository.existsByEmail((Mockito.anyString())))
@@ -95,7 +95,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
-        Mockito.verify(organizationRepository, Mockito.times(1))
+        Mockito.verify(institutionRepository, Mockito.times(1))
                 .existsById(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .existsByEmail(Mockito.anyString());
@@ -131,30 +131,30 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenInvalidOrganizationIdFromAdminUserRegisterRequest_whenOrganizationNotExist_thenThrowAysOrganizationNotExistException() {
+    void givenInvalidInstitutionIdFromAdminUserRegisterRequest_whenInstitutionNotExist_thenThrowAysInstitutionNotExistException() {
 
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId("Invalid").build();
+                .withInstitutionId("Invalid").build();
 
         // When
         AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder().build();
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 
-        Mockito.when(organizationRepository.existsById(Mockito.anyString()))
+        Mockito.when(institutionRepository.existsById(Mockito.anyString()))
                 .thenReturn(false);
 
         // Then
         Assertions.assertThrows(
-                AysOrganizationNotExistException.class,
+                AysInstitutionNotExistException.class,
                 () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
         );
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
-        Mockito.verify(organizationRepository, Mockito.times(1))
+        Mockito.verify(institutionRepository, Mockito.times(1))
                 .existsById(Mockito.anyString());
     }
 
@@ -164,7 +164,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
         // When
@@ -172,7 +172,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 
-        Mockito.when(organizationRepository.existsById(Mockito.anyString()))
+        Mockito.when(institutionRepository.existsById(Mockito.anyString()))
                 .thenReturn(true);
 
         Mockito.when(adminUserRepository.existsByEmail((Mockito.anyString())))
@@ -186,7 +186,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
-        Mockito.verify(organizationRepository, Mockito.times(1))
+        Mockito.verify(institutionRepository, Mockito.times(1))
                 .existsById(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .existsByEmail(Mockito.anyString());
@@ -198,7 +198,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Given
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
         // When
@@ -206,7 +206,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 
-        Mockito.when(organizationRepository.existsById(Mockito.anyString()))
+        Mockito.when(institutionRepository.existsById(Mockito.anyString()))
                 .thenReturn(true);
 
         Mockito.when(adminUserRepository.existsByEmail((Mockito.anyString())))
@@ -223,7 +223,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
-        Mockito.verify(organizationRepository, Mockito.times(1))
+        Mockito.verify(institutionRepository, Mockito.times(1))
                 .existsById(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .existsByEmail(Mockito.anyString());
@@ -238,7 +238,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withVerificationId(AysRandomUtil.generateUUID())
-                .withOrganizationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -247,7 +247,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 
-        Mockito.when(organizationRepository.existsById(Mockito.anyString()))
+        Mockito.when(institutionRepository.existsById(Mockito.anyString()))
                 .thenReturn(true);
 
         Mockito.when(adminUserRepository.existsByEmail((Mockito.anyString())))
@@ -270,11 +270,13 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
-        Mockito.verify(organizationRepository, Mockito.times(1))
+        Mockito.verify(institutionRepository, Mockito.times(1))
                 .existsById(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .existsByEmail(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .existsByUsername(Mockito.anyString());
     }
+
 }
+

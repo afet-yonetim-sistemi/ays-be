@@ -2,6 +2,7 @@ package com.ays.user.controller;
 
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.request.AysLoginRequest;
+import com.ays.auth.model.dto.request.AysTokenInvalidateRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.response.AysTokenResponse;
 import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
@@ -9,6 +10,7 @@ import com.ays.common.model.dto.response.AysResponse;
 import com.ays.user.service.UserAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +59,20 @@ class UserAuthController {
         final AysTokenResponse aysTokenResponse = aysTokenToAysTokenResponseMapper.map(aysToken);
 
         return AysResponse.successOf(aysTokenResponse);
+    }
+
+    /**
+     * Endpoint for invalidating a token. Only users with the 'USER' authority are allowed to access this endpoint.
+     * It invalidates the access token and refresh token associated with the provided refresh token.
+     *
+     * @param invalidateRequest the request object containing the refresh token to invalidate
+     * @return AysResponse with a success message and no data
+     */
+    @PostMapping("/token/invalidate")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
+        userAuthService.invalidateTokens(invalidateRequest.getRefreshToken());
+        return AysResponse.SUCCESS;
     }
 
 }

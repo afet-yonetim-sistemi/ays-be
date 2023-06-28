@@ -54,7 +54,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(accessTokenExpiresAt)
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .addClaims(claims)
                 .compact();
 
@@ -66,8 +66,8 @@ class AysTokenServiceImpl implements AysTokenService {
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(refreshTokenExpiresAt)
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .claim(AysTokenClaims.USERNAME.getValue(), claims.get(AysTokenClaims.USERNAME.getValue()))
+                .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
+                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .compact();
 
         return AysToken.builder()
@@ -96,7 +96,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .setIssuer(tokenConfiguration.getIssuer())
                 .setIssuedAt(accessTokenIssuedAt)
                 .setExpiration(accessTokenExpiresAt)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
                 .addClaims(claims)
                 .compact();
@@ -172,12 +172,11 @@ class AysTokenServiceImpl implements AysTokenService {
         final AysUserType userType = AysUserType.valueOf(claims.get(AysTokenClaims.USER_TYPE.getValue()).toString());
 
         final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        switch (userType) {
-            case ADMIN -> authorities.add(new SimpleGrantedAuthority("ADMIN"));
-            case USER -> {
-                final List<String> roles = AysListUtil.to(claims.get(AysTokenClaims.ROLES.getValue()), String.class);
-                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-            }
+        authorities.add(new SimpleGrantedAuthority(userType.name()));
+
+        if (userType == AysUserType.USER) {
+            final List<String> roles = AysListUtil.to(claims.get(AysTokenClaims.ROLES.getValue()), String.class);
+            roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
         }
 
         return UsernamePasswordAuthenticationToken.authenticated(jwt, null, authorities);

@@ -122,10 +122,10 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
-                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .httpStatus(HttpStatus.FORBIDDEN)
                 .header(AysError.Header.AUTH_ERROR.getName())
                 .build();
-        return new ResponseEntity<>(aysError, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(aysError, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(SQLException.class)
@@ -138,5 +138,4 @@ class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }

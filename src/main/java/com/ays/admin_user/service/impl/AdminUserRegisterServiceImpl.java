@@ -13,19 +13,20 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberE
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterVerificationCodeNotValidException;
 import com.ays.common.model.AysPhoneNumber;
-import com.ays.organization.repository.OrganizationRepository;
-import com.ays.organization.util.exception.AysOrganizationNotExistException;
+import com.ays.institution.repository.InstitutionRepository;
+import com.ays.institution.util.exception.AysInstitutionNotExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This service class implements the {@link AdminUserAuthService} interface and provides methods for
  * registering and authenticating admin users. It uses the {@link AdminUserRepository} and
  * {@link AdminUserRegisterVerificationRepository} for persistence operations and the
  * {@link AdminUserRegisterRequestToAdminUserEntityMapper} for mapping the request to entity objects.
- * It also uses the {@link OrganizationRepository} to check if the requested organization exists.
+ * It also uses the {@link InstitutionRepository} to check if the requested institution exists.
  * Authentication is handled using the {@link PasswordEncoder}
  */
 @Slf4j
@@ -37,25 +38,26 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
     private final AdminUserRegisterVerificationRepository adminUserRegisterVerificationRepository;
     private static final AdminUserRegisterRequestToAdminUserEntityMapper adminUserRegisterRequestToAdminUserEntityMapper = AdminUserRegisterRequestToAdminUserEntityMapper.initialize();
 
-    private final OrganizationRepository organizationRepository;
+    private final InstitutionRepository institutionRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     /**
      * Registers a new admin user based on the given {@link AdminUserRegisterRequest} object. First, it retrieves
      * the {@link AdminUserRegisterVerificationEntity} associated with the verificationId provided in the request.
-     * Then, it checks if the requested organization exists, if the email and username are unique, and finally
+     * Then, it checks if the requested institution exists, if the email and username are unique, and finally
      * maps the request to an {@link AdminUserEntity} and saves it to the database. If successful, the verification
      * entity is completed and saved to the database.
      *
      * @param registerRequest the request object containing the information for the new admin user
      * @throws AysAdminUserRegisterVerificationCodeNotValidException if the verificationId provided is not valid
-     * @throws AysOrganizationNotExistException                      if the requested organization does not exist
+     * @throws AysInstitutionNotExistException                       if the requested institution does not exist
      * @throws AysAdminUserAlreadyExistsByEmailException             if an admin user with the same email already exists
      * @throws AysAdminUserAlreadyExistsByUsernameException          if an admin user with the same username already exists
      * @throws AysAdminUserAlreadyExistsByPhoneNumberException       if an admin user with the same phone number already exists
      */
     @Override
+    @Transactional
     public void register(final AdminUserRegisterRequest registerRequest) {
         log.trace("Admin User Register Flow call starting for email of {}", registerRequest.getEmail());
 
@@ -63,8 +65,8 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
                 .findById(registerRequest.getVerificationId())
                 .orElseThrow(() -> new AysAdminUserRegisterVerificationCodeNotValidException(registerRequest.getVerificationId()));
 
-        if (!organizationRepository.existsById(registerRequest.getOrganizationId())) {
-            throw new AysOrganizationNotExistException(registerRequest.getOrganizationId());
+        if (!institutionRepository.existsById(registerRequest.getInstitutionId())) {
+            throw new AysInstitutionNotExistException(registerRequest.getInstitutionId());
         }
 
         if (adminUserRepository.existsByEmail(registerRequest.getEmail())) {

@@ -1,6 +1,7 @@
 package com.ays.auth.model;
 
 import com.ays.auth.model.enums.AysTokenClaims;
+import com.ays.auth.model.enums.AysUserType;
 import com.ays.common.model.enums.BeanScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
@@ -19,12 +20,39 @@ import org.springframework.stereotype.Component;
 public class AysIdentity {
 
     /**
-     * Returns the organization ID associated with the authenticated user's AYS identity.
+     * Returns the institution ID associated with the authenticated user's AYS identity.
      *
-     * @return the organization ID as a string
+     * @return the institution ID as a string
      */
-    public String getOrganizationId() {
-        return this.getJwt().getClaim(AysTokenClaims.ORGANIZATION_ID.getValue());
+    public String getInstitutionId() {
+        return this.getJwt().getClaim(AysTokenClaims.INSTITUTION_ID.getValue());
+    }
+
+    /**
+     * Retrieves the access token value.
+     *
+     * @return the access token value
+     */
+    public String getAccessToken() {
+        return this.getJwt().getTokenValue();
+    }
+
+    /**
+     * Retrieves user type from the JWT token
+     *
+     * @return AysUserType as an admin user type
+     */
+    public AysUserType getUserType() {
+        return AysUserType.valueOf(this.getJwt().getClaim(AysTokenClaims.USER_TYPE.getValue()));
+    }
+
+    /**
+     * Returns the user ID associated with the authenticated user's AYS identity.
+     *
+     * @return user Id value
+     */
+    public String getUserId() {
+        return this.getJwt().getClaim(AysTokenClaims.USER_ID.getValue());
     }
 
     /**

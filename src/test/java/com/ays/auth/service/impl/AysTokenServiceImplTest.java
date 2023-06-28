@@ -6,6 +6,7 @@ import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.auth.config.AysTokenConfiguration;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.enums.AysTokenClaims;
+import com.ays.auth.model.enums.AysUserType;
 import com.ays.auth.util.KeyConverter;
 import com.ays.auth.util.exception.TokenNotValidException;
 import com.ays.common.util.AysListUtil;
@@ -313,7 +314,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         );
 
         List<SimpleGrantedAuthority> mockAuthorities = new ArrayList<>();
-        mockAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
+        mockAuthorities.add(new SimpleGrantedAuthority(AysUserType.ADMIN.name()));
 
         UsernamePasswordAuthenticationToken mockAuthentication = UsernamePasswordAuthenticationToken
                 .authenticated(mockJwt, null, mockAuthorities);
@@ -367,6 +368,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         );
 
         List<SimpleGrantedAuthority> mockAuthorities = new ArrayList<>();
+        mockAuthorities.add(new SimpleGrantedAuthority(AysUserType.USER.name()));
         List<String> roles = AysListUtil.to(mockClaims.get(AysTokenClaims.ROLES.getValue()), String.class);
         roles.forEach(role -> mockAuthorities.add(new SimpleGrantedAuthority(role)));
 

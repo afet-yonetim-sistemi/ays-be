@@ -68,7 +68,7 @@ public abstract class AbstractRestControllerTest {
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(accessTokenExpiresAt)
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .addClaims(claims)
                 .compact();
 
@@ -80,7 +80,7 @@ public abstract class AbstractRestControllerTest {
                 .setIssuedAt(tokenIssuedAt)
                 .setExpiration(refreshTokenExpiresAt)
                 .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .claim(AysTokenClaims.USERNAME.getValue(), claims.get(AysTokenClaims.USERNAME.getValue()))
                 .compact();
 

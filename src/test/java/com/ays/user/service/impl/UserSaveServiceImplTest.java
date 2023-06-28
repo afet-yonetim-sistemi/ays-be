@@ -53,7 +53,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
         Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
                 .thenReturn(mockUserEntity);
 
-        Mockito.when(identity.getOrganizationId())
+        Mockito.when(identity.getInstitutionId())
                 .thenReturn(AysRandomUtil.generateUUID());
 
         // Then
@@ -65,7 +65,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(6, user.getPassword().length());
 
         Mockito.verify(userRepository, Mockito.times(1)).findAll();
-        Mockito.verify(identity, Mockito.times(1)).getOrganizationId();
+        Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
         Mockito.verify(passwordEncoder, Mockito.times(1)).encode(Mockito.anyString());
         Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any(UserEntity.class));
     }
