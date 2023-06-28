@@ -6,6 +6,7 @@ on:
       - opened
       - review_requested
       - edited
+      - synchronize
 
 jobs:
   build:
