@@ -1,9 +1,11 @@
 name: Maven Build
 
 on:
-  pull:
-    branches:
-      - main
+  pull_request:
+    types:
+      - opened
+      - review_requested
+      - edited
 
 jobs:
   build:
