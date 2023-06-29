@@ -27,8 +27,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-ays-db/
-db/
+/db
 
 ### STS ###
 .apt_generated
