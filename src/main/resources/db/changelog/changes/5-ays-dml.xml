@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="5-ays-dml" author="agitrubard">
+        <!-- ======================== -->
+        <!-- DML of AYS_USER_LOCATION -->
+        <!-- ======================== -->
+        <sql>
+            INSERT INTO AYS_USER_LOCATION (USER_ID, POINT, CREATED_USER, CREATED_AT)
+            VALUES ('c4b4e4db-5641-41f7-8222-a76deb1c065c', 0x000000000101000000342F87DD77F6434098F90E7EE26E4040,
+                    'AYS', CURRENT_TIMESTAMP);
+        </sql>
+        <!-- ======================== -->
+        <!-- DML of AYS_USER_LOCATION -->
+        <!-- ======================== -->
+
+
+        <!-- ========================== -->
+        <!-- DML of AYS_USER_ASSIGNMENT -->
+        <!-- ========================== -->
+        <sql>
+            INSERT INTO AYS_USER_ASSIGNMENT (ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE, LINE_NUMBER, STATUS,
+                                             POINT, CREATED_USER, CREATED_AT)
+            VALUES ('3b30cac9-0645-48cb-bc98-2e928df521ab', '100L İçme Suyu İhtiyacı', 'Ahmet', 'Mehmet',
+                    90, 1234567890, 'AVAILABLE', 0x000000000101000000342F87DD77F6434098F90E7EE26E4040,
+                    'AYS', CURRENT_TIMESTAMP);
+        </sql>
+        <!-- ========================== -->
+        <!-- DML of AYS_USER_ASSIGNMENT -->
+        <!-- ========================== -->
+    </changeSet>
+
+</databaseChangeLog>
