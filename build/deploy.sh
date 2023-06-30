@@ -13,7 +13,6 @@ cd "${PATH}" || exit
 git status
 git checkout main &&
 git fetch --all &&
-git reset --hard origin/main &&
 git pull origin main
 
 # stop already existing images
@@ -25,4 +24,4 @@ docker rmi "$(docker images -q)"
 
 # run the docker file
 echo 'run new docker images'
-docker compose up -f ../docker-compose-production.yml -d --build
+docker compose -f ../docker-compose-production.yml --env-file ../.env.local up -d
