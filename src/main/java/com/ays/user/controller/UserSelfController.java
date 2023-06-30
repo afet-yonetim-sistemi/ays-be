@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * User Self Controller class for managing user's own operations.
  */
 @RestController
-@RequestMapping("/api/v1/user/self")
+@RequestMapping("/api/v1/user-self")
 @RequiredArgsConstructor
 class UserSelfController {
 

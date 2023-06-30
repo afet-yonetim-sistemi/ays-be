@@ -47,7 +47,7 @@ class UserController {
      * @param listRequest The request object containing the list criteria.
      * @return A response object containing a paginated list of users.
      */
-    @PostMapping
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<AysPageResponse<UsersResponse>> getUsers(@RequestBody @Valid UserListRequest listRequest) {
         final AysPage<User> pageOfUsers = userService.getAllUsers(listRequest);
