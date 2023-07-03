@@ -1,5 +1,7 @@
 package com.ays.admin_user.controller;
 
+import java.util.List;
+
 import com.ays.AbstractRestControllerTest;
 import com.ays.admin_user.model.AdminUser;
 import com.ays.admin_user.model.dto.request.AdminUserListRequest;
@@ -24,9 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-
-import java.util.List;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,7 +40,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
     private static final AdminUserEntityToAdminUserMapper ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1/admin";
+    private static final String BASE_PATH = "/api/v1/admins";
 
     @Test
     void givenValidUserListRequest_whenAdminUsersFound_thenReturnAdminUsersResponse() throws Exception {
@@ -67,7 +66,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
 
         AysResponse<AysPageResponse<AdminUsersResponse>> mockAysResponse = AysResponse.successOf(pageOfAdminUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH, mockAdminUserToken.getAccessToken(), mockAdminUserListRequest))
+                        .post(BASE_PATH, mockAdminUserToken.getAccessToken(), mockAdminUserListRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
@@ -86,7 +85,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH, mockUserToken.getAccessToken(), mockAdminUserListRequest);
+                .post(BASE_PATH, mockUserToken.getAccessToken(), mockAdminUserListRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)

@@ -1,5 +1,7 @@
 package com.ays.user.controller;
 
+import java.util.List;
+
 import com.ays.AbstractRestControllerTest;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPhoneNumberBuilder;
@@ -10,7 +12,12 @@ import com.ays.common.util.AysRandomUtil;
 import com.ays.common.util.exception.model.AysError;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
-import com.ays.user.model.dto.request.*;
+import com.ays.user.model.dto.request.UserListRequest;
+import com.ays.user.model.dto.request.UserListRequestBuilder;
+import com.ays.user.model.dto.request.UserSaveRequest;
+import com.ays.user.model.dto.request.UserSaveRequestBuilder;
+import com.ays.user.model.dto.request.UserUpdateRequest;
+import com.ays.user.model.dto.request.UserUpdateRequestBuilder;
 import com.ays.user.model.dto.response.UserResponse;
 import com.ays.user.model.dto.response.UserSavedResponse;
 import com.ays.user.model.dto.response.UserSavedResponseBuilder;
@@ -33,8 +40,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.List;
 
 class UserControllerTest extends AbstractRestControllerTest {
 
@@ -140,7 +145,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .build();
         AysResponse<AysPageResponse<UsersResponse>> mockAysResponse = AysResponse.successOf(pageOfUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserListRequest))
+                        .post(BASE_PATH.replace("user", "users"), mockAdminUserToken.getAccessToken(), mockUserListRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -163,7 +168,7 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH, mockUserToken.getAccessToken(), mockUserListRequest);
+                .post(BASE_PATH, mockUserToken.getAccessToken(), mockUserListRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
