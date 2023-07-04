@@ -59,7 +59,7 @@ public class UserEntity extends BaseEntity {
     private UserStatus status;
 
     @Column(name = "COUNTRY_CODE")
-    private Long countryCode;
+    private String countryCode;
 
     @Column(name = "LINE_NUMBER")
     private String lineNumber;
