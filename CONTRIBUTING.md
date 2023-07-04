@@ -25,6 +25,7 @@ To contribute to the project, please follow these steps:
 2. Create a new branch for your contribution:
     - Branch names should be descriptive and relate to the feature or bug you are addressing.
     - Use kebab case (e.g., `fix-bug`, `add-new-feature`).
+    - Branches should follow the below `Naming Conventions of Branchs` header in [README.md](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/README.md) file.
 3. Make your changes in the branch you created.
 4. Test your changes thoroughly to ensure their work as expected.
 5. Commit your changes with clear and concise messages (see [Commit Messages](#commit-messages) section for more
@@ -33,6 +34,7 @@ To contribute to the project, please follow these steps:
 7. Open a pull request (PR) against the `main` branch of the "afet-yonetim-sistemi" repository.
     - Provide a clear and detailed description of the changes you made in the PR.
     - Link any relevant issues or discussions in the PR description.
+    - Pull Request Headers should follow the below `Naming Conventions of Pull Requests` hader in [README.md](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/README.md) file.
 
 Once your PR is submitted, the project maintainers will review it and provide feedback. Be prepared to make additional
 changes based on the feedback received.
