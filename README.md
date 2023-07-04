@@ -128,10 +128,10 @@ kubectl port-forward service/ays-be 9790:9790
 
 ---
 
-# How to Contribute
+# [How to Contribute](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/CONTRIBUTING.md)
 
 The project is managed by [GitHub projects](https://github.com/orgs/afet-yonetim-sistemi/projects/3). You can assign
-an issue from the Todo list and start working on it.
+an issue from the Todo list and start working on it. 
 
 ## Development Standards
 
@@ -149,10 +149,7 @@ For your feature branches, please ensure below:
 - PR title and description should clearly define and explain the aim.
 - PR title should contain the issue/feature/bug number e.g. Issue 7 - Readme Update
 - PR should successfully complete build and any other necessary tests before being merged to main.
-- Branches should follow the below pattern:
-    feature/issue-no-other-desc
-    bugfix/issue-no-other-desc
-    hotfix/issue-no-other-desc (there may also be no issue number for some hotfixes)
+- Branches should follow the below `Naming Conventions of Branchs` header.
 - Each release should be tagged with a version
 - Commit messages should be subjectless
   e.g. Add README.md
@@ -163,6 +160,23 @@ For your feature branches, please ensure below:
 - The code should comply with the existing code standards and previously established coding standards. No new standards
   should be introduced, and if they are, the reasons for their addition should be stated, with the expectation that this
   structure will be applied to the entire project.
+- Pull Request Headers should follow the below `Naming Conventions of Pull Requests` header.
+
+**Naming Conventions of Branchs**
+- `bugfix/{issue-number}/{optional-description}`
+  - Ex: `bugfix/0/authentication-flow` or `bugfix/0`
+- `feature/{issue-number}/{optional-description}`
+  - Ex: `feature/0/admin-register-flow` or `feature/0`
+- `refactor/{issue-number}/{optional-description}`
+  - Ex: `refactor/0/tests-classes` or `refactor/0`
+- `hotfix/{issue-number}/{optional-description}`
+  - Ex: `hotfix/0/authorization-flow` or `hotfix/0`
+  
+**Naming Conventions of Pull Requests**
+- `#{issue-number} | {header-for-summary-of-development}`
+  - Ex: `#0 | Authentication/Authorization Flows Has Been Created`
+
+
 
 ## Docker Image Name Conventions
 
