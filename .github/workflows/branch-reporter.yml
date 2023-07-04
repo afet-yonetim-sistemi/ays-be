@@ -7,6 +7,7 @@ on:
       - review_requested
       - edited
       - synchronize
+      - assigned
 
 jobs:
   build:
