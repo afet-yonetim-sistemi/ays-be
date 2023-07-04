@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +60,7 @@ public class UserEntity extends BaseEntity {
     private UserStatus status;
 
     @Column(name = "COUNTRY_CODE")
-    private Long countryCode;
+    private String countryCode;
 
     @Column(name = "LINE_NUMBER")
     private Long lineNumber;

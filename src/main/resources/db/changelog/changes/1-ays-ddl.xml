@@ -66,11 +66,11 @@
             <column name="LAST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="COUNTRY_CODE" type="BIGINT">
+            <column name="COUNTRY_CODE" type="VARCHAR(5)">
                 <constraints nullable="false" unique="true"
                              uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
             </column>
-            <column name="LINE_NUMBER" type="BIGINT">
+            <column name="LINE_NUMBER" type="VARCHAR(10)">
                 <constraints nullable="false" unique="true"
                              uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
             </column>
@@ -163,11 +163,11 @@
             <column name="LAST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="COUNTRY_CODE" type="BIGINT">
+            <column name="COUNTRY_CODE" type="VARCHAR(5)">
                 <constraints nullable="false" unique="true"
                              uniqueConstraintName="U__AYS_USER__COUNTRY_CODE__LINE_NUMBER"/>
             </column>
-            <column name="LINE_NUMBER" type="BIGINT">
+            <column name="LINE_NUMBER" type="VARCHAR(10)">
                 <constraints nullable="false" unique="true"
                              uniqueConstraintName="U__AYS_USER__COUNTRY_CODE__LINE_NUMBER"/>
             </column>
