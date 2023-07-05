@@ -54,7 +54,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     private static final UserToUserResponseMapper USER_TO_USER_RESPONSE_MAPPER = UserToUserResponseMapper.initialize();
     private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
 
-    private static final String BASE_PATH = "/api/v1/user";
+    private static final String BASE_PATH = "/api/v1";
 
     @Test
     void givenValidUserSaveRequest_whenUserSaved_thenReturnUserSavedResponse() throws Exception {
@@ -72,13 +72,14 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockUser);
 
         // Then
+        String endpoint = BASE_PATH.concat("/user");
         UserSavedResponse mockUserSavedResponse = new UserSavedResponseBuilder()
                 .withUsername(mockUser.getUsername())
                 .withPassword(mockUser.getPassword())
                 .build();
         AysResponse<UserSavedResponse> mockResponse = AysResponseBuilder.successOf(mockUserSavedResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -106,8 +107,9 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // Then
+        String endpoint = BASE_PATH.concat("/user");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(BASE_PATH, mockUserToken.getAccessToken(), mockUserSaveRequest);
+                .post(endpoint, mockUserToken.getAccessToken(), mockUserSaveRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -138,6 +140,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
+        String endpoint = BASE_PATH.concat("/users");
         List<UsersResponse> mockUsersResponses = USER_TO_USERS_RESPONSE_MAPPER.map(mockAysPageOfUsers.getContent());
         AysPageResponse<UsersResponse> pageOfUsersResponse = AysPageResponse.<UsersResponse>builder()
                 .of(mockAysPageOfUsers)
@@ -145,7 +148,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .build();
         AysResponse<AysPageResponse<UsersResponse>> mockAysResponse = AysResponse.successOf(pageOfUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.replace("user", "users"), mockAdminUserToken.getAccessToken(), mockUserListRequest))
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -167,8 +170,9 @@ class UserControllerTest extends AbstractRestControllerTest {
         UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
 
         // Then
+        String endpoint = BASE_PATH.concat("/users");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(BASE_PATH, mockUserToken.getAccessToken(), mockUserListRequest);
+                .post(endpoint, mockUserToken.getAccessToken(), mockUserListRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -195,7 +199,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockUser);
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/").concat(mockUserId);
         UserResponse mockUserResponse = USER_TO_USER_RESPONSE_MAPPER.map(mockUser);
         AysResponse<UserResponse> mockAysResponse = AysResponse.successOf(mockUserResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
@@ -221,8 +225,9 @@ class UserControllerTest extends AbstractRestControllerTest {
         String mockUserId = AysRandomUtil.generateUUID();
 
         // Then
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH.concat("/".concat(mockUserId)), mockUserToken.getAccessToken());
+                .get(endpoint, mockUserToken.getAccessToken());
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -250,7 +255,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         Mockito.doNothing().when(userService).updateUser(mockUserId, mockUpdateRequest);
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .put(endpoint, mockAdminUserToken.getAccessToken(), mockUpdateRequest))
@@ -276,7 +281,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
 
@@ -303,7 +308,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         Mockito.doNothing().when(userService).deleteUser(mockUserId);
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .delete(endpoint, mockAdminUserToken.getAccessToken()))
@@ -328,7 +333,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         String mockUserId = AysRandomUtil.generateUUID();
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
