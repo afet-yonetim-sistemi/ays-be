@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * A class representing a phone number, including its country code and line number.
@@ -22,12 +23,14 @@ public class AysPhoneNumber {
      * The country code of the phone number, a non-null long value between 1 and 5 (inclusive).
      */
     @NotNull
+    @Range(min = 0,max = 5)
     private Long countryCode;
 
     /**
      * The line number of the phone number, a non-null long value between 1 and 10 (inclusive).
      */
     @NotNull
+    @Range(min = 0,max = 10)
     private Long lineNumber;
 
     /**

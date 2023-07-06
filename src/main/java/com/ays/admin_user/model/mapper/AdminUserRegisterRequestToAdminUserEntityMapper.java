@@ -34,8 +34,8 @@ public interface AdminUserRegisterRequestToAdminUserEntityMapper extends BaseMap
                 .password(encodedPassword)
                 .firstName(registerRequest.getFirstName())
                 .lastName(registerRequest.getLastName())
-                .countryCode(registerRequest.getPhoneNumber().getCountryCode().toString())
-                .lineNumber(registerRequest.getPhoneNumber().getLineNumber().toString())
+                .countryCode(registerRequest.getPhoneNumber().getCountryCode())
+                .lineNumber(registerRequest.getPhoneNumber().getLineNumber())
                 .status(AdminUserStatus.NOT_VERIFIED)
                 .build();
     }
