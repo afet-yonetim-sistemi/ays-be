@@ -11,7 +11,7 @@ ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}"@"${HOSTNAME}"
 echo 'pulling latest changes from github'
 cd "${PATH}" || exit
 git status
-git checkout main &&
+git checkout feature/50-automating-development-process &&
 git fetch --all &&
 git pull origin main
 
