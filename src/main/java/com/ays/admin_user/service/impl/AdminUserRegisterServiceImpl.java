@@ -78,7 +78,7 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
         }
 
         final AysPhoneNumber phoneNumber = registerRequest.getPhoneNumber();
-        if (adminUserRepository.existsByCountryCodeAndLineNumber(phoneNumber.getCountryCode().toString(), phoneNumber.getLineNumber().toString())) {
+        if (adminUserRepository.existsByCountryCodeAndLineNumber(phoneNumber.getCountryCode(), phoneNumber.getLineNumber())) {
             throw new AysAdminUserAlreadyExistsByPhoneNumberException(phoneNumber);
         }
         log.trace("Admin User Register Request checked successfully!");
