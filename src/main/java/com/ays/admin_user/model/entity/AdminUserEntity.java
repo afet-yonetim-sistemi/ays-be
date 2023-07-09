@@ -1,5 +1,6 @@
 package com.ays.admin_user.model.entity;
 
+import com.ays.admin_user.model.enums.AdminRole;
 import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
@@ -57,6 +58,10 @@ public class AdminUserEntity extends BaseEntity {
 
     @Column(name = "LINE_NUMBER")
     private Long lineNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE")
+    private AdminRole role;
 
     @Column(name = "INSTITUTION_ID")
     private String institutionId;
