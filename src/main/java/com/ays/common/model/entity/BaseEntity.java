@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -32,8 +33,12 @@ public abstract class BaseEntity {
 
     @PrePersist
     public void prePersist() {
-        this.createdUser = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getClaim(AysTokenClaims.USERNAME.getValue());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            this.createdUser = ((Jwt) authentication.getPrincipal()).getClaim(AysTokenClaims.USERNAME.getValue());
+        } else {
+            this.createdUser = "AYS";
+        }
         this.createdAt = LocalDateTime.now();
     }
 
@@ -46,8 +51,12 @@ public abstract class BaseEntity {
 
     @PreUpdate
     public void preUpdate() {
-        this.updatedUser = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getClaim(AysTokenClaims.USERNAME.getValue());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            this.updatedUser = ((Jwt) authentication.getPrincipal()).getClaim(AysTokenClaims.USERNAME.getValue());
+        } else {
+            this.updatedUser = "AYS";
+        }
         this.updatedAt = LocalDateTime.now();
     }
 }
