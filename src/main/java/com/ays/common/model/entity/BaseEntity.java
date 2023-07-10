@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * Base entity to be used in order to pass the common fields to the entities in the same module.
@@ -34,11 +35,13 @@ public abstract class BaseEntity {
     @PrePersist
     public void prePersist() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            this.createdUser = ((Jwt) authentication.getPrincipal()).getClaim(AysTokenClaims.USERNAME.getValue());
-        } else {
-            this.createdUser = "AYS";
-        }
+        Jwt jwt = Optional.ofNullable(authentication)
+                .map(Authentication::getPrincipal)
+                .filter(Jwt.class::isInstance)
+                .map(Jwt.class::cast)
+                .orElse(null);
+
+        this.createdUser = (jwt != null) ? jwt.getClaim(AysTokenClaims.USERNAME.getValue()) : "AYS";
         this.createdAt = LocalDateTime.now();
     }
 
@@ -52,11 +55,13 @@ public abstract class BaseEntity {
     @PreUpdate
     public void preUpdate() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            this.updatedUser = ((Jwt) authentication.getPrincipal()).getClaim(AysTokenClaims.USERNAME.getValue());
-        } else {
-            this.updatedUser = "AYS";
-        }
+        Jwt jwt = Optional.ofNullable(authentication)
+                .map(Authentication::getPrincipal)
+                .filter(Jwt.class::isInstance)
+                .map(Jwt.class::cast)
+                .orElse(null);
+
+        this.updatedUser = (jwt != null) ? jwt.getClaim(AysTokenClaims.USERNAME.getValue()) : "AYS";
         this.updatedAt = LocalDateTime.now();
     }
 }
