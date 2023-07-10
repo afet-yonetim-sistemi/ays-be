@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Admin User controller to perform admin api operations.
  */
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Validated
 class AdminUserController {
@@ -37,7 +37,7 @@ class AdminUserController {
      * @param listRequest The request object containing the list criteria.
      * @return A response object containing a paginated list of users.
      */
-    @GetMapping
+    @PostMapping("/admins")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public AysResponse<AysPageResponse<AdminUsersResponse>> getAdminUsers(@RequestBody @Valid AdminUserListRequest listRequest) {
         final AysPage<AdminUser> pageOfAdminUsers = adminUserService.getAdminUsers(listRequest);

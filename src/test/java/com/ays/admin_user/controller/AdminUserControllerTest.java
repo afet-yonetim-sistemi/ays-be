@@ -41,7 +41,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
     private static final AdminUserEntityToAdminUserMapper ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1/admin";
+    private static final String BASE_PATH = "/api/v1";
 
     @Test
     void givenValidUserListRequest_whenAdminUsersFound_thenReturnAdminUsersResponse() throws Exception {
@@ -66,8 +66,9 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
                 .build();
 
         AysResponse<AysPageResponse<AdminUsersResponse>> mockAysResponse = AysResponse.successOf(pageOfAdminUsersResponse);
+        String endpoint = BASE_PATH.concat("/admins");
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH, mockAdminUserToken.getAccessToken(), mockAdminUserListRequest))
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockAdminUserListRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
@@ -85,8 +86,9 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
         AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
 
         // Then
+        String endpoint = BASE_PATH.concat("/admins");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH, mockUserToken.getAccessToken(), mockAdminUserListRequest);
+                .post(endpoint, mockUserToken.getAccessToken(), mockAdminUserListRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)

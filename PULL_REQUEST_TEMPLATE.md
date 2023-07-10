@@ -14,9 +14,7 @@ Please provide a brief and descriptive title for your pull request, summarizing 
 should be in English and clearly indicate the purpose of the pull request. Optionally, you can provide a more detailed
 description of what you have done.
 
-- Feature/issue-number/feature-description: [Feature Description]
-- Refactor/issue-number/issue-description: [Issue Description]
-- ...
+- Branches should follow the below `Naming Conventions of Branchs` header in [README.md](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/README.md) File
 
 ## Additional Information
 
