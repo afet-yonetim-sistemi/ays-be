@@ -1,7 +1,7 @@
 package com.ays;
 
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
-import com.ays.auth.config.AysTokenConfiguration;
+import com.ays.auth.config.AysTokenConfigurationParameter;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.common.util.AysRandomUtil;
@@ -42,7 +42,7 @@ public abstract class AbstractRestControllerTest {
 
 
     @Mock
-    private AysTokenConfiguration tokenConfiguration;
+    private AysTokenConfigurationParameter tokenConfiguration;
     @Mock
     private AysParameterService parameterService;
 
@@ -51,7 +51,7 @@ public abstract class AbstractRestControllerTest {
         Set<AysParameter> parameters = AysParameterBuilder.getParameters();
         Mockito.when(parameterService.getParameters(Mockito.anyString()))
                 .thenReturn(parameters);
-        this.tokenConfiguration = new AysTokenConfiguration(parameterService);
+        this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);
         this.mockAdminUserToken = this.generate(new AdminUserEntityBuilder().build().getClaims());
         this.mockUserToken = this.generate(new UserEntityBuilder().build().getClaims());
     }

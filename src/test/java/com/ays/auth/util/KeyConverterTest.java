@@ -2,6 +2,8 @@ package com.ays.auth.util;
 
 import com.ays.AbstractUnitTest;
 import com.ays.auth.util.exception.KeyReadException;
+import com.ays.encryption.utility.AysPrivateKeyEncryptionUtil;
+import com.ays.encryption.utility.AysPublicKeyEncryptionUtil;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
@@ -19,14 +21,15 @@ class KeyConverterTest extends AbstractUnitTest {
     @Test
     void givenValidStringPrivateKeyWithPemFormat_whenStringParsed_thenReturnPrivateKey() throws IOException {
         // Given
-        String mockPrivateKeyPem = TestData.VALID_PRIVATE_KEY_PEM;
-        StringReader keyReader = new StringReader(mockPrivateKeyPem);
+        String mockEncryptedPrivateKeyPem = TestData.VALID_ENCRYPTED_PRIVATE_KEY_PEM;
+        String mockDecryptedPrivateKeyPem = AysPrivateKeyEncryptionUtil.decrypt(mockEncryptedPrivateKeyPem);
+        StringReader keyReader = new StringReader(mockDecryptedPrivateKeyPem);
         PrivateKeyInfo privateKeyInfo = PrivateKeyInfo
                 .getInstance(new PEMParser(keyReader).readObject());
         PrivateKey mockPrivateKey = new JcaPEMKeyConverter().getPrivateKey(privateKeyInfo);
 
         // When
-        PrivateKey privateKey = KeyConverter.convertPrivateKey(mockPrivateKeyPem);
+        PrivateKey privateKey = KeyConverter.convertPrivateKey(mockEncryptedPrivateKeyPem);
 
         // Then
         Assertions.assertEquals(mockPrivateKey, privateKey);
@@ -35,7 +38,7 @@ class KeyConverterTest extends AbstractUnitTest {
     @Test
     void givenInvalidStringPrivateKeyWithPemFormat_whenStringNotParsed_thenThrowKeyReadException() {
         // Given
-        String mockPrivateKeyPem = TestData.INVALID_PRIVATE_KEY_PEM;
+        String mockPrivateKeyPem = TestData.INVALID_ENCRYPTED_PRIVATE_KEY_PEM;
 
         // Then
         Assertions.assertThrows(KeyReadException.class, () -> KeyConverter.convertPrivateKey(mockPrivateKeyPem));
@@ -44,14 +47,15 @@ class KeyConverterTest extends AbstractUnitTest {
     @Test
     void givenValidStringPublicKeyWithPemFormat_whenStringParsed_thenReturnPublicKey() throws IOException {
         // Given
-        String mockPublicKeyPem = TestData.VALID_PUBLIC_KEY_PEM;
-        StringReader keyReader = new StringReader(mockPublicKeyPem);
+        String mockEncryptedPublicKeyPem = TestData.VALID_ENCRYPTED_PUBLIC_KEY_PEM;
+        String mockDecryptedPublicKeyPem = AysPublicKeyEncryptionUtil.decrypt(mockEncryptedPublicKeyPem);
+        StringReader keyReader = new StringReader(mockDecryptedPublicKeyPem);
         SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo
                 .getInstance(new PEMParser(keyReader).readObject());
         PublicKey mockPublicKey = new JcaPEMKeyConverter().getPublicKey(publicKeyInfo);
 
         // When
-        PublicKey publicKey = KeyConverter.convertPublicKey(mockPublicKeyPem);
+        PublicKey publicKey = KeyConverter.convertPublicKey(mockEncryptedPublicKeyPem);
 
         // Then
         Assertions.assertEquals(mockPublicKey, publicKey);
@@ -60,7 +64,7 @@ class KeyConverterTest extends AbstractUnitTest {
     @Test
     void givenInvalidStringPublicKeyWithPemFormat_whenStringNotParsed_thenThrowKeyReadException() {
         // Given
-        String mockPublicKeyPem = TestData.INVALID_PUBLIC_KEY_PEM;
+        String mockPublicKeyPem = TestData.INVALID_ENCRYPTED_PUBLIC_KEY_PEM;
 
         // Then
         Assertions.assertThrows(KeyReadException.class, () -> KeyConverter.convertPublicKey(mockPublicKeyPem));
@@ -68,87 +72,13 @@ class KeyConverterTest extends AbstractUnitTest {
 
 
     private static class TestData {
-        private static final String VALID_PRIVATE_KEY_PEM = """
-                -----BEGIN PRIVATE KEY-----
-                MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDH+MUShIcE42+v
-                eixv8iUJ0+Pd76HWgX2iHhaSftXQs9O5doCOKCMVVkK1H8ORN6ZgDIVIhao5MTCP
-                wPvH85YU2Y2ukILfXps2PCdLMQg45b2t8HFqJJAaqzQQ5ACAVWx3hbVWFQs5g7yL
-                eB/tagY+QaElDXpNk85Xh6EIIOjQLyqSHa12Fhi9PRaqJM5kC/HQY+E8YtHOAout
-                aUG/C78l/sTMg3sPGB/4AcTd3cKiHu3Aauy0pstqdzJ6niMSO1L004MXYaMmBl8I
-                g9b60JwVxF2fC1ZHCH+BlckYbQUJ9JCqhr7qnoFbg7ngLe3iqcLmLmPowNm8kpLK
-                hkV5AwdPAgMBAAECggEARs+hwW/qe+Gpv+Ksb6u4T+WXcBSWI2ZRPaIX7iI5xqCX
-                HbqHxU8TNVAJaSfpUbf6E1L7s3WZlI0FnDIDNofcIl/zWthTb5OJtMfSRj8DoVpB
-                M6HMF4EBAmCTnFOQleEp+pz/XI8xHVm3309XRvPfaBZHYN6H64amb7pYXI+CwY0A
-                xTAntPO4uKwvrzTc+rHtVLRjA2fRUHZ+QJ+IObXwVxFUFMGS7b98jk2LuzTsQoLx
-                dNFaE3XtEpUNyKePnfly2lmBv6obIuxr3Dnppzdye6+u3iJ+TD5uNFAT/ZF24pE/
-                oP71rmdPhJCuxK219AJoC15Z5dsBOm1za/synNEnwQKBgQD/VzizN6z1Rt9rk9Vt
-                X1apiLpgWhx5USDBcTwya03AtZTrH7hVqkpLFnCOFnyprV3MauztNSpWXOWLljs4
-                MtJO+Vfx4YzRS013w8bSp7ZrcFfZNXKa0zkx4rCiaUxzC5LKSN0q3NZxKjC37OYS
-                cUHS5knpV19UNSj2sunC3xUj4QKBgQDIfPMnWVgTscqvbdjm/yNwbSYrbYXduuPm
-                axrcMe4LiHQ6nabNSM1otkH/tsrQnrhfMDKtsWnDu40Jb8iFvoO8I3/vOhdI3oLG
-                oZcPXYljKtrbE0NHt2aRiANto+/GRRy6kH6EKjseerksq4SLLCBbEgjNKrnhViPR
-                OXswhK+RLwKBgC5TMrRBG538V7h6v7PyIhTr+3RTpOrVry2pT5SOJzMZPoVR4e2Y
-                0ZXB4nXE2qUmEOhvVcDLbnzwqayjeub9QW6WikAV/ahTEyDxYfcB+nSPk0CTE9HH
-                FI9aY1Vz6SzOIrmUcpu+KSGq19/mmO8roReUNECjW2Y5ps7rMsHqGznBAoGALzln
-                WPRtj64ITQw11Cty4I+FNyOELbdQ6Tx/RjConqTUo93wpVgpsimEIEShP0SzrxA+
-                T7WDcSxjSz6+X+qBQzalcucfBvYKndkAKQliTC6TAJln9qOXkF4WWKQN3Yj3/GX+
-                twjvhf1oUsJP5SxOrsTvt8wBnrdYlnbQspv+ctcCgYEA4M/Wvbo0MAurrtJ76tfE
-                lzvj79/cGU7xNBKODn/PBzgdbE8QnQ5Je+V9ItFPUaT6gUr8zHGyKwcBpZDAsBZk
-                fMhHTTgkOI/loUvUo6RuJk+HZm0sWkVk1BvIs478HHgu+8RYVqmkHVhGcFcc3Ghr
-                7400PzFngOk2CgDXBijQS+Y=
-                -----END PRIVATE KEY-----
-                """;
+        private static final String VALID_ENCRYPTED_PRIVATE_KEY_PEM = "dkNHbEVaSW9rdGQ1cVBKek03dHJqT2daMmdIbEpUSEw=LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktZd2dnU2lBZ0VBQW9JQkFRQ0puK0lSRUhmclFsWjEKY0RkbllKcndUL1pvV1hick13aGt1enBXdUJVRDJHdTVteU1DdCtyT0p1S3N4VXFIL2IyZGFlZW81dUdndWY2cwpKcjI5bzZLM1drVVBMdG9uNk5GZUhKZEwwcWs5NmVlWDM5UVhFUHYzdS8yRGJXZTJRWk83aW4wNnhLSTQyOUgwCmg4cjdCT0NzemE1WFpkbjVCUHdmZ0pveUFLbkdGODNPMGpUT0Qzem8zV0VvbGEreW1YYXVoUHorUFl0dndSWncKSkZvQW91MTVZM2Z1SDBna3B4NDdRd0tnVFRwNUl4d1I4RnNxVkVOK1JaNFMzcWhxSktOaGY2SVkwS1RjaHphQQpmelp3QnRON0E1eWI4TURMRnRJTHlmRkdhYW0wbXMzUHJWb0J3LzhzYmxsSGlEMTdOVCtXcmNNVkJRRjJTRFlwCmR3WENMM1JiQWdNQkFBRUNnZ0VBS3FzK2JPbjlOQnlTTDhFRi9IQXdPWGVoUHdNVjRxQWs1dzVCYlNlUHBHeVMKSWE2ZXNUWVNmNjRBczI1THlGUDhXUFMvMVZjWDl6d1RZSTUyWDNoL2QzZHVWK0cvMDRYVWUraERaRWZCSHlnSgpITVpSdklFUWplTmtHejV0WEUyQ255KzEyZVdqSWh2TlFaSmtkV1V5djREWm45RTlQbjYwS0pRM3VtOElOQmt3CjZLNUFIMGxiYy8yMEtFYWZpMUsyMzBTUVFCeFp4bEN6bkNJSmNQYlZGSmxwVUNOM1JkaDFJSkdYZUlLT0NRbjkKQnB4Z2ZKVC9KUFo1cWVXamF1OUYxVWlCbWYyZjFzNnlDSXB2aDVsYUhKMXRuU1NuQXlKalkzYzFFUk1GMHBDSgpwUUtIMlEyaXFEYUxGNGdRQWIyQlRnYm85NWVja1RZaFdPVUlQQUt3UVFLQmdRRGhUbXhvTlQwRXlQWEptVFRPClJvdUNwSW4ycmlldGcwUXdYVVVVSDhMMHNJRUVqRDFpeXp5NVBvNk55OWN1QVNYSXBRM05RaDExZ2k1MTJXNmYKYXIyYWtXdXVRK01ENmRNM3RCa0xQSlJITVQ1SmVJbDBQQTJXc2tvMktTcmZtbUI1TFI5MzdpeFNjZmhvajY4bQpWSHBGQ2FhRDBtdVVzUHZYVVR0ZmhMV1ZZUUtCZ1FDY1g0ekllNS9HSWk3Z0pMZTZZTm5ITmprUmhIb3VreEVECm1HbjB2WlRlUzh1SXZrL1JQL2dMdjIwN3hIOXcwMEc1cS9BbytnWG1DV3pQWlhybmR1SVVZbUxwZ2NKVDh5bWMKQVovSWhsbkU4azBxTHlleWRtWmV0NHNXcXY3NkFseFlhNTdFZ3daaTNMQ1Z3OFBIVnIwb1pHR09vTGd3a3g3QgpRV2V4cXJ4bk93S0JnRXlGNlZYL2R3a1FCRU1Ea1NiYVdQbjNUcENGR0I3YnJhWkxsM0c5VStidHAvUldlV2I3CnBsVTRoUXh1QmxpdXRSbVB6YjlBVEdjajN3blIzcnV3Y2xOMFBzR0NkekZXRXBJaHpqdTl5SkxoaThsQ2NsVVQKTEg1WmNkRXhiRWxqMG81MW4vR0k2RzdjSE1YT3YydGlWK0RvNVRCeW9HMXhLeWczZzlYdWFnb2hBb0dBUkJ0Wgp0ZmdpSHFuRXdOczlLbkFFYWorem0yMlh5YkZFTjh5cVdXNDQ2SmthalBSV3oweU5QSkNqZ3VTU25SRm1EdmhVCklZVEVETzBOOTBhN3dSU0dZMXAydWoxSjVrYUNXUEJjSjNwY251cnBzUFhZMUdHOU5JTzhrS0xwYXZxY1BlYWgKdi9WUlVyM01LMjZZVnJud3FTY1BWbytwcVg1cVpzR1Y2RXYwd3dFQ2dZQkdSckF2cEptVWluazVoc0ZldzRvaAozclMwRTlqQklqekszWU9WWTJJVWxydmJYd2N2OWJ0UGpaVkd4VzZ1UEt0UEtPNTFaUExzRS94YWRiUGllOGhmCmM1aTB3LzVPK24rYlc3TlpmcWwvUFk4OTB5ajZJWHlzZElYMVRwQ1NST1Uzb1ptUWZBTG9WWWNBNHU3QWxpY0sKYnBKbTYwampiMHNNejRIVU9CaVZIUT09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0KNjNLcEhJM2FXeUtrOHNsVkFiaGY3UjBvcURVeHh5RUk=";
 
-        private static final String INVALID_PRIVATE_KEY_PEM = """
-                MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDH+MUShIcE42+v
-                eixv8iUJ0+Pd76HWgX2iHhaSftXQs9O5doCOKCMVVkK1H8ORN6ZgDIVIhao5MTCP
-                wPvH85YU2Y2ukILfXps2PCdLMQg45b2t8HFqJJAaqzQQ5ACAVWx3hbVWFQs5g7yL
-                eB/tagY+QaElDXpNk85Xh6EIIOjQLyqSHa12Fhi9PRaqJM5kC/HQY+E8YtHOAout
-                aUG/C78l/sTMg3sPGB/4AcTd3cKiHu3Aauy0pstqdzJ6niMSO1L004MXYaMmBl8I
-                g9b60JwVxF2fC1ZHCH+BlckYbQUJ9JCqhr7qnoFbg7ngLe3iqcLmLmPowNm8kpLK
-                hkV5AwdPAgMBAAECggEARs+hwW/qe+Gpv+Ksb6u4T+WXcBSWI2ZRPaIX7iI5xqCX
-                HbqHxU8TNVAJaSfpUbf6E1L7s3WZlI0FnDIDNofcIl/zWthTb5OJtMfSRj8DoVpB
-                M6HMF4EBAmCTnFOQleEp+pz/XI8xHVm3309XRvPfaBZHYN6H64amb7pYXI+CwY0A
-                xTAntPO4uKwvrzTc+rHtVLRjA2fRUHZ+QJ+IObXwVxFUFMGS7b98jk2LuzTsQoLx
-                dNFaE3XtEpUNyKePnfly2lmBv6obIuxr3Dnppzdye6+u3iJ+TD5uNFAT/ZF24pE/
-                oP71rmdPhJCuxK219AJoC15Z5dsBOm1za/synNEnwQKBgQD/VzizN6z1Rt9rk9Vt
-                X1apiLpgWhx5USDBcTwya03AtZTrH7hVqkpLFnCOFnyprV3MauztNSpWXOWLljs4
-                MtJO+Vfx4YzRS013w8bSp7ZrcFfZNXKa0zkx4rCiaUxzC5LKSN0q3NZxKjC37OYS
-                cUHS5knpV19UNSj2sunC3xUj4QKBgQDIfPMnWVgTscqvbdjm/yNwbSYrbYXduuPm
-                axrcMe4LiHQ6nabNSM1otkH/tsrQnrhfMDKtsWnDu40Jb8iFvoO8I3/vOhdI3oLG
-                oZcPXYljKtrbE0NHt2aRiANto+/GRRy6kH6EKjseerksq4SLLCBbEgjNKrnhViPR
-                OXswhK+RLwKBgC5TMrRBG538V7h6v7PyIhTr+3RTpOrVry2pT5SOJzMZPoVR4e2Y
-                0ZXB4nXE2qUmEOhvVcDLbnzwqayjeub9QW6WikAV/ahTEyDxYfcB+nSPk0CTE9HH
-                FI9aY1Vz6SzOIrmUcpu+KSGq19/mmO8roReUNECjW2Y5ps7rMsHqGznBAoGALzln
-                WPRtj64ITQw11Cty4I+FNyOELbdQ6Tx/RjConqTUo93wpVgpsimEIEShP0SzrxA+
-                T7WDcSxjSz6+X+qBQzalcucfBvYKndkAKQliTC6TAJln9qOXkF4WWKQN3Yj3/GX+
-                twjvhf1oUsJP5SxOrsTvt8wBnrdYlnbQspv+ctcCgYEA4M/Wvbo0MAurrtJ76tfE
-                lzvj79/cGU7xNBKODn/PBzgdbE8QnQ5Je+V9ItFPUaT6gUr8zHGyKwcBpZDAsBZk
-                fMhHTTgkOI/loUvUo6RuJk+HZm0sWkVk1BvIs478HHgu+8RYVqmkHVhGcFcc3Ghr
-                7400PzFngOk2CgDXBijQS+Y=
-                """;
+        private static final String INVALID_ENCRYPTED_PRIVATE_KEY_PEM = "dkNHbEVaSW9rdGQ1cVBKek03dHJqT2daMmdIbEpUSEw=SGVsbG8gV29ybGQhNjNLcEhJM2FXeUtrOHNsVkFiaGY3UjBvcURVeHh5RUk=";
 
-        private static final String VALID_PUBLIC_KEY_PEM = """
-                -----BEGIN PUBLIC KEY-----
-                MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx/jFEoSHBONvr3osb/Il
-                CdPj3e+h1oF9oh4Wkn7V0LPTuXaAjigjFVZCtR/DkTemYAyFSIWqOTEwj8D7x/OW
-                FNmNrpCC316bNjwnSzEIOOW9rfBxaiSQGqs0EOQAgFVsd4W1VhULOYO8i3gf7WoG
-                PkGhJQ16TZPOV4ehCCDo0C8qkh2tdhYYvT0WqiTOZAvx0GPhPGLRzgKLrWlBvwu/
-                Jf7EzIN7Dxgf+AHE3d3Coh7twGrstKbLancyep4jEjtS9NODF2GjJgZfCIPW+tCc
-                FcRdnwtWRwh/gZXJGG0FCfSQqoa+6p6BW4O54C3t4qnC5i5j6MDZvJKSyoZFeQMH
-                TwIDAQAB
-                -----END PUBLIC KEY-----
-                """;
+        private static final String VALID_ENCRYPTED_PUBLIC_KEY_PEM = "cExiWUJBSVFTbHVwOXFXSkxSTDhsOGRDVkh1VkxyQ0E=LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFpWi9pRVJCMzYwSldkWEEzWjJDYQo4RS8yYUZsMjZ6TUlaTHM2VnJnVkE5aHJ1WnNqQXJmcXppYmlyTVZLaC8yOW5Xbm5xT2Job0xuK3JDYTl2YU9pCnQxcEZEeTdhSitqUlhoeVhTOUtwUGVubmw5L1VGeEQ3OTd2OWcyMW50a0dUdTRwOU9zU2lPTnZSOUlmSyt3VGcKck0ydVYyWForUVQ4SDRDYU1nQ3B4aGZOenRJMHpnOTg2TjFoS0pXdnNwbDJyb1Q4L2oyTGI4RVdjQ1JhQUtMdAplV04zN2g5SUpLY2VPME1Db0UwNmVTTWNFZkJiS2xSRGZrV2VFdDZvYWlTallYK2lHTkNrM0ljMmdIODJjQWJUCmV3T2NtL0RBeXhiU0M4bnhSbW1wdEpyTno2MWFBY1AvTEc1WlI0ZzllelUvbHEzREZRVUJka2cyS1hjRndpOTAKV3dJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==SlhaNTl3eFBsWTJEWkNSWDdlZFRlaFhPaFhZRzlBN1Q=";
 
-        private static final String INVALID_PUBLIC_KEY_PEM = """
-                MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx/jFEoSHBONvr3osb/Il
-                CdPj3e+h1oF9oh4Wkn7V0LPTuXaAjigjFVZCtR/DkTemYAyFSIWqOTEwj8D7x/OW
-                FNmNrpCC316bNjwnSzEIOOW9rfBxaiSQGqs0EOQAgFVsd4W1VhULOYO8i3gf7WoG
-                PkGhJQ16TZPOV4ehCCDo0C8qkh2tdhYYvT0WqiTOZAvx0GPhPGLRzgKLrWlBvwu/
-                Jf7EzIN7Dxgf+AHE3d3Coh7twGrstKbLancyep4jEjtS9NODF2GjJgZfCIPW+tCc
-                FcRdnwtWRwh/gZXJGG0FCfSQqoa+6p6BW4O54C3t4qnC5i5j6MDZvJKSyoZFeQMH
-                TwIDAQAB
-                """;
+        private static final String INVALID_ENCRYPTED_PUBLIC_KEY_PEM = "cExiWUJBSVFTbHVwOXFXSkxSTDhsOGRDVkh1VkxyQ0E=SGVsbG8gV29ybGQhSlhaNTl3eFBsWTJEWkNSWDdlZFRlaFhPaFhZRzlBN1Q=";
     }
 
 }
