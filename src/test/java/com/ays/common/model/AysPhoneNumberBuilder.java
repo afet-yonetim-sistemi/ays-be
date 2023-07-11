@@ -14,6 +14,12 @@ public class AysPhoneNumberBuilder extends TestDataBuilder<AysPhoneNumber> {
                 .withLineNumber(AysRandomUtil.generateNumber(10));
     }
 
+    public AysPhoneNumberBuilder withValidLongLineNumberFields(){
+        return new AysPhoneNumberBuilder()
+                .withCountryCode(90)
+                .withLineNumber(AysRandomUtil.generateNumber(13));
+    }
+
     public AysPhoneNumberBuilder withCountryCode(long countryCode) {
         data.setCountryCode(countryCode);
         return this;
