@@ -43,6 +43,6 @@ public interface AdminUserRepository extends JpaRepository<AdminUserEntity, Stri
      * @param lineNumber  the phone number of the user to check
      * @return true if an {@link AdminUserEntity} exists with the given country code and phone number, false otherwise
      */
-    boolean existsByCountryCodeAndLineNumber(long countryCode, long lineNumber);
+    boolean existsByCountryCodeAndLineNumber(String countryCode, String lineNumber);
 
 }

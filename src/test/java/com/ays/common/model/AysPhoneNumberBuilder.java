@@ -10,22 +10,16 @@ public class AysPhoneNumberBuilder extends TestDataBuilder<AysPhoneNumber> {
 
     public AysPhoneNumberBuilder withValidFields() {
         return new AysPhoneNumberBuilder()
-                .withCountryCode(90)
-                .withLineNumber(AysRandomUtil.generateNumber(10));
+                .withCountryCode("90")
+                .withLineNumber(String.valueOf(AysRandomUtil.generateNumber(10)));
     }
 
-    public AysPhoneNumberBuilder withValidLongLineNumberFields(){
-        return new AysPhoneNumberBuilder()
-                .withCountryCode(90)
-                .withLineNumber(AysRandomUtil.generateNumber(13));
-    }
-
-    public AysPhoneNumberBuilder withCountryCode(long countryCode) {
+    public AysPhoneNumberBuilder withCountryCode(String countryCode) {
         data.setCountryCode(countryCode);
         return this;
     }
 
-    public AysPhoneNumberBuilder withLineNumber(long lineNumber) {
+    public AysPhoneNumberBuilder withLineNumber(String lineNumber) {
         data.setLineNumber(lineNumber);
         return this;
     }

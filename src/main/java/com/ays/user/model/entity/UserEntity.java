@@ -59,10 +59,10 @@ public class UserEntity extends BaseEntity {
     private UserStatus status;
 
     @Column(name = "COUNTRY_CODE")
-    private Long countryCode;
+    private String countryCode;
 
     @Column(name = "LINE_NUMBER")
-    private Long lineNumber;
+    private String lineNumber;
 
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
