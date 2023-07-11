@@ -1,6 +1,8 @@
 package com.ays.user.model.dto.request;
 
 import com.ays.common.model.AysPhoneNumber;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,8 +19,14 @@ import lombok.Data;
 @Builder
 public class UserSaveRequest {
 
+    @NotNull
     private String firstName;
+
+    @NotNull
     private String lastName;
+
+    @Valid
+    @NotNull
     private AysPhoneNumber phoneNumber;
 
 }
