@@ -34,14 +34,11 @@ public abstract class BaseEntity {
 
     @PrePersist
     public void prePersist() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Jwt jwt = Optional.ofNullable(authentication)
+        this.createdUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)
-                .filter(Jwt.class::isInstance)
                 .map(Jwt.class::cast)
-                .orElse(null);
-
-        this.createdUser = (jwt != null) ? jwt.getClaim(AysTokenClaims.USERNAME.getValue()) : "AYS";
+                .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
+                .orElse("AYS");
         this.createdAt = LocalDateTime.now();
     }
 
@@ -54,14 +51,11 @@ public abstract class BaseEntity {
 
     @PreUpdate
     public void preUpdate() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Jwt jwt = Optional.ofNullable(authentication)
+        this.updatedUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)
-                .filter(Jwt.class::isInstance)
                 .map(Jwt.class::cast)
-                .orElse(null);
-
-        this.updatedUser = (jwt != null) ? jwt.getClaim(AysTokenClaims.USERNAME.getValue()) : "AYS";
+                .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
+                .orElse("AYS");
         this.updatedAt = LocalDateTime.now();
     }
 }
