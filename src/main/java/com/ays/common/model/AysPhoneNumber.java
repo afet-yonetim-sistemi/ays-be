@@ -22,13 +22,13 @@ public class AysPhoneNumber {
      * The country code of the phone number, a non-null long value between 1 and 5 (inclusive).
      */
     @NotNull
-    private Long countryCode;
+    private String countryCode;
 
     /**
      * The line number of the phone number, a non-null long value between 1 and 10 (inclusive).
      */
     @NotNull
-    private Long lineNumber;
+    private String lineNumber;
 
     /**
      * This method returns a JSON representation of the object for validation exception messages.

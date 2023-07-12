@@ -24,6 +24,7 @@ import com.ays.user.model.dto.response.UserSavedResponseBuilder;
 import com.ays.user.model.dto.response.UsersResponse;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
+import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import com.ays.user.model.mapper.UserEntityToUserMapper;
 import com.ays.user.model.mapper.UserToUserResponseMapper;
@@ -249,7 +250,9 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
-        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
+                .withRole(UserRole.VOLUNTEER)
+                .withStatus(UserStatus.ACTIVE).build();
 
         // When
         Mockito.doNothing().when(userService).updateUser(mockUserId, mockUpdateRequest);
@@ -278,7 +281,9 @@ class UserControllerTest extends AbstractRestControllerTest {
     void givenValidUserIdAndUserUpdateRequest_whenUserUnauthorizedForUpdating_thenReturnAccessDeniedException() throws Exception {
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
-        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
+                .withRole(UserRole.VOLUNTEER)
+                .withStatus(UserStatus.ACTIVE).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));

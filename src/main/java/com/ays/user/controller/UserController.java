@@ -99,7 +99,7 @@ class UserController {
     @PutMapping("/user/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<Void> updateUser(@PathVariable @UUID String id,
-                                        @RequestBody UserUpdateRequest updateRequest) {
+                                        @RequestBody @Valid UserUpdateRequest updateRequest) {
 
         userService.updateUser(id, updateRequest);
         return AysResponse.SUCCESS;

@@ -53,10 +53,10 @@ public class AdminUserEntity extends BaseEntity {
     private AdminUserStatus status;
 
     @Column(name = "COUNTRY_CODE")
-    private Long countryCode;
+    private String countryCode;
 
     @Column(name = "LINE_NUMBER")
-    private Long lineNumber;
+    private String lineNumber;
 
     @Column(name = "INSTITUTION_ID")
     private String institutionId;

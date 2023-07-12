@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.EnumSet;
 
@@ -23,10 +24,11 @@ public class UserSupportStatusUpdateRequest {
     @NotNull
     private UserSupportStatus supportStatus;
 
-    @AssertTrue(message = "SUPPORT STATUS IS NOT ACCEPTED!")
-    private boolean isSupportStatusValid() {
+    @AssertTrue(message = "is not accepted")
+    @SuppressWarnings("unused")
+    private boolean isSupportStatusAccepted() {
 
-        if (this.supportStatus == null) {
+        if (ObjectUtils.isEmpty(this.supportStatus)) {
             return true;
         }
 
