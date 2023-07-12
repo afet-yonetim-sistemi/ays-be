@@ -1,5 +1,7 @@
 package com.ays.admin_user.controller;
 
+import java.util.List;
+
 import com.ays.AbstractRestControllerTest;
 import com.ays.admin_user.model.AdminUser;
 import com.ays.admin_user.model.dto.request.AdminUserListRequest;
@@ -24,9 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-
-import java.util.List;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,7 +38,6 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
     private static final AdminUserToAdminUsersResponseMapper ADMIN_USER_TO_ADMIN_USER_RESPONSE_MAPPER = AdminUserToAdminUsersResponseMapper.initialize();
 
     private static final AdminUserEntityToAdminUserMapper ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
-
 
     private static final String BASE_PATH = "/api/v1";
 

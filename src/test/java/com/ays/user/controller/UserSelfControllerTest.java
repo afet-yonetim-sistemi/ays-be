@@ -23,7 +23,7 @@ class UserSelfControllerTest extends AbstractRestControllerTest {
     private UserSelfService supportStatusService;
 
 
-    private static final String BASE_PATH = "/api/v1/user/self";
+    private static final String BASE_PATH = "/api/v1/user-self";
 
     @Test
     void givenValidUserSupportStatusUpdateRequest_whenUserRole_thenReturnSuccess() throws Exception {
