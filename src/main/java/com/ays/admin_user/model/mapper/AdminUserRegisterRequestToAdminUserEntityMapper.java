@@ -2,6 +2,7 @@ package com.ays.admin_user.model.mapper;
 
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
+import com.ays.admin_user.model.enums.AdminRole;
 import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.common.model.mapper.BaseMapper;
 import com.ays.common.util.AysRandomUtil;
@@ -37,6 +38,7 @@ public interface AdminUserRegisterRequestToAdminUserEntityMapper extends BaseMap
                 .countryCode(registerRequest.getPhoneNumber().getCountryCode())
                 .lineNumber(registerRequest.getPhoneNumber().getLineNumber())
                 .status(AdminUserStatus.NOT_VERIFIED)
+                .role(AdminRole.ADMIN)
                 .build();
     }
 
