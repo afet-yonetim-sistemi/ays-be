@@ -21,6 +21,7 @@ public enum AysTokenClaims {
     USER_FIRST_NAME("userFirstName"),
     USER_LAST_NAME("userLastName"),
     INSTITUTION_ID("institutionId"),
+    INSTITUTION_NAME("institutionName"),
     ISSUED_AT("iat"),
     EXPIRES_AT("exp"),
     ALGORITHM("alg");

@@ -90,6 +90,7 @@ public class AdminUserEntity extends BaseEntity {
         } else {
             claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
             claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
+            claims.put(AysTokenClaims.INSTITUTION_NAME.getValue(), this.institution.getName());
         }
 
         claims.put(AysTokenClaims.USER_ID.getValue(), this.id);
