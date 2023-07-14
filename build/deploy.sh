@@ -11,7 +11,7 @@ ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}"@"${HOSTNAME}"
 echo 'pulling latest changes from github'
 cd "${PATH}" || exit
 git status
-git checkout feature/50-automating-development-process &&
+git checkout hotfix/build-flow &&
 git fetch --all &&
 git pull origin main
 
@@ -24,4 +24,4 @@ docker rmi "$(docker images -q)"
 
 # run the docker file
 echo 'run new docker images'
-docker compose -f ../docker-compose-production.yml --env-file ../.env.local up -d
+docker compose -f ../docker-compose-production.yml up -d --build
