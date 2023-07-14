@@ -68,10 +68,18 @@ First of all, generate personal access token with this url : https://github.com/
 
 # Before Running Locally On IDE
 
-> 1. In the settings.xml file within the project, replace the `{YOUR_GITHUB_USERNAME}` placeholder with your GitHub
+> 1. If you haven't `~/m2/settings.xml` file skip the step without reading the after section.
+     If you aren't using the `~/.m2/settings.xml` file to actively, you can be back up it before creating
+     the new `settings.xml` file, if you want. If you are using actively, after the perform step 3 you can
+     manually merge the `settings.xml` file in the project with the `~/.m2/settings.xml` file and skip step 2 and 4.
+> 2. While inside the project directory in the terminal; that is, when you are in the `~/afet-yonetim-sistemi/ays-be`
+     directory, run the command `cp template-settings.xml settings.xml`.
+> 3. In the settings.xml file within the project, replace the `{YOUR_GITHUB_USERNAME}` placeholder with your GitHub
      username and replace `{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}` with the access token value you created on GitHub as
      described in the instructions under the `'Instructions Before Building The Project'` section.
-> 2. Then you need to copy the `settings.xml` file located in the project to the `~/.m2` directory.
+> 4. If the `.m2` directory has not been created before, you can use the command `mkdir ~/.m2` and then run the
+     command `cp settings.xml ~/.m2/settings.xml` for copy the `settings.xml` file located in the project
+     to the `~/.m2` directory.
 
 #### Don't forget to enable Lombok pre-processing in your IDE!
 
@@ -111,9 +119,11 @@ docker compose down -v mysql
 
 # Running As Docker Container
 
-> In the settings.xml file within the project, replace the `{YOUR_GITHUB_USERNAME}` placeholder with your GitHub
-> username and replace `{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}` with the access token value you created on GitHub as
-> described in the instructions under the `'Instructions Before Building The Project'` section.
+> 1. While inside the project directory in the terminal; that is, when you are in the `~/afet-yonetim-sistemi/ays-be`
+     directory, run the command `cp template-settings.xml settings.xml`.
+> 2. In the `settings.xml` file within the project, replace the `{YOUR_GITHUB_USERNAME}` placeholder with your GitHub
+     username and replace `{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}` with the access token value you created on GitHub as
+     described in the instructions under the `'Instructions Before Building The Project'` section.
 
 Before running the project, you need to run the following command to start the project container:
 
