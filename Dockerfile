@@ -8,8 +8,11 @@ COPY .mvn .mvn
 # Copy application source code
 COPY src src
 
+# Copy settings.xml file for private repository access
+COPY settings.xml settings.xml
+
 # Build the project and create the executable JAR
-RUN mvn clean install
+RUN mvn --settings settings.xml clean install
 
 # Stage 2: Run stage
 FROM openjdk:17-jdk-slim
