@@ -1,10 +1,12 @@
 #!/bin/bash
 
-echo 'deploy is running'
+echo 'deployment is starting...'
 
-# connect to the server
 echo 'connecting to server'
 echo "${AWS_PRIVATE_KEY}" >private_key && chmod 600 private_key
+ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_TEST_ENVIRONMENT_IP}" || exit
+
+echo 'pulling latest changes from github and rebuild docker image'
 ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_TEST_ENVIRONMENT_IP}" "
   cd ${AWS_BE_APP_PATH} ;
   sudo  git status ;
@@ -13,3 +15,5 @@ ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_TEST_ENV
   sudo  git pull ;
   sudo  docker compose -f docker-compose-test.yml up -d --build
 "
+
+echo 'deployment is done'
