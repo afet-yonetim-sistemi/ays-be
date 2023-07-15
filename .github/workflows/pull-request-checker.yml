@@ -44,7 +44,6 @@ jobs:
         id: maven-build
 
       - name: Deploy to server
-        if: steps.maven-build.success
         env:
           AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
           AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
