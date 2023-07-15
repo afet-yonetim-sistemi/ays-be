@@ -14,6 +14,6 @@ ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_LIVE_ENV
   sudo  git fetch --all ;
   sudo  git pull ;
   sudo  docker compose -f docker-compose-live.yml up -d --build
-"
+" || exit
 
 echo 'deployment is done'

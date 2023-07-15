@@ -14,6 +14,6 @@ ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_TEST_ENV
   sudo  git fetch --all ;
   sudo  git pull ;
   sudo  docker compose -f docker-compose-test.yml up -d --build
-"
+" || exit
 
 echo 'deployment is done'
