@@ -1,21 +1,19 @@
 #!/bin/bash
 
-echo 'deploy is running'
+echo 'deployment is starting...'
 
-# connect to the server
 echo 'connecting to server'
-echo "${AWS_PRIVATE_KEY}" > private_key && chmod 600 private_key
-ssh -o StrictHostKeyChecking=no -i private_key ${AWS_USERNAME}@${AWS_LIVE_ENVIRONMENT_IP}
-sudo su
+echo "${AWS_PRIVATE_KEY}" >private_key && chmod 600 private_key
+ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_LIVE_ENVIRONMENT_IP}" || exit
 
-# pull the latest changes
-echo 'pulling latest changes from github'
-cd "${AWS_BE_APP_PATH}" || exit
-git status
-git switch main &&
-git fetch --all &&
-git pull origin main
+echo 'pulling latest changes from github and rebuild docker image'
+ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_LIVE_ENVIRONMENT_IP}" "
+  cd ${AWS_BE_APP_PATH} ;
+  sudo  git status ;
+  sudo  git switch ${GH_LIVE_DEPLOYMENT_BRANCH} ;
+  sudo  git fetch --all ;
+  sudo  git pull ;
+  sudo  docker compose -f docker-compose-live.yml up -d --build
+"
 
-# run the docker file
-echo 'run new docker images'
-docker compose -f ../docker-compose-live.yml up -d --build
+echo 'deployment is done'

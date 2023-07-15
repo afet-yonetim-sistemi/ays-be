@@ -34,10 +34,10 @@ jobs:
       #        run: cp template-settings.xml settings.xml
       #
       #      - name: Replace username in settings.xml
-      #        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+      #        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
       #
       #      - name: Replace access token in settings.xml
-      #        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.PERSONAL_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+      #        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
       #
       #      - name: Build with Maven
       #        run: mvn --settings settings.xml clean install
@@ -49,4 +49,5 @@ jobs:
           AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
           AWS_TEST_ENVIRONMENT_IP: ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
           AWS_BE_APP_PATH: ${{ secrets.AWS_BE_APP_PATH }}
-        run: bash .github/workflows/test.sh
+          GH_TEST_DEPLOYMENT_BRANCH: ${{ env.GH_TEST_DEPLOYMENT_BRANCH }}
+        run: bash .github/workflows/test/deploy.sh
