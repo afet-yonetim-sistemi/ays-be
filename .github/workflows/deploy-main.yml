@@ -28,10 +28,10 @@ jobs:
         run: cp template-settings.xml settings.xml
 
       - name: Replace username in settings.xml
-        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.Username }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: Replace access token in settings.xml
-        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.PersonalAccessToken }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.PERSONAL_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: Build with Maven
         run: mvn --settings settings.xml clean install
