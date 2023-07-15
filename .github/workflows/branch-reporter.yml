@@ -4,10 +4,11 @@ on:
   pull_request:
     types:
       - opened
-      - review_requested
+      - reopened
       - edited
       - synchronize
-      - assigned
+      - ready_for_review
+      - unlocked
 
 jobs:
   build:
