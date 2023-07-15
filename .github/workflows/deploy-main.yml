@@ -24,8 +24,17 @@ jobs:
       - name: Install Maven
         run: sudo apt-get install -y maven
 
+      - name: Copy settings.xml file from template
+        run: cp template-settings.xml settings.xml
+
+      - name: Replace username in settings.xml
+        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.Username }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+
+      - name: Replace access token in settings.xml
+        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.PersonalAccessToken }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn --settings settings.xml clean install
         id: maven-build
 
       - name: Deploy to server
