@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pwd
+
 echo 'deploy is running'
 
 # connect to the server
