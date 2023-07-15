@@ -43,14 +43,17 @@ jobs:
       #        run: mvn --settings settings.xml clean install
       #        id: maven-build
 
-      - name: Connecting To Server
-        env:
-          AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
-          AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
-          AWS_TEST_ENVIRONMENT_IP: ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
-          AWS_BE_APP_PATH: ${{ secrets.AWS_BE_APP_PATH }}
-        run: echo "${AWS_PRIVATE_KEY}" > private_key && chmod 600 private_key && ssh -o StrictHostKeyChecking=no -i private_key ${AWS_USERNAME}@${AWS_TEST_ENVIRONMENT_IP}
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: { %- raw -% } ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
 
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }}{% endraw%} >> ~/.ssh/known_hosts
+
+      - name: Deploy with rsync
+        run: rsync -avz ./dist/ ${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_TEST_ENVIRONMENT_IP }}:${{ secrets.AWS_BE_APP_PATH }}
 
       - name: Deploy to server
         env:

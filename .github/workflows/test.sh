@@ -4,10 +4,6 @@ pwd
 
 echo 'deploy is running'
 
-# connect to the server
-echo 'connecting to server'
-echo "${AWS_PRIVATE_KEY}" > private_key && chmod 600 private_key
-ssh -o StrictHostKeyChecking=no -i private_key ${AWS_USERNAME}@${AWS_TEST_ENVIRONMENT_IP}
 sudo su
 
 # pull the latest changes
