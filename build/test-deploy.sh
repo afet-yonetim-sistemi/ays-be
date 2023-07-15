@@ -12,16 +12,9 @@ sudo su
 echo 'pulling latest changes from github'
 cd "${AWS_BE_APP_PATH}" || exit
 git status
-git switch hotfix/build-flow &&
+git switch main &&
 git fetch --all &&
 git pull origin main
-
-# stop already existing images
-echo 'stopping already existing images'
-docker ps
-docker stop "$(docker ps -aq)"
-docker rm "$(docker ps -aq)"
-docker rmi "$(docker images -q)"
 
 # run the docker file
 echo 'run new docker images'
