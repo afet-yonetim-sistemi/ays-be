@@ -24,4 +24,4 @@ docker rmi "$(docker images -q)"
 
 # run the docker file
 echo 'run new docker images'
-docker compose -f ../docker-compose-production.yml up -d --build
+docker compose -f ../docker-compose-test.yml up -d --build

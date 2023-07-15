@@ -1,0 +1,49 @@
+# Purpose: Deploy the backend to the test environment.
+name: Deploy to Test Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update package cache
+        run: sudo apt-get update
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      - name: Install Maven
+        run: sudo apt-get install -y maven
+
+      - name: Copy settings.xml file from template
+        run: cp template-settings.xml settings.xml
+
+      - name: Replace username in settings.xml
+        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+
+      - name: Replace access token in settings.xml
+        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.PERSONAL_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+
+      - name: Build with Maven
+        run: mvn --settings settings.xml clean install
+        id: maven-build
+
+      - name: Deploy to server
+        if: steps.maven-build.success
+        env:
+          PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
+          HOSTNAME: ${{ secrets.HOSTNAME  }}
+          USER_NAME: ${{ secrets.USER_NAME  }}
+          PATH: ${{ secrets.BACKEND_PATH }}
+        run: |
+          bash ./build/deploy.sh
