@@ -46,4 +46,4 @@ jobs:
           AWS_TEST_ENVIRONMENT_IP: ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
           AWS_BE_APP_PATH: ${{ secrets.AWS_BE_APP_PATH }}
         run: |
-          bash ./build/deploy.sh
+          bash ./build/test-deploy.sh
