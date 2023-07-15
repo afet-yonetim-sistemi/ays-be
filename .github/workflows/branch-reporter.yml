@@ -1,4 +1,4 @@
-name: Maven Build
+name: Branch Reporter
 
 on:
   pull_request:
