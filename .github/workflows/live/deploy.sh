@@ -9,11 +9,12 @@ ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_LIVE_ENV
 echo 'pulling latest changes from github and rebuild docker image'
 ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_LIVE_ENVIRONMENT_IP}" "
   cd ${AWS_BE_APP_PATH} ;
-  sudo  git status ;
-  sudo  git switch ${GH_LIVE_DEPLOYMENT_BRANCH} ;
-  sudo  git fetch --all ;
-  sudo  git pull ;
-  sudo  docker compose -f docker-compose-live.yml up -d --build
+  sudo git status ;
+  sudo git switch ${GH_LIVE_DEPLOYMENT_BRANCH} ;
+  sudo git reset --hard;
+  sudo git fetch --all ;
+  sudo git pull ;
+  sudo docker compose -f docker-compose-live.yml up -d --build
 " || exit
 
 echo 'deployment is done'
