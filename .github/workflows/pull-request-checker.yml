@@ -1,4 +1,5 @@
-name: Branch Reporter
+# Purpose: This file is used to build the project when a pull request is opened, reopened, edited, synchronized, ready for review, or unlocked.
+name: Pull Request Checker
 
 on:
   pull_request:
