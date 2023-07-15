@@ -4,12 +4,12 @@ echo 'deploy is running'
 
 # connect to the server
 echo 'connecting to server'
-echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}"@"${HOSTNAME}"
+echo "${AWS_PRIVATE_KEY}" > private_key && chmod 600 private_key
+ssh -o StrictHostKeyChecking=no -i private_key ${AWS_USERNAME}@${AWS_LIVE_ENVIRONMENT_IP}
 
 # pull the latest changes
 echo 'pulling latest changes from github'
-cd "${PATH}" || exit
+cd "${AWS_BE_APP_PATH}" || exit
 git status
 git switch hotfix/build-flow &&
 git fetch --all &&
