@@ -44,6 +44,7 @@ jobs:
       #        id: maven-build
 
       - name: Deploy to server
+        uses: actions/checkout@v2
         env:
           AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
           AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
