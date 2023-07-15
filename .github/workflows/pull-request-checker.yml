@@ -53,4 +53,4 @@ jobs:
           AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
           AWS_LIVE_ENVIRONMENT_IP: ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
           AWS_BE_APP_PATH: ${{ secrets.AWS_BE_APP_PATH }}
-        run: bash test.sh
+        run: cd .github/workflows ; bash test.sh
