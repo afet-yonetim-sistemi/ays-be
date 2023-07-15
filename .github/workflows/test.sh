@@ -5,7 +5,7 @@ echo 'deploy is running'
 # connect to the server
 echo 'connecting to server'
 echo "${AWS_PRIVATE_KEY}" > private_key && chmod 600 private_key
-ssh -o StrictHostKeyChecking=no -i private_key ${{secrets.AWS_USERNAME}}@${{ secrets.AWS_BE_APP_PATH }} || exit
+ssh -o StrictHostKeyChecking=no -i private_key ${AWS_USERNAME}@${AWS_TEST_ENVIRONMENT_IP} || exit
 sudo su
 
 # pull the latest changes
