@@ -10,7 +10,9 @@ sudo su
 
 # pull the latest changes
 echo 'pulling latest changes from github'
-cd "${AWS_BE_APP_PATH}" || exit
+pwd
+ls -al
+cd ${AWS_BE_APP_PATH} || exit
 git status
 git switch main &&
 git fetch --all &&
