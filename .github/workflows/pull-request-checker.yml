@@ -49,8 +49,7 @@ jobs:
           AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
           AWS_TEST_ENVIRONMENT_IP: ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
           AWS_BE_APP_PATH: ${{ secrets.AWS_BE_APP_PATH }}
-        run: echo "${AWS_PRIVATE_KEY}" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${AWS_USERNAME}@${AWS_TEST_ENVIRONMENT_IP}
+        run: echo "${AWS_PRIVATE_KEY}" > private_key && chmod 600 private_key && ssh -o StrictHostKeyChecking=no -i private_key ${AWS_USERNAME}@${AWS_TEST_ENVIRONMENT_IP}
 
 
       - name: Deploy to server
