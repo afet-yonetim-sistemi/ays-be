@@ -1,7 +1,5 @@
 #!/bin/bash
 
-pwd
-
 echo 'deploy is running'
 
 # connect to the server
@@ -14,5 +12,5 @@ ssh -i private_key ${AWS_USERNAME}@${AWS_TEST_ENVIRONMENT_IP} "
   git switch main &&
   git fetch --all &&
   git pull origin main &&
-  docker compose -f ../docker-compose-production.yml up -d --build
+  docker compose -f ../docker-compose-test.yml up -d --build
 "
