@@ -30,6 +30,9 @@ jobs:
           java-version: 17 # Specify Java 17 as the version
           distribution: 'zulu' # Use the 'zulu' distribution of Java
 
+      - name: Set up Docker # Step to set up the Docker environment
+        uses: actions/hello-world-docker-action@v2
+
       - name: Install Maven # Step to install Maven
         run: sudo apt-get install -y maven
 
