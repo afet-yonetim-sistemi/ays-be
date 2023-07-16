@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class LocationUserRequest {
+public class UserLocationRequest {
 
     private Double latitude;
     private Double longitude;
