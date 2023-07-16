@@ -19,7 +19,7 @@ import java.util.Set;
  */
 @Data
 @Builder
-public class AssignmentListRequest extends AysPagingRequest implements AysFilteringRequest {
+public class UserAssignmentListRequest extends AysPagingRequest implements AysFilteringRequest {
 
     private AssignmentStatus status;
 
@@ -28,8 +28,8 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
      *
      * @return true if the assignment status is valid or null, false otherwise.
      */
-    @AssertTrue(message = "IS ASSIGNMENT STATUS NOT VALID")
-    private boolean isStatusValid() {
+    @AssertTrue(message = "IS ASSIGNMENT STATUS NOT ACCEPTED")
+    private boolean isStatusAccepted() {
 
         if (this.status == null) {
             return true;

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AssignmentLocationRequest {
+public class UserAssignmentSearchRequest {
 
     private Double latitude;
     private Double longitude;
