@@ -44,3 +44,14 @@ jobs:
 
       - name: Build with Maven # Step to build the application using Maven with the provided settings.xml configuration file
         run: mvn --settings settings.xml clean install
+        id: maven-build
+
+      - name: Deploy to server # Step to deploy the application to the server using the deploy.sh script with the specified environment variables
+        env:
+          AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+          AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
+          AWS_TEST_ENVIRONMENT_IP: ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
+          AWS_BE_APP_PATH: ${{ secrets.AWS_BE_APP_PATH }}
+          GH_TEST_DEPLOYMENT_BRANCH: ${{ vars.GH_TEST_DEPLOYMENT_BRANCH }}
+        run: bash .github/workflows/test/deploy.sh
+
