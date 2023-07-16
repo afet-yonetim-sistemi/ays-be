@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
  * The mapping path for this controller is "/api/v1/user".
  */
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Validated
 class UserController {
@@ -47,7 +47,7 @@ class UserController {
      * @param listRequest The request object containing the list criteria.
      * @return A response object containing a paginated list of users.
      */
-    @GetMapping
+    @PostMapping("/users")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<AysPageResponse<UsersResponse>> getUsers(@RequestBody @Valid UserListRequest listRequest) {
         final AysPage<User> pageOfUsers = userService.getAllUsers(listRequest);
@@ -66,7 +66,7 @@ class UserController {
      * @param id The ID of the user to retrieve.
      * @return A response object containing the retrieved user data.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<UserResponse> getUserById(@PathVariable @UUID String id) {
         final User user = userService.getUserById(id);
@@ -81,7 +81,7 @@ class UserController {
      * @param saveRequest The request object containing the user data to be saved.
      * @return A response object containing the saved user data.
      */
-    @PostMapping
+    @PostMapping("/user")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<UserSavedResponse> saveUser(@RequestBody @Valid UserSaveRequest saveRequest) {
         User user = userSaveService.saveUser(saveRequest);
@@ -96,10 +96,10 @@ class UserController {
      * @param updateRequest the user update request containing the updated user information
      * @return a success response if the user was updated successfully
      */
-    @PutMapping("/{id}")
+    @PutMapping("/user/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<Void> updateUser(@PathVariable @UUID String id,
-                                        @RequestBody UserUpdateRequest updateRequest) {
+                                        @RequestBody @Valid UserUpdateRequest updateRequest) {
 
         userService.updateUser(id, updateRequest);
         return AysResponse.SUCCESS;
@@ -112,7 +112,7 @@ class UserController {
      * @param id The ID of the user to delete.
      * @return A response object indicating a successful deletion.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<Void> deleteUser(@PathVariable @UUID String id) {
         userService.deleteUser(id);

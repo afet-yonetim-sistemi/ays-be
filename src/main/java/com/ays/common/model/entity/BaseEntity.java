@@ -9,10 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * Base entity to be used in order to pass the common fields to the entities in the same module.
@@ -32,8 +34,11 @@ public abstract class BaseEntity {
 
     @PrePersist
     public void prePersist() {
-        this.createdUser = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getClaim(AysTokenClaims.USERNAME.getValue());
+        this.createdUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getPrincipal)
+                .map(Jwt.class::cast)
+                .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
+                .orElse("AYS");
         this.createdAt = LocalDateTime.now();
     }
 
@@ -46,8 +51,11 @@ public abstract class BaseEntity {
 
     @PreUpdate
     public void preUpdate() {
-        this.updatedUser = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getClaim(AysTokenClaims.USERNAME.getValue());
+        this.updatedUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getPrincipal)
+                .map(Jwt.class::cast)
+                .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
+                .orElse("AYS");
         this.updatedAt = LocalDateTime.now();
     }
 }

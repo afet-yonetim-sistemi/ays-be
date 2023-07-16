@@ -21,11 +21,20 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
      */
     @Override
     public boolean isValid(AysPhoneNumber phoneNumber, ConstraintValidatorContext context) {
-        final int countryCodeLength = phoneNumber.getCountryCode().toString().length();
-        final int lineNumberLength = phoneNumber.getLineNumber().toString().length();
-        final boolean countryCodeLengthIsValid = countryCodeLength >= 1 && countryCodeLength <= 5;
-        final boolean lineNumberLengthIsValid = lineNumberLength >= 1 && lineNumberLength <= 10;
-        return countryCodeLengthIsValid && lineNumberLengthIsValid;
+        final String countryCode = phoneNumber.getCountryCode();
+        final String lineNumber = phoneNumber.getLineNumber();
+
+        final int countryCodeLength = countryCode.length();
+        final int lineNumberLength = lineNumber.length();
+        final boolean isCountryCodeLengthValid = countryCodeLength >= 1 && countryCodeLength <= 7;
+        final boolean isLineNumberLengthValid = lineNumberLength >= 1 && lineNumberLength <= 13;
+
+        final boolean countryCodeIsNumeric = countryCode.chars().allMatch(Character::isDigit);
+        final boolean lineNumberIsNumberic = lineNumber.chars().allMatch(Character::isDigit);
+
+        final boolean isPhoneNumberLengthValid = isCountryCodeLengthValid && isLineNumberLengthValid;
+        final boolean isPhoneNumberNumeric = countryCodeIsNumeric && lineNumberIsNumberic;
+        return isPhoneNumberLengthValid && isPhoneNumberNumeric;
     }
 
 }

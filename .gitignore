@@ -63,3 +63,4 @@ build/
 ## We should not commit this to prevent leaking confidential information
 .env
 
+settings.xml

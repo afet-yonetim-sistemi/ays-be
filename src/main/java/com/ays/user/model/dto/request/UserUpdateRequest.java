@@ -7,6 +7,7 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.EnumSet;
 
@@ -29,10 +30,11 @@ public class UserUpdateRequest {
     @NotNull
     private UserStatus status;
 
-    @AssertTrue(message = "IS STATUS NOT VALID")
-    private boolean isStatusValid() {
+    @AssertTrue(message = "IS NOT ACCEPTED")
+    @SuppressWarnings("unused")
+    private boolean isStatusAccepted() {
 
-        if (this.status == null) {
+        if (ObjectUtils.isEmpty(this.status)) {
             return true;
         }
 
@@ -40,10 +42,11 @@ public class UserUpdateRequest {
         return EnumValidation.anyOf(this.status, acceptedUserStatuses);
     }
 
-    @AssertTrue(message = "IS ROLE NOT VALID")
-    private boolean isRoleValid() {
+    @AssertTrue(message = "IS NOT ACCEPTED")
+    @SuppressWarnings("unused")
+    private boolean isRoleAccepted() {
 
-        if (this.role == null) {
+        if (ObjectUtils.isEmpty(this.role)) {
             return true;
         }
 

@@ -1,6 +1,6 @@
 package com.ays.auth.service.impl;
 
-import com.ays.auth.config.AysTokenConfiguration;
+import com.ays.auth.config.AysTokenConfigurationParameter;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
@@ -33,7 +33,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 class AysTokenServiceImpl implements AysTokenService {
 
-    private final AysTokenConfiguration tokenConfiguration;
+    private final AysTokenConfigurationParameter tokenConfiguration;
 
     /**
      * Generates an access token and a refresh token based on the provided claims.
@@ -110,7 +110,7 @@ class AysTokenServiceImpl implements AysTokenService {
 
     /**
      * Verifies and validates the given JWT (JSON Web Token).
-     * This method parses the token using the public key from the {@link AysTokenConfiguration},
+     * This method parses the token using the public key from the {@link AysTokenConfigurationParameter},
      * and throws a {@link TokenNotValidException} if the token is not valid due to being malformed, expired or having an invalid signature.
      *
      * @param jwt The JWT (JSON Web Token) to be verified and validated.
@@ -146,7 +146,7 @@ class AysTokenServiceImpl implements AysTokenService {
 
     /**
      * Retrieves the authentication object {@link UsernamePasswordAuthenticationToken} based on the provided token.
-     * This method parses the token using the public key from the {@link AysTokenConfiguration} and extracts the necessary information from the token claims,
+     * This method parses the token using the public key from the {@link AysTokenConfigurationParameter} and extracts the necessary information from the token claims,
      * such as user type and roles, to construct the authentication object.
      *
      * @param token The token string used for authentication.

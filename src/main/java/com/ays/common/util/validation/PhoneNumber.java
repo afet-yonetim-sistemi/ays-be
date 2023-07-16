@@ -21,7 +21,7 @@ public @interface PhoneNumber {
      *
      * @return the error message
      */
-    String message() default "must be valid";
+    String message() default "MUST BE VALID";
 
     /**
      * Returns the validation groups to which this constraint belongs.

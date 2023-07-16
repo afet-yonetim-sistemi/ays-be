@@ -2,12 +2,14 @@ package com.ays.user.controller;
 
 import com.ays.AbstractRestControllerTest;
 import com.ays.common.model.AysPage;
+import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
 import com.ays.user.model.dto.request.*;
@@ -17,6 +19,7 @@ import com.ays.user.model.dto.response.UserSavedResponseBuilder;
 import com.ays.user.model.dto.response.UsersResponse;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
+import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import com.ays.user.model.mapper.UserEntityToUserMapper;
 import com.ays.user.model.mapper.UserToUserResponseMapper;
@@ -49,7 +52,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     private static final UserToUserResponseMapper USER_TO_USER_RESPONSE_MAPPER = UserToUserResponseMapper.initialize();
     private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
 
-    private static final String BASE_PATH = "/api/v1/user";
+    private static final String BASE_PATH = "/api/v1";
 
     @Test
     void givenValidUserSaveRequest_whenUserSaved_thenReturnUserSavedResponse() throws Exception {
@@ -67,19 +70,20 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockUser);
 
         // Then
+        String endpoint = BASE_PATH.concat("/user");
         UserSavedResponse mockUserSavedResponse = new UserSavedResponseBuilder()
                 .withUsername(mockUser.getUsername())
                 .withPassword(mockUser.getPassword())
                 .build();
         AysResponse<UserSavedResponse> mockResponse = AysResponseBuilder.successOf(mockUserSavedResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().getReasonPhrase()))
+                        .value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
@@ -101,8 +105,9 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // Then
+        String endpoint = BASE_PATH.concat("/user");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(BASE_PATH, mockUserToken.getAccessToken(), mockUserSaveRequest);
+                .post(endpoint, mockUserToken.getAccessToken(), mockUserSaveRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -116,6 +121,74 @@ class UserControllerTest extends AbstractRestControllerTest {
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+    }
+
+    @Test
+    void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("ABC")
+                .withLineNumber("ABC").build();
+        UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
+                .withValidFields()
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userSaveService, Mockito.times(0))
+                .saveUser(Mockito.any(UserSaveRequest.class));
+    }
+
+    @Test
+    void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("456786745645")
+                .withLineNumber("6546467456435548676845321346656654").build();
+        UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
+                .withValidFields()
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userSaveService, Mockito.times(0))
+                .saveUser(Mockito.any(UserSaveRequest.class));
     }
 
     @Test
@@ -133,6 +206,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
+        String endpoint = BASE_PATH.concat("/users");
         List<UsersResponse> mockUsersResponses = USER_TO_USERS_RESPONSE_MAPPER.map(mockAysPageOfUsers.getContent());
         AysPageResponse<UsersResponse> pageOfUsersResponse = AysPageResponse.<UsersResponse>builder()
                 .of(mockAysPageOfUsers)
@@ -140,7 +214,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .build();
         AysResponse<AysPageResponse<UsersResponse>> mockAysResponse = AysResponse.successOf(pageOfUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH, mockAdminUserToken.getAccessToken(), mockUserListRequest))
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -162,8 +236,9 @@ class UserControllerTest extends AbstractRestControllerTest {
         UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();
 
         // Then
+        String endpoint = BASE_PATH.concat("/users");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH, mockUserToken.getAccessToken(), mockUserListRequest);
+                .post(endpoint, mockUserToken.getAccessToken(), mockUserListRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -190,7 +265,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockUser);
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/").concat(mockUserId);
         UserResponse mockUserResponse = USER_TO_USER_RESPONSE_MAPPER.map(mockUser);
         AysResponse<UserResponse> mockAysResponse = AysResponse.successOf(mockUserResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
@@ -216,8 +291,9 @@ class UserControllerTest extends AbstractRestControllerTest {
         String mockUserId = AysRandomUtil.generateUUID();
 
         // Then
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH.concat("/".concat(mockUserId)), mockUserToken.getAccessToken());
+                .get(endpoint, mockUserToken.getAccessToken());
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -239,13 +315,15 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
-        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
+                .withRole(UserRole.VOLUNTEER)
+                .withStatus(UserStatus.ACTIVE).build();
 
         // When
         Mockito.doNothing().when(userService).updateUser(mockUserId, mockUpdateRequest);
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .put(endpoint, mockAdminUserToken.getAccessToken(), mockUpdateRequest))
@@ -268,10 +346,12 @@ class UserControllerTest extends AbstractRestControllerTest {
     void givenValidUserIdAndUserUpdateRequest_whenUserUnauthorizedForUpdating_thenReturnAccessDeniedException() throws Exception {
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
-        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder().build();
+        UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
+                .withRole(UserRole.VOLUNTEER)
+                .withStatus(UserStatus.ACTIVE).build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
 
@@ -298,7 +378,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         Mockito.doNothing().when(userService).deleteUser(mockUserId);
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .delete(endpoint, mockAdminUserToken.getAccessToken()))
@@ -323,7 +403,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         String mockUserId = AysRandomUtil.generateUUID();
 
         // Then
-        String endpoint = BASE_PATH.concat("/").concat(mockUserId);
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 

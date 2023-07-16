@@ -1,5 +1,6 @@
 package com.ays.admin_user.model.entity;
 
+import com.ays.admin_user.model.enums.AdminRole;
 import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.model.enums.AysUserType;
@@ -53,10 +54,14 @@ public class AdminUserEntity extends BaseEntity {
     private AdminUserStatus status;
 
     @Column(name = "COUNTRY_CODE")
-    private Long countryCode;
+    private String countryCode;
 
     @Column(name = "LINE_NUMBER")
-    private Long lineNumber;
+    private String lineNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE")
+    private AdminRole role;
 
     @Column(name = "INSTITUTION_ID")
     private String institutionId;
@@ -85,6 +90,7 @@ public class AdminUserEntity extends BaseEntity {
         } else {
             claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
             claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
+            claims.put(AysTokenClaims.INSTITUTION_NAME.getValue(), this.institution.getName());
         }
 
         claims.put(AysTokenClaims.USER_ID.getValue(), this.id);
