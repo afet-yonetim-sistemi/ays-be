@@ -1,23 +1,18 @@
 package com.ays.user.controller;
 
-import java.util.List;
-
 import com.ays.AbstractRestControllerTest;
 import com.ays.common.model.AysPage;
+import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
-import com.ays.user.model.dto.request.UserListRequest;
-import com.ays.user.model.dto.request.UserListRequestBuilder;
-import com.ays.user.model.dto.request.UserSaveRequest;
-import com.ays.user.model.dto.request.UserSaveRequestBuilder;
-import com.ays.user.model.dto.request.UserUpdateRequest;
-import com.ays.user.model.dto.request.UserUpdateRequestBuilder;
+import com.ays.user.model.dto.request.*;
 import com.ays.user.model.dto.response.UserResponse;
 import com.ays.user.model.dto.response.UserSavedResponse;
 import com.ays.user.model.dto.response.UserSavedResponseBuilder;
@@ -41,6 +36,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.List;
 
 class UserControllerTest extends AbstractRestControllerTest {
 
@@ -86,7 +83,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().getReasonPhrase()))
+                        .value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
@@ -124,6 +121,74 @@ class UserControllerTest extends AbstractRestControllerTest {
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+    }
+
+    @Test
+    void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("ABC")
+                .withLineNumber("ABC").build();
+        UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
+                .withValidFields()
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userSaveService, Mockito.times(0))
+                .saveUser(Mockito.any(UserSaveRequest.class));
+    }
+
+    @Test
+    void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("456786745645")
+                .withLineNumber("6546467456435548676845321346656654").build();
+        UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
+                .withValidFields()
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userSaveService, Mockito.times(0))
+                .saveUser(Mockito.any(UserSaveRequest.class));
     }
 
     @Test
