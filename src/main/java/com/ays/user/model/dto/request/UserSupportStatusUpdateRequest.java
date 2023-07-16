@@ -24,7 +24,7 @@ public class UserSupportStatusUpdateRequest {
     @NotNull
     private UserSupportStatus supportStatus;
 
-    @AssertTrue(message = "is not accepted")
+    @AssertTrue(message = "IS NOT ACCEPTED")
     @SuppressWarnings("unused")
     private boolean isSupportStatusAccepted() {
 
