@@ -12,7 +12,7 @@ import org.locationtech.jts.geom.Point;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class Location extends BaseDomainModel {
+public class UserLocation extends BaseDomainModel {
 
     private Long id;
     private Point point;
