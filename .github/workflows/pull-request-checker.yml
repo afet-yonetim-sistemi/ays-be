@@ -33,18 +33,18 @@ jobs:
       #      - name: Install Maven # Step to install Maven
       #        run: sudo apt-get install -y maven
 
-      - name: Copy settings.xml file from template # Step to create a new 'settings.xml' file by copying the 'template-settings.xml'
-        run: cp template-settings.xml settings.xml
-
-      - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
-        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
-
-      - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
-        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
-
-      - name: Build with Maven # Step to build the application using Maven with the provided settings.xml configuration file
-        run: mvn --settings settings.xml clean install
-        id: maven-build
+      #      - name: Copy settings.xml file from template # Step to create a new 'settings.xml' file by copying the 'template-settings.xml'
+      #        run: cp template-settings.xml settings.xml
+      #
+      #      - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
+      #        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+      #
+      #      - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
+      #        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+      #
+      #      - name: Build with Maven # Step to build the application using Maven with the provided settings.xml configuration file
+      #        run: mvn --settings settings.xml clean install
+      #        id: maven-build
 
       - name: Deploy to server # Step to deploy the application to the server using the test.sh script with the specified environment variables
         env:
