@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.Point;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "AYS_USER_LOCATION")
-public class LocationEntity extends BaseEntity {
+public class UserLocationEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
@@ -32,7 +32,7 @@ public class LocationEntity extends BaseEntity {
     @Column(name = "USER_ID")
     private String userId;
 
-    @Column(name = "POINT", columnDefinition = "geometry(Point,4326)")
+    @Column(name = "POINT", columnDefinition = "ST_GeomFromText(Point, 4326)")
     private Point point;
 
     @OneToOne
