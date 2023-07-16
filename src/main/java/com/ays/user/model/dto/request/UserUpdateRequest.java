@@ -30,7 +30,7 @@ public class UserUpdateRequest {
     @NotNull
     private UserStatus status;
 
-    @AssertTrue(message = "is not accepted")
+    @AssertTrue(message = "IS NOT ACCEPTED")
     @SuppressWarnings("unused")
     private boolean isStatusAccepted() {
 
@@ -42,7 +42,7 @@ public class UserUpdateRequest {
         return EnumValidation.anyOf(this.status, acceptedUserStatuses);
     }
 
-    @AssertTrue(message = "is not accepted")
+    @AssertTrue(message = "IS NOT ACCEPTED")
     @SuppressWarnings("unused")
     private boolean isRoleAccepted() {
 
