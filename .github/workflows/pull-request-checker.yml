@@ -18,17 +18,17 @@ jobs:
   build: # Define the "build" job
     runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
     steps: # List of steps to execute within the job
-#      - name: Update package cache # Step to update the package cache
-      #        run: sudo apt-get update
+      - name: Update package cache # Step to update the package cache
+        run: sudo apt-get update
       #
-      #      - name: Checkout code # Step to check out the code from the repository
-      #        uses: actions/checkout@v3
+      - name: Checkout code # Step to check out the code from the repository
+        uses: actions/checkout@v3
       #
-      #      - name: Set up Java # Step to set up the Java environment
-      #        uses: actions/setup-java@v3
-      #        with:
-      #          java-version: 17 # Specify Java 17 as the version
-      #          distribution: 'zulu' # Use the 'zulu' distribution of Java
+      - name: Set up Java # Step to set up the Java environment
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17 # Specify Java 17 as the version
+          distribution: 'zulu' # Use the 'zulu' distribution of Java
       #
       #      - name: Install Maven # Step to install Maven
       #        run: sudo apt-get install -y maven
