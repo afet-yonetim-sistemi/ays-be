@@ -1,6 +1,4 @@
-# AYS | Afet Yönetim Sistemi API
-
----
+# AYS | Afet Yönetim Sistemi API  [![Application Status](https://github.com/afet-yonetim-sistemi/ays-be/actions/workflows/application-health-checker.yml/badge.svg)](https://github.com/afet-yonetim-sistemi/ays-be/actions/workflows/application-health-checker.yml)
 
 ## Tech Stack
 
