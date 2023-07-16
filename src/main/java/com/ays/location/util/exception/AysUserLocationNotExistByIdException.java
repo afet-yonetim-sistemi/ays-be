@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception to be thrown when a location with a given ID does not exist.
  */
-public class AysLocationNotExistByIdException extends AysNotExistException {
+public class AysUserLocationNotExistByIdException extends AysNotExistException {
 
     /**
      * Unique serial version ID.
@@ -20,8 +20,8 @@ public class AysLocationNotExistByIdException extends AysNotExistException {
      *
      * @param id the ID of the location that does not exist
      */
-    public AysLocationNotExistByIdException(String id) {
-        super("LOCATION NOT EXIST! id:" + id);
+    public AysUserLocationNotExistByIdException(String id) {
+        super("USER LOCATION NOT EXIST! id:" + id);
     }
 
 }
