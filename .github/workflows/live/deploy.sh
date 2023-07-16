@@ -36,7 +36,7 @@ ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_LIVE_ENV
   sudo git switch ${GH_LIVE_DEPLOYMENT_BRANCH};
   sudo git pull;
   sudo git reset --hard;
-  sudo docker compose -f docker-compose-test.yml up -d --build
+  sudo docker compose -f docker-compose-live.yml up -d --build
 " || exit
 
 # Outputting a message indicating that the deployment is done
