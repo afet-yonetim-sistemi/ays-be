@@ -46,7 +46,7 @@ jobs:
       #        run: mvn --settings settings.xml clean install
       #        id: maven-build
 
-      - name: Deploy to server # Step to deploy the application to the server using the test.sh script with the specified environment variables
+      - name: Deploy to server
         env:
           AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
           AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
