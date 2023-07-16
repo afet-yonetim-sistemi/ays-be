@@ -4,6 +4,10 @@ import org.springframework.http.HttpStatus;
 
 public class AysErrorBuilder {
 
+    public static final AysError VALIDATION_ERROR = AysError.builder()
+            .httpStatus(HttpStatus.BAD_REQUEST)
+            .header(AysError.Header.VALIDATION_ERROR.getName())
+            .isSuccess(false).build();
 
     public static final AysError UNAUTHORIZED = AysError.builder()
             .httpStatus(HttpStatus.UNAUTHORIZED)
