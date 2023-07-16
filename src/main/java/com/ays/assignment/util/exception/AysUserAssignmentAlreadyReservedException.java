@@ -5,9 +5,9 @@ import com.ays.common.util.exception.AysAlreadyException;
 import java.io.Serial;
 
 /**
- * Exception thrown when an assignment is reserved and attempting to perform an action that requires an assignment which is already reserved.
+ * Exception thrown when a user assignment is reserved and attempting to perform an action that requires an assignment which is already reserved.
  */
-public class AysAssignmentAlreadyReservedException extends AysAlreadyException {
+public class AysUserAssignmentAlreadyReservedException extends AysAlreadyException {
 
     /**
      * Unique identifier for serialization.
@@ -20,7 +20,7 @@ public class AysAssignmentAlreadyReservedException extends AysAlreadyException {
      *
      * @param id the id of the assignment which is already reserved
      */
-    public AysAssignmentAlreadyReservedException(String id) {
+    public AysUserAssignmentAlreadyReservedException(String id) {
         super("ASSIGNMENT IS ALREADY RESERVED! id:" + id);
     }
 }

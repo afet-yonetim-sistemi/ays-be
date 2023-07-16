@@ -5,9 +5,9 @@ import com.ays.common.util.exception.AysNotExistException;
 import java.io.Serial;
 
 /**
- * Exception to be thrown when an assignment with a given ID does not exist.
+ * Exception to be thrown when a user assignment with a given ID does not exist.
  */
-public class AysAssignmentNotExistByIdException extends AysNotExistException {
+public class AysUserAssignmentNotExistByIdException extends AysNotExistException {
 
     /**
      * Unique serial version ID.
@@ -20,7 +20,7 @@ public class AysAssignmentNotExistByIdException extends AysNotExistException {
      *
      * @param id the ID of the assignment that does not exist
      */
-    public AysAssignmentNotExistByIdException(String id) {
+    public AysUserAssignmentNotExistByIdException(String id) {
         super("ASSIGNMENT NOT EXIST! id:" + id);
     }
 

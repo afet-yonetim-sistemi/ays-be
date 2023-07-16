@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 /**
- * A DTO (Data Transfer Object) representing a list of assignment in a paginated response.
+ * A DTO (Data Transfer Object) representing a list of user assignment in a paginated response.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

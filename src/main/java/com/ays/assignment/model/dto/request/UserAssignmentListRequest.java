@@ -14,7 +14,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
- * Represents a request object for fetching a list of assignment with pagination,sorting and filtering options
+ * Represents a request object for fetching a list of user assignment with pagination,sorting and filtering options
  * This class extends the {@link AysPagingRequest} class and adds additional validation rules for sorting.
  */
 @Data

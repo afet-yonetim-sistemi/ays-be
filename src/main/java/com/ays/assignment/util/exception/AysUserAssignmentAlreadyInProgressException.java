@@ -5,9 +5,9 @@ import com.ays.common.util.exception.AysAlreadyException;
 import java.io.Serial;
 
 /**
- * Exception thrown when an assignment is in progress and attempting to perform an action that requires an assignment which is already in progress.
+ * Exception thrown when a user assignment is in progress and attempting to perform an action that requires an assignment which is already in progress.
  */
-public class AysAssignmentAlreadyInProgressException extends AysAlreadyException {
+public class AysUserAssignmentAlreadyInProgressException extends AysAlreadyException {
 
     /**
      * Unique identifier for serialization.
@@ -20,7 +20,7 @@ public class AysAssignmentAlreadyInProgressException extends AysAlreadyException
      *
      * @param id the id of the assignment which is already in progress
      */
-    public AysAssignmentAlreadyInProgressException(String id) {
+    public AysUserAssignmentAlreadyInProgressException(String id) {
         super("ASSIGNMENT IS ALREADY IN PROGRESS! id:" + id);
     }
 
