@@ -13,7 +13,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
 /**
- * Location entity, which holds the information regarding location.
+ * User Location entity, which holds the information regarding location.
  */
 @Entity
 @Data

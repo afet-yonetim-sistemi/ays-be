@@ -5,7 +5,7 @@ import com.ays.common.util.exception.AysNotExistException;
 import java.io.Serial;
 
 /**
- * Exception to be thrown when a location with a given ID does not exist.
+ * Exception to be thrown when a user location with a given ID does not exist.
  */
 public class AysUserLocationNotExistByIdException extends AysNotExistException {
 
