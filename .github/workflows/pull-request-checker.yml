@@ -18,20 +18,20 @@ jobs:
   build: # Define the "build" job
     runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
     steps: # List of steps to execute within the job
-      - name: Update package cache # Step to update the package cache
-        run: sudo apt-get update
-
-      - name: Checkout code # Step to check out the code from the repository
-        uses: actions/checkout@v3
-
-      - name: Set up Java # Step to set up the Java environment
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17 # Specify Java 17 as the version
-          distribution: 'zulu' # Use the 'zulu' distribution of Java
-
-      - name: Install Maven # Step to install Maven
-        run: sudo apt-get install -y maven
+#      - name: Update package cache # Step to update the package cache
+      #        run: sudo apt-get update
+      #
+      #      - name: Checkout code # Step to check out the code from the repository
+      #        uses: actions/checkout@v3
+      #
+      #      - name: Set up Java # Step to set up the Java environment
+      #        uses: actions/setup-java@v3
+      #        with:
+      #          java-version: 17 # Specify Java 17 as the version
+      #          distribution: 'zulu' # Use the 'zulu' distribution of Java
+      #
+      #      - name: Install Maven # Step to install Maven
+      #        run: sudo apt-get install -y maven
 
       - name: Copy settings.xml file from template # Step to create a new 'settings.xml' file by copying the 'template-settings.xml'
         run: cp template-settings.xml settings.xml
@@ -52,6 +52,5 @@ jobs:
           AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
           AWS_TEST_ENVIRONMENT_IP: ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
           AWS_BE_APP_PATH: ${{ secrets.AWS_BE_APP_PATH }}
-          GH_TEST_DEPLOYMENT_BRANCH: ${{ vars.GH_TEST_CHECKER_BRANCH }}
+          GH_TEST_DEPLOYMENT_BRANCH: main
         run: bash .github/workflows/test.sh
-
