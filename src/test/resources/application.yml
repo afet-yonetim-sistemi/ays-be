@@ -1,0 +1,25 @@
+spring:
+  sql:
+    init:
+      mode: always
+  liquibase:
+    enabled: true
+    changeLog: "classpath:db/changelog/db.changelog-master.yaml"
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+ays:
+  db:
+    name: mysql
+    username: ays
+    password: :ayspass
+    url: jdbc:mysql://localhost:3306/test
+    maximum-pool-size: 5
+    connection-timeout: 180000
+    maximum-lifetime: 170000

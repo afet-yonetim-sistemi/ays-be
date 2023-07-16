@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
@@ -32,8 +31,7 @@ import java.util.Set;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@ActiveProfiles(value = "test")
-public abstract class AbstractRestControllerTest {
+public abstract class AbstractRestControllerTest extends AbstractTestContainerConfiguration {
 
     @Autowired
     protected MockMvc mockMvc;
