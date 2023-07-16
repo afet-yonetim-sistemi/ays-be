@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class Assignment extends BaseDomainModel {
+public class UserAssignment extends BaseDomainModel {
 
     private String id;
     private String description;
@@ -25,6 +25,7 @@ public class Assignment extends BaseDomainModel {
     private Double latitude;
     private Double longitude;
     private AssignmentStatus status;
+
     private User user;
     private Institution institution;
 
