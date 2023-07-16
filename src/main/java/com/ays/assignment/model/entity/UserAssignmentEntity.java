@@ -10,6 +10,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Assignment entity, which holds the information regarding assignment.
@@ -21,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "AYS_USER_ASSIGNMENT")
-public class AssignmentEntity extends BaseEntity {
+public class UserAssignmentEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
@@ -48,11 +51,8 @@ public class AssignmentEntity extends BaseEntity {
     @Column(name = "LINE_NUMBER")
     private String lineNumber;
 
-    @Column(name = "LATITUDE")
-    private Double latitude;
-
-    @Column(name = "LONGITUDE")
-    private Double longitude;
+    @Column(name = "POINT", columnDefinition = "ST_GeomFromText(Point, 4326)")
+    private Point point;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ASSIGNMENT_STATUS")
@@ -66,6 +66,11 @@ public class AssignmentEntity extends BaseEntity {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private UserEntity user;
 
+    public void setPoint(double latitude, double longitude) {
+        Coordinate coordinate = new Coordinate(latitude, longitude);
+        GeometryFactory geometryFactory = new GeometryFactory();
+        this.point = geometryFactory.createPoint(coordinate);
+    }
 
     public boolean isAvailable() {
         return AssignmentStatus.AVAILABLE.equals(this.status);
