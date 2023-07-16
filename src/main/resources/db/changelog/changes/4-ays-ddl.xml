@@ -20,9 +20,6 @@
                              referencedColumnNames="ID"
                 />
             </column>
-            <column name="POINT" type="POINT">
-                <constraints nullable="false"/>
-            </column>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
                 <constraints nullable="false"/>
             </column>
@@ -32,6 +29,11 @@
             <column name="UPDATED_USER" type="VARCHAR(255)"/>
             <column name="UPDATED_AT" type="TIMESTAMP"/>
         </createTable>
+
+        <sql>
+            ALTER TABLE `AYS_USER_LOCATION`
+                ADD COLUMN `POINT` POINT NULL SRID 4326 AFTER `USER_ID`;
+        </sql>
         <!-- ======================== -->
         <!-- DDL of AYS_USER_LOCATION -->
         <!-- ======================== -->
@@ -73,9 +75,6 @@
             <column name="LINE_NUMBER" type="INTEGER(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="POINT" type="POINT">
-                <constraints nullable="false"/>
-            </column>
             <column name="STATUS" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -90,6 +89,9 @@
         </createTable>
 
         <sql>
+            ALTER TABLE `AYS_USER_ASSIGNMENT`
+                ADD COLUMN `POINT` POINT NOT NULL SRID 4326 AFTER `LINE_NUMBER`;
+
             ALTER TABLE `AYS_USER_ASSIGNMENT`
                 ADD CONSTRAINT `C__AYS_USER_ASSIGNMENT__STATUS` CHECK (`STATUS` IN ('AVAILABLE', 'RESERVED', 'ASSIGNED', 'IN_PROGRESS', 'DONE'));
         </sql>
