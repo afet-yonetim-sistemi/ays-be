@@ -30,12 +30,12 @@ echo 'pulling latest changes from github and rebuild docker image'
 #                                                                  --build rebuilds the Docker images if necessary
 # If any command within the SSH session fails, exit the script
 ssh -o StrictHostKeyChecking=no -i private_key "${AWS_USERNAME}"@"${AWS_LIVE_ENVIRONMENT_IP}" "
-  cd ${AWS_BE_APP_PATH} ;
-  sudo git status ;
-  sudo git switch ${GH_LIVE_DEPLOYMENT_BRANCH} ;
+  cd ${AWS_BE_APP_PATH};
   sudo git reset --hard;
-  sudo git fetch --all ;
-  sudo git pull ;
+  sudo git status;
+  sudo git fetch --all;
+  sudo git switch ${GH_LIVE_DEPLOYMENT_BRANCH};
+  sudo git pull;
   sudo docker compose -f docker-compose-live.yml up -d --build
 " || exit
 
