@@ -75,7 +75,6 @@ class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/authentication/**").permitAll()
                         .anyRequest().authenticated()
                 )
