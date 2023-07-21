@@ -2,17 +2,12 @@ package com.ays;
 
 import com.ays.auth.model.AysToken;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.test.context.ActiveProfiles;
 
 @ExtendWith(MockitoExtension.class)
-@RunWith(MockitoJUnitRunner.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-@ActiveProfiles(value = "test")
 public abstract class AbstractUnitTest {
 
     protected AysToken mockSuperAdminUserToken = AysToken.builder()
