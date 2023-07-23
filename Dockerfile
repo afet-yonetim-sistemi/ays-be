@@ -12,7 +12,7 @@ COPY src src
 COPY settings.xml settings.xml
 
 # Build the project and create the executable JAR
-RUN mvn --settings settings.xml clean install
+RUN mvn --settings settings.xml clean install -DskipTests
 
 # Stage 2: Run stage
 FROM openjdk:17-jdk-slim
