@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 /**
- * User Assignment Domain Model to perform data transfer from service layer to controller
+ * Assignment Domain Model to perform data transfer from service layer to controller
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

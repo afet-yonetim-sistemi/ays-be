@@ -15,7 +15,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
 /**
- * User Assignment entity, which holds the information regarding assignment.
+ * Assignment entity, which holds the information regarding assignment.
  */
 @Entity
 @Data
