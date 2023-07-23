@@ -23,8 +23,8 @@ import org.locationtech.jts.geom.Point;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "AYS_USER_ASSIGNMENT")
-public class UserAssignmentEntity extends BaseEntity {
+@Table(name = "AYS_ASSIGNMENT")
+public class AssignmentEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
