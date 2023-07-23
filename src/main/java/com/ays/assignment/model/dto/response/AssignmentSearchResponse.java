@@ -1,0 +1,32 @@
+package com.ays.assignment.model.dto.response;
+
+import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.dto.response.BaseResponse;
+import com.ays.institution.model.dto.response.InstitutionResponse;
+import com.ays.user.model.enums.UserRole;
+import com.ays.user.model.enums.UserStatus;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+
+/**
+ * This class represents the response for a user with assignment.
+ * It includes information such as the user's username, first and last name, email, institution, role and status.
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+public class AssignmentSearchResponse extends BaseResponse {
+
+    private String id;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private UserRole role;
+    private UserStatus status;
+    private AysPhoneNumber phoneNumber;
+
+    private InstitutionResponse institution;
+
+}
