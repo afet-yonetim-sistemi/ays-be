@@ -26,7 +26,7 @@ public interface AssignmentToAssignmentEntityMapper extends BaseMapper<Assignmen
      * @param assignment the UserAssignment object
      * @return the mapped UserAssignmentEntity object
      */
-    @Mapping(target = "point", expression = "java(mapToPoint(userAssignment.getLatitude(), userAssignment.getLongitude()))")
+    @Mapping(target = "point", expression = "java(mapToPoint(assignment.getLatitude(), assignment.getLongitude()))")
     AssignmentEntity map(Assignment assignment);
 
 
