@@ -36,7 +36,7 @@ public class UserLocationEntity extends BaseEntity {
     private Point point;
 
     @OneToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private UserEntity user;
 
     public void setPoint(double latitude, double longitude) {
