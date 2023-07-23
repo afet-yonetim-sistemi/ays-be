@@ -19,7 +19,7 @@ import java.util.Set;
  */
 @Data
 @Builder
-public class UserAssignmentListRequest extends AysPagingRequest implements AysFilteringRequest {
+public class AssignmentListRequest extends AysPagingRequest implements AysFilteringRequest {
 
     private AssignmentStatus status;
 
