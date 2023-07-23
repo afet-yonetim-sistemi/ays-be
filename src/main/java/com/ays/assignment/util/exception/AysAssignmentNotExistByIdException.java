@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception to be thrown when a user assignment with a given ID does not exist.
  */
-public class AysUserAssignmentNotExistByIdException extends AysNotExistException {
+public class AysAssignmentNotExistByIdException extends AysNotExistException {
 
     /**
      * Unique serial version ID.
@@ -20,7 +20,7 @@ public class AysUserAssignmentNotExistByIdException extends AysNotExistException
      *
      * @param id the ID of the assignment that does not exist
      */
-    public AysUserAssignmentNotExistByIdException(String id) {
+    public AysAssignmentNotExistByIdException(String id) {
         super("ASSIGNMENT NOT EXIST! id:" + id);
     }
 

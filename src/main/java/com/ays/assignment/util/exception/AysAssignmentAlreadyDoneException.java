@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception thrown when a user assignment is done and attempting to perform an action that requires an assignment which is already done.
  */
-public class AysUserAssignmentAlreadyDoneException extends AysAlreadyException {
+public class AysAssignmentAlreadyDoneException extends AysAlreadyException {
 
     /**
      * Unique identifier for serialization.
@@ -20,7 +20,7 @@ public class AysUserAssignmentAlreadyDoneException extends AysAlreadyException {
      *
      * @param id the id of the assignment which is already done
      */
-    public AysUserAssignmentAlreadyDoneException(String id) {
+    public AysAssignmentAlreadyDoneException(String id) {
         super("ASSIGNMENT IS ALREADY DONE! id:" + id);
     }
 
