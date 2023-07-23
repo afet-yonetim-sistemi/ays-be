@@ -59,11 +59,11 @@ public class AssignmentEntity extends BaseEntity {
     private AssignmentStatus status;
 
     @OneToOne
-    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private InstitutionEntity institution;
 
     @OneToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private UserEntity user;
 
     public void setPoint(double latitude, double longitude) {
