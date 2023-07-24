@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -31,13 +29,19 @@ public class AysSpecification {
          */
         public Specification<C> and(final Map<String, Object> filter) {
 
-            List<Predicate> predicates = new ArrayList<>();
+            final Predicate[] predicates = new Predicate[filter.size()];
+            final String[] names = filter.keySet().toArray(new String[0]);
+
             return ((root, query, criteriaBuilder) -> {
-                filter.forEach((name, value) -> {
-                    Predicate equal = criteriaBuilder.equal(root.get(name), value);
-                    predicates.add(equal);
-                });
-                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+
+                for (int count = 0; count < filter.size(); count++) {
+
+                    final String name = names[count];
+                    final String value = filter.get(name).toString();
+
+                    predicates[count] = criteriaBuilder.equal(root.get(name), value);
+                }
+                return criteriaBuilder.and(predicates);
             });
         }
 
