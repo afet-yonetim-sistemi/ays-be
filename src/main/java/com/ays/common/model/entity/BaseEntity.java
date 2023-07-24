@@ -36,6 +36,7 @@ public abstract class BaseEntity {
     public void prePersist() {
         this.createdUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)
+                .filter(user -> !"anonymousUser".equals(user))
                 .map(Jwt.class::cast)
                 .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
                 .orElse("AYS");
@@ -53,6 +54,7 @@ public abstract class BaseEntity {
     public void preUpdate() {
         this.updatedUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)
+                .filter(user -> !"anonymousUser".equals(user))
                 .map(Jwt.class::cast)
                 .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
                 .orElse("AYS");
