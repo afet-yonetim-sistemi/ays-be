@@ -53,6 +53,11 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
         return this;
     }
 
+    public AdminUserEntityBuilder withEmail(String email) {
+        data.setEmail(email);
+        return this;
+    }
+
     public AdminUserEntityBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
         data.setCountryCode(phoneNumber.getCountryCode());
         data.setLineNumber(phoneNumber.getLineNumber());
