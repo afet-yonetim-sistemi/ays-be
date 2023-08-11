@@ -11,7 +11,6 @@ Framework :
         * Spring Boot Dev Tools
         * Spring Security
         * Spring Web
-        * Spring Boot JOOQ
         * Spring Boot Actuator
     * Spring Data
         * Spring Data JPA
