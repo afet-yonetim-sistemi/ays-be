@@ -59,7 +59,13 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .build()
                 .getClaims();
         this.adminUserToken = this.generate(claimsOfAdminUser);
-        this.userToken = this.generate(new UserEntityBuilder().build().getClaims());
+
+        final Map<String, Object> claimsOfUser = new UserEntityBuilder()
+                .withId(AysTestData.User.VALID_ID_ONE)
+                .withUsername(AysTestData.User.VALID_USERNAME_ONE)
+                .build()
+                .getClaims();
+        this.userToken = this.generate(claimsOfUser);
     }
 
     private AysToken generate(Map<String, Object> claims) {

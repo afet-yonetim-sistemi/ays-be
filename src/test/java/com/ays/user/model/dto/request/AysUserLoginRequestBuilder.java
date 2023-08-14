@@ -10,4 +10,14 @@ public class AysUserLoginRequestBuilder extends TestDataBuilder<AysLoginRequest>
         super(AysLoginRequest.class);
     }
 
+    public AysUserLoginRequestBuilder withUsername(String username) {
+        data.setUsername(username);
+        return this;
+    }
+
+    public AysUserLoginRequestBuilder withPassword(String password) {
+        data.setPassword(password);
+        return this;
+    }
+
 }

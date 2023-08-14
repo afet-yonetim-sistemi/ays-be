@@ -23,4 +23,10 @@ public class AysTestData {
         public static final String VALID_EMAIL_TWO = "admin2@ays.com";
     }
 
+    public static class User {
+        public static final String VALID_ID_ONE = "c4b4e4db-5641-41f7-8222-a76deb1c065c";
+        public static final String VALID_USERNAME_ONE = "232180";
+        public static final String VALID_PASSWORD_ONE = "367894";
+    }
+
 }
