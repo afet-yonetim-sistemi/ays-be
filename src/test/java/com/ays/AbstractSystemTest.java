@@ -36,8 +36,8 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @Autowired
     protected MockMvc mockMvc;
-    protected AysToken mockAdminUserToken;
-    protected AysToken mockUserToken;
+    protected AysToken adminUserToken;
+    protected AysToken userToken;
 
 
     @Mock
@@ -58,8 +58,8 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .withEmail(AysTestData.AdminUser.VALID_EMAIL_ONE)
                 .build()
                 .getClaims();
-        this.mockAdminUserToken = this.generate(claimsOfAdminUser);
-        this.mockUserToken = this.generate(new UserEntityBuilder().build().getClaims());
+        this.adminUserToken = this.generate(claimsOfAdminUser);
+        this.userToken = this.generate(new UserEntityBuilder().build().getClaims());
     }
 
     private AysToken generate(Map<String, Object> claims) {
