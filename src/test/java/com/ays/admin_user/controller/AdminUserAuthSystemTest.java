@@ -32,24 +32,24 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenValidAdminUserRegisterRequest_whenAdminUserRegistered_thenReturnSuccessResponse() throws Exception {
         // Given
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(AysTestData.VALID_INSTITUTION_ID_ONE)
                 .withVerificationId(AysTestData.VALID_VERIFICATION_ID)
                 .build();
 
         // Then
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> response = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
+                        .post(BASE_PATH.concat("/register"), registerRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
+                        .value(response.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
+                        .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -57,27 +57,27 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumber phoneNumber = new AysPhoneNumberBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
-                .withPhoneNumber(mockPhoneNumber).build();
+                .withPhoneNumber(phoneNumber).build();
 
         // Then
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysError errorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
+                        .post(BASE_PATH.concat("/register"), registerRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
+                        .value(errorResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
+                        .value(errorResponse.getHeader()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
+                        .value(errorResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
@@ -87,27 +87,27 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumber phoneNumber = new AysPhoneNumberBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
-                .withPhoneNumber(mockPhoneNumber).build();
+                .withPhoneNumber(phoneNumber).build();
 
         // Then
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysError errorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
+                        .post(BASE_PATH.concat("/register"), registerRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
+                        .value(errorResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
+                        .value(errorResponse.getHeader()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
+                        .value(errorResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
@@ -117,23 +117,23 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenValidLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
-        AysLoginRequest mockRequest = new AysLoginRequestBuilder()
+        AysLoginRequest loginRequest = new AysLoginRequestBuilder()
                 .withUsername(AysTestData.AdminUser.VALID_USERNAME_ONE)
                 .withPassword(AysTestData.AdminUser.VALID_PASSWORD_ONE).build();
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
-        AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
+        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(adminUserToken);
+        AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/token"), mockRequest))
+                        .post(BASE_PATH.concat("/token"), loginRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                        .value(response.getHttpStatus().getReasonPhrase()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+                        .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
@@ -148,23 +148,23 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenValidTokenRefreshRequest_whenAccessTokenGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
-        AysTokenRefreshRequest mockRequest = AysTokenRefreshRequest.builder()
-                .refreshToken(mockAdminUserToken.getRefreshToken())
+        AysTokenRefreshRequest tokenRefreshRequest = AysTokenRefreshRequest.builder()
+                .refreshToken(adminUserToken.getRefreshToken())
                 .build();
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
-        AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
+        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(adminUserToken);
+        AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/token/refresh"), mockRequest))
+                        .post(BASE_PATH.concat("/token/refresh"), tokenRefreshRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                        .value(response.getHttpStatus().getReasonPhrase()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+                        .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
@@ -179,22 +179,22 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
         // Given
         AysTokenInvalidateRequest mockRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(mockAdminUserToken.getRefreshToken())
+                .refreshToken(adminUserToken.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> response = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
+                        .post(endpoint, adminUserToken.getAccessToken(), mockRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
+                        .value(response.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
+                        .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -202,25 +202,25 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenValidAysTokenInvalidateRequest_whenUserUnauthorizedForTokensInvalidating_thenReturnAccessDeniedException() throws Exception {
         // Given
-        AysTokenInvalidateRequest mockRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(mockAdminUserToken.getRefreshToken())
+        AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
+                .refreshToken(adminUserToken.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockUserToken.getAccessToken(), mockRequest);
+                .post(endpoint, userToken.getAccessToken(), tokenInvalidateRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
+        AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
+                        .value(response.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
+                        .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
