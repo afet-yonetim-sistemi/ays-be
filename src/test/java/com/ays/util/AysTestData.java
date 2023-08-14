@@ -27,6 +27,18 @@ public class AysTestData {
         public static final String VALID_ID_ONE = "c4b4e4db-5641-41f7-8222-a76deb1c065c";
         public static final String VALID_USERNAME_ONE = "232180";
         public static final String VALID_PASSWORD_ONE = "367894";
+
+
+        public static final String VALID_ID_TWO = "edb36891-b898-4c12-bcec-d9aaa5d45190";
+        public static final String VALID_USERNAME_TWO = "648193";
+        public static final String VALID_PASSWORD_TWO = "367894";
+    }
+
+    public static class Institution {
+        public static final String VALID_ID_ONE = "77ece256-bf0e-4bbe-801d-173083f8bdcf";
+
+
+        public static final String VALID_ID_TWO = "91df7ae9-d5b9-44ae-b54f-d5d55359c4a4";
     }
 
 }
