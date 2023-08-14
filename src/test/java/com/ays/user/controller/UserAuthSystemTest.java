@@ -2,6 +2,7 @@ package com.ays.user.controller;
 
 import com.ays.AbstractSystemTest;
 import com.ays.auth.model.dto.request.AysLoginRequest;
+import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.model.dto.request.AysTokenInvalidateRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.response.AysTokenResponse;
@@ -9,7 +10,6 @@ import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
-import com.ays.user.model.dto.request.AysUserLoginRequestBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysTestData;
@@ -27,7 +27,7 @@ class UserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
-        AysLoginRequest loginRequest = new AysUserLoginRequestBuilder()
+        AysLoginRequest loginRequest = new AysLoginRequestBuilder()
                 .withUsername(AysTestData.User.VALID_USERNAME_ONE)
                 .withPassword(AysTestData.User.VALID_PASSWORD_ONE)
                 .build();

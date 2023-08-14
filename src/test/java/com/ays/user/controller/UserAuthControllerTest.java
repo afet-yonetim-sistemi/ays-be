@@ -7,7 +7,6 @@ import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
-import com.ays.user.model.dto.request.AysUserLoginRequestBuilder;
 import com.ays.user.service.UserAuthService;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
@@ -31,7 +30,7 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
-        AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
+        AysLoginRequest mockRequest = new AysLoginRequestBuilder().build();
 
         // when
         Mockito.when(userAuthService.authenticate(Mockito.any()))

@@ -13,7 +13,6 @@ import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.*;
-import com.ays.user.model.dto.request.AysUserLoginRequestBuilder;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -82,7 +81,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     @Test
     void givenInvalidLoginRequest_whenAdminUserNotFound_thenThrowUsernameNotValidException() {
         // Given
-        AysLoginRequest mockRequest = new AysUserLoginRequestBuilder().build();
+        AysLoginRequest mockRequest = new AysLoginRequestBuilder().build();
 
         // When
         Mockito.when(adminUserRepository.findByUsername(mockRequest.getUsername()))
