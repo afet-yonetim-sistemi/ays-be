@@ -24,7 +24,7 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
     private UserAuthService userAuthService;
 
 
-    private final AysTokenToAysTokenResponseMapper AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER = AysTokenToAysTokenResponseMapper.initialize();
+    private static final AysTokenToAysTokenResponseMapper AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER = AysTokenToAysTokenResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1/authentication";
 
