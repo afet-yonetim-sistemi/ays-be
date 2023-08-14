@@ -33,7 +33,7 @@ class UserAuthSystemTest extends AbstractSystemTest {
                 .build();
 
         // Then
-        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(userToken);
+        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(userTokenOne);
         AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), loginRequest))
@@ -59,11 +59,11 @@ class UserAuthSystemTest extends AbstractSystemTest {
     void givenValidTokenRefreshRequest_whenAccessTokenGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysTokenRefreshRequest tokenRefreshRequest = AysTokenRefreshRequest.builder()
-                .refreshToken(userToken.getRefreshToken())
+                .refreshToken(userTokenOne.getRefreshToken())
                 .build();
 
         // Then
-        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(userToken);
+        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(userTokenOne);
         AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), tokenRefreshRequest))
@@ -89,14 +89,14 @@ class UserAuthSystemTest extends AbstractSystemTest {
     void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
         // Given
         AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(userToken.getRefreshToken())
+                .refreshToken(userTokenOne.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userToken.getAccessToken(), tokenInvalidateRequest))
+                        .post(endpoint, userTokenOne.getAccessToken(), tokenInvalidateRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -113,13 +113,13 @@ class UserAuthSystemTest extends AbstractSystemTest {
     void givenValidAysTokenInvalidateRequest_whenUserUnauthorizedForTokensInvalidating_thenReturnAccessDeniedException() throws Exception {
         // Given
         AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(userToken.getRefreshToken())
+                .refreshToken(userTokenOne.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, adminUserToken.getAccessToken(), tokenInvalidateRequest);
+                .post(endpoint, adminUserTokenOne.getAccessToken(), tokenInvalidateRequest);
 
         AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)

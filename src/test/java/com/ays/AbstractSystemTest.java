@@ -36,8 +36,11 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @Autowired
     protected MockMvc mockMvc;
-    protected AysToken adminUserToken;
-    protected AysToken userToken;
+
+    protected AysToken adminUserTokenOne;
+    protected AysToken adminUserTokenTwo;
+    protected AysToken userTokenOne;
+    protected AysToken userTokenTwo;
 
 
     @Mock
@@ -52,20 +55,38 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .thenReturn(parameters);
         this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);
 
-        final Map<String, Object> claimsOfAdminUser = new AdminUserEntityBuilder()
+        final Map<String, Object> claimsOfAdminUserOne = new AdminUserEntityBuilder()
                 .withId(AysTestData.AdminUser.VALID_ID_ONE)
                 .withUsername(AysTestData.AdminUser.VALID_USERNAME_ONE)
                 .withEmail(AysTestData.AdminUser.VALID_EMAIL_ONE)
+                .withInstitutionId(AysTestData.Institution.VALID_ID_ONE)
                 .build()
                 .getClaims();
-        this.adminUserToken = this.generate(claimsOfAdminUser);
+        this.adminUserTokenOne = this.generate(claimsOfAdminUserOne);
 
-        final Map<String, Object> claimsOfUser = new UserEntityBuilder()
+        final Map<String, Object> claimsOfUserOne = new UserEntityBuilder()
                 .withId(AysTestData.User.VALID_ID_ONE)
                 .withUsername(AysTestData.User.VALID_USERNAME_ONE)
                 .build()
                 .getClaims();
-        this.userToken = this.generate(claimsOfUser);
+        this.userTokenOne = this.generate(claimsOfUserOne);
+
+
+        final Map<String, Object> claimsOfAdminUserTwo = new AdminUserEntityBuilder()
+                .withId(AysTestData.AdminUser.VALID_ID_TWO)
+                .withUsername(AysTestData.AdminUser.VALID_USERNAME_TWO)
+                .withEmail(AysTestData.AdminUser.VALID_EMAIL_TWO)
+                .withInstitutionId(AysTestData.Institution.VALID_ID_TWO)
+                .build()
+                .getClaims();
+        this.adminUserTokenTwo = this.generate(claimsOfAdminUserTwo);
+
+        final Map<String, Object> claimsOfUserTwo = new UserEntityBuilder()
+                .withId(AysTestData.User.VALID_ID_TWO)
+                .withUsername(AysTestData.User.VALID_USERNAME_TWO)
+                .build()
+                .getClaims();
+        this.userTokenTwo = this.generate(claimsOfUserTwo);
     }
 
     private AysToken generate(Map<String, Object> claims) {

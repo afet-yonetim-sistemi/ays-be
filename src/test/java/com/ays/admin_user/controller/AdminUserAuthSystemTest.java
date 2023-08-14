@@ -122,7 +122,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
                 .withPassword(AysTestData.AdminUser.VALID_PASSWORD_ONE).build();
 
         // Then
-        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(adminUserToken);
+        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(adminUserTokenOne);
         AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), loginRequest))
@@ -149,11 +149,11 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     void givenValidTokenRefreshRequest_whenAccessTokenGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysTokenRefreshRequest tokenRefreshRequest = AysTokenRefreshRequest.builder()
-                .refreshToken(adminUserToken.getRefreshToken())
+                .refreshToken(adminUserTokenOne.getRefreshToken())
                 .build();
 
         // Then
-        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(adminUserToken);
+        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(adminUserTokenOne);
         AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), tokenRefreshRequest))
@@ -179,14 +179,14 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
         // Given
         AysTokenInvalidateRequest mockRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(adminUserToken.getRefreshToken())
+                .refreshToken(adminUserTokenOne.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
         AysResponse<Void> response = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, adminUserToken.getAccessToken(), mockRequest))
+                        .post(endpoint, adminUserTokenOne.getAccessToken(), mockRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -203,13 +203,13 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     void givenValidAysTokenInvalidateRequest_whenUserUnauthorizedForTokensInvalidating_thenReturnAccessDeniedException() throws Exception {
         // Given
         AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(adminUserToken.getRefreshToken())
+                .refreshToken(adminUserTokenOne.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken(), tokenInvalidateRequest);
+                .post(endpoint, adminUserTokenOne.getAccessToken(), tokenInvalidateRequest);
 
         AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
