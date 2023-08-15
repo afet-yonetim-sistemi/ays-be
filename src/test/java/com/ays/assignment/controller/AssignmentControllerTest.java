@@ -10,7 +10,6 @@ import com.ays.assignment.model.dto.response.AssignmentSavedResponseBuilder;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSavedResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
-import com.ays.assignment.service.AssignmentService;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
@@ -26,9 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
 class AssignmentControllerTest extends AbstractRestControllerTest {
-
-    @MockBean
-    private AssignmentService assignmentService;
 
     @MockBean
     private AssignmentSaveService assignmentSaveService;

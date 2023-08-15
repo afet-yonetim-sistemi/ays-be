@@ -5,7 +5,6 @@ import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.response.AssignmentSavedResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSavedResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
-import com.ays.assignment.service.AssignmentService;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 class AssignmentController {
 
-    private final AssignmentService assignmentService;
     private final AssignmentSaveService assignmentSaveService;
 
     private final AssignmentToAssignmentSavedResponseMapper assignmentToAssignmentSavedResponseMapper = AssignmentToAssignmentSavedResponseMapper.initialize();
