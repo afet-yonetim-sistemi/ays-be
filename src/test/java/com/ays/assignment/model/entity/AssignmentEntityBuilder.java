@@ -23,7 +23,7 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
         super(AssignmentEntity.class);
     }
 
-    public static List<AssignmentEntity> generateValidUserEntities(int size) {
+    public static List<AssignmentEntity> generateValidAssignmentEntities(int size) {
         List<AssignmentEntity> userEntities = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             AssignmentEntity assignmentEntity = new AssignmentEntityBuilder().withValidFields().build();

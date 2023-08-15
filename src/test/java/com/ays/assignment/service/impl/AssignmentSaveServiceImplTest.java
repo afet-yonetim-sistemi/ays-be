@@ -38,7 +38,7 @@ class AssignmentSaveServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .build();
 
-        List<AssignmentEntity> assignmentsFromDatabase = AssignmentEntityBuilder.generateValidUserEntities(10);
+        List<AssignmentEntity> assignmentsFromDatabase = AssignmentEntityBuilder.generateValidAssignmentEntities(10);
 
         AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
                 .withValidFields().build();
@@ -78,7 +78,7 @@ class AssignmentSaveServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        List<AssignmentEntity> assignmentsFromDatabase = AssignmentEntityBuilder.generateValidUserEntities(10);
+        List<AssignmentEntity> assignmentsFromDatabase = AssignmentEntityBuilder.generateValidAssignmentEntities(10);
         assignmentsFromDatabase.get(0).setCountryCode(mockAssignmentSaveRequest.getPhoneNumber().getCountryCode());
         assignmentsFromDatabase.get(0).setLineNumber(mockAssignmentSaveRequest.getPhoneNumber().getLineNumber());
         Mockito.when(assignmentRepository.findAll())
