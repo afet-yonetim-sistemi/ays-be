@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Repository interface for performing CRUD operations on UserAssignmentEntity objects.
  */
-public interface AssignmentEntityRepository extends JpaRepository<AssignmentEntity, String> {
+public interface AssignmentRepository extends JpaRepository<AssignmentEntity, String> {
 
 }
