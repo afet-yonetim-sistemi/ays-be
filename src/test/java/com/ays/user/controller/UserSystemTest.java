@@ -222,7 +222,7 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenValidUserId_whenUserFound_thenReturnUserResponse() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_TWO;
+        String userId = AysTestData.User.VALID_ID_ONE;
         User user = new UserBuilder()
                 .withId(userId)
                 .build();
@@ -232,7 +232,7 @@ class UserSystemTest extends AbstractSystemTest {
         UserResponse userResponse = userToUserResponseMapper.map(user);
         AysResponse<UserResponse> response = AysResponse.successOf(userResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(endpoint, adminUserTokenTwo.getAccessToken()))
+                        .get(endpoint, adminUserTokenOne.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -298,7 +298,7 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenValidUserIdAndUserUpdateRequest_whenUserUnauthorizedForUpdating_thenReturnAccessDeniedException() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_ONE;
+        String userId = AysTestData.User.VALID_ID_TWO;
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.PASSIVE).build();
@@ -306,7 +306,7 @@ class UserSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(userId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(endpoint, userTokenOne.getAccessToken(), mockUpdateRequest);
+                .put(endpoint, userTokenTwo.getAccessToken(), mockUpdateRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -325,7 +325,7 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenValidUserId_whenUserDeleted_thenReturnAysResponseOfSuccess() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_TWO;
+        String userId = AysTestData.User.VALID_ID_THREE;
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(userId));
@@ -347,12 +347,12 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenValidValidUserId_whenUserUnauthorizedForDeleting_thenReturnAccessDeniedException() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_TWO;
+        String userId = AysTestData.User.VALID_ID_THREE;
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(userId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, userTokenOne.getAccessToken());
+                .get(endpoint, userTokenThree.getAccessToken());
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)

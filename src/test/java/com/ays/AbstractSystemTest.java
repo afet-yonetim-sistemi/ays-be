@@ -41,6 +41,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected AysToken adminUserTokenTwo;
     protected AysToken userTokenOne;
     protected AysToken userTokenTwo;
+    protected AysToken userTokenThree;
 
 
     @Mock
@@ -64,14 +65,6 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .getClaims();
         this.adminUserTokenOne = this.generate(claimsOfAdminUserOne);
 
-        final Map<String, Object> claimsOfUserOne = new UserEntityBuilder()
-                .withId(AysTestData.User.VALID_ID_ONE)
-                .withUsername(AysTestData.User.VALID_USERNAME_ONE)
-                .build()
-                .getClaims();
-        this.userTokenOne = this.generate(claimsOfUserOne);
-
-
         final Map<String, Object> claimsOfAdminUserTwo = new AdminUserEntityBuilder()
                 .withId(AysTestData.AdminUser.VALID_ID_TWO)
                 .withUsername(AysTestData.AdminUser.VALID_USERNAME_TWO)
@@ -81,12 +74,30 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .getClaims();
         this.adminUserTokenTwo = this.generate(claimsOfAdminUserTwo);
 
+
+        final Map<String, Object> claimsOfUserOne = new UserEntityBuilder()
+                .withId(AysTestData.User.VALID_ID_ONE)
+                .withUsername(AysTestData.User.VALID_USERNAME_ONE)
+                .withInstitutionId(AysTestData.Institution.VALID_ID_ONE)
+                .build()
+                .getClaims();
+        this.userTokenOne = this.generate(claimsOfUserOne);
+
         final Map<String, Object> claimsOfUserTwo = new UserEntityBuilder()
                 .withId(AysTestData.User.VALID_ID_TWO)
                 .withUsername(AysTestData.User.VALID_USERNAME_TWO)
+                .withInstitutionId(AysTestData.Institution.VALID_ID_ONE)
                 .build()
                 .getClaims();
         this.userTokenTwo = this.generate(claimsOfUserTwo);
+
+        final Map<String, Object> claimsOfUserThree = new UserEntityBuilder()
+                .withId(AysTestData.User.VALID_ID_THREE)
+                .withUsername(AysTestData.User.VALID_USERNAME_THREE)
+                .withInstitutionId(AysTestData.Institution.VALID_ID_TWO)
+                .build()
+                .getClaims();
+        this.userTokenThree = this.generate(claimsOfUserThree);
     }
 
     private AysToken generate(Map<String, Object> claims) {
