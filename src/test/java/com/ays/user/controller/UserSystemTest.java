@@ -273,7 +273,7 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenValidUserIdAndUserUpdateRequest_whenUserUpdated_thenReturnAysResponseOfSuccess() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_ONE;
+        String userId = AysTestData.User.VALID_ID_TWO;
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.PASSIVE).build();
