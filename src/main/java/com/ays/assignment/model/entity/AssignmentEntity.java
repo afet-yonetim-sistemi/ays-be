@@ -11,8 +11,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * Assignment entity, which holds the information regarding assignment.
@@ -67,9 +69,10 @@ public class AssignmentEntity extends BaseEntity {
     private UserEntity user;
 
     public void setPoint(double latitude, double longitude) {
-        Coordinate coordinate = new Coordinate(latitude, longitude);
+        Coordinate[] coordinates = new Coordinate[]{new Coordinate(latitude, longitude)};
+        CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
         GeometryFactory geometryFactory = new GeometryFactory();
-        this.point = geometryFactory.createPoint(coordinate);
+        this.point = geometryFactory.createPoint(coordinateSequence);
     }
 
     public boolean isAvailable() {
