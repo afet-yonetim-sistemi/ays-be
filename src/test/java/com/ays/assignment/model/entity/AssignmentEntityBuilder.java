@@ -7,9 +7,12 @@ import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.institution.model.entity.InstitutionEntityBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +35,7 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
     public AssignmentEntityBuilder withValidFields() {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidFields().build();
 
-        double x = Math.random();
-        double y = Math.random();
-        Point point = new GeometryFactory().createPoint(new Coordinate(x, y));
+        Point point = getPoint();
 
         return this
                 .withId(AysRandomUtil.generateUUID())
@@ -46,6 +47,16 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
                 .withLastName("Last Name")
                 .withStatus(AssignmentStatus.AVAILABLE)
                 .withPoint(point);
+    }
+
+    @NotNull
+    private static Point getPoint() {
+        double x = Math.random();
+        double y = Math.random();
+        Coordinate[] coordinates = new Coordinate[]{new Coordinate(x, y)};
+        CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
+        Point point = new Point(coordinateSequence, new GeometryFactory());
+        return point;
     }
 
     public AssignmentEntityBuilder withId(String id) {

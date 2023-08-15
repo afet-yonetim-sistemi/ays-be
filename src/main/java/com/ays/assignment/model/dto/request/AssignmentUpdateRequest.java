@@ -1,5 +1,6 @@
 package com.ays.assignment.model.dto.request;
 
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.AysPhoneNumber;
 import lombok.Builder;
 import lombok.Data;
@@ -23,4 +24,5 @@ public class AssignmentUpdateRequest {
     private AysPhoneNumber phoneNumber;
     private double latitude;
     private double longitude;
+    private AssignmentStatus status;
 }

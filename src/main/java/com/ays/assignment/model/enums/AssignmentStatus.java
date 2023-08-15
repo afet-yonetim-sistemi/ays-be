@@ -9,6 +9,7 @@ public enum AssignmentStatus {
     RESERVED,
     ASSIGNED,
     IN_PROGRESS,
-    DONE
+    DONE,
+    DELETED
 
 }
