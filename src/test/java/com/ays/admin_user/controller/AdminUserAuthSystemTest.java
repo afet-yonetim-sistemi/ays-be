@@ -209,7 +209,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, adminUserTokenOne.getAccessToken(), tokenInvalidateRequest);
+                .post(endpoint, userTokenOne.getAccessToken(), tokenInvalidateRequest);
 
         AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
