@@ -7,8 +7,6 @@ public class AysTestData {
 
     public static final String VALID_EMAIL = "test@ays.com";
     public static final String VALID_VERIFICATION_ID = "3cfeb994-88f4-48d0-b105-309f42f91412";
-    public static final String VALID_INSTITUTION_ID_ONE = "77ece256-bf0e-4bbe-801d-173083f8bdcf";
-    public static final String VALID_INSTITUTION_ID_TWO = "91df7ae9-d5b9-44ae-b54f-d5d55359c4a4";
 
     public static class AdminUser {
         public static final String VALID_ID_ONE = "9262f0fc-93db-4f7e-81c6-aaad85c2b206";

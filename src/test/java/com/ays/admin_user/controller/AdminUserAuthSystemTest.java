@@ -8,6 +8,7 @@ import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.model.dto.request.AysTokenInvalidateRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.response.AysTokenResponse;
+import com.ays.auth.model.dto.response.AysTokenResponseBuilder;
 import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
@@ -34,7 +35,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
         // Given
         AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
-                .withInstitutionId(AysTestData.VALID_INSTITUTION_ID_ONE)
+                .withInstitutionId(AysTestData.Institution.VALID_ID_ONE)
                 .withVerificationId(AysTestData.VALID_VERIFICATION_ID)
                 .build();
 
@@ -122,8 +123,8 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
                 .withPassword(AysTestData.AdminUser.VALID_PASSWORD_ONE).build();
 
         // Then
-        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(adminUserTokenOne);
-        AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
+        AysResponse<AysTokenResponse> response = AysResponseBuilder
+                .successOf(new AysTokenResponseBuilder().build());
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), loginRequest))
                 .andDo(MockMvcResultHandlers.print())
@@ -153,8 +154,8 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
                 .build();
 
         // Then
-        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(adminUserTokenOne);
-        AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
+        AysResponse<AysTokenResponse> response = AysResponseBuilder
+                .successOf(new AysTokenResponseBuilder().build());
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), tokenRefreshRequest))
                 .andDo(MockMvcResultHandlers.print())

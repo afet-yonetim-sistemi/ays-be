@@ -6,6 +6,7 @@ import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.model.dto.request.AysTokenInvalidateRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.response.AysTokenResponse;
+import com.ays.auth.model.dto.response.AysTokenResponseBuilder;
 import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
@@ -13,7 +14,6 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysTestData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -27,7 +27,6 @@ class UserAuthSystemTest extends AbstractSystemTest {
     private static final String BASE_PATH = "/api/v1/authentication";
 
     @Test
-    @Disabled
     void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysLoginRequest loginRequest = new AysLoginRequestBuilder()
@@ -36,8 +35,8 @@ class UserAuthSystemTest extends AbstractSystemTest {
                 .build();
 
         // Then
-        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(userTokenOne);
-        AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
+        AysResponse<AysTokenResponse> response = AysResponseBuilder
+                .successOf(new AysTokenResponseBuilder().build());
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), loginRequest))
                 .andDo(MockMvcResultHandlers.print())
@@ -59,7 +58,6 @@ class UserAuthSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Disabled
     void givenValidTokenRefreshRequest_whenAccessTokenGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysTokenRefreshRequest tokenRefreshRequest = AysTokenRefreshRequest.builder()
@@ -67,8 +65,8 @@ class UserAuthSystemTest extends AbstractSystemTest {
                 .build();
 
         // Then
-        AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(userTokenOne);
-        AysResponse<AysTokenResponse> response = AysResponseBuilder.successOf(tokenResponse);
+        AysResponse<AysTokenResponse> response = AysResponseBuilder
+                .successOf(new AysTokenResponseBuilder().build());
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), tokenRefreshRequest))
                 .andDo(MockMvcResultHandlers.print())
