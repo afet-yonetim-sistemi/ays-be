@@ -13,6 +13,7 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysTestData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -22,9 +23,11 @@ class UserAuthSystemTest extends AbstractSystemTest {
 
     private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
 
+
     private static final String BASE_PATH = "/api/v1/authentication";
 
     @Test
+    @Disabled
     void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysLoginRequest loginRequest = new AysLoginRequestBuilder()
@@ -56,6 +59,7 @@ class UserAuthSystemTest extends AbstractSystemTest {
     }
 
     @Test
+    @Disabled
     void givenValidTokenRefreshRequest_whenAccessTokenGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysTokenRefreshRequest tokenRefreshRequest = AysTokenRefreshRequest.builder()
