@@ -6,7 +6,6 @@ import com.ays.assignment.model.AssignmentBuilder;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequestBuilder;
 import com.ays.assignment.model.dto.response.AssignmentSavedResponse;
-import com.ays.assignment.model.dto.response.AssignmentSavedResponseBuilder;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSavedResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
@@ -48,19 +47,16 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                 .withPhoneNumber(mockAssignmentSaveRequest.getPhoneNumber())
                 .withStatus(AssignmentStatus.AVAILABLE)
                 .build();
+
+
         Mockito.when(assignmentSaveService.saveAssignment(Mockito.any(AssignmentSaveRequest.class)))
                 .thenReturn(mockAssignment);
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment");
-        AssignmentSavedResponse mockUserSavedResponse = new AssignmentSavedResponseBuilder()
-                .withDescription(mockAssignment.getDescription())
-                .withFirstName(mockAssignment.getFirstName())
-                .withLastName(mockAssignment.getLastName())
-                .withPhoneNumber(mockAssignment.getPhoneNumber())
-                .withLongitude(mockAssignment.getLongitude())
-                .withLatitude(mockAssignment.getLatitude())
-                .build();
+
+        AssignmentSavedResponse mockUserSavedResponse = assignmentToAssignmentSavedResponseMapper.map(mockAssignment);
+
         AysResponse<AssignmentSavedResponse> mockResponse = AysResponseBuilder.successOf(mockUserSavedResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockAdminUserToken.getAccessToken(), mockAssignmentSaveRequest))
