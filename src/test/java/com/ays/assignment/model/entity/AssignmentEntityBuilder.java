@@ -7,11 +7,6 @@ import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.institution.model.entity.InstitutionEntityBuilder;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +29,6 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
     public AssignmentEntityBuilder withValidFields() {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidFields().build();
 
-        Point point = generatePoint();
-
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withInstitutionId(institutionEntity.getId())
@@ -44,18 +37,7 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
                 .withDescription("Description")
                 .withFirstName("First Name")
                 .withLastName("Last Name")
-                .withStatus(AssignmentStatus.AVAILABLE)
-                .withPoint(point);
-    }
-
-    private Point generatePoint() {
-        double x = Math.random();
-        double y = Math.random();
-        Coordinate[] coordinates = new Coordinate[]{new Coordinate(x, y)};
-        CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
-        GeometryFactory geometryFactory = new GeometryFactory();
-        Point point = geometryFactory.createPoint(coordinateSequence);
-        return point;
+                .withStatus(AssignmentStatus.AVAILABLE);
     }
 
     public AssignmentEntityBuilder withId(String id) {
@@ -96,11 +78,6 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
 
     public AssignmentEntityBuilder withStatus(AssignmentStatus status) {
         data.setStatus(status);
-        return this;
-    }
-
-    public AssignmentEntityBuilder withPoint(Point point) {
-        data.setPoint(point);
         return this;
     }
 

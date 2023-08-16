@@ -38,6 +38,7 @@ class AssignmentSaveServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .build();
 
+
         List<AssignmentEntity> assignmentsFromDatabase = AssignmentEntityBuilder.generateValidAssignmentEntities(10);
 
         AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
