@@ -8,10 +8,10 @@ import com.ays.auth.model.AysIdentity;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.AysTokenBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
+import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
 import com.ays.auth.util.exception.*;
-import com.ays.user.model.dto.request.AysUserLoginRequestBuilder;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.model.enums.UserStatus;
@@ -50,7 +50,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     @Test
     void givenValidLoginRequest_whenUserAuthenticated_thenReturnAysToken() {
         // Given
-        AysLoginRequest mockLoginRequest = new AysUserLoginRequestBuilder().build();
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder().build();
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.ACTIVE)
@@ -84,7 +84,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     @Test
     void givenInvalidLoginRequest_whenUserNotFound_thenThrowUsernameNotValidException() {
         // Given
-        AysLoginRequest mockLoginRequest = new AysUserLoginRequestBuilder().build();
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder().build();
 
         // When
         Mockito.when(userRepository.findByUsername(mockLoginRequest.getUsername()))
@@ -103,7 +103,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     @Test
     void givenInvalidLoginRequest_whenUserNotAuthenticated_thenThrowPasswordNotValidException() {
         // Given
-        AysLoginRequest mockLoginRequest = new AysUserLoginRequestBuilder().build();
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder().build();
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.ACTIVE)
@@ -132,7 +132,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     @Test
     void givenValidLoginRequest_whenUserNotActive_thenThrowUserNotActiveException() {
         // Given
-        AysLoginRequest mockLoginRequest = new AysUserLoginRequestBuilder().build();
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder().build();
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withStatus(UserStatus.PASSIVE)

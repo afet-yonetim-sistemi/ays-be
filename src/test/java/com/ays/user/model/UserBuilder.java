@@ -9,6 +9,11 @@ public class UserBuilder extends TestDataBuilder<User> {
         super(User.class);
     }
 
+    public UserBuilder withId(String id) {
+        data.setId(id);
+        return this;
+    }
+
     public UserBuilder withUsername(String username) {
         data.setUsername(username);
         return this;
