@@ -1,6 +1,5 @@
 package com.ays.assignment.service;
 
-import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 
 /**
@@ -14,5 +13,5 @@ public interface AssignmentSaveService {
      * @param saveRequest the AssignmentSaveRequest entity
      * @return Assignment
      */
-    Assignment saveAssignment(AssignmentSaveRequest saveRequest);
+    void saveAssignment(AssignmentSaveRequest saveRequest);
 }
