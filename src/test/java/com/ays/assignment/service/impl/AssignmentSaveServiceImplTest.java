@@ -13,8 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.List;
-
 
 class AssignmentSaveServiceImplTest extends AbstractUnitTest {
 
@@ -28,7 +26,7 @@ class AssignmentSaveServiceImplTest extends AbstractUnitTest {
     private AysIdentity identity;
 
     @Test
-    void givenValidAssignmentSaveRequest_whenAssignmentSaved_thenReturnAssignment() {
+    void givenValidAssignmentSaveRequest_whenAssignmentSaved_thenReturnSucess() {
 
         // Given
         AssignmentSaveRequest mockAssignmentSaveRequest = new AssignmentSaveRequestBuilder()
@@ -36,14 +34,10 @@ class AssignmentSaveServiceImplTest extends AbstractUnitTest {
                 .build();
 
 
-        List<AssignmentEntity> assignmentsFromDatabase = AssignmentEntityBuilder.generateValidAssignmentEntities(10);
-
         AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
                 .withValidFields().build();
 
         // When
-        Mockito.when(assignmentRepository.findAll())
-                .thenReturn(assignmentsFromDatabase);
 
         Mockito.when(assignmentRepository.save(Mockito.any(AssignmentEntity.class)))
                 .thenReturn(mockAssignmentEntity);
