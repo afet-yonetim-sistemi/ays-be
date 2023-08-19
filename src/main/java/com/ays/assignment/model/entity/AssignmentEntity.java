@@ -73,6 +73,7 @@ public class AssignmentEntity extends BaseEntity {
         CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
         GeometryFactory geometryFactory = new GeometryFactory();
         this.point = geometryFactory.createPoint(coordinateSequence);
+        this.point.setSRID(4326); // Set the SRID of the created Point
     }
 
     public boolean isAvailable() {

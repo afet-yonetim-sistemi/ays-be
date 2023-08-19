@@ -36,6 +36,8 @@ class AssignmentSaveServiceImpl implements AssignmentSaveService {
 
         final AssignmentEntity assignmentEntity = assignmentSaveRequestToAssignmentMapper.mapForSaving(saveRequest, identity.getInstitutionId());
 
+        assignmentEntity.setPoint(saveRequest.getLatitude(), saveRequest.getLongitude());
+
         assignmentRepository.save(assignmentEntity);
 
     }
