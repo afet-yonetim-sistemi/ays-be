@@ -26,7 +26,7 @@ class AssignmentSaveServiceImplTest extends AbstractUnitTest {
     private AysIdentity identity;
 
     @Test
-    void givenValidAssignmentSaveRequest_whenAssignmentSaved_thenReturnSucess() {
+    void givenValidAssignmentSaveRequest_whenAssignmentSaved_thenReturnSuccess() {
 
         // Given
         AssignmentSaveRequest mockAssignmentSaveRequest = new AssignmentSaveRequestBuilder()
