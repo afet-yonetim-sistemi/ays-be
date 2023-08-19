@@ -5,7 +5,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A DTO class representing the request data for saving an assignment.
@@ -16,7 +17,8 @@ import lombok.Data;
  * The purpose of this class is to encapsulate the request data related to saving an assignment, allowing for easy
  * transfer of the data between different layers of the application.
  */
-@Data
+@Getter
+@Setter
 @Builder
 public class AssignmentSaveRequest {
 
