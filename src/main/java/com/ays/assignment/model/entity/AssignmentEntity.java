@@ -57,7 +57,7 @@ public class AssignmentEntity extends BaseEntity {
     private Point point;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ASSIGNMENT_STATUS")
+    @Column(name = "STATUS")
     private AssignmentStatus status;
 
     @OneToOne
