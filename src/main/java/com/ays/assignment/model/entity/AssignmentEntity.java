@@ -95,15 +95,9 @@ public class AssignmentEntity extends BaseEntity {
         return AssignmentStatus.DONE.equals(this.status);
     }
 
-    public boolean isDeleted() {
-        return AssignmentStatus.DELETED.equals(this.status);
-    }
 
     public void updateAssignmentStatus(AssignmentStatus assignmentStatus) {
         this.status = assignmentStatus;
     }
 
-    public void deleteUser() {
-        this.status = AssignmentStatus.DELETED;
-    }
 }
