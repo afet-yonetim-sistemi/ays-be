@@ -29,7 +29,7 @@ public interface AssignmentSaveRequestToAssignmentMapper extends BaseMapper<Assi
      */
     default AssignmentEntity mapForSaving(AssignmentSaveRequest saveRequest, String institutionId) {
 
-        return AssignmentEntity.builder()
+        AssignmentEntity assignmentEntity = AssignmentEntity.builder()
                 .id(AysRandomUtil.generateUUID())
                 .institutionId(institutionId)
                 .firstName(saveRequest.getFirstName())
@@ -39,6 +39,10 @@ public interface AssignmentSaveRequestToAssignmentMapper extends BaseMapper<Assi
                 .description(saveRequest.getDescription())
                 .status(AssignmentStatus.AVAILABLE)
                 .build();
+
+        assignmentEntity.setPoint(saveRequest.getLatitude(), saveRequest.getLongitude());
+
+        return assignmentEntity;
     }
 
     /**
