@@ -63,6 +63,23 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
+
+        <insert tableName="AYS_INSTITUTION">
+            <column name="ID" value="705b4fd8-0ec5-41cd-b75a-0ed7aa9d853b"/>
+            <column name="NAME" value="Test Institution 3"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="AYS_INSTITUTION">
+            <column name="ID" value="7024b566-6df9-445c-8526-ff43d3d0ba9e"/>
+            <column name="NAME" value="Test Institution 4"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+
         <!-- ====================== -->
         <!-- DML of AYS_INSTITUTION -->
         <!-- ====================== -->

@@ -25,21 +25,27 @@
         <sql>
             <!-- Kadiköy, Moda (40.981210, 29.026083) -->
             INSERT INTO AYS_ASSIGNMENT (ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE, LINE_NUMBER, STATUS,
+                                        INSTITUTION_ID,
                                         POINT, CREATED_USER, CREATED_AT)
             VALUES ('3b30cac9-0645-48cb-bc98-2e928df521ab', '100L İçme Suyu İhtiyacı', 'Ahmet', 'Mehmet',
-                    90, 1234567890, 'AVAILABLE', ST_GeomFromText('POINT(40.981210 29.026083)', 4326),
+                    90, 1234567890, 'AVAILABLE', '77ece256-bf0e-4bbe-801d-173083f8bdcf',
+                    ST_GeomFromText('POINT(40.981210 29.026083)', 4326),
                     'AYS', CURRENT_TIMESTAMP);
 
             INSERT INTO AYS_ASSIGNMENT (ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE, LINE_NUMBER, STATUS,
+                                        INSTITUTION_ID,
                                         POINT, CREATED_USER, CREATED_AT)
             VALUES ('a9ec051e-3c4f-4cb5-ab08-e9dcee5e1f03', 'Kıyafet İhtiyacı', 'Cem', 'Orkun',
-                    90, 1234567890, 'AVAILABLE', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
+                    90, 1234567890, 'AVAILABLE', '7024b566-6df9-445c-8526-ff43d3d0ba9e',
+                    ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
                     'AYS', CURRENT_TIMESTAMP);
 
             INSERT INTO AYS_ASSIGNMENT (ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE, LINE_NUMBER, STATUS,
+                                        INSTITUTION_ID,
                                         POINT, CREATED_USER, CREATED_AT)
             VALUES ('7e1ebd41-a644-4596-a0f3-b4a71237b3c5', 'Yemek İhtiyacı', 'Ceren', 'Deniz',
-                    90, 1234567890, 'AVAILABLE', ST_GeomFromText('POINT(40.941210 29.123123)', 4326),
+                    90, 1234567890, 'AVAILABLE', '705b4fd8-0ec5-41cd-b75a-0ed7aa9d853b',
+                    ST_GeomFromText('POINT(40.941210 29.123123)', 4326),
                     'AYS', CURRENT_TIMESTAMP);
         </sql>
         <!-- ========================== -->
