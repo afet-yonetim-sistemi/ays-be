@@ -36,8 +36,8 @@ public class AssignmentSaveRequest {
     private AysPhoneNumber phoneNumber;
 
     @NotNull
-    private double latitude;
+    private Double latitude;
 
     @NotNull
-    private double longitude;
+    private Double longitude;
 }
