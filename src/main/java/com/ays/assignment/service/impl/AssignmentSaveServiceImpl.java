@@ -10,8 +10,6 @@ import com.ays.user.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * UserSaveServiceImpl is an implementation of the {@link AssignmentSaveService} interface.
  * It provides methods for saving assignment data and performing related operations by admin.
@@ -35,8 +33,6 @@ class AssignmentSaveServiceImpl implements AssignmentSaveService {
      */
     @Override
     public void saveAssignment(AssignmentSaveRequest saveRequest) {
-
-        final List<AssignmentEntity> assignmentsFromDatabase = assignmentRepository.findAll();
 
         final AssignmentEntity assignmentEntity = assignmentSaveRequestToAssignmentMapper.mapForSaving(saveRequest, identity.getInstitutionId());
 
