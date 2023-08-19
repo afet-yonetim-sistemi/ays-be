@@ -6,7 +6,6 @@ import com.ays.assignment.model.mapper.AssignmentSaveRequestToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.auth.model.AysIdentity;
-import com.ays.user.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,6 @@ class AssignmentSaveServiceImpl implements AssignmentSaveService {
      *
      * @param saveRequest the request object containing assignment data to be saved
      * @return the saved assignment
-     * @throws AysUserAlreadyExistsByPhoneNumberException if a assignment with the same phone number already exists
      */
     @Override
     public void saveAssignment(AssignmentSaveRequest saveRequest) {
