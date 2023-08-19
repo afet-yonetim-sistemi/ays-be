@@ -1,6 +1,9 @@
 package com.ays.assignment.model.dto.request;
 
 import com.ays.common.model.AysPhoneNumber;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,10 +20,22 @@ import lombok.Data;
 @Builder
 public class AssignmentSaveRequest {
 
+    @NotBlank
     private String description;
+
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
+
+    @Valid
+    @NotNull
     private AysPhoneNumber phoneNumber;
+
+    @NotNull
     private double latitude;
+
+    @NotNull
     private double longitude;
 }
