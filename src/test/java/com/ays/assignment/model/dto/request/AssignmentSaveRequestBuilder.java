@@ -40,12 +40,12 @@ public class AssignmentSaveRequestBuilder extends TestDataBuilder<AssignmentSave
         return this;
     }
 
-    public AssignmentSaveRequestBuilder withLatitude(double latitude) {
+    public AssignmentSaveRequestBuilder withLatitude(Double latitude) {
         data.setLatitude(latitude);
         return this;
     }
 
-    public AssignmentSaveRequestBuilder withLongitude(double longitude) {
+    public AssignmentSaveRequestBuilder withLongitude(Double longitude) {
         data.setLongitude(longitude);
         return this;
     }
