@@ -29,7 +29,7 @@
                                         POINT, CREATED_USER, CREATED_AT)
             VALUES ('3b30cac9-0645-48cb-bc98-2e928df521ab', '77ece256-bf0e-4bbe-801d-173083f8bdcf',
                     '100L İçme Suyu İhtiyacı',
-                    'Ahmet', 'Mehmet', 90, 1234567890, 'AVAILABLE',
+                    'Ahmet', 'Mehmet', '90', '1234567890', 'AVAILABLE',
                     ST_GeomFromText('POINT(40.981210 29.026083)', 4326),
                     'AYS', CURRENT_TIMESTAMP);
 
@@ -37,7 +37,7 @@
                                         LINE_NUMBER, STATUS,
                                         POINT, CREATED_USER, CREATED_AT)
             VALUES ('a9ec051e-3c4f-4cb5-ab08-e9dcee5e1f03', '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4', 'Kıyafet İhtiyacı',
-                    'Cem', 'Orkun', 90, 1234567890, 'AVAILABLE',
+                    'Cem', 'Orkun', '90', '1234567890', 'AVAILABLE',
                     ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
                     'AYS', CURRENT_TIMESTAMP);
 

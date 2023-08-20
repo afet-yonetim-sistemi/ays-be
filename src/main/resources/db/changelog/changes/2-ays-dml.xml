@@ -63,8 +63,6 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
-
-
         <!-- ====================== -->
         <!-- DML of AYS_INSTITUTION -->
         <!-- ====================== -->
