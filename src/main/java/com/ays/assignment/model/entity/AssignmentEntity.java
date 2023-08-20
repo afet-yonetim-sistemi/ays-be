@@ -10,10 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.*;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
@@ -69,11 +66,10 @@ public class AssignmentEntity extends BaseEntity {
     private UserEntity user;
 
     public void setPoint(double latitude, double longitude) {
-        Coordinate[] coordinates = new Coordinate[]{new Coordinate(latitude, longitude)};
-        CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
-        GeometryFactory geometryFactory = new GeometryFactory();
-        this.point = geometryFactory.createPoint(coordinateSequence);
-        this.point.setSRID(4326); // Set the SRID of the created Point
+        final Coordinate[] coordinates = new Coordinate[]{new Coordinate(latitude, longitude)};
+        final CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
+        final PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
+        this.point = new GeometryFactory(precisionModel, 4326).createPoint(coordinateSequence);
     }
 
     public boolean isAvailable() {
