@@ -3,9 +3,8 @@ package com.ays.assignment.model.mapper;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.common.model.mapper.BaseMapper;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -48,9 +47,10 @@ public interface AssignmentToAssignmentEntityMapper extends BaseMapper<Assignmen
      */
     default Point mapToPoint(Double latitude, Double longitude) {
         if (latitude != null && longitude != null) {
-            Coordinate coordinate = new Coordinate(latitude, longitude);
-            GeometryFactory geometryFactory = new GeometryFactory();
-            return geometryFactory.createPoint(coordinate);
+            final Coordinate[] coordinates = new Coordinate[]{new Coordinate(latitude, longitude)};
+            final CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
+            final PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
+            return new GeometryFactory(precisionModel, 4326).createPoint(coordinateSequence);
         }
         return null;
     }
