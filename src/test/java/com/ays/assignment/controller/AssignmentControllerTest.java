@@ -51,10 +51,10 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
-        ;
 
         Mockito.verify(assignmentSaveService, Mockito.times(1))
                 .saveAssignment(Mockito.any(AssignmentSaveRequest.class));
+
     }
 
 
@@ -82,6 +82,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+
     }
 
 }
