@@ -43,4 +43,11 @@ public class UserLocationEntity extends BaseEntity {
         this.point = AysLocationUtil.generatePoint(latitude, longitude);
     }
 
+    public abstract static class UserLocationEntityBuilder<C extends UserLocationEntity, B extends UserLocationEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {
+        public B point(final Double latitude, final Double longitude) {
+            this.point = AysLocationUtil.generatePoint(latitude, longitude);
+            return this.self();
+        }
+    }
+
 }
