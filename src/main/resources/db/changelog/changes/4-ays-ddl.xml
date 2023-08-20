@@ -69,10 +69,10 @@
             <column name="LAST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="COUNTRY_CODE" type="VARCHAR(5)">
+            <column name="COUNTRY_CODE" type="VARCHAR(7)">
                 <constraints nullable="false"/>
             </column>
-            <column name="LINE_NUMBER" type="VARCHAR(10)">
+            <column name="LINE_NUMBER" type="VARCHAR(13)">
                 <constraints nullable="false"/>
             </column>
             <column name="STATUS" type="VARCHAR(50)">
