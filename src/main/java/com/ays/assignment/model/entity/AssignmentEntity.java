@@ -2,6 +2,7 @@ package com.ays.assignment.model.entity;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.entity.BaseEntity;
+import com.ays.common.util.AysLocationUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.user.model.entity.UserEntity;
 import jakarta.persistence.*;
@@ -10,8 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.locationtech.jts.geom.*;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Assignment entity, which holds the information regarding assignment.
@@ -66,10 +66,7 @@ public class AssignmentEntity extends BaseEntity {
     private UserEntity user;
 
     public void setPoint(double latitude, double longitude) {
-        final Coordinate[] coordinates = new Coordinate[]{new Coordinate(latitude, longitude)};
-        final CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
-        final PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
-        this.point = new GeometryFactory(precisionModel, 4326).createPoint(coordinateSequence);
+        this.point = AysLocationUtil.generatePoint(latitude, longitude);
     }
 
     public boolean isAvailable() {
@@ -97,4 +94,10 @@ public class AssignmentEntity extends BaseEntity {
         this.status = assignmentStatus;
     }
 
+    public abstract static class AssignmentEntityBuilder<C extends AssignmentEntity, B extends AssignmentEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {
+        public B point(final Double latitude, final Double longitude) {
+            this.point = AysLocationUtil.generatePoint(latitude, longitude);
+            return this.self();
+        }
+    }
 }

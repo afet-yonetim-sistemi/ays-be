@@ -3,10 +3,7 @@ package com.ays.assignment.model.mapper;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.common.model.mapper.BaseMapper;
-import org.locationtech.jts.geom.*;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -19,15 +16,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AssignmentToAssignmentEntityMapper extends BaseMapper<Assignment, AssignmentEntity> {
 
-    /**
-     * Maps UserAssignment to UserAssignmentEntity.
-     *
-     * @param assignment the UserAssignment object
-     * @return the mapped UserAssignmentEntity object
-     */
-    @Mapping(target = "point", expression = "java(mapToPoint(assignment.getLatitude(), assignment.getLongitude()))")
-    AssignmentEntity map(Assignment assignment);
-
 
     /**
      * Initializes the mapper.
@@ -38,20 +26,4 @@ public interface AssignmentToAssignmentEntityMapper extends BaseMapper<Assignmen
         return Mappers.getMapper(AssignmentToAssignmentEntityMapper.class);
     }
 
-    /**
-     * Maps latitude and longitude to the point field.
-     *
-     * @param latitude  the latitude value
-     * @param longitude the longitude value
-     * @return the mapped Point object
-     */
-    default Point mapToPoint(Double latitude, Double longitude) {
-        if (latitude != null && longitude != null) {
-            final Coordinate[] coordinates = new Coordinate[]{new Coordinate(latitude, longitude)};
-            final CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
-            final PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
-            return new GeometryFactory(precisionModel, 4326).createPoint(coordinateSequence);
-        }
-        return null;
-    }
 }
