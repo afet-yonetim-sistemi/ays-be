@@ -126,19 +126,19 @@ First of all, generate personal access token with this url : https://github.com/
 Before running the project, you need to run the following command to start the MySQL container:
 
 ```
-docker compose up -d --build mysql
+docker compose up -d --build database
 ```
 
 If you want to recreate the MySQL container, you can run the following command:
 
 ```
-docker compose up --force-recreate -d --build mysql
+docker compose up --force-recreate -d --build database
 ```
 
 If you want to stop the MySQL container, you can run the following command:
 
 ```
-docker compose down -v mysql
+docker compose down -v database
 ```
 
 ---
