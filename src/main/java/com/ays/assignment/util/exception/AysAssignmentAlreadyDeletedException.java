@@ -5,9 +5,9 @@ import com.ays.common.util.exception.AysAlreadyException;
 import java.io.Serial;
 
 /**
- * Exception thrown when an assignment is available and attempting to perform an action that requires an assignment which is already available.
+ * Exception thrown when an assignment is deleted and attempting to perform an action that requires an assignment which is already deleted.
  */
-public class AysAssignmentAlreadyAvailableException extends AysAlreadyException {
+public class AysAssignmentAlreadyDeletedException extends AysAlreadyException {
 
     /**
      * Unique identifier for serialization.
@@ -20,8 +20,7 @@ public class AysAssignmentAlreadyAvailableException extends AysAlreadyException 
      *
      * @param id the id of the assignment which is already available
      */
-    public AysAssignmentAlreadyAvailableException(String id) {
-        super("ASSIGNMENT IS ALREADY AVAILABLE! id:" + id);
+    public AysAssignmentAlreadyDeletedException(String id) {
+        super("ASSIGNMENT IS ALREADY DELETED! id:" + id);
     }
-
 }

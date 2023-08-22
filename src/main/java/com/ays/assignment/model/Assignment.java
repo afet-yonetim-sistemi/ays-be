@@ -8,6 +8,7 @@ import com.ays.user.model.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Assignment Domain Model to perform data transfer from service layer to controller
@@ -22,8 +23,7 @@ public class Assignment extends BaseDomainModel {
     private String firstName;
     private String lastName;
     private AysPhoneNumber phoneNumber;
-    private Double latitude;
-    private Double longitude;
+    private Point point;
     private AssignmentStatus status;
 
     private User user;
