@@ -67,6 +67,34 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
+    void givenValidUserLocationSaveRequest_whenAssignmentNotFoundOrNotInProgress_thenThrowAysUserLocationCannotBeUpdatedException() {
+        // Given
+        UserLocationSaveRequest mockSaveRequest = new UserLocationSaveRequestBuilder()
+                .withValidFields()
+                .build();
+        String userId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(identity.getUserId()).thenReturn(userId);
+
+        Mockito.when(assignmentRepository.existsByUserIdAndStatus(userId, AssignmentStatus.IN_PROGRESS))
+                .thenReturn(false);
+
+        // Then
+        Assertions.assertThrows(
+                AysUserLocationCannotBeUpdatedException.class,
+                () -> userLocationService.saveUserLocation(mockSaveRequest)
+        );
+
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .existsByUserIdAndStatus(Mockito.anyString(), Mockito.any(AssignmentStatus.class));
+        Mockito.verify(userLocationRepository, Mockito.times(0))
+                .findByUserId(Mockito.anyString());
+        Mockito.verify(userLocationRepository, Mockito.times(0))
+                .save(Mockito.any(UserLocationEntity.class));
+    }
+
+    @Test
     void givenValidUserLocationSaveRequest_whenUserLocationNotFound_thenUpdateUserLastLocation() {
         // Given
         UserLocationSaveRequest mockSaveRequest = new UserLocationSaveRequestBuilder()
