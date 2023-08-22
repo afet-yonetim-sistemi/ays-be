@@ -14,8 +14,6 @@ import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
 import com.ays.user.model.dto.request.*;
 import com.ays.user.model.dto.response.UserResponse;
-import com.ays.user.model.dto.response.UserSavedResponse;
-import com.ays.user.model.dto.response.UserSavedResponseBuilder;
 import com.ays.user.model.dto.response.UsersResponse;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
@@ -35,7 +33,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
