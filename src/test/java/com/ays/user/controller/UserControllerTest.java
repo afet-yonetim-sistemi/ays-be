@@ -62,20 +62,11 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // When
-        User mockUser = new UserBuilder()
-                .withUsername("123456")
-                .withPassword("987654")
-                .withStatus(UserStatus.ACTIVE).build();
-        Mockito.when(userSaveService.saveUser(Mockito.any(UserSaveRequest.class)))
-                .thenReturn(mockUser);
+        Mockito.doNothing().when(userSaveService).saveUser(Mockito.any(UserSaveRequest.class));
 
         // Then
         String endpoint = BASE_PATH.concat("/user");
-        UserSavedResponse mockUserSavedResponse = new UserSavedResponseBuilder()
-                .withUsername(mockUser.getUsername())
-                .withPassword(mockUser.getPassword())
-                .build();
-        AysResponse<UserSavedResponse> mockResponse = AysResponseBuilder.successOf(mockUserSavedResponse);
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
                 .andDo(MockMvcResultHandlers.print())
