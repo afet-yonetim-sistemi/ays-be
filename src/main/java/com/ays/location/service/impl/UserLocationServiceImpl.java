@@ -1,11 +1,14 @@
 package com.ays.location.service.impl;
 
+import com.ays.assignment.model.enums.AssignmentStatus;
+import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
 import com.ays.location.model.dto.request.UserLocationSaveRequest;
 import com.ays.location.model.entity.UserLocationEntity;
 import com.ays.location.model.mapper.UserLocationSaveRequestToUserLocationEntityMapper;
 import com.ays.location.repository.UserLocationRepository;
 import com.ays.location.service.UserLocationService;
+import com.ays.location.util.exception.AysUserLocationCannotBeUpdatedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 class UserLocationServiceImpl implements UserLocationService {
 
     private final UserLocationRepository userLocationRepository;
+    private final AssignmentRepository assignmentRepository;
 
     private final AysIdentity identity;
 
@@ -32,6 +36,13 @@ class UserLocationServiceImpl implements UserLocationService {
      */
     @Override
     public void saveUserLocation(final UserLocationSaveRequest saveRequest) {
+
+        final boolean isAssignmentInProgress = assignmentRepository
+                .existsByUserIdAndStatus(identity.getUserId(), AssignmentStatus.IN_PROGRESS);
+        if (!isAssignmentInProgress) {
+            throw new AysUserLocationCannotBeUpdatedException();
+        }
+
         userLocationRepository.findByUserId(identity.getUserId())
                 .ifPresentOrElse(
                         userLocationEntityFromDatabase -> {
