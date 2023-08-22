@@ -24,23 +24,23 @@
         <!-- ========================== -->
         <sql>
             <!-- Kadiköy, Moda (40.981210, 29.026083) -->
-            INSERT INTO AYS_ASSIGNMENT (ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE, LINE_NUMBER, STATUS,
+            INSERT INTO AYS_ASSIGNMENT (ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
+                                        LINE_NUMBER, STATUS,
                                         POINT, CREATED_USER, CREATED_AT)
-            VALUES ('3b30cac9-0645-48cb-bc98-2e928df521ab', '100L İçme Suyu İhtiyacı', 'Ahmet', 'Mehmet',
-                    90, 1234567890, 'AVAILABLE', ST_GeomFromText('POINT(40.981210 29.026083)', 4326),
+            VALUES ('3b30cac9-0645-48cb-bc98-2e928df521ab', '77ece256-bf0e-4bbe-801d-173083f8bdcf',
+                    '100L İçme Suyu İhtiyacı',
+                    'Ahmet', 'Mehmet', '90', '1234567890', 'AVAILABLE',
+                    ST_GeomFromText('POINT(40.981210 29.026083)', 4326),
                     'AYS', CURRENT_TIMESTAMP);
 
-            INSERT INTO AYS_ASSIGNMENT (ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE, LINE_NUMBER, STATUS,
+            INSERT INTO AYS_ASSIGNMENT (ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
+                                        LINE_NUMBER, STATUS,
                                         POINT, CREATED_USER, CREATED_AT)
-            VALUES ('a9ec051e-3c4f-4cb5-ab08-e9dcee5e1f03', 'Kıyafet İhtiyacı', 'Cem', 'Orkun',
-                    90, 1234567890, 'AVAILABLE', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
+            VALUES ('a9ec051e-3c4f-4cb5-ab08-e9dcee5e1f03', '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4', 'Kıyafet İhtiyacı',
+                    'Cem', 'Orkun', '90', '1234567890', 'AVAILABLE',
+                    ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
                     'AYS', CURRENT_TIMESTAMP);
 
-            INSERT INTO AYS_ASSIGNMENT (ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE, LINE_NUMBER, STATUS,
-                                        POINT, CREATED_USER, CREATED_AT)
-            VALUES ('7e1ebd41-a644-4596-a0f3-b4a71237b3c5', 'Yemek İhtiyacı', 'Ceren', 'Deniz',
-                    90, 1234567890, 'AVAILABLE', ST_GeomFromText('POINT(40.941210 29.123123)', 4326),
-                    'AYS', CURRENT_TIMESTAMP);
         </sql>
         <!-- ========================== -->
         <!-- DML of AYS_ASSIGNMENT -->

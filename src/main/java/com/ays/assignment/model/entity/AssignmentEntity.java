@@ -2,6 +2,7 @@ package com.ays.assignment.model.entity;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.entity.BaseEntity;
+import com.ays.common.util.AysLocationUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.user.model.entity.UserEntity;
 import jakarta.persistence.*;
@@ -10,8 +11,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
 /**
@@ -55,7 +54,7 @@ public class AssignmentEntity extends BaseEntity {
     private Point point;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ASSIGNMENT_STATUS")
+    @Column(name = "STATUS")
     private AssignmentStatus status;
 
     @OneToOne
@@ -67,9 +66,7 @@ public class AssignmentEntity extends BaseEntity {
     private UserEntity user;
 
     public void setPoint(double latitude, double longitude) {
-        Coordinate coordinate = new Coordinate(latitude, longitude);
-        GeometryFactory geometryFactory = new GeometryFactory();
-        this.point = geometryFactory.createPoint(coordinate);
+        this.point = AysLocationUtil.generatePoint(latitude, longitude);
     }
 
     public boolean isAvailable() {
@@ -92,8 +89,15 @@ public class AssignmentEntity extends BaseEntity {
         return AssignmentStatus.DONE.equals(this.status);
     }
 
+
     public void updateAssignmentStatus(AssignmentStatus assignmentStatus) {
         this.status = assignmentStatus;
     }
 
+    public abstract static class AssignmentEntityBuilder<C extends AssignmentEntity, B extends AssignmentEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {
+        public B point(final Double latitude, final Double longitude) {
+            this.point = AysLocationUtil.generatePoint(latitude, longitude);
+            return this.self();
+        }
+    }
 }
