@@ -2,8 +2,8 @@ package com.ays.assignment.model.entity;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.entity.BaseEntity;
-import com.ays.common.util.AysLocationUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
+import com.ays.location.util.AysLocationUtil;
 import com.ays.user.model.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
