@@ -83,10 +83,9 @@ class UserController {
      */
     @PostMapping("/user")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public AysResponse<UserSavedResponse> saveUser(@RequestBody @Valid UserSaveRequest saveRequest) {
-        User user = userSaveService.saveUser(saveRequest);
-        UserSavedResponse userSavedResponse = userToUserSavedResponseMapper.map(user);
-        return AysResponse.successOf(userSavedResponse);
+    public AysResponse<Void> saveUser(@RequestBody @Valid UserSaveRequest saveRequest) {
+        userSaveService.saveUser(saveRequest);
+        return AysResponse.SUCCESS;
     }
 
     /**

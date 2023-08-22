@@ -87,11 +87,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.response.username")
-                        .value(mockResponse.getResponse().getUsername()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.response.password")
-                        .value(mockResponse.getResponse().getPassword()));
+                        .doesNotExist());
 
         Mockito.verify(userSaveService, Mockito.times(1))
                 .saveUser(Mockito.any(UserSaveRequest.class));

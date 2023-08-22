@@ -66,11 +66,7 @@ class UserSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
                         .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.response.username")
-                        .isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.response.password")
-                        .isNotEmpty());
+                        .doesNotExist());
     }
 
     @Test
