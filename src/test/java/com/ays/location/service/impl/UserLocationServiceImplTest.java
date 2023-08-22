@@ -1,6 +1,8 @@
 package com.ays.location.service.impl;
 
 import com.ays.AbstractUnitTest;
+import com.ays.assignment.model.enums.AssignmentStatus;
+import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.location.model.dto.request.UserLocationSaveRequest;
@@ -8,6 +10,8 @@ import com.ays.location.model.dto.request.UserLocationSaveRequestBuilder;
 import com.ays.location.model.entity.UserLocationEntity;
 import com.ays.location.model.mapper.UserLocationSaveRequestToUserLocationEntityMapper;
 import com.ays.location.repository.UserLocationRepository;
+import com.ays.location.util.exception.AysUserLocationCannotBeUpdatedException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,6 +26,9 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
 
     @Mock
     private UserLocationRepository userLocationRepository;
+
+    @Mock
+    private AssignmentRepository assignmentRepository;
 
     @Mock
     private AysIdentity identity;
@@ -40,6 +47,9 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(identity.getUserId()).thenReturn(userId);
 
+        Mockito.when(assignmentRepository.existsByUserIdAndStatus(userId, AssignmentStatus.IN_PROGRESS))
+                .thenReturn(true);
+
         UserLocationEntity userLocationEntity = USER_LOCATION_SAVE_REQUEST_TO_USER_LOCATION_ENTITY_MAPPER
                 .mapForSaving(mockSaveRequest, userId);
         Mockito.when(userLocationRepository.findByUserId(userId))
@@ -48,6 +58,8 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
         // Then
         userLocationService.saveUserLocation(mockSaveRequest);
 
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .existsByUserIdAndStatus(Mockito.anyString(), Mockito.any(AssignmentStatus.class));
         Mockito.verify(userLocationRepository, Mockito.times(1))
                 .findByUserId(Mockito.anyString());
         Mockito.verify(userLocationRepository, Mockito.times(1))
