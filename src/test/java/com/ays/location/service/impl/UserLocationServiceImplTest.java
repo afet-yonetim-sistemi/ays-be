@@ -77,9 +77,14 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(identity.getUserId()).thenReturn(userId);
 
+        Mockito.when(assignmentRepository.existsByUserIdAndStatus(userId, AssignmentStatus.IN_PROGRESS))
+                .thenReturn(true);
+
         // Then
         userLocationService.saveUserLocation(mockSaveRequest);
 
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .existsByUserIdAndStatus(Mockito.anyString(), Mockito.any(AssignmentStatus.class));
         Mockito.verify(userLocationRepository, Mockito.times(1))
                 .findByUserId(Mockito.anyString());
         Mockito.verify(userLocationRepository, Mockito.times(1))
