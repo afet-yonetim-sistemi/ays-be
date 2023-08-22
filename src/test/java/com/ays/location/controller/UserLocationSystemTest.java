@@ -27,7 +27,7 @@ class UserLocationSystemTest extends AbstractSystemTest {
         // Then
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH, userTokenOne.getAccessToken(), mockUserLocationSaveRequest))
+                        .post(BASE_PATH, userTokenThree.getAccessToken(), mockUserLocationSaveRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
