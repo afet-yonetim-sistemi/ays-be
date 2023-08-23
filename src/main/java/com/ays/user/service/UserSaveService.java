@@ -12,8 +12,7 @@ public interface UserSaveService {
      * Saves a saveRequest to the database.
      *
      * @param saveRequest the UserSaveRequest entity
-     * @return User
      */
-    User saveUser(UserSaveRequest saveRequest);
+    void saveUser(UserSaveRequest saveRequest);
 
 }

@@ -8,10 +8,8 @@ import com.ays.user.model.dto.request.UserListRequest;
 import com.ays.user.model.dto.request.UserSaveRequest;
 import com.ays.user.model.dto.request.UserUpdateRequest;
 import com.ays.user.model.dto.response.UserResponse;
-import com.ays.user.model.dto.response.UserSavedResponse;
 import com.ays.user.model.dto.response.UsersResponse;
 import com.ays.user.model.mapper.UserToUserResponseMapper;
-import com.ays.user.model.mapper.UserToUserSavedResponseMapper;
 import com.ays.user.model.mapper.UserToUsersResponseMapper;
 import com.ays.user.service.UserSaveService;
 import com.ays.user.service.UserService;
@@ -36,7 +34,6 @@ class UserController {
     private final UserService userService;
     private final UserSaveService userSaveService;
 
-    private final UserToUserSavedResponseMapper userToUserSavedResponseMapper = UserToUserSavedResponseMapper.initialize();
     private final UserToUserResponseMapper userToUserResponseMapper = UserToUserResponseMapper.initialize();
     private final UserToUsersResponseMapper userToUsersResponseMapper = UserToUsersResponseMapper.initialize();
 
@@ -83,10 +80,9 @@ class UserController {
      */
     @PostMapping("/user")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public AysResponse<UserSavedResponse> saveUser(@RequestBody @Valid UserSaveRequest saveRequest) {
-        User user = userSaveService.saveUser(saveRequest);
-        UserSavedResponse userSavedResponse = userToUserSavedResponseMapper.map(user);
-        return AysResponse.successOf(userSavedResponse);
+    public AysResponse<Void> saveUser(@RequestBody @Valid UserSaveRequest saveRequest) {
+        userSaveService.saveUser(saveRequest);
+        return AysResponse.SUCCESS;
     }
 
     /**
