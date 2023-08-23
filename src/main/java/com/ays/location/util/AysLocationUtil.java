@@ -1,4 +1,4 @@
-package com.ays.common.util;
+package com.ays.location.util;
 
 import lombok.experimental.UtilityClass;
 import org.locationtech.jts.geom.*;
