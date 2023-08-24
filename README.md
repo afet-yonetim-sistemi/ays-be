@@ -1,8 +1,9 @@
 # AYS | Afet Yönetim Sistemi API  [![Application Status](https://github.com/afet-yonetim-sistemi/ays-be/actions/workflows/application-health-checker.yml/badge.svg)](https://github.com/afet-yonetim-sistemi/ays-be/actions/workflows/application-health-checker.yml)
 
-
 ## Description
-**Disaster Management System** ,which is named as **AYS(AFET YÖNETİM SİSTEMİ)**, is an open source and voluntary project.
+
+**Disaster Management System** ,which is named as **AYS(AFET YÖNETİM SİSTEMİ)**, is an open source and voluntary
+project.
 The aim is to manage the needs that arise during a natural disaster.
 It manages the coordination of the need processes between volunteers and institutions in the disaster area.
 
@@ -12,13 +13,14 @@ volunteers who are close to the relevant region and need, aims to manage the nee
 
 ## Processes
 
-
 - **Institute (Institution) user Processes** :
-  It is aimed to ensure resource management of the organization in case of a disaster and to carry out these processes according to the relevant scenarios.
+  It is aimed to ensure resource management of the organization in case of a disaster and to carry out these processes
+  according to the relevant scenarios.
   It allocates workloads for volunteers according to the needs and follows up.
 
 - **Admin** :
-  The role of Admin takes part in the management of users and institutions that voluntarily participate in the role. It follows up institutions and users.
+  The role of Admin takes part in the management of users and institutions that voluntarily participate in the role. It
+  follows up institutions and users.
 
 
 - **User** :
@@ -27,56 +29,71 @@ volunteers who are close to the relevant region and need, aims to manage the nee
   can be automatically assigned, or interested volunteers can choose from the needs in their region
   select the most appropriate assignment and complete the relevant process.
 
-
-
 ## Tech Stack
 
-Framework :
+**Framework**
 
 * Core
     * Spring
         * Spring Boot 3
         * Spring Boot Test (Junit)
         * Spring Boot Dev Tools
-        * Spring Security
+        * Spring Security 6
         * Spring Web
         * Spring Boot Actuator
+        * Spring Doc Open API
+        * Spring Security
+        * Spring OAuth2 Client
+        * Spring OAuth2 Resource Server
     * Spring Data
         * Spring Data JPA
     * Cache
         * Spring Cache
 
-Databases :
-
-* MySQL
-
-
-Technologies :
+**3rd Party Dependencies**
 
 * Lombok
 * Test Containers
-* Swagger
+* Mapstruct
+* Easy Random
+* JSON Web Token
+* JSON Web Signature
+* Bouncy Castle
 
-Language :
+**Database**
+
+* MySQL
+
+**Database Migration Tool**
+
+* Liquibase
+
+**Language**
 
 * Java 17
 
-Build Tool :
+**Build Tool**
 
 * Maven
 
-Software Development Process :
+**Software Development Process**
 
 * TDD
 * Agile Kanban
+* GitHub Projects
 
-Version Control :
+**Version Control**
 
 * Git
+* GitHub
 
-Database Change Management :
+**APIs Interaction Platform**
 
-* Liquibase
+* Postman
+
+**Application Pipeline**
+
+* GitHub Actions
 
 --- 
 
@@ -257,9 +274,17 @@ For other information, you can contact the project's [Discord channel](https://d
 
 ---
 
-## Postman Collections
+## Postman
 
-### AYS Auth APIs
+### AYS Local Collections
+
+https://fromsmash.com/sX28.CH0NF-dt
+
+### AYS APIs | PUBLIC
+
+https://documenter.getpostman.com/view/26813504/2s9Y5VVQ82
+
+### AYS APIs | AUTH
 
 https://documenter.getpostman.com/view/26813504/2s93kz55K3
 
