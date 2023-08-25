@@ -40,4 +40,12 @@ public class AysTestData {
         public static final String VALID_ID_TWO = "91df7ae9-d5b9-44ae-b54f-d5d55359c4a4";
     }
 
+    public static class Assignment {
+
+        public static final String VALID_ID_ONE = "3b30cac9-0645-48cb-bc98-2e928df521ab";
+
+        public static final String VALID_ID_TWO = "a9ec051e-3c4f-4cb5-ab08-e9dcee5e1f03";
+
+    }
+
 }
