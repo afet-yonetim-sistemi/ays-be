@@ -5,6 +5,8 @@ import com.ays.assignment.model.enums.AssignmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.Optional;
+
 /**
  * Repository interface for performing CRUD operations on UserAssignmentEntity objects.
  */
@@ -17,5 +19,15 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
      * @return {@code true} if an assignment exists for the specified user ID, otherwise {@code false}.
      */
     boolean existsByUserIdAndStatus(String userId, AssignmentStatus status);
+
+
+    /**
+     * Retrieves an optional AssignmentEntity based on the provided user ID and institution ID.
+     *
+     * @param id            The ID of the assignment to retrieve.
+     * @param institutionId The ID of the institution associated with the user.
+     * @return An optional AssignmentEntity that matches the specified ID and institution ID, or an empty optional if not found.
+     */
+    Optional<AssignmentEntity> findByIdAndInstitutionId(String id, String institutionId);
 
 }
