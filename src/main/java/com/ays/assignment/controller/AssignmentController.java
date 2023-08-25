@@ -53,7 +53,7 @@ class AssignmentController {
      * @param id The ID of the user to retrieve.
      * @return A response object containing the retrieved user data.
      */
-    @PostMapping("/assignment/{id}")
+    @GetMapping("/assignment/{id}")
     @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<AssignmentResponse> getAssignmentById(@PathVariable @UUID String id) {
 
