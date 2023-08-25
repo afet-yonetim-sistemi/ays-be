@@ -1,6 +1,8 @@
 package com.ays.assignment.controller;
 
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
+import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
+import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
@@ -25,7 +27,6 @@ class AssignmentController {
 
     private final AssignmentSaveService assignmentSaveService;
 
-
     /**
      * Saves a new assignment to the system.
      * Requires ADMIN authority.
@@ -38,5 +39,11 @@ class AssignmentController {
     public AysResponse<Void> saveAssignment(@RequestBody @Valid AssignmentSaveRequest saveRequest) {
         assignmentSaveService.saveAssignment(saveRequest);
         return AysResponse.SUCCESS;
+    }
+
+    @PostMapping("/assignment/search")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<AssignmentSearchResponse> getUserAssignmentSearch(@RequestBody @Valid AssignmentSearchRequest assignmentSearchRequest) {
+        return AysResponse.successOf(AssignmentSearchResponse.builder().build());
     }
 }
