@@ -2,8 +2,11 @@ package com.ays.assignment.repository;
 
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.enums.AssignmentStatus;
+import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.Optional;
 
 /**
  * Repository interface for performing CRUD operations on UserAssignmentEntity objects.
@@ -17,5 +20,7 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
      * @return {@code true} if an assignment exists for the specified user ID, otherwise {@code false}.
      */
     boolean existsByUserIdAndStatus(String userId, AssignmentStatus status);
+
+    Optional<AssignmentEntity> findByPointAndInstitutionId(Point point, String institutionId);
 
 }
