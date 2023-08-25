@@ -1,8 +1,11 @@
 package com.ays.assignment.controller;
 
+import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
+import com.ays.assignment.service.AssignmentService;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,9 @@ class AssignmentController {
 
     private final AssignmentSaveService assignmentSaveService;
 
+    private final AssignmentService assignmentService;
+
+    private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
 
     /**
      * Saves a new assignment to the system.
@@ -50,7 +56,11 @@ class AssignmentController {
     @PostMapping("/assignment/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<AssignmentResponse> getAssignmentById(@PathVariable @UUID String id) {
-        return null;
+
+        final Assignment assignment = assignmentService.getAssignmentById(id);
+        final AssignmentResponse assignmentResponse = assignmentToAssignmentResponseMapper.map(assignment);
+        return AysResponse.successOf(assignmentResponse);
     }
+
 
 }
