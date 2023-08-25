@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AssignmentServiceImpl implements AssignmentService {
+class AssignmentServiceImpl implements AssignmentService {
 
     private final AssignmentRepository assignmentRepository;
 
