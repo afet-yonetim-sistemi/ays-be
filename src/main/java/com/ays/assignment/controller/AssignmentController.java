@@ -54,7 +54,7 @@ class AssignmentController {
      * @return A response object containing the retrieved user data.
      */
     @PostMapping("/assignment/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<AssignmentResponse> getAssignmentById(@PathVariable @UUID String id) {
 
         final Assignment assignment = assignmentService.getAssignmentById(id);
