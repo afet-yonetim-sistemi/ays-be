@@ -36,9 +36,10 @@ class UserSaveServiceImpl implements UserSaveService {
      * Saves a new user based on the provided save request.
      *
      * @param saveRequest the request object containing user data to be saved
+     * @return the saved user
      * @throws AysUserAlreadyExistsByPhoneNumberException if a user with the same phone number already exists
      */
-    public void saveUser(final UserSaveRequest saveRequest) {
+    public User saveUser(final UserSaveRequest saveRequest) {
 
         final List<UserEntity> usersFromDatabase = userRepository.findAll();
 
@@ -57,6 +58,11 @@ class UserSaveServiceImpl implements UserSaveService {
                 );
 
         userRepository.save(userEntity);
+
+        return User.builder()
+                .username(username)
+                .password(password)
+                .build();
     }
 
     /**

@@ -57,8 +57,13 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
                 .thenReturn(AysRandomUtil.generateUUID());
 
         // Then
-        userSaveService.saveUser(mockUserSaveRequest);
-        
+        User user = userSaveService.saveUser(mockUserSaveRequest);
+
+        Assertions.assertNotNull(user.getUsername());
+        Assertions.assertEquals(6, user.getUsername().length());
+        Assertions.assertNotNull(user.getPassword());
+        Assertions.assertEquals(6, user.getPassword().length());
+
         Mockito.verify(userRepository, Mockito.times(1)).findAll();
         Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
         Mockito.verify(passwordEncoder, Mockito.times(1)).encode(Mockito.anyString());
