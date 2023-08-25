@@ -6,6 +6,7 @@ import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
@@ -66,5 +67,30 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
 
+    }
+
+    @Test
+    void givenAssignmentId_whenAssignmentNotFound_thenThrowAysAssignmentNotExistByIdException() {
+
+        // Given
+        String mockAssignmentId = AysRandomUtil.generateUUID();
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+        Mockito.when(assignmentRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysAssignmentNotExistByIdException.class,
+                () -> assignmentService.getAssignmentById(mockAssignmentId)
+        );
+
+        Mockito.when(assignmentRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(Optional.empty());
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
     }
 }
