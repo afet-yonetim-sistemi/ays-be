@@ -1,9 +1,12 @@
 package com.ays.assignment.controller;
 
+import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
-import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
+import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 class AssignmentController {
 
     private final AssignmentSaveService assignmentSaveService;
+    private final AssignmentSearchService assignmentSearchService;
+
+    private final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
 
     /**
      * Saves a new assignment to the system.
@@ -43,7 +49,9 @@ class AssignmentController {
 
     @PostMapping("/assignment/search")
     @PreAuthorize("hasAnyAuthority('USER')")
-    public AysResponse<AssignmentSearchResponse> getUserAssignmentSearch(@RequestBody @Valid AssignmentSearchRequest assignmentSearchRequest) {
-        return AysResponse.successOf(AssignmentSearchResponse.builder().build());
+    public AysResponse<AssignmentResponse> getUserAssignmentSearch(@RequestBody @Valid AssignmentSearchRequest assignmentSearchRequest) {
+        final Assignment assignment = assignmentSearchService.searchAssignment(assignmentSearchRequest);
+        final AssignmentResponse assignmentResponse = assignmentToAssignmentResponseMapper.map(assignment);
+        return AysResponse.successOf(assignmentResponse);
     }
 }
