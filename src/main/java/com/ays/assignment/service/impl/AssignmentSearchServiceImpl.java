@@ -6,7 +6,7 @@ import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentSearchService;
-import com.ays.assignment.util.exception.AysAssignmentNotExistByLatitudeAndLongitudeException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByPointException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.location.util.AysLocationUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +24,20 @@ public class AssignmentSearchServiceImpl implements AssignmentSearchService {
     /**
      * Retrieves nearest assigment by their point
      *
-     * @param assignmentSearchRequest the AssignmentSearchRequest
+     * @param searchRequest the AssignmentSearchRequest
      * @return Assignment
      */
     @Override
-    public Assignment searchAssignment(AssignmentSearchRequest assignmentSearchRequest) {
-        final Point searchAssignmentRequestPoint = AysLocationUtil.generatePoint(assignmentSearchRequest.getLatitude(), assignmentSearchRequest.getLongitude());
-        AssignmentEntity assignmentEntity = assignmentRepository.findNearestAssignment(searchAssignmentRequestPoint, identity.getInstitutionId())
-                .orElseThrow(() -> new AysAssignmentNotExistByLatitudeAndLongitudeException(assignmentSearchRequest.getLatitude(), assignmentSearchRequest.getLongitude()));
+    public Assignment searchAssignment(AssignmentSearchRequest searchRequest) {
+        final Point searchAssignmentRequestPoint = AysLocationUtil
+                .generatePoint(searchRequest.getLatitude(), searchRequest.getLongitude());
+        AssignmentEntity assignmentEntity = assignmentRepository
+                .findNearestAssignment(searchAssignmentRequestPoint, identity.getInstitutionId())
+                .orElseThrow(() -> new AysAssignmentNotExistByPointException(
+                                searchRequest.getLatitude(),
+                                searchRequest.getLongitude()
+                        )
+                );
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }
 }
