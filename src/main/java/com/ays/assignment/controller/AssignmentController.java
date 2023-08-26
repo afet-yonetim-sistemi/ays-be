@@ -47,6 +47,14 @@ class AssignmentController {
         return AysResponse.SUCCESS;
     }
 
+
+    /**
+     * Retrieves nearest assignment by AssignmentSearchRequest.
+     * Requires USER authority.
+     *
+     * @param assignmentSearchRequest The request object containing user location to search nearest assignment.
+     * @return A response object containing nearest assignment data.
+     */
     @PostMapping("/assignment/search")
     @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<AssignmentResponse> getUserAssignmentSearch(@RequestBody @Valid AssignmentSearchRequest assignmentSearchRequest) {
