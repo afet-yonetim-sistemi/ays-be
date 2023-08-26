@@ -13,6 +13,8 @@ import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
 import com.ays.user.model.dto.request.*;
 import com.ays.user.model.dto.response.UserResponse;
+import com.ays.user.model.dto.response.UserSavedResponse;
+import com.ays.user.model.dto.response.UserSavedResponseBuilder;
 import com.ays.user.model.dto.response.UsersResponse;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
@@ -29,6 +31,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
@@ -50,7 +53,8 @@ class UserSystemTest extends AbstractSystemTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user");
-        AysResponse<Void> response = AysResponseBuilder.SUCCESS;
+        UserSavedResponse userSavedResponse = new UserSavedResponseBuilder().build();
+        AysResponse<UserSavedResponse> response = AysResponseBuilder.successOf(userSavedResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, adminUserTokenOne.getAccessToken(), userSaveRequest))
                 .andDo(MockMvcResultHandlers.print())
@@ -62,7 +66,11 @@ class UserSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
                         .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.username")
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.password")
+                        .isNotEmpty());
     }
 
     @Test
