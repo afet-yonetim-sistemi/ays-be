@@ -114,7 +114,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         AssignmentResponse mockAssignmentResponse = ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER.map(mockAssignment);
         AysResponse<AssignmentResponse> mockAysResponse = AysResponse.successOf(mockAssignmentResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(endpoint, mockUserToken.getAccessToken()))
+                        .get(endpoint, mockAdminUserToken.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -141,7 +141,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/".concat(mockAssignmentId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, mockAdminUserToken.getAccessToken());
+                .get(endpoint, mockUserToken.getAccessToken());
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)

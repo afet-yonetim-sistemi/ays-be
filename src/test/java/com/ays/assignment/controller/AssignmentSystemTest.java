@@ -96,7 +96,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/").concat(mockAssignmentId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, userTokenOne.getAccessToken());
+                .get(endpoint, adminUserTokenOne.getAccessToken());
 
         AssignmentResponse mockAssignmentResponse = ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER.map(mockAssignment);
         AysResponse<AssignmentResponse> mockAysResponse = AysResponse.successOf(mockAssignmentResponse);
@@ -124,7 +124,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/".concat(mockAssignmentId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, adminUserTokenOne.getAccessToken());
+                .get(endpoint, userTokenOne.getAccessToken());
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
