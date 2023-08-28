@@ -63,6 +63,7 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
 
         final AdminUserRegisterVerificationEntity verificationEntity = adminUserRegisterVerificationRepository
                 .findById(registerRequest.getVerificationId())
+                .filter(AdminUserRegisterVerificationEntity::isWaiting)
                 .orElseThrow(() -> new AysAdminUserRegisterVerificationCodeNotValidException(registerRequest.getVerificationId()));
 
         if (!institutionRepository.existsById(registerRequest.getInstitutionId())) {
