@@ -20,6 +20,4 @@ public class AssignmentResponse extends BaseResponse {
     private Double longitude;
     private Double latitude;
 
-    private AssignmentSearchResponse assignmentSearchResponse;
-
 }
