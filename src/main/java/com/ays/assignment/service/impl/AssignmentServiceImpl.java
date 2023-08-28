@@ -1,14 +1,20 @@
 package com.ays.assignment.service.impl;
 
 import com.ays.assignment.model.Assignment;
+import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
 import com.ays.auth.model.AysIdentity;
+import com.ays.common.model.AysPage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +40,25 @@ class AssignmentServiceImpl implements AssignmentService {
                 .orElseThrow(() -> new AysAssignmentNotExistByIdException(id));
 
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
+    }
+
+    @Override
+    public AysPage<Assignment> getAssignments(AssignmentListRequest listRequest) {
+
+        Specification<AssignmentEntity> byStatus = listRequest.toSpecification(AssignmentEntity.class);
+        Specification<AssignmentEntity> byInstitutionId = (root, query, criteriaBuilder) -> {
+            return criteriaBuilder.equal(root.get("institutionId"),identity.getInstitutionId());
+        };
+
+        Page<AssignmentEntity> assignmentEntities = assignmentRepository
+                .findAll(byStatus.and(byInstitutionId),listRequest.toPageable());
+
+        List<Assignment> assignments = assignmentEntityToAssignmentMapper.map(assignmentEntities.getContent());
+
+        return AysPage.of(
+                listRequest.getFilter(),
+                assignmentEntities,
+                assignments
+        );
     }
 }
