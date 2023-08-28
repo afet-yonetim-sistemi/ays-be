@@ -25,7 +25,7 @@ public interface AssignmentToAssignmentsResponseMapper extends BaseMapper<Assign
      *
      * @return the initialized mapper object.
      */
-    static AssignmentEntityToAssignmentMapper initialize() {
-        return Mappers.getMapper(AssignmentEntityToAssignmentMapper.class);
+    static AssignmentToAssignmentsResponseMapper initialize() {
+        return Mappers.getMapper(AssignmentToAssignmentsResponseMapper.class);
     }
 }
