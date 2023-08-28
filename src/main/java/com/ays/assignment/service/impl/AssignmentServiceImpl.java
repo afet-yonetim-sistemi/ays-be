@@ -46,9 +46,8 @@ class AssignmentServiceImpl implements AssignmentService {
     public AysPage<Assignment> getAssignments(AssignmentListRequest listRequest) {
 
         Specification<AssignmentEntity> byStatus = listRequest.toSpecification(AssignmentEntity.class);
-        Specification<AssignmentEntity> byInstitutionId = (root, query, criteriaBuilder) -> {
-            return criteriaBuilder.equal(root.get("institutionId"),identity.getInstitutionId());
-        };
+        Specification<AssignmentEntity> byInstitutionId = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("institutionId"),identity.getInstitutionId());
 
         Page<AssignmentEntity> assignmentEntities = assignmentRepository
                 .findAll(byStatus.and(byInstitutionId),listRequest.toPageable());
