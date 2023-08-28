@@ -35,7 +35,6 @@
             VALUES ('a9ec051e-3c4f-4cb5-ab08-e9dcee5e1f03', '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4',
                     'Kıyafet İhtiyacı', 'Cem', 'Orkun', '90', '1234567890',
                     ST_GeomFromText('POINT(40.981210 29.000000)', 4326), 'AVAILABLE', 'AYS', CURRENT_TIMESTAMP);
-
             INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
                                         LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
             VALUES ('823835f4-85f0-4052-a09c-b9b6e5284afc', 'edb36891-b898-4c12-bcec-d9aaa5d45190',

@@ -1,16 +1,18 @@
 package com.ays.assignment.controller;
 
+import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
+import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
+import com.ays.assignment.service.AssignmentService;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller class for managing assignment-related operations via HTTP requests.
@@ -25,6 +27,9 @@ class AssignmentController {
 
     private final AssignmentSaveService assignmentSaveService;
 
+    private final AssignmentService assignmentService;
+
+    private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
 
     /**
      * Saves a new assignment to the system.
@@ -39,4 +44,23 @@ class AssignmentController {
         assignmentSaveService.saveAssignment(saveRequest);
         return AysResponse.SUCCESS;
     }
+
+
+    /**
+     * Gets a user by ID.
+     * Requires ADMIN authority.
+     *
+     * @param id The ID of the user to retrieve.
+     * @return A response object containing the retrieved user data.
+     */
+    @GetMapping("/assignment/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<AssignmentResponse> getAssignmentById(@PathVariable @UUID String id) {
+
+        final Assignment assignment = assignmentService.getAssignmentById(id);
+        final AssignmentResponse assignmentResponse = assignmentToAssignmentResponseMapper.map(assignment);
+        return AysResponse.successOf(assignmentResponse);
+    }
+
+
 }

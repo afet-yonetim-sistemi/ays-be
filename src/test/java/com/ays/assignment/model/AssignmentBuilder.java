@@ -10,6 +10,11 @@ public class AssignmentBuilder extends TestDataBuilder<Assignment> {
         super(Assignment.class);
     }
 
+    public AssignmentBuilder withId(String id) {
+        data.setId(id);
+        return this;
+    }
+
     public AssignmentBuilder withDescription(String description) {
         data.setDescription(description);
         return this;
