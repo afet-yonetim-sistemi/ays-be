@@ -7,6 +7,7 @@ import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.entity.AdminUserRegisterVerificationEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterVerificationEntityBuilder;
+import com.ays.admin_user.model.enums.AdminUserRegisterVerificationStatus;
 import com.ays.admin_user.repository.AdminUserRegisterVerificationRepository;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByEmailException;
@@ -119,6 +120,36 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysAdminUserRegisterVerificationCodeNotValidException.class,
+                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
+        );
+
+        Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
+                .findById(Mockito.anyString());
+    }
+
+    @Test
+    void givenUsedVerificationIdFromAdminUserRegisterRequest_whenVerificationEntityStatusIsWaiting_thenThrowAysAdminUserRegisterVerificationCodeNotValidException() {
+
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
+        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+                .withVerificationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
+                .withEmail(AysTestData.VALID_EMAIL)
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        // When
+        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity =
+                new AdminUserRegisterVerificationEntityBuilder()
+                        .withStatus(AdminUserRegisterVerificationStatus.COMPLETED)
+                        .build();
+
+        Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockAdminUserRegisterVerificationEntity));
 
         // Then
         Assertions.assertThrows(
