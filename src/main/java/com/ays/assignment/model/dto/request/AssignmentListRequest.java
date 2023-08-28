@@ -1,16 +1,18 @@
 package com.ays.assignment.model.dto.request;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
+import com.ays.common.model.AysFiltering;
 import com.ays.common.model.dto.request.AysFilteringRequest;
 import com.ays.common.model.dto.request.AysPagingRequest;
-import com.ays.common.util.validation.EnumValidation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,28 +23,24 @@ import java.util.Set;
 @Builder
 public class AssignmentListRequest extends AysPagingRequest implements AysFilteringRequest {
 
-    private AssignmentStatus status;
+    @Valid
+    public Filter filter;
 
     /**
-     * Checks if the assignment status is valid.
-     *
-     * @return true if the assignment status is valid or null, false otherwise.
+     * Represents a filtering configuration for assignments based on the class fields.
      */
-    @AssertTrue(message = "IS ASSIGNMENT STATUS NOT ACCEPTED")
-    private boolean isStatusAccepted() {
+    @Data
+    public static class Filter implements AysFiltering {
 
-        if (this.status == null) {
-            return true;
-        }
 
-        EnumSet<AssignmentStatus> acceptedAssignmentStatuses = EnumSet.of(AssignmentStatus.AVAILABLE,
-                AssignmentStatus.RESERVED,
-                AssignmentStatus.ASSIGNED,
-                AssignmentStatus.IN_PROGRESS,
-                AssignmentStatus.DONE
-        );
-        return EnumValidation.anyOf(this.status, acceptedAssignmentStatuses);
+        /**
+         * List of assignment statuses used for filtering.
+         */
+        @NotNull
+        public List<AssignmentStatus> statuses;
+
     }
+
 
     /**
      * Overrides the {@link AysPagingRequest#isSortPropertyAccepted()} method to validate sorting options
@@ -58,22 +56,26 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
         return this.isPropertyAccepted(acceptedFilterFields);
     }
 
+
     /**
-     * Converts the request into a JPA Specification that filters assignments based on the specified status,
-     * if it is provided.
+     * Converts the request into a JPA Specification that filters assignments based on the specified statuses,
+     * if they are provided.
      *
      * @param clazz the class type of the specification.
      * @return the generated JPA Specification based on the request filters.
      */
     @Override
     public <C> Specification<C> toSpecification(Class<C> clazz) {
-        Specification<C> specification = Specification.where(null);
-        if (status != null) {
-            specification = specification.and((root, query, builder) ->
-                    builder.equal(root.get("status"), status));
+        if (this.filter == null) {
+            return Specification.allOf();
         }
-        // Add more filter conditions if needed
-        return specification;
+
+        return this.filter.statuses.stream()
+                .map(status -> (Specification<C>)
+                        (root, query, criteriaBuilder) -> criteriaBuilder
+                                .equal(root.get("status"), status))
+                .reduce(Specification::or)
+                .orElse(null);
     }
 
 }
