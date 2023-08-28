@@ -9,6 +9,11 @@ public class AdminUserRegisterVerificationEntityBuilder extends TestDataBuilder<
         super(AdminUserRegisterVerificationEntity.class);
     }
 
+    public AdminUserRegisterVerificationEntityBuilder withValidFields() {
+        return this
+                .withStatus(AdminUserRegisterVerificationStatus.WAITING);
+    }
+
     public AdminUserRegisterVerificationEntityBuilder withStatus(AdminUserRegisterVerificationStatus status){
         data.setStatus(status);
         return this;
