@@ -16,6 +16,7 @@ import lombok.Getter;
 @Builder
 public class AssignmentSearchRequest {
 
-    private Double latitude;
     private Double longitude;
+    private Double latitude;
+
 }

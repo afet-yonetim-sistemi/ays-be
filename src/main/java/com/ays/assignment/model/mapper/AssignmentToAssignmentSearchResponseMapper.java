@@ -18,8 +18,8 @@ import org.mapstruct.factory.Mappers;
 public interface AssignmentToAssignmentSearchResponseMapper extends BaseMapper<Assignment, AssignmentSearchResponse> {
 
     @Override
-    @Mapping(target = "latitude", source = "source.point.x")
-    @Mapping(target = "longitude", source = "source.point.y")
+    @Mapping(target = "longitude", source = "source.point.x")
+    @Mapping(target = "latitude", source = "source.point.y")
     AssignmentSearchResponse map(Assignment source);
 
     /**

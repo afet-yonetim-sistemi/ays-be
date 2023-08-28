@@ -46,7 +46,7 @@ class UserLocationServiceImpl implements UserLocationService {
         userLocationRepository.findByUserId(identity.getUserId())
                 .ifPresentOrElse(
                         userLocationEntityFromDatabase -> {
-                            userLocationEntityFromDatabase.setPoint(saveRequest.getLatitude(), saveRequest.getLongitude());
+                            userLocationEntityFromDatabase.setPoint(saveRequest.getLongitude(), saveRequest.getLatitude());
                             userLocationRepository.save(userLocationEntityFromDatabase);
                         },
                         () -> {

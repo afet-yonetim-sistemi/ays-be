@@ -37,7 +37,7 @@ public interface AssignmentSaveRequestToAssignmentMapper extends BaseMapper<Assi
                 .lastName(saveRequest.getLastName())
                 .lineNumber(saveRequest.getPhoneNumber().getLineNumber())
                 .countryCode(saveRequest.getPhoneNumber().getCountryCode())
-                .point(saveRequest.getLatitude(), saveRequest.getLongitude())
+                .point(saveRequest.getLongitude(), saveRequest.getLatitude())
                 .status(AssignmentStatus.AVAILABLE)
                 .build();
     }

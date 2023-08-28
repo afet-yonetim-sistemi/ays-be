@@ -29,10 +29,10 @@ public class AssignmentSearchServiceImpl implements AssignmentSearchService {
      */
     @Override
     public Assignment searchAssignment(AssignmentSearchRequest searchRequest) {
-        final Point searchAssignmentRequestPoint = AysLocationUtil
-                .generatePoint(searchRequest.getLatitude(), searchRequest.getLongitude());
+        final Point searchRequestPoint = AysLocationUtil
+                .generatePoint(searchRequest.getLongitude(), searchRequest.getLatitude());
         AssignmentEntity assignmentEntity = assignmentRepository
-                .findNearestAssignment(searchAssignmentRequestPoint, identity.getInstitutionId())
+                .findNearestAssignment(searchRequestPoint, identity.getInstitutionId())
                 .orElseThrow(() -> new AysAssignmentNotExistByPointException(
                                 searchRequest.getLatitude(),
                                 searchRequest.getLongitude()

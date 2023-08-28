@@ -34,10 +34,9 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
             SELECT Object(assignmentEntity)
             FROM AssignmentEntity assignmentEntity
             WHERE assignmentEntity.institutionId = :institution_id_param
-            ORDER BY ST_DISTANCE(ST_GeomFromText(:#{#point_param.toString()}, 4326), assignmentEntity.point) DESC
+            ORDER BY ST_DISTANCE(ST_GeomFromText(:#{#point_param.toString()}, 4326), assignmentEntity.point)
             LIMIT 1"""
     )
     Optional<AssignmentEntity> findNearestAssignment(@Param("point_param") Point point, @Param("institution_id_param") String institutionId);
-
 
 }

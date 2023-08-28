@@ -39,13 +39,13 @@ public class UserLocationEntity extends BaseEntity {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private UserEntity user;
 
-    public void setPoint(final Double latitude, final Double longitude) {
-        this.point = AysLocationUtil.generatePoint(latitude, longitude);
+    public void setPoint(final Double longitude, final Double latitude) {
+        this.point = AysLocationUtil.generatePoint(longitude, latitude);
     }
 
     public abstract static class UserLocationEntityBuilder<C extends UserLocationEntity, B extends UserLocationEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {
-        public B point(final Double latitude, final Double longitude) {
-            this.point = AysLocationUtil.generatePoint(latitude, longitude);
+        public B point(final Double longitude, final Double latitude) {
+            this.point = AysLocationUtil.generatePoint(longitude, latitude);
             return this.self();
         }
     }
