@@ -1,11 +1,14 @@
 package com.ays.assignment.controller;
 
 import com.ays.assignment.model.Assignment;
+import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentService;
+import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,20 +34,11 @@ class AssignmentController {
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
 
-    /**
-     * Saves a new assignment to the system.
-     * Requires ADMIN authority.
-     *
-     * @param saveRequest The request object containing the assignment data to be saved.
-     * @return A response object containing the saved assignment data.
-     */
-    @PostMapping("/assignment")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public AysResponse<Void> saveAssignment(@RequestBody @Valid AssignmentSaveRequest saveRequest) {
-        assignmentSaveService.saveAssignment(saveRequest);
-        return AysResponse.SUCCESS;
+    @GetMapping("/assignments")
+    @PreAuthorize(("hasAnyAuthority('ADMIN')"))
+    public AysResponse<AysPageResponse<AssignmentsResponse>> getAssignments(@RequestBody @Valid AssignmentListRequest listRequest) {
+        return null;
     }
-
 
     /**
      * Gets a user by ID.
@@ -60,6 +54,20 @@ class AssignmentController {
         final Assignment assignment = assignmentService.getAssignmentById(id);
         final AssignmentResponse assignmentResponse = assignmentToAssignmentResponseMapper.map(assignment);
         return AysResponse.successOf(assignmentResponse);
+    }
+
+    /**
+     * Saves a new assignment to the system.
+     * Requires ADMIN authority.
+     *
+     * @param saveRequest The request object containing the assignment data to be saved.
+     * @return A response object containing the saved assignment data.
+     */
+    @PostMapping("/assignment")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<Void> saveAssignment(@RequestBody @Valid AssignmentSaveRequest saveRequest) {
+        assignmentSaveService.saveAssignment(saveRequest);
+        return AysResponse.SUCCESS;
     }
 
 
