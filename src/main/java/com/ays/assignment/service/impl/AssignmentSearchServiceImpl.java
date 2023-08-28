@@ -7,8 +7,11 @@ import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByPointException;
+import com.ays.assignment.util.exception.AysAssignmentUserNotReadyException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.location.util.AysLocationUtil;
+import com.ays.user.model.entity.UserEntity;
+import com.ays.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AssignmentSearchServiceImpl implements AssignmentSearchService {
     private final AssignmentRepository assignmentRepository;
+    private final UserRepository userRepository;
     private final AysIdentity identity;
 
     private final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
@@ -29,6 +33,11 @@ public class AssignmentSearchServiceImpl implements AssignmentSearchService {
      */
     @Override
     public Assignment searchAssignment(AssignmentSearchRequest searchRequest) {
+        userRepository
+                .findByIdAndInstitutionId(identity.getUserId(), identity.getInstitutionId())
+                .filter(UserEntity::isReady)
+                .orElseThrow(() -> new AysAssignmentUserNotReadyException(identity.getUserId()));
+
         final Point searchRequestPoint = AysLocationUtil
                 .generatePoint(searchRequest.getLongitude(), searchRequest.getLatitude());
         AssignmentEntity assignmentEntity = assignmentRepository
@@ -38,6 +47,7 @@ public class AssignmentSearchServiceImpl implements AssignmentSearchService {
                                 searchRequest.getLongitude()
                         )
                 );
+
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }
 }
