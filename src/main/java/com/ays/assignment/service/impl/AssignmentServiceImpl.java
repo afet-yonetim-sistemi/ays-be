@@ -42,6 +42,12 @@ class AssignmentServiceImpl implements AssignmentService {
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }
 
+    /**
+     * Retrieves a paginated list of assignments based on the specified filters and the institution's identity.
+     *
+     * @param listRequest The request containing filters and pagination parameters.
+     * @return An {@link AysPage} object containing the filtered assignments.
+     */
     @Override
     public AysPage<Assignment> getAssignments(AssignmentListRequest listRequest) {
 
