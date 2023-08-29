@@ -6,8 +6,10 @@ import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentService;
+import com.ays.common.model.AysPage;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
@@ -33,7 +35,7 @@ class AssignmentController {
     private final AssignmentService assignmentService;
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
-
+    private static final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
     /**
      * Gets an Assignments list based on the specified statuses in the {@link AssignmentListRequest}
      * Requires ADMIN authority
@@ -44,7 +46,14 @@ class AssignmentController {
     @GetMapping("/assignments")
     @PreAuthorize(("hasAnyAuthority('ADMIN')"))
     public AysResponse<AysPageResponse<AssignmentsResponse>> getAssignments(@RequestBody @Valid AssignmentListRequest listRequest) {
-        return null;
+        final AysPage<Assignment> pageOfAssignments = assignmentService.getAssignments(listRequest);
+        final AysPageResponse<AssignmentsResponse> pageOfAssignmentsResponse = AysPageResponse
+                .<AssignmentsResponse>builder()
+                .of(pageOfAssignments)
+                .content(assignmentToAssignmentsResponseMapper.map(pageOfAssignments.getContent()))
+                .filteredBy(listRequest.getFilter())
+                .build();
+        return AysResponse.successOf(pageOfAssignmentsResponse);
     }
 
     /**
