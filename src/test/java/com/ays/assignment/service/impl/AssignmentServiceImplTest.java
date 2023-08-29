@@ -132,4 +132,62 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
+
+    @Test
+    void givenAssignmentListRequest_whenPhoneNumberIsAvailable_thenReturnAysPageAssignmentResponse() {
+
+        // Given
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+
+        AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder().withValidValuesForPhoneNumber().build();
+
+        List<AssignmentEntity> mockAssignmentEntities = Collections.singletonList(new AssignmentEntityBuilder()
+                .withValidFields().build());
+        Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
+
+        List<Assignment> mockAssignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntities);
+        AysPage<Assignment> mockAysPageAssignments = AysPage.of(assignmentListRequest.getFilter(), mockPageAssignmentEntities, mockAssignments);
+
+        // When
+        Mockito.when(identity.getInstitutionId()).thenReturn(mockInstitutionId);
+        Mockito.when(assignmentRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockPageAssignmentEntities);
+
+        // Then
+        AysPage<Assignment> aysPageAssignment = assignmentService.getAssignments(assignmentListRequest);
+
+        AysPageBuilder.assertEquals(mockAysPageAssignments, aysPageAssignment);
+
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
+
+    @Test
+    void givenAssignmentListRequest_whenAssignmentStatusAndPhoneNumberAvailable_thenReturnAysPageAssignmentResponse() {
+
+        // Given
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+
+        AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder().withValidValuesForPhoneNumber().build();
+
+        List<AssignmentEntity> mockAssignmentEntities = Collections.singletonList(new AssignmentEntityBuilder()
+                .withValidFields().build());
+        Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
+
+        List<Assignment> mockAssignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntities);
+        AysPage<Assignment> mockAysPageAssignments = AysPage.of(assignmentListRequest.getFilter(), mockPageAssignmentEntities, mockAssignments);
+
+        // When
+        Mockito.when(identity.getInstitutionId()).thenReturn(mockInstitutionId);
+        Mockito.when(assignmentRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockPageAssignmentEntities);
+
+        // Then
+        AysPage<Assignment> aysPageAssignment = assignmentService.getAssignments(assignmentListRequest);
+
+        AysPageBuilder.assertEquals(mockAysPageAssignments, aysPageAssignment);
+
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
 }
