@@ -94,7 +94,7 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
             }
         }
 
-        if (this.filter.statuses != null) {
+        if (this.filter.statuses != null && !this.filter.statuses.isEmpty()) {
             Specification<C> statusSpecification = this.filter.statuses.stream().map(status ->
                             (Specification<C>) (root, query, criteriaBuilder) ->
                                     criteriaBuilder.equal(root.get("status"), status))
