@@ -94,6 +94,12 @@ public class AssignmentEntity extends BaseEntity {
         this.status = assignmentStatus;
     }
 
+    public void reserve(String userId, String institutionId) {
+        this.status = AssignmentStatus.RESERVED;
+        this.userId = userId;
+        this.institutionId = institutionId;
+    }
+
     public abstract static class AssignmentEntityBuilder<C extends AssignmentEntity, B extends AssignmentEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {
         public B point(final Double longitude, final Double latitude) {
             this.point = AysLocationUtil.generatePoint(longitude, latitude);

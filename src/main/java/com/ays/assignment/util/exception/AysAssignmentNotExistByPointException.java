@@ -18,11 +18,11 @@ public class AysAssignmentNotExistByPointException extends AysNotExistException 
     /**
      * Constructs a new AysAssignmentNotExistByPointAndInstitutionIdException with the specified latitude and longitude.
      *
-     * @param latitude  the latitude of location used for search
      * @param longitude the longitude of location used for search
+     * @param latitude  the latitude of location used for search
      */
-    public AysAssignmentNotExistByPointException(Double latitude, Double longitude) {
-        super("ASSIGNMENT NOT EXIST! latitude:" + latitude.toString() + ", longitude:" + longitude.toString());
+    public AysAssignmentNotExistByPointException(Double longitude, Double latitude) {
+        super("ASSIGNMENT NOT EXIST! longitude:" + longitude + ", latitude:" + latitude);
     }
 
 }

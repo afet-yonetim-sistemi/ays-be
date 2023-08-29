@@ -33,20 +33,22 @@ public class AssignmentSearchServiceImpl implements AssignmentSearchService {
      */
     @Override
     public Assignment searchAssignment(AssignmentSearchRequest searchRequest) {
+        final String userId = identity.getUserId();
+        final String institutionId = identity.getInstitutionId();
         userRepository
-                .findByIdAndInstitutionId(identity.getUserId(), identity.getInstitutionId())
+                .findByIdAndInstitutionId(userId, institutionId)
                 .filter(UserEntity::isReady)
-                .orElseThrow(() -> new AysAssignmentUserNotReadyException(identity.getUserId()));
+                .orElseThrow(() -> new AysAssignmentUserNotReadyException(userId, institutionId));
 
-        final Point searchRequestPoint = AysLocationUtil
-                .generatePoint(searchRequest.getLongitude(), searchRequest.getLatitude());
+        final Double longitude = searchRequest.getLongitude();
+        final Double latitude = searchRequest.getLatitude();
+        final Point searchRequestPoint = AysLocationUtil.generatePoint(longitude, latitude);
         AssignmentEntity assignmentEntity = assignmentRepository
-                .findNearestAssignment(searchRequestPoint, identity.getInstitutionId())
-                .orElseThrow(() -> new AysAssignmentNotExistByPointException(
-                                searchRequest.getLatitude(),
-                                searchRequest.getLongitude()
-                        )
-                );
+                .findNearestAvailableAssignment(searchRequestPoint, institutionId)
+                .orElseThrow(() -> new AysAssignmentNotExistByPointException(longitude, latitude));
+
+        assignmentEntity.reserve(userId, institutionId);
+        assignmentRepository.save(assignmentEntity);
 
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }

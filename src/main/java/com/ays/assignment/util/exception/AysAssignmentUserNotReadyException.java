@@ -18,10 +18,11 @@ public class AysAssignmentUserNotReadyException extends AysAuthException {
     /**
      * Constructs a new AysAssignmentUserNotReadyException with the specified userId.
      *
-     * @param userId the userId of user that will take assignment.
+     * @param userId        the userId of user that will take assignment.
+     * @param institutionId the institutionId of user that will take assignment.
      */
-    public AysAssignmentUserNotReadyException(String userId) {
-        super("USER NOT READY TO TAKE ASSIGNMENT! userId:" + userId);
+    public AysAssignmentUserNotReadyException(String userId, String institutionId) {
+        super("USER NOT READY TO TAKE ASSIGNMENT! userId:" + userId + ", institutionId:" + institutionId);
     }
 
 }
