@@ -3,6 +3,8 @@ package com.ays.assignment.model.dto.response;
 import com.ays.common.model.dto.response.BaseResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -17,12 +19,16 @@ public class AssignmentsResponse extends BaseResponse {
     private Location location;
     private User user;
 
-    private static class Location {
+    @Getter
+    @Setter
+    public static class Location {
         private Double longitude;
         private Double latitude;
     }
 
-    private static class User {
+    @Getter
+    @Setter
+    public static class User {
         private String id;
         private String firstName;
         private String lastName;
