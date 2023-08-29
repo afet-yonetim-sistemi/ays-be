@@ -8,8 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -20,16 +19,21 @@ import java.util.Set;
  * This class extends the {@link AysPagingRequest} class and adds additional validation rules for sorting.
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class AssignmentListRequest extends AysPagingRequest implements AysFilteringRequest {
 
     @Valid
-    public Filter filter;
+    private Filter filter;
 
     /**
      * Represents a filtering configuration for assignments based on the class fields.
      */
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Filter implements AysFiltering {
 
 
@@ -70,12 +74,10 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
             return Specification.allOf();
         }
 
-        return this.filter.statuses.stream()
-                .map(status -> (Specification<C>)
-                        (root, query, criteriaBuilder) -> criteriaBuilder
-                                .equal(root.get("status"), status))
-                .reduce(Specification::or)
-                .orElse(null);
+        return this.filter.statuses.stream().map(status ->
+                (Specification<C>) (root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get("status"), status))
+                .reduce(Specification::or).orElse(null);
     }
 
 }
