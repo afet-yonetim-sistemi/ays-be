@@ -46,7 +46,7 @@ class AssignmentController {
      * @see AssignmentListRequest
      */
     @GetMapping("/assignments")
-    @PreAuthorize(("hasAnyAuthority('ADMIN')"))
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<AysPageResponse<AssignmentsResponse>> getAssignments(@RequestBody @Valid AssignmentListRequest listRequest) {
         final AysPage<Assignment> pageOfAssignments = assignmentService.getAssignments(listRequest);
         final AysPageResponse<AssignmentsResponse> pageOfAssignmentsResponse = AysPageResponse
