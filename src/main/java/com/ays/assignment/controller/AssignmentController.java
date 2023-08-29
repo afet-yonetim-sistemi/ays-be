@@ -36,12 +36,14 @@ class AssignmentController {
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
     private static final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
+
     /**
-     * Gets an Assignments list based on the specified statuses in the {@link AssignmentListRequest}
+     * Gets an Assignments list based on the specified filters in the {@link AssignmentListRequest}
      * Requires ADMIN authority
      *
      * @param listRequest The assignment request that contains the status filter
      * @return A response object that contains the retrieved assignments' data
+     * @see AssignmentListRequest
      */
     @GetMapping("/assignments")
     @PreAuthorize(("hasAnyAuthority('ADMIN')"))
