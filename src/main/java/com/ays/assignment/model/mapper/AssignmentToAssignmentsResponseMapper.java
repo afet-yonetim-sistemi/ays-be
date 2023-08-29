@@ -3,6 +3,7 @@ package com.ays.assignment.model.mapper;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.common.model.mapper.BaseMapper;
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
@@ -13,11 +14,13 @@ import org.mapstruct.factory.Mappers;
  * <p>The interface extends the MapStruct interface {@link BaseMapper}, which defines basic mapping methods.
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
+
+@Mapper
 public interface AssignmentToAssignmentsResponseMapper extends BaseMapper<Assignment, AssignmentsResponse> {
 
     @Override
-    @Mapping(target = "location.longitude", source = "point.coordinates.y")
-    @Mapping(target = "location.latitude", source = "point.coordinates.x")
+    @Mapping(target = "location.longitude", source = "point.y")
+    @Mapping(target = "location.latitude", source = "point.x")
     AssignmentsResponse map(Assignment source);
 
     /**
