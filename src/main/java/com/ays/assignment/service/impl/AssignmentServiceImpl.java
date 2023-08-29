@@ -51,12 +51,12 @@ class AssignmentServiceImpl implements AssignmentService {
     @Override
     public AysPage<Assignment> getAssignments(AssignmentListRequest listRequest) {
 
-        Specification<AssignmentEntity> byStatus = listRequest.toSpecification(AssignmentEntity.class);
+        Specification<AssignmentEntity> byStatusAndPhoneNumber = listRequest.toSpecification(AssignmentEntity.class);
         Specification<AssignmentEntity> byInstitutionId = (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("institutionId"),identity.getInstitutionId());
 
         Page<AssignmentEntity> assignmentEntities = assignmentRepository
-                .findAll(byStatus.and(byInstitutionId),listRequest.toPageable());
+                .findAll(byStatusAndPhoneNumber.and(byInstitutionId),listRequest.toPageable());
 
         List<Assignment> assignments = assignmentEntityToAssignmentMapper.map(assignmentEntities.getContent());
 
