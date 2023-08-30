@@ -79,14 +79,14 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
 
         if (this.filter.phoneNumber != null) {
 
-            if (this.filter.phoneNumber.getLineNumber() != null) {
+            if (this.filter.phoneNumber.getLineNumber() != null && !this.filter.phoneNumber.getLineNumber().isEmpty()) {
                 Specification<C> lineNumberSpecification = (root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get("lineNumber"), this.filter.phoneNumber.getLineNumber());
 
                 specification = specification.and(lineNumberSpecification);
             }
 
-            if (this.filter.phoneNumber.getCountryCode() != null) {
+            if (this.filter.phoneNumber.getCountryCode() != null && !this.filter.phoneNumber.getCountryCode().isEmpty()) {
                 Specification<C> countryCodeSpecification = (root, query, criteriaBuilder)
                         -> criteriaBuilder.equal(root.get("countryCode"), this.filter.phoneNumber.getCountryCode());
 
