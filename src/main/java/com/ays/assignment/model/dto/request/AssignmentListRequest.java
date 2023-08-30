@@ -18,8 +18,8 @@ import java.util.Set;
  * Represents a request object for fetching a list of user assignment with pagination,sorting and filtering options
  * This class extends the {@link AysPagingRequest} class and adds additional validation rules for sorting.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -31,7 +31,8 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
     /**
      * Represents a filtering configuration for assignments based on the class fields.
      */
-    @Data
+    @Getter
+    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Filter implements AysFiltering {

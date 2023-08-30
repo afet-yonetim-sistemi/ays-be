@@ -3,13 +3,22 @@ package com.ays.assignment.controller;
 import com.ays.AbstractRestControllerTest;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.AssignmentBuilder;
+import com.ays.assignment.model.dto.request.AssignmentListRequest;
+import com.ays.assignment.model.dto.request.AssignmentListRequestBuilder;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequestBuilder;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.dto.response.AssignmentsResponse;
+import com.ays.assignment.model.entity.AssignmentEntity;
+import com.ays.assignment.model.entity.AssignmentEntityBuilder;
+import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentService;
+import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPhoneNumberBuilder;
+import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.AysRandomUtil;
@@ -19,8 +28,12 @@ import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
+import java.util.List;
 
 
 class AssignmentControllerTest extends AbstractRestControllerTest {
@@ -35,7 +48,9 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
     private static final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
 
+    private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
 
+    private static final AssignmentToAssignmentsResponseMapper ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER = AssignmentToAssignmentsResponseMapper.initialize();
     @Test
     void givenValidAssignmentSaveRequest_whenAssignmentSaved_thenReturnAssignmentSavedResponse() throws Exception {
         // Given
@@ -157,5 +172,39 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
     }
 
+    @Test
+    void givenValidAssignmentListRequest_whenAssignmentsFound_thenReturnAysPageResponseOfAssignmentsResponse() throws Exception {
 
+        // Given
+        AssignmentListRequest mockListRequest = new AssignmentListRequestBuilder().withValidValues().build();
+
+        // When
+        List<AssignmentEntity> mockAssignmentEntities = AssignmentEntityBuilder.generateValidAssignmentEntities(1);
+        Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
+        List<Assignment> mockAssignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntities);
+        AysPage<Assignment> mockAysPageOfAssignments = AysPage
+                .of(mockListRequest.getFilter(),mockPageAssignmentEntities,mockAssignments);
+
+        Mockito.when(assignmentService.getAssignments(mockListRequest)).thenReturn(mockAysPageOfAssignments);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignments");
+        List<AssignmentsResponse> mockAssignmentsResponse = ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER.map(mockAssignments);
+        AysPageResponse<AssignmentsResponse> pageOfAssignmentsResponse = AysPageResponse.<AssignmentsResponse>builder()
+                .of(mockAysPageOfAssignments)
+                .content(mockAssignmentsResponse)
+                .build();
+
+        AysResponse<AysPageResponse<AssignmentsResponse>> mockAysResponse = AysResponse.successOf(pageOfAssignmentsResponse);
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .get(endpoint,mockAdminUserToken.getAccessToken(),mockListRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
+
+        Mockito.verify(assignmentService,Mockito.times(1)).getAssignments(mockListRequest);
+    }
 }
