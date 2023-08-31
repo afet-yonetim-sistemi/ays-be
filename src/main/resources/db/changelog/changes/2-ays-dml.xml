@@ -148,7 +148,7 @@
             <column name="FIRST_NAME" value="Afet Yönetim"/>
             <column name="LAST_NAME" value="Sistemi 1"/>
             <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="IDLE"/>
+            <column name="SUPPORT_STATUS" value="READY"/>
             <column name="LINE_NUMBER" value="1234567890"/>
             <column name="ROLE" value="VOLUNTEER"/>
             <column name="STATUS" value="ACTIVE"/>
