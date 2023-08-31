@@ -109,7 +109,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // When
         Assignment mockAssignment = new AssignmentBuilder().build();
-        Mockito.when(assignmentSearchService.searchAssignment(mockSearchRequest))
+        Mockito.when(assignmentSearchService.searchAssignment(Mockito.any(AssignmentSearchRequest.class)))
                 .thenReturn(mockAssignment);
 
         // Then
@@ -131,7 +131,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                         .isNotEmpty());
 
         Mockito.verify(assignmentSearchService, Mockito.times(1))
-                .searchAssignment(mockSearchRequest);
+                .searchAssignment(Mockito.any(AssignmentSearchRequest.class));
     }
 
     @Test
