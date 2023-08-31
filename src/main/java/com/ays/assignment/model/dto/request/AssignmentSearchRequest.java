@@ -2,6 +2,7 @@ package com.ays.assignment.model.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A DTO class representing the request data for searching assignment with respect to user's location.
@@ -13,6 +14,7 @@ import lombok.Getter;
  * transfer of the data between different layers of the application.
  */
 @Getter
+@Setter
 @Builder
 public class AssignmentSearchRequest {
 

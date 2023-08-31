@@ -7,6 +7,8 @@ import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.institution.model.entity.InstitutionEntityBuilder;
+import com.ays.location.util.AysLocationUtil;
+import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,8 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
                 .withDescription("Description")
                 .withFirstName("First Name")
                 .withLastName("Last Name")
-                .withStatus(AssignmentStatus.AVAILABLE);
+                .withStatus(AssignmentStatus.AVAILABLE)
+                .withPoint(AysLocationUtil.generatePoint(1.0, 1.0));
     }
 
     public AssignmentEntityBuilder withId(String id) {
@@ -78,6 +81,11 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
 
     public AssignmentEntityBuilder withStatus(AssignmentStatus status) {
         data.setStatus(status);
+        return this;
+    }
+
+    public AssignmentEntityBuilder withPoint(Point point) {
+        data.setPoint(point);
         return this;
     }
 

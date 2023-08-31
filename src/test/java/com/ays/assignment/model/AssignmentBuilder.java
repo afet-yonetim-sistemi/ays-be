@@ -3,6 +3,7 @@ package com.ays.assignment.model;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.TestDataBuilder;
+import org.locationtech.jts.geom.Point;
 
 public class AssignmentBuilder extends TestDataBuilder<Assignment> {
 
@@ -32,6 +33,11 @@ public class AssignmentBuilder extends TestDataBuilder<Assignment> {
 
     public AssignmentBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
         data.setPhoneNumber(phoneNumber);
+        return this;
+    }
+
+    public AssignmentBuilder withPoint(Point point) {
+        data.setPoint(point);
         return this;
     }
 

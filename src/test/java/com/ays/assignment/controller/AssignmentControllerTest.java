@@ -1,9 +1,17 @@
 package com.ays.assignment.controller;
 
 import com.ays.AbstractRestControllerTest;
+import com.ays.assignment.model.Assignment;
+import com.ays.assignment.model.AssignmentBuilder;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequestBuilder;
+import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
+import com.ays.assignment.model.dto.request.AssignmentSearchRequestBuilder;
+import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
+import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
@@ -21,6 +29,13 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
     @MockBean
     private AssignmentSaveService assignmentSaveService;
+
+    @MockBean
+    private AssignmentSearchService assignmentSearchService;
+
+
+    private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
+    private static final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -83,6 +98,65 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
+    }
+
+    @Test
+    void givenValidAssignmentSearchRequest_whenAssignmentSearched_thenReturnAssignmentSearchResponse() throws Exception {
+        // Given
+        AssignmentSearchRequest mockSearchRequest = new AssignmentSearchRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // When
+        Assignment mockAssignment = new AssignmentBuilder().build();
+        Mockito.when(assignmentSearchService.searchAssignment(mockSearchRequest))
+                .thenReturn(mockAssignment);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/search");
+        AssignmentSearchResponse mockSearchResponse = ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER.map(mockAssignment);
+        AysResponse<AssignmentSearchResponse> mockAysResponse = AysResponse.successOf(mockSearchResponse);
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockUserToken.getAccessToken(), mockSearchRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        Mockito.verify(assignmentSearchService, Mockito.times(1))
+                .searchAssignment(mockSearchRequest);
+    }
+
+    @Test
+    void givenValidAssignmentSearchRequest_whenUserUnauthorizedForSearching_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        AssignmentSearchRequest mockAssignmentSearchRequest = new AssignmentSearchRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/search");
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockAssignmentSearchRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
     }
 
 }

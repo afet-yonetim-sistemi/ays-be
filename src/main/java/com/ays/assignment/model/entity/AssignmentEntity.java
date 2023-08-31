@@ -65,7 +65,7 @@ public class AssignmentEntity extends BaseEntity {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private UserEntity user;
 
-    public void setPoint(double longitude, double latitude) {
+    public void setPoint(final Double longitude, final Double latitude) {
         this.point = AysLocationUtil.generatePoint(longitude, latitude);
     }
 
