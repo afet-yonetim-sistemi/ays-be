@@ -207,4 +207,25 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         Mockito.verify(assignmentService,Mockito.times(1)).getAssignments(mockListRequest);
     }
+
+    @Test
+    void givenValidAssignmentListRequest_whenUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception{
+
+        // Given
+        AssignmentListRequest mockListRequest = new AssignmentListRequestBuilder().withValidValues().build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignments");
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                .get(endpoint,mockUserToken.getAccessToken(),mockListRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+
+    }
 }
