@@ -197,7 +197,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         AysResponse<AysPageResponse<AssignmentsResponse>> mockAysResponse = AysResponse.successOf(pageOfAssignmentsResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(endpoint,mockAdminUserToken.getAccessToken(),mockListRequest))
+                        .post(endpoint,mockAdminUserToken.getAccessToken(),mockListRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
@@ -219,7 +219,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                .get(endpoint,mockUserToken.getAccessToken(),mockListRequest))
+                .post(endpoint,mockUserToken.getAccessToken(),mockListRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
