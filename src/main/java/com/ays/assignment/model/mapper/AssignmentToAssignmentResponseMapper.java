@@ -2,8 +2,10 @@ package com.ays.assignment.model.mapper;
 
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -15,6 +17,11 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface AssignmentToAssignmentResponseMapper extends BaseMapper<Assignment, AssignmentResponse> {
+
+    @Override
+    @Mapping(target = "longitude", source = "point.x")
+    @Mapping(target = "latitude", source = "point.y")
+    AssignmentResponse map(Assignment source);
 
     /**
      * Initializes the mapper.
