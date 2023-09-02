@@ -191,13 +191,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
         // Given
         AssignmentListRequest listRequest = new AssignmentListRequestBuilder().withValidValues().build();
 
-        List<AssignmentEntity> assignmentEntities = AssignmentEntityBuilder.generateValidAssignmentEntities(1);
-        Page<AssignmentEntity> pageOfAssignmentEntities = new PageImpl<>(assignmentEntities);
-        List<Assignment> assignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(assignmentEntities);
-        AysPage<Assignment> aysPageOfAssignments = AysPage.of(pageOfAssignmentEntities,assignments);
-        AysPageResponse<Assignment> aysPageResponseOfAssignments = AysPageResponse.<Assignment>builder()
-                .of(aysPageOfAssignments).build();
-
         // Then
         String endpoint = BASE_PATH.concat("/assignments");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
