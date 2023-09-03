@@ -5,11 +5,11 @@ import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.AssignmentBuilder;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequestBuilder;
-import com.ays.assignment.model.dto.response.AssignmentResponse;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequestBuilder;
+import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysResponse;
@@ -159,7 +159,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
         AysResponse<AssignmentSearchResponse> mockAysResponse = AysResponse.successOf(mockSearchResponse);
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenOne.getAccessToken(), mockSearchRequest))
+                        .post(endpoint, userTokenFour.getAccessToken(), mockSearchRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
