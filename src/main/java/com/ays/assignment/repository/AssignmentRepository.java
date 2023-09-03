@@ -6,7 +6,6 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -43,10 +42,10 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
     @Query("""
             SELECT assignmentEntity
             FROM AssignmentEntity assignmentEntity
-            WHERE assignmentEntity.institutionId = :institution_id_param AND assignmentEntity.status = 'AVAILABLE'
-            ORDER BY st_distance(st_geomfromtext(:#{#point_param.toString()}, 4326), assignmentEntity.point)
+            WHERE assignmentEntity.institutionId = :institutionId AND assignmentEntity.status = 'AVAILABLE'
+            ORDER BY st_distance(st_geomfromtext(:#{#point.toString()}, 4326), assignmentEntity.point)
             LIMIT 1"""
     )
-    Optional<AssignmentEntity> findNearestAvailableAssignment(@Param("point_param") Point point, @Param("institution_id_param") String institutionId);
+    Optional<AssignmentEntity> findNearestAvailableAssignment(Point point, String institutionId);
 
 }
