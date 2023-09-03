@@ -1,5 +1,6 @@
 package com.ays.assignment.model.dto.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,9 @@ import lombok.Setter;
 @Builder
 public class AssignmentSearchRequest {
 
+    @NotNull
     private Double longitude;
+    @NotNull
     private Double latitude;
 
 }
