@@ -99,6 +99,14 @@ public class AssignmentSearchServiceImplTest extends AbstractUnitTest {
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
                 .build();
+        Point mockAssignmentPoint = AysLocationUtil.generatePoint(
+                mockAssignmentSearchRequest.getLongitude(),
+                mockAssignmentSearchRequest.getLatitude()
+        );
+        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
+                .withValidFields()
+                .withPoint(mockAssignmentPoint)
+                .build();
 
         // When
         Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
@@ -120,6 +128,9 @@ public class AssignmentSearchServiceImplTest extends AbstractUnitTest {
         Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(mockUserEntity.getId(), mockUserEntity.getInstitutionId());
+        Mockito.verify(assignmentRepository, Mockito.times(0))
+                .findNearestAvailableAssignment(mockAssignmentPoint, mockUserEntity.getInstitutionId());
+        Mockito.verify(assignmentRepository, Mockito.times(0)).save(mockAssignmentEntity);
     }
 
     @Test
@@ -137,6 +148,10 @@ public class AssignmentSearchServiceImplTest extends AbstractUnitTest {
                 mockAssignmentSearchRequest.getLongitude(),
                 mockAssignmentSearchRequest.getLatitude()
         );
+        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
+                .withValidFields()
+                .withPoint(mockAssignmentPoint)
+                .build();
 
         // When
         Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
@@ -166,6 +181,7 @@ public class AssignmentSearchServiceImplTest extends AbstractUnitTest {
                 .findByIdAndInstitutionId(mockUserEntity.getId(), mockUserEntity.getInstitutionId());
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findNearestAvailableAssignment(mockAssignmentPoint, mockUserEntity.getInstitutionId());
+        Mockito.verify(assignmentRepository, Mockito.times(0)).save(mockAssignmentEntity);
     }
 
 }
