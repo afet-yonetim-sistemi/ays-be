@@ -41,10 +41,10 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
      * @return An Optional AssignmentEntity that nearest specified point and institution ID or an empty optional if not found.
      */
     @Query("""
-            SELECT Object(assignmentEntity)
+            SELECT assignmentEntity
             FROM AssignmentEntity assignmentEntity
             WHERE assignmentEntity.institutionId = :institution_id_param AND assignmentEntity.status = 'AVAILABLE'
-            ORDER BY ST_DISTANCE(ST_GeomFromText(:#{#point_param.toString()}, 4326), assignmentEntity.point)
+            ORDER BY st_distance(st_geomfromtext(:#{#point_param.toString()}, 4326), assignmentEntity.point)
             LIMIT 1"""
     )
     Optional<AssignmentEntity> findNearestAvailableAssignment(@Param("point_param") Point point, @Param("institution_id_param") String institutionId);
