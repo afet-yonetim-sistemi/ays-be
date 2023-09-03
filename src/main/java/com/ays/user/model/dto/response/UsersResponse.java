@@ -19,6 +19,7 @@ public class UsersResponse {
     private String lastName;
     private UserRole role;
     private UserStatus status;
+
     private InstitutionResponse institution;
 
 }
