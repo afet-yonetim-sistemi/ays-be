@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AssignmentSearchServiceImpl implements AssignmentSearchService {
+class AssignmentSearchServiceImpl implements AssignmentSearchService {
     private final AssignmentRepository assignmentRepository;
     private final UserRepository userRepository;
     private final AysIdentity identity;

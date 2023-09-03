@@ -3,10 +3,10 @@ package com.ays.assignment.controller;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
-import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.service.AssignmentService;
@@ -50,7 +50,6 @@ class AssignmentController {
         return AysResponse.SUCCESS;
     }
 
-
     /**
      * Gets a user by ID.
      * Requires ADMIN authority.
@@ -66,9 +65,6 @@ class AssignmentController {
         final AssignmentResponse assignmentResponse = assignmentToAssignmentResponseMapper.map(assignment);
         return AysResponse.successOf(assignmentResponse);
     }
-
-
-
 
     /**
      * Retrieves nearest assignment by AssignmentSearchRequest.
