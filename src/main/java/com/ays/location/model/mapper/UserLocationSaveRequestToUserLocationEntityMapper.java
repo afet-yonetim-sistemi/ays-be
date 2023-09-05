@@ -26,7 +26,7 @@ public interface UserLocationSaveRequestToUserLocationEntityMapper extends BaseM
     default UserLocationEntity mapForSaving(UserLocationSaveRequest saveRequest, String userId) {
         return UserLocationEntity.builder()
                 .userId(userId)
-                .point(saveRequest.getLatitude(), saveRequest.getLongitude())
+                .point(saveRequest.getLongitude(), saveRequest.getLatitude())
                 .build();
     }
 

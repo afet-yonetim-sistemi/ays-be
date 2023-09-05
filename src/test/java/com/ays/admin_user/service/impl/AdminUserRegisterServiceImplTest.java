@@ -7,6 +7,7 @@ import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.entity.AdminUserRegisterVerificationEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterVerificationEntityBuilder;
+import com.ays.admin_user.model.enums.AdminUserRegisterVerificationStatus;
 import com.ays.admin_user.repository.AdminUserRegisterVerificationRepository;
 import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByEmailException;
@@ -56,10 +57,14 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
+
+
+        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder()
+                .withValidFields()
+                .build();
         // When
-        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder().build();
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
+                .thenReturn(Optional.of(mockAdminUserRegisterVerificationEntity));
 
         Mockito.when(institutionRepository.existsById(Mockito.anyString()))
                 .thenReturn(true);
@@ -83,12 +88,13 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminUserRepository.save(Mockito.any(AdminUserEntity.class)))
                 .thenReturn(mockAdminUserEntityToBeSaved);
 
-        assert mockAdminUserRegisterVerificationEntity != null;
-        mockAdminUserRegisterVerificationEntity.complete(mockAdminUserEntityToBeSaved.getId());
-        Mockito.when(adminUserRegisterVerificationRepository.save(
-                        Mockito.any(AdminUserRegisterVerificationEntity.class))
-                )
-                .thenReturn(mockAdminUserRegisterVerificationEntity);
+        AdminUserRegisterVerificationEntity mockCompletedVerificationEntity = new AdminUserRegisterVerificationEntityBuilder()
+                .withValidFields()
+                .build();
+        mockCompletedVerificationEntity.complete(mockAdminUserEntityToBeSaved.getId());
+        Mockito.when(adminUserRegisterVerificationRepository
+                        .save(Mockito.any(AdminUserRegisterVerificationEntity.class)))
+                .thenReturn(mockCompletedVerificationEntity);
 
         // Then
         adminUserRegisterService.register(mockAdminUserRegisterRequest);
@@ -131,6 +137,35 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
+    void givenUsedVerificationIdFromAdminUserRegisterRequest_whenVerificationEntityStatusIsWaiting_thenThrowAysAdminUserRegisterVerificationCodeNotValidException() {
+
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
+        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+                .withVerificationId(AysRandomUtil.generateUUID())
+                .withInstitutionId(AysRandomUtil.generateUUID())
+                .withEmail(AysTestData.VALID_EMAIL)
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity =
+                new AdminUserRegisterVerificationEntityBuilder()
+                        .withStatus(AdminUserRegisterVerificationStatus.COMPLETED)
+                        .build();
+        // When
+        Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockAdminUserRegisterVerificationEntity));
+
+        // Then
+        Assertions.assertThrows(
+                AysAdminUserRegisterVerificationCodeNotValidException.class,
+                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
+        );
+
+        Mockito.verify(adminUserRegisterVerificationRepository, Mockito.times(1))
+                .findById(Mockito.anyString());
+    }
+
+    @Test
     void givenInvalidInstitutionIdFromAdminUserRegisterRequest_whenInstitutionNotExist_thenThrowAysInstitutionNotExistException() {
 
         // Given
@@ -138,8 +173,10 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 .withVerificationId(AysRandomUtil.generateUUID())
                 .withInstitutionId("Invalid").build();
 
+        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder()
+                .withValidFields()
+                .build();
         // When
-        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder().build();
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 
@@ -167,8 +204,10 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
+        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder()
+                .withValidFields()
+                .build();
         // When
-        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder().build();
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 
@@ -201,8 +240,10 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL).build();
 
+        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder()
+                .withValidFields()
+                .build();
         // When
-        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder().build();
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 
@@ -242,8 +283,10 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
+        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder()
+                .withValidFields()
+                .build();
         // When
-        AdminUserRegisterVerificationEntity mockAdminUserRegisterVerificationEntity = new AdminUserRegisterVerificationEntityBuilder().build();
         Mockito.when(adminUserRegisterVerificationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.ofNullable(mockAdminUserRegisterVerificationEntity));
 

@@ -276,7 +276,7 @@ For other information, you can contact the project's [Discord channel](https://d
 
 ## Postman
 
-### AYS Local Collections
+### AYS Local Environments
 
 https://fromsmash.com/sX28.CH0NF-dt
 
