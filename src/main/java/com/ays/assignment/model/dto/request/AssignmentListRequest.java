@@ -2,12 +2,12 @@ package com.ays.assignment.model.dto.request;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.AysFiltering;
-import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.dto.request.AysFilteringRequest;
 import com.ays.common.model.dto.request.AysPagingRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Digits;
 import lombok.*;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -43,9 +43,20 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
          */
         private List<AssignmentStatus> statuses;
 
-        private AysPhoneNumber phoneNumber;
+        @Valid
+        private PhoneNumber phoneNumber;
     }
 
+    @Getter
+    @Setter
+    public static class PhoneNumber {
+
+        @Digits(integer = 7, fraction = 0, message = "MUST BE 7-DIGIT NUMBER")
+        private String countryCode;
+
+        @Digits(integer = 13, fraction = 0, message = "MUST BE 13-DIGIT NUMBER")
+        private String lineNumber;
+    }
 
     /**
      * Overrides the {@link AysPagingRequest#isSortPropertyAccepted()} method to validate sorting options
