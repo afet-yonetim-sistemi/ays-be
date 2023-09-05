@@ -84,6 +84,10 @@ public class UserEntity extends BaseEntity {
         return UserStatus.DELETED.equals(this.status);
     }
 
+    public boolean isReady() {
+        return this.isActive() && UserSupportStatus.READY.equals(this.supportStatus);
+    }
+
     public void deleteUser() {
         this.status = UserStatus.DELETED;
     }

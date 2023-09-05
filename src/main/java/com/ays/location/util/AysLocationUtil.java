@@ -14,15 +14,14 @@ public class AysLocationUtil {
     /**
      * Generates a Point object representing a location based on the provided latitude and longitude coordinates.
      *
-     * @param latitude  The latitude coordinate of the location.
-     * @param longitude The longitude coordinate of the location.
+     * @param longitude The longitude coordinate of the location. The X coordinate, or Longitude in geospatial contexts.
+     * @param latitude  The latitude coordinate of the location. The Y coordinate, or Latitude in geospatial contexts.
      * @return A Point object representing the location.
      */
-    public static Point generatePoint(final Double latitude, final Double longitude) {
-        final Coordinate[] coordinates = new Coordinate[]{new Coordinate(latitude, longitude)};
+    public static Point generatePoint(final Double longitude, final Double latitude) {
+        final Coordinate[] coordinates = new Coordinate[]{new Coordinate(longitude, latitude)};
         final CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
         final PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
         return new GeometryFactory(precisionModel, 4326).createPoint(coordinateSequence);
     }
-
 }

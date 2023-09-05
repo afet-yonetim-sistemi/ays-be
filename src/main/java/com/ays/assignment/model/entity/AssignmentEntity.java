@@ -65,8 +65,8 @@ public class AssignmentEntity extends BaseEntity {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private UserEntity user;
 
-    public void setPoint(double latitude, double longitude) {
-        this.point = AysLocationUtil.generatePoint(latitude, longitude);
+    public void setPoint(final Double longitude, final Double latitude) {
+        this.point = AysLocationUtil.generatePoint(longitude, latitude);
     }
 
     public boolean isAvailable() {
@@ -94,9 +94,15 @@ public class AssignmentEntity extends BaseEntity {
         this.status = assignmentStatus;
     }
 
+    public void reserve(String userId, String institutionId) {
+        this.status = AssignmentStatus.RESERVED;
+        this.userId = userId;
+        this.institutionId = institutionId;
+    }
+
     public abstract static class AssignmentEntityBuilder<C extends AssignmentEntity, B extends AssignmentEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {
-        public B point(final Double latitude, final Double longitude) {
-            this.point = AysLocationUtil.generatePoint(latitude, longitude);
+        public B point(final Double longitude, final Double latitude) {
+            this.point = AysLocationUtil.generatePoint(longitude, latitude);
             return this.self();
         }
     }
