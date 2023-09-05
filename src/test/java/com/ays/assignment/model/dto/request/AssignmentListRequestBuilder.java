@@ -1,8 +1,10 @@
 package com.ays.assignment.model.dto.request;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
-import com.ays.common.model.*;
-import com.ays.user.model.dto.request.UserListRequestBuilder;
+import com.ays.common.model.AysPaging;
+import com.ays.common.model.AysPagingBuilder;
+import com.ays.common.model.AysSorting;
+import com.ays.common.model.TestDataBuilder;
 
 import java.util.List;
 
@@ -43,20 +45,17 @@ public class AssignmentListRequestBuilder extends TestDataBuilder<AssignmentList
 
     public AssignmentListRequestBuilder withPhoneNumber() {
 
-        AysPhoneNumberBuilder phoneNumberBuilder = new AysPhoneNumberBuilder().withValidFields();
 
         data.setFilter(new AssignmentListRequest.Filter(null
-                , phoneNumberBuilder.build()));
+                , new AssignmentListRequest.PhoneNumber("90", "1234567890")));
 
         return this;
     }
 
     public AssignmentListRequestBuilder withPhoneNumberAndStatus() {
 
-        AysPhoneNumberBuilder phoneNumberBuilder = new AysPhoneNumberBuilder().withValidFields();
-
         data.setFilter(new AssignmentListRequest.Filter(List.of(AssignmentStatus.AVAILABLE, AssignmentStatus.ASSIGNED)
-                , phoneNumberBuilder.build()));
+                , new AssignmentListRequest.PhoneNumber("90", "1234567890")));
 
         return this;
     }

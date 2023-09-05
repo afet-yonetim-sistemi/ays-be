@@ -49,6 +49,8 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class PhoneNumber {
 
         @Digits(integer = 7, fraction = 0, message = "MUST BE 7-DIGIT NUMBER")
