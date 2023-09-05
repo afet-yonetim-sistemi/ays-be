@@ -5,6 +5,7 @@ import com.ays.common.model.dto.response.BaseResponse;
 import com.ays.institution.model.dto.response.InstitutionResponse;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -26,7 +27,7 @@ public class UserResponse extends BaseResponse {
     private UserRole role;
     private UserStatus status;
     private AysPhoneNumber phoneNumber;
-
+    private UserSupportStatus supportStatus;
     private InstitutionResponse institution;
 
 }

@@ -39,6 +39,10 @@ public class AdminUserRegisterVerificationEntity extends BaseEntity {
     @JoinColumn(name = "ADMIN_USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private AdminUserEntity adminUser;
 
+    public boolean isWaiting(){
+        return AdminUserRegisterVerificationStatus.WAITING.equals(this.status);
+    }
+
     public void complete(final String adminUserId) {
         this.adminUserId = adminUserId;
         this.status = AdminUserRegisterVerificationStatus.COMPLETED;

@@ -3,11 +3,15 @@ package com.ays.assignment.controller;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
+import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
 import com.ays.assignment.service.AssignmentSaveService;
+import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.dto.response.AysPageResponse;
@@ -32,9 +36,12 @@ class AssignmentController {
 
     private final AssignmentSaveService assignmentSaveService;
 
+    private final AssignmentSearchService assignmentSearchService;
+
     private final AssignmentService assignmentService;
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
+    private static final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
     private static final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
 
     /**
@@ -88,5 +95,19 @@ class AssignmentController {
         return AysResponse.SUCCESS;
     }
 
+    /**
+     * Retrieves nearest assignment by AssignmentSearchRequest.
+     * Requires USER authority.
+     *
+     * @param searchRequest The request object containing user location to search nearest assignment.
+     * @return A response object containing nearest assignment data.
+     */
+    @PostMapping("/assignment/search")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<AssignmentSearchResponse> searchUserAssignment(@RequestBody @Valid AssignmentSearchRequest searchRequest) {
+        final Assignment assignment = assignmentSearchService.searchAssignment(searchRequest);
+        final AssignmentSearchResponse assignmentResponse = assignmentToAssignmentSearchResponseMapper.map(assignment);
+        return AysResponse.successOf(assignmentResponse);
+    }
 
 }
