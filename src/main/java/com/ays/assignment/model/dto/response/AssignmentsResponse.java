@@ -1,5 +1,6 @@
 package com.ays.assignment.model.dto.response;
 
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.dto.response.BaseResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 public class AssignmentsResponse extends BaseResponse {
 
     private String id;
+    private AssignmentStatus status;
     private String description;
     private String firstName;
     private String lastName;
