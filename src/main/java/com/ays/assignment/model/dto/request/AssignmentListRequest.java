@@ -21,6 +21,7 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -94,14 +95,14 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
 
         if (this.filter.phoneNumber != null) {
 
-            if (this.filter.phoneNumber.getLineNumber() != null && !this.filter.phoneNumber.getLineNumber().isEmpty()) {
+            if (this.filter.phoneNumber.getLineNumber() != null) {
                 Specification<C> lineNumberSpecification = (root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get("lineNumber"), this.filter.phoneNumber.getLineNumber());
 
                 specification = specification.and(lineNumberSpecification);
             }
 
-            if (this.filter.phoneNumber.getCountryCode() != null && !this.filter.phoneNumber.getCountryCode().isEmpty()) {
+            if (this.filter.phoneNumber.getCountryCode() != null) {
                 Specification<C> countryCodeSpecification = (root, query, criteriaBuilder)
                         -> criteriaBuilder.equal(root.get("countryCode"), this.filter.phoneNumber.getCountryCode());
 
@@ -109,7 +110,7 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
             }
         }
 
-        if (!CollectionUtils.isEmpty(this.filter.statuses)) {
+        if (!CollectionUtils.isEmpty(this.filter.getStatuses())) {
             Specification<C> statusSpecification = this.filter.statuses.stream().map(status ->
                             (Specification<C>) (root, query, criteriaBuilder) ->
                                     criteriaBuilder.equal(root.get("status"), status))
