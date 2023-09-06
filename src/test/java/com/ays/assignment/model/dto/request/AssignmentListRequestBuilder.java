@@ -14,49 +14,32 @@ public class AssignmentListRequestBuilder extends TestDataBuilder<AssignmentList
         super(AssignmentListRequest.class);
     }
 
-    public AssignmentListRequestBuilder withValidValuesForStatus() {
-        return this
-                .withStatus()
-                .withPagination(new AysPagingBuilder().withValidValues().build())
-                .withSort(null);
-    }
-
-    public AssignmentListRequestBuilder withValidValuesForPhoneNumber() {
-        return this
-                .withPhoneNumber()
-                .withPagination(new AysPagingBuilder().withValidValues().build())
-                .withSort(null);
-    }
-
     public AssignmentListRequestBuilder withValidValues() {
         return this
-                .withPhoneNumberAndStatus()
+                .initializeFilter()
+                .withStatuses(List.of(AssignmentStatus.AVAILABLE, AssignmentStatus.ASSIGNED))
+                .withPhoneNumber(new AssignmentListRequest.PhoneNumber("90", "1234567890"))
                 .withPagination(new AysPagingBuilder().withValidValues().build())
                 .withSort(null);
     }
 
-    public AssignmentListRequestBuilder withStatus() {
-
-        data.setFilter(new AssignmentListRequest.Filter(List.of(AssignmentStatus.AVAILABLE, AssignmentStatus.ASSIGNED)
-                , null));
-
+    private AssignmentListRequestBuilder initializeFilter() {
+        data.setFilter(new AssignmentListRequest.Filter());
         return this;
     }
 
-    public AssignmentListRequestBuilder withPhoneNumber() {
-
-
-        data.setFilter(new AssignmentListRequest.Filter(null
-                , new AssignmentListRequest.PhoneNumber("90", "1234567890")));
-
+    public AssignmentListRequestBuilder withFilter(AssignmentListRequest.Filter filter) {
+        data.setFilter(filter);
         return this;
     }
 
-    public AssignmentListRequestBuilder withPhoneNumberAndStatus() {
+    public AssignmentListRequestBuilder withStatuses(List<AssignmentStatus> statuses) {
+        data.getFilter().setStatuses(statuses);
+        return this;
+    }
 
-        data.setFilter(new AssignmentListRequest.Filter(List.of(AssignmentStatus.AVAILABLE, AssignmentStatus.ASSIGNED)
-                , new AssignmentListRequest.PhoneNumber("90", "1234567890")));
-
+    public AssignmentListRequestBuilder withPhoneNumber(AssignmentListRequest.PhoneNumber phoneNumber) {
+        data.getFilter().setPhoneNumber(phoneNumber);
         return this;
     }
 
@@ -69,4 +52,5 @@ public class AssignmentListRequestBuilder extends TestDataBuilder<AssignmentList
         data.setSort(sorting);
         return this;
     }
+
 }
