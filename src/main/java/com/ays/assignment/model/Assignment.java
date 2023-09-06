@@ -4,6 +4,7 @@ import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.BaseDomainModel;
 import com.ays.institution.model.Institution;
+import com.ays.location.model.UserLocation;
 import com.ays.user.model.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class Assignment extends BaseDomainModel {
     private AssignmentStatus status;
 
     private User user;
+    private UserLocation userLocation;
     private Institution institution;
 
 }
