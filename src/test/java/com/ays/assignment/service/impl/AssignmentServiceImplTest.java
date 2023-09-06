@@ -133,6 +133,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+        Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
     }
 
     @Test
@@ -165,6 +166,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+        Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
     }
 
     @Test
@@ -196,6 +198,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+        Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
     }
 
 }
