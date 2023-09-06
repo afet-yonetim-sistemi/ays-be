@@ -109,7 +109,10 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         // Given
         String mockInstitutionId = AysRandomUtil.generateUUID();
 
-        AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder().withValidValuesForStatus().build();
+        AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(null)
+                .build();
 
         List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder()
                 .withValidFields().build());
@@ -138,7 +141,10 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         // Given
         String mockInstitutionId = AysRandomUtil.generateUUID();
 
-        AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder().withValidValuesForPhoneNumber().build();
+        AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder()
+                .withValidValues()
+                .withStatuses(null)
+                .build();
 
         List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder()
                 .withValidFields().build());
@@ -167,7 +173,9 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         // Given
         String mockInstitutionId = AysRandomUtil.generateUUID();
 
-        AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder().withValidValuesForPhoneNumber().build();
+        AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder()
+                .withValidValues()
+                .build();
 
         List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder()
                 .withValidFields().build());
