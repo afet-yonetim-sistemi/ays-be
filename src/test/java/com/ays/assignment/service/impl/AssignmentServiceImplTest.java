@@ -23,7 +23,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,7 +111,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder().withValidValuesForStatus().build();
 
-        List<AssignmentEntity> mockAssignmentEntities = Collections.singletonList(new AssignmentEntityBuilder()
+        List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder()
                 .withValidFields().build());
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
 
@@ -141,7 +140,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder().withValidValuesForPhoneNumber().build();
 
-        List<AssignmentEntity> mockAssignmentEntities = Collections.singletonList(new AssignmentEntityBuilder()
+        List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder()
                 .withValidFields().build());
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
 
@@ -170,7 +169,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder().withValidValuesForPhoneNumber().build();
 
-        List<AssignmentEntity> mockAssignmentEntities = Collections.singletonList(new AssignmentEntityBuilder()
+        List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder()
                 .withValidFields().build());
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
 
