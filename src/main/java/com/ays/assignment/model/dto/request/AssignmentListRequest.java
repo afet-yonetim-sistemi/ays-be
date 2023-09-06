@@ -21,7 +21,6 @@ import java.util.Set;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
