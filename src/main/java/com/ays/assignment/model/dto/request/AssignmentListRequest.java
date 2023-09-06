@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Digits;
 import lombok.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -108,7 +109,7 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
             }
         }
 
-        if (this.filter.statuses != null && !this.filter.statuses.isEmpty()) {
+        if (!CollectionUtils.isEmpty(this.filter.statuses)) {
             Specification<C> statusSpecification = this.filter.statuses.stream().map(status ->
                             (Specification<C>) (root, query, criteriaBuilder) ->
                                     criteriaBuilder.equal(root.get("status"), status))
