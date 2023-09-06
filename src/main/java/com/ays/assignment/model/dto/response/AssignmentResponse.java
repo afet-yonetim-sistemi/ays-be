@@ -1,8 +1,11 @@
 package com.ays.assignment.model.dto.response;
 
+import com.ays.assignment.model.enums.AssignmentStatus;
+import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.dto.response.BaseResponse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -15,9 +18,31 @@ public class AssignmentResponse extends BaseResponse {
 
     private String id;
     private String description;
+    private AssignmentStatus status;
     private String firstName;
     private String lastName;
-    private Double longitude;
-    private Double latitude;
+    private AysPhoneNumber phoneNumber;
+    private Location location;
+    private User user;
+
+    @Getter
+    @Setter
+    public static class User {
+
+        private String id;
+        private String firstName;
+        private String lastName;
+        private AysPhoneNumber phoneNumber;
+        private Location location;
+
+    }
+
+    @Getter
+    @Setter
+    public static class Location {
+        private Double longitude;
+        private Double latitude;
+
+    }
 
 }
