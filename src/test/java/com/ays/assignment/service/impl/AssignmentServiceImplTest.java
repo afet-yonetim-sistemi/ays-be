@@ -189,4 +189,5 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
+
 }
