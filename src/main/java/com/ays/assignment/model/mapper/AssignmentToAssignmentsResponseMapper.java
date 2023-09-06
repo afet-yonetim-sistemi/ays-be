@@ -21,7 +21,6 @@ public interface AssignmentToAssignmentsResponseMapper extends BaseMapper<Assign
     @Override
     @Mapping(target = "location.longitude", source = "point.x")
     @Mapping(target = "location.latitude", source = "point.y")
-    @Mapping(target = "status", source = "status")
     AssignmentsResponse map(Assignment source);
 
     /**
