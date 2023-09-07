@@ -3,9 +3,7 @@ package com.ays.assignment.model.dto.response;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.dto.response.BaseResponse;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -27,6 +25,7 @@ public class AssignmentResponse extends BaseResponse {
 
     @Getter
     @Setter
+    @Builder
     public static class User {
 
         private String id;
@@ -39,6 +38,7 @@ public class AssignmentResponse extends BaseResponse {
 
     @Getter
     @Setter
+    @Builder
     public static class Location {
         private Double longitude;
         private Double latitude;
