@@ -7,18 +7,26 @@ import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
 import com.ays.auth.model.AysIdentity;
+import com.ays.location.model.UserLocation;
+import com.ays.location.model.entity.UserLocationEntity;
+import com.ays.location.model.mapper.UserLocationEntityToUserLocationMapper;
+import com.ays.location.repository.UserLocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 class AssignmentServiceImpl implements AssignmentService {
 
     private final AssignmentRepository assignmentRepository;
+    private final UserLocationRepository userLocationRepository;
 
     private final AysIdentity identity;
 
     private static final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
+    private static final UserLocationEntityToUserLocationMapper userLocationEntityToUserLocationMapper = UserLocationEntityToUserLocationMapper.initialize();
 
     /**
      * Retrieves an assignment by their ID.
@@ -33,6 +41,20 @@ class AssignmentServiceImpl implements AssignmentService {
         final AssignmentEntity assignmentEntity = assignmentRepository.findByIdAndInstitutionId(id, identity.getInstitutionId())
                 .orElseThrow(() -> new AysAssignmentNotExistByIdException(id));
 
-        return assignmentEntityToAssignmentMapper.map(assignmentEntity);
+        Assignment assignment = assignmentEntityToAssignmentMapper.map(assignmentEntity);
+
+        Optional<UserLocationEntity> optionalUserLocationEntity = userLocationRepository
+                .findByUserId(assignmentEntity.getUserId());
+
+        if (optionalUserLocationEntity.isPresent()) {
+
+            UserLocation userLocation = userLocationEntityToUserLocationMapper
+                    .map(optionalUserLocationEntity.get());
+
+            assignment.getUser().setLocation(userLocation.getPoint());
+        }
+
+        return assignment;
     }
+
 }
