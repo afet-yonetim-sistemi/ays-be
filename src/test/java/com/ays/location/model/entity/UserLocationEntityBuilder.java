@@ -42,4 +42,5 @@ public class UserLocationEntityBuilder extends TestDataBuilder<UserLocationEntit
         data.setPoint(longitude, latitude);
         return this;
     }
+
 }

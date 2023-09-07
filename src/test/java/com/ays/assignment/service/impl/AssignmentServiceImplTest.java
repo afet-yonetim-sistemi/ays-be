@@ -106,4 +106,5 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
     }
+
 }

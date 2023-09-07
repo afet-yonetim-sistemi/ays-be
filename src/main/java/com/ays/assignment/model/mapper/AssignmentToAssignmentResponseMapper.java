@@ -27,7 +27,7 @@ public interface AssignmentToAssignmentResponseMapper extends BaseMapper<Assignm
     /**
      * Maps user location from {@link Assignment} to {@link AssignmentResponse}.
      *
-     * @param source The source {@link Assignment} object.
+     * @param source        The source {@link Assignment} object.
      * @param targetBuilder The builder for {@link AssignmentResponse} to be modified.
      */
     @AfterMapping

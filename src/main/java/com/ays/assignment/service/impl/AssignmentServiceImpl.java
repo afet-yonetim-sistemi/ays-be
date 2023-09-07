@@ -24,6 +24,7 @@ class AssignmentServiceImpl implements AssignmentService {
 
     private static final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
     private static final UserLocationEntityToUserLocationMapper userLocationEntityToUserLocationMapper = UserLocationEntityToUserLocationMapper.initialize();
+
     /**
      * Retrieves an assignment by their ID.
      *
@@ -44,4 +45,5 @@ class AssignmentServiceImpl implements AssignmentService {
 
         return assignment;
     }
+
 }
