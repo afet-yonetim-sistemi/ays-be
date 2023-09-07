@@ -8,10 +8,13 @@ import com.ays.assignment.service.AssignmentService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.location.model.UserLocation;
+import com.ays.location.model.entity.UserLocationEntity;
 import com.ays.location.model.mapper.UserLocationEntityToUserLocationMapper;
 import com.ays.location.repository.UserLocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,9 +42,17 @@ class AssignmentServiceImpl implements AssignmentService {
                 .orElseThrow(() -> new AysAssignmentNotExistByIdException(id));
 
         Assignment assignment = assignmentEntityToAssignmentMapper.map(assignmentEntity);
-        UserLocation userLocation = userLocationEntityToUserLocationMapper.map(userLocationRepository
-                .findByUserId(assignmentEntity.getUserId()).orElse(null));
-        assignment.setUserLocation(userLocation);
+
+        Optional<UserLocationEntity> optionalUserLocationEntity = userLocationRepository
+                .findByUserId(assignmentEntity.getUserId());
+
+        if (optionalUserLocationEntity.isPresent()) {
+
+            UserLocation userLocation = userLocationEntityToUserLocationMapper
+                    .map(optionalUserLocationEntity.get());
+
+            assignment.getUser().setLocation(userLocation.getPoint());
+        }
 
         return assignment;
     }

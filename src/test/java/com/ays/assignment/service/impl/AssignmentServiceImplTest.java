@@ -54,7 +54,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         UserLocation mockUserLocation = USER_LOCATION_ENTITY_TO_USER_LOCATION_MAPPER.map(mockUserLocationEntity);
         Assignment mockAssignment = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntity);
-        mockAssignment.setUserLocation(mockUserLocation);
+        mockAssignment.getUser().setLocation(mockUserLocation.getPoint());
 
         // When
         Mockito.when(identity.getInstitutionId())
@@ -73,7 +73,10 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(mockAssignment.getPhoneNumber().getLineNumber(), assignment.getPhoneNumber().getLineNumber());
         Assertions.assertEquals(mockAssignment.getStatus(), assignment.getStatus());
         Assertions.assertEquals(mockAssignment.getPoint(), assignment.getPoint());
-        Assertions.assertEquals(mockAssignment.getUserLocation(), assignment.getUserLocation());
+        Assertions.assertEquals(mockAssignment.getUser().getLocation().getLongitude(),
+                assignment.getUser().getLocation().getLongitude());
+        Assertions.assertEquals(mockAssignment.getUser().getLocation().getLatitude(),
+                assignment.getUser().getLocation().getLatitude());
 
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);

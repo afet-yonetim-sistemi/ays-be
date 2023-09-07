@@ -40,7 +40,6 @@ public class AssignmentResponse extends BaseResponse {
     }
 
     @Getter
-    @Setter
     @Builder
     public static class Location {
         private Double longitude;
