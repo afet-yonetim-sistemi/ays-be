@@ -1,6 +1,7 @@
 package com.ays.assignment.service.impl;
 
 import com.ays.assignment.model.Assignment;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
@@ -55,6 +56,26 @@ class AssignmentServiceImpl implements AssignmentService {
         }
 
         return assignment;
+    }
+
+    /**
+     * Updates an assignment with the provided ID and request.
+     *
+     * @param id The ID of the assignment to be updated.
+     * @param updateRequest The request containing the new assignment information.
+     * @throws AysAssignmentNotExistByIdException if the {@link Assignment} with the specified
+     * assignment id and institution id does not exist.
+     */
+    @Override
+    public void updateAssignment(String id, AssignmentUpdateRequest updateRequest) {
+
+        AssignmentEntity assignmentEntity = assignmentRepository
+                .findByIdAndInstitutionId(id, identity.getInstitutionId())
+                .filter(AssignmentEntity::isAvailable)
+                .orElseThrow(() -> new AysAssignmentNotExistByIdException(id));
+
+        assignmentEntity.updateAssignment(updateRequest);
+        assignmentRepository.save(assignmentEntity);
     }
 
 }
