@@ -114,15 +114,15 @@ class AssignmentController {
     /**
      * Updates an assignment with the provided ID and request.
      *
-     * @param id The ID of the assignment to be updated.
+     * @param id            The ID of the assignment to be updated.
      * @param updateRequest The request containing the new assignment information.
      * @return A success response indicating that the assignment has been updated.
      */
     @PutMapping("/assignment/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<Void> updateAssignment(@PathVariable @UUID String id,
-                                              @RequestBody @Valid AssignmentUpdateRequest updateRequest){
-        assignmentService.updateAssignment(id,updateRequest);
+                                              @RequestBody @Valid AssignmentUpdateRequest updateRequest) {
+        assignmentService.updateAssignment(id, updateRequest);
         return AysResponse.SUCCESS;
     }
 
