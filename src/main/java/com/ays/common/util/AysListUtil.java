@@ -18,7 +18,7 @@ public class AysListUtil {
      * @param <C>    the type parameter for the class
      * @return a List of objects of the specified class type
      */
-    @SuppressWarnings({"unchecked", "unused"})
+    @SuppressWarnings({"unchecked", "This method is unused by the application directly but Spring is using it in the background."})
     public static <C> List<C> to(Object object, Class<C> clazz) {
         return (List<C>) object;
     }

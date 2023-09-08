@@ -1,47 +1,64 @@
 package com.ays.assignment.model.dto.request;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
+import com.ays.common.model.AysFiltering;
 import com.ays.common.model.dto.request.AysFilteringRequest;
 import com.ays.common.model.dto.request.AysPagingRequest;
-import com.ays.common.util.validation.EnumValidation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
-import lombok.Builder;
-import lombok.Data;
+import jakarta.validation.constraints.Digits;
+import lombok.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Represents a request object for fetching a list of user assignment with pagination,sorting and filtering options
  * This class extends the {@link AysPagingRequest} class and adds additional validation rules for sorting.
  */
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class AssignmentListRequest extends AysPagingRequest implements AysFilteringRequest {
 
-    private AssignmentStatus status;
+    @Valid
+    private Filter filter;
 
     /**
-     * Checks if the assignment status is valid.
-     *
-     * @return true if the assignment status is valid or null, false otherwise.
+     * Represents a filtering configuration for assignments based on the class fields.
      */
-    @AssertTrue(message = "IS ASSIGNMENT STATUS NOT ACCEPTED")
-    private boolean isStatusAccepted() {
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Filter implements AysFiltering {
 
-        if (this.status == null) {
-            return true;
-        }
 
-        EnumSet<AssignmentStatus> acceptedAssignmentStatuses = EnumSet.of(AssignmentStatus.AVAILABLE,
-                AssignmentStatus.RESERVED,
-                AssignmentStatus.ASSIGNED,
-                AssignmentStatus.IN_PROGRESS,
-                AssignmentStatus.DONE
-        );
-        return EnumValidation.anyOf(this.status, acceptedAssignmentStatuses);
+        /**
+         * List of assignment statuses used for filtering.
+         */
+        private List<AssignmentStatus> statuses;
+
+        @Valid
+        private PhoneNumber phoneNumber;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PhoneNumber {
+
+        @Digits(integer = 7, fraction = 0, message = "MUST BE 7-DIGIT NUMBER")
+        private String countryCode;
+
+        @Digits(integer = 13, fraction = 0, message = "MUST BE 13-DIGIT NUMBER")
+        private String lineNumber;
     }
 
     /**
@@ -58,21 +75,49 @@ public class AssignmentListRequest extends AysPagingRequest implements AysFilter
         return this.isPropertyAccepted(acceptedFilterFields);
     }
 
+
     /**
-     * Converts the request into a JPA Specification that filters assignments based on the specified status,
-     * if it is provided.
+     * Converts the request into a JPA Specification that filters assignments based on the specified
+     * statuses and phoneNumber, if they are provided.
      *
      * @param clazz the class type of the specification.
      * @return the generated JPA Specification based on the request filters.
      */
     @Override
     public <C> Specification<C> toSpecification(Class<C> clazz) {
-        Specification<C> specification = Specification.where(null);
-        if (status != null) {
-            specification = specification.and((root, query, builder) ->
-                    builder.equal(root.get("status"), status));
+
+        if (this.filter == null) {
+            return Specification.allOf();
         }
-        // Add more filter conditions if needed
+
+        Specification<C> specification = Specification.where(null);
+
+        if (this.filter.phoneNumber != null) {
+
+            if (this.filter.phoneNumber.getLineNumber() != null) {
+                Specification<C> lineNumberSpecification = (root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get("lineNumber"), this.filter.phoneNumber.getLineNumber());
+
+                specification = specification.and(lineNumberSpecification);
+            }
+
+            if (this.filter.phoneNumber.getCountryCode() != null) {
+                Specification<C> countryCodeSpecification = (root, query, criteriaBuilder)
+                        -> criteriaBuilder.equal(root.get("countryCode"), this.filter.phoneNumber.getCountryCode());
+
+                specification = specification.and(countryCodeSpecification);
+            }
+        }
+
+        if (!CollectionUtils.isEmpty(this.filter.getStatuses())) {
+            Specification<C> statusSpecification = this.filter.statuses.stream().map(status ->
+                            (Specification<C>) (root, query, criteriaBuilder) ->
+                                    criteriaBuilder.equal(root.get("status"), status))
+                    .reduce(Specification::or).orElse(null);
+
+            specification = specification.and(statusSpecification);
+        }
+
         return specification;
     }
 

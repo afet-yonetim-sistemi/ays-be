@@ -31,7 +31,7 @@ public class UserUpdateRequest {
     private UserStatus status;
 
     @AssertTrue(message = "IS NOT ACCEPTED")
-    @SuppressWarnings("unused")
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isStatusAccepted() {
 
         if (ObjectUtils.isEmpty(this.status)) {
@@ -43,7 +43,7 @@ public class UserUpdateRequest {
     }
 
     @AssertTrue(message = "IS NOT ACCEPTED")
-    @SuppressWarnings("unused")
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isRoleAccepted() {
 
         if (ObjectUtils.isEmpty(this.role)) {
