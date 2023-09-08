@@ -18,8 +18,10 @@ import org.mapstruct.factory.Mappers;
 public interface AssignmentEntityToAssignmentMapper extends BaseMapper<AssignmentEntity, Assignment> {
 
     @Override
-    @Mapping(target = "phoneNumber.countryCode", source = "source.countryCode")
-    @Mapping(target = "phoneNumber.lineNumber", source = "source.lineNumber")
+    @Mapping(target = "phoneNumber.countryCode", source = "countryCode")
+    @Mapping(target = "phoneNumber.lineNumber", source = "lineNumber")
+    @Mapping(target = "user.phoneNumber.countryCode", source = "user.countryCode")
+    @Mapping(target = "user.phoneNumber.lineNumber", source = "user.lineNumber")
     Assignment map(AssignmentEntity source);
 
     /**

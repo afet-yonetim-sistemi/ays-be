@@ -13,6 +13,11 @@ import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
 import com.ays.common.util.AysRandomUtil;
+import com.ays.location.model.UserLocation;
+import com.ays.location.model.entity.UserLocationEntity;
+import com.ays.location.model.entity.UserLocationEntityBuilder;
+import com.ays.location.model.mapper.UserLocationEntityToUserLocationMapper;
+import com.ays.location.repository.UserLocationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,10 +41,13 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     private AssignmentRepository assignmentRepository;
 
     @Mock
+    private UserLocationRepository userLocationRepository;
+
+    @Mock
     private AysIdentity identity;
 
     private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
-
+    private static final UserLocationEntityToUserLocationMapper USER_LOCATION_ENTITY_TO_USER_LOCATION_MAPPER = UserLocationEntityToUserLocationMapper.initialize();
 
     @Test
     void givenAssignmentId_whenGetAssignment_thenReturnAssignment() {
@@ -51,14 +59,18 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .withInstitutionId(mockInstitutionId).build();
         String mockAssignmentId = mockAssignmentEntity.getId();
+        UserLocationEntity mockUserLocationEntity = new UserLocationEntityBuilder().withValidFields().build();
 
+        UserLocation mockUserLocation = USER_LOCATION_ENTITY_TO_USER_LOCATION_MAPPER.map(mockUserLocationEntity);
         Assignment mockAssignment = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntity);
+        mockAssignment.getUser().setLocation(mockUserLocation.getPoint());
 
         // When
         Mockito.when(identity.getInstitutionId())
                 .thenReturn(mockInstitutionId);
         Mockito.when(assignmentRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.of(mockAssignmentEntity));
+        Mockito.when(userLocationRepository.findByUserId(Mockito.anyString())).thenReturn(Optional.of(mockUserLocationEntity));
 
         // Then
         Assignment assignment = assignmentService.getAssignmentById(mockAssignmentId);
@@ -70,6 +82,10 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(mockAssignment.getPhoneNumber().getLineNumber(), assignment.getPhoneNumber().getLineNumber());
         Assertions.assertEquals(mockAssignment.getStatus(), assignment.getStatus());
         Assertions.assertEquals(mockAssignment.getPoint(), assignment.getPoint());
+        Assertions.assertEquals(mockAssignment.getUser().getLocation().getLongitude(),
+                assignment.getUser().getLocation().getLongitude());
+        Assertions.assertEquals(mockAssignment.getUser().getLocation().getLatitude(),
+                assignment.getUser().getLocation().getLatitude());
 
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);
