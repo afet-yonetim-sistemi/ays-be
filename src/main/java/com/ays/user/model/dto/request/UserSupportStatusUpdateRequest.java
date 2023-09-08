@@ -25,7 +25,7 @@ public class UserSupportStatusUpdateRequest {
     private UserSupportStatus supportStatus;
 
     @AssertTrue(message = "IS NOT ACCEPTED")
-    @SuppressWarnings("unused")
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isSupportStatusAccepted() {
 
         if (ObjectUtils.isEmpty(this.supportStatus)) {
