@@ -3,6 +3,7 @@ package com.ays.assignment.controller;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
@@ -80,4 +81,20 @@ class AssignmentController {
         final AssignmentSearchResponse assignmentResponse = assignmentToAssignmentSearchResponseMapper.map(assignment);
         return AysResponse.successOf(assignmentResponse);
     }
+
+    /**
+     * Updates an assignment with the provided ID and request.
+     *
+     * @param id The ID of the assignment to be updated.
+     * @param updateRequest The request containing the new assignment information.
+     * @return A success response indicating that the assignment has been updated.
+     */
+    @PutMapping("/assignment/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<Void> updateAssignment(@PathVariable @UUID String id,
+                                              @RequestBody @Valid AssignmentUpdateRequest updateRequest){
+        assignmentService.updateAssignment(id,updateRequest);
+        return AysResponse.SUCCESS;
+    }
+
 }
