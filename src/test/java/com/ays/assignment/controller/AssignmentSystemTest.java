@@ -267,7 +267,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     void givenValidAssignmentIdAndAssignmentUpdateRequest_whenAssignmentUpdated_thenReturnAysResponseOfSuccess() throws Exception {
 
         // Given
-        String assignmentId = AysTestData.Assignment.VALID_ID_TWO;
+        String assignmentId = AysTestData.Assignment.VALID_ID_THREE;
         AssignmentUpdateRequest mockUpdateRequest = new AssignmentUpdateRequestBuilder()
                 .withValidFields()
                 .build();
@@ -307,4 +307,43 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
+    @Test
+    void givenValidAssignmentId_whenAssignmentDeleted_thenReturnAysResponseOfSuccess() throws Exception {
+
+        // Given
+        String assignmentId = AysTestData.Assignment.VALID_ID_TWO;
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/".concat(assignmentId));
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .delete(endpoint, adminUserTokenTwo.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus()
+                        .getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
+
+    @Test
+    void givenValidAssignmentId_whenUserUnauthorizedForDeleting_thenThrowAccessDeniedException() throws Exception {
+
+        // Given
+        String assignmentId = AysTestData.Assignment.VALID_ID_ONE;
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/".concat(assignmentId));
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .delete(endpoint, userTokenOne.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus()
+                        .name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
 }
