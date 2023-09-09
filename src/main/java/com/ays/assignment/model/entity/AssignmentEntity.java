@@ -101,12 +101,12 @@ public class AssignmentEntity extends BaseEntity {
         this.institutionId = institutionId;
     }
 
-    public void updateAssignment(AssignmentUpdateRequest updateRequest){
-        this.description=updateRequest.getDescription();
-        this.firstName=updateRequest.getFirstName();
-        this.lastName=updateRequest.getLastName();
-        this.countryCode=updateRequest.getPhoneNumber().getCountryCode();
-        this.lineNumber=updateRequest.getPhoneNumber().getLineNumber();
+    public void updateAssignment(AssignmentUpdateRequest updateRequest) {
+        this.description = updateRequest.getDescription();
+        this.firstName = updateRequest.getFirstName();
+        this.lastName = updateRequest.getLastName();
+        this.countryCode = updateRequest.getPhoneNumber().getCountryCode();
+        this.lineNumber = updateRequest.getPhoneNumber().getLineNumber();
         this.point.getCoordinate().setX(updateRequest.getLongitude());
         this.point.getCoordinate().setY(updateRequest.getLatitude());
     }
