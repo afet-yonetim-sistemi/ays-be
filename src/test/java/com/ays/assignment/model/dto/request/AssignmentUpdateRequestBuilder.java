@@ -11,12 +11,15 @@ public class AssignmentUpdateRequestBuilder extends TestDataBuilder<AssignmentUp
 
     public AssignmentUpdateRequestBuilder withValidFields() {
         return this
-                .withDescription("Description")
-                .withFirstName("First Name")
-                .withLastName("Last Name")
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
-                .withLatitude(1.0)
-                .withLongitude(1.0);
+                .withDescription("Updated Description")
+                .withFirstName("Updated First Name")
+                .withLastName("Updated Last Name")
+                .withPhoneNumber(new AysPhoneNumberBuilder()
+                        .withCountryCode("91")
+                        .withLineNumber("9876543210")
+                        .build())
+                .withLatitude(2.0)
+                .withLongitude(2.0);
     }
 
     public AssignmentUpdateRequestBuilder withDescription(String description) {
