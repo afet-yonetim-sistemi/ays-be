@@ -339,11 +339,11 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         // Then
         assignmentService.deleteAssignment(mockAssignmentId);
 
-        Mockito.verify(assignmentRepository,Mockito.times(1))
-                .findByIdAndInstitutionId(mockAssignmentId,mockInstitutionId);
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .delete(Mockito.any(AssignmentEntity.class));
-        Mockito.verify(identity,Mockito.times(1))
+        Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
     }
 
@@ -369,11 +369,11 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
                 () -> assignmentService.deleteAssignment(mockAssignmentId)
         );
 
-        Mockito.verify(assignmentRepository,Mockito.times(1))
-                .findByIdAndInstitutionId(mockAssignmentId,mockInstitutionId);
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);
         Mockito.verify(assignmentRepository, Mockito.never())
                 .delete(mockAssignmentEntity);
-        Mockito.verify(identity,Mockito.times(1))
+        Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
     }
 
@@ -395,11 +395,11 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
                 () -> assignmentService.deleteAssignment(mockAssignmentId)
         );
 
-        Mockito.verify(assignmentRepository,Mockito.times(1))
-                .findByIdAndInstitutionId(mockAssignmentId,mockInstitutionId);
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);
         Mockito.verify(assignmentRepository, Mockito.never())
                 .delete(Mockito.any(AssignmentEntity.class));
-        Mockito.verify(identity,Mockito.times(1))
+        Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
     }
 }
