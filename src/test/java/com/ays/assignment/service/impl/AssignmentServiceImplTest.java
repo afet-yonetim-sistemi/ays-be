@@ -4,8 +4,11 @@ import com.ays.AbstractUnitTest;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentListRequestBuilder;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequestBuilder;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
@@ -217,4 +220,43 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
     }
 
+
+    @Test
+    void givenValidAssignmentIdAndAssignmentUpdateRequest_whenAssignmentAvailable_thenUpdateAssignment() {
+
+        // Given
+        final String mockInstitutionId = AysRandomUtil.generateUUID();
+        final String mockAssignmentId = AysRandomUtil.generateUUID();
+
+        final AssignmentUpdateRequest mockUpdateRequest = new AssignmentUpdateRequestBuilder().withValidFields().build();
+
+        final AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
+                .withId(mockAssignmentId)
+                .withInstitutionId(mockInstitutionId)
+                .withStatus(AssignmentStatus.AVAILABLE)
+                .build();
+
+        // When
+        Mockito.when(identity.getInstitutionId()).thenReturn(mockInstitutionId);
+        Mockito.when(assignmentRepository.findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId))
+                .thenReturn(Optional.of(mockAssignmentEntity));
+        Mockito.when(assignmentRepository.save(mockAssignmentEntity)).thenReturn(mockAssignmentEntity);
+
+        // Then
+        assignmentService.updateAssignment(mockAssignmentId, mockUpdateRequest);
+
+        Assertions.assertEquals(mockUpdateRequest.getDescription(), mockAssignmentEntity.getDescription());
+        Assertions.assertEquals(mockUpdateRequest.getFirstName(), mockAssignmentEntity.getFirstName());
+        Assertions.assertEquals(mockUpdateRequest.getLastName(), mockAssignmentEntity.getLastName());
+        Assertions.assertEquals(mockUpdateRequest.getPhoneNumber().getCountryCode(), mockAssignmentEntity.getCountryCode());
+        Assertions.assertEquals(mockUpdateRequest.getLongitude(), mockAssignmentEntity.getPoint().getX());
+        Assertions.assertEquals(mockUpdateRequest.getLatitude(), mockAssignmentEntity.getPoint().getY());
+
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .save(Mockito.any(AssignmentEntity.class));
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+    }
 }
