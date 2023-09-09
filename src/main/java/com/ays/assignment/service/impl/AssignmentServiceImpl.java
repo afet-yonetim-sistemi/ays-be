@@ -99,7 +99,7 @@ class AssignmentServiceImpl implements AssignmentService {
      *                                            assignment id and institution id does not exist.
      */
     @Override
-    public void updateAssignment(String id, AssignmentUpdateRequest updateRequest) {
+    public void updateAssignment(final String id, final AssignmentUpdateRequest updateRequest) {
 
         AssignmentEntity assignmentEntity = assignmentRepository
                 .findByIdAndInstitutionId(id, identity.getInstitutionId())
@@ -108,6 +108,22 @@ class AssignmentServiceImpl implements AssignmentService {
 
         assignmentEntity.updateAssignment(updateRequest);
         assignmentRepository.save(assignmentEntity);
+    }
+
+    /**
+     * Deletes an assignment by Assignment ID.
+     *
+     * @param id The unique identifier of the assignment.
+     */
+    @Override
+    public void deleteAssignment(final String id) {
+
+        AssignmentEntity assignmentEntity = assignmentRepository
+                .findByIdAndInstitutionId(id, identity.getInstitutionId())
+                .filter(AssignmentEntity::isAvailable)
+                .orElseThrow(() -> new AysAssignmentNotExistByIdException(id));
+
+        assignmentRepository.delete(assignmentEntity);
     }
 
 }
