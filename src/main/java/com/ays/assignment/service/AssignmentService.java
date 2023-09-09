@@ -27,6 +27,16 @@ public interface AssignmentService {
      */
     Assignment getAssignmentById(String id);
 
-    void updateAssignment(final String id, AssignmentUpdateRequest updateRequest);
+    /**
+     * Update Assignment by Assignment ID and {@link AssignmentUpdateRequest}
+     * @param id the given Assignment ID
+     * @param updateRequest the request that contains new assignment information
+     */
+    void updateAssignment(final String id, final AssignmentUpdateRequest updateRequest);
 
+    /**
+     * Delete assignment by Assignment ID
+     * @param id the given AssignmentID
+     */
+    void deleteAssignment(final String id);
 }
