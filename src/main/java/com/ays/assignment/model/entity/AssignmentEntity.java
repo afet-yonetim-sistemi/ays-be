@@ -107,8 +107,7 @@ public class AssignmentEntity extends BaseEntity {
         this.lastName = updateRequest.getLastName();
         this.countryCode = updateRequest.getPhoneNumber().getCountryCode();
         this.lineNumber = updateRequest.getPhoneNumber().getLineNumber();
-        this.point.getCoordinate().setX(updateRequest.getLongitude());
-        this.point.getCoordinate().setY(updateRequest.getLatitude());
+        this.setPoint(updateRequest.getLongitude(), updateRequest.getLatitude());
     }
 
     public abstract static class AssignmentEntityBuilder<C extends AssignmentEntity, B extends AssignmentEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {
