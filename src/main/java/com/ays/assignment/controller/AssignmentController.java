@@ -7,6 +7,7 @@ import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
+import com.ays.assignment.service.AssignmentActionService;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.service.AssignmentService;
@@ -32,6 +33,7 @@ class AssignmentController {
     private final AssignmentSaveService assignmentSaveService;
     private final AssignmentSearchService assignmentSearchService;
     private final AssignmentService assignmentService;
+    private final AssignmentActionService assignmentActionService;
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
     private static final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
@@ -79,5 +81,20 @@ class AssignmentController {
         final Assignment assignment = assignmentSearchService.searchAssignment(searchRequest);
         final AssignmentSearchResponse assignmentResponse = assignmentToAssignmentSearchResponseMapper.map(assignment);
         return AysResponse.successOf(assignmentResponse);
+    }
+
+    // approve assignment and requires user authority
+
+    /**
+     * Approves assignment by id.
+     * Requires USER authority.
+     *
+     * @return A success response if assignment approved.
+     */
+    @PostMapping("/assignment/approve")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> approveAssignment() {
+        assignmentActionService.approveAssignment();
+        return AysResponse.SUCCESS;
     }
 }
