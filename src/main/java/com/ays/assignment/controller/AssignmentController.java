@@ -126,4 +126,19 @@ class AssignmentController {
         return AysResponse.SUCCESS;
     }
 
+    /**
+     * Deletes an assignment with the specified ID.
+     * This method is accessible via a DELETE request to "/assignment/{id}" endpoint,
+     * and requires the caller to have the 'ADMIN' authority.
+     *
+     * @param id The unique identifier of the assignment to be deleted.
+     * @return A response indicating the success of the operation.
+     */
+    @DeleteMapping("/assignment/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<Void> deleteAssignment(@PathVariable @UUID String id) {
+        assignmentService.deleteAssignment(id);
+        return AysResponse.SUCCESS;
+    }
+
 }
