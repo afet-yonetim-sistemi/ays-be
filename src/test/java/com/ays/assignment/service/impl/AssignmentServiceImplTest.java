@@ -292,4 +292,30 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
     }
+
+    @Test
+    void givenValidAssignmentIdAndAssignmentUpdateRequest_whenAssignmentNotExists_thenThrowAysAssignmentNotExistByIdException() {
+
+        // Given
+        final String mockInstitutionId = AysRandomUtil.generateUUID();
+        final String mockAssignmentId = AysRandomUtil.generateUUID();
+
+        final AssignmentUpdateRequest mockUpdateRequest = new AssignmentUpdateRequestBuilder().withValidFields().build();
+
+        // When
+        Mockito.when(identity.getInstitutionId()).thenReturn(mockInstitutionId);
+        Mockito.when(assignmentRepository.findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(AysAssignmentNotExistByIdException.class,
+                () -> assignmentService.updateAssignment(mockAssignmentId, mockUpdateRequest)
+        );
+
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);
+        Mockito.verify(assignmentRepository,Mockito.never()).save(Mockito.any(AssignmentEntity.class));
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+    }
 }
