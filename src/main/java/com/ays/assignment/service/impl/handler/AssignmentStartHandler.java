@@ -11,12 +11,12 @@ import com.ays.user.model.enums.UserSupportStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-class AssignmentCompleteHandler extends AssignmentAbstractHandler {
+class AssignmentStartHandler extends AssignmentAbstractHandler {
 
     private final AssignmentRepository assignmentRepository;
     private final AysIdentity identity;
 
-    public AssignmentCompleteHandler(AssignmentRepository assignmentRepository, AysIdentity aysIdentity) {
+    public AssignmentStartHandler(AssignmentRepository assignmentRepository, AysIdentity aysIdentity) {
         super(assignmentRepository, aysIdentity);
         this.assignmentRepository = assignmentRepository;
         this.identity = aysIdentity;
@@ -29,15 +29,15 @@ class AssignmentCompleteHandler extends AssignmentAbstractHandler {
 
     @Override
     protected AssignmentEntity handle(AssignmentEntity assignmentEntity) {
-        assignmentEntity.updateAssignmentStatus(AssignmentStatus.DONE);
-        assignmentEntity.getUser().setSupportStatus(UserSupportStatus.READY);
+        assignmentEntity.updateAssignmentStatus(AssignmentStatus.IN_PROGRESS);
+        assignmentEntity.getUser().setSupportStatus(UserSupportStatus.ON_ROAD);
         return assignmentEntity;
     }
 
     @Override
     protected AssignmentEntity findAssignmentEntity() {
         String userId = identity.getUserId();
-        AssignmentStatus assignmentStatus = AssignmentStatus.IN_PROGRESS;
+        AssignmentStatus assignmentStatus = AssignmentStatus.ASSIGNED;
         return assignmentRepository
                 .findByUserIdAndStatus(userId, assignmentStatus)
                 .orElseThrow(() -> new AysAssignmentUserNotStatusException(assignmentStatus, userId));

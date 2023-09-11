@@ -138,4 +138,30 @@ class AssignmentController {
         return AysResponse.SUCCESS;
     }
 
+    /**
+     * Starts assignment by id.
+     * Requires USER authority.
+     *
+     * @return A success response if assignment started.
+     */
+    @PostMapping("/assignment/start")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> startAssignment() {
+        assignmentConcludeService.start();
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Completes assignment by id.
+     * Requires USER authority.
+     *
+     * @return A success response if assignment completed.
+     */
+    @PostMapping("/assignment/complete")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> completeAssignment() {
+        assignmentConcludeService.complete();
+        return AysResponse.SUCCESS;
+    }
+
 }

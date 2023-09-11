@@ -16,4 +16,14 @@ public interface AssignmentConcludeService {
      */
     void reject();
 
+    /**
+     * Start Assignment by Assignment ID
+     */
+    void start();
+
+    /**
+     * Complete Assignment by Assignment ID
+     */
+    void complete();
+
 }
