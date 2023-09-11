@@ -1,16 +1,21 @@
 package com.ays.assignment.controller;
 
 import com.ays.assignment.model.Assignment;
+import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
 import com.ays.assignment.service.AssignmentActionService;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.service.AssignmentService;
+import com.ays.common.model.AysPage;
+import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,25 +36,35 @@ import org.springframework.web.bind.annotation.*;
 class AssignmentController {
 
     private final AssignmentSaveService assignmentSaveService;
+
     private final AssignmentSearchService assignmentSearchService;
+
     private final AssignmentService assignmentService;
     private final AssignmentActionService assignmentActionService;
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
     private static final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
+    private static final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
 
     /**
-     * Saves a new assignment to the system.
-     * Requires ADMIN authority.
+     * Gets an Assignments list based on the specified filters in the {@link AssignmentListRequest}
+     * Requires ADMIN authority
      *
-     * @param saveRequest The request object containing the assignment data to be saved.
-     * @return A response object containing the saved assignment data.
+     * @param listRequest The assignment request that contains the status filter
+     * @return A response object that contains the retrieved assignments' data
+     * @see AssignmentListRequest
      */
-    @PostMapping("/assignment")
+    @PostMapping("/assignments")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public AysResponse<Void> saveAssignment(@RequestBody @Valid AssignmentSaveRequest saveRequest) {
-        assignmentSaveService.saveAssignment(saveRequest);
-        return AysResponse.SUCCESS;
+    public AysResponse<AysPageResponse<AssignmentsResponse>> getAssignments(@RequestBody @Valid AssignmentListRequest listRequest) {
+        final AysPage<Assignment> pageOfAssignments = assignmentService.getAssignments(listRequest);
+        final AysPageResponse<AssignmentsResponse> pageOfAssignmentsResponse = AysPageResponse
+                .<AssignmentsResponse>builder()
+                .of(pageOfAssignments)
+                .content(assignmentToAssignmentsResponseMapper.map(pageOfAssignments.getContent()))
+                .filteredBy(listRequest.getFilter())
+                .build();
+        return AysResponse.successOf(pageOfAssignmentsResponse);
     }
 
     /**
@@ -66,6 +81,20 @@ class AssignmentController {
         final Assignment assignment = assignmentService.getAssignmentById(id);
         final AssignmentResponse assignmentResponse = assignmentToAssignmentResponseMapper.map(assignment);
         return AysResponse.successOf(assignmentResponse);
+    }
+
+    /**
+     * Saves a new assignment to the system.
+     * Requires ADMIN authority.
+     *
+     * @param saveRequest The request object containing the assignment data to be saved.
+     * @return A response object containing the saved assignment data.
+     */
+    @PostMapping("/assignment")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<Void> saveAssignment(@RequestBody @Valid AssignmentSaveRequest saveRequest) {
+        assignmentSaveService.saveAssignment(saveRequest);
+        return AysResponse.SUCCESS;
     }
 
     /**
@@ -97,4 +126,5 @@ class AssignmentController {
         assignmentActionService.approveAssignment();
         return AysResponse.SUCCESS;
     }
+
 }

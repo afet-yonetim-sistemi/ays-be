@@ -58,7 +58,7 @@ public class AysPageResponse<R> {
      *
      * @param <R> The type of content in the response.
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     public static class AysPageResponseBuilder<R> {
 
         /**

@@ -18,7 +18,7 @@ public class AysSpecification {
      * A builder class for creating specifications in the context of AysSpecification.
      * Use this builder to construct predicates based on a provided filter.
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     public static class AysSpecificationBuilder<C> {
 
         /**
