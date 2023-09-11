@@ -1,6 +1,6 @@
-package com.ays.assignment.service.impl.action;
+package com.ays.assignment.util.exception;
 
-import com.ays.assignment.model.enums.AssignmentActionEnum;
+import com.ays.assignment.model.enums.AssignmentHandlerType;
 import com.ays.common.util.exception.AysAuthException;
 
 import java.io.Serial;
@@ -22,7 +22,7 @@ public class AysAssignmentActionNotIntegratedException extends AysAuthException 
      *
      * @param assignmentAction The assignment action that not integrated to AssignmentActionContext.
      */
-    public AysAssignmentActionNotIntegratedException(AssignmentActionEnum assignmentAction) {
+    public AysAssignmentActionNotIntegratedException(AssignmentHandlerType assignmentAction) {
         super("Assignment action not found. Action: " + assignmentAction);
     }
 

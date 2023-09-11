@@ -10,7 +10,7 @@ import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
-import com.ays.assignment.service.AssignmentActionService;
+import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.service.AssignmentService;
@@ -40,7 +40,7 @@ class AssignmentController {
     private final AssignmentSearchService assignmentSearchService;
 
     private final AssignmentService assignmentService;
-    private final AssignmentActionService assignmentActionService;
+    private final AssignmentConcludeService assignmentConcludeService;
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
     private static final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
@@ -112,8 +112,6 @@ class AssignmentController {
         return AysResponse.successOf(assignmentResponse);
     }
 
-    // approve assignment and requires user authority
-
     /**
      * Approves assignment by id.
      * Requires USER authority.
@@ -123,7 +121,20 @@ class AssignmentController {
     @PostMapping("/assignment/approve")
     @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<Void> approveAssignment() {
-        assignmentActionService.approveAssignment();
+        assignmentConcludeService.approve();
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Rejects assignment by id.
+     * Requires USER authority.
+     *
+     * @return A success response if assignment rejected.
+     */
+    @PostMapping("/assignment/reject")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> rejectAssignment() {
+        assignmentConcludeService.reject();
         return AysResponse.SUCCESS;
     }
 

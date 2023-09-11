@@ -4,11 +4,16 @@ package com.ays.assignment.service;
 /**
  * Assignment Action Service to perform assignment related business operations.
  */
-public interface AssignmentActionService {
+public interface AssignmentConcludeService {
 
     /**
      * Approve Assignment by Assignment ID
-     *
      */
-    void approveAssignment();
+    void approve();
+
+    /**
+     * Reject Assignment by Assignment ID
+     */
+    void reject();
+
 }
