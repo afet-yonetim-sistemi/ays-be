@@ -161,7 +161,7 @@ class UserServiceImplTest extends AbstractUnitTest {
                 .withId(mockUserId)
                 .withInstitutionId(mockInstitutionId)
                 .build();
-        mockUserEntityToBeUpdated.updateUser(mockUpdateRequest);
+        mockUserEntityToBeUpdated.update(mockUpdateRequest);
         Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
                 .thenReturn(mockUserEntityToBeUpdated);
 
@@ -310,7 +310,7 @@ class UserServiceImplTest extends AbstractUnitTest {
                 .withId(mockUserId)
                 .withInstitutionId(mockInstitutionId)
                 .build();
-        mockUserEntityToBeDeleted.deleteUser();
+        mockUserEntityToBeDeleted.delete();
         Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
                 .thenReturn(mockUserEntityToBeDeleted);
 

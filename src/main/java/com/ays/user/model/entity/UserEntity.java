@@ -88,7 +88,7 @@ public class UserEntity extends BaseEntity {
         return this.isActive() && UserSupportStatus.READY.equals(this.supportStatus);
     }
 
-    public void deleteUser() {
+    public void delete() {
         this.status = UserStatus.DELETED;
     }
 
@@ -104,7 +104,7 @@ public class UserEntity extends BaseEntity {
         return claims;
     }
 
-    public void updateUser(UserUpdateRequest updateRequest) {
+    public void update(UserUpdateRequest updateRequest) {
         this.role = updateRequest.getRole();
         this.status = updateRequest.getStatus();
     }
