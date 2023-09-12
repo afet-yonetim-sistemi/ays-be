@@ -27,6 +27,6 @@ public interface AssignmentService {
      */
     Assignment getAssignmentById(String id);
 
-    void updateAssignment(final String id, AssignmentUpdateRequest updateRequest);
+    void updateAssignment(String id, AssignmentUpdateRequest updateRequest);
 
 }
