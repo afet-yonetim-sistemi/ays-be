@@ -95,7 +95,7 @@ class UserServiceImpl implements UserService {
             throw new AysUserAlreadyPassiveException(id);
         }
 
-        userEntity.updateUser(updateRequest);
+        userEntity.update(updateRequest);
         userRepository.save(userEntity);
     }
 
@@ -116,7 +116,7 @@ class UserServiceImpl implements UserService {
             throw new AysUserAlreadyDeletedException(id);
         }
 
-        userEntity.deleteUser();
+        userEntity.delete();
         userRepository.save(userEntity);
     }
 

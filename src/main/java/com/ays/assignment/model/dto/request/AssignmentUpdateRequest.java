@@ -8,6 +8,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a request object for updating an assignment.
+ * This class contains information such as description, first name, last name,
+ * phone number, latitude, and longitude for the assignment.
+ */
 @Getter
 @Setter
 @Builder
