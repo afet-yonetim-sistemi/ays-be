@@ -5,6 +5,7 @@ import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
+import com.ays.assignment.model.mapper.AssignmentUpdateRequestToAssignmentEntityMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
@@ -32,6 +33,9 @@ class AssignmentServiceImpl implements AssignmentService {
     private final AysIdentity identity;
 
     private static final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
+
+    private static final AssignmentUpdateRequestToAssignmentEntityMapper assignmentUpdateRequestToAssignmentEntityMapper = AssignmentUpdateRequestToAssignmentEntityMapper.initialize();
+
     private static final UserLocationEntityToUserLocationMapper userLocationEntityToUserLocationMapper = UserLocationEntityToUserLocationMapper.initialize();
 
     /**
@@ -106,7 +110,7 @@ class AssignmentServiceImpl implements AssignmentService {
                 .filter(AssignmentEntity::isAvailable)
                 .orElseThrow(() -> new AysAssignmentNotExistByIdException(id));
 
-        assignmentEntity.updateAssignment(updateRequest);
+        assignmentEntity.update(assignmentUpdateRequestToAssignmentEntityMapper.map(updateRequest));
         assignmentRepository.save(assignmentEntity);
     }
 

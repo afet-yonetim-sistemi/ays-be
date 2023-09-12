@@ -254,10 +254,10 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .save(Mockito.any(AssignmentEntity.class));
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .save(Mockito.any(AssignmentEntity.class));
     }
 
     @Test
@@ -288,9 +288,9 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(mockAssignmentId, mockInstitutionId);
-        Mockito.verify(assignmentRepository, Mockito.never()).save(Mockito.any(AssignmentEntity.class));
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
+        Mockito.verify(assignmentRepository, Mockito.never()).save(Mockito.any(AssignmentEntity.class));
     }
 
     @Test

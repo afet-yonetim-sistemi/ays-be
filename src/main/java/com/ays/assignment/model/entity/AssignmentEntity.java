@@ -1,6 +1,5 @@
 package com.ays.assignment.model.entity;
 
-import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.entity.BaseEntity;
 import com.ays.institution.model.entity.InstitutionEntity;
@@ -101,13 +100,13 @@ public class AssignmentEntity extends BaseEntity {
         this.institutionId = institutionId;
     }
 
-    public void updateAssignment(AssignmentUpdateRequest updateRequest) {
-        this.description = updateRequest.getDescription();
-        this.firstName = updateRequest.getFirstName();
-        this.lastName = updateRequest.getLastName();
-        this.countryCode = updateRequest.getPhoneNumber().getCountryCode();
-        this.lineNumber = updateRequest.getPhoneNumber().getLineNumber();
-        this.setPoint(updateRequest.getLongitude(), updateRequest.getLatitude());
+    public void update(AssignmentEntity assignmentEntity) {
+        this.description = assignmentEntity.getDescription();
+        this.firstName = assignmentEntity.getFirstName();
+        this.lastName = assignmentEntity.getLastName();
+        this.countryCode = assignmentEntity.getCountryCode();
+        this.lineNumber = assignmentEntity.getLineNumber();
+        this.point = assignmentEntity.getPoint();
     }
 
     public abstract static class AssignmentEntityBuilder<C extends AssignmentEntity, B extends AssignmentEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {

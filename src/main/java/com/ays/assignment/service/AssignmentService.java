@@ -33,7 +33,7 @@ public interface AssignmentService {
      * @param id            the given Assignment ID
      * @param updateRequest the request that contains new assignment information
      */
-    void updateAssignment(final String id, final AssignmentUpdateRequest updateRequest);
+    void updateAssignment(String id, AssignmentUpdateRequest updateRequest);
 
     /**
      * Delete assignment by Assignment ID
