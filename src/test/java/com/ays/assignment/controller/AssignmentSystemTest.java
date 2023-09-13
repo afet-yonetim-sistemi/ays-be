@@ -3,20 +3,15 @@ package com.ays.assignment.controller;
 import com.ays.AbstractSystemTest;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.AssignmentBuilder;
-import com.ays.assignment.model.dto.request.AssignmentListRequest;
-import com.ays.assignment.model.dto.request.AssignmentListRequestBuilder;
-import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
-import com.ays.assignment.model.dto.request.AssignmentSaveRequestBuilder;
-import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
-import com.ays.assignment.model.dto.request.AssignmentSearchRequestBuilder;
+import com.ays.assignment.model.dto.request.*;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
-import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
-import com.ays.common.model.AysPage;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
+import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
@@ -218,14 +213,14 @@ class AssignmentSystemTest extends AbstractSystemTest {
         List<AssignmentEntity> assignmentEntities = AssignmentEntityBuilder.generateValidAssignmentEntities(1);
         Page<AssignmentEntity> pageOfAssignmentEntities = new PageImpl<>(assignmentEntities);
         List<Assignment> assignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(assignmentEntities);
-        AysPage<Assignment> aysPageOfAssignments = AysPage.of(pageOfAssignmentEntities,assignments);
+        AysPage<Assignment> aysPageOfAssignments = AysPage.of(pageOfAssignmentEntities, assignments);
         AysPageResponse<Assignment> aysPageResponseOfAssignments = AysPageResponse.<Assignment>builder()
                 .of(aysPageOfAssignments).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/assignments");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint,adminUserTokenOne.getAccessToken(),listRequest);
+                .post(endpoint, adminUserTokenOne.getAccessToken(), listRequest);
 
         AysResponse<AysPageResponse<Assignment>> response = AysResponse.successOf(aysPageResponseOfAssignments);
 
@@ -251,7 +246,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/assignments");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint,userTokenOne.getAccessToken(),listRequest);
+                .post(endpoint, userTokenOne.getAccessToken(), listRequest);
 
         AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
 
@@ -266,6 +261,50 @@ class AssignmentSystemTest extends AbstractSystemTest {
                         .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+    }
+
+    @Test
+    void givenValidAssignmentIdAndAssignmentUpdateRequest_whenAssignmentUpdated_thenReturnAysResponseOfSuccess() throws Exception {
+
+        // Given
+        String assignmentId = AysTestData.Assignment.VALID_ID_TWO;
+        AssignmentUpdateRequest mockUpdateRequest = new AssignmentUpdateRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/".concat(assignmentId));
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .put(endpoint, adminUserTokenTwo.getAccessToken(), mockUpdateRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
+
+    @Test
+    void givenValidAssignmentIdAndAssignmentUpdateRequest_whenUserUnauthorizedForUpdating_thenThrowAccessDeniedException() throws Exception {
+
+        // Given
+        String assignmentId = AysTestData.Assignment.VALID_ID_ONE;
+        AssignmentUpdateRequest mockUpdateRequest = new AssignmentUpdateRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/".concat(assignmentId));
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .put(endpoint, userTokenOne.getAccessToken(), mockUpdateRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
 }

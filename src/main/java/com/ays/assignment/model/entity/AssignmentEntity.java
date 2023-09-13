@@ -100,6 +100,15 @@ public class AssignmentEntity extends BaseEntity {
         this.institutionId = institutionId;
     }
 
+    public void update(AssignmentEntity assignmentEntity) {
+        this.description = assignmentEntity.getDescription();
+        this.firstName = assignmentEntity.getFirstName();
+        this.lastName = assignmentEntity.getLastName();
+        this.countryCode = assignmentEntity.getCountryCode();
+        this.lineNumber = assignmentEntity.getLineNumber();
+        this.point = assignmentEntity.getPoint();
+    }
+
     public abstract static class AssignmentEntityBuilder<C extends AssignmentEntity, B extends AssignmentEntityBuilder<C, B>> extends BaseEntity.BaseEntityBuilder<C, B> {
         public B point(final Double longitude, final Double latitude) {
             this.point = AysLocationUtil.generatePoint(longitude, latitude);
