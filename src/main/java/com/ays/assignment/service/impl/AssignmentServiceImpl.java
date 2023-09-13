@@ -15,13 +15,14 @@ import com.ays.location.model.UserLocation;
 import com.ays.location.model.entity.UserLocationEntity;
 import com.ays.location.model.mapper.UserLocationEntityToUserLocationMapper;
 import com.ays.location.repository.UserLocationRepository;
+import com.ays.common.model.AysPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
