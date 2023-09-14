@@ -8,6 +8,8 @@ import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.institution.model.entity.InstitutionEntityBuilder;
 import com.ays.location.util.AysLocationUtil;
+import com.ays.user.model.entity.UserEntity;
+import com.ays.user.model.entity.UserEntityBuilder;
 import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
@@ -30,11 +32,14 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
 
     public AssignmentEntityBuilder withValidFields() {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidFields().build();
+        UserEntity userEntity = new UserEntityBuilder().withValidFields().build();
 
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withInstitutionId(institutionEntity.getId())
                 .withInstitution(institutionEntity)
+                .withUserId(userEntity.getId())
+                .withUser(userEntity)
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .withDescription("Description")
                 .withFirstName("First Name")
@@ -53,6 +58,11 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
         return this;
     }
 
+    public AssignmentEntityBuilder withUserId(String userId) {
+        data.setUserId(userId);
+        return this;
+    }
+
     public AssignmentEntityBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
         data.setCountryCode(phoneNumber.getCountryCode());
         data.setLineNumber(phoneNumber.getLineNumber());
@@ -61,6 +71,11 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
 
     public AssignmentEntityBuilder withInstitution(InstitutionEntity institution) {
         data.setInstitution(institution);
+        return this;
+    }
+
+    public AssignmentEntityBuilder withUser(UserEntity user) {
+        data.setUser(user);
         return this;
     }
 
