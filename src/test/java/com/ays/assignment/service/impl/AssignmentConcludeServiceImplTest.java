@@ -66,7 +66,7 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenVoidRequest_whenAssignmentApprove_thenReturnVoid() {
+    void givenNothing_whenAssignmentApprove_thenReturnNothing() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -101,7 +101,7 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenVoidRequest_whenAssignmentNotExistsForApproving_thenThrowsAysAssignmentUserNotStatusException() {
+    void givenNothing_whenAssignmentNotExistsForApproving_thenThrowsAysAssignmentUserNotStatusException() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -134,7 +134,7 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenVoidRequest_whenAssignmentStart_thenReturnVoid() {
+    void givenNothing_whenAssignmentStart_thenReturnNothing() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -169,7 +169,7 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenVoidRequest_whenAssignmentNotExistsForStarting_thenThrowsAysAssignmentUserNotStatusException() {
+    void givenNothing_whenAssignmentNotExistsForStarting_thenThrowsAysAssignmentUserNotStatusException() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -202,7 +202,7 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenVoidRequest_whenAssignmentReject_thenReturnVoid() {
+    void givenNothing_whenAssignmentReject_thenReturnNothing() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -244,7 +244,7 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenVoidRequest_whenAssignmentNotExistsForRejecting_thenThrowsAysAssignmentUserNotStatusException() {
+    void givenNothing_whenAssignmentNotExistsForRejecting_thenThrowsAysAssignmentUserNotStatusException() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -281,7 +281,7 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenVoidRequest_whenAssignmentComplete_thenReturnVoid() {
+    void givenNothing_whenAssignmentComplete_thenReturnNothing() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -318,7 +318,7 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenVoidRequest_whenAssignmentNotExistsForCompleting_thenThrowsAysAssignmentUserNotStatusException() {
+    void givenNothing_whenAssignmentNotExistsForCompleting_thenThrowsAysAssignmentUserNotStatusException() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
