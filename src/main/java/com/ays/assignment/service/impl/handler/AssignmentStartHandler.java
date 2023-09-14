@@ -5,26 +5,22 @@ import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.enums.AssignmentHandlerType;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.repository.AssignmentRepository;
-import com.ays.assignment.util.exception.AysAssignmentUserNotStatusException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.user.model.enums.UserSupportStatus;
 import org.springframework.stereotype.Component;
 
-@Component
-class AssignmentStartHandler extends AssignmentAbstractHandler {
+import java.util.List;
 
-    private final AssignmentRepository assignmentRepository;
-    private final AysIdentity identity;
+@Component
+public class AssignmentStartHandler extends AssignmentAbstractHandler {
 
     public AssignmentStartHandler(AssignmentRepository assignmentRepository, AysIdentity aysIdentity) {
         super(assignmentRepository, aysIdentity);
-        this.assignmentRepository = assignmentRepository;
-        this.identity = aysIdentity;
     }
 
     @Override
     public AssignmentHandlerType type() {
-        return AssignmentHandlerType.COMPLETE;
+        return AssignmentHandlerType.START;
     }
 
     @Override
@@ -36,11 +32,8 @@ class AssignmentStartHandler extends AssignmentAbstractHandler {
 
     @Override
     protected AssignmentEntity findAssignmentEntity() {
-        String userId = identity.getUserId();
-        AssignmentStatus assignmentStatus = AssignmentStatus.ASSIGNED;
-        return assignmentRepository
-                .findByUserIdAndStatus(userId, assignmentStatus)
-                .orElseThrow(() -> new AysAssignmentUserNotStatusException(assignmentStatus, userId));
+        return this.findAssignmentByStatuses(List.of(AssignmentStatus.ASSIGNED));
+
     }
 
 }

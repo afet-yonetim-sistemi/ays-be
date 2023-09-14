@@ -11,8 +11,10 @@ import com.ays.user.model.enums.UserSupportStatus;
 import com.ays.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-class AssignmentRejectHandler extends AssignmentAbstractHandler {
+public class AssignmentRejectHandler extends AssignmentAbstractHandler {
 
     private final UserRepository userRepository;
 
@@ -32,8 +34,17 @@ class AssignmentRejectHandler extends AssignmentAbstractHandler {
         user.setSupportStatus(UserSupportStatus.READY);
         userRepository.save(user);
         assignment.updateAssignmentStatus(AssignmentStatus.AVAILABLE);
-        assignment.setUser(null);
+        assignment.setUserId(null);
         return assignment;
     }
 
+
+    @Override
+    protected AssignmentEntity findAssignmentEntity() {
+        return this.findAssignmentByStatuses(List.of(
+                AssignmentStatus.RESERVED,
+                AssignmentStatus.ASSIGNED,
+                AssignmentStatus.IN_PROGRESS
+        ));
+    }
 }

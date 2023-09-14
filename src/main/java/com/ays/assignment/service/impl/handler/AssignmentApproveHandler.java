@@ -9,8 +9,10 @@ import com.ays.auth.model.AysIdentity;
 import com.ays.user.model.enums.UserSupportStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-class AssignmentApproveHandler extends AssignmentAbstractHandler {
+public class AssignmentApproveHandler extends AssignmentAbstractHandler {
 
     public AssignmentApproveHandler(AssignmentRepository assignmentRepository, AysIdentity aysIdentity) {
         super(assignmentRepository, aysIdentity);
@@ -21,11 +23,18 @@ class AssignmentApproveHandler extends AssignmentAbstractHandler {
         return AssignmentHandlerType.APPROVE;
     }
 
+
     @Override
     protected AssignmentEntity handle(AssignmentEntity assignment) {
         assignment.updateAssignmentStatus(AssignmentStatus.ASSIGNED);
         assignment.getUser().setSupportStatus(UserSupportStatus.BUSY);
         return assignment;
     }
+
+    @Override
+    protected AssignmentEntity findAssignmentEntity() {
+        return this.findAssignmentByStatuses(List.of(AssignmentStatus.RESERVED));
+    }
+
 
 }
