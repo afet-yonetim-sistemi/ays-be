@@ -15,13 +15,14 @@ import com.ays.location.model.UserLocation;
 import com.ays.location.model.entity.UserLocationEntity;
 import com.ays.location.model.mapper.UserLocationEntityToUserLocationMapper;
 import com.ays.location.repository.UserLocationRepository;
+import com.ays.common.model.AysPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -103,7 +104,7 @@ class AssignmentServiceImpl implements AssignmentService {
      *                                            assignment id and institution id does not exist.
      */
     @Override
-    public void updateAssignment(String id, AssignmentUpdateRequest updateRequest) {
+    public void updateAssignment(final String id, final AssignmentUpdateRequest updateRequest) {
 
         AssignmentEntity assignmentEntity = assignmentRepository
                 .findByIdAndInstitutionId(id, identity.getInstitutionId())
@@ -112,6 +113,22 @@ class AssignmentServiceImpl implements AssignmentService {
 
         assignmentEntity.update(assignmentUpdateRequestToAssignmentEntityMapper.map(updateRequest));
         assignmentRepository.save(assignmentEntity);
+    }
+
+    /**
+     * Deletes an assignment by Assignment ID.
+     *
+     * @param id The unique identifier of the assignment.
+     */
+    @Override
+    public void deleteAssignment(final String id) {
+
+        AssignmentEntity assignmentEntity = assignmentRepository
+                .findByIdAndInstitutionId(id, identity.getInstitutionId())
+                .filter(AssignmentEntity::isAvailable)
+                .orElseThrow(() -> new AysAssignmentNotExistByIdException(id));
+
+        assignmentRepository.delete(assignmentEntity);
     }
 
 }

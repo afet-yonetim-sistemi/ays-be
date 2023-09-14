@@ -35,4 +35,10 @@ public interface AssignmentService {
      */
     void updateAssignment(String id, AssignmentUpdateRequest updateRequest);
 
+    /**
+     * Delete assignment by Assignment ID
+     *
+     * @param id the given AssignmentID
+     */
+    void deleteAssignment(final String id);
 }

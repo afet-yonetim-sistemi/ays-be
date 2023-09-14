@@ -349,5 +349,53 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         Mockito.verifyNoInteractions(assignmentService);
     }
 
+    @Test
+    void givenValidAssignmentId_whenAssignmentDeleted_thenReturnAysResponseOfSuccess() throws Exception {
 
+        // Given
+        String mockAssignmentId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.doNothing().when(assignmentService).deleteAssignment(mockAssignmentId);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/".concat(mockAssignmentId));
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .delete(endpoint, mockAdminUserToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus()
+                        .getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+
+        Mockito.verify(assignmentService, Mockito.times(1)).deleteAssignment(mockAssignmentId);
+    }
+
+    @Test
+    void givenValidAssignmentId_whenUserUnauthorizedForDeleting_thenThrowAccessDeniedException() throws Exception {
+
+        // Given
+        String mockAssignmentId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.doNothing().when(assignmentService).deleteAssignment(mockAssignmentId);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/".concat(mockAssignmentId));
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .delete(endpoint, mockUserToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus()
+                        .name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+
+        Mockito.verifyNoInteractions(assignmentService);
+    }
 }
