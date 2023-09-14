@@ -41,6 +41,19 @@
                     '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4', 'Kıyafet İhtiyacı', 'Cem', 'Orkun',
                     '90', '1234567890', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
                     'IN_PROGRESS', 'AYS', CURRENT_TIMESTAMP);
+
+            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
+                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
+            VALUES ('a2d5d49f-4d54-4782-b470-40b9614b378b', '08cd53fb-7624-4c66-be93-9512170ec226',
+                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'Reserved Assignment', 'Ahmet', 'Mehmet',
+                    '90', '1234567890', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
+                    'RESERVED', 'AYS', CURRENT_TIMESTAMP);
+            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
+                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
+            VALUES ('69d473a4-2523-457d-bbde-903a2fb488db', '08cd53fb-7624-4c66-be93-9512170ec226',
+                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'In Progress Assignment', 'Ahmet', 'Mehmet',
+                    '90', '1234567890', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
+                    'IN_PROGRESS', 'AYS', CURRENT_TIMESTAMP);
         </sql>
         <!-- ========================== -->
         <!-- DML of AYS_ASSIGNMENT -->
