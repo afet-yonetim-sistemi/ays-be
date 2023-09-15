@@ -10,7 +10,7 @@ spring:
   liquibase:
     enabled: true
     changeLog: "classpath:db/changelog/db.changelog-master.yaml"
-    drop-first: ${LIQUIBASE_ENABLE_DROP_FIRST:false}
+    drop-first: ${AYS_LIQUIBASE_ENABLE_DROP_FIRST:false}
   jpa:
     properties:
       hibernate:
