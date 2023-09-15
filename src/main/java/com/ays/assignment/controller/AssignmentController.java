@@ -4,6 +4,7 @@ import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.dto.response.AssignmentsResponse;
@@ -40,6 +41,7 @@ class AssignmentController {
     private final AssignmentSearchService assignmentSearchService;
 
     private final AssignmentService assignmentService;
+
     private final AssignmentConcludeService assignmentConcludeService;
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
@@ -110,6 +112,36 @@ class AssignmentController {
         final Assignment assignment = assignmentSearchService.searchAssignment(searchRequest);
         final AssignmentSearchResponse assignmentResponse = assignmentToAssignmentSearchResponseMapper.map(assignment);
         return AysResponse.successOf(assignmentResponse);
+    }
+
+    /**
+     * Updates an assignment with the provided ID and request.
+     *
+     * @param id            The ID of the assignment to be updated.
+     * @param updateRequest The request containing the new assignment information.
+     * @return A success response indicating that the assignment has been updated.
+     */
+    @PutMapping("/assignment/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<Void> updateAssignment(@PathVariable @UUID String id,
+                                              @RequestBody @Valid AssignmentUpdateRequest updateRequest) {
+        assignmentService.updateAssignment(id, updateRequest);
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Deletes an assignment with the specified ID.
+     * This method is accessible via a DELETE request to "/assignment/{id}" endpoint,
+     * and requires the caller to have the 'ADMIN' authority.
+     *
+     * @param id The unique identifier of the assignment to be deleted.
+     * @return A response indicating the success of the operation.
+     */
+    @DeleteMapping("/assignment/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public AysResponse<Void> deleteAssignment(@PathVariable @UUID String id) {
+        assignmentService.deleteAssignment(id);
+        return AysResponse.SUCCESS;
     }
 
     /**
