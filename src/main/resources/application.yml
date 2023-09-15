@@ -3,7 +3,8 @@ server:
 
 logging:
   level:
-    web: debug
+    web: ${AYS_LOG_LEVEL:debug}
+    sql: ${AYS_LOG_LEVEL:debug}
 
 spring:
   liquibase:
