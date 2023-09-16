@@ -12,6 +12,7 @@ import com.ays.auth.model.AysIdentity;
 import com.ays.location.util.AysLocationUtil;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.repository.UserRepository;
+import com.ays.user.util.exception.AysUserNotExistByIdException;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,13 @@ class AssignmentSearchServiceImpl implements AssignmentSearchService {
     public Assignment searchAssignment(AssignmentSearchRequest searchRequest) {
         final String userId = identity.getUserId();
         final String institutionId = identity.getInstitutionId();
-        userRepository
+        final UserEntity userEntity = userRepository
                 .findByIdAndInstitutionId(userId, institutionId)
-                .filter(UserEntity::isReady)
-                .orElseThrow(() -> new AysAssignmentUserNotReadyException(userId, institutionId));
+                .orElseThrow(() -> new AysUserNotExistByIdException(userId));
+
+        if (!userEntity.isReady()) {
+            throw new AysAssignmentUserNotReadyException(userId, institutionId);
+        }
 
         final Double longitude = searchRequest.getLongitude();
         final Double latitude = searchRequest.getLatitude();

@@ -195,7 +195,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
                         .value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(adminUserAuthService, Mockito.times(1))
-                .refreshAccessToken(Mockito.any());
+                .refreshAccessToken(Mockito.anyString());
     }
 
     @Test

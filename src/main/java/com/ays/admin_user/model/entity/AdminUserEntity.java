@@ -8,11 +8,7 @@ import com.ays.common.model.entity.BaseEntity;
 import com.ays.institution.model.entity.InstitutionEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,11 +17,12 @@ import java.util.Map;
  * Admin User entity, which holds the information regarding the system user.
  */
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
-@SuperBuilder
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_ADMIN_USER")
 public class AdminUserEntity extends BaseEntity {
 

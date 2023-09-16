@@ -15,6 +15,7 @@ public class AysToken {
     private Long accessTokenExpiresAt;
     private String refreshToken;
 
+
     private static final String TOKEN_PREFIX = "Bearer ";
 
     /**
@@ -37,4 +38,5 @@ public class AysToken {
     public static String getJwt(String authorizationHeader) {
         return authorizationHeader.replace(TOKEN_PREFIX, "");
     }
+
 }

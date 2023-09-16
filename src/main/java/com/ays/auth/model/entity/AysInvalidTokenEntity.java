@@ -2,10 +2,7 @@ package com.ays.auth.model.entity;
 
 import com.ays.common.model.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -13,11 +10,12 @@ import lombok.experimental.SuperBuilder;
  * It extends the BaseEntity class and maps to the "AYS_INVALID_TOKEN" table in the database.
  */
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_INVALID_TOKEN")
 public class AysInvalidTokenEntity extends BaseEntity {
 

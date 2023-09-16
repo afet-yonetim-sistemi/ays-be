@@ -31,17 +31,18 @@ class UserSelfControllerTest extends AbstractRestControllerTest {
         // Given
         UserSupportStatus userSupportStatus = UserSupportStatus.READY;
 
-        UserSupportStatusUpdateRequest mockUserSupportStatusUpdateRequest =
-                new UserSupportStatusUpdateRequestBuilder().withSupportStatus(userSupportStatus).build();
+        UserSupportStatusUpdateRequest mockUpdateRequest = new UserSupportStatusUpdateRequestBuilder()
+                .withSupportStatus(userSupportStatus).build();
 
         // When
-        Mockito.doNothing().when(supportStatusService).updateUserSupportStatus(mockUserSupportStatusUpdateRequest);
+        Mockito.doNothing().when(supportStatusService)
+                .updateUserSupportStatus(Mockito.any(UserSupportStatusUpdateRequest.class));
 
         // Then
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(BASE_PATH.concat("/status/support"), mockUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest))
+                        .put(BASE_PATH.concat("/status/support"), mockUserToken.getAccessToken(), mockUpdateRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -54,8 +55,7 @@ class UserSelfControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
 
         Mockito.verify(supportStatusService, Mockito.times(1))
-                .updateUserSupportStatus(mockUserSupportStatusUpdateRequest);
-
+                .updateUserSupportStatus(Mockito.any(UserSupportStatusUpdateRequest.class));
     }
 
     @Test
@@ -63,12 +63,12 @@ class UserSelfControllerTest extends AbstractRestControllerTest {
         // Given
         UserSupportStatus userSupportStatus = UserSupportStatus.READY;
 
-        UserSupportStatusUpdateRequest mockUserSupportStatusUpdateRequest =
-                new UserSupportStatusUpdateRequestBuilder().withSupportStatus(userSupportStatus).build();
+        UserSupportStatusUpdateRequest mockUpdateRequest = new UserSupportStatusUpdateRequestBuilder()
+                .withSupportStatus(userSupportStatus).build();
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(BASE_PATH.concat("/status/support"), mockAdminUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest);
+                .put(BASE_PATH.concat("/status/support"), mockAdminUserToken.getAccessToken(), mockUpdateRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)

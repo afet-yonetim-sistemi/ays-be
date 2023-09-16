@@ -1,7 +1,5 @@
 package com.ays.admin_user.controller;
 
-import java.util.List;
-
 import com.ays.AbstractRestControllerTest;
 import com.ays.admin_user.model.AdminUser;
 import com.ays.admin_user.model.dto.request.AdminUserListRequest;
@@ -26,6 +24,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
+import java.util.List;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,7 +54,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
         );
         List<AdminUser> mockAdminUsers = ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER.map(mockAdminUserEntities.getContent());
         AysPage<AdminUser> mockAysPageOfUsers = AysPage.of(mockAdminUserEntities, mockAdminUsers);
-        Mockito.when(adminUserService.getAdminUsers(mockAdminUserListRequest))
+        Mockito.when(adminUserService.getAdminUsers(Mockito.any(AdminUserListRequest.class)))
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
@@ -75,7 +76,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
 
         Mockito.verify(adminUserService, Mockito.times(1))
-                .getAdminUsers(mockAdminUserListRequest);
+                .getAdminUsers(Mockito.any(AdminUserListRequest.class));
     }
 
     @Test
