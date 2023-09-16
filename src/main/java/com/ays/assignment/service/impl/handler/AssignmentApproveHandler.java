@@ -14,8 +14,8 @@ import java.util.List;
 @Component
 public class AssignmentApproveHandler extends AssignmentAbstractHandler {
 
-    public AssignmentApproveHandler(AssignmentRepository assignmentRepository, AysIdentity aysIdentity) {
-        super(assignmentRepository, aysIdentity);
+    public AssignmentApproveHandler(AssignmentRepository assignmentRepository, AysIdentity identity) {
+        super(assignmentRepository, identity);
     }
 
     @Override
@@ -35,6 +35,5 @@ public class AssignmentApproveHandler extends AssignmentAbstractHandler {
     protected AssignmentEntity findAssignmentEntity() {
         return this.findAssignmentByStatuses(List.of(AssignmentStatus.RESERVED));
     }
-
 
 }

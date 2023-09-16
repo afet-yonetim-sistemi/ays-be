@@ -14,8 +14,8 @@ import java.util.List;
 @Component
 public class AssignmentStartHandler extends AssignmentAbstractHandler {
 
-    public AssignmentStartHandler(AssignmentRepository assignmentRepository, AysIdentity aysIdentity) {
-        super(assignmentRepository, aysIdentity);
+    public AssignmentStartHandler(AssignmentRepository assignmentRepository, AysIdentity identity) {
+        super(assignmentRepository, identity);
     }
 
     @Override

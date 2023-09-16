@@ -15,8 +15,8 @@ import java.util.List;
 public class AssignmentCompleteHandler extends AssignmentAbstractHandler {
 
 
-    public AssignmentCompleteHandler(AssignmentRepository assignmentRepository, AysIdentity aysIdentity) {
-        super(assignmentRepository, aysIdentity);
+    public AssignmentCompleteHandler(AssignmentRepository assignmentRepository, AysIdentity identity) {
+        super(assignmentRepository, identity);
     }
 
     @Override

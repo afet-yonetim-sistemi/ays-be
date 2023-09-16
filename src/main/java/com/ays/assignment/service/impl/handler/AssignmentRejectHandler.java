@@ -18,8 +18,8 @@ public class AssignmentRejectHandler extends AssignmentAbstractHandler {
 
     private final UserRepository userRepository;
 
-    public AssignmentRejectHandler(AssignmentRepository assignmentRepository, UserRepository userRepository, AysIdentity aysIdentity) {
-        super(assignmentRepository, aysIdentity);
+    public AssignmentRejectHandler(AssignmentRepository assignmentRepository, UserRepository userRepository, AysIdentity identity) {
+        super(assignmentRepository, identity);
         this.userRepository = userRepository;
     }
 
