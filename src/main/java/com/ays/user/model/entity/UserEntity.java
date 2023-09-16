@@ -92,6 +92,10 @@ public class UserEntity extends BaseEntity {
         this.status = UserStatus.DELETED;
     }
 
+    public void ready() {
+        this.supportStatus = UserSupportStatus.READY;
+    }
+
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
         claims.put(AysTokenClaims.USER_ID.getValue(), this.id);

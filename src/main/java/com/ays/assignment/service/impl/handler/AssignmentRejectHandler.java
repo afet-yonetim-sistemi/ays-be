@@ -7,7 +7,6 @@ import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
 import com.ays.user.model.entity.UserEntity;
-import com.ays.user.model.enums.UserSupportStatus;
 import com.ays.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -31,10 +30,10 @@ public class AssignmentRejectHandler extends AssignmentAbstractHandler {
     @Override
     protected AssignmentEntity handle(AssignmentEntity assignment) {
         UserEntity user = assignment.getUser();
-        user.setSupportStatus(UserSupportStatus.READY);
+        user.ready();
         userRepository.save(user);
-        assignment.updateAssignmentStatus(AssignmentStatus.AVAILABLE);
-        assignment.setUserId(null);
+
+        assignment.available();
         return assignment;
     }
 

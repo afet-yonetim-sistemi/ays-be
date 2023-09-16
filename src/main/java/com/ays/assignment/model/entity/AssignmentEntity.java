@@ -89,6 +89,10 @@ public class AssignmentEntity extends BaseEntity {
         return AssignmentStatus.DONE.equals(this.status);
     }
 
+    public void available() {
+        this.updateAssignmentStatus(AssignmentStatus.AVAILABLE);
+        this.setUserId(null);
+    }
 
     public void updateAssignmentStatus(AssignmentStatus assignmentStatus) {
         this.status = assignmentStatus;
