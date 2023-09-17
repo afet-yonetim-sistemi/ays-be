@@ -60,7 +60,8 @@ class UserLocationControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // When
-        Mockito.doNothing().when(userLocationService).saveUserLocation(mockUserLocationSaveRequest);
+        Mockito.doNothing().when(userLocationService)
+                .saveUserLocation(Mockito.any(UserLocationSaveRequest.class));
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders

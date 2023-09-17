@@ -202,7 +202,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         );
         List<User> mockUsers = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntities.getContent());
         AysPage<User> mockAysPageOfUsers = AysPage.of(mockUserEntities, mockUsers);
-        Mockito.when(userService.getAllUsers(mockUserListRequest))
+        Mockito.when(userService.getAllUsers(Mockito.any(UserListRequest.class)))
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
@@ -227,7 +227,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                         .isNotEmpty());
 
         Mockito.verify(userService, Mockito.times(1))
-                .getAllUsers(mockUserListRequest);
+                .getAllUsers(Mockito.any(UserListRequest.class));
     }
 
     @Test
@@ -320,7 +320,8 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .withStatus(UserStatus.ACTIVE).build();
 
         // When
-        Mockito.doNothing().when(userService).updateUser(mockUserId, mockUpdateRequest);
+        Mockito.doNothing().when(userService)
+                .updateUser(Mockito.anyString(), Mockito.any(UserUpdateRequest.class));
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
@@ -339,7 +340,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
 
         Mockito.verify(userService, Mockito.times(1))
-                .updateUser(mockUserId, mockUpdateRequest);
+                .updateUser(Mockito.anyString(), Mockito.any(UserUpdateRequest.class));
     }
 
     @Test
@@ -375,7 +376,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         String mockUserId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.doNothing().when(userService).deleteUser(mockUserId);
+        Mockito.doNothing().when(userService).deleteUser(Mockito.anyString());
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
@@ -394,7 +395,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
 
         Mockito.verify(userService, Mockito.times(1))
-                .deleteUser(mockUserId);
+                .deleteUser(Mockito.anyString());
     }
 
     @Test

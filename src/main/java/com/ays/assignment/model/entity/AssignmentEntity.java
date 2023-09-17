@@ -6,10 +6,7 @@ import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.location.util.AysLocationUtil;
 import com.ays.user.model.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.locationtech.jts.geom.Point;
 
@@ -17,11 +14,12 @@ import org.locationtech.jts.geom.Point;
  * Assignment entity, which holds the information regarding assignment.
  */
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_ASSIGNMENT")
 public class AssignmentEntity extends BaseEntity {
 
@@ -65,28 +63,12 @@ public class AssignmentEntity extends BaseEntity {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private UserEntity user;
 
-    public void setPoint(final Double longitude, final Double latitude) {
-        this.point = AysLocationUtil.generatePoint(longitude, latitude);
-    }
-
     public boolean isAvailable() {
         return AssignmentStatus.AVAILABLE.equals(this.status);
     }
 
-    public boolean isReserved() {
-        return AssignmentStatus.RESERVED.equals(this.status);
-    }
-
     public boolean isAssigned() {
         return AssignmentStatus.ASSIGNED.equals(this.status);
-    }
-
-    public boolean isInProgress() {
-        return AssignmentStatus.IN_PROGRESS.equals(this.status);
-    }
-
-    public boolean isDone() {
-        return AssignmentStatus.DONE.equals(this.status);
     }
 
     public void available() {

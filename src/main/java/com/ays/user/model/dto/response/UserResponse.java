@@ -6,17 +6,19 @@ import com.ays.institution.model.dto.response.InstitutionResponse;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import com.ays.user.model.enums.UserSupportStatus;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 /**
  * This class represents the response for a single user.
  * It includes information such as the user's username, first and last name, email, institution, role and status.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class UserResponse extends BaseResponse {
 
     private String id;

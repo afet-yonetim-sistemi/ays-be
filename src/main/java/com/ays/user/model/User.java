@@ -6,16 +6,20 @@ import com.ays.institution.model.Institution;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import com.ays.user.model.enums.UserSupportStatus;
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.locationtech.jts.geom.Point;
 
 /**
  * User Domain Model to perform data transfer from service layer to controller
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class User extends BaseDomainModel {
 
     private String id;

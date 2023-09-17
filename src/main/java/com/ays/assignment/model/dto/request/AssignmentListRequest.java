@@ -21,9 +21,10 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@EqualsAndHashCode(callSuper = true)
 public class AssignmentListRequest extends AysPagingRequest implements AysFilteringRequest {
 
     @Valid

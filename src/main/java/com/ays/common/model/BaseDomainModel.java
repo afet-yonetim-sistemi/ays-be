@@ -1,8 +1,7 @@
 package com.ays.common.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -10,10 +9,9 @@ import java.time.LocalDateTime;
 /**
  * Base domain model to be used in order to pass the common fields to the domain model in the same module.
  */
-@Data
+@Getter
+@Setter
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 public abstract class BaseDomainModel {
 
     protected String createdUser;
