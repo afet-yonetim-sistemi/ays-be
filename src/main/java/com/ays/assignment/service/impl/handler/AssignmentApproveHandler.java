@@ -6,16 +6,18 @@ import com.ays.assignment.model.enums.AssignmentHandlerType;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
-import com.ays.user.model.enums.UserSupportStatus;
+import com.ays.user.model.entity.UserEntity;
+import com.ays.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class AssignmentApproveHandler extends AssignmentAbstractHandler {
+class AssignmentApproveHandler extends AssignmentAbstractHandler {
 
-    public AssignmentApproveHandler(AssignmentRepository assignmentRepository, AysIdentity identity) {
+    private final UserRepository userRepository;
+
+    public AssignmentApproveHandler(AssignmentRepository assignmentRepository, UserRepository userRepository, AysIdentity identity) {
         super(assignmentRepository, identity);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -26,14 +28,17 @@ public class AssignmentApproveHandler extends AssignmentAbstractHandler {
 
     @Override
     protected AssignmentEntity handle(AssignmentEntity assignment) {
-        assignment.updateAssignmentStatus(AssignmentStatus.ASSIGNED);
-        assignment.getUser().setSupportStatus(UserSupportStatus.BUSY);
+        UserEntity user = assignment.getUser();
+        user.busy();
+        userRepository.save(user);
+
+        assignment.assign();
         return assignment;
     }
 
     @Override
-    protected AssignmentEntity findAssignmentEntity() {
-        return this.findAssignmentByStatuses(List.of(AssignmentStatus.RESERVED));
+    protected AssignmentStatus getAssignmentSearchStatus() {
+        return AssignmentStatus.RESERVED;
     }
 
 }

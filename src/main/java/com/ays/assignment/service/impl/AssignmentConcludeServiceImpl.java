@@ -3,7 +3,7 @@ package com.ays.assignment.service.impl;
 import com.ays.assignment.model.enums.AssignmentHandlerType;
 import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.impl.handler.AssignmentHandler;
-import com.ays.assignment.util.exception.AysAssignmentUserNotStatusException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdAndStatusException;
 import com.ays.common.util.exception.AysUnexpectedArgumentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ class AssignmentConcludeServiceImpl implements AssignmentConcludeService {
     /**
      * Approve an assignment by their ID.
      *
-     * @throws AysAssignmentUserNotStatusException if the assignment with the specified userId and assignmentStatus does not exist
+     * @throws AysAssignmentNotExistByUserIdAndStatusException if the assignment with the specified userId and assignmentStatus does not exist
      */
     @Override
     public void approve() {
@@ -29,7 +29,7 @@ class AssignmentConcludeServiceImpl implements AssignmentConcludeService {
     /**
      * Approve an assignment by their ID.
      *
-     * @throws AysAssignmentUserNotStatusException if the assignment with the specified userId and assignmentStatus does not exist
+     * @throws AysAssignmentNotExistByUserIdAndStatusException if the assignment with the specified userId and assignmentStatus does not exist
      */
     @Override
     public void reject() {
@@ -39,7 +39,7 @@ class AssignmentConcludeServiceImpl implements AssignmentConcludeService {
     /**
      * Start an assignment by their ID.
      *
-     * @throws AysAssignmentUserNotStatusException if the assignment with the specified userId and assignmentStatus does not exist
+     * @throws AysAssignmentNotExistByUserIdAndStatusException if the assignment with the specified userId and assignmentStatus does not exist
      */
     @Override
     public void start() {
@@ -49,7 +49,7 @@ class AssignmentConcludeServiceImpl implements AssignmentConcludeService {
     /**
      * Complete an assignment by their ID.
      *
-     * @throws AysAssignmentUserNotStatusException if the assignment with the specified userId and assignmentStatus does not exist
+     * @throws AysAssignmentNotExistByUserIdAndStatusException if the assignment with the specified userId and assignmentStatus does not exist
      */
     @Override
     public void complete() {

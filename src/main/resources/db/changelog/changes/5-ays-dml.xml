@@ -35,12 +35,14 @@
             VALUES ('a9ec051e-3c4f-4cb5-ab08-e9dcee5e1f03', '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4',
                     'Kıyafet İhtiyacı', 'Cem', 'Orkun', '90', '1234567890',
                     ST_GeomFromText('POINT(40.981210 29.000000)', 4326), 'AVAILABLE', 'AYS', CURRENT_TIMESTAMP);
+
             INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
                                         LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
             VALUES ('823835f4-85f0-4052-a09c-b9b6e5284afc', 'edb36891-b898-4c12-bcec-d9aaa5d45190',
                     '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4', 'Kıyafet İhtiyacı', 'Cem', 'Orkun',
                     '90', '1234567890', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
                     'IN_PROGRESS', 'AYS', CURRENT_TIMESTAMP);
+
             INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
                                         LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
             VALUES ('cbc00422-4f22-11ee-be56-0242ac120002', 'c4b4e4db-5641-41f7-8222-a76deb1c065c',
@@ -54,6 +56,7 @@
                     '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'Reserved Assignment', 'Ahmet', 'Mehmet',
                     '90', '1234567890', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
                     'RESERVED', 'AYS', CURRENT_TIMESTAMP);
+
             INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
                                         LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
             VALUES ('69d473a4-2523-457d-bbde-903a2fb488db', '08cd53fb-7624-4c66-be93-9512170ec226',

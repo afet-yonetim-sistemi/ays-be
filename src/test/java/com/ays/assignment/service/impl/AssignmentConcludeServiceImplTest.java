@@ -1,26 +1,13 @@
 package com.ays.assignment.service.impl;
 
 import com.ays.AbstractUnitTest;
-import com.ays.assignment.model.entity.AssignmentEntity;
-import com.ays.assignment.model.entity.AssignmentEntityBuilder;
-import com.ays.assignment.model.enums.AssignmentStatus;
-import com.ays.assignment.repository.AssignmentRepository;
-import com.ays.assignment.service.impl.handler.*;
-import com.ays.assignment.util.exception.AysAssignmentUserNotStatusException;
-import com.ays.auth.model.AysIdentity;
-import com.ays.user.model.entity.UserEntity;
-import com.ays.user.model.entity.UserEntityBuilder;
-import com.ays.user.model.enums.UserSupportStatus;
-import com.ays.user.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import com.ays.assignment.model.enums.AssignmentHandlerType;
+import com.ays.assignment.service.impl.handler.AssignmentHandler;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -30,324 +17,81 @@ public class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
     private AssignmentConcludeServiceImpl assignmentConcludeService;
 
     @Mock
-    private AssignmentRepository assignmentRepository;
-
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private AysIdentity identity;
-
-    @InjectMocks
-    private AssignmentApproveHandler assignmentApproveHandler;
-
-    @InjectMocks
-    private AssignmentStartHandler assignmentStartHandler;
-
-    @InjectMocks
-    private AssignmentRejectHandler assignmentRejectHandler;
-
-    @InjectMocks
-    private AssignmentCompleteHandler assignmentCompleteHandler;
+    private AssignmentHandler assignmentHandler;
 
     @Mock
     private Set<AssignmentHandler> assignmentHandlers;
 
-    @BeforeEach
-    public void setUp() {
-        Mockito
-                .when(assignmentHandlers.stream())
-                .thenReturn(Stream.of(
-                        assignmentApproveHandler,
-                        assignmentStartHandler,
-                        assignmentRejectHandler,
-                        assignmentCompleteHandler
-                ));
-    }
-
     @Test
-    void givenNothing_whenAssignmentApprove_thenReturnNothing() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
+    void whenAssignmentConclude_thenApproveAssignment() {
 
         // When
-        String userId = mockUserEntity.getId();
-        String institutionId = mockUserEntity.getInstitutionId();
-        List<AssignmentStatus> assignmentStatuses = List.of(AssignmentStatus.RESERVED);
-
-        Mockito.when(identity.getUserId()).thenReturn(userId);
-        Mockito.when(identity.getInstitutionId()).thenReturn(institutionId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusIsIn(userId, assignmentStatuses))
-                .thenReturn(Optional.of(mockAssignmentEntity));
-        Mockito.when(assignmentRepository.save(mockAssignmentEntity))
-                .thenReturn(mockAssignmentEntity);
+        Mockito
+                .when(assignmentHandlers.stream())
+                .thenReturn(Stream.of(assignmentHandler));
+        Mockito.when(assignmentHandler.type()).thenReturn(AssignmentHandlerType.APPROVE);
+        Mockito.doNothing().when(assignmentHandler).handle();
 
         // Then
         assignmentConcludeService.approve();
 
-        Mockito.verify(identity, Mockito.times(1)).getUserId();
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses);
-        Mockito.verify(assignmentRepository, Mockito.times(1)).save(mockAssignmentEntity);
+        Mockito.verify(assignmentHandlers, Mockito.times(1)).stream();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).type();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).handle();
     }
 
     @Test
-    void givenNothing_whenAssignmentNotExistsForApproving_thenThrowsAysAssignmentUserNotStatusException() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
+    void whenAssignmentConclude_thenStartAssignment() {
 
         // When
-        String userId = mockUserEntity.getId();
-        String institutionId = mockUserEntity.getInstitutionId();
-        List<AssignmentStatus> assignmentStatuses = List.of(AssignmentStatus.RESERVED);
-
-        Mockito.when(identity.getUserId()).thenReturn(userId);
-        Mockito.when(identity.getInstitutionId()).thenReturn(institutionId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusIsIn(userId, assignmentStatuses))
-                .thenReturn(Optional.empty());
-
-        // Then
-        Assertions.assertThrows(AysAssignmentUserNotStatusException.class, assignmentConcludeService::approve);
-
-        Mockito.verify(identity, Mockito.times(1)).getUserId();
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses);
-        Mockito.verify(assignmentRepository, Mockito.times(0)).save(mockAssignmentEntity);
-    }
-
-    @Test
-    void givenNothing_whenAssignmentStart_thenReturnNothing() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
-
-        // When
-        String userId = mockUserEntity.getId();
-        String institutionId = mockUserEntity.getInstitutionId();
-        List<AssignmentStatus> assignmentStatuses = List.of(AssignmentStatus.ASSIGNED);
-
-        Mockito.when(identity.getUserId()).thenReturn(userId);
-        Mockito.when(identity.getInstitutionId()).thenReturn(institutionId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusIsIn(userId, assignmentStatuses))
-                .thenReturn(Optional.of(mockAssignmentEntity));
-        Mockito.when(assignmentRepository.save(mockAssignmentEntity))
-                .thenReturn(mockAssignmentEntity);
+        Mockito
+                .when(assignmentHandlers.stream())
+                .thenReturn(Stream.of(assignmentHandler));
+        Mockito.when(assignmentHandler.type()).thenReturn(AssignmentHandlerType.START);
+        Mockito.doNothing().when(assignmentHandler).handle();
 
         // Then
         assignmentConcludeService.start();
 
-        Mockito.verify(identity, Mockito.times(1)).getUserId();
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses);
-        Mockito.verify(assignmentRepository, Mockito.times(1)).save(mockAssignmentEntity);
+        Mockito.verify(assignmentHandlers, Mockito.times(1)).stream();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).type();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).handle();
     }
 
     @Test
-    void givenNothing_whenAssignmentNotExistsForStarting_thenThrowsAysAssignmentUserNotStatusException() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
+    void whenAssignmentConclude_thenRejectAssignment() {
 
         // When
-        String userId = mockUserEntity.getId();
-        String institutionId = mockUserEntity.getInstitutionId();
-        List<AssignmentStatus> assignmentStatuses = List.of(AssignmentStatus.ASSIGNED);
-
-        Mockito.when(identity.getUserId()).thenReturn(userId);
-        Mockito.when(identity.getInstitutionId()).thenReturn(institutionId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusIsIn(userId, assignmentStatuses))
-                .thenReturn(Optional.empty());
-
-        // Then
-        Assertions.assertThrows(AysAssignmentUserNotStatusException.class, assignmentConcludeService::start);
-
-        Mockito.verify(identity, Mockito.times(1)).getUserId();
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses);
-        Mockito.verify(assignmentRepository, Mockito.times(0)).save(mockAssignmentEntity);
-    }
-
-    @Test
-    void givenNothing_whenAssignmentReject_thenReturnNothing() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
-
-        // When
-        String userId = mockUserEntity.getId();
-        String institutionId = mockUserEntity.getInstitutionId();
-        List<AssignmentStatus> assignmentStatuses = List.of(
-                AssignmentStatus.RESERVED,
-                AssignmentStatus.ASSIGNED,
-                AssignmentStatus.IN_PROGRESS
-        );
-
-        Mockito.when(identity.getUserId()).thenReturn(userId);
-        Mockito.when(identity.getInstitutionId()).thenReturn(institutionId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusIsIn(userId, assignmentStatuses))
-                .thenReturn(Optional.of(mockAssignmentEntity));
-        Mockito.when(assignmentRepository.save(mockAssignmentEntity))
-                .thenReturn(mockAssignmentEntity);
-        Mockito.when(userRepository.save(mockUserEntity))
-                .thenReturn(mockUserEntity);
+        Mockito
+                .when(assignmentHandlers.stream())
+                .thenReturn(Stream.of(assignmentHandler));
+        Mockito.when(assignmentHandler.type()).thenReturn(AssignmentHandlerType.REJECT);
+        Mockito.doNothing().when(assignmentHandler).handle();
 
         // Then
         assignmentConcludeService.reject();
 
-        Mockito.verify(identity, Mockito.times(1)).getUserId();
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses);
-        Mockito.verify(assignmentRepository, Mockito.times(1)).save(mockAssignmentEntity);
-        Mockito.verify(userRepository, Mockito.times(1)).save(mockUserEntity);
+        Mockito.verify(assignmentHandlers, Mockito.times(1)).stream();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).type();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).handle();
     }
 
     @Test
-    void givenNothing_whenAssignmentNotExistsForRejecting_thenThrowsAysAssignmentUserNotStatusException() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
+    void whenAssignmentConclude_thenCompleteAssignment() {
 
         // When
-        String userId = mockUserEntity.getId();
-        String institutionId = mockUserEntity.getInstitutionId();
-        List<AssignmentStatus> assignmentStatuses = List.of(
-                AssignmentStatus.RESERVED,
-                AssignmentStatus.ASSIGNED,
-                AssignmentStatus.IN_PROGRESS
-        );
-
-        Mockito.when(identity.getUserId()).thenReturn(userId);
-        Mockito.when(identity.getInstitutionId()).thenReturn(institutionId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusIsIn(userId, assignmentStatuses))
-                .thenReturn(Optional.empty());
-
-        // Then
-        Assertions.assertThrows(AysAssignmentUserNotStatusException.class, assignmentConcludeService::reject);
-
-        Mockito.verify(identity, Mockito.times(1)).getUserId();
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses);
-        Mockito.verify(assignmentRepository, Mockito.times(0)).save(mockAssignmentEntity);
-    }
-
-    @Test
-    void givenNothing_whenAssignmentComplete_thenReturnNothing() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
-
-        // When
-        String userId = mockUserEntity.getId();
-        String institutionId = mockUserEntity.getInstitutionId();
-        List<AssignmentStatus> assignmentStatuses = List.of(AssignmentStatus.IN_PROGRESS);
-
-        Mockito.when(identity.getUserId()).thenReturn(userId);
-        Mockito.when(identity.getInstitutionId()).thenReturn(institutionId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusIsIn(userId, assignmentStatuses))
-                .thenReturn(Optional.of(mockAssignmentEntity));
-        Mockito.when(assignmentRepository.save(mockAssignmentEntity))
-                .thenReturn(mockAssignmentEntity);
-        Mockito.when(userRepository.save(mockUserEntity))
-                .thenReturn(mockUserEntity);
+        Mockito
+                .when(assignmentHandlers.stream())
+                .thenReturn(Stream.of(assignmentHandler));
+        Mockito.when(assignmentHandler.type()).thenReturn(AssignmentHandlerType.COMPLETE);
+        Mockito.doNothing().when(assignmentHandler).handle();
 
         // Then
         assignmentConcludeService.complete();
 
-        Mockito.verify(identity, Mockito.times(1)).getUserId();
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses);
-        Mockito.verify(assignmentRepository, Mockito.times(1)).save(mockAssignmentEntity);
-    }
-
-    @Test
-    void givenNothing_whenAssignmentNotExistsForCompleting_thenThrowsAysAssignmentUserNotStatusException() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
-
-        // When
-        String userId = mockUserEntity.getId();
-        String institutionId = mockUserEntity.getInstitutionId();
-        List<AssignmentStatus> assignmentStatuses = List.of(AssignmentStatus.IN_PROGRESS);
-
-        Mockito.when(identity.getUserId()).thenReturn(userId);
-        Mockito.when(identity.getInstitutionId()).thenReturn(institutionId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusIsIn(userId, assignmentStatuses))
-                .thenReturn(Optional.empty());
-
-        // Then
-        Assertions.assertThrows(AysAssignmentUserNotStatusException.class, assignmentConcludeService::complete);
-
-        Mockito.verify(identity, Mockito.times(1)).getUserId();
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses);
-        Mockito.verify(assignmentRepository, Mockito.times(0)).save(mockAssignmentEntity);
+        Mockito.verify(assignmentHandlers, Mockito.times(1)).stream();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).type();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).handle();
     }
 
 }

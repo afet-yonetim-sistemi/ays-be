@@ -3,11 +3,10 @@ package com.ays.assignment.service.impl.handler;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.repository.AssignmentRepository;
-import com.ays.assignment.util.exception.AysAssignmentUserNotStatusException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdAndStatusException;
 import com.ays.auth.model.AysIdentity;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 abstract class AssignmentAbstractHandler implements AssignmentHandler {
@@ -19,9 +18,10 @@ abstract class AssignmentAbstractHandler implements AssignmentHandler {
     /**
      * Run assignment action by given assignment action name.
      *
-     * @throws AysAssignmentUserNotStatusException if current user does not have reserved assignment
+     * @throws AysAssignmentNotExistByUserIdAndStatusException if current user does not have assignment by status.
      */
     @Override
+    @Transactional
     public void handle() {
         AssignmentEntity assignmentEntity = this.findAssignmentEntity();
         AssignmentEntity assignmentEntityToBeSaved = this.handle(assignmentEntity);
@@ -37,25 +37,24 @@ abstract class AssignmentAbstractHandler implements AssignmentHandler {
     protected abstract AssignmentEntity handle(AssignmentEntity assignmentEntity);
 
     /**
-     * Abstract method to find assignment entity.
+     * Abstract method to get assignment search status.
      *
-     * @return assignment entity
+     * @return assignment status
      */
-    protected abstract AssignmentEntity findAssignmentEntity();
-
+    protected abstract AssignmentStatus getAssignmentSearchStatus();
 
     /**
      * Find assignment entity by current user id and status.
      *
-     * @param assignmentStatuses status list
      * @return assignment entity
-     * @throws AysAssignmentUserNotStatusException if current user does not have reserved assignment
+     * @throws AysAssignmentNotExistByUserIdAndStatusException if current user does not have assignment by status
      */
-    protected AssignmentEntity findAssignmentByStatuses(List<AssignmentStatus> assignmentStatuses) {
+    private AssignmentEntity findAssignmentEntity() {
         String userId = identity.getUserId();
+        AssignmentStatus assignmentStatus = this.getAssignmentSearchStatus();
         return assignmentRepository
-                .findByUserIdAndStatusIsIn(userId, assignmentStatuses)
-                .orElseThrow(() -> new AysAssignmentUserNotStatusException(userId, assignmentStatuses));
+                .findByUserIdAndStatus(userId, assignmentStatus)
+                .orElseThrow(() -> new AysAssignmentNotExistByUserIdAndStatusException(userId, assignmentStatus));
     }
 
 }

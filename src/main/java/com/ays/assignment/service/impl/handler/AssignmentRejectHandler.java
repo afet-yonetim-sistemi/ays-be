@@ -10,10 +10,8 @@ import com.ays.user.model.entity.UserEntity;
 import com.ays.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class AssignmentRejectHandler extends AssignmentAbstractHandler {
+class AssignmentRejectHandler extends AssignmentAbstractHandler {
 
     private final UserRepository userRepository;
 
@@ -27,6 +25,7 @@ public class AssignmentRejectHandler extends AssignmentAbstractHandler {
         return AssignmentHandlerType.REJECT;
     }
 
+
     @Override
     protected AssignmentEntity handle(AssignmentEntity assignment) {
         UserEntity user = assignment.getUser();
@@ -37,13 +36,9 @@ public class AssignmentRejectHandler extends AssignmentAbstractHandler {
         return assignment;
     }
 
-
     @Override
-    protected AssignmentEntity findAssignmentEntity() {
-        return this.findAssignmentByStatuses(List.of(
-                AssignmentStatus.RESERVED,
-                AssignmentStatus.ASSIGNED,
-                AssignmentStatus.IN_PROGRESS
-        ));
+    protected AssignmentStatus getAssignmentSearchStatus() {
+        return AssignmentStatus.RESERVED;
     }
+
 }
