@@ -1,14 +1,16 @@
 package com.ays.common.model;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 /**
  * A class representing paging parameters for a query. It includes the page number and page size.
  * The page number is 1-based, but internally, it is stored as 0-based to comply with Spring Data's pagination system.
  */
-@Data
+@Getter
+@Setter
 public class AysPaging {
 
     /**

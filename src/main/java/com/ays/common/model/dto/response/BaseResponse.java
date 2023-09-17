@@ -1,8 +1,8 @@
 package com.ays.common.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 /**
  * BaseResponse is a base class for response objects that contain common fields for auditing purposes.
  */
-@Data
+@Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 public class BaseResponse {
 
     protected String createdUser;

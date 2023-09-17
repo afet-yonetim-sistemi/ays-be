@@ -250,7 +250,8 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         AysPage<Assignment> mockAysPageOfAssignments = AysPage
                 .of(mockListRequest.getFilter(), mockPageAssignmentEntities, mockAssignments);
 
-        Mockito.when(assignmentService.getAssignments(mockListRequest)).thenReturn(mockAysPageOfAssignments);
+        Mockito.when(assignmentService.getAssignments(Mockito.any(AssignmentListRequest.class)))
+                .thenReturn(mockAysPageOfAssignments);
 
         // Then
         String endpoint = BASE_PATH.concat("/assignments");
@@ -270,12 +271,12 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
 
-        Mockito.verify(assignmentService, Mockito.times(1)).getAssignments(mockListRequest);
+        Mockito.verify(assignmentService, Mockito.times(1))
+                .getAssignments(Mockito.any(AssignmentListRequest.class));
     }
 
     @Test
     void givenValidAssignmentListRequest_whenUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
-
         // Given
         AssignmentListRequest mockListRequest = new AssignmentListRequestBuilder().withValidValues().build();
 
@@ -291,12 +292,10 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
-
     }
 
     @Test
     void givenValidAssignmentIdAndAssignmentUpdateRequest_whenAssignmentUpdated_thenReturnAysResponseOfSuccess() throws Exception {
-
         // Given
         String mockAssignmentId = AysRandomUtil.generateUUID();
         AssignmentUpdateRequest mockUpdateRequest = new AssignmentUpdateRequestBuilder()

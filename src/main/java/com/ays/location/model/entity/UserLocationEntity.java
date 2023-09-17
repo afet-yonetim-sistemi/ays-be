@@ -4,10 +4,7 @@ import com.ays.common.model.entity.BaseEntity;
 import com.ays.location.util.AysLocationUtil;
 import com.ays.user.model.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.locationtech.jts.geom.Point;
 
@@ -15,11 +12,12 @@ import org.locationtech.jts.geom.Point;
  * User Location entity, which holds the information regarding location.
  */
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_USER_LOCATION")
 public class UserLocationEntity extends BaseEntity {
 

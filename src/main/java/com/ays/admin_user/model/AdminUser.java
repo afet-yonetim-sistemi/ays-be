@@ -4,16 +4,18 @@ import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.BaseDomainModel;
 import com.ays.institution.model.Institution;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 /**
  * Admin User Domain Model to perform data transfer from service layer to controller
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class AdminUser extends BaseDomainModel {
 
     private String id;
@@ -26,4 +28,5 @@ public class AdminUser extends BaseDomainModel {
     private AysPhoneNumber phoneNumber;
 
     private Institution institution;
+
 }

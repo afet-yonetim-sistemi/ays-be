@@ -3,13 +3,11 @@ package com.ays.common.model;
 import jakarta.persistence.criteria.Predicate;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Map;
 
-@Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AysSpecification {

@@ -3,8 +3,8 @@ package com.ays.user.model.dto.request;
 import com.ays.common.model.AysPhoneNumber;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A DTO class representing the request data for saving a user.
@@ -15,8 +15,8 @@ import lombok.Data;
  * The purpose of this class is to encapsulate the request data related to saving a user, allowing for easy
  * transfer of the data between different layers of the application.
  */
-@Data
-@Builder
+@Getter
+@Setter
 public class UserSaveRequest {
 
     @NotNull

@@ -2,15 +2,15 @@ package com.ays.assignment.model.dto.response;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.model.dto.response.BaseResponse;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class AssignmentsResponse extends BaseResponse {
 
     private String id;

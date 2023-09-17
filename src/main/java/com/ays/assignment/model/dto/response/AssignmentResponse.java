@@ -13,8 +13,9 @@ import lombok.experimental.SuperBuilder;
  * A DTO (Data Transfer Object) representing a list of user assignment in a paginated response.
  */
 @Getter
-@EqualsAndHashCode(callSuper = true)
+@Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class AssignmentResponse extends BaseResponse {
 
     private String id;

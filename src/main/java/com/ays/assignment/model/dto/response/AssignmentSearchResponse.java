@@ -5,6 +5,7 @@ import com.ays.common.model.dto.response.BaseResponse;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.locationtech.jts.geom.Point;
 
@@ -13,8 +14,9 @@ import org.locationtech.jts.geom.Point;
  * It includes information such as the user's username, first and last name, email, institution, role and status.
  */
 @Getter
-@EqualsAndHashCode(callSuper = true)
+@Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class AssignmentSearchResponse extends BaseResponse {
 
     private String id;
