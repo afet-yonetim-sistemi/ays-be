@@ -29,7 +29,7 @@ class UserSelfSystemTest extends AbstractSystemTest {
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(BASE_PATH.concat("/status/support"), userTokenOne.getAccessToken(), mockUserSupportStatusUpdateRequest))
+                        .put(BASE_PATH.concat("/status/support"), userTokenTwo.getAccessToken(), mockUserSupportStatusUpdateRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()

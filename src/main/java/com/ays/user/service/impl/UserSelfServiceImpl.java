@@ -1,10 +1,12 @@
 package com.ays.user.service.impl;
 
+import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.service.UserSelfService;
+import com.ays.user.util.exception.AysUserAlreadyHasAssignmentException;
 import com.ays.user.util.exception.AysUserNotExistByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 class UserSelfServiceImpl implements UserSelfService {
 
     private final UserRepository userRepository;
+
+    private final AssignmentRepository assignmentRepository;
 
     private final AysIdentity identity;
 
@@ -33,6 +37,14 @@ class UserSelfServiceImpl implements UserSelfService {
 
         final UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new AysUserNotExistByIdException(userId));
+
+        if (updateRequest.isSupportStatusChecked()) {
+            assignmentRepository
+                    .findByUserId(userId)
+                    .ifPresent(assignmentEntity -> {
+                        throw new AysUserAlreadyHasAssignmentException(userId, assignmentEntity.getId());
+                    });
+        }
 
         userEntity.updateSupportStatus(updateRequest.getSupportStatus());
         userRepository.save(userEntity);
