@@ -9,6 +9,10 @@ import com.ays.auth.model.AysIdentity;
 import com.ays.user.model.entity.UserEntity;
 import org.springframework.stereotype.Component;
 
+/**
+ * Implementation of {@link AssignmentAbstractHandler} for {@link AssignmentHandlerType#COMPLETE} type.
+ * This class is responsible for handling the {@link AssignmentEntity} with {@link AssignmentStatus#IN_PROGRESS} status.
+ */
 @Component
 class AssignmentCompleteHandler extends AssignmentAbstractHandler {
 

@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+/**
+ * Implementation of {@link AssignmentConcludeService}.
+ * This class is responsible for handling assignment actions such as approve, reject, start and complete.
+ */
 @Service
 @RequiredArgsConstructor
 class AssignmentConcludeServiceImpl implements AssignmentConcludeService {

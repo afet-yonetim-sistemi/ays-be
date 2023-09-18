@@ -7,22 +7,22 @@ package com.ays.assignment.service;
 public interface AssignmentConcludeService {
 
     /**
-     * Approve Assignment by Assignment ID
+     * Approves an assignment that is reserved by user
      */
     void approve();
 
     /**
-     * Reject Assignment by Assignment ID
+     * Reject an assignment that is reserved by user
      */
     void reject();
 
     /**
-     * Start Assignment by Assignment ID
+     * Start an assignment that is approved by user
      */
     void start();
 
     /**
-     * Complete Assignment by Assignment ID
+     * Complete an assignment that is started by user
      */
     void complete();
 

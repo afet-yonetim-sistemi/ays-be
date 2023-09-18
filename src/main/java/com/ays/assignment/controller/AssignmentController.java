@@ -145,7 +145,7 @@ class AssignmentController {
     }
 
     /**
-     * Approves assignment by id.
+     * Approves an assignment that is reserved by user
      * Requires USER authority.
      *
      * @return A success response if assignment approved.
@@ -158,7 +158,7 @@ class AssignmentController {
     }
 
     /**
-     * Rejects assignment by id.
+     * Rejects an assignment that is reserved by user
      * Requires USER authority.
      *
      * @return A success response if assignment rejected.
@@ -171,7 +171,7 @@ class AssignmentController {
     }
 
     /**
-     * Starts assignment by id.
+     * Starts assignment that is approved by user.
      * Requires USER authority.
      *
      * @return A success response if assignment started.
@@ -184,7 +184,7 @@ class AssignmentController {
     }
 
     /**
-     * Completes assignment by id.
+     * Completes assignment that is started by user.
      * Requires USER authority.
      *
      * @return A success response if assignment completed.

@@ -10,6 +10,10 @@ import com.ays.user.model.entity.UserEntity;
 import com.ays.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
+/**
+ * Implementation of {@link AssignmentAbstractHandler} for {@link AssignmentHandlerType#APPROVE} type
+ * This class is responsible for handling the {@link AssignmentEntity} with {@link AssignmentStatus#RESERVED} status.
+ */
 @Component
 class AssignmentApproveHandler extends AssignmentAbstractHandler {
 

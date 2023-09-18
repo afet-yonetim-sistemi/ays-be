@@ -8,6 +8,10 @@ import com.ays.auth.model.AysIdentity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Abstract class to handle assignment action. It implements AssignmentHandler interface.
+ * This class is responsible for finding assignment entity by current user id and status and run assignment action.
+ */
 @RequiredArgsConstructor
 abstract class AssignmentAbstractHandler implements AssignmentHandler {
 
