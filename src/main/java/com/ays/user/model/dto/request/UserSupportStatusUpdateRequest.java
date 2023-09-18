@@ -44,15 +44,4 @@ public class UserSupportStatusUpdateRequest {
 
     }
 
-    public boolean isSupportStatusChecked() {
-        EnumSet<UserSupportStatus> supportStatusesToCheck = EnumSet.of(
-                UserSupportStatus.IDLE,
-                UserSupportStatus.READY,
-                UserSupportStatus.BUSY,
-                UserSupportStatus.OFFLINE
-        );
-
-        return EnumValidation.anyOf(this.supportStatus, supportStatusesToCheck);
-    }
-
 }

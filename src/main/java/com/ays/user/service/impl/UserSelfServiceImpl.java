@@ -2,14 +2,18 @@ package com.ays.user.service.impl;
 
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
+import com.ays.common.util.validation.EnumValidation;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 import com.ays.user.model.entity.UserEntity;
+import com.ays.user.model.enums.UserSupportStatus;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.service.UserSelfService;
 import com.ays.user.util.exception.AysUserAlreadyHasAssignmentException;
 import com.ays.user.util.exception.AysUserNotExistByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.EnumSet;
 
 /**
  * UserSelfServiceImpl is an implementation of the UserSelfService interface.
@@ -38,7 +42,18 @@ class UserSelfServiceImpl implements UserSelfService {
         final UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new AysUserNotExistByIdException(userId));
 
-        if (updateRequest.isSupportStatusChecked()) {
+        EnumSet<UserSupportStatus> supportStatusesToCheck = EnumSet.of(
+                UserSupportStatus.IDLE,
+                UserSupportStatus.READY,
+                UserSupportStatus.BUSY,
+                UserSupportStatus.OFFLINE
+        );
+        boolean isSupportStatusChecked = EnumValidation.anyOf(
+                updateRequest.getSupportStatus(),
+                supportStatusesToCheck
+        );
+
+        if (isSupportStatusChecked) {
             assignmentRepository
                     .findByUserId(userId)
                     .ifPresent(assignmentEntity -> {
