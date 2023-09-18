@@ -29,7 +29,7 @@ class AssignmentStartHandler extends AssignmentAbstractHandler {
     @Override
     protected AssignmentEntity handle(AssignmentEntity assignment) {
         UserEntity user = assignment.getUser();
-        user.leave();
+        user.onRoad();
         userRepository.save(user);
 
         assignment.start();

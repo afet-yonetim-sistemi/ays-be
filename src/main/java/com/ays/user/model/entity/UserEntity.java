@@ -98,7 +98,7 @@ public class UserEntity extends BaseEntity {
         this.supportStatus = UserSupportStatus.BUSY;
     }
 
-    public void leave() {
+    public void onRoad() {
         this.supportStatus = UserSupportStatus.ON_ROAD;
     }
 
