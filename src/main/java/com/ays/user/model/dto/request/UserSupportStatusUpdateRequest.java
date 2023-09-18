@@ -5,10 +5,8 @@ import com.ays.user.model.enums.UserSupportStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.EnumSet;
@@ -16,10 +14,8 @@ import java.util.EnumSet;
 /**
  * Request object for updating the support status of a user.
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class UserSupportStatusUpdateRequest {
 
     @NotNull

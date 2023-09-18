@@ -2,7 +2,8 @@ package com.ays.common.model.dto.request;
 
 import com.ays.common.model.AysSorting;
 import jakarta.validation.Valid;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.Set;
  * specify sorting parameters. It provides methods to check if a given property is accepted for sorting,
  * and to convert the sorting parameters to a Spring {@link Sort} object.
  */
-@Data
+@Getter
+@Setter
 public abstract class AysSortingRequest {
 
     /**
@@ -35,6 +37,7 @@ public abstract class AysSortingRequest {
      * @param acceptedProperties The set of accepted properties.
      * @return True if the given property is accepted, false otherwise.
      */
+    @SuppressWarnings("all")
     protected boolean isPropertyAccepted(final Set<String> acceptedProperties) {
 
         if (this.sort == null || this.sort.isEmpty()) {

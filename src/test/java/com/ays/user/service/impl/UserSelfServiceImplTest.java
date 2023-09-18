@@ -6,6 +6,7 @@ import com.ays.assignment.model.entity.AssignmentEntityBuilder;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
+import com.ays.user.model.dto.request.UserSupportStatusUpdateRequestBuilder;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.model.enums.UserSupportStatus;
@@ -44,10 +45,9 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
 
         UserSupportStatus userSupportStatus = UserSupportStatus.READY;
 
-        UserSupportStatusUpdateRequest userSupportStatusUpdateRequest =
-                UserSupportStatusUpdateRequest.builder()
-                        .supportStatus(userSupportStatus)
-                        .build();
+        UserSupportStatusUpdateRequest mockUpdateRequest = new UserSupportStatusUpdateRequestBuilder()
+                .withSupportStatus(userSupportStatus)
+                .build();
 
         mockUserEntity.updateSupportStatus(userSupportStatus);
 
@@ -61,7 +61,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
                 .thenReturn(mockUserEntity);
 
         // then
-        userSupportStatusService.updateUserSupportStatus(userSupportStatusUpdateRequest);
+        userSupportStatusService.updateUserSupportStatus(mockUpdateRequest);
 
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
@@ -82,10 +82,9 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
 
         UserSupportStatus userSupportStatus = UserSupportStatus.READY;
 
-        UserSupportStatusUpdateRequest userSupportStatusUpdateRequest =
-                UserSupportStatusUpdateRequest.builder()
-                        .supportStatus(userSupportStatus)
-                        .build();
+        UserSupportStatusUpdateRequest mockUpdateRequest = new UserSupportStatusUpdateRequestBuilder()
+                .withSupportStatus(userSupportStatus)
+                .build();
 
         mockUserEntity.updateSupportStatus(userSupportStatus);
 
@@ -97,7 +96,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysUserNotExistByIdException.class,
-                () -> userSupportStatusService.updateUserSupportStatus(userSupportStatusUpdateRequest)
+                () -> userSupportStatusService.updateUserSupportStatus(mockUpdateRequest)
         );
 
         Mockito.verify(userRepository, Mockito.times(1))

@@ -13,4 +13,5 @@ public class UserSupportStatusUpdateRequestBuilder extends TestDataBuilder<UserS
         data.setSupportStatus(supportStatus);
         return this;
     }
+
 }

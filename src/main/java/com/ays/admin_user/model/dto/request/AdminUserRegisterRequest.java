@@ -5,15 +5,15 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents a request to register a new administrator user. The request includes fields for the required user
  * information, such as the user's username, email, password, and phone number, as well as their first and last name.
  */
-@Data
-@Builder
+@Getter
+@Setter
 public class AdminUserRegisterRequest {
 
     /**

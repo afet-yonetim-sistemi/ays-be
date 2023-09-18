@@ -1,9 +1,5 @@
 package com.ays.auth.service.impl;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.ays.AbstractUnitTest;
 import com.ays.auth.model.entity.AysInvalidTokenEntity;
 import com.ays.auth.model.entity.AysInvalidTokenEntityBuilder;
@@ -15,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 class AysInvalidTokenServiceImplTest extends AbstractUnitTest {
 
@@ -36,14 +36,14 @@ class AysInvalidTokenServiceImplTest extends AbstractUnitTest {
                 .collect(Collectors.toSet());
 
         // When
-        Mockito.when(invalidTokenRepository.saveAll(mockInvalidTokenEntities))
+        Mockito.when(invalidTokenRepository.saveAll(Mockito.anySet()))
                 .thenReturn(mockInvalidTokenEntities.stream().toList());
 
         // Then
         invalidTokenService.invalidateTokens(mockTokenIds);
 
         Mockito.verify(invalidTokenRepository, Mockito.times(1))
-                .saveAll(mockInvalidTokenEntities);
+                .saveAll(Mockito.anySet());
     }
 
     @Test

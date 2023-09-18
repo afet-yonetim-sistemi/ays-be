@@ -5,8 +5,8 @@ import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.EnumSet;
@@ -20,8 +20,8 @@ import java.util.EnumSet;
  * The purpose of this class is to encapsulate the request data related to updating a user, allowing for easy
  * transfer of the data between different layers of the application.
  */
-@Data
-@Builder
+@Getter
+@Setter
 public class UserUpdateRequest {
 
     @NotNull

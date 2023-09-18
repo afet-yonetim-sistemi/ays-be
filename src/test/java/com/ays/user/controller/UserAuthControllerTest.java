@@ -68,7 +68,7 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         AysTokenRefreshRequest mockRequest = AysTokenRefreshRequestBuilder.VALID_FOR_USER;
 
         // When
-        Mockito.when(userAuthService.refreshAccessToken(Mockito.any()))
+        Mockito.when(userAuthService.refreshAccessToken(Mockito.anyString()))
                 .thenReturn(mockUserToken);
 
         // Then
@@ -94,7 +94,7 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                         .value(mockAysResponse.getResponse().getRefreshToken()));
 
         Mockito.verify(userAuthService, Mockito.times(1))
-                .refreshAccessToken(Mockito.any());
+                .refreshAccessToken(Mockito.anyString());
     }
 
     @Test

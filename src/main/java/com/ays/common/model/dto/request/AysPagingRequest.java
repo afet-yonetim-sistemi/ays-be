@@ -3,8 +3,9 @@ package com.ays.common.model.dto.request;
 import com.ays.common.model.AysPaging;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,8 @@ import org.springframework.data.domain.Pageable;
  * It includes a {@link AysPaging} object to define pagination parameters, and provides a method to
  * convert these parameters to a Spring {@link Pageable} object.
  */
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 public abstract class AysPagingRequest extends AysSortingRequest {
 

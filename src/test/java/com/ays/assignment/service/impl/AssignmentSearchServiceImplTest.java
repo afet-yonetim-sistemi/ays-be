@@ -23,7 +23,7 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
-public class AssignmentSearchServiceImplTest extends AbstractUnitTest {
+class AssignmentSearchServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks
     private AssignmentSearchServiceImpl assignmentSearchService;
