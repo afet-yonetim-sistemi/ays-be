@@ -119,9 +119,8 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
 
         UserSupportStatus userSupportStatus = UserSupportStatus.READY;
 
-        UserSupportStatusUpdateRequest userSupportStatusUpdateRequest =
-                UserSupportStatusUpdateRequest.builder()
-                        .supportStatus(userSupportStatus)
+        UserSupportStatusUpdateRequest userSupportStatusUpdateRequest = new UserSupportStatusUpdateRequestBuilder()
+                .withSupportStatus(userSupportStatus)
                         .build();
 
         mockUserEntity.updateSupportStatus(userSupportStatus);
