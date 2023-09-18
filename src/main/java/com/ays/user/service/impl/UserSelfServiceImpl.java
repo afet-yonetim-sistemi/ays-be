@@ -2,13 +2,12 @@ package com.ays.user.service.impl;
 
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
-import com.ays.common.util.validation.EnumValidation;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.enums.UserSupportStatus;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.service.UserSelfService;
-import com.ays.user.util.exception.AysUserAlreadyHasAssignmentException;
+import com.ays.user.util.exception.AysUserCannotUpdateSupportStatusException;
 import com.ays.user.util.exception.AysUserNotExistByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,32 +36,43 @@ class UserSelfServiceImpl implements UserSelfService {
     @Override
     public void updateUserSupportStatus(UserSupportStatusUpdateRequest updateRequest) {
 
-        String userId = identity.getUserId();
+        final String userId = identity.getUserId();
+        final UserSupportStatus userSupportStatus = updateRequest.getSupportStatus();
 
         final UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new AysUserNotExistByIdException(userId));
 
-        EnumSet<UserSupportStatus> supportStatusesToCheck = EnumSet.of(
+        this.checkAssignment(userId, userSupportStatus);
+
+        userEntity.updateSupportStatus(userSupportStatus);
+        userRepository.save(userEntity);
+
+    }
+
+    /**
+     * Checks if a user has an assignment when update supportStatus to specific statuses.
+     *
+     * @param userId the id of the user to check
+     * @param userSupportStatus the user support status of the user to check
+     */
+    private void checkAssignment(String userId, UserSupportStatus userSupportStatus) {
+
+        final EnumSet<UserSupportStatus> supportStatusesToCheck = EnumSet.of(
                 UserSupportStatus.IDLE,
                 UserSupportStatus.READY,
                 UserSupportStatus.BUSY,
                 UserSupportStatus.OFFLINE
         );
-        boolean isSupportStatusChecked = EnumValidation.anyOf(
-                updateRequest.getSupportStatus(),
-                supportStatusesToCheck
-        );
 
-        if (isSupportStatusChecked) {
+        final boolean isAssignmentNeedToCheck = supportStatusesToCheck.contains(userSupportStatus);
+        if (isAssignmentNeedToCheck) {
             assignmentRepository
                     .findByUserId(userId)
                     .ifPresent(assignmentEntity -> {
-                        throw new AysUserAlreadyHasAssignmentException(userId, assignmentEntity.getId());
+                        throw new AysUserCannotUpdateSupportStatusException(userId, assignmentEntity.getId());
                     });
         }
 
-        userEntity.updateSupportStatus(updateRequest.getSupportStatus());
-        userRepository.save(userEntity);
-
     }
+
 }

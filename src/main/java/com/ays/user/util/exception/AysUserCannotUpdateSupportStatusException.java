@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception thrown when a user has assignment and attempting to update user support status.
  */
-public class AysUserAlreadyHasAssignmentException extends AysAlreadyException {
+public class AysUserCannotUpdateSupportStatusException extends AysAlreadyException {
 
     /**
      * Unique serial version ID.
@@ -16,13 +16,12 @@ public class AysUserAlreadyHasAssignmentException extends AysAlreadyException {
     private static final long serialVersionUID = -3686691276790127586L;
 
     /**
-     * Constructs a new {@code AysUserAlreadyHasAssignmentException} with the specified id and assignmentId.
+     * Constructs a new {@code AysUserCannotUpdateSupportStatusException} with the specified id and assignmentId.
      *
      * @param id the id of the user
-     * @param assignmentId the id of the assignment
      */
-    public AysUserAlreadyHasAssignmentException(String id, String assignmentId) {
-        super("USER ALREADY HAS ASSIGNMENT! id:" + id + " assignmentId:" + assignmentId);
+    public AysUserCannotUpdateSupportStatusException(String id, String assignmentId) {
+        super("USER CANNOT UPDATE SUPPORT STATUS BECAUSE USER HAS ASSIGNMENT! id:" + id + " assignmentId:" + assignmentId);
     }
 
 }

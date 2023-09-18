@@ -2,6 +2,7 @@ package com.ays.user.model.dto.request;
 
 import com.ays.common.util.validation.EnumValidation;
 import com.ays.user.model.enums.UserSupportStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class UserSupportStatusUpdateRequest {
     @NotNull
     private UserSupportStatus supportStatus;
 
+    @JsonIgnore
     @AssertTrue(message = "IS NOT ACCEPTED")
     @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isSupportStatusAccepted() {

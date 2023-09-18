@@ -10,7 +10,7 @@ import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.model.enums.UserSupportStatus;
 import com.ays.user.repository.UserRepository;
-import com.ays.user.util.exception.AysUserAlreadyHasAssignmentException;
+import com.ays.user.util.exception.AysUserCannotUpdateSupportStatusException;
 import com.ays.user.util.exception.AysUserNotExistByIdException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -136,7 +136,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserAlreadyHasAssignmentException.class,
+                AysUserCannotUpdateSupportStatusException.class,
                 () -> userSupportStatusService.updateUserSupportStatus(userSupportStatusUpdateRequest)
         );
 
