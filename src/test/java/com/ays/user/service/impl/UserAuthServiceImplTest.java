@@ -162,14 +162,12 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenRefreshTokenValidated_thenReturnAysToken() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI4YjNmMThmZS05NDE4LTQ5NTItYjFkZi03MThkMjgwNzBiNTUiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTEwMjIsImV4cCI6MTY4NjUxODIyMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
-                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJyb2xlcyI6WyJWT0xVTlRFRVIiXSwidXNlc
-                lR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiJjNGI0ZTRkYi01NjQxLTQxZjctODI
-                yMi1hNzZkZWIxYzA2NWMiLCJ1c2VybmFtZSI6IjIzMjE4MCJ9.cUXG7s675JpBYVh0FmPKCBd8xdD4OCZV9cW6r6rw7oKgEQGs6BNs
-                Kc5awQcvCUr9R-v4oqC72pZCAZDmRnrjrTye2SxGImJw17xe9gUZiFyqX0DIFLf94fY5P8v-V3qfJW4A_ffwubvjcJg5aFWAZOqleP
-                fj-pI4UECi1UAygLjz-ZOzxHYWolJXS0QfhWwwUJ0JOSc_3F00-L13mWzYi_NtHF9Y0sjk90iQBUTY0VLVs5JEaDHwvDh92Xidmqbo
-                I6mw3G_RJqSyVBsCCpqBx09A4LHhv1u84HBgeh4MjdXDR5GDXS6sEMVLOGqlr7FVXWSD6apUoJZlQf1UrWyrQg
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI5NDJjOTExYi0xZTI4LTQ0MjMtYjJkOS00ZmE3MWU1MmQxOWIi
+                LCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTY4MzMsImV4cCI6MTY5NDk0MzIzMywidXNlcklkIjoiYzRiNGU0ZGItNTY0MS00MWY3L
+                TgyMjItYTc2ZGViMWMwNjVjIn0.N99NunRiwGbYtCxQ8Amf3use0QDp4ToSCsiVND9KncZjITFgP-yFW1aeZbddZ13wo8qQZuZd9W
+                Z1S4qJ9EHvBgo9kTc15wI6SpuwnOXfewRv28mJezYa2_4RQJ-4SOqG6R6JcrY1z0uoqgRIBBJhUBNcgICtNbkMiWfebnZX_B0jXNQ
+                dKSjJgHZCSPZ60hqEHJA8hR0zv7cNIhhmITtP8Wx-dnMMHjS0FBvLyd8diQoKk1pDb2x2blFlmby9yGk2LXhi7aienVgG0FuJ6_k6
+                ETpzGZ_51lNl2R1QJWvO3-mzLAwc3CytVBjCF9NkS_30lEf-jhXCGvCEliS1h1FZ0A
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -238,14 +236,12 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenUsernameNotValid_thenThrowUsernameNotValidException() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI4YjNmMThmZS05NDE4LTQ5NTItYjFkZi03MThkMjgwNzBiNTUiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTEwMjIsImV4cCI6MTY4NjUxODIyMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
-                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJyb2xlcyI6WyJWT0xVTlRFRVIiXSwidXNlc
-                lR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiJjNGI0ZTRkYi01NjQxLTQxZjctODI
-                yMi1hNzZkZWIxYzA2NWMiLCJ1c2VybmFtZSI6IjIzMjE4MCJ9.cUXG7s675JpBYVh0FmPKCBd8xdD4OCZV9cW6r6rw7oKgEQGs6BNs
-                Kc5awQcvCUr9R-v4oqC72pZCAZDmRnrjrTye2SxGImJw17xe9gUZiFyqX0DIFLf94fY5P8v-V3qfJW4A_ffwubvjcJg5aFWAZOqleP
-                fj-pI4UECi1UAygLjz-ZOzxHYWolJXS0QfhWwwUJ0JOSc_3F00-L13mWzYi_NtHF9Y0sjk90iQBUTY0VLVs5JEaDHwvDh92Xidmqbo
-                I6mw3G_RJqSyVBsCCpqBx09A4LHhv1u84HBgeh4MjdXDR5GDXS6sEMVLOGqlr7FVXWSD6apUoJZlQf1UrWyrQg
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI5NDJjOTExYi0xZTI4LTQ0MjMtYjJkOS00ZmE3MWU1MmQxOWIi
+                LCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTY4MzMsImV4cCI6MTY5NDk0MzIzMywidXNlcklkIjoiYzRiNGU0ZGItNTY0MS00MWY3L
+                TgyMjItYTc2ZGViMWMwNjVjIn0.N99NunRiwGbYtCxQ8Amf3use0QDp4ToSCsiVND9KncZjITFgP-yFW1aeZbddZ13wo8qQZuZd9W
+                Z1S4qJ9EHvBgo9kTc15wI6SpuwnOXfewRv28mJezYa2_4RQJ-4SOqG6R6JcrY1z0uoqgRIBBJhUBNcgICtNbkMiWfebnZX_B0jXNQ
+                dKSjJgHZCSPZ60hqEHJA8hR0zv7cNIhhmITtP8Wx-dnMMHjS0FBvLyd8diQoKk1pDb2x2blFlmby9yGk2LXhi7aienVgG0FuJ6_k6
+                ETpzGZ_51lNl2R1QJWvO3-mzLAwc3CytVBjCF9NkS_30lEf-jhXCGvCEliS1h1FZ0A
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
@@ -280,14 +276,12 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenUserNotActive_thenThrowUserNotActiveException() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI4YjNmMThmZS05NDE4LTQ5NTItYjFkZi03MThkMjgwNzBiNTUiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTEwMjIsImV4cCI6MTY4NjUxODIyMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
-                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJyb2xlcyI6WyJWT0xVTlRFRVIiXSwidXNlc
-                lR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiJjNGI0ZTRkYi01NjQxLTQxZjctODI
-                yMi1hNzZkZWIxYzA2NWMiLCJ1c2VybmFtZSI6IjIzMjE4MCJ9.cUXG7s675JpBYVh0FmPKCBd8xdD4OCZV9cW6r6rw7oKgEQGs6BNs
-                Kc5awQcvCUr9R-v4oqC72pZCAZDmRnrjrTye2SxGImJw17xe9gUZiFyqX0DIFLf94fY5P8v-V3qfJW4A_ffwubvjcJg5aFWAZOqleP
-                fj-pI4UECi1UAygLjz-ZOzxHYWolJXS0QfhWwwUJ0JOSc_3F00-L13mWzYi_NtHF9Y0sjk90iQBUTY0VLVs5JEaDHwvDh92Xidmqbo
-                I6mw3G_RJqSyVBsCCpqBx09A4LHhv1u84HBgeh4MjdXDR5GDXS6sEMVLOGqlr7FVXWSD6apUoJZlQf1UrWyrQg
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiI5NDJjOTExYi0xZTI4LTQ0MjMtYjJkOS00ZmE3MWU1MmQxOWIi
+                LCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTY4MzMsImV4cCI6MTY5NDk0MzIzMywidXNlcklkIjoiYzRiNGU0ZGItNTY0MS00MWY3L
+                TgyMjItYTc2ZGViMWMwNjVjIn0.N99NunRiwGbYtCxQ8Amf3use0QDp4ToSCsiVND9KncZjITFgP-yFW1aeZbddZ13wo8qQZuZd9W
+                Z1S4qJ9EHvBgo9kTc15wI6SpuwnOXfewRv28mJezYa2_4RQJ-4SOqG6R6JcrY1z0uoqgRIBBJhUBNcgICtNbkMiWfebnZX_B0jXNQ
+                dKSjJgHZCSPZ60hqEHJA8hR0zv7cNIhhmITtP8Wx-dnMMHjS0FBvLyd8diQoKk1pDb2x2blFlmby9yGk2LXhi7aienVgG0FuJ6_k6
+                ETpzGZ_51lNl2R1QJWvO3-mzLAwc3CytVBjCF9NkS_30lEf-jhXCGvCEliS1h1FZ0A
                 """;
 
         UserEntity mockUserEntity = new UserEntityBuilder()
