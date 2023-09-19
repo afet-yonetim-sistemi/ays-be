@@ -9,6 +9,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,16 @@ import java.sql.SQLException;
 @Slf4j
 @RestControllerAdvice
 class GlobalExceptionHandler {
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    protected ResponseEntity<Object> handleJsonParseErrors(final HttpMessageNotReadableException exception) {
+        log.error(exception.getMessage(), exception);
+
+        AysError aysError = AysError.builder()
+                .header(AysError.Header.VALIDATION_ERROR.getName())
+                .build();
+        return new ResponseEntity<>(aysError, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<Object> handleValidationErrors(final MethodArgumentTypeMismatchException exception) {
