@@ -30,6 +30,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysError.Header.VALIDATION_ERROR.getName())
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.BAD_REQUEST);
