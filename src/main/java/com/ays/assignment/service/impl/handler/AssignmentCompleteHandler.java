@@ -7,6 +7,7 @@ import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
 import com.ays.user.model.entity.UserEntity;
+import com.ays.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,8 +17,11 @@ import org.springframework.stereotype.Component;
 @Component
 class AssignmentCompleteHandler extends AssignmentAbstractHandler {
 
-    public AssignmentCompleteHandler(AssignmentRepository assignmentRepository, AysIdentity identity) {
+    private final UserRepository userRepository;
+
+    public AssignmentCompleteHandler(AssignmentRepository assignmentRepository, UserRepository userRepository, AysIdentity identity) {
         super(assignmentRepository, identity);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -30,6 +34,7 @@ class AssignmentCompleteHandler extends AssignmentAbstractHandler {
     protected AssignmentEntity handle(AssignmentEntity assignment) {
         UserEntity user = assignment.getUser();
         user.ready();
+        userRepository.save(user);
 
         assignment.done();
         return assignment;
