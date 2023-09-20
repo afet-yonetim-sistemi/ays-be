@@ -74,6 +74,16 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
         return this;
     }
 
+    public AssignmentEntityBuilder withUserId(String userId) {
+        data.setUserId(userId);
+        return this;
+    }
+
+    public AssignmentEntityBuilder withUser(UserEntity user) {
+        data.setUser(user);
+        return this;
+    }
+
     public AssignmentEntityBuilder withUser(UserEntity user) {
         data.setUser(user);
         return this;

@@ -84,7 +84,7 @@ class AdminUserAuthController {
      * @return AysResponse with a success message and no data
      */
     @PostMapping("/token/invalidate")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
         adminUserAuthService.invalidateTokens(invalidateRequest.getRefreshToken());
         return AysResponse.SUCCESS;

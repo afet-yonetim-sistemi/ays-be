@@ -185,14 +185,12 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenRefreshTokenValidated_thenReturnAysToken() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiZjk3MTZjOC1hMDg2LTQ3MGItYWIyOS1hMDQ0MmI1NWVkNWEiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTA5MTIsImV4cCI6MTY4NjUxODExMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
-                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpc
-                nN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiI5MjYyZjBmYy05M2RiLTRmN2UtODFjNi1hYWFkODVjMmIyMDYiLCJ1c2V
-                ybmFtZSI6ImF5cy1hZG1pbiJ9.Y5SUBHHDEwWAdR4M5cq5WNjpQh2zo7b2O2g1Jc9fVdDsm8x9alAVJo7PFReJ8lkGlwvNzGPFS--Q
-                KSxp4mLE74o2oZvjxVHM0OOHvNyajlyZzQqSsbGuk8Im-kpvNUGglJn77g6lm6s5yrjw6H2XvItPtxup_Leq062j1Q2ZT1CXHtjhCw
-                aCAAsLhHazL2RG7JO9FxwUEwsgJ3lYdwo4LgCkuJrGV3kwYR6RNCtIiGCrJYpdW3752wpGrw5X_MsXKAf6hua2QMF8kdbTRRBBPAaS
-                pdpvCnNS7cu__FEqG64KJ_Ecsos9xMtfDCZ_funwRY6PzuJWyxJewnqG1u2pdA
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJkNzVmOWFkMS04Njc4LTRhMWYtOWRlMi03MjY3NjgzYzQyZTUi
+                LCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTY3MzQsImV4cCI6MTY5NDk0MzEzNCwidXNlcklkIjoiOTI2MmYwZmMtOTNkYi00ZjdlL
+                TgxYzYtYWFhZDg1YzJiMjA2In0.SVSZnIo2TnYz_tjlfpdzcokRM0waDC2ZdnlL5thjWHB3YSA5ZFwRg2vhqRj9-04UELO0W6XsBk
+                B8dKf4HJBTJu1En2uRXqiB3zRuYHrdCL0tDBVzORUNAOdr9ZC_a3lDDFdE-sfPxvrxiPooIhJ3fphnPG5V0Bo0m3ngzFSnMMVyYDB
+                F7x5Qq4f6WXsE7PWmoC40_2yI7X4k4lQV05luWyI27zjqcb3NNFDroWuk1Mwa06dqtcGMxL6o9AiksZk58Yvw3aR5e_FthiIXxVWh
+                joK-v_J6szj0HNsUQ_9YKmXE2zOtUlirQ_lUOEVyz79NM4iIHv9-L8I6N_o9BIuOKw
                 """;
 
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
@@ -260,14 +258,12 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenUsernameNotValid_thenThrowUsernameNotValidException() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiZjk3MTZjOC1hMDg2LTQ3MGItYWIyOS1hMDQ0MmI1NWVkNWEiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTA5MTIsImV4cCI6MTY4NjUxODExMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
-                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpc
-                nN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiI5MjYyZjBmYy05M2RiLTRmN2UtODFjNi1hYWFkODVjMmIyMDYiLCJ1c2V
-                ybmFtZSI6ImF5cy1hZG1pbiJ9.Y5SUBHHDEwWAdR4M5cq5WNjpQh2zo7b2O2g1Jc9fVdDsm8x9alAVJo7PFReJ8lkGlwvNzGPFS--Q
-                KSxp4mLE74o2oZvjxVHM0OOHvNyajlyZzQqSsbGuk8Im-kpvNUGglJn77g6lm6s5yrjw6H2XvItPtxup_Leq062j1Q2ZT1CXHtjhCw
-                aCAAsLhHazL2RG7JO9FxwUEwsgJ3lYdwo4LgCkuJrGV3kwYR6RNCtIiGCrJYpdW3752wpGrw5X_MsXKAf6hua2QMF8kdbTRRBBPAaS
-                pdpvCnNS7cu__FEqG64KJ_Ecsos9xMtfDCZ_funwRY6PzuJWyxJewnqG1u2pdA
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJkNzVmOWFkMS04Njc4LTRhMWYtOWRlMi03MjY3NjgzYzQyZTUi
+                LCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTY3MzQsImV4cCI6MTY5NDk0MzEzNCwidXNlcklkIjoiOTI2MmYwZmMtOTNkYi00ZjdlL
+                TgxYzYtYWFhZDg1YzJiMjA2In0.SVSZnIo2TnYz_tjlfpdzcokRM0waDC2ZdnlL5thjWHB3YSA5ZFwRg2vhqRj9-04UELO0W6XsBk
+                B8dKf4HJBTJu1En2uRXqiB3zRuYHrdCL0tDBVzORUNAOdr9ZC_a3lDDFdE-sfPxvrxiPooIhJ3fphnPG5V0Bo0m3ngzFSnMMVyYDB
+                F7x5Qq4f6WXsE7PWmoC40_2yI7X4k4lQV05luWyI27zjqcb3NNFDroWuk1Mwa06dqtcGMxL6o9AiksZk58Yvw3aR5e_FthiIXxVWh
+                joK-v_J6szj0HNsUQ_9YKmXE2zOtUlirQ_lUOEVyz79NM4iIHv9-L8I6N_o9BIuOKw
                 """;
 
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
@@ -306,14 +302,12 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenAdminUserNotActive_thenThrowUserNotActiveException() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiZjk3MTZjOC1hMDg2LTQ3MGItYWIyOS1hMDQ0MmI1NWVkNWEiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTA5MTIsImV4cCI6MTY4NjUxODExMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
-                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpc
-                nN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiI5MjYyZjBmYy05M2RiLTRmN2UtODFjNi1hYWFkODVjMmIyMDYiLCJ1c2V
-                ybmFtZSI6ImF5cy1hZG1pbiJ9.Y5SUBHHDEwWAdR4M5cq5WNjpQh2zo7b2O2g1Jc9fVdDsm8x9alAVJo7PFReJ8lkGlwvNzGPFS--Q
-                KSxp4mLE74o2oZvjxVHM0OOHvNyajlyZzQqSsbGuk8Im-kpvNUGglJn77g6lm6s5yrjw6H2XvItPtxup_Leq062j1Q2ZT1CXHtjhCw
-                aCAAsLhHazL2RG7JO9FxwUEwsgJ3lYdwo4LgCkuJrGV3kwYR6RNCtIiGCrJYpdW3752wpGrw5X_MsXKAf6hua2QMF8kdbTRRBBPAaS
-                pdpvCnNS7cu__FEqG64KJ_Ecsos9xMtfDCZ_funwRY6PzuJWyxJewnqG1u2pdA
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJkNzVmOWFkMS04Njc4LTRhMWYtOWRlMi03MjY3NjgzYzQyZTUi
+                LCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTY3MzQsImV4cCI6MTY5NDk0MzEzNCwidXNlcklkIjoiOTI2MmYwZmMtOTNkYi00ZjdlL
+                TgxYzYtYWFhZDg1YzJiMjA2In0.SVSZnIo2TnYz_tjlfpdzcokRM0waDC2ZdnlL5thjWHB3YSA5ZFwRg2vhqRj9-04UELO0W6XsBk
+                B8dKf4HJBTJu1En2uRXqiB3zRuYHrdCL0tDBVzORUNAOdr9ZC_a3lDDFdE-sfPxvrxiPooIhJ3fphnPG5V0Bo0m3ngzFSnMMVyYDB
+                F7x5Qq4f6WXsE7PWmoC40_2yI7X4k4lQV05luWyI27zjqcb3NNFDroWuk1Mwa06dqtcGMxL6o9AiksZk58Yvw3aR5e_FthiIXxVWh
+                joK-v_J6szj0HNsUQ_9YKmXE2zOtUlirQ_lUOEVyz79NM4iIHv9-L8I6N_o9BIuOKw
                 """;
 
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
@@ -352,14 +346,12 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
     void givenValidRefreshToken_whenAdminUserNotVerified_thenThrowUserNotVerifiedException() {
         // Given
         String mockRefreshToken = """
-                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiZjk3MTZjOC1hMDg2LTQ3MGItYWIyOS1hMDQ0MmI1NWVkNWEiL
-                CJpc3MiOiJBWVMiLCJpYXQiOjE2ODY1MTA5MTIsImV4cCI6MTY4NjUxODExMiwiaW5zdGl0dXRpb25JZCI6Ijc3ZWNlMjU2LWJmMGU
-                tNGJiZS04MDFkLTE3MzA4M2Y4YmRjZiIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpc
-                nN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VySWQiOiI5MjYyZjBmYy05M2RiLTRmN2UtODFjNi1hYWFkODVjMmIyMDYiLCJ1c2V
-                ybmFtZSI6ImF5cy1hZG1pbiJ9.Y5SUBHHDEwWAdR4M5cq5WNjpQh2zo7b2O2g1Jc9fVdDsm8x9alAVJo7PFReJ8lkGlwvNzGPFS--Q
-                KSxp4mLE74o2oZvjxVHM0OOHvNyajlyZzQqSsbGuk8Im-kpvNUGglJn77g6lm6s5yrjw6H2XvItPtxup_Leq062j1Q2ZT1CXHtjhCw
-                aCAAsLhHazL2RG7JO9FxwUEwsgJ3lYdwo4LgCkuJrGV3kwYR6RNCtIiGCrJYpdW3752wpGrw5X_MsXKAf6hua2QMF8kdbTRRBBPAaS
-                pdpvCnNS7cu__FEqG64KJ_Ecsos9xMtfDCZ_funwRY6PzuJWyxJewnqG1u2pdA
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJkNzVmOWFkMS04Njc4LTRhMWYtOWRlMi03MjY3NjgzYzQyZTUi
+                LCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTY3MzQsImV4cCI6MTY5NDk0MzEzNCwidXNlcklkIjoiOTI2MmYwZmMtOTNkYi00ZjdlL
+                TgxYzYtYWFhZDg1YzJiMjA2In0.SVSZnIo2TnYz_tjlfpdzcokRM0waDC2ZdnlL5thjWHB3YSA5ZFwRg2vhqRj9-04UELO0W6XsBk
+                B8dKf4HJBTJu1En2uRXqiB3zRuYHrdCL0tDBVzORUNAOdr9ZC_a3lDDFdE-sfPxvrxiPooIhJ3fphnPG5V0Bo0m3ngzFSnMMVyYDB
+                F7x5Qq4f6WXsE7PWmoC40_2yI7X4k4lQV05luWyI27zjqcb3NNFDroWuk1Mwa06dqtcGMxL6o9AiksZk58Yvw3aR5e_FthiIXxVWh
+                joK-v_J6szj0HNsUQ_9YKmXE2zOtUlirQ_lUOEVyz79NM4iIHv9-L8I6N_o9BIuOKw
                 """;
 
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()

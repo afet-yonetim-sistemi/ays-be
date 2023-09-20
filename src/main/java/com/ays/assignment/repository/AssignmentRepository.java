@@ -15,13 +15,13 @@ import java.util.Optional;
 public interface AssignmentRepository extends JpaRepository<AssignmentEntity, String>, JpaSpecificationExecutor<AssignmentEntity> {
 
     /**
-     * Checks whether an assignment exists for a specific user ID.
+     * Checks whether an assignment exists for a specific user ID and status.
      *
      * @param userId The ID of the user to check the assignment for.
-     * @return {@code true} if an assignment exists for the specified user ID, otherwise {@code false}.
+     * @param status The status of the assignment to check.
+     * @return {@code true} if an assignment exists for the specified user ID and status, otherwise {@code false}.
      */
     boolean existsByUserIdAndStatus(String userId, AssignmentStatus status);
-
 
     /**
      * Retrieves an optional AssignmentEntity based on the provided user ID and institution ID.
@@ -31,6 +31,14 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
      * @return An optional AssignmentEntity that matches the specified ID and institution ID, or an empty optional if not found.
      */
     Optional<AssignmentEntity> findByIdAndInstitutionId(String id, String institutionId);
+
+    /**
+     * Retrieves an optional AssignmentEntity based on the provided user ID.
+     *
+     * @param userId The ID of the user to retrieve the assignment for.
+     * @return An optional AssignmentEntity that matches the specified user ID, or an empty optional if not found.
+     */
+    Optional<AssignmentEntity> findByUserId(String userId);
 
     /**
      * Retrieves an optional AssignmentEntity based on the provided user ID and status.
