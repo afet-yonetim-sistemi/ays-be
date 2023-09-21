@@ -7,6 +7,7 @@ import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByPointException;
+import com.ays.assignment.util.exception.AysAssignmentUserAlreadyAssigned;
 import com.ays.assignment.util.exception.AysAssignmentUserNotReadyException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.location.util.AysLocationUtil;
@@ -182,6 +183,47 @@ class AssignmentSearchServiceImplTest extends AbstractUnitTest {
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findNearestAvailableAssignment(mockAssignmentPoint, mockUserEntity.getInstitutionId());
         Mockito.verify(assignmentRepository, Mockito.times(0)).save(mockAssignmentEntity);
+    }
+
+    @Test
+    void givenValidAssignmentSearchRequest_whenUserAlreadyHasAssignment_thenThrowAysAssignmentUserAlreadyAssigned() {
+        // Given
+        AssignmentSearchRequest mockAssignmentSearchRequest = new AssignmentSearchRequestBuilder()
+                .withValidFields()
+                .build();
+
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withValidFields()
+                .build();
+
+        // When
+        Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
+        Mockito.when(identity.getInstitutionId()).thenReturn(mockUserEntity.getInstitutionId());
+
+        Mockito.when(userRepository.findByIdAndInstitutionId(
+                        mockUserEntity.getId(),
+                        mockUserEntity.getInstitutionId()
+                ))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        Mockito.when(assignmentRepository.existsByUserId(
+                        mockUserEntity.getId()
+                ))
+                .thenReturn(true);
+
+        // Then
+        Assertions.assertThrows(
+                AysAssignmentUserAlreadyAssigned.class,
+                () -> assignmentSearchService.searchAssignment(mockAssignmentSearchRequest)
+        );
+
+        Mockito.verify(identity, Mockito.times(1)).getUserId();
+        Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(mockUserEntity.getId(), mockUserEntity.getInstitutionId());
+        Mockito.verify(assignmentRepository, Mockito.never())
+                .findNearestAvailableAssignment(Mockito.any(Point.class), Mockito.anyString());
+        Mockito.verify(assignmentRepository, Mockito.never()).save(Mockito.any(AssignmentEntity.class));
     }
 
 }
