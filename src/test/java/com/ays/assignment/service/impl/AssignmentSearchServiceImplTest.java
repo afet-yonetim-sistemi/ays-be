@@ -112,7 +112,7 @@ class AssignmentSearchServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
         Mockito.when(identity.getInstitutionId()).thenReturn(mockUserEntity.getInstitutionId());
-
+        Mockito.when(assignmentRepository.existsByUserId(mockUserEntity.getId())).thenReturn(false);
         Mockito.when(userRepository.findByIdAndInstitutionId(
                         mockUserEntity.getId(),
                         mockUserEntity.getInstitutionId()

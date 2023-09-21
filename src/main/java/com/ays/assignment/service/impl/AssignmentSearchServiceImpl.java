@@ -8,6 +8,7 @@ import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByPointException;
 import com.ays.assignment.util.exception.AysAssignmentUserAlreadyAssigned;
+import com.ays.assignment.util.exception.AysAssignmentUserNotReadyException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.location.util.AysLocationUtil;
 import com.ays.user.model.entity.UserEntity;
@@ -45,7 +46,7 @@ class AssignmentSearchServiceImpl implements AssignmentSearchService {
         }
 
         if (!userEntity.isReady()) {
-            throw new AysAssignmentUserAlreadyAssigned(userId);
+            throw new AysAssignmentUserNotReadyException(userId, institutionId);
         }
 
         final Double longitude = searchRequest.getLongitude();
