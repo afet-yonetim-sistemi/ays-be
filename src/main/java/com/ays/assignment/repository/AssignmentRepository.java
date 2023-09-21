@@ -24,6 +24,14 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
     boolean existsByUserIdAndStatus(String userId, AssignmentStatus status);
 
     /**
+     * Checks whether an assignment exists for a specific user ID.
+     *
+     * @param userId The ID of the user to check the assignment for.
+     * @return {@code true} if an assignment exists for the specified user ID, otherwise {@code false}.
+     */
+    boolean existsByUserId(String userId);
+
+    /**
      * Retrieves an optional AssignmentEntity based on the provided user ID and institution ID.
      *
      * @param id            The ID of the assignment to retrieve.
