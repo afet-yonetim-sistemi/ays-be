@@ -7,10 +7,13 @@ import com.ays.common.util.exception.AysProcessException;
 import com.ays.common.util.exception.model.AysError;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -150,4 +153,44 @@ class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+        log.error(exception.getMessage(), exception);
+
+        AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
+                .header(AysError.Header.VALIDATION_ERROR.getName())
+                .build();
+
+        return new ResponseEntity<>(aysError, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
+
+        log.error(exception.getMessage(), exception);
+
+        AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                .header(AysError.Header.VALIDATION_ERROR.getName())
+                .build();
+
+        return new ResponseEntity<>(aysError, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    protected ResponseEntity<Object> handleDataAccessException(DataAccessException exception) {
+
+        log.error(exception.getMessage(), exception);
+
+        AysError aysError = AysError.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header(AysError.Header.DATABASE_ERROR.getName())
+                .build();
+
+        return new ResponseEntity<>(aysError, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
 }
