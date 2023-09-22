@@ -2,6 +2,8 @@ package com.ays.assignment.model.dto.request;
 
 import com.ays.common.model.AysPhoneNumber;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -34,9 +36,13 @@ public class AssignmentSaveRequest {
     private AysPhoneNumber phoneNumber;
 
     @NotNull
+    @Min(value = -180)
+    @Max(value = 180)
     private Double longitude;
 
     @NotNull
+    @Min(value = -90)
+    @Max(value = 90)
     private Double latitude;
 
 }

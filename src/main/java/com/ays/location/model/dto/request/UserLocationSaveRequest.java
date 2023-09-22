@@ -1,5 +1,7 @@
 package com.ays.location.model.dto.request;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,9 +20,13 @@ import lombok.Setter;
 public class UserLocationSaveRequest {
 
     @NotNull
-    private Double latitude;
+    @Min(value = -180)
+    @Max(value = 180)
+    private Double longitude;
 
     @NotNull
-    private Double longitude;
+    @Min(value = -90)
+    @Max(value = 90)
+    private Double latitude;
 
 }
