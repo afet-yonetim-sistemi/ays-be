@@ -16,12 +16,12 @@ public class AysAssignmentUserAlreadyAssigned extends AysAlreadyException {
     private static final long serialVersionUID = -3240549605152804148L;
 
     /**
-     * Constructs a new AysAssignmentUserAlreadyAssigned with the specified userId.
+     * Constructs a new AysAssignmentUserAlreadyAssigned with the specified userId and assignmentId.
      *
      * @param userId the userId of user that will take assignment.
      */
-    public AysAssignmentUserAlreadyAssigned(String userId) {
-        super("USER ALREADY HAS AN UNCOMPLETED ASSIGNMENT! userId:" + userId);
+    public AysAssignmentUserAlreadyAssigned(String userId, String assignmentId) {
+        super("USER ALREADY HAS AN UNCOMPLETED ASSIGNMENT! userId:" + userId + " assignmentId:" + assignmentId);
     }
 
 }

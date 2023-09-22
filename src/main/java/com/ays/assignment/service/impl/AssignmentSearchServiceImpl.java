@@ -42,9 +42,11 @@ class AssignmentSearchServiceImpl implements AssignmentSearchService {
                 .findByIdAndInstitutionId(userId, institutionId)
                 .orElseThrow(() -> new AysUserNotExistByIdException(userId));
 
-        if (assignmentRepository.existsByUserIdAndStatusNot(userId, AssignmentStatus.DONE)) {
-            throw new AysAssignmentUserAlreadyAssigned(userId);
-        }
+        assignmentRepository
+                .findByUserIdAndStatusNot(userId, AssignmentStatus.DONE)
+                .ifPresent(assignment -> {
+                    throw new AysAssignmentUserAlreadyAssigned(userId, assignment.getId());
+                });
 
         if (!userEntity.isReady()) {
             throw new AysAssignmentUserNotReadyException(userId, institutionId);
