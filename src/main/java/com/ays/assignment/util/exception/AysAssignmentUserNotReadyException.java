@@ -1,13 +1,13 @@
 package com.ays.assignment.util.exception;
 
-import com.ays.common.util.exception.AysAuthException;
+import com.ays.common.util.exception.AysAlreadyException;
 
 import java.io.Serial;
 
 /**
  * Exception to be thrown when a user is not ready to take assignment.
  */
-public class AysAssignmentUserNotReadyException extends AysAuthException {
+public class AysAssignmentUserNotReadyException extends AysAlreadyException {
 
     /**
      * Unique serial version ID.
