@@ -3,6 +3,7 @@ package com.ays.assignment.service.impl;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
 import com.ays.assignment.model.entity.AssignmentEntity;
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentSearchService;
@@ -41,7 +42,7 @@ class AssignmentSearchServiceImpl implements AssignmentSearchService {
                 .findByIdAndInstitutionId(userId, institutionId)
                 .orElseThrow(() -> new AysUserNotExistByIdException(userId));
 
-        if (assignmentRepository.existsByUserId(userId)) {
+        if (assignmentRepository.existsByUserIdAndStatusNot(userId, AssignmentStatus.DONE)) {
             throw new AysAssignmentUserAlreadyAssigned(userId);
         }
 

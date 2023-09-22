@@ -21,7 +21,7 @@ public class AysAssignmentUserAlreadyAssigned extends AysAlreadyException {
      * @param userId the userId of user that will take assignment.
      */
     public AysAssignmentUserAlreadyAssigned(String userId) {
-        super("USER ALREADY HAS AN ASSIGNMENT! userId:" + userId);
+        super("USER ALREADY HAS AN UNCOMPLETED ASSIGNMENT! userId:" + userId);
     }
 
 }
