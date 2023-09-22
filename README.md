@@ -38,17 +38,14 @@ volunteers who are close to the relevant region and need, aims to manage the nee
         * Spring Boot 3
         * Spring Boot Test (Junit)
         * Spring Boot Dev Tools
-        * Spring Security 6
         * Spring Web
         * Spring Boot Actuator
         * Spring Doc Open API
-        * Spring Security
+        * Spring Security 6
         * Spring OAuth2 Client
         * Spring OAuth2 Resource Server
     * Spring Data
         * Spring Data JPA
-    * Cache
-        * Spring Cache
 
 **3rd Party Dependencies**
 

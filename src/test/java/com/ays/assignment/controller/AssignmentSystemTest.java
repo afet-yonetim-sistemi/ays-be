@@ -264,6 +264,166 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
+    void givenNothing_whenAssignmentApproved_thenReturnNothing() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/approve");
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, userTokenFive.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenNothing_whenUserUnauthorizedForApproving_thenReturnAccessDeniedException() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/approve");
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, adminUserTokenOne.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenNothing_whenAssignmentStarted_thenReturnNothing() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/start");
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, userTokenFive.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenNothing_whenUserUnauthorizedForStarting_thenReturnAccessDeniedException() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/start");
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, adminUserTokenOne.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenNothing_whenAssignmentRejected_thenReturnNothing() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/reject");
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, userTokenFour.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenNothing_whenUserUnauthorizedForRejecting_thenReturnAccessDeniedException() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/reject");
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, adminUserTokenOne.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenNothing_whenAssignmentCompleted_thenReturnNothing() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/complete");
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, userTokenFive.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenNothing_whenUserUnauthorizedForCompleting_thenReturnAccessDeniedException() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/complete");
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, adminUserTokenOne.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
     void givenValidAssignmentIdAndAssignmentUpdateRequest_whenAssignmentUpdated_thenReturnAysResponseOfSuccess() throws Exception {
 
         // Given

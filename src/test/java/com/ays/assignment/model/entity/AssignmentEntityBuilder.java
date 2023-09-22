@@ -58,6 +58,11 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
         return this;
     }
 
+    public AssignmentEntityBuilder withUserId(String userId) {
+        data.setUserId(userId);
+        return this;
+    }
+
     public AssignmentEntityBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
         data.setCountryCode(phoneNumber.getCountryCode());
         data.setLineNumber(phoneNumber.getLineNumber());
@@ -66,11 +71,6 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
 
     public AssignmentEntityBuilder withInstitution(InstitutionEntity institution) {
         data.setInstitution(institution);
-        return this;
-    }
-
-    public AssignmentEntityBuilder withUserId(String userId) {
-        data.setUserId(userId);
         return this;
     }
 

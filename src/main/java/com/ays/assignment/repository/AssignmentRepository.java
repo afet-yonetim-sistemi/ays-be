@@ -41,6 +41,15 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
     Optional<AssignmentEntity> findByUserId(String userId);
 
     /**
+     * Retrieves an optional AssignmentEntity based on the provided user ID and status.
+     *
+     * @param userId The ID of the user to retrieve the assignment for.
+     * @param status The status of the assignment to retrieve.
+     * @return An optional AssignmentEntity that matches the specified user ID and status, or an empty optional if not found.
+     */
+    Optional<AssignmentEntity> findByUserIdAndStatus(String userId, AssignmentStatus status);
+
+    /**
      * Retrieves nearest optional AssignmentEntity based on the provided user location point and institution ID.
      *
      * @param point         The point of the assignment to retrieve.

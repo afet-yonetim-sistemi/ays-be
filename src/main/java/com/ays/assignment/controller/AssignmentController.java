@@ -11,6 +11,7 @@ import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
+import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.service.AssignmentService;
@@ -40,6 +41,8 @@ class AssignmentController {
     private final AssignmentSearchService assignmentSearchService;
 
     private final AssignmentService assignmentService;
+
+    private final AssignmentConcludeService assignmentConcludeService;
 
     private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
     private static final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
@@ -138,6 +141,58 @@ class AssignmentController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AysResponse<Void> deleteAssignment(@PathVariable @UUID String id) {
         assignmentService.deleteAssignment(id);
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Approves an assignment that is reserved by user
+     * Requires USER authority.
+     *
+     * @return A success response if assignment approved.
+     */
+    @PostMapping("/assignment/approve")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> approveAssignment() {
+        assignmentConcludeService.approve();
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Rejects an assignment that is reserved by user
+     * Requires USER authority.
+     *
+     * @return A success response if assignment rejected.
+     */
+    @PostMapping("/assignment/reject")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> rejectAssignment() {
+        assignmentConcludeService.reject();
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Starts assignment that is approved by user.
+     * Requires USER authority.
+     *
+     * @return A success response if assignment started.
+     */
+    @PostMapping("/assignment/start")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> startAssignment() {
+        assignmentConcludeService.start();
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Completes assignment that is started by user.
+     * Requires USER authority.
+     *
+     * @return A success response if assignment completed.
+     */
+    @PostMapping("/assignment/complete")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> completeAssignment() {
+        assignmentConcludeService.complete();
         return AysResponse.SUCCESS;
     }
 

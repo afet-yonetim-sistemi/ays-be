@@ -90,6 +90,18 @@ public class UserEntity extends BaseEntity {
         this.status = UserStatus.DELETED;
     }
 
+    public void ready() {
+        this.supportStatus = UserSupportStatus.READY;
+    }
+
+    public void busy() {
+        this.supportStatus = UserSupportStatus.BUSY;
+    }
+
+    public void onRoad() {
+        this.supportStatus = UserSupportStatus.ON_ROAD;
+    }
+
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
         claims.put(AysTokenClaims.USER_ID.getValue(), this.id);

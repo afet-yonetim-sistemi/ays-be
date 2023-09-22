@@ -71,6 +71,23 @@ public class AssignmentEntity extends BaseEntity {
         return AssignmentStatus.ASSIGNED.equals(this.status);
     }
 
+    public void available() {
+        this.status = AssignmentStatus.AVAILABLE;
+        this.userId = null;
+    }
+
+    public void assign() {
+        this.status = AssignmentStatus.ASSIGNED;
+    }
+
+    public void start() {
+        this.status = AssignmentStatus.IN_PROGRESS;
+    }
+
+    public void done() {
+        this.status = AssignmentStatus.DONE;
+    }
+
     public void reserve(String userId, String institutionId) {
         this.status = AssignmentStatus.RESERVED;
         this.userId = userId;

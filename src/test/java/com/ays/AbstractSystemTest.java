@@ -43,6 +43,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected AysToken userTokenTwo;
     protected AysToken userTokenThree;
     protected AysToken userTokenFour;
+    protected AysToken userTokenFive;
 
 
     @Mock
@@ -107,6 +108,14 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .build()
                 .getClaims();
         this.userTokenFour = this.generate(claimsOfUserFour);
+
+        final Map<String, Object> claimsOfUserFive = new UserEntityBuilder()
+                .withId(AysTestData.User.VALID_ID_FIVE)
+                .withUsername(AysTestData.User.VALID_USERNAME_FIVE)
+                .withInstitutionId(AysTestData.Institution.VALID_ID_ONE)
+                .build()
+                .getClaims();
+        this.userTokenFive = this.generate(claimsOfUserFive);
     }
 
     private AysToken generate(Map<String, Object> claims) {

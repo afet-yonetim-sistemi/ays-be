@@ -203,6 +203,22 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
+
+        <insert tableName="AYS_USER">
+            <column name="ID" value="08cd53fb-7624-4c66-be93-9512170ec226"/>
+            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="USERNAME" value="486879"/>
+            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
+            <column name="FIRST_NAME" value="Afet Yönetim"/>
+            <column name="LAST_NAME" value="Sistemi 5"/>
+            <column name="COUNTRY_CODE" value="90"/>
+            <column name="SUPPORT_STATUS" value="READY"/>
+            <column name="LINE_NUMBER" value="1234567894"/>
+            <column name="ROLE" value="VOLUNTEER"/>
+            <column name="STATUS" value="ACTIVE"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
         <!-- =============== -->
         <!-- DML of AYS_USER -->
         <!-- =============== -->
