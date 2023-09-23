@@ -3,10 +3,12 @@ package com.ays.assignment.service.impl;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
 import com.ays.assignment.model.entity.AssignmentEntity;
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByPointException;
+import com.ays.assignment.util.exception.AysAssignmentUserAlreadyAssigned;
 import com.ays.assignment.util.exception.AysAssignmentUserNotReadyException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.location.util.AysLocationUtil;
@@ -39,6 +41,12 @@ class AssignmentSearchServiceImpl implements AssignmentSearchService {
         final UserEntity userEntity = userRepository
                 .findByIdAndInstitutionId(userId, institutionId)
                 .orElseThrow(() -> new AysUserNotExistByIdException(userId));
+
+        assignmentRepository
+                .findByUserIdAndStatusNot(userId, AssignmentStatus.DONE)
+                .ifPresent(assignment -> {
+                    throw new AysAssignmentUserAlreadyAssigned(userId, assignment.getId());
+                });
 
         if (!userEntity.isReady()) {
             throw new AysAssignmentUserNotReadyException(userId, institutionId);
