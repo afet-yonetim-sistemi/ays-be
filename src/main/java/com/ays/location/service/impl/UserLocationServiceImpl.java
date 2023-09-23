@@ -40,7 +40,7 @@ class UserLocationServiceImpl implements UserLocationService {
         final boolean isAssignmentInProgress = assignmentRepository
                 .existsByUserIdAndStatus(identity.getUserId(), AssignmentStatus.IN_PROGRESS);
         if (!isAssignmentInProgress) {
-            throw new AysUserLocationCannotBeUpdatedException();
+            throw new AysUserLocationCannotBeUpdatedException(identity.getUserId());
         }
 
         userLocationRepository.findByUserId(identity.getUserId())
