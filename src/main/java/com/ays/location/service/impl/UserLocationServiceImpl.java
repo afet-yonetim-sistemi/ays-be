@@ -44,7 +44,7 @@ class UserLocationServiceImpl implements UserLocationService {
             throw new AysUserLocationCannotBeUpdatedException(userId);
         }
 
-        userLocationRepository.findByUserId(identity.getUserId())
+        userLocationRepository.findByUserId(userId)
                 .ifPresentOrElse(
                         userLocationEntityFromDatabase -> {
                             userLocationEntityFromDatabase.setPoint(saveRequest.getLongitude(), saveRequest.getLatitude());
@@ -52,7 +52,7 @@ class UserLocationServiceImpl implements UserLocationService {
                         },
                         () -> {
                             final UserLocationEntity userLocationEntity = userLocationSaveRequestToUserLocationEntityMapper
-                                    .mapForSaving(saveRequest, identity.getUserId());
+                                    .mapForSaving(saveRequest, userId);
                             userLocationRepository.save(userLocationEntity);
                         }
                 );
