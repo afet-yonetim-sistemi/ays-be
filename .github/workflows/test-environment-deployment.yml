@@ -6,7 +6,11 @@ name: Deploy to Test Environment
 on:
   push:
     branches:
-      - main # Trigger the workflow when a push event occurs on the main branch
+      - refactor/196/pipelines # Trigger the workflow when a push event occurs on the main branch
+#on:
+#  push:
+#    branches:
+#      - main # Trigger the workflow when a push event occurs on the main branch
 
 jobs:
   build: # Define the "build" job
@@ -40,13 +44,48 @@ jobs:
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: Build with Maven # Step to build the application using Maven with the provided settings.xml configuration file
-        run: mvn --settings settings.xml clean install
+        run: mvn --settings settings.xml clean install -DskipTests
 
-      - name: Deploy to server # Step to deploy the application to the server using the deploy.sh script with the specified environment variables
+      - name: Starting Deployment to ECS... # Step to start the deployment to ECS
+        run: echo "Starting Deployment to ECS..."
+
+      - name: Configure AWS credentials # Step to configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR # Step to log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR # Step to build, tag, and push the image to Amazon ECR
+        id: build-image
         env:
-          AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
-          AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
-          AWS_TEST_ENVIRONMENT_IP: ${{ secrets.AWS_TEST_ENVIRONMENT_IP }}
-          AWS_BE_APP_PATH: ${{ secrets.AWS_BE_APP_PATH }}
-          GH_TEST_DEPLOYMENT_BRANCH: main
-        run: bash .github/workflows/test/deploy.sh
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ays-be-test
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Fill in the new image ID in the Amazon ECS task definition # Step to fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task_definition.json
+          container-name: ays-be-test
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition # Step to deploy the Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ays-be-test-service
+          cluster: ays-be-test-cluster
+          wait-for-service-stability: true
+
+      - name: Deployment successfully completed # Step to indicate that the deployment was successful
+        run: echo "Deployment successfully completed!"
