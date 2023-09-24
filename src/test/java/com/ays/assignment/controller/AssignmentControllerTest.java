@@ -24,6 +24,7 @@ import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -92,6 +93,76 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         Mockito.verify(assignmentSaveService, Mockito.times(1))
                 .saveAssignment(Mockito.any(AssignmentSaveRequest.class));
 
+    }
+
+    @Test
+    void givenNameWithNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        String invalidName = "John 1234";
+        AssignmentSaveRequest mockRequest = new AssignmentSaveRequestBuilder()
+                .withValidFields()
+                .withFirstName(invalidName)
+                .withLastName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment");
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(assignmentSaveService, Mockito.never())
+                .saveAssignment(Mockito.any(AssignmentSaveRequest.class));
+    }
+
+    @Test
+    void givenNameWithForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        String invalidName = "John *^%$#";
+        AssignmentSaveRequest mockRequest = new AssignmentSaveRequestBuilder()
+                .withValidFields()
+                .withFirstName(invalidName)
+                .withLastName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment");
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(assignmentSaveService, Mockito.never())
+                .saveAssignment(Mockito.any(AssignmentSaveRequest.class));
     }
 
 
@@ -401,6 +472,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         Mockito.verifyNoInteractions(assignmentService);
     }
+
     @Test
     void givenNothing_whenAssignmentApproved_thenReturnNothing() throws Exception {
         // When
