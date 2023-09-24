@@ -27,7 +27,7 @@ public class AysUserLocationCannotBeUpdatedException extends AysProcessException
      * @param userId the ID of the user whose location cannot be updated
      */
     public AysUserLocationCannotBeUpdatedException(String userId) {
-        super("USER LOCATION CANNOT BE UPDATED AS THE USER DOES NOT HAVE AN ASSIGNMENT IN PROGRESS! userId:" + userId);
+        super("USER LOCATION CANNOT BE UPDATED BECAUSE USER DOES NOT HAVE AN ASSIGNMENT IN PROGRESS! userId:" + userId);
     }
 
 }

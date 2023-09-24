@@ -37,10 +37,11 @@ class UserLocationServiceImpl implements UserLocationService {
     @Override
     public void saveUserLocation(final UserLocationSaveRequest saveRequest) {
 
+        final String userId = identity.getUserId();
         final boolean isAssignmentInProgress = assignmentRepository
-                .existsByUserIdAndStatus(identity.getUserId(), AssignmentStatus.IN_PROGRESS);
+                .existsByUserIdAndStatus(userId, AssignmentStatus.IN_PROGRESS);
         if (!isAssignmentInProgress) {
-            throw new AysUserLocationCannotBeUpdatedException(identity.getUserId());
+            throw new AysUserLocationCannotBeUpdatedException(userId);
         }
 
         userLocationRepository.findByUserId(identity.getUserId())
