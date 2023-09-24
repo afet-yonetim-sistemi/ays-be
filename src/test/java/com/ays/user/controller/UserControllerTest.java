@@ -1,6 +1,8 @@
 package com.ays.user.controller;
 
 import com.ays.AbstractRestControllerTest;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequestBuilder;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
@@ -94,6 +96,76 @@ class UserControllerTest extends AbstractRestControllerTest {
                         .value(mockResponse.getResponse().getPassword()));
 
         Mockito.verify(userSaveService, Mockito.times(1))
+                .saveUser(Mockito.any(UserSaveRequest.class));
+    }
+
+    @Test
+    void givenInvalidUserSaveRequestWithNameContainingNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        String invalidName = "John 1234";
+        UserSaveRequest mockRequest = new UserSaveRequestBuilder()
+                .withValidFields()
+                .withFirstName(invalidName)
+                .withLastName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userSaveService, Mockito.never())
+                .saveUser(Mockito.any(UserSaveRequest.class));
+    }
+
+    @Test
+    void givenInvalidUserSaveRequestWithNameContainingForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        String invalidName = "John *^%$#";
+        AssignmentUpdateRequest mockRequest = new AssignmentUpdateRequestBuilder()
+                .withValidFields()
+                .withFirstName(invalidName)
+                .withLastName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userSaveService, Mockito.never())
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
 
