@@ -3,8 +3,7 @@ ${AnsiColor.BRIGHT_WHITE}    /   \${AnsiColor.BRIGHT_WHITE}  \   \  /   /${AnsiC
 ${AnsiColor.BRIGHT_WHITE}   /  ^  \${AnsiColor.BRIGHT_WHITE}  \   \/   /${AnsiColor.BRIGHT_WHITE} |   (----`
 ${AnsiColor.BRIGHT_WHITE}  /  /_\  \${AnsiColor.BRIGHT_WHITE}  \_    _/${AnsiColor.BRIGHT_WHITE}   \   \
 ${AnsiColor.BRIGHT_WHITE} /  _____  \${AnsiColor.BRIGHT_WHITE}   |  |${AnsiColor.BRIGHT_WHITE} .----)   |
-${AnsiColor.BRIGHT_WHITE}/__/     \__\${AnsiColor.BRIGHT_WHITE}  |__|${AnsiColor.BRIGHT_WHITE} |_______/
+${AnsiColor.BRIGHT_WHITE}/__/     \__\${AnsiColor.BRIGHT_WHITE}  |__|${AnsiColor.BRIGHT_WHITE} |_______/  (${info.application.version})
 ${AnsiColor.2}
-${info.application.description} - ${info.application.version}
-Powered by Spring Boot ${spring-boot.version}
+:: Afet Yönetim Sistemi ::
 ${AnsiColor.DEFAULT}
