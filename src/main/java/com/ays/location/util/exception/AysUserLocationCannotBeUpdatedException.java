@@ -22,12 +22,12 @@ public class AysUserLocationCannotBeUpdatedException extends AysProcessException
     private static final long serialVersionUID = 2733712280590701217L;
 
     /**
-     * Constructs an exception for the specified identifier (id).
+     * Constructs a new AysUserLocationCannotBeUpdatedException with the specified user ID.
      *
-     * @param id The identifier (id) that describes the reason for the unupdatable user location.
+     * @param userId the ID of the user whose location cannot be updated
      */
-    public AysUserLocationCannotBeUpdatedException() {
-        super("USER LOCATION CANNOT BE UPDATED BECAUSE ASSIGNMENT NOT EXIST OR NOT IN PROGRESS STATUS!");
+    public AysUserLocationCannotBeUpdatedException(String userId) {
+        super("USER LOCATION CANNOT BE UPDATED BECAUSE USER DOES NOT HAVE AN ASSIGNMENT IN PROGRESS! userId:" + userId);
     }
 
 }

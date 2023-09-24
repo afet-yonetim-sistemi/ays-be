@@ -37,13 +37,14 @@ class UserLocationServiceImpl implements UserLocationService {
     @Override
     public void saveUserLocation(final UserLocationSaveRequest saveRequest) {
 
+        final String userId = identity.getUserId();
         final boolean isAssignmentInProgress = assignmentRepository
-                .existsByUserIdAndStatus(identity.getUserId(), AssignmentStatus.IN_PROGRESS);
+                .existsByUserIdAndStatus(userId, AssignmentStatus.IN_PROGRESS);
         if (!isAssignmentInProgress) {
-            throw new AysUserLocationCannotBeUpdatedException();
+            throw new AysUserLocationCannotBeUpdatedException(userId);
         }
 
-        userLocationRepository.findByUserId(identity.getUserId())
+        userLocationRepository.findByUserId(userId)
                 .ifPresentOrElse(
                         userLocationEntityFromDatabase -> {
                             userLocationEntityFromDatabase.setPoint(saveRequest.getLongitude(), saveRequest.getLatitude());
@@ -51,7 +52,7 @@ class UserLocationServiceImpl implements UserLocationService {
                         },
                         () -> {
                             final UserLocationEntity userLocationEntity = userLocationSaveRequestToUserLocationEntityMapper
-                                    .mapForSaving(saveRequest, identity.getUserId());
+                                    .mapForSaving(saveRequest, userId);
                             userLocationRepository.save(userLocationEntity);
                         }
                 );
