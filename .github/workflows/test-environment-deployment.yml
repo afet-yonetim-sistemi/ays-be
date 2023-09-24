@@ -6,11 +6,7 @@ name: Deploy to Test Environment
 on:
   push:
     branches:
-      - refactor/196/pipelines # Trigger the workflow when a push event occurs on the main branch
-#on:
-#  push:
-#    branches:
-#      - main # Trigger the workflow when a push event occurs on the main branch
+      - main # Trigger the workflow when a push event occurs on the main branch
 
 jobs:
   build: # Define the "build" job
@@ -44,7 +40,7 @@ jobs:
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: Build with Maven # Step to build the application using Maven with the provided settings.xml configuration file
-        run: mvn --settings settings.xml clean install -DskipTests
+        run: mvn --settings settings.xml clean install
 
       - name: Starting Deployment to ECS... # Step to start the deployment to ECS
         run: echo "Starting Deployment to ECS..."
