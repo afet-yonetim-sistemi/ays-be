@@ -33,4 +33,14 @@ public class AssignmentUpdateRequestBuilder extends TestDataBuilder<AssignmentUp
         data.setLongitude(longitude);
         return this;
     }
+
+    public AssignmentUpdateRequestBuilder withFirstName(String firstName) {
+        data.setFirstName(firstName);
+        return this;
+    }
+
+    public AssignmentUpdateRequestBuilder withLastName(String lastName) {
+        data.setLastName(lastName);
+        return this;
+    }
 }

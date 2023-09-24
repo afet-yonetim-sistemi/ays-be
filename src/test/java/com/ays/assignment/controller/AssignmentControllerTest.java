@@ -96,7 +96,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNameWithNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+    void givenInvalidAssignmentSaveRequestWithNameContainingNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
         // Given
         String invalidName = "John 1234";
         AssignmentSaveRequest mockRequest = new AssignmentSaveRequestBuilder()
@@ -131,7 +131,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNameWithForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+    void givenInvalidAssignmentSaveRequestWithNameContainingForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
         // Given
         String invalidName = "John *^%$#";
         AssignmentSaveRequest mockRequest = new AssignmentSaveRequestBuilder()
@@ -394,6 +394,78 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         Mockito.verify(assignmentService, Mockito.times(1)).updateAssignment(
                 Mockito.anyString(), Mockito.any(AssignmentUpdateRequest.class));
+    }
+
+    @Test
+    void givenInvalidAssignmentUpdateRequestWithNameContainingNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        String mockAssignmentId = AysRandomUtil.generateUUID();
+        String invalidName = "John 1234";
+        AssignmentUpdateRequest mockRequest = new AssignmentUpdateRequestBuilder()
+                .withValidFields()
+                .withFirstName(invalidName)
+                .withLastName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/".concat(mockAssignmentId));
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .put(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(assignmentService, Mockito.never())
+                .updateAssignment(Mockito.any(String.class), Mockito.any(AssignmentUpdateRequest.class));
+    }
+
+    @Test
+    void givenInvalidAssignmentUpdateRequestWithNameContainingForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        String mockAssignmentId = AysRandomUtil.generateUUID();
+        String invalidName = "John *^%$#";
+        AssignmentUpdateRequest mockRequest = new AssignmentUpdateRequestBuilder()
+                .withValidFields()
+                .withFirstName(invalidName)
+                .withLastName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/".concat(mockAssignmentId));
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .put(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(assignmentService, Mockito.never())
+                .updateAssignment(Mockito.any(String.class), Mockito.any(AssignmentUpdateRequest.class));
     }
 
     @Test
