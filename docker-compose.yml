@@ -31,5 +31,6 @@ services:
       - AYS_DB_USERNAME=ays
       - AYS_DB_PASSWORD=ayspass
       - AYS_DB_URL=jdbc:mysql://host.docker.internal:3307/ays
+      - AYS_LIQUIBASE_ENABLE_DROP_FIRST=false
     depends_on:
       - database
