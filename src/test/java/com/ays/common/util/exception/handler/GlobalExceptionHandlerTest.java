@@ -12,8 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -295,6 +298,29 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // Then
         ResponseEntity<Object> responseEntity = globalExceptionHandler.handleDataAccessException(mockException);
+        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
+        Assertions.assertNotNull(responseEntity.getHeaders());
+        Assertions.assertNotNull(responseEntity.getStatusCode());
+        Assertions.assertNotNull(responseEntity.getBody());
+
+    }
+
+    @Test
+    void givenJsonParseError_whenThrowHttpMessageNotReadableException_thenReturnAysError() {
+
+        // Given
+        HttpInputMessage mockHttpInputMessage = new MockHttpInputMessage(new byte[]{});
+        HttpMessageNotReadableException mockException = new HttpMessageNotReadableException("Invalid JSON", mockHttpInputMessage);
+
+        // When
+        AysError mockAysError = AysError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(AysError.Header.VALIDATION_ERROR.getName())
+                .build();
+        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockAysError, HttpStatus.BAD_REQUEST);
+
+        // Then
+        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleJsonParseErrors(mockException);
         Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
         Assertions.assertNotNull(responseEntity.getHeaders());
         Assertions.assertNotNull(responseEntity.getStatusCode());
