@@ -20,4 +20,13 @@ public class UserSaveRequestBuilder extends TestDataBuilder<UserSaveRequest> {
         return this;
     }
 
+    public UserSaveRequestBuilder withFirstName(String firstName) {
+        data.setFirstName(firstName);
+        return this;
+    }
+
+    public UserSaveRequestBuilder withLastName(String lastName) {
+        data.setLastName(lastName);
+        return this;
+    }
 }

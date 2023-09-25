@@ -40,4 +40,14 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
         return this;
     }
 
+    public AdminUserRegisterRequestBuilder withFirstName(String firstName) {
+        data.setFirstName(firstName);
+        return this;
+    }
+
+    public AdminUserRegisterRequestBuilder withLastName(String lastName) {
+        data.setLastName(lastName);
+        return this;
+    }
+
 }

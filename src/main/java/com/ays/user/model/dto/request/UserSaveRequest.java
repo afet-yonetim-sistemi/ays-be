@@ -1,6 +1,7 @@
 package com.ays.user.model.dto.request;
 
 import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.util.validation.Name;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -20,9 +21,11 @@ import lombok.Setter;
 public class UserSaveRequest {
 
     @NotNull
+    @Name
     private String firstName;
 
     @NotNull
+    @Name
     private String lastName;
 
     @Valid

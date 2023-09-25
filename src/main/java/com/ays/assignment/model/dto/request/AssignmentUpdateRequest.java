@@ -1,6 +1,7 @@
 package com.ays.assignment.model.dto.request;
 
 import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.util.validation.Name;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -22,9 +23,11 @@ public class AssignmentUpdateRequest {
     private String description;
 
     @NotBlank
+    @Name
     private String firstName;
 
     @NotBlank
+    @Name
     private String lastName;
 
     @Valid
