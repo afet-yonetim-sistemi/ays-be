@@ -1,14 +1,14 @@
 package com.ays.assignment.util.exception;
 
 import com.ays.assignment.model.enums.AssignmentStatus;
-import com.ays.common.util.exception.AysAuthException;
+import com.ays.common.util.exception.AysNotExistException;
 
 import java.io.Serial;
 
 /**
  * Exception to be thrown when a user does not have assignment by status.
  */
-public class AysAssignmentNotExistByUserIdAndStatusException extends AysAuthException {
+public class AysAssignmentNotExistByUserIdAndStatusException extends AysNotExistException {
 
     /**
      * Unique serial version ID.
