@@ -2,13 +2,14 @@ package com.ays.common.util.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.util.StringUtils;
 
 /**
  * A custom validator implementation for the {@link Name} annotation.
  * Validates whether the provided first/last name is a valid name based on the
  * specified regular expression.
  */
-public class NameValidator implements ConstraintValidator<Name, String> {
+class NameValidator implements ConstraintValidator<Name, String> {
 
     /**
      * Regular expression for validating names.
@@ -22,7 +23,7 @@ public class NameValidator implements ConstraintValidator<Name, String> {
      * </p>
      * <p>
      */
-    public static final String NAME_REGEX = "^[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]+$";
+    static final String NAME_REGEX = "^[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]+$";
 
     /**
      * Checks whether the given value is a valid name or not.
@@ -47,6 +48,9 @@ public class NameValidator implements ConstraintValidator<Name, String> {
      */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (!StringUtils.hasText(value)) {
+            return true;
+        }
         return value.matches(NAME_REGEX);
     }
 }
