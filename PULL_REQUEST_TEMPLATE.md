@@ -1,14 +1,12 @@
-# PULL REQUEST TEMPLATE
-
-## Description
+### Description
 
 Please provide a brief description of the changes made in this pull request.
 
-## Related Issue
+### Related Issue
 
 If this pull request is related to any GitHub issue, please mention it here with the appropriate issue number.
 
-## Proposed Changes
+### Proposed Changes
 
 Please provide a brief and descriptive title for your pull request, summarizing the changes or features introduced. It
 should be in English and clearly indicate the purpose of the pull request. Optionally, you can provide a more detailed
@@ -16,11 +14,11 @@ description of what you have done.
 
 - Branches should follow the below `Naming Conventions of Branchs` header in [README.md](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/README.md) File
 
-## Additional Information
+### Additional Information
 
 If there's any additional information or context that the reviewers should know, please provide it here.
 
-## Checklist
+### Checklist
 
 Please check the following before submitting your pull request:
 
@@ -38,6 +36,6 @@ Please check the following before submitting your pull request:
   board or milestone. However, if there is no issue, the pull request should be associated with the appropriate project
   board (BE Board, In Review column) and milestone to track the progress.
 
-## Reviewers
+### Reviewers
 
 The default project maintainers and team members will be automatically assigned as reviewers for this pull request.
