@@ -58,9 +58,7 @@ abstract class AssignmentAbstractHandler implements AssignmentHandler {
         AssignmentStatus assignmentStatus = this.getAssignmentSearchStatus();
         return assignmentRepository
                 .findByUserIdAndStatus(userId, assignmentStatus)
-                .orElseThrow(
-                        () -> new AysAssignmentNotExistByUserIdAndStatusException(userId, assignmentStatus)
-                );
+                .orElseThrow(() -> new AysAssignmentNotExistByUserIdAndStatusException(userId, assignmentStatus));
     }
 
 }
