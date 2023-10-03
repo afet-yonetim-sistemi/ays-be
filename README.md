@@ -67,7 +67,7 @@ volunteers who are close to the relevant region and need, aims to manage the nee
 
 **Language**
 
-* Java 17
+* Java 21
 
 **Build Tool**
 
