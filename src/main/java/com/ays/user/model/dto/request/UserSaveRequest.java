@@ -3,6 +3,7 @@ package com.ays.user.model.dto.request;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.util.validation.Name;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +21,11 @@ import lombok.Setter;
 @Setter
 public class UserSaveRequest {
 
-    @NotNull
+    @NotBlank
     @Name
     private String firstName;
 
-    @NotNull
+    @NotBlank
     @Name
     private String lastName;
 
