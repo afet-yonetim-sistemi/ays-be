@@ -33,6 +33,11 @@ public class AysPaging {
      * @return The 0-based page number.
      */
     public Long getPage() {
+
+        if (this.page == null) {
+            return null;
+        }
+
         return this.page - 1;
     }
 
