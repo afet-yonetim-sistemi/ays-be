@@ -47,13 +47,6 @@ public class AysResponse<T> {
             .isSuccess(true).build();
 
     /**
-     * A pre-defined response for no content.
-     */
-    public static final AysResponse<Void> NO_CONTENT = AysResponse.<Void>builder()
-            .httpStatus(HttpStatus.NO_CONTENT)
-            .isSuccess(false).build();
-
-    /**
      * Creates a success response with the specified response object.
      *
      * @param <T>      The type of the response object.
@@ -67,31 +60,4 @@ public class AysResponse<T> {
                 .response(response).build();
     }
 
-    /**
-     * Creates a response with the specified response object and HTTP status of CREATED.
-     *
-     * @param <T>      The type of the response object.
-     * @param response The response object.
-     * @return An instance of {@link AysResponse} representing a CREATED response.
-     */
-    public static <T> AysResponse<T> createdOf(final T response) {
-        return AysResponse.<T>builder()
-                .httpStatus(HttpStatus.CREATED)
-                .isSuccess(true)
-                .response(response).build();
-    }
-
-    /**
-     * Creates a failure response with the specified response object and HTTP status of NOT_FOUND.
-     *
-     * @param <T>      The type of the response object.
-     * @param response The response object.
-     * @return An instance of {@link AysResponse} representing a failure response.
-     */
-    public static <T> AysResponse<T> failOf(final T response) {
-        return AysResponse.<T>builder()
-                .httpStatus(HttpStatus.NOT_FOUND)
-                .isSuccess(false)
-                .response(response).build();
-    }
 }

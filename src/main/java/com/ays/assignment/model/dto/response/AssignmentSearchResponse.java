@@ -1,36 +1,54 @@
 package com.ays.assignment.model.dto.response;
 
-import com.ays.assignment.model.enums.AssignmentStatus;
-import com.ays.common.model.dto.response.BaseResponse;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import org.locationtech.jts.geom.Point;
 
 /**
- * This class represents the response for a user with assignment.
- * It includes information such as the user's username, first and last name, email, institution, role and status.
+ * Represents a response object for assignment search results.
+ * <p>
+ * This class provides information about an assignment, including its unique identifier, description, and location.
  */
 @Getter
 @Setter
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class AssignmentSearchResponse extends BaseResponse {
+@Builder
+public class AssignmentSearchResponse {
 
+    /**
+     * The unique identifier of the assignment.
+     */
     private String id;
+    /**
+     * A description of the assignment.
+     */
     private String description;
+    /**
+     * The location of the assignment specified as longitude and latitude.
+     */
     private Location location;
-    private AssignmentStatus status;
 
+    /**
+     * Represents the location information for an assignment.
+     */
     @Getter
     @Builder
     public static class Location {
+        /**
+         * The longitude coordinate of the assignment location.
+         */
         private Double longitude;
+        /**
+         * The latitude coordinate of the assignment location.
+         */
         private Double latitude;
     }
 
+    /**
+     * Sets the location of the assignment based on a Point object.
+     *
+     * @param point The Point object containing longitude and latitude information.
+     */
     public void setLocation(Point point) {
         this.location = Location.builder()
                 .longitude(point.getX())
