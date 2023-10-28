@@ -1,7 +1,6 @@
 package com.ays.common.util.validation;
 
 import com.ays.common.model.AysPhoneNumber;
-import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import jakarta.validation.ConstraintValidator;
@@ -40,12 +39,12 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
         }
 
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
-        final String regionCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
 
         try {
+            final String regionCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
             Phonenumber.PhoneNumber number = phoneNumberUtil.parse(fullNumber, null);
             return phoneNumberUtil.isValidNumberForRegion(number, regionCode);
-        } catch (NumberParseException e) {
+        } catch (Exception e) {
             return false;
         }
     }
