@@ -65,6 +65,13 @@ class NameValidator implements ConstraintValidator<Name, String> {
             return false;
         }
 
+        if (value.startsWith(" ") || value.endsWith(" ")) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("NAME MUST NOT START OR END WITH WHITESPACE")
+                    .addConstraintViolation();
+            return false;
+        }
+
         return value.matches(NAME_REGEX);
     }
 }
