@@ -8,18 +8,16 @@ import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * A custom validator implementation for the {@link PhoneNumber} annotation.
- * Validates whether the provided {@link AysPhoneNumber} object is a valid phone number or not based on the
- * country code and line number length.
+ * Validates whether the provided {@link AysPhoneNumber} object is a valid phone number or not based on E.164 international standard.
  */
 class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneNumber> {
 
     /**
-     * Validates whether the provided {@link AysPhoneNumber} object is a valid phone number or not based on the
-     * country code and line number length.
+     * Validates an AysPhoneNumber object based on E.164 international standard.
      *
-     * @param phoneNumber the {@link AysPhoneNumber} object to be validated
-     * @param context     the context in which the constraint is evaluated
-     * @return true if the phone number is valid, false otherwise
+     * @param phoneNumber The AysPhoneNumber object to be validated.
+     * @param context     The context for validation.
+     * @return True if the number is valid, false otherwise.
      */
     @Override
     public boolean isValid(AysPhoneNumber phoneNumber, ConstraintValidatorContext context) {
