@@ -1,6 +1,9 @@
 package com.ays.common.util.validation;
 
 import com.ays.common.model.AysPhoneNumber;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
@@ -23,22 +26,28 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
     public boolean isValid(AysPhoneNumber phoneNumber, ConstraintValidatorContext context) {
         final String countryCode = phoneNumber.getCountryCode();
         final String lineNumber = phoneNumber.getLineNumber();
+        final String fullNumber = "+" + countryCode + lineNumber;
 
         if (countryCode == null || lineNumber == null) {
             return true;
         }
 
-        final int countryCodeLength = countryCode.length();
-        final int lineNumberLength = lineNumber.length();
-        final boolean isCountryCodeLengthValid = countryCodeLength >= 1 && countryCodeLength <= 7;
-        final boolean isLineNumberLengthValid = lineNumberLength >= 1 && lineNumberLength <= 13;
-
         final boolean countryCodeIsNumeric = countryCode.chars().allMatch(Character::isDigit);
         final boolean lineNumberIsNumeric = lineNumber.chars().allMatch(Character::isDigit);
 
-        final boolean isPhoneNumberLengthValid = isCountryCodeLengthValid && isLineNumberLengthValid;
-        final boolean isPhoneNumberNumeric = countryCodeIsNumeric && lineNumberIsNumeric;
-        return isPhoneNumberLengthValid && isPhoneNumberNumeric;
+        if (!countryCodeIsNumeric || !lineNumberIsNumeric) {
+            return false;
+        }
+
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        final String regionCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
+
+        try {
+            Phonenumber.PhoneNumber number = phoneNumberUtil.parse(fullNumber, null);
+            return phoneNumberUtil.isValidNumberForRegion(number, regionCode);
+        } catch (NumberParseException e) {
+            return false;
+        }
     }
 
 }
