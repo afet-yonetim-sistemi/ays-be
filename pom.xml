@@ -89,6 +89,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>8.13.24</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.ays</groupId>
             <artifactId>ays-be-encryption-utility</artifactId>
             <version>${ays-be-encryption-utility.version}</version>
