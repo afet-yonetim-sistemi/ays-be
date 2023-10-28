@@ -11,7 +11,7 @@ public class AysPhoneNumberBuilder extends TestDataBuilder<AysPhoneNumber> {
     public AysPhoneNumberBuilder withValidFields() {
         return new AysPhoneNumberBuilder()
                 .withCountryCode("90")
-                .withLineNumber(String.valueOf(AysRandomUtil.generateNumber(10)));
+                .withLineNumber("535" + AysRandomUtil.generateNumber(7));
     }
 
     public AysPhoneNumberBuilder withCountryCode(String countryCode) {
