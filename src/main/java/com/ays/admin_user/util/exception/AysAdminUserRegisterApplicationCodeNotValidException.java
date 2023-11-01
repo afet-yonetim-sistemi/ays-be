@@ -11,7 +11,7 @@ import java.io.Serial;
  * Typically, this exception is thrown when a verification code provided during the registration process of an admin
  * user is not valid, meaning that it may have already been used or expired.
  */
-public class AysAdminUserRegisterVerificationCodeNotValidException extends AysNotExistException {
+public class AysAdminUserRegisterApplicationCodeNotValidException extends AysNotExistException {
 
     /**
      * Unique identifier for serialization.
@@ -24,7 +24,7 @@ public class AysAdminUserRegisterVerificationCodeNotValidException extends AysNo
      *
      * @param verificationId The verification ID that is not valid.
      */
-    public AysAdminUserRegisterVerificationCodeNotValidException(String verificationId) {
+    public AysAdminUserRegisterApplicationCodeNotValidException(String verificationId) {
         super("VERIFICATION ID IS NOT VALID! verificationId:" + verificationId);
     }
 

@@ -14,14 +14,14 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
 
     public AdminUserRegisterRequestBuilder withValidFields() {
         return this
-                .withVerificationId(AysRandomUtil.generateUUID())
+                .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysTestData.VALID_EMAIL)
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build());
     }
 
-    public AdminUserRegisterRequestBuilder withVerificationId(String verificationId) {
-        data.setVerificationId(verificationId);
+    public AdminUserRegisterRequestBuilder withApplicationId(String applicationId) {
+        data.setApplicationId(applicationId);
         return this;
     }
 
