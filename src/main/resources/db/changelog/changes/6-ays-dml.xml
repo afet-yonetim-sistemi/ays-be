@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="6-ays-dml" author="ibrahimdenizz">
+        <!-- ========================================== -->
+        <!-- DML of AYS_ADMIN_USER_REGISTER_APPLICATION -->
+        <!-- ========================================== -->
+        <sql>
+            ALTER TABLE AYS_ADMIN_USER_REGISTER_VERIFICATION RENAME TO AYS_ADMIN_USER_REGISTER_APPLICATION;
+
+            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
+                ADD COLUMN REJECT_REASON VARCHAR(512);
+
+            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
+                ADD COLUMN INSTITUTION_ID VARCHAR(36);
+            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
+                ADD CONSTRAINT FK__AYS_ADMIN_USER_REGISTER_APPLICATION__INSTITUTION_ID
+                    FOREIGN KEY (INSTITUTION_ID) REFERENCES AYS_INSTITUTION (ID);
+
+            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION DROP CONSTRAINT FK__AYS_ADMIN_USER_REGISTER_VERIFICATION__ADMIN_USER_ID;
+            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
+                ADD CONSTRAINT FK__AYS_ADMIN_USER_REGISTER_APPLICATION__ADMIN_USER_ID
+                    FOREIGN KEY (ADMIN_USER_ID)
+                        REFERENCES AYS_ADMIN_USER (ID);
+
+
+            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION DROP CONSTRAINT C__AYS_ADMIN_USER_REGISTER_VERIFICATION__ADMIN_USER_ID;
+            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
+                ADD CONSTRAINT C__AYS_ADMIN_USER_REGISTER_APPLICATION__STATUS CHECK (STATUS IN ('WAITING', 'COMPLETED', 'VERIFIED', 'REJECTED'));
+
+            UPDATE AYS_ADMIN_USER_REGISTER_APPLICATION
+            SET INSTITUTION_ID = '77ece256-bf0e-4bbe-801d-173083f8bdcf'
+                WHERE id = '3cfeb994-88f4-48d0-b105-309f42f91412';
+        </sql>
+        <!-- ========================================== -->
+        <!-- DML of AYS_ADMIN_USER_REGISTER_APPLICATION -->
+        <!-- ========================================== -->
+    </changeSet>
+</databaseChangeLog>
