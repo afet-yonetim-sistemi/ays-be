@@ -8,33 +8,42 @@
         <!-- ========================================== -->
         <!-- DML of AYS_ADMIN_USER_REGISTER_APPLICATION -->
         <!-- ========================================== -->
+        <renameTable
+                oldTableName="AYS_ADMIN_USER_REGISTER_VERIFICATION"
+                newTableName="AYS_ADMIN_USER_REGISTER_APPLICATION"
+        />
+
+        <addColumn tableName="AYS_ADMIN_USER_REGISTER_APPLICATION">
+            <column name="REJECT_REASON" type="VARCHAR(512)"/>
+            <column name="INSTITUTION_ID" type="VARCHAR(36)">
+                <constraints foreignKeyName="FK__AYS_ADMIN_USER_REGISTER_APPLICATION__INSTITUTION_ID"
+                             referencedTableName="AYS_INSTITUTION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+        </addColumn>
+
+        <dropForeignKeyConstraint
+                baseTableName="AYS_ADMIN_USER_REGISTER_APPLICATION"
+                constraintName="FK__AYS_ADMIN_USER_REGISTER_VERIFICATION__ADMIN_USER_ID"/>
+        <addForeignKeyConstraint
+                baseColumnNames="ADMIN_USER_ID"
+                baseTableName="AYS_ADMIN_USER_REGISTER_APPLICATION"
+                constraintName="FK__AYS_ADMIN_USER_REGISTER_APPLICATION__ADMIN_USER_ID"
+                referencedColumnNames="ID"
+                referencedTableName="AYS_ADMIN_USER"
+        />
+
         <sql>
-            ALTER TABLE AYS_ADMIN_USER_REGISTER_VERIFICATION RENAME TO AYS_ADMIN_USER_REGISTER_APPLICATION;
-
-            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
-                ADD COLUMN REJECT_REASON VARCHAR(512);
-
-            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
-                ADD COLUMN INSTITUTION_ID VARCHAR(36);
-            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
-                ADD CONSTRAINT FK__AYS_ADMIN_USER_REGISTER_APPLICATION__INSTITUTION_ID
-                    FOREIGN KEY (INSTITUTION_ID) REFERENCES AYS_INSTITUTION (ID);
-
-            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION DROP CONSTRAINT FK__AYS_ADMIN_USER_REGISTER_VERIFICATION__ADMIN_USER_ID;
-            ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
-                ADD CONSTRAINT FK__AYS_ADMIN_USER_REGISTER_APPLICATION__ADMIN_USER_ID
-                    FOREIGN KEY (ADMIN_USER_ID)
-                        REFERENCES AYS_ADMIN_USER (ID);
-
-
             ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION DROP CONSTRAINT C__AYS_ADMIN_USER_REGISTER_VERIFICATION__ADMIN_USER_ID;
             ALTER TABLE AYS_ADMIN_USER_REGISTER_APPLICATION
                 ADD CONSTRAINT C__AYS_ADMIN_USER_REGISTER_APPLICATION__STATUS CHECK (STATUS IN ('WAITING', 'COMPLETED', 'VERIFIED', 'REJECTED'));
-
-            UPDATE AYS_ADMIN_USER_REGISTER_APPLICATION
-            SET INSTITUTION_ID = '77ece256-bf0e-4bbe-801d-173083f8bdcf'
-                WHERE id = '3cfeb994-88f4-48d0-b105-309f42f91412';
         </sql>
+
+        <update  tableName="AYS_ADMIN_USER_REGISTER_APPLICATION">
+            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <where>id='3cfeb994-88f4-48d0-b105-309f42f91412'</where>
+        </update>
         <!-- ========================================== -->
         <!-- DML of AYS_ADMIN_USER_REGISTER_APPLICATION -->
         <!-- ========================================== -->
