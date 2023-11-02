@@ -4,25 +4,26 @@ import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.entity.AssignmentEntity;
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.model.mapper.AssignmentUpdateRequestToAssignmentEntityMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.location.model.UserLocation;
 import com.ays.location.model.entity.UserLocationEntity;
 import com.ays.location.model.mapper.UserLocationEntityToUserLocationMapper;
 import com.ays.location.repository.UserLocationRepository;
-import com.ays.common.model.AysPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +39,22 @@ class AssignmentServiceImpl implements AssignmentService {
     private static final AssignmentUpdateRequestToAssignmentEntityMapper assignmentUpdateRequestToAssignmentEntityMapper = AssignmentUpdateRequestToAssignmentEntityMapper.initialize();
 
     private static final UserLocationEntityToUserLocationMapper userLocationEntityToUserLocationMapper = UserLocationEntityToUserLocationMapper.initialize();
+
+
+    /**
+     * Retrieves the assignment that is assigned to the current user.
+     *
+     * @return the Assignment object representing the retrieved user's assignment
+     */
+    public Assignment getUserAssignment() {
+        String userId = identity.getUserId();
+        final AssignmentEntity assignmentEntity = assignmentRepository
+                .findByUserIdAndStatusNot(userId, AssignmentStatus.DONE)
+                .filter(AssignmentEntity::isAssigned)
+                .orElseThrow(() -> new AysAssignmentNotExistByUserIdException(userId));
+
+        return assignmentEntityToAssignmentMapper.map(assignmentEntity);
+    }
 
     /**
      * Retrieves an assignment by their ID.

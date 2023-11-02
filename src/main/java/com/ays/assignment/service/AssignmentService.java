@@ -20,6 +20,13 @@ public interface AssignmentService {
     AysPage<Assignment> getAssignments(AssignmentListRequest listRequest);
 
     /**
+     * Get Assignment that is assigned to the current user
+     *
+     * @return Assignment
+     */
+    Assignment getUserAssignment();
+
+    /**
      * Get Assignment by Assignment ID
      *
      * @param id the given Assignment ID
