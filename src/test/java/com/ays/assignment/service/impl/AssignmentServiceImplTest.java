@@ -404,7 +404,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenAssignmentWithValidStatusExists_thenReturnAssignment() {
+    void givenValidUserId_whenUserHasAssignmentWithValidStatus_thenReturnAssignment() {
 
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
@@ -436,7 +436,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenAssignmentWithAvailableStatusExists_thenThrowAysAssignmentNotExistByIdException() {
+    void givenValidUserId_whenUserHasAssignmentWithAvailableStatus_thenThrowAysAssignmentNotExistByIdException() {
 
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
@@ -463,7 +463,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenAssignmentNotExists_thenThrowAysAssignmentNotExistByIdException() {
+    void givenValidUserId_whenUserHasNoAssignment_thenThrowAysAssignmentNotExistByIdException() {
 
         // Given
         String mockUserId = AysRandomUtil.generateUUID();

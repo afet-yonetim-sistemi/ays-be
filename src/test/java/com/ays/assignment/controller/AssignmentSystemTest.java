@@ -508,7 +508,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenVoid_whenAssignmentWithValidStatusFound_thenReturnAysResponseOfSuccess() throws Exception {
+    void givenVoid_whenUserHasAssignmentWithValidStatus_thenReturnAysResponseOfSuccess() throws Exception {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/summary");
@@ -525,7 +525,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenVoid_whenUserUnauthorizedForGettingSummary_thenThrowAccessDeniedException() throws Exception {
+    void givenVoid_whenUserUnauthorizedForGettingAssignmentSummary_thenThrowAccessDeniedException() throws Exception {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/summary");

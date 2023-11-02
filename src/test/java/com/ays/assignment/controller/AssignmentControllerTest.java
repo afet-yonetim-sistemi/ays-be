@@ -746,7 +746,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenVoid_whenAssignmentWithValidStatusFound_thenReturnAysResponseOfAssignmentSummaryResponse() throws Exception {
+    void givenVoid_whenUserHasAssignmentWithValidStatus_thenReturnAysResponseOfAssignmentSummaryResponse() throws Exception {
 
         // When
         Assignment mockAssignment = new AssignmentBuilder().build();
@@ -775,7 +775,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenVoid_whenUserUnauthorizedForGettingSummary_thenReturnAccessDeniedException() throws Exception {
+    void givenVoid_whenUserUnauthorizedForGettingAssignmentSummary_thenReturnAccessDeniedException() throws Exception {
 
         // When
         Assignment mockAssignment = new AssignmentBuilder().build();
