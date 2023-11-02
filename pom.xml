@@ -28,6 +28,7 @@
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 
         <ays-be-encryption-utility.version>1.0.0</ays-be-encryption-utility.version>
+        <libphonenumber.version>8.13.24</libphonenumber.version>
         <testcontainers.version>1.19.1</testcontainers.version>
         <liquibase.version>4.23.2</liquibase.version>
         <easy-random-core.version>5.0.0</easy-random-core.version>
@@ -86,6 +87,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>${libphonenumber.version}</version>
         </dependency>
 
         <dependency>

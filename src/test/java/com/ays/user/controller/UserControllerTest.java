@@ -264,6 +264,41 @@ class UserControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
+    void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        final String invalidOperator = "123";
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("90")
+                .withLineNumber(invalidOperator + "6327218").build();
+        UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
+                .withValidFields()
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userSaveService, Mockito.times(0))
+                .saveUser(Mockito.any(UserSaveRequest.class));
+    }
+
+    @Test
     void givenValidUserListRequest_whenUsersFound_thenReturnUsersResponse() throws Exception {
         // Given
         UserListRequest mockUserListRequest = new UserListRequestBuilder().withValidValues().build();

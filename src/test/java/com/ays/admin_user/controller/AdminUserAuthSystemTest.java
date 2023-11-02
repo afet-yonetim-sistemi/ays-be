@@ -113,6 +113,37 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     }
 
     @Test
+    void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        final String invalidOperator = "123";
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("90")
+                .withLineNumber(invalidOperator + "6327218").build();
+        AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
+                .withValidFields()
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        // Then
+        AysError errorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(BASE_PATH.concat("/register"), registerRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(errorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(errorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(errorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+    }
+
+    @Test
     void givenValidLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysLoginRequest loginRequest = new AysLoginRequestBuilder()
