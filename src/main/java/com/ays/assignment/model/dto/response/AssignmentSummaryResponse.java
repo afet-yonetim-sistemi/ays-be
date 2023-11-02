@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * A DTO (Data Transfer Object) representing a summary of an assignment.
+ */
 @Getter
 @Setter
 @SuperBuilder
