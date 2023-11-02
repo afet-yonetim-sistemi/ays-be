@@ -4,6 +4,7 @@ import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.entity.AssignmentEntity;
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.model.mapper.AssignmentUpdateRequestToAssignmentEntityMapper;
 import com.ays.assignment.repository.AssignmentRepository;
@@ -15,14 +16,13 @@ import com.ays.location.model.UserLocation;
 import com.ays.location.model.entity.UserLocationEntity;
 import com.ays.location.model.mapper.UserLocationEntityToUserLocationMapper;
 import com.ays.location.repository.UserLocationRepository;
-import com.ays.common.model.AysPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -93,6 +93,26 @@ class AssignmentServiceImpl implements AssignmentService {
                 assignmentEntities,
                 assignments
         );
+    }
+
+    /**
+     * <p>Retrieves an assignment of a user if there's one with the statuses:</p>
+     * <li>RESERVED</li>
+     * <li>ASSIGNED</li>
+     * <li>IN_PROGRESS</li>
+     * <p>If there's no assignment with the above statuses, the method throws {@link AysAssignmentNotExistByIdException}.</p>
+     *
+     * @return Assignment
+     */
+    @Override
+    public Assignment getAssignmentSummary() {
+
+        String userId = identity.getUserId();
+
+        AssignmentEntity assignmentEntity = assignmentRepository.findByUserIdAndStatusNot(userId, AssignmentStatus.DONE)
+                .filter(entity -> !entity.isAvailable())
+                .orElseThrow(() -> new AysAssignmentNotExistByIdException(userId));
+        return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }
 
     /**
