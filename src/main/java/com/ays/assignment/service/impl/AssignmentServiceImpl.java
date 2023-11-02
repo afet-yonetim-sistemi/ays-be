@@ -10,6 +10,7 @@ import com.ays.assignment.model.mapper.AssignmentUpdateRequestToAssignmentEntity
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdAndStatusException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.location.model.UserLocation;
@@ -111,7 +112,9 @@ class AssignmentServiceImpl implements AssignmentService {
 
         AssignmentEntity assignmentEntity = assignmentRepository.findByUserIdAndStatusNot(userId, AssignmentStatus.DONE)
                 .filter(entity -> !entity.isAvailable())
-                .orElseThrow(() -> new AysAssignmentNotExistByIdException(userId));
+                .orElseThrow(
+                        () -> new AysAssignmentNotExistByUserIdAndStatusException(userId, AssignmentStatus.RESERVED, AssignmentStatus.ASSIGNED, AssignmentStatus.IN_PROGRESS)
+                );
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }
 
