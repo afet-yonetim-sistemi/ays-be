@@ -402,4 +402,86 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
     }
+
+    @Test
+    void givenValidUserId_whenAssignmentWithValidStatusExists_thenReturnAssignment() {
+
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
+                .withValidFields()
+                .withStatus(AssignmentStatus.RESERVED)
+                .build();
+        Assignment mockAssignment = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntity);
+
+        // When
+        Mockito.when(identity.getUserId()).thenReturn(mockUserId);
+        Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
+                .thenReturn(Optional.of(mockAssignmentEntity));
+
+        // Then
+        Assignment assignment = assignmentService.getAssignmentSummary();
+
+        Assertions.assertEquals(mockAssignment.getFirstName(), assignment.getFirstName());
+        Assertions.assertEquals(mockAssignment.getLastName(), assignment.getLastName());
+        Assertions.assertEquals(mockAssignment.getDescription(), assignment.getDescription());
+        Assertions.assertEquals(mockAssignment.getPhoneNumber().getCountryCode(), assignment.getPhoneNumber().getCountryCode());
+        Assertions.assertEquals(mockAssignment.getPhoneNumber().getLineNumber(), assignment.getPhoneNumber().getLineNumber());
+        Assertions.assertEquals(mockAssignment.getStatus(), assignment.getStatus());
+        Assertions.assertEquals(mockAssignment.getPoint(), assignment.getPoint());
+
+        Mockito.verify(identity, Mockito.times(1)).getUserId();
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE);
+    }
+
+    @Test
+    void givenValidUserId_whenAssignmentWithAvailableStatusExists_thenThrowAysAssignmentNotExistByIdException() {
+
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
+                .withValidFields()
+                .withStatus(AssignmentStatus.AVAILABLE)
+                .build();
+
+        // When
+        Mockito.when(identity.getUserId()).thenReturn(mockUserId);
+        Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
+                .thenReturn(Optional.of(mockAssignmentEntity));
+
+        // Then
+        Assertions.assertThrows(
+                AysAssignmentNotExistByIdException.class,
+                () -> assignmentService.getAssignmentSummary()
+        );
+
+        Mockito.verify(identity, Mockito.times(1)).getUserId();
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE);
+
+    }
+
+    @Test
+    void givenValidUserId_whenAssignmentNotExists_thenThrowAysAssignmentNotExistByIdException() {
+
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(identity.getUserId()).thenReturn(mockUserId);
+        Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysAssignmentNotExistByIdException.class,
+                () -> assignmentService.getAssignmentSummary()
+        );
+
+        Mockito.verify(identity, Mockito.times(1)).getUserId();
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE);
+
+    }
 }
