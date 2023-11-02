@@ -12,6 +12,7 @@ import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdAndStatusException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
@@ -436,7 +437,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenUserHasAssignmentWithAvailableStatus_thenThrowAysAssignmentNotExistByIdException() {
+    void givenValidUserId_whenUserHasAssignmentWithAvailableStatus_thenThrowAysAssignmentNotExistByUserIdAndStatus() {
 
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
@@ -452,7 +453,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAssignmentNotExistByIdException.class,
+                AysAssignmentNotExistByUserIdAndStatusException.class,
                 () -> assignmentService.getAssignmentSummary()
         );
 
@@ -463,7 +464,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenUserHasNoAssignment_thenThrowAysAssignmentNotExistByIdException() {
+    void givenValidUserId_whenUserHasNoAssignment_thenThrowAysAssignmentNotExistByUserIdAndStatus() {
 
         // Given
         String mockUserId = AysRandomUtil.generateUUID();
@@ -475,7 +476,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAssignmentNotExistByIdException.class,
+                AysAssignmentNotExistByUserIdAndStatusException.class,
                 () -> assignmentService.getAssignmentSummary()
         );
 
