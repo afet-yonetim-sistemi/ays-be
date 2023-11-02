@@ -33,7 +33,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
         AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(AysTestData.Institution.VALID_ID_ONE)
-                .withVerificationId(AysTestData.VALID_VERIFICATION_ID)
+                .withApplicationId(AysTestData.VALID_APPLICATION_ID)
                 .build();
 
         // Then

@@ -21,7 +21,7 @@ public class AdminUserRegisterRequest {
      * Registration Verification ID for Registering Admin User
      */
     @NotBlank
-    private String verificationId;
+    private String applicationId;
 
     @NotBlank
     private String institutionId;
