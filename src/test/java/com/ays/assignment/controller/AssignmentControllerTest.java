@@ -53,13 +53,13 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     private AssignmentConcludeService assignmentConcludeService;
 
 
-    private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
-    private static final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private static final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
-    private static final AssignmentToAssignmentsResponseMapper ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER = AssignmentToAssignmentsResponseMapper.initialize();
+    private final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
+    private final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentsResponseMapper ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER = AssignmentToAssignmentsResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1";
+    private final String BASE_PATH = "/api/v1";
 
 
     @Test
@@ -746,7 +746,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenVoid_whenUserHasAssignmentWithValidStatus_thenReturnAysResponseOfAssignmentSummaryResponse() throws Exception {
+    void whenUserHasAssignmentWithValidStatus_thenReturnAysResponseOfAssignmentSummaryResponse() throws Exception {
 
         // When
         Assignment mockAssignment = new AssignmentBuilder().build();
@@ -775,7 +775,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenVoid_whenUserUnauthorizedForGettingAssignmentSummary_thenReturnAccessDeniedException() throws Exception {
+    void whenUserUnauthorizedForGettingAssignmentSummary_thenReturnAccessDeniedException() throws Exception {
 
         // When
         Assignment mockAssignment = new AssignmentBuilder().build();

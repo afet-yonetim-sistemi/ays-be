@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,13 +109,14 @@ class AssignmentServiceImpl implements AssignmentService {
     @Override
     public Assignment getAssignmentSummary() {
 
+        final EnumSet<AssignmentStatus> acceptedStatuses = EnumSet.of(
+                AssignmentStatus.ASSIGNED, AssignmentStatus.RESERVED, AssignmentStatus.IN_PROGRESS
+        );
+
         String userId = identity.getUserId();
 
-        AssignmentEntity assignmentEntity = assignmentRepository.findByUserIdAndStatusNot(userId, AssignmentStatus.DONE)
-                .filter(entity -> !entity.isAvailable())
-                .orElseThrow(
-                        () -> new AysAssignmentNotExistByUserIdAndStatusException(userId, AssignmentStatus.RESERVED, AssignmentStatus.ASSIGNED, AssignmentStatus.IN_PROGRESS)
-                );
+        AssignmentEntity assignmentEntity = assignmentRepository.findByUserIdAndStatusIn(userId, acceptedStatuses)
+                .orElseThrow(() -> new AysAssignmentNotExistByUserIdAndStatusException(userId, acceptedStatuses));
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }
 

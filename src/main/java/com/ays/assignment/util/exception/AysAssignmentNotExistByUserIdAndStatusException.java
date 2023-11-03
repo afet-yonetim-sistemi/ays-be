@@ -4,7 +4,7 @@ import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.common.util.exception.AysNotExistException;
 
 import java.io.Serial;
-import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Exception to be thrown when a user does not have assignment by status.
@@ -31,11 +31,11 @@ public class AysAssignmentNotExistByUserIdAndStatusException extends AysNotExist
     /**
      * Constructs a new AysAssignmentNotExistByUserIdAndStatusException with the specified userId and statuses.
      *
-     * @param userId           the userId of user that try to handle assignment.
+     * @param userId   the userId of user that try to handle assignment.
      * @param statuses the assignmentStatuses of assignment that is tried to handle.
      */
-    public AysAssignmentNotExistByUserIdAndStatusException(String userId, AssignmentStatus... statuses) {
-        super("ASSIGNMENT NOT EXIST! userId:" + userId + ", assignmentStatuses:" + Arrays.toString(statuses));
+    public AysAssignmentNotExistByUserIdAndStatusException(String userId, Collection<AssignmentStatus> statuses) {
+        super("ASSIGNMENT NOT EXIST! userId:" + userId + ", assignmentStatuses:" + statuses.toString());
     }
 
 }

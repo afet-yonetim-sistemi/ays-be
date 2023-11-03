@@ -405,17 +405,15 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenUserHasAssignmentWithValidStatus_thenReturnAssignment() {
+    void whenUserHasAssignmentWithValidStatus_thenReturnAssignment() {
 
-        // Given
+        // When
         String mockUserId = AysRandomUtil.generateUUID();
         AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
                 .withValidFields()
                 .withStatus(AssignmentStatus.RESERVED)
                 .build();
         Assignment mockAssignment = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntity);
-
-        // When
         Mockito.when(identity.getUserId()).thenReturn(mockUserId);
         Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
                 .thenReturn(Optional.of(mockAssignmentEntity));
@@ -437,16 +435,14 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenUserHasAssignmentWithAvailableStatus_thenThrowAysAssignmentNotExistByUserIdAndStatus() {
+    void whenUserHasAssignmentWithAvailableStatus_thenThrowAysAssignmentNotExistByUserIdAndStatus() {
 
-        // Given
+        // When
         String mockUserId = AysRandomUtil.generateUUID();
         AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
                 .withValidFields()
                 .withStatus(AssignmentStatus.AVAILABLE)
                 .build();
-
-        // When
         Mockito.when(identity.getUserId()).thenReturn(mockUserId);
         Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
                 .thenReturn(Optional.of(mockAssignmentEntity));
@@ -464,12 +460,10 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenUserHasNoAssignment_thenThrowAysAssignmentNotExistByUserIdAndStatus() {
-
-        // Given
-        String mockUserId = AysRandomUtil.generateUUID();
+    void whenUserHasNoAssignment_thenThrowAysAssignmentNotExistByUserIdAndStatus() {
 
         // When
+        String mockUserId = AysRandomUtil.generateUUID();
         Mockito.when(identity.getUserId()).thenReturn(mockUserId);
         Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
                 .thenReturn(Optional.empty());
