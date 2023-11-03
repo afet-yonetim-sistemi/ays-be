@@ -21,7 +21,7 @@ public class AysAssignmentNotExistByUserIdException extends AysNotExistException
      * @param userId the ID of the user that does not have assignment
      */
     public AysAssignmentNotExistByUserIdException(String userId) {
-        super("USER DOES NOT HAVE ASSIGNMENT! id:" + userId);
+        super("USER DOES NOT HAVE ASSIGNMENT! userId:" + userId);
     }
 
 }
