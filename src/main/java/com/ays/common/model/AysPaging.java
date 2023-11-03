@@ -1,9 +1,10 @@
 package com.ays.common.model;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Range;
 
 /**
  * A class representing paging parameters for a query. It includes the page number and page size.
@@ -14,17 +15,29 @@ import org.hibernate.validator.constraints.Range;
 public class AysPaging {
 
     /**
-     * The page number, which should be greater than or equal to 1.
+     * The page number.
+     *
+     * <p>
+     * The page number specifies the page of data to retrieve. It should be a positive integer greater than or equal to 1.
+     * For example, setting it to 1 would request the first page of data.
+     * </p>
      */
     @NotNull
-    @Range(min = 1)
+    @Min(1)
+    @Max(Integer.MAX_VALUE)
     public Long page;
 
     /**
-     * The number of elements in each page, which should be between 1 and 100.
+     * The number of elements in each page.
+     *
+     * <p>
+     * The pageSize field determines the number of elements to be included in each page of data. It should be a positive
+     * integer within the range of 1 to the maximum value allowed (typically 1 to 100).
+     * </p>
      */
     @NotNull
-    @Range(min = 10, max = 10)
+    @Min(1)
+    @Max(Integer.MAX_VALUE)
     public Long pageSize;
 
     /**
