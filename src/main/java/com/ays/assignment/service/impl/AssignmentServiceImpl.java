@@ -50,7 +50,7 @@ class AssignmentServiceImpl implements AssignmentService {
         String userId = identity.getUserId();
         final AssignmentEntity assignmentEntity = assignmentRepository
                 .findByUserIdAndStatusNot(userId, AssignmentStatus.DONE)
-                .filter(AssignmentEntity::isAssigned)
+                .filter(assignment -> assignment.isAssigned() || assignment.isInProgress())
                 .orElseThrow(() -> new AysAssignmentNotExistByUserIdException(userId));
 
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
