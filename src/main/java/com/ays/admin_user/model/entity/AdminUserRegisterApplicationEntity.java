@@ -1,7 +1,8 @@
 package com.ays.admin_user.model.entity;
 
-import com.ays.admin_user.model.enums.AdminUserRegisterVerificationStatus;
+import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.common.model.entity.BaseEntity;
+import com.ays.institution.model.entity.InstitutionEntity;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,8 +15,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "AYS_ADMIN_USER_REGISTER_VERIFICATION")
-public class AdminUserRegisterVerificationEntity extends BaseEntity {
+@Table(name = "AYS_ADMIN_USER_REGISTER_APPLICATION")
+public class AdminUserRegisterApplicationEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
@@ -24,23 +25,33 @@ public class AdminUserRegisterVerificationEntity extends BaseEntity {
     @Column(name = "REASON")
     private String reason;
 
+    @Column(name = "REJECT_REASON")
+    private String rejectReason;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private AdminUserRegisterVerificationStatus status;
+    private AdminUserRegisterApplicationStatus status;
 
     @Column(name = "ADMIN_USER_ID")
     private String adminUserId;
+
+    @Column(name = "INSTITUTION_ID")
+    private String institutionId;
 
     @OneToOne
     @JoinColumn(name = "ADMIN_USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private AdminUserEntity adminUser;
 
+    @OneToOne
+    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private InstitutionEntity institution;
+
     public boolean isWaiting() {
-        return AdminUserRegisterVerificationStatus.WAITING.equals(this.status);
+        return AdminUserRegisterApplicationStatus.WAITING.equals(this.status);
     }
 
     public void complete(final String adminUserId) {
         this.adminUserId = adminUserId;
-        this.status = AdminUserRegisterVerificationStatus.COMPLETED;
+        this.status = AdminUserRegisterApplicationStatus.COMPLETED;
     }
 }

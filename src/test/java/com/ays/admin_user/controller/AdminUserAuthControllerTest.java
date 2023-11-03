@@ -131,6 +131,40 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
+    void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+        // Given
+        final String invalidOperator = "123";
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("90")
+                .withLineNumber(invalidOperator + "6327218").build();
+        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+                .withValidFields()
+                .withPhoneNumber(mockPhoneNumber).build();
+
+        // Then
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(BASE_PATH.concat("/register"), mockRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(adminUserRegisterService, Mockito.times(0))
+                .register(Mockito.any());
+    }
+
+    @Test
     void givenNameWithNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
         // Given
         String invalidName = "John 1234";
@@ -162,6 +196,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         Mockito.verify(adminUserRegisterService, Mockito.times(0))
                 .register(Mockito.any());
     }
+
     @Test
     void givenNameWithForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
         // Given
