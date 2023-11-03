@@ -23,7 +23,10 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysTestData;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -31,12 +34,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AssignmentSystemTest extends AbstractSystemTest {
 
-    private static final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
-    private static final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private static final AssignmentToAssignmentUserResponseMapper ASSIGNMENT_TO_ASSIGNMENT_USER_RESPONSE_MAPPER = AssignmentToAssignmentUserResponseMapper.initialize();
-    private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
+    private final AssignmentToAssignmentUserResponseMapper ASSIGNMENT_TO_ASSIGNMENT_USER_RESPONSE_MAPPER = AssignmentToAssignmentUserResponseMapper.initialize();
+    private final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -98,7 +102,8 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenUserAssignmentFound_thenReturnAssignmentUserResponse() throws Exception {
+    @Order(1)
+    void whenUserAssignmentFound_thenReturnAssignmentUserResponse() throws Exception {
 
         // When
         Assignment mockAssignment = new AssignmentBuilder()
@@ -107,7 +112,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/assignment");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, userTokenFive.getAccessToken());
+                .get(endpoint, userTokenThree.getAccessToken());
 
         AssignmentUserResponse mockAssignmentUserResponse = ASSIGNMENT_TO_ASSIGNMENT_USER_RESPONSE_MAPPER.map(mockAssignment);
         AysResponse<AssignmentUserResponse> mockAysResponse = AysResponse.successOf(mockAssignmentUserResponse);
@@ -127,7 +132,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
 
 
     @Test
-    void givenNothing_whenUnauthorizedForGettingUserAssignment_thenReturnAccessDeniedException() throws Exception {
+    void whenUnauthorizedForGettingUserAssignment_thenReturnAccessDeniedException() throws Exception {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment");
@@ -207,6 +212,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
+    @Order(2)
     void givenValidAssignmentSearchRequest_whenAssignmentSearched_thenReturnAssignmentSearchResponse() throws Exception {
         // Given
         AssignmentSearchRequest mockSearchRequest = new AssignmentSearchRequestBuilder()
@@ -318,7 +324,8 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentApproved_thenReturnNothing() throws Exception {
+    @Order(3)
+    void whenAssignmentApproved_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/approve");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
@@ -338,7 +345,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenUserUnauthorizedForApproving_thenReturnAccessDeniedException() throws Exception {
+    void whenUserUnauthorizedForApproving_thenReturnAccessDeniedException() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/approve");
         AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
@@ -358,7 +365,8 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentStarted_thenReturnNothing() throws Exception {
+    @Order(4)
+    void whenAssignmentStarted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/start");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
@@ -378,7 +386,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenUserUnauthorizedForStarting_thenReturnAccessDeniedException() throws Exception {
+    void whenUserUnauthorizedForStarting_thenReturnAccessDeniedException() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/start");
         AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
@@ -398,7 +406,8 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentRejected_thenReturnNothing() throws Exception {
+    @Order(6)
+    void whenAssignmentRejected_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/reject");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
@@ -418,7 +427,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenUserUnauthorizedForRejecting_thenReturnAccessDeniedException() throws Exception {
+    void whenUserUnauthorizedForRejecting_thenReturnAccessDeniedException() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/reject");
         AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
@@ -438,13 +447,14 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentCompleted_thenReturnNothing() throws Exception {
+    @Order(5)
+    void whenAssignmentCompleted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/complete");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenFive.getAccessToken()))
+                        .post(endpoint, userTokenThree.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -458,7 +468,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenUserUnauthorizedForCompleting_thenReturnAccessDeniedException() throws Exception {
+    void whenUserUnauthorizedForCompleting_thenReturnAccessDeniedException() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/complete");
         AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;

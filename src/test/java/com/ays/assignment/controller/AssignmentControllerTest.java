@@ -51,11 +51,11 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     private AssignmentConcludeService assignmentConcludeService;
 
 
-    private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
-    private static final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private static final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
-    private static final AssignmentToAssignmentsResponseMapper ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER = AssignmentToAssignmentsResponseMapper.initialize();
-    private static final AssignmentToAssignmentUserResponseMapper ASSIGNMENT_TO_ASSIGNMENT_USER_RESPONSE_MAPPER = AssignmentToAssignmentUserResponseMapper.initialize();
+    private final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
+    private final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentsResponseMapper ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER = AssignmentToAssignmentsResponseMapper.initialize();
+    private final AssignmentToAssignmentUserResponseMapper ASSIGNMENT_TO_ASSIGNMENT_USER_RESPONSE_MAPPER = AssignmentToAssignmentUserResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -193,7 +193,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenUserAssignmentFound_thenReturnAssignmentUserResponse() throws Exception {
+    void whenUserAssignmentFound_thenReturnAssignmentUserResponse() throws Exception {
 
         // When
         Assignment mockAssignment = new AssignmentBuilder().build();
@@ -225,7 +225,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
 
     @Test
-    void givenNothing_whenUnauthorizedForGettingUserAssignment_thenReturnAccessDeniedException() throws Exception {
+    void whenUnauthorizedForGettingUserAssignment_thenReturnAccessDeniedException() throws Exception {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment");
@@ -599,7 +599,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentApproved_thenReturnNothing() throws Exception {
+    void whenAssignmentApproved_thenReturnNothing() throws Exception {
         // When
         Mockito.doNothing().when(assignmentConcludeService).approve();
 
@@ -649,7 +649,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentStarted_thenReturnNothing() throws Exception {
+    void whenAssignmentStarted_thenReturnNothing() throws Exception {
         // When
         Mockito.doNothing().when(assignmentConcludeService).start();
 
@@ -699,7 +699,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentRejected_thenReturnNothing() throws Exception {
+    void whenAssignmentRejected_thenReturnNothing() throws Exception {
         // When
         Mockito.doNothing().when(assignmentConcludeService).reject();
 
@@ -749,7 +749,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentCompleted_thenReturnNothing() throws Exception {
+    void whenAssignmentCompleted_thenReturnNothing() throws Exception {
         // When
         Mockito.doNothing().when(assignmentConcludeService).complete();
 
