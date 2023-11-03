@@ -2,9 +2,11 @@ package com.ays.user.service.impl;
 
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
+import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.enums.UserSupportStatus;
+import com.ays.user.model.mapper.UserEntityToUserMapper;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.service.UserSelfService;
 import com.ays.user.util.exception.AysUserCannotUpdateSupportStatusException;
@@ -23,10 +25,24 @@ import java.util.EnumSet;
 class UserSelfServiceImpl implements UserSelfService {
 
     private final UserRepository userRepository;
-
     private final AssignmentRepository assignmentRepository;
-
     private final AysIdentity identity;
+
+    private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
+
+    /**
+     * Get the user's self information.
+     *
+     * @return A User object containing user's self information.
+     */
+    @Override
+    public User getUserSelfInformation() {
+        final String userId = identity.getUserId();
+        final UserEntity userEntity = userRepository.findById(userId)
+                .filter(UserEntity::isActive)
+                .orElseThrow(() -> new AysUserNotExistByIdException(userId));
+        return userEntityToUserMapper.map(userEntity);
+    }
 
     /**
      * Updates the support status of a user.
@@ -52,7 +68,7 @@ class UserSelfServiceImpl implements UserSelfService {
     /**
      * Checks if a user has an assignment when update supportStatus to specific statuses.
      *
-     * @param userId the id of the user to check
+     * @param userId            the id of the user to check
      * @param userSupportStatus the user support status of the user to check
      */
     private void checkAssignment(String userId, UserSupportStatus userSupportStatus) {
