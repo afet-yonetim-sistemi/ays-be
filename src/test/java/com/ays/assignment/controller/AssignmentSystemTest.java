@@ -6,11 +6,14 @@ import com.ays.assignment.model.AssignmentBuilder;
 import com.ays.assignment.model.dto.request.*;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentSummaryResponseMapper;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
@@ -31,10 +34,10 @@ import java.util.List;
 
 class AssignmentSystemTest extends AbstractSystemTest {
 
-    private static final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
     private final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
-
+    private final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
+    private final AssignmentToAssignmentSummaryResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SUMMARY_RESPONSE_MAPPER = AssignmentToAssignmentSummaryResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -508,11 +511,15 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenVoid_whenUserHasAssignmentWithValidStatus_thenReturnAysResponseOfSuccess() throws Exception {
+    void whenUserHasAssignmentWithValidStatus_thenReturnAssignmentSummaryResponse() throws Exception {
+
+        // When
+        Assignment assignment = new AssignmentBuilder().withStatus(AssignmentStatus.RESERVED).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/summary");
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        AssignmentSummaryResponse mockResponse = ASSIGNMENT_TO_ASSIGNMENT_SUMMARY_RESPONSE_MAPPER.map(assignment);
+        AysResponse<AssignmentSummaryResponse> mockAysResponse = AysResponse.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(endpoint, userTokenThree.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
@@ -525,7 +532,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenVoid_whenUserUnauthorizedForGettingAssignmentSummary_thenThrowAccessDeniedException() throws Exception {
+    void whenUserUnauthorizedForGettingAssignmentSummary_thenThrowAccessDeniedException() throws Exception {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/summary");

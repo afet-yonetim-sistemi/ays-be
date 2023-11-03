@@ -6,13 +6,11 @@ import com.ays.assignment.model.AssignmentBuilder;
 import com.ays.assignment.model.dto.request.*;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
 import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
-import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
+import com.ays.assignment.model.mapper.*;
 import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
@@ -57,7 +55,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     private final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
     private final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
     private final AssignmentToAssignmentsResponseMapper ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER = AssignmentToAssignmentsResponseMapper.initialize();
-
+    private final AssignmentToAssignmentSummaryResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SUMMARY_RESPONSE_MAPPER = AssignmentToAssignmentSummaryResponseMapper.initialize();
 
     private final String BASE_PATH = "/api/v1";
 
@@ -746,7 +744,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void whenUserHasAssignmentWithValidStatus_thenReturnAysResponseOfAssignmentSummaryResponse() throws Exception {
+    void whenUserHasAssignmentWithValidStatus_thenReturnAssignmentSummaryResponse() throws Exception {
 
         // When
         Assignment mockAssignment = new AssignmentBuilder().build();
@@ -755,8 +753,8 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/summary");
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
-
+        AssignmentSummaryResponse mockResponse = ASSIGNMENT_TO_ASSIGNMENT_SUMMARY_RESPONSE_MAPPER.map(mockAssignment);
+        AysResponse<AssignmentSummaryResponse> mockAysResponse = AysResponse.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(endpoint, mockUserToken.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
