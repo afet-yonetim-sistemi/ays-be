@@ -82,8 +82,8 @@ class AssignmentController {
     @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<AssignmentUserResponse> getUserAssignment() {
         final Assignment assignment = assignmentService.getUserAssignment();
-        final AssignmentUserResponse assignmentResponse = assignmentToAssignmentUserResponseMapper.map(assignment);
-        return AysResponse.successOf(assignmentResponse);
+        final AssignmentUserResponse assignmentUserResponse = assignmentToAssignmentUserResponseMapper.map(assignment);
+        return AysResponse.successOf(assignmentUserResponse);
     }
 
     /**
