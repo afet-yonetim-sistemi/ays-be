@@ -10,6 +10,7 @@ import com.ays.assignment.model.mapper.AssignmentUpdateRequestToAssignmentEntity
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdException;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdAndStatusException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
@@ -40,6 +41,22 @@ class AssignmentServiceImpl implements AssignmentService {
     private static final AssignmentUpdateRequestToAssignmentEntityMapper assignmentUpdateRequestToAssignmentEntityMapper = AssignmentUpdateRequestToAssignmentEntityMapper.initialize();
 
     private static final UserLocationEntityToUserLocationMapper userLocationEntityToUserLocationMapper = UserLocationEntityToUserLocationMapper.initialize();
+
+
+    /**
+     * Retrieves the assignment that is assigned to the current user.
+     *
+     * @return the Assignment object representing the retrieved user's assignment
+     */
+    public Assignment getUserAssignment() {
+        String userId = identity.getUserId();
+        final AssignmentEntity assignmentEntity = assignmentRepository
+                .findByUserIdAndStatusNot(userId, AssignmentStatus.DONE)
+                .filter(assignment -> assignment.isAssigned() || assignment.isInProgress())
+                .orElseThrow(() -> new AysAssignmentNotExistByUserIdException(userId));
+
+        return assignmentEntityToAssignmentMapper.map(assignmentEntity);
+    }
 
     /**
      * Retrieves an assignment by their ID.

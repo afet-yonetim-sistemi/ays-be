@@ -71,6 +71,10 @@ public class AssignmentEntity extends BaseEntity {
         return AssignmentStatus.ASSIGNED.equals(this.status);
     }
 
+    public boolean isInProgress() {
+        return AssignmentStatus.IN_PROGRESS.equals(this.status);
+    }
+
     public void available() {
         this.status = AssignmentStatus.AVAILABLE;
         this.userId = null;

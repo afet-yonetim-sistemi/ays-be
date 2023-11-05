@@ -8,10 +8,12 @@ import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
+import com.ays.assignment.model.dto.response.AssignmentUserResponse;
 import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSummaryResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentUserResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
 import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.AssignmentSaveService;
@@ -50,6 +52,7 @@ class AssignmentController {
     private static final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
     private static final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
     private static final AssignmentToAssignmentSummaryResponseMapper assignmentToAssignmentSummaryResponseMapper = AssignmentToAssignmentSummaryResponseMapper.initialize();
+    private static final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
 
     /**
      * Gets an Assignments list based on the specified filters in the {@link AssignmentListRequest}
@@ -70,6 +73,20 @@ class AssignmentController {
                 .filteredBy(listRequest.getFilter())
                 .build();
         return AysResponse.successOf(pageOfAssignmentsResponse);
+    }
+
+    /**
+     * Gets the assignment that assigns to the current user.
+     * Requires USER authority.
+     *
+     * @return A response object containing the retrieved user's assignment data.
+     */
+    @GetMapping("/assignment")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<AssignmentUserResponse> getUserAssignment() {
+        final Assignment assignment = assignmentService.getUserAssignment();
+        final AssignmentUserResponse assignmentUserResponse = assignmentToAssignmentUserResponseMapper.map(assignment);
+        return AysResponse.successOf(assignmentUserResponse);
     }
 
     /**

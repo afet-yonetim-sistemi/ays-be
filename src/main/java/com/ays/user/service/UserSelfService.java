@@ -1,11 +1,14 @@
 package com.ays.user.service;
 
+import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 
 /**
  * UserSelfService interface is responsible for managing a user's own operations
  */
 public interface UserSelfService {
+
+    User getUserSelfInformation();
 
     /**
      * Updates the support status of a user.
