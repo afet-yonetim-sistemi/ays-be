@@ -4,9 +4,13 @@ import com.ays.AbstractRestControllerTest;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.user.model.User;
+import com.ays.user.model.UserBuilder;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequestBuilder;
+import com.ays.user.model.dto.response.UserSelfResponse;
 import com.ays.user.model.enums.UserSupportStatus;
+import com.ays.user.model.mapper.UserToUserSelfResponseMapper;
 import com.ays.user.service.UserSelfService;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
@@ -20,10 +24,70 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 class UserSelfControllerTest extends AbstractRestControllerTest {
 
     @MockBean
-    private UserSelfService supportStatusService;
+    private UserSelfService userSelfService;
+
+
+    private final UserToUserSelfResponseMapper userToUserSelfResponseMapper = UserToUserSelfResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1/user-self";
+
+    @Test
+    void givenValidUserToken_whenUserFound_thenReturnUserSelfResponse() throws Exception {
+        // Given
+        String mockAccessToken = mockUserToken.getAccessToken();
+
+        // When
+        User mockUser = new UserBuilder().build();
+        Mockito.when(userSelfService.getUserSelfInformation())
+                .thenReturn(mockUser);
+
+        // Then
+        UserSelfResponse mockUserSelfResponse = userToUserSelfResponseMapper.map(mockUser);
+        AysResponse<UserSelfResponse> mockAysResponse = AysResponse.successOf(mockUserSelfResponse);
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .get(BASE_PATH, mockAccessToken))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        Mockito.verify(userSelfService, Mockito.times(1))
+                .getUserSelfInformation();
+    }
+
+    @Test
+    void givenInvalidAccessToken_whenUserUnauthorizedForGetting_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        String mockAccessToken = mockAdminUserToken.getAccessToken();
+
+        // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(BASE_PATH, mockAccessToken);
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        Mockito.verify(userSelfService, Mockito.times(0))
+                .getUserSelfInformation();
+    }
+
 
     @Test
     void givenValidUserSupportStatusUpdateRequest_whenUserRole_thenReturnSuccess() throws Exception {
@@ -35,7 +99,7 @@ class UserSelfControllerTest extends AbstractRestControllerTest {
                 .withSupportStatus(userSupportStatus).build();
 
         // When
-        Mockito.doNothing().when(supportStatusService)
+        Mockito.doNothing().when(userSelfService)
                 .updateUserSupportStatus(Mockito.any(UserSupportStatusUpdateRequest.class));
 
         // Then
@@ -54,7 +118,7 @@ class UserSelfControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
-        Mockito.verify(supportStatusService, Mockito.times(1))
+        Mockito.verify(userSelfService, Mockito.times(1))
                 .updateUserSupportStatus(Mockito.any(UserSupportStatusUpdateRequest.class));
     }
 
@@ -82,7 +146,6 @@ class UserSelfControllerTest extends AbstractRestControllerTest {
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
-
     }
 
 }

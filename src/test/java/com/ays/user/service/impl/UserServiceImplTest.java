@@ -46,7 +46,8 @@ class UserServiceImplTest extends AbstractUnitTest {
     private AysIdentity identity;
 
 
-    private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
+    private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
+
 
     @Test
     void givenUserListRequest_whenUsersFound_thenReturnUsers() {
@@ -56,7 +57,7 @@ class UserServiceImplTest extends AbstractUnitTest {
         List<UserEntity> mockUserEntities = Collections.singletonList(new UserEntityBuilder().build());
         Page<UserEntity> mockPageUserEntities = new PageImpl<>(mockUserEntities);
 
-        List<User> mockUsers = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntities);
+        List<User> mockUsers = userEntityToUserMapper.map(mockUserEntities);
         AysPage<User> mockAysPageUsers = AysPage.of(mockPageUserEntities, mockUsers);
 
         String mockInstitutionId = AysRandomUtil.generateUUID();
@@ -88,7 +89,7 @@ class UserServiceImplTest extends AbstractUnitTest {
                 .withInstitutionId(mockInstitutionId).build();
         String mockUserId = mockUserEntity.getId();
 
-        User mockUser = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntity);
+        User mockUser = userEntityToUserMapper.map(mockUserEntity);
 
         // When
         Mockito.when(identity.getInstitutionId())
@@ -101,10 +102,10 @@ class UserServiceImplTest extends AbstractUnitTest {
 
         Assertions.assertEquals(mockUser.getFirstName(), user.getFirstName());
 
-        Mockito.verify(userRepository, Mockito.times(1))
-                .findByIdAndInstitutionId(mockUserId, mockInstitutionId);
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(mockUserId, mockInstitutionId);
     }
 
     @Test
@@ -125,10 +126,10 @@ class UserServiceImplTest extends AbstractUnitTest {
                 () -> userService.getUserById(mockUserId)
         );
 
-        Mockito.when(userRepository.findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(Optional.empty());
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
     }
 
     @Test
