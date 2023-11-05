@@ -34,10 +34,10 @@ import java.util.List;
 
 class AssignmentSystemTest extends AbstractSystemTest {
 
-    private final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
     private final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
-    private final AssignmentToAssignmentSummaryResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SUMMARY_RESPONSE_MAPPER = AssignmentToAssignmentSummaryResponseMapper.initialize();
+    private final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
+    private final AssignmentToAssignmentSummaryResponseMapper assignmentToAssignmentSummaryResponseMapper = AssignmentToAssignmentSummaryResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -113,7 +113,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, adminUserTokenOne.getAccessToken());
 
-        AssignmentResponse mockAssignmentResponse = ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER.map(mockAssignment);
+        AssignmentResponse mockAssignmentResponse = assignmentToAssignmentResponseMapper.map(mockAssignment);
         AysResponse<AssignmentResponse> mockAysResponse = AysResponse.successOf(mockAssignmentResponse);
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())
@@ -215,7 +215,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
 
         List<AssignmentEntity> assignmentEntities = AssignmentEntityBuilder.generateValidAssignmentEntities(1);
         Page<AssignmentEntity> pageOfAssignmentEntities = new PageImpl<>(assignmentEntities);
-        List<Assignment> assignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(assignmentEntities);
+        List<Assignment> assignments = assignmentEntityToAssignmentMapper.map(assignmentEntities);
         AysPage<Assignment> aysPageOfAssignments = AysPage.of(pageOfAssignmentEntities, assignments);
         AysPageResponse<Assignment> aysPageResponseOfAssignments = AysPageResponse.<Assignment>builder()
                 .of(aysPageOfAssignments).build();
@@ -518,7 +518,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/summary");
-        AssignmentSummaryResponse mockResponse = ASSIGNMENT_TO_ASSIGNMENT_SUMMARY_RESPONSE_MAPPER.map(assignment);
+        AssignmentSummaryResponse mockResponse = assignmentToAssignmentSummaryResponseMapper.map(assignment);
         AysResponse<AssignmentSummaryResponse> mockAysResponse = AysResponse.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(endpoint, userTokenThree.getAccessToken()))
