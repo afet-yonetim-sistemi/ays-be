@@ -215,7 +215,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     void givenValidAssignmentSearchRequest_whenAssignmentSearched_thenReturnAssignmentSearchResponse() throws Exception {
         // Given
         AssignmentSearchRequest mockSearchRequest = new AssignmentSearchRequestBuilder()
@@ -327,7 +327,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     void whenAssignmentApproved_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/approve");
@@ -368,7 +368,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     void whenAssignmentStarted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/start");
@@ -409,7 +409,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     void whenAssignmentRejected_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/reject");
@@ -450,7 +450,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     void whenAssignmentCompleted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/complete");
@@ -574,6 +574,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
+    @Order(2)
     @Test
     void whenUserHasAssignmentWithValidStatus_thenReturnAssignmentSummaryResponse() throws Exception {
 
