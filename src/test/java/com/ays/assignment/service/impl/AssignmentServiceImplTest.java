@@ -12,6 +12,7 @@ import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
@@ -49,8 +50,57 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
     @Mock
     private AysIdentity identity;
 
-    private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
-    private static final UserLocationEntityToUserLocationMapper USER_LOCATION_ENTITY_TO_USER_LOCATION_MAPPER = UserLocationEntityToUserLocationMapper.initialize();
+    private final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
+    private final UserLocationEntityToUserLocationMapper userLocationEntityToUserLocationMapper = UserLocationEntityToUserLocationMapper.initialize();
+
+    @Test
+    void whenGetUserAssignment_thenReturnAssignment() {
+
+        // Given
+        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
+                .withValidFields()
+                .withStatus(AssignmentStatus.IN_PROGRESS)
+                .build();
+        String mockUserId = mockAssignmentEntity.getUserId();
+
+        // When
+        Mockito.when(identity.getUserId())
+                .thenReturn(mockUserId);
+        Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
+                .thenReturn(Optional.of(mockAssignmentEntity));
+
+        // Then
+        assignmentService.getUserAssignment();
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getUserId();
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE);
+    }
+
+    @Test
+    void whenUserNotHaveAssignment_thenThrowAysAssignmentNotExistByUserIdException() {
+
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(identity.getUserId())
+                .thenReturn(mockUserId);
+        Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysAssignmentNotExistByUserIdException.class,
+                () -> assignmentService.getUserAssignment()
+        );
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getUserId();
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE);
+    }
 
     @Test
     void givenAssignmentId_whenGetAssignment_thenReturnAssignment() {
@@ -64,8 +114,8 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
         String mockAssignmentId = mockAssignmentEntity.getId();
         UserLocationEntity mockUserLocationEntity = new UserLocationEntityBuilder().withValidFields().build();
 
-        UserLocation mockUserLocation = USER_LOCATION_ENTITY_TO_USER_LOCATION_MAPPER.map(mockUserLocationEntity);
-        Assignment mockAssignment = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntity);
+        UserLocation mockUserLocation = userLocationEntityToUserLocationMapper.map(mockUserLocationEntity);
+        Assignment mockAssignment = assignmentEntityToAssignmentMapper.map(mockAssignmentEntity);
         mockAssignment.getUser().setLocation(mockUserLocation.getPoint());
 
         // When
@@ -137,7 +187,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
                 .withValidFields().build());
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
 
-        List<Assignment> mockAssignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntities);
+        List<Assignment> mockAssignments = assignmentEntityToAssignmentMapper.map(mockAssignmentEntities);
         AysPage<Assignment> mockAysPageAssignments = AysPage.of(assignmentListRequest.getFilter(), mockPageAssignmentEntities, mockAssignments);
 
         // When
@@ -170,7 +220,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
                 .withValidFields().build());
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
 
-        List<Assignment> mockAssignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntities);
+        List<Assignment> mockAssignments = assignmentEntityToAssignmentMapper.map(mockAssignmentEntities);
         AysPage<Assignment> mockAysPageAssignments = AysPage.of(assignmentListRequest.getFilter(), mockPageAssignmentEntities, mockAssignments);
 
         // When
@@ -202,7 +252,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
                 .withValidFields().build());
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
 
-        List<Assignment> mockAssignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntities);
+        List<Assignment> mockAssignments = assignmentEntityToAssignmentMapper.map(mockAssignmentEntities);
         AysPage<Assignment> mockAysPageAssignments = AysPage.of(assignmentListRequest.getFilter(), mockPageAssignmentEntities, mockAssignments);
 
         // When

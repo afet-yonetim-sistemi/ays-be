@@ -6,13 +6,11 @@ import com.ays.assignment.model.AssignmentBuilder;
 import com.ays.assignment.model.dto.request.*;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.dto.response.AssignmentUserResponse;
 import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
-import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
+import com.ays.assignment.model.mapper.*;
 import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
@@ -53,10 +51,11 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     private AssignmentConcludeService assignmentConcludeService;
 
 
-    private static final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
-    private static final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private static final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
-    private static final AssignmentToAssignmentsResponseMapper ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER = AssignmentToAssignmentsResponseMapper.initialize();
+    private final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
+    private final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
+    private final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -194,6 +193,60 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
+    void whenUserAssignmentFound_thenReturnAssignmentUserResponse() throws Exception {
+
+        // When
+        Assignment mockAssignment = new AssignmentBuilder().build();
+        Mockito.when(assignmentService.getUserAssignment())
+                .thenReturn(mockAssignment);
+
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment");
+        AssignmentUserResponse mockAssignmentUserResponse = assignmentToAssignmentUserResponseMapper.map(mockAssignment);
+        AysResponse<AssignmentUserResponse> mockAysResponse = AysResponse.successOf(mockAssignmentUserResponse);
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .get(endpoint, mockUserToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        Mockito.verify(assignmentService, Mockito.times(1))
+                .getUserAssignment();
+
+    }
+
+
+    @Test
+    void whenUnauthorizedForGettingUserAssignment_thenReturnAccessDeniedException() throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminUserToken.getAccessToken());
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
     void givenValidAssignmentId_whenAssignmentFound_thenReturnAssignmentResponse() throws Exception {
 
         // Given
@@ -207,7 +260,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/").concat(mockAssignmentId);
-        AssignmentResponse mockAssignmentResponse = ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER.map(mockAssignment);
+        AssignmentResponse mockAssignmentResponse = assignmentToAssignmentResponseMapper.map(mockAssignment);
         AysResponse<AssignmentResponse> mockAysResponse = AysResponse.successOf(mockAssignmentResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(endpoint, mockAdminUserToken.getAccessToken()))
@@ -267,7 +320,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/search");
-        AssignmentSearchResponse mockSearchResponse = ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER.map(mockAssignment);
+        AssignmentSearchResponse mockSearchResponse = assignmentToAssignmentSearchResponseMapper.map(mockAssignment);
         AysResponse<AssignmentSearchResponse> mockAysResponse = AysResponse.successOf(mockSearchResponse);
 
         mockMvc.perform(AysMockMvcRequestBuilders
@@ -321,7 +374,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         // When
         List<AssignmentEntity> mockAssignmentEntities = AssignmentEntityBuilder.generateValidAssignmentEntities(1);
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
-        List<Assignment> mockAssignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntities);
+        List<Assignment> mockAssignments = assignmentEntityToAssignmentMapper.map(mockAssignmentEntities);
         AysPage<Assignment> mockAysPageOfAssignments = AysPage
                 .of(mockListRequest.getFilter(), mockPageAssignmentEntities, mockAssignments);
 
@@ -330,7 +383,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignments");
-        List<AssignmentsResponse> mockAssignmentsResponse = ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER.map(mockAssignments);
+        List<AssignmentsResponse> mockAssignmentsResponse = assignmentToAssignmentsResponseMapper.map(mockAssignments);
         AysPageResponse<AssignmentsResponse> pageOfAssignmentsResponse = AysPageResponse.<AssignmentsResponse>builder()
                 .of(mockAysPageOfAssignments)
                 .content(mockAssignmentsResponse)
@@ -546,7 +599,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentApproved_thenReturnNothing() throws Exception {
+    void whenAssignmentApproved_thenReturnNothing() throws Exception {
         // When
         Mockito.doNothing().when(assignmentConcludeService).approve();
 
@@ -596,7 +649,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentStarted_thenReturnNothing() throws Exception {
+    void whenAssignmentStarted_thenReturnNothing() throws Exception {
         // When
         Mockito.doNothing().when(assignmentConcludeService).start();
 
@@ -646,7 +699,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentRejected_thenReturnNothing() throws Exception {
+    void whenAssignmentRejected_thenReturnNothing() throws Exception {
         // When
         Mockito.doNothing().when(assignmentConcludeService).reject();
 
@@ -696,7 +749,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenNothing_whenAssignmentCompleted_thenReturnNothing() throws Exception {
+    void whenAssignmentCompleted_thenReturnNothing() throws Exception {
         // When
         Mockito.doNothing().when(assignmentConcludeService).complete();
 
