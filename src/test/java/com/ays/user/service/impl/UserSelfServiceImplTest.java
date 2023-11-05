@@ -162,7 +162,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenUserSupportStatus_whenUserHasAssignment_thenThrowAysUserAlreadyHasAssignmentException() {
+    void givenUserSupportStatus_whenUserHasAssignment_thenThrowAysUserCannotUpdateSupportStatusException() {
 
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
