@@ -444,12 +444,13 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         // When
         String mockUserId = AysRandomUtil.generateUUID();
-        Mockito.when(identity.getUserId()).thenReturn(mockUserId);
-        Mockito.when(assignmentRepository.findByUserIdAndStatusNot(mockUserId, AssignmentStatus.DONE))
-                .thenReturn(Optional.empty());
         EnumSet<AssignmentStatus> acceptedStatuses = EnumSet.of(
                 AssignmentStatus.ASSIGNED, AssignmentStatus.RESERVED, AssignmentStatus.IN_PROGRESS
         );
+
+        Mockito.when(identity.getUserId()).thenReturn(mockUserId);
+        Mockito.when(assignmentRepository.findByUserIdAndStatusIn(mockUserId, acceptedStatuses))
+                .thenReturn(Optional.empty());
 
         // Then
         Assertions.assertThrows(

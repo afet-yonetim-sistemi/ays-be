@@ -109,13 +109,13 @@ class AssignmentServiceImpl implements AssignmentService {
     @Override
     public Assignment getAssignmentSummary() {
 
+        final String userId = identity.getUserId();
+
         final EnumSet<AssignmentStatus> acceptedStatuses = EnumSet.of(
                 AssignmentStatus.ASSIGNED, AssignmentStatus.RESERVED, AssignmentStatus.IN_PROGRESS
         );
 
-        String userId = identity.getUserId();
-
-        AssignmentEntity assignmentEntity = assignmentRepository.findByUserIdAndStatusIn(userId, acceptedStatuses)
+        final AssignmentEntity assignmentEntity = assignmentRepository.findByUserIdAndStatusIn(userId, acceptedStatuses)
                 .orElseThrow(() -> new AysAssignmentNotExistByUserIdAndStatusException(userId, acceptedStatuses));
         return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }
