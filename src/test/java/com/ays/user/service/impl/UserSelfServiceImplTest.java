@@ -5,6 +5,7 @@ import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.model.AysIdentity;
+import com.ays.common.util.AysRandomUtil;
 import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequestBuilder;
@@ -72,10 +73,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
     @Test
     void whenUserIsNotExistForGetting_thenThrowAysUserNotExistByIdException() {
         // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .build();
-        String mockUserId = mockUserEntity.getId();
+        String mockUserId = AysRandomUtil.generateUUID();
 
         // When
         Mockito.when(identity.getUserId())
