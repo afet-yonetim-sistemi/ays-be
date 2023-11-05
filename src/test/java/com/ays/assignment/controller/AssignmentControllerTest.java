@@ -51,11 +51,11 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     private AssignmentConcludeService assignmentConcludeService;
 
 
-    private final AssignmentEntityToAssignmentMapper ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER = AssignmentEntityToAssignmentMapper.initialize();
-    private final AssignmentToAssignmentSearchResponseMapper ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private final AssignmentToAssignmentResponseMapper ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER = AssignmentToAssignmentResponseMapper.initialize();
-    private final AssignmentToAssignmentsResponseMapper ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER = AssignmentToAssignmentsResponseMapper.initialize();
-    private final AssignmentToAssignmentUserResponseMapper ASSIGNMENT_TO_ASSIGNMENT_USER_RESPONSE_MAPPER = AssignmentToAssignmentUserResponseMapper.initialize();
+    private final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
+    private final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
+    private final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -203,7 +203,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment");
-        AssignmentUserResponse mockAssignmentUserResponse = ASSIGNMENT_TO_ASSIGNMENT_USER_RESPONSE_MAPPER.map(mockAssignment);
+        AssignmentUserResponse mockAssignmentUserResponse = assignmentToAssignmentUserResponseMapper.map(mockAssignment);
         AysResponse<AssignmentUserResponse> mockAysResponse = AysResponse.successOf(mockAssignmentUserResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(endpoint, mockUserToken.getAccessToken()))
@@ -260,7 +260,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/").concat(mockAssignmentId);
-        AssignmentResponse mockAssignmentResponse = ASSIGNMENT_TO_ASSIGNMENT_RESPONSE_MAPPER.map(mockAssignment);
+        AssignmentResponse mockAssignmentResponse = assignmentToAssignmentResponseMapper.map(mockAssignment);
         AysResponse<AssignmentResponse> mockAysResponse = AysResponse.successOf(mockAssignmentResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(endpoint, mockAdminUserToken.getAccessToken()))
@@ -320,7 +320,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/search");
-        AssignmentSearchResponse mockSearchResponse = ASSIGNMENT_TO_ASSIGNMENT_SEARCH_RESPONSE_MAPPER.map(mockAssignment);
+        AssignmentSearchResponse mockSearchResponse = assignmentToAssignmentSearchResponseMapper.map(mockAssignment);
         AysResponse<AssignmentSearchResponse> mockAysResponse = AysResponse.successOf(mockSearchResponse);
 
         mockMvc.perform(AysMockMvcRequestBuilders
@@ -374,7 +374,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         // When
         List<AssignmentEntity> mockAssignmentEntities = AssignmentEntityBuilder.generateValidAssignmentEntities(1);
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
-        List<Assignment> mockAssignments = ASSIGNMENT_ENTITY_TO_ASSIGNMENT_MAPPER.map(mockAssignmentEntities);
+        List<Assignment> mockAssignments = assignmentEntityToAssignmentMapper.map(mockAssignmentEntities);
         AysPage<Assignment> mockAysPageOfAssignments = AysPage
                 .of(mockListRequest.getFilter(), mockPageAssignmentEntities, mockAssignments);
 
@@ -383,7 +383,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/assignments");
-        List<AssignmentsResponse> mockAssignmentsResponse = ASSIGNMENT_TO_ASSIGNMENTS_RESPONSE_MAPPER.map(mockAssignments);
+        List<AssignmentsResponse> mockAssignmentsResponse = assignmentToAssignmentsResponseMapper.map(mockAssignments);
         AysPageResponse<AssignmentsResponse> pageOfAssignmentsResponse = AysPageResponse.<AssignmentsResponse>builder()
                 .of(mockAysPageOfAssignments)
                 .content(mockAssignmentsResponse)
