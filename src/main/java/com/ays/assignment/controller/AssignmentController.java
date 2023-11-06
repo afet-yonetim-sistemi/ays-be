@@ -48,11 +48,11 @@ class AssignmentController {
 
     private final AssignmentConcludeService assignmentConcludeService;
 
-    private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
-    private static final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private static final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
-    private static final AssignmentToAssignmentSummaryResponseMapper assignmentToAssignmentSummaryResponseMapper = AssignmentToAssignmentSummaryResponseMapper.initialize();
-    private static final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
+    private final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
+    private final AssignmentToAssignmentSummaryResponseMapper assignmentToAssignmentSummaryResponseMapper = AssignmentToAssignmentSummaryResponseMapper.initialize();
+    private final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
 
     /**
      * Gets an Assignments list based on the specified filters in the {@link AssignmentListRequest}

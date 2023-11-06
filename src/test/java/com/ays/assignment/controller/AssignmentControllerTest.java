@@ -60,7 +60,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     private final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
 
 
-    private final String BASE_PATH = "/api/v1";
+    private static final String BASE_PATH = "/api/v1";
 
 
     @Test
