@@ -11,6 +11,7 @@ import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdAndStatusException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
 import com.ays.location.model.UserLocation;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,6 +112,29 @@ class AssignmentServiceImpl implements AssignmentService {
                 assignmentEntities,
                 assignments
         );
+    }
+
+    /**
+     * <p>Retrieves an assignment of a user if there's one with the statuses:</p>
+     * <li>RESERVED</li>
+     * <li>ASSIGNED</li>
+     * <li>IN_PROGRESS</li>
+     * <p>If there's no assignment with the above statuses, the method throws {@link AysAssignmentNotExistByIdException}.</p>
+     *
+     * @return Assignment
+     */
+    @Override
+    public Assignment getAssignmentSummary() {
+
+        final String userId = identity.getUserId();
+
+        final EnumSet<AssignmentStatus> acceptedStatuses = EnumSet.of(
+                AssignmentStatus.ASSIGNED, AssignmentStatus.RESERVED, AssignmentStatus.IN_PROGRESS
+        );
+
+        final AssignmentEntity assignmentEntity = assignmentRepository.findByUserIdAndStatusIn(userId, acceptedStatuses)
+                .orElseThrow(() -> new AysAssignmentNotExistByUserIdAndStatusException(userId, acceptedStatuses));
+        return assignmentEntityToAssignmentMapper.map(assignmentEntity);
     }
 
     /**

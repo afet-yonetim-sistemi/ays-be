@@ -12,6 +12,7 @@ import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByIdException;
+import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdAndStatusException;
 import com.ays.assignment.util.exception.AysAssignmentNotExistByUserIdException;
 import com.ays.auth.model.AysIdentity;
 import com.ays.common.model.AysPage;
@@ -32,6 +33,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -451,5 +453,64 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
                 .delete(Mockito.any(AssignmentEntity.class));
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
+    }
+
+    @Test
+    void whenUserHasAssignmentWithValidStatus_thenReturnAssignment() {
+
+        // When
+        String mockUserId = AysRandomUtil.generateUUID();
+        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
+                .withValidFields()
+                .withStatus(AssignmentStatus.RESERVED)
+                .build();
+        EnumSet<AssignmentStatus> acceptedStatuses = EnumSet.of(
+                AssignmentStatus.ASSIGNED, AssignmentStatus.RESERVED, AssignmentStatus.IN_PROGRESS
+        );
+
+        Assignment mockAssignment = assignmentEntityToAssignmentMapper.map(mockAssignmentEntity);
+        Mockito.when(identity.getUserId()).thenReturn(mockUserId);
+        Mockito.when(assignmentRepository.findByUserIdAndStatusIn(mockUserId, acceptedStatuses))
+                .thenReturn(Optional.of(mockAssignmentEntity));
+
+        // Then
+        Assignment assignment = assignmentService.getAssignmentSummary();
+
+        Assertions.assertEquals(mockAssignment.getFirstName(), assignment.getFirstName());
+        Assertions.assertEquals(mockAssignment.getLastName(), assignment.getLastName());
+        Assertions.assertEquals(mockAssignment.getDescription(), assignment.getDescription());
+        Assertions.assertEquals(mockAssignment.getPhoneNumber().getCountryCode(), assignment.getPhoneNumber().getCountryCode());
+        Assertions.assertEquals(mockAssignment.getPhoneNumber().getLineNumber(), assignment.getPhoneNumber().getLineNumber());
+        Assertions.assertEquals(mockAssignment.getStatus(), assignment.getStatus());
+        Assertions.assertEquals(mockAssignment.getPoint(), assignment.getPoint());
+
+        Mockito.verify(identity, Mockito.times(1)).getUserId();
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByUserIdAndStatusIn(mockUserId, acceptedStatuses);
+    }
+
+    @Test
+    void whenUserHasNoAssignment_thenThrowAysAssignmentNotExistByUserIdAndStatus() {
+
+        // When
+        String mockUserId = AysRandomUtil.generateUUID();
+        EnumSet<AssignmentStatus> acceptedStatuses = EnumSet.of(
+                AssignmentStatus.ASSIGNED, AssignmentStatus.RESERVED, AssignmentStatus.IN_PROGRESS
+        );
+
+        Mockito.when(identity.getUserId()).thenReturn(mockUserId);
+        Mockito.when(assignmentRepository.findByUserIdAndStatusIn(mockUserId, acceptedStatuses))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysAssignmentNotExistByUserIdAndStatusException.class,
+                () -> assignmentService.getAssignmentSummary()
+        );
+
+        Mockito.verify(identity, Mockito.times(1)).getUserId();
+        Mockito.verify(assignmentRepository, Mockito.times(1))
+                .findByUserIdAndStatusIn(mockUserId, acceptedStatuses);
+
     }
 }

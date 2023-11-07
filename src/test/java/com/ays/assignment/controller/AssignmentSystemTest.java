@@ -6,12 +6,15 @@ import com.ays.assignment.model.AssignmentBuilder;
 import com.ays.assignment.model.dto.request.*;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
 import com.ays.assignment.model.dto.response.AssignmentUserResponse;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
+import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.assignment.model.mapper.AssignmentEntityToAssignmentMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentSummaryResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentUserResponseMapper;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPhoneNumberBuilder;
@@ -41,7 +44,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     private final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
     private final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
     private final AssignmentEntityToAssignmentMapper assignmentEntityToAssignmentMapper = AssignmentEntityToAssignmentMapper.initialize();
-
+    private final AssignmentToAssignmentSummaryResponseMapper assignmentToAssignmentSummaryResponseMapper = AssignmentToAssignmentSummaryResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -212,7 +215,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     void givenValidAssignmentSearchRequest_whenAssignmentSearched_thenReturnAssignmentSearchResponse() throws Exception {
         // Given
         AssignmentSearchRequest mockSearchRequest = new AssignmentSearchRequestBuilder()
@@ -324,7 +327,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     void whenAssignmentApproved_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/approve");
@@ -365,7 +368,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     void whenAssignmentStarted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/start");
@@ -406,7 +409,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     void whenAssignmentRejected_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/reject");
@@ -447,7 +450,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     void whenAssignmentCompleted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/complete");
@@ -562,6 +565,45 @@ class AssignmentSystemTest extends AbstractSystemTest {
         AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .delete(endpoint, userTokenOne.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus()
+                        .name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+    }
+
+    @Order(2)
+    @Test
+    void whenUserHasAssignmentWithValidStatus_thenReturnAssignmentSummaryResponse() throws Exception {
+
+        // When
+        Assignment assignment = new AssignmentBuilder().withStatus(AssignmentStatus.RESERVED).build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/summary");
+        AssignmentSummaryResponse mockResponse = assignmentToAssignmentSummaryResponseMapper.map(assignment);
+        AysResponse<AssignmentSummaryResponse> mockAysResponse = AysResponse.successOf(mockResponse);
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .get(endpoint, userTokenThree.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus()
+                        .getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
+    }
+
+    @Test
+    void whenUserUnauthorizedForGettingAssignmentSummary_thenThrowAccessDeniedException() throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/summary");
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .get(endpoint, adminUserTokenTwo.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())

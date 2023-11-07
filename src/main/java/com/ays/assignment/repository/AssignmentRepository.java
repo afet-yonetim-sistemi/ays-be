@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.EnumSet;
 import java.util.Optional;
 
 /**
@@ -32,6 +33,16 @@ public interface AssignmentRepository extends JpaRepository<AssignmentEntity, St
      * {@code false} otherwise.
      */
     Optional<AssignmentEntity> findByUserIdAndStatusNot(String userId, AssignmentStatus status);
+
+    /**
+     * Retrieves an optional AssignmentEntity based on the provided USER ID and statuses
+     *
+     * @param userId   The unique identifier of the user for whom the assignment is being checked.
+     * @param statuses A collection of Assignment Statuses
+     * @return An optional AssignmentEntity that matches with the specified user ID and
+     * includes at least one of the specified Assignment statuses
+     */
+    Optional<AssignmentEntity> findByUserIdAndStatusIn(String userId, EnumSet<AssignmentStatus> statuses);
 
     /**
      * Retrieves an optional AssignmentEntity based on the provided user ID and institution ID.

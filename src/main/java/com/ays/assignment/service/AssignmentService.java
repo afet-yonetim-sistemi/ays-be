@@ -35,6 +35,13 @@ public interface AssignmentService {
     Assignment getAssignmentById(String id);
 
     /**
+     * Get Assignment Summary based on the logged-in user
+     *
+     * @return Assignment
+     */
+    Assignment getAssignmentSummary();
+
+    /**
      * Update Assignment by Assignment ID and {@link AssignmentUpdateRequest}
      *
      * @param id            the given Assignment ID

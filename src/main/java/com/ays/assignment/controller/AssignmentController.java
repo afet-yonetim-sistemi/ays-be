@@ -7,10 +7,12 @@ import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
 import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
 import com.ays.assignment.model.dto.response.AssignmentUserResponse;
 import com.ays.assignment.model.dto.response.AssignmentsResponse;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentSummaryResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentUserResponseMapper;
 import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
 import com.ays.assignment.service.AssignmentConcludeService;
@@ -46,10 +48,11 @@ class AssignmentController {
 
     private final AssignmentConcludeService assignmentConcludeService;
 
-    private static final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
-    private static final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
-    private static final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
-    private static final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
+    private final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
+    private final AssignmentToAssignmentSearchResponseMapper assignmentToAssignmentSearchResponseMapper = AssignmentToAssignmentSearchResponseMapper.initialize();
+    private final AssignmentToAssignmentsResponseMapper assignmentToAssignmentsResponseMapper = AssignmentToAssignmentsResponseMapper.initialize();
+    private final AssignmentToAssignmentSummaryResponseMapper assignmentToAssignmentSummaryResponseMapper = AssignmentToAssignmentSummaryResponseMapper.initialize();
+    private final AssignmentToAssignmentUserResponseMapper assignmentToAssignmentUserResponseMapper = AssignmentToAssignmentUserResponseMapper.initialize();
 
     /**
      * Gets an Assignments list based on the specified filters in the {@link AssignmentListRequest}
@@ -100,6 +103,22 @@ class AssignmentController {
         final Assignment assignment = assignmentService.getAssignmentById(id);
         final AssignmentResponse assignmentResponse = assignmentToAssignmentResponseMapper.map(assignment);
         return AysResponse.successOf(assignmentResponse);
+    }
+
+    /**
+     * Gets a summary of the assignments.
+     * Requires USER authority.
+     *
+     * @return A response object containing the assignment summary data.
+     */
+    @GetMapping("/assignment/summary")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<AssignmentSummaryResponse> getAssignmentSummary() {
+
+        final Assignment assignment = assignmentService.getAssignmentSummary();
+        final AssignmentSummaryResponse assignmentSummaryResponse = assignmentToAssignmentSummaryResponseMapper
+                .map(assignment);
+        return AysResponse.successOf(assignmentSummaryResponse);
     }
 
     /**
