@@ -1,7 +1,5 @@
 package com.ays.institution.model.dto.response;
 
-import com.ays.common.model.dto.response.BaseResponse;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -13,8 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class InstitutionResponse extends BaseResponse {
+public class InstitutionResponse {
 
     private String id;
     private String name;
