@@ -1,7 +1,8 @@
 package com.ays.institution.service;
 
-import com.ays.common.model.AysPage;
-import com.ays.institution.model.dto.response.InstitutionResponse;
+import com.ays.institution.model.Institution;
+
+import java.util.List;
 
 /**
  * Institution Service to perform institution related business operations.
@@ -10,8 +11,9 @@ public interface InstitutionService {
 
     /**
      * Get all institutions summary
-     * @return AysPage of InstitutionResponse
+     *
+     * @return list of InstitutionResponse
      */
-    AysPage<InstitutionResponse> getInstitutionsSummary();
+    List<Institution> getInstitutionsSummary();
 
 }
