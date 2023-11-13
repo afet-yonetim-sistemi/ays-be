@@ -8,6 +8,7 @@ import com.ays.common.util.AysRandomUtil;
 import com.ays.parameter.model.AysParameter;
 import com.ays.parameter.model.AysParameterBuilder;
 import com.ays.parameter.service.AysParameterService;
+import com.ays.super_admin.entity.SuperAdminEntityBuilder;
 import com.ays.user.model.entity.UserEntityBuilder;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -37,6 +38,7 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
     protected MockMvc mockMvc;
     protected AysToken mockAdminUserToken;
     protected AysToken mockUserToken;
+    protected AysToken mockSuperAdminToken;
 
 
     @Mock
@@ -52,6 +54,7 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
         this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);
         this.mockAdminUserToken = this.generate(new AdminUserEntityBuilder().build().getClaims());
         this.mockUserToken = this.generate(new UserEntityBuilder().build().getClaims());
+        this.mockSuperAdminToken = this.generate(new SuperAdminEntityBuilder().withValidFields().build().getClaims());
     }
 
     private AysToken generate(Map<String, Object> claims) {
