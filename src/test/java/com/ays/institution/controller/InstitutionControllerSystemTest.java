@@ -8,12 +8,9 @@ import com.ays.institution.model.Institution;
 import com.ays.institution.model.dto.response.InstitutionResponse;
 import com.ays.institution.model.entity.InstitutionBuilder;
 import com.ays.institution.model.mapper.InstitutionToInstitutionResponseMapper;
-import com.ays.institution.service.InstitutionService;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -21,9 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 class InstitutionControllerSystemTest extends AbstractSystemTest {
-
-    @MockBean
-    private InstitutionService institutionService;
 
 
     private final InstitutionToInstitutionResponseMapper institutionToInstitutionResponseMapper = InstitutionToInstitutionResponseMapper.initialize();
@@ -46,8 +40,6 @@ class InstitutionControllerSystemTest extends AbstractSystemTest {
                 institution2
         );
 
-        // when
-        Mockito.when(institutionService.getInstitutionsSummary()).thenReturn(mockInstitutions);
 
         // then
         List<InstitutionResponse> mockInstitutionResponseList = institutionToInstitutionResponseMapper.map(mockInstitutions);
@@ -66,8 +58,6 @@ class InstitutionControllerSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
 
-        // verify
-        Mockito.verify(institutionService, Mockito.times(1)).getInstitutionsSummary();
 
     }
 
