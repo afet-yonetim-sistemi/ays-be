@@ -1,20 +1,9 @@
 package com.ays.assignment.controller;
 
 import com.ays.assignment.model.Assignment;
-import com.ays.assignment.model.dto.request.AssignmentListRequest;
-import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
-import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
-import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
-import com.ays.assignment.model.dto.response.AssignmentResponse;
-import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
-import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
-import com.ays.assignment.model.dto.response.AssignmentUserResponse;
-import com.ays.assignment.model.dto.response.AssignmentsResponse;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentSummaryResponseMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentUserResponseMapper;
-import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
+import com.ays.assignment.model.dto.request.*;
+import com.ays.assignment.model.dto.response.*;
+import com.ays.assignment.model.mapper.*;
 import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
@@ -229,6 +218,21 @@ class AssignmentController {
     @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<Void> completeAssignment() {
         assignmentConcludeService.complete();
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Cancels assignment that is either started by user or assigned to user.
+     * Requires USER authority.
+     *
+     * @param cancelRequest The request object containing cancel reason.
+     * @return A success response if assignment canceled.
+     */
+    @PostMapping("/assignment/cancel")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @SuppressWarnings("unused")
+    public AysResponse<Void> cancelAssignment(AssignmentCancelRequest cancelRequest) {
+        assignmentConcludeService.cancel();
         return AysResponse.SUCCESS;
     }
 
