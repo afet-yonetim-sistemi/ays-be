@@ -26,4 +26,8 @@ public interface AssignmentConcludeService {
      */
     void complete();
 
+    /**
+     * Cancel an assignment that is either started by user or assigned to user
+     */
+    void cancel();
 }

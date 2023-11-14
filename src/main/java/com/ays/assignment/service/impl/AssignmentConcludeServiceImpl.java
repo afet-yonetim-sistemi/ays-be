@@ -61,6 +61,16 @@ class AssignmentConcludeServiceImpl implements AssignmentConcludeService {
     }
 
     /**
+     * Cancel an assignment by the authenticated user ID.
+     *
+     * @throws AysAssignmentNotExistByUserIdAndStatusException if the assignment with the specified userId and assignmentStatus does not exist
+     */
+    @Override
+    public void cancel() {
+        this.findAssignmentHandler(AssignmentHandlerType.CANCEL).handle();
+    }
+
+    /**
      * Retrieve assignment action class by given assignment action name.
      *
      * @param handlerType The type of assignment action that provided by AssignmentHandlerType
