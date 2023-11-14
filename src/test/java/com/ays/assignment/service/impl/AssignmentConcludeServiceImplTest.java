@@ -94,4 +94,22 @@ class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
         Mockito.verify(assignmentHandler, Mockito.times(1)).handle();
     }
 
+    @Test
+    void whenAssignmentConclude_thenCancelAssignment() {
+
+        // When
+        Mockito
+                .when(assignmentHandlers.stream())
+                .thenReturn(Stream.of(assignmentHandler));
+        Mockito.when(assignmentHandler.type()).thenReturn(AssignmentHandlerType.CANCEL);
+        Mockito.doNothing().when(assignmentHandler).handle();
+
+        // Then
+        assignmentConcludeService.cancel();
+
+        Mockito.verify(assignmentHandlers, Mockito.times(1)).stream();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).type();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).handle();
+    }
+
 }
