@@ -66,7 +66,7 @@
 
             INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
                                         LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
-            VALUES ('c4aecdf9-5e3b-4640-9782-e87f1443606e', '08cd53fb-7624-4c66-be93-9512170ec226',
+            VALUES ('eccc1eeb-473e-494b-9f0e-8fcae145fa15', 'c4aecdf9-5e3b-4640-9782-e87f1443606e',
                     '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'In Progress Assignment 2', 'Ahmet', 'Mehmet',
                     '90', '5382124323', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
                     'IN_PROGRESS', 'AYS', CURRENT_TIMESTAMP);
