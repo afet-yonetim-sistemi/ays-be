@@ -5,6 +5,7 @@ public enum AssignmentHandlerType {
     APPROVE,
     REJECT,
     START,
-    COMPLETE
+    COMPLETE,
+    CANCEL
 
 }
