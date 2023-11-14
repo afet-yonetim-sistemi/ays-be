@@ -4,11 +4,7 @@ import com.ays.AbstractRestControllerTest;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.AssignmentBuilder;
 import com.ays.assignment.model.dto.request.*;
-import com.ays.assignment.model.dto.response.AssignmentResponse;
-import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
-import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
-import com.ays.assignment.model.dto.response.AssignmentUserResponse;
-import com.ays.assignment.model.dto.response.AssignmentsResponse;
+import com.ays.assignment.model.dto.response.*;
 import com.ays.assignment.model.entity.AssignmentEntity;
 import com.ays.assignment.model.entity.AssignmentEntityBuilder;
 import com.ays.assignment.model.mapper.*;
@@ -798,6 +794,99 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
 
         Mockito.verify(assignmentConcludeService, Mockito.times(0))
                 .complete();
+    }
+
+    @Test
+    void givenValidAssignmentCancelRequest_whenAssignmentCanceled_thenReturnNothing() throws Exception {
+        // Given
+        AssignmentCancelRequest mockCancelRequest = new AssignmentCancelRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // When
+        Mockito.doNothing().when(assignmentConcludeService).cancel();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/cancel");
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockUserToken.getAccessToken(), mockCancelRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        Mockito.verify(assignmentConcludeService, Mockito.times(1))
+                .cancel();
+    }
+
+    @Test
+    void givenInvalidAssignmentCancelRequest_whenReasonHasLessThan40Chars_thenReturnValidationError() throws Exception {
+        // Given
+        AssignmentCancelRequest mockCancelRequest = new AssignmentCancelRequestBuilder()
+                .withReason("invalid-reason")
+                .build();
+
+        // When
+        Mockito.doNothing().when(assignmentConcludeService).cancel();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/cancel");
+        AysError mockAysResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockUserToken.getAccessToken(), mockCancelRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        Mockito.verify(assignmentConcludeService, Mockito.never())
+                .cancel();
+    }
+
+    @Test
+    void givenValidAssignmentCancelRequest_whenUserUnauthorizedForCanceling_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        AssignmentCancelRequest mockCancelRequest = new AssignmentCancelRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // When
+        Mockito.doNothing().when(assignmentConcludeService).cancel();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/cancel");
+        AysError mockAysResponse = AysErrorBuilder.FORBIDDEN;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockCancelRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        Mockito.verify(assignmentConcludeService, Mockito.never())
+                .cancel();
     }
 
     @Test
