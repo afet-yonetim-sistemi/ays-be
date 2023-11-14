@@ -231,7 +231,7 @@ class AssignmentController {
     @PostMapping("/assignment/cancel")
     @PreAuthorize("hasAnyAuthority('USER')")
     @SuppressWarnings("unused")
-    public AysResponse<Void> cancelAssignment(AssignmentCancelRequest cancelRequest) {
+    public AysResponse<Void> cancelAssignment(@Valid AssignmentCancelRequest cancelRequest) {
         assignmentConcludeService.cancel();
         return AysResponse.SUCCESS;
     }
