@@ -123,7 +123,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .withInstitutionId(AysTestData.Institution.VALID_ID_ONE)
                 .build()
                 .getClaims();
-        this.userTokenSix = this.generate(claimsOfUserFive);
+        this.userTokenSix = this.generate(claimsOfUserSix);
     }
 
     private AysToken generate(Map<String, Object> claims) {
