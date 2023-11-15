@@ -3,6 +3,7 @@ package com.ays.institution.model.entity;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.Institution;
+import com.ays.institution.model.enums.InstitutionStatus;
 
 public class InstitutionBuilder extends TestDataBuilder<Institution> {
 
@@ -26,5 +27,9 @@ public class InstitutionBuilder extends TestDataBuilder<Institution> {
         return this;
     }
 
+    public InstitutionBuilder withStatus(InstitutionStatus status) {
+        data.setStatus(status);
+        return this;
+    }
 }
 

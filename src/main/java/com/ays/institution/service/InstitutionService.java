@@ -10,10 +10,10 @@ import java.util.List;
 public interface InstitutionService {
 
     /**
-     * Get all institutions summary
+     * Get all active institutions summary
      *
-     * @return list of InstitutionResponse
+     * @return list of active institutions
      */
-    List<Institution> getInstitutionsSummary();
+    List<Institution> getSummaryOfActiveInstitutions();
 
 }

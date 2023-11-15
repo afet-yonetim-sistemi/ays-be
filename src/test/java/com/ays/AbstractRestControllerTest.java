@@ -36,9 +36,9 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
 
     @Autowired
     protected MockMvc mockMvc;
+    protected AysToken mockSuperAdminToken;
     protected AysToken mockAdminUserToken;
     protected AysToken mockUserToken;
-    protected AysToken mockSuperAdminToken;
 
 
     @Mock
@@ -52,9 +52,10 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
         Mockito.when(parameterService.getParameters(Mockito.anyString()))
                 .thenReturn(parameters);
         this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);
+        this.mockSuperAdminToken = this.generate(new SuperAdminEntityBuilder().withValidFields().build().getClaims());
         this.mockAdminUserToken = this.generate(new AdminUserEntityBuilder().build().getClaims());
         this.mockUserToken = this.generate(new UserEntityBuilder().build().getClaims());
-        this.mockSuperAdminToken = this.generate(new SuperAdminEntityBuilder().withValidFields().build().getClaims());
+
     }
 
     private AysToken generate(Map<String, Object> claims) {

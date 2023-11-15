@@ -28,9 +28,9 @@ class InstitutionServiceImpl implements InstitutionService {
      * @return a list of {@link Institution} representing the summary of institutions
      */
     @Override
-    public List<Institution> getInstitutionsSummary() {
-        final List<InstitutionEntity> allByStatusAndOrderByNameAsc = institutionRepository.findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
-        return institutionEntityToInstitutionMapper.map(allByStatusAndOrderByNameAsc);
+    public List<Institution> getSummaryOfActiveInstitutions() {
+        final List<InstitutionEntity> activeInstitutions = institutionRepository.findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
+        return institutionEntityToInstitutionMapper.map(activeInstitutions);
     }
 
 }

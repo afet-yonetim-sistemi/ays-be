@@ -39,7 +39,6 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected MockMvc mockMvc;
 
     protected AysToken superAdminToken;
-
     protected AysToken adminUserTokenOne;
     protected AysToken adminUserTokenTwo;
     protected AysToken userTokenOne;

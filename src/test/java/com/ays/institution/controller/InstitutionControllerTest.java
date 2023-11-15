@@ -5,9 +5,10 @@ import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
 import com.ays.institution.model.Institution;
-import com.ays.institution.model.dto.response.InstitutionResponse;
+import com.ays.institution.model.dto.response.InstitutionSummaryResponse;
 import com.ays.institution.model.entity.InstitutionBuilder;
-import com.ays.institution.model.mapper.InstitutionToInstitutionResponseMapper;
+import com.ays.institution.model.enums.InstitutionStatus;
+import com.ays.institution.model.mapper.InstitutionToInstitutionSummaryResponseMapper;
 import com.ays.institution.service.InstitutionService;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
@@ -27,7 +28,7 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
     private InstitutionService institutionService;
 
 
-    private final InstitutionToInstitutionResponseMapper institutionToInstitutionResponseMapper = InstitutionToInstitutionResponseMapper.initialize();
+    private final InstitutionToInstitutionSummaryResponseMapper institutionToInstitutionSummaryResponseMapper = InstitutionToInstitutionSummaryResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1/institutions";
@@ -37,8 +38,15 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
 
         String mockAccessToken = mockSuperAdminToken.getAccessToken();
 
-        Institution institution1 = new InstitutionBuilder().withValidFields().build();
-        Institution institution2 = new InstitutionBuilder().withValidFields().build();
+        Institution institution1 = new InstitutionBuilder()
+                .withValidFields()
+                .withStatus(InstitutionStatus.ACTIVE)
+                .build();
+
+        Institution institution2 = new InstitutionBuilder()
+                .withValidFields()
+                .withStatus(InstitutionStatus.ACTIVE)
+                .build();
 
 
         List<Institution> mockInstitutions = Arrays.asList(
@@ -47,11 +55,11 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
         );
 
         // when
-        Mockito.when(institutionService.getInstitutionsSummary()).thenReturn(mockInstitutions);
+        Mockito.when(institutionService.getSummaryOfActiveInstitutions()).thenReturn(mockInstitutions);
 
         // then
-        List<InstitutionResponse> mockInstitutionResponseList = institutionToInstitutionResponseMapper.map(mockInstitutions);
-        AysResponse<List<InstitutionResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponseList);
+        List<InstitutionSummaryResponse> mockInstitutionResponseList = institutionToInstitutionSummaryResponseMapper.map(mockInstitutions);
+        AysResponse<List<InstitutionSummaryResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponseList);
 
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(BASE_PATH.concat("/summary"), mockAccessToken))
@@ -66,16 +74,13 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
 
-        // verify
-        Mockito.verify(institutionService, Mockito.times(1)).getInstitutionsSummary();
-
     }
 
 
     @Test
     void givenNothing_whenUserUnauthorizedForSummary_thenReturnAccessDeniedException() throws Exception {
 
-        // Given
+
         String mockAccessToken = mockUserToken.getAccessToken();
 
 

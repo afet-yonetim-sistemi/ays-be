@@ -29,11 +29,18 @@ class InstitutionServiceImplTest extends AbstractUnitTest {
     private final InstitutionEntityToInstitutionMapper institutionEntityToInstitutionMapper = InstitutionEntityToInstitutionMapper.initialize();
 
     @Test
-    void givenInstitutionEntities_whenInstitutionStatusActive_thenReturnListInstitution() {
+    void whenActiveInstitutionsExist_thenReturnInstitutions() {
 
-        // given
-        InstitutionEntity institutionEntity1 = new InstitutionEntityBuilder().withValidFields().build();
-        InstitutionEntity institutionEntity2 = new InstitutionEntityBuilder().withValidFields().build();
+
+        InstitutionEntity institutionEntity1 = new InstitutionEntityBuilder()
+                .withValidFields()
+                .withName("institutionEntity1")
+                .build();
+
+        InstitutionEntity institutionEntity2 = new InstitutionEntityBuilder()
+                .withValidFields()
+                .withName("institutionEntity2")
+                .build();
 
 
         List<InstitutionEntity> mockInstitutionEntities = Arrays.asList(
@@ -43,34 +50,33 @@ class InstitutionServiceImplTest extends AbstractUnitTest {
 
         List<Institution> mockInstitutionList = institutionEntityToInstitutionMapper.map(mockInstitutionEntities);
 
-        // when
+        // When
         Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE)).thenReturn(mockInstitutionEntities);
 
-        // then
-        List<Institution> result = institutionService.getInstitutionsSummary();
+        // Then
+        List<Institution> result = institutionService.getSummaryOfActiveInstitutions();
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(result.size(), mockInstitutionList.size());
 
-        // verify
+        // Verify
         Mockito.verify(institutionRepository, Mockito.times(1)).findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
 
     }
 
     @Test
-    void givenNoInstitutionEntities_whenInstitutionStatusACTIVE_thenReturnEmptyList() {
+    void whenActiveInstitutionsNotExist_thenReturnEmptyList() {
 
-        // when
+        // When
         Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE))
                 .thenReturn(Collections.emptyList());
 
-        // then
-        List<Institution> result = institutionService.getInstitutionsSummary();
+        // Then
+        List<Institution> institutions = institutionService.getSummaryOfActiveInstitutions();
 
-        Assertions.assertNotNull(result);
-        Assertions.assertTrue(result.isEmpty());
+        Assertions.assertTrue(institutions.isEmpty());
 
-        // verify
+        // Verify
         Mockito.verify(institutionRepository, Mockito.times(1)).findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
 
     }

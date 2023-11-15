@@ -1,6 +1,7 @@
 package com.ays.institution.model;
 
 import com.ays.common.model.BaseDomainModel;
+import com.ays.institution.model.enums.InstitutionStatus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +18,5 @@ public class Institution extends BaseDomainModel {
 
     private String id;
     private String name;
-
+    private InstitutionStatus status;
 }

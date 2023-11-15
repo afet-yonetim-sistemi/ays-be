@@ -3,7 +3,8 @@ package com.ays.institution.controller;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.institution.model.Institution;
 import com.ays.institution.model.dto.response.InstitutionResponse;
-import com.ays.institution.model.mapper.InstitutionToInstitutionResponseMapper;
+import com.ays.institution.model.dto.response.InstitutionSummaryResponse;
+import com.ays.institution.model.mapper.InstitutionToInstitutionSummaryResponseMapper;
 import com.ays.institution.service.InstitutionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +28,7 @@ class InstitutionController {
 
     private final InstitutionService institutionService;
 
-    private final InstitutionToInstitutionResponseMapper institutionToInstitutionResponseMapper = InstitutionToInstitutionResponseMapper.initialize();
+    private final InstitutionToInstitutionSummaryResponseMapper institutionToInstitutionSummaryResponseMapper = InstitutionToInstitutionSummaryResponseMapper.initialize();
 
     /**
      * Retrieves a summary of all institutions.
@@ -37,11 +38,11 @@ class InstitutionController {
      */
     @GetMapping("/institutions/summary")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<List<InstitutionResponse>> getInstitutionsSummary() {
+    public AysResponse<List<InstitutionSummaryResponse>> getSummaryOfActiveInstitutions() {
 
-        final List<Institution> institutionsSummary = institutionService.getInstitutionsSummary();
-        final List<InstitutionResponse> institutionsResponseSummary = institutionToInstitutionResponseMapper.map(institutionsSummary);
-        return AysResponse.successOf(institutionsResponseSummary);
+        final List<Institution> institutionsSummary = institutionService.getSummaryOfActiveInstitutions();
+        final List<InstitutionSummaryResponse> institutionSummaryResponses = institutionToInstitutionSummaryResponseMapper.map(institutionsSummary);
+        return AysResponse.successOf(institutionSummaryResponses);
     }
 
 }

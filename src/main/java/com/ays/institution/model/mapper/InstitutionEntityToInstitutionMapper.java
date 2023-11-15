@@ -16,7 +16,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface InstitutionEntityToInstitutionMapper extends BaseMapper<InstitutionEntity, Institution> {
 
-
     /**
      * Initializes the mapper.
      *
