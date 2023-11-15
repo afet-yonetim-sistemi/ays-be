@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import java.util.Arrays;
 import java.util.List;
 
-class InstitutionControllerSystemTest extends AbstractSystemTest {
+class InstitutionSystemTest extends AbstractSystemTest {
 
 
     private final InstitutionToInstitutionSummaryResponseMapper institutionToInstitutionSummaryResponseMapper = InstitutionToInstitutionSummaryResponseMapper.initialize();
