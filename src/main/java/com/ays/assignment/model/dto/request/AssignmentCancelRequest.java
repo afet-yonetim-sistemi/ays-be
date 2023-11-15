@@ -11,7 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AssignmentCancelRequest {
+
     @NotBlank
     @Size(min = 40, max = 512)
     private String reason;
+
 }
