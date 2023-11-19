@@ -1,6 +1,8 @@
 package com.ays.assignment.service;
 
 
+import com.ays.assignment.model.dto.request.AssignmentCancelRequest;
+
 /**
  * Assignment Action Service to perform assignment related business operations.
  */
@@ -29,5 +31,5 @@ public interface AssignmentConcludeService {
     /**
      * Cancel an assignment that is either started by user or assigned to user
      */
-    void cancel();
+    void cancel(AssignmentCancelRequest cancelRequest);
 }

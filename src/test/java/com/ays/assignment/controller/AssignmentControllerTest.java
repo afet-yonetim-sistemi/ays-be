@@ -813,7 +813,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // When
-        Mockito.doNothing().when(assignmentConcludeService).cancel();
+        Mockito.doNothing().when(assignmentConcludeService).cancel(mockCancelRequest);
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/cancel");
@@ -833,7 +833,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
 
         Mockito.verify(assignmentConcludeService, Mockito.times(1))
-                .cancel();
+                .cancel(Mockito.any(AssignmentCancelRequest.class));
     }
 
     @Test
@@ -844,7 +844,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // When
-        Mockito.doNothing().when(assignmentConcludeService).cancel();
+        Mockito.doNothing().when(assignmentConcludeService).cancel(mockCancelRequest);
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/cancel");
@@ -864,7 +864,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
 
         Mockito.verify(assignmentConcludeService, Mockito.never())
-                .cancel();
+                .cancel(Mockito.any(AssignmentCancelRequest.class));
     }
 
     @Test
@@ -875,7 +875,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // When
-        Mockito.doNothing().when(assignmentConcludeService).cancel();
+        Mockito.doNothing().when(assignmentConcludeService).cancel(mockCancelRequest);
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/cancel");
@@ -895,7 +895,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
 
         Mockito.verify(assignmentConcludeService, Mockito.never())
-                .cancel();
+                .cancel(Mockito.any(AssignmentCancelRequest.class));
     }
 
     @Test

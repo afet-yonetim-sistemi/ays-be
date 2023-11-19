@@ -1,9 +1,21 @@
 package com.ays.assignment.controller;
 
 import com.ays.assignment.model.Assignment;
-import com.ays.assignment.model.dto.request.*;
-import com.ays.assignment.model.dto.response.*;
-import com.ays.assignment.model.mapper.*;
+import com.ays.assignment.model.dto.request.AssignmentCancelRequest;
+import com.ays.assignment.model.dto.request.AssignmentListRequest;
+import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
+import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
+import com.ays.assignment.model.dto.response.AssignmentResponse;
+import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
+import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
+import com.ays.assignment.model.dto.response.AssignmentUserResponse;
+import com.ays.assignment.model.dto.response.AssignmentsResponse;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentSearchResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentSummaryResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentUserResponseMapper;
+import com.ays.assignment.model.mapper.AssignmentToAssignmentsResponseMapper;
 import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
@@ -16,7 +28,14 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller class for managing assignment-related operations via HTTP requests.
@@ -230,9 +249,8 @@ class AssignmentController {
      */
     @PostMapping("/assignment/cancel")
     @PreAuthorize("hasAnyAuthority('USER')")
-    @SuppressWarnings("unused")
     public AysResponse<Void> cancelAssignment(@RequestBody @Valid AssignmentCancelRequest cancelRequest) {
-        assignmentConcludeService.cancel();
+        assignmentConcludeService.cancel(cancelRequest);
         return AysResponse.SUCCESS;
     }
 

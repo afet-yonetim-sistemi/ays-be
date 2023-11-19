@@ -1,5 +1,6 @@
 package com.ays.assignment.service.impl;
 
+import com.ays.assignment.model.dto.request.AssignmentCancelRequest;
 import com.ays.assignment.model.enums.AssignmentHandlerType;
 import com.ays.assignment.service.AssignmentConcludeService;
 import com.ays.assignment.service.impl.handler.AssignmentHandler;
@@ -66,7 +67,7 @@ class AssignmentConcludeServiceImpl implements AssignmentConcludeService {
      * @throws AysAssignmentNotExistByUserIdAndStatusException if the assignment with the specified userId and assignmentStatus does not exist
      */
     @Override
-    public void cancel() {
+    public void cancel(AssignmentCancelRequest cancelRequest) {
         this.findAssignmentHandler(AssignmentHandlerType.CANCEL).handle();
     }
 
