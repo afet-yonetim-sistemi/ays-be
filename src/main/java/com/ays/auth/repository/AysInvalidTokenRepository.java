@@ -3,6 +3,8 @@ package com.ays.auth.repository;
 import com.ays.auth.model.entity.AysInvalidTokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,5 +19,7 @@ public interface AysInvalidTokenRepository extends JpaRepository<AysInvalidToken
      * @return an Optional containing the found invalid token entity, or an empty Optional if not found
      */
     Optional<AysInvalidTokenEntity> findByTokenId(String tokenId);
+
+    List<AysInvalidTokenEntity> findAllByCreatedAtBefore(LocalDateTime time);
 
 }
