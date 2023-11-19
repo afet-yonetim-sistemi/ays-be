@@ -1,6 +1,8 @@
 package com.ays.assignment.service.impl;
 
 import com.ays.AbstractUnitTest;
+import com.ays.assignment.model.dto.request.AssignmentCancelRequest;
+import com.ays.assignment.model.dto.request.AssignmentCancelRequestBuilder;
 import com.ays.assignment.model.enums.AssignmentHandlerType;
 import com.ays.assignment.service.impl.handler.AssignmentHandler;
 import org.junit.jupiter.api.Test;
@@ -88,6 +90,28 @@ class AssignmentConcludeServiceImplTest extends AbstractUnitTest {
 
         // Then
         assignmentConcludeService.complete();
+
+        Mockito.verify(assignmentHandlers, Mockito.times(1)).stream();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).type();
+        Mockito.verify(assignmentHandler, Mockito.times(1)).handle();
+    }
+
+    @Test
+    void givenAssignmentCancelRequest_whenAssignmentConclude_thenCancelAssignment() {
+
+        // Given
+        AssignmentCancelRequest cancelRequest = new AssignmentCancelRequestBuilder()
+                .withValidFields().build();
+
+        // When
+        Mockito
+                .when(assignmentHandlers.stream())
+                .thenReturn(Stream.of(assignmentHandler));
+        Mockito.when(assignmentHandler.type()).thenReturn(AssignmentHandlerType.CANCEL);
+        Mockito.doNothing().when(assignmentHandler).handle();
+
+        // Then
+        assignmentConcludeService.cancel(cancelRequest);
 
         Mockito.verify(assignmentHandlers, Mockito.times(1)).stream();
         Mockito.verify(assignmentHandler, Mockito.times(1)).type();

@@ -1,6 +1,7 @@
 package com.ays.assignment.controller;
 
 import com.ays.assignment.model.Assignment;
+import com.ays.assignment.model.dto.request.AssignmentCancelRequest;
 import com.ays.assignment.model.dto.request.AssignmentListRequest;
 import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
 import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
@@ -27,7 +28,14 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller class for managing assignment-related operations via HTTP requests.
@@ -229,6 +237,20 @@ class AssignmentController {
     @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<Void> completeAssignment() {
         assignmentConcludeService.complete();
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Cancels assignment that is either started by user or assigned to user.
+     * Requires USER authority.
+     *
+     * @param cancelRequest The request object containing cancel reason.
+     * @return A success response if assignment canceled.
+     */
+    @PostMapping("/assignment/cancel")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public AysResponse<Void> cancelAssignment(@RequestBody @Valid AssignmentCancelRequest cancelRequest) {
+        assignmentConcludeService.cancel(cancelRequest);
         return AysResponse.SUCCESS;
     }
 

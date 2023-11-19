@@ -3,7 +3,16 @@ package com.ays.assignment.controller;
 import com.ays.AbstractSystemTest;
 import com.ays.assignment.model.Assignment;
 import com.ays.assignment.model.AssignmentBuilder;
-import com.ays.assignment.model.dto.request.*;
+import com.ays.assignment.model.dto.request.AssignmentCancelRequest;
+import com.ays.assignment.model.dto.request.AssignmentCancelRequestBuilder;
+import com.ays.assignment.model.dto.request.AssignmentListRequest;
+import com.ays.assignment.model.dto.request.AssignmentListRequestBuilder;
+import com.ays.assignment.model.dto.request.AssignmentSaveRequest;
+import com.ays.assignment.model.dto.request.AssignmentSaveRequestBuilder;
+import com.ays.assignment.model.dto.request.AssignmentSearchRequest;
+import com.ays.assignment.model.dto.request.AssignmentSearchRequestBuilder;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
+import com.ays.assignment.model.dto.request.AssignmentUpdateRequestBuilder;
 import com.ays.assignment.model.dto.response.AssignmentResponse;
 import com.ays.assignment.model.dto.response.AssignmentSearchResponse;
 import com.ays.assignment.model.dto.response.AssignmentSummaryResponse;
@@ -478,6 +487,56 @@ class AssignmentSystemTest extends AbstractSystemTest {
 
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, adminUserTokenOne.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenValidAssignmentCancelRequest_whenAssignmentCanceled_thenReturnNothing() throws Exception {
+        // Given
+        AssignmentCancelRequest mockCancelRequest = new AssignmentCancelRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/cancel");
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, userTokenSix.getAccessToken(), mockCancelRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenValidAssignmentCancelRequest_whenUserUnauthorizedForCanceling_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        AssignmentCancelRequest mockCancelRequest = new AssignmentCancelRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/assignment/cancel");
+        AysResponse<AysError> mockAysResponse = AysResponseBuilder.FORBIDDEN;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, adminUserTokenOne.getAccessToken(), mockCancelRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.time()
