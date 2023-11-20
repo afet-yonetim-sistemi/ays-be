@@ -8,7 +8,7 @@ import com.ays.institution.model.Institution;
 import com.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import com.ays.institution.model.entity.InstitutionBuilder;
 import com.ays.institution.model.enums.InstitutionStatus;
-import com.ays.institution.model.mapper.InstitutionToInstitutionSummaryResponseMapper;
+import com.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
 import com.ays.institution.service.InstitutionService;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
@@ -28,7 +28,7 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
     private InstitutionService institutionService;
 
 
-    private final InstitutionToInstitutionSummaryResponseMapper institutionToInstitutionSummaryResponseMapper = InstitutionToInstitutionSummaryResponseMapper.initialize();
+    private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1/institutions";
@@ -58,7 +58,7 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
         Mockito.when(institutionService.getSummaryOfActiveInstitutions()).thenReturn(mockInstitutions);
 
         // then
-        List<InstitutionsSummaryResponse> mockInstitutionResponseList = institutionToInstitutionSummaryResponseMapper.map(mockInstitutions);
+        List<InstitutionsSummaryResponse> mockInstitutionResponseList = institutionToInstitutionsSummaryResponseMapper.map(mockInstitutions);
         AysResponse<List<InstitutionsSummaryResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponseList);
 
         mockMvc.perform(AysMockMvcRequestBuilders

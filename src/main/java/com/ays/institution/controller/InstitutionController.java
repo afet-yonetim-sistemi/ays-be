@@ -4,7 +4,7 @@ import com.ays.common.model.dto.response.AysResponse;
 import com.ays.institution.model.Institution;
 import com.ays.institution.model.dto.response.InstitutionResponse;
 import com.ays.institution.model.dto.response.InstitutionsSummaryResponse;
-import com.ays.institution.model.mapper.InstitutionToInstitutionSummaryResponseMapper;
+import com.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
 import com.ays.institution.service.InstitutionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +28,7 @@ class InstitutionController {
 
     private final InstitutionService institutionService;
 
-    private final InstitutionToInstitutionSummaryResponseMapper institutionToInstitutionSummaryResponseMapper = InstitutionToInstitutionSummaryResponseMapper.initialize();
+    private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
     /**
      * Retrieves a summary of all institutions.
@@ -41,7 +41,7 @@ class InstitutionController {
     public AysResponse<List<InstitutionsSummaryResponse>> getSummaryOfActiveInstitutions() {
 
         final List<Institution> institutionsSummary = institutionService.getSummaryOfActiveInstitutions();
-        final List<InstitutionsSummaryResponse> institutionsSummaryRespons = institutionToInstitutionSummaryResponseMapper.map(institutionsSummary);
+        final List<InstitutionsSummaryResponse> institutionsSummaryRespons = institutionToInstitutionsSummaryResponseMapper.map(institutionsSummary);
         return AysResponse.successOf(institutionsSummaryRespons);
     }
 

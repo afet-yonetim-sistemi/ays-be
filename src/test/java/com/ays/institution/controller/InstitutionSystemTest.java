@@ -7,7 +7,7 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.institution.model.Institution;
 import com.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import com.ays.institution.model.entity.InstitutionBuilder;
-import com.ays.institution.model.mapper.InstitutionToInstitutionSummaryResponseMapper;
+import com.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import java.util.List;
 class InstitutionSystemTest extends AbstractSystemTest {
 
 
-    private final InstitutionToInstitutionSummaryResponseMapper institutionToInstitutionSummaryResponseMapper = InstitutionToInstitutionSummaryResponseMapper.initialize();
+    private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1/institutions";
@@ -42,7 +42,7 @@ class InstitutionSystemTest extends AbstractSystemTest {
 
 
         // Then
-        List<InstitutionsSummaryResponse> mockInstitutionResponses = institutionToInstitutionSummaryResponseMapper.map(mockInstitutions);
+        List<InstitutionsSummaryResponse> mockInstitutionResponses = institutionToInstitutionsSummaryResponseMapper.map(mockInstitutions);
         AysResponse<List<InstitutionsSummaryResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponses);
 
         mockMvc.perform(AysMockMvcRequestBuilders
