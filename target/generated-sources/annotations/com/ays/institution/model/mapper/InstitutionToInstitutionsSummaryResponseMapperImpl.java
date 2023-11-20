@@ -9,7 +9,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-11-20T21:42:54+0300",
+    date = "2023-11-20T21:55:53+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 19 (Oracle Corporation)"
 )
 public class InstitutionToInstitutionsSummaryResponseMapperImpl implements InstitutionToInstitutionsSummaryResponseMapper {
