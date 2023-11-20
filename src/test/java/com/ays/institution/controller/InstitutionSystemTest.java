@@ -5,7 +5,7 @@ import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
 import com.ays.institution.model.Institution;
-import com.ays.institution.model.dto.response.InstitutionSummaryResponse;
+import com.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import com.ays.institution.model.entity.InstitutionBuilder;
 import com.ays.institution.model.mapper.InstitutionToInstitutionSummaryResponseMapper;
 import com.ays.util.AysMockMvcRequestBuilders;
@@ -42,8 +42,8 @@ class InstitutionSystemTest extends AbstractSystemTest {
 
 
         // Then
-        List<InstitutionSummaryResponse> mockInstitutionResponses = institutionToInstitutionSummaryResponseMapper.map(mockInstitutions);
-        AysResponse<List<InstitutionSummaryResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponses);
+        List<InstitutionsSummaryResponse> mockInstitutionResponses = institutionToInstitutionSummaryResponseMapper.map(mockInstitutions);
+        AysResponse<List<InstitutionsSummaryResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponses);
 
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(BASE_PATH.concat("/summary"), mockAccessToken))

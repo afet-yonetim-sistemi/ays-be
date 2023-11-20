@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class InstitutionSummaryResponse {
+public class InstitutionsSummaryResponse {
 
     private String id;
     private String name;

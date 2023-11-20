@@ -3,7 +3,7 @@ package com.ays.institution.controller;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.institution.model.Institution;
 import com.ays.institution.model.dto.response.InstitutionResponse;
-import com.ays.institution.model.dto.response.InstitutionSummaryResponse;
+import com.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import com.ays.institution.model.mapper.InstitutionToInstitutionSummaryResponseMapper;
 import com.ays.institution.service.InstitutionService;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +38,11 @@ class InstitutionController {
      */
     @GetMapping("/institutions/summary")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<List<InstitutionSummaryResponse>> getSummaryOfActiveInstitutions() {
+    public AysResponse<List<InstitutionsSummaryResponse>> getSummaryOfActiveInstitutions() {
 
         final List<Institution> institutionsSummary = institutionService.getSummaryOfActiveInstitutions();
-        final List<InstitutionSummaryResponse> institutionSummaryResponses = institutionToInstitutionSummaryResponseMapper.map(institutionsSummary);
-        return AysResponse.successOf(institutionSummaryResponses);
+        final List<InstitutionsSummaryResponse> institutionsSummaryRespons = institutionToInstitutionSummaryResponseMapper.map(institutionsSummary);
+        return AysResponse.successOf(institutionsSummaryRespons);
     }
 
 }

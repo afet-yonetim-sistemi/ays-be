@@ -5,7 +5,7 @@ import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
 import com.ays.institution.model.Institution;
-import com.ays.institution.model.dto.response.InstitutionSummaryResponse;
+import com.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import com.ays.institution.model.entity.InstitutionBuilder;
 import com.ays.institution.model.enums.InstitutionStatus;
 import com.ays.institution.model.mapper.InstitutionToInstitutionSummaryResponseMapper;
@@ -58,8 +58,8 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
         Mockito.when(institutionService.getSummaryOfActiveInstitutions()).thenReturn(mockInstitutions);
 
         // then
-        List<InstitutionSummaryResponse> mockInstitutionResponseList = institutionToInstitutionSummaryResponseMapper.map(mockInstitutions);
-        AysResponse<List<InstitutionSummaryResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponseList);
+        List<InstitutionsSummaryResponse> mockInstitutionResponseList = institutionToInstitutionSummaryResponseMapper.map(mockInstitutions);
+        AysResponse<List<InstitutionsSummaryResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponseList);
 
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(BASE_PATH.concat("/summary"), mockAccessToken))
