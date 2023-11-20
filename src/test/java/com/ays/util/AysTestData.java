@@ -50,6 +50,10 @@ public class AysTestData {
         public static final String VALID_ID_FIVE = "08cd53fb-7624-4c66-be93-9512170ec226";
         public static final String VALID_USERNAME_FIVE = "486879";
         public static final String VALID_PASSWORD_FIVE = "147180";
+
+        public static final String VALID_ID_SIX = "c4aecdf9-5e3b-4640-9782-e87f1443606e";
+        public static final String VALID_USERNAME_SIX = "679852";
+        public static final String VALID_PASSWORD_SIX = "147180";
     }
 
     public static class Institution {
