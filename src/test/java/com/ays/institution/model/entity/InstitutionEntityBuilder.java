@@ -21,11 +21,6 @@ public class InstitutionEntityBuilder extends TestDataBuilder<InstitutionEntity>
         return this;
     }
 
-    public InstitutionEntityBuilder withName(String name) {
-        data.setName(name);
-        return this;
-    }
-
     public InstitutionEntityBuilder withStatus(InstitutionStatus status) {
         data.setStatus(status);
         return this;

@@ -63,7 +63,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
         final Map<String, Object> claimsOfSuperAdminOne = new SuperAdminEntityBuilder()
                 .withId(AysTestData.SuperAdminUser.VALID_ID_ONE)
                 .withUsername(AysTestData.SuperAdminUser.VALID_USERNAME_ONE)
-                .withInstitutionId(AysTestData.SuperAdminUser.INSTITUTION_ID)
+                .withInstitutionId(null)
                 .build()
                 .getClaims();
         this.superAdminToken = this.generate(claimsOfSuperAdminOne);

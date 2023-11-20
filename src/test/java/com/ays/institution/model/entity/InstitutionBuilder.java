@@ -14,16 +14,11 @@ public class InstitutionBuilder extends TestDataBuilder<Institution> {
     public InstitutionBuilder withValidFields() {
         return this
                 .withId(AysRandomUtil.generateUUID())
-                .withName("Test Institution " + AysRandomUtil.generateUUID());
+                .withStatus(InstitutionStatus.ACTIVE);
     }
 
     public InstitutionBuilder withId(String id) {
         data.setId(id);
-        return this;
-    }
-
-    public InstitutionBuilder withName(String name) {
-        data.setName(name);
         return this;
     }
 

@@ -7,6 +7,7 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.institution.model.Institution;
 import com.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import com.ays.institution.model.entity.InstitutionBuilder;
+import com.ays.institution.model.enums.InstitutionStatus;
 import com.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-import java.util.Arrays;
 import java.util.List;
 
 class InstitutionSystemTest extends AbstractSystemTest {
@@ -29,24 +29,18 @@ class InstitutionSystemTest extends AbstractSystemTest {
     void whenActiveInstitutionsExist_thenReturnInstitutionSummaryResponses() throws Exception {
 
         // When
-        String mockAccessToken = superAdminToken.getAccessToken();
-
-        Institution institution1 = new InstitutionBuilder().withValidFields().build();
-        Institution institution2 = new InstitutionBuilder().withValidFields().build();
-
-
-        List<Institution> mockInstitutions = Arrays.asList(
-                institution1,
-                institution2
+        List<Institution> mockActiveInstitutions = List.of(
+                new InstitutionBuilder().withValidFields().withStatus(InstitutionStatus.ACTIVE).build(),
+                new InstitutionBuilder().withValidFields().withStatus(InstitutionStatus.ACTIVE).build()
         );
 
-
         // Then
-        List<InstitutionsSummaryResponse> mockInstitutionResponses = institutionToInstitutionsSummaryResponseMapper.map(mockInstitutions);
+        List<InstitutionsSummaryResponse> mockInstitutionResponses = institutionToInstitutionsSummaryResponseMapper
+                .map(mockActiveInstitutions);
         AysResponse<List<InstitutionsSummaryResponse>> mockAysResponse = AysResponse.successOf(mockInstitutionResponses);
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH.concat("/summary"), mockAccessToken))
+                        .get(BASE_PATH.concat("/summary"), superAdminToken.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()

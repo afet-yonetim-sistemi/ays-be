@@ -7,6 +7,7 @@ import com.ays.institution.model.entity.InstitutionEntityBuilder;
 import com.ays.institution.model.enums.InstitutionStatus;
 import com.ays.institution.model.mapper.InstitutionEntityToInstitutionMapper;
 import com.ays.institution.repository.InstitutionRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,36 +32,25 @@ class InstitutionServiceImplTest extends AbstractUnitTest {
     @Test
     void whenActiveInstitutionsExist_thenReturnInstitutions() {
 
-
-        InstitutionEntity institutionEntity1 = new InstitutionEntityBuilder()
-                .withValidFields()
-                .withName("institutionEntity1")
-                .build();
-
-        InstitutionEntity institutionEntity2 = new InstitutionEntityBuilder()
-                .withValidFields()
-                .withName("institutionEntity2")
-                .build();
-
-
-        List<InstitutionEntity> mockInstitutionEntities = Arrays.asList(
-                institutionEntity1,
-                institutionEntity2
+        // When
+        List<InstitutionEntity> mockActiveInstitutionEntities = Arrays.asList(
+                new InstitutionEntityBuilder().withValidFields().build(),
+                new InstitutionEntityBuilder().withValidFields().build()
         );
 
-        List<Institution> mockInstitutionList = institutionEntityToInstitutionMapper.map(mockInstitutionEntities);
-
-        // When
-        Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE)).thenReturn(mockInstitutionEntities);
+        Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE))
+                .thenReturn(mockActiveInstitutionEntities);
 
         // Then
-        List<Institution> result = institutionService.getSummaryOfActiveInstitutions();
+        List<Institution> mockActiveInstitutions = institutionEntityToInstitutionMapper
+                .map(mockActiveInstitutionEntities);
+        List<Institution> activeInstitutions = institutionService.getSummaryOfActiveInstitutions();
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(result.size(), mockInstitutionList.size());
+        Assertions.assertNotNull(activeInstitutions);
+        Assertions.assertEquals(activeInstitutions.size(), mockActiveInstitutions.size());
 
-        // Verify
-        Mockito.verify(institutionRepository, Mockito.times(1)).findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
 
     }
 
@@ -70,14 +60,13 @@ class InstitutionServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE))
                 .thenReturn(Collections.emptyList());
-
         // Then
         List<Institution> institutions = institutionService.getSummaryOfActiveInstitutions();
 
-        Assertions.assertTrue(institutions.isEmpty());
+        Assertions.assertTrue(CollectionUtils.isEmpty(institutions));
 
-        // Verify
-        Mockito.verify(institutionRepository, Mockito.times(1)).findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
 
     }
 

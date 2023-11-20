@@ -16,8 +16,6 @@ public class AysTestData {
         public static final String VALID_PASSWORD_ONE = "A123y456S.";
         public static final String VALID_EMAIL_ONE = "superadmin@ays.com";
 
-        public static final String INSTITUTION_ID = null;
-
     }
 
     public static class AdminUser {
