@@ -36,7 +36,6 @@ import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysTestData;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.data.domain.Page;
@@ -114,7 +113,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(1)
     void whenUserAssignmentFound_thenReturnAssignmentUserResponse() throws Exception {
 
         // When
@@ -224,7 +222,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(3)
     void givenValidAssignmentSearchRequest_whenAssignmentSearched_thenReturnAssignmentSearchResponse() throws Exception {
         // Given
         AssignmentSearchRequest mockSearchRequest = new AssignmentSearchRequestBuilder()
@@ -336,7 +333,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(4)
     void whenAssignmentApproved_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/approve");
@@ -377,14 +373,13 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(5)
     void whenAssignmentStarted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/start");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenFive.getAccessToken()))
+                        .post(endpoint, userTokenSeven.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -418,7 +413,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(7)
     void whenAssignmentRejected_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/reject");
@@ -459,7 +453,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(6)
     void whenAssignmentCompleted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/complete");
@@ -633,7 +626,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
-    @Order(2)
     @Test
     void whenUserHasAssignmentWithValidStatus_thenReturnAssignmentSummaryResponse() throws Exception {
 
