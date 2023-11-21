@@ -8,6 +8,7 @@ import com.ays.common.util.AysRandomUtil;
 import com.ays.parameter.model.AysParameter;
 import com.ays.parameter.model.AysParameterBuilder;
 import com.ays.parameter.service.AysParameterService;
+import com.ays.super_admin.entity.SuperAdminEntityBuilder;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.util.AysTestData;
 import io.jsonwebtoken.JwtBuilder;
@@ -37,6 +38,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     @Autowired
     protected MockMvc mockMvc;
 
+    protected AysToken superAdminToken;
     protected AysToken adminUserTokenOne;
     protected AysToken adminUserTokenTwo;
     protected AysToken userTokenOne;
@@ -57,6 +59,14 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
         Mockito.when(parameterService.getParameters(Mockito.anyString()))
                 .thenReturn(parameters);
         this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);
+
+        final Map<String, Object> claimsOfSuperAdminOne = new SuperAdminEntityBuilder()
+                .withId(AysTestData.SuperAdminUser.VALID_ID_ONE)
+                .withUsername(AysTestData.SuperAdminUser.VALID_USERNAME_ONE)
+                .withInstitutionId(null)
+                .build()
+                .getClaims();
+        this.superAdminToken = this.generate(claimsOfSuperAdminOne);
 
         final Map<String, Object> claimsOfAdminUserOne = new AdminUserEntityBuilder()
                 .withId(AysTestData.AdminUser.VALID_ID_ONE)
