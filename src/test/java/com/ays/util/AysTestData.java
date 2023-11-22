@@ -54,6 +54,18 @@ public class AysTestData {
         public static final String VALID_ID_SIX = "c4aecdf9-5e3b-4640-9782-e87f1443606e";
         public static final String VALID_USERNAME_SIX = "679852";
         public static final String VALID_PASSWORD_SIX = "147180";
+
+        public static final String VALID_ID_SEVEN = "9cf9abe6-7b6a-45b7-be25-e30916ecf9ae";
+        public static final String VALID_USERNAME_SEVEN = "974631";
+        public static final String VALID_PASSWORD_SEVEN = "147180";
+
+        public static final String VALID_ID_EIGHT = "0d4531a2-5bfe-4004-a453-b66d8ebbe515";
+        public static final String VALID_USERNAME_EIGHT = "511552";
+        public static final String VALID_PASSWORD_EIGHT = "147180";
+
+        public static final String VALID_ID_NINE = "187afe6a-7443-4fb8-9e31-c5e3f3a7ef43";
+        public static final String VALID_USERNAME_NINE = "499370";
+        public static final String VALID_PASSWORD_NINE = "147180";
     }
 
     public static class Institution {
@@ -64,11 +76,11 @@ public class AysTestData {
 
     public static class Assignment {
 
-        public static final String VALID_ID_ONE = "3b30cac9-0645-48cb-bc98-2e928df521ab";
+        public static final String VALID_ID_ONE = "c3f0f5de-ecec-4245-b91e-39ea25f6da05";
 
-        public static final String VALID_ID_TWO = "a9ec051e-3c4f-4cb5-ab08-e9dcee5e1f03";
+        public static final String VALID_ID_TWO = "2dd42a70-3151-4640-9c9d-547c5bb30096";
 
-        public static final String VALID_ID_THREE = "cbc00422-4f22-11ee-be56-0242ac120002";
+        public static final String VALID_ID_THREE = "a9b02d99-4c70-4409-b5f1-1da036cf891b";
 
     }
 

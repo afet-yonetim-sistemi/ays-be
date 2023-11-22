@@ -35,10 +35,7 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysTestData;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -46,7 +43,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AssignmentSystemTest extends AbstractSystemTest {
 
     private final AssignmentToAssignmentResponseMapper assignmentToAssignmentResponseMapper = AssignmentToAssignmentResponseMapper.initialize();
@@ -82,9 +78,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
-
     }
-
 
     @Test
     void givenValidAssignmentSaveRequest_whenUserUnauthorizedForSaving_thenReturnAccessDeniedException() throws Exception {
@@ -110,13 +104,10 @@ class AssignmentSystemTest extends AbstractSystemTest {
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
-
     }
 
     @Test
-    @Order(1)
     void whenUserAssignmentFound_thenReturnAssignmentUserResponse() throws Exception {
-
         // When
         Assignment mockAssignment = new AssignmentBuilder()
                 .build();
@@ -139,7 +130,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .exists());
-
     }
 
 
@@ -194,9 +184,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .exists());
-
     }
-
 
     @Test
     void givenValidAssignmentId_whenUnauthorizedForGettingAssignmentById_thenReturnAccessDeniedException() throws Exception {
@@ -224,7 +212,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(3)
     void givenValidAssignmentSearchRequest_whenAssignmentSearched_thenReturnAssignmentSearchResponse() throws Exception {
         // Given
         AssignmentSearchRequest mockSearchRequest = new AssignmentSearchRequestBuilder()
@@ -238,7 +225,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
         AysResponse<AssignmentSearchResponse> mockAysResponse = AysResponse.successOf(mockSearchResponse);
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenFour.getAccessToken(), mockSearchRequest))
+                        .post(endpoint, userTokenTwo.getAccessToken(), mockSearchRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -336,14 +323,13 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(4)
     void whenAssignmentApproved_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/approve");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenFive.getAccessToken()))
+                        .post(endpoint, userTokenThree.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -377,14 +363,13 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(5)
     void whenAssignmentStarted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/start");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenFive.getAccessToken()))
+                        .post(endpoint, userTokenFour.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -418,14 +403,13 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(7)
     void whenAssignmentRejected_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/reject");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenFour.getAccessToken()))
+                        .post(endpoint, userTokenFive.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -459,14 +443,13 @@ class AssignmentSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    @Order(6)
     void whenAssignmentCompleted_thenReturnNothing() throws Exception {
         // Then
         String endpoint = BASE_PATH.concat("/assignment/complete");
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenThree.getAccessToken()))
+                        .post(endpoint, userTokenSix.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -511,7 +494,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
 
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenSix.getAccessToken(), mockCancelRequest))
+                        .post(endpoint, userTokenSeven.getAccessToken(), mockCancelRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -553,7 +536,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     void givenValidAssignmentIdAndAssignmentUpdateRequest_whenAssignmentUpdated_thenReturnAysResponseOfSuccess() throws Exception {
 
         // Given
-        String assignmentId = AysTestData.Assignment.VALID_ID_THREE;
+        String assignmentId = AysTestData.Assignment.VALID_ID_TWO;
         AssignmentUpdateRequest mockUpdateRequest = new AssignmentUpdateRequestBuilder()
                 .withValidFields()
                 .build();
@@ -597,7 +580,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     void givenValidAssignmentId_whenAssignmentDeleted_thenReturnAysResponseOfSuccess() throws Exception {
 
         // Given
-        String assignmentId = AysTestData.Assignment.VALID_ID_TWO;
+        String assignmentId = AysTestData.Assignment.VALID_ID_THREE;
 
         // Then
         String endpoint = BASE_PATH.concat("/assignment/".concat(assignmentId));
@@ -633,7 +616,6 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
     }
 
-    @Order(2)
     @Test
     void whenUserHasAssignmentWithValidStatus_thenReturnAssignmentSummaryResponse() throws Exception {
 
