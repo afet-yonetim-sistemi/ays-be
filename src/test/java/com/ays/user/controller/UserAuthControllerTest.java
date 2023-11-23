@@ -28,7 +28,8 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
     private UserAuthService userAuthService;
 
 
-    private static final AysTokenToAysTokenResponseMapper AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER = AysTokenToAysTokenResponseMapper.initialize();
+    private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
+
 
     private static final String BASE_PATH = "/api/v1/authentication";
 
@@ -42,7 +43,7 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockUserToken);
 
         // then
-        AysTokenResponse mockResponse = AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER.map(mockUserToken);
+        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockUserToken);
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token"), mockRequest))
@@ -78,7 +79,7 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockUserToken);
 
         // Then
-        AysTokenResponse mockResponse = AYS_TOKEN_TO_AYS_TOKEN_RESPONSE_MAPPER.map(mockUserToken);
+        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockUserToken);
         AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(BASE_PATH.concat("/token/refresh"), mockRequest))

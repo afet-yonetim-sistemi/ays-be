@@ -34,7 +34,7 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
     private AysIdentity identity;
 
 
-    private static final UserLocationSaveRequestToUserLocationEntityMapper USER_LOCATION_SAVE_REQUEST_TO_USER_LOCATION_ENTITY_MAPPER = UserLocationSaveRequestToUserLocationEntityMapper.initialize();
+    private final UserLocationSaveRequestToUserLocationEntityMapper userLocationSaveRequestToUserLocationEntityMapper = UserLocationSaveRequestToUserLocationEntityMapper.initialize();
 
     @Test
     void givenValidUserLocationSaveRequest_whenUserLocationNotFound_thenSaveUserLastLocation() {
@@ -50,7 +50,7 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
         Mockito.when(assignmentRepository.existsByUserIdAndStatus(userId, AssignmentStatus.IN_PROGRESS))
                 .thenReturn(true);
 
-        UserLocationEntity userLocationEntity = USER_LOCATION_SAVE_REQUEST_TO_USER_LOCATION_ENTITY_MAPPER
+        UserLocationEntity userLocationEntity = userLocationSaveRequestToUserLocationEntityMapper
                 .mapForSaving(mockSaveRequest, userId);
         Mockito.when(userLocationRepository.findByUserId(userId))
                 .thenReturn(Optional.of(userLocationEntity));

@@ -36,9 +36,10 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
     private AdminUserService adminUserService;
 
 
-    private static final AdminUserToAdminUsersResponseMapper ADMIN_USER_TO_ADMIN_USER_RESPONSE_MAPPER = AdminUserToAdminUsersResponseMapper.initialize();
+    private final AdminUserToAdminUsersResponseMapper adminUserToAdminUsersResponseMapper = AdminUserToAdminUsersResponseMapper.initialize();
 
-    private static final AdminUserEntityToAdminUserMapper ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
+    private final AdminUserEntityToAdminUserMapper adminUserEntityToAdminUserMapper = AdminUserEntityToAdminUserMapper.initialize();
+
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -52,13 +53,13 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
         Page<AdminUserEntity> mockAdminUserEntities = new PageImpl<>(
                 AdminUserEntityBuilder.generateValidUserEntities(1)
         );
-        List<AdminUser> mockAdminUsers = ADMIN_USER_ENTITY_TO_ADMIN_USER_MAPPER.map(mockAdminUserEntities.getContent());
+        List<AdminUser> mockAdminUsers = adminUserEntityToAdminUserMapper.map(mockAdminUserEntities.getContent());
         AysPage<AdminUser> mockAysPageOfUsers = AysPage.of(mockAdminUserEntities, mockAdminUsers);
         Mockito.when(adminUserService.getAdminUsers(Mockito.any(AdminUserListRequest.class)))
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
-        List<AdminUsersResponse> mockAdminUsersResponses = ADMIN_USER_TO_ADMIN_USER_RESPONSE_MAPPER.map(mockAysPageOfUsers.getContent());
+        List<AdminUsersResponse> mockAdminUsersResponses = adminUserToAdminUsersResponseMapper.map(mockAysPageOfUsers.getContent());
         AysPageResponse<AdminUsersResponse> pageOfAdminUsersResponse = AysPageResponse.<AdminUsersResponse>builder()
                 .of(mockAysPageOfUsers)
                 .content(mockAdminUsersResponses)
