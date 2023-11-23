@@ -58,6 +58,7 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
         // Then
         userLocationService.saveUserLocation(mockSaveRequest);
 
+        // Verify
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .existsByUserIdAndStatus(Mockito.anyString(), Mockito.any(AssignmentStatus.class));
         Mockito.verify(userLocationRepository, Mockito.times(1))
@@ -86,6 +87,7 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
                 () -> userLocationService.saveUserLocation(mockSaveRequest)
         );
 
+        // Verify
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .existsByUserIdAndStatus(Mockito.anyString(), Mockito.any(AssignmentStatus.class));
         Mockito.verify(userLocationRepository, Mockito.times(0))
@@ -111,6 +113,7 @@ class UserLocationServiceImplTest extends AbstractUnitTest {
         // Then
         userLocationService.saveUserLocation(mockSaveRequest);
 
+        // Verify
         Mockito.verify(assignmentRepository, Mockito.times(1))
                 .existsByUserIdAndStatus(Mockito.anyString(), Mockito.any(AssignmentStatus.class));
         Mockito.verify(userLocationRepository, Mockito.times(1))

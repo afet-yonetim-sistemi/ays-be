@@ -42,6 +42,7 @@ class AysInvalidTokenServiceImplTest extends AbstractUnitTest {
         // Then
         invalidTokenService.invalidateTokens(mockTokenIds);
 
+        // Verify
         Mockito.verify(invalidTokenRepository, Mockito.times(1))
                 .saveAll(Mockito.anySet());
     }
@@ -62,7 +63,7 @@ class AysInvalidTokenServiceImplTest extends AbstractUnitTest {
                 () -> invalidTokenService.checkForInvalidityOfToken(mockTokenId)
         );
 
-
+        // Verify
         Mockito.verify(invalidTokenRepository, Mockito.times(1))
                 .findByTokenId(mockTokenId);
     }
@@ -79,6 +80,7 @@ class AysInvalidTokenServiceImplTest extends AbstractUnitTest {
         // Then
         invalidTokenService.checkForInvalidityOfToken(mockTokenId);
 
+        // Verify
         Mockito.verify(invalidTokenRepository, Mockito.times(1))
                 .findByTokenId(mockTokenId);
     }

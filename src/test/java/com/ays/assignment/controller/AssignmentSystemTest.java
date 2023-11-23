@@ -330,7 +330,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
 
-        // Validate
+        // Verify
         Optional<UserEntity> userEntity = userRepository.findById(mockUserEntity.getId());
         Assertions.assertTrue(userEntity.isPresent());
         Assertions.assertEquals(UserSupportStatus.READY, userEntity.get().getSupportStatus());
@@ -465,7 +465,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
-        // Validate
+        // Verify
         Optional<UserEntity> userEntity = userRepository.findById(mockUserEntity.getId());
         Assertions.assertTrue(userEntity.isPresent());
         Assertions.assertEquals(UserSupportStatus.BUSY, userEntity.get().getSupportStatus());
@@ -535,7 +535,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
-        // Validate
+        // Verify
         Optional<UserEntity> userEntity = userRepository.findById(mockUserEntity.getId());
         Assertions.assertTrue(userEntity.isPresent());
         Assertions.assertEquals(UserSupportStatus.ON_ROAD, userEntity.get().getSupportStatus());
@@ -605,7 +605,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
-        // Validate
+        // Verify
         Optional<UserEntity> userEntity = userRepository.findById(mockUserEntity.getId());
         Assertions.assertTrue(userEntity.isPresent());
         Assertions.assertEquals(UserSupportStatus.READY, userEntity.get().getSupportStatus());
@@ -675,7 +675,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
-        // Validate
+        // Verify
         Optional<UserEntity> userEntity = userRepository.findById(mockUserEntity.getId());
         Assertions.assertTrue(userEntity.isPresent());
         Assertions.assertEquals(UserSupportStatus.READY, userEntity.get().getSupportStatus());
@@ -751,7 +751,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
-        // Validate
+        // Verify
         Optional<UserEntity> userEntity = userRepository.findById(mockUserEntity.getId());
         Assertions.assertTrue(userEntity.isPresent());
         Assertions.assertEquals(UserSupportStatus.BUSY, userEntity.get().getSupportStatus());
@@ -875,7 +875,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
 
-        // Validate
+        // Verify
         Optional<AssignmentEntity> assignmentEntity = assignmentRepository.findById(mockAssignmentEntity.getId());
         Assertions.assertTrue(assignmentEntity.isEmpty());
     }

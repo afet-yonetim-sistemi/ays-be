@@ -62,6 +62,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
 
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
+        // Verify
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findAll(mockAdminUserListRequest.toPageable());
     }
@@ -93,6 +94,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
 
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
+        // Verify
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }

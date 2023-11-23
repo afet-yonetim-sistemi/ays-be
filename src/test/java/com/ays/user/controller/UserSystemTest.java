@@ -386,7 +386,7 @@ class UserSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
-        // Validate
+        // Verify
         Optional<UserEntity> userEntity = userRepository.findById(mockUserEntity.getId());
         Assertions.assertTrue(userEntity.isPresent());
         Assertions.assertEquals(UserStatus.DELETED, userEntity.get().getStatus());

@@ -1,7 +1,12 @@
 package com.ays.user.controller;
 
 import com.ays.AbstractRestControllerTest;
-import com.ays.auth.model.dto.request.*;
+import com.ays.auth.model.dto.request.AysLoginRequest;
+import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
+import com.ays.auth.model.dto.request.AysTokenInvalidateRequest;
+import com.ays.auth.model.dto.request.AysTokenInvalidateRequestBuilder;
+import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
+import com.ays.auth.model.dto.request.AysTokenRefreshRequestBuilder;
 import com.ays.auth.model.dto.response.AysTokenResponse;
 import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
@@ -58,6 +63,7 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .value(mockAysResponse.getResponse().getRefreshToken()));
 
+        // Verify
         Mockito.verify(userAuthService, Mockito.times(1))
                 .authenticate(Mockito.any());
     }

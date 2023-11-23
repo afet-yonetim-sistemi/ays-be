@@ -75,6 +75,7 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
 
+        // Verify
         Mockito.verify(adminUserService, Mockito.times(1))
                 .getAdminUsers(Mockito.any(AdminUserListRequest.class));
     }

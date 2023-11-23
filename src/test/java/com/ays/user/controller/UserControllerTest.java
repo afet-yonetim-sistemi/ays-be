@@ -100,6 +100,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.password")
                         .value(mockResponse.getResponse().getPassword()));
 
+        // Verify
         Mockito.verify(userSaveService, Mockito.times(1))
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
@@ -135,6 +136,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userSaveService, Mockito.never())
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
@@ -170,6 +172,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userSaveService, Mockito.never())
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
@@ -230,6 +233,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userSaveService, Mockito.times(0))
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }

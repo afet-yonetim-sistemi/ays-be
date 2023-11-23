@@ -64,6 +64,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
         Assertions.assertNotNull(user.getPassword());
         Assertions.assertEquals(6, user.getPassword().length());
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1)).findAll();
         Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
         Mockito.verify(passwordEncoder, Mockito.times(1)).encode(Mockito.anyString());
