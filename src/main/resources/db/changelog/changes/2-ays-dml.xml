@@ -76,8 +76,8 @@
             <column name="USERNAME" value="ays-super-admin"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="superadmin@ays.com"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="FIRST_NAME" value="James"/>
+            <column name="LAST_NAME" value="William"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="LINE_NUMBER" value="1234567890"/>
             <column name="ROLE" value="SUPER_ADMIN"/>
@@ -85,15 +85,14 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
-
         <insert tableName="AYS_ADMIN_USER">
             <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b206"/>
             <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
             <column name="USERNAME" value="ays-admin-1"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="admin1@ays.com"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="FIRST_NAME" value="Kyle"/>
+            <column name="LAST_NAME" value="Joanne"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="LINE_NUMBER" value="1234567891"/>
             <column name="ROLE" value="ADMIN"/>
@@ -101,15 +100,14 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
-
         <insert tableName="AYS_ADMIN_USER">
             <column name="ID" value="87ab173b-1b7d-4264-abd7-438e5ed2c1fa"/>
             <column name="INSTITUTION_ID" value="91df7ae9-d5b9-44ae-b54f-d5d55359c4a4"/>
             <column name="USERNAME" value="ays-admin-2"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="admin2@ays.com"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="FIRST_NAME" value="Olivia"/>
+            <column name="LAST_NAME" value="Ethan"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="LINE_NUMBER" value="1234567892"/>
             <column name="ROLE" value="ADMIN"/>
@@ -125,13 +123,13 @@
         <!-- =============== -->
         <!-- DML of AYS_USER -->
         <!-- =============== -->
-        <insert tableName="AYS_USER"> <!-- AssignmentStatus : ASSIGNED -->
+        <insert tableName="AYS_USER">
             <column name="ID" value="c4b4e4db-5641-41f7-8222-a76deb1c065c"/>
             <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
             <column name="USERNAME" value="232180"/>
             <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 1"/>
+            <column name="FIRST_NAME" value="Joseph"/>
+            <column name="LAST_NAME" value="Margaret"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="SUPPORT_STATUS" value="BUSY"/>
             <column name="LINE_NUMBER" value="1234567890"/>
@@ -140,129 +138,16 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
-
-        <insert tableName="AYS_USER"> <!-- Does Not Have Assignment -->
+        <insert tableName="AYS_USER">
             <column name="ID" value="0c8034d2-f91b-4ef4-bf6c-bdbeda945764"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="INSTITUTION_ID" value="91df7ae9-d5b9-44ae-b54f-d5d55359c4a4"/>
             <column name="USERNAME" value="930047"/>
             <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 2"/>
+            <column name="FIRST_NAME" value="Noah"/>
+            <column name="LAST_NAME" value="Patricia"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="SUPPORT_STATUS" value="READY"/>
             <column name="LINE_NUMBER" value="1234567891"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER"> <!-- AssignmentStatus : RESERVED -->
-            <column name="ID" value="edb36891-b898-4c12-bcec-d9aaa5d45190"/>
-            <column name="INSTITUTION_ID" value="91df7ae9-d5b9-44ae-b54f-d5d55359c4a4"/>
-            <column name="USERNAME" value="648193"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 3"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="READY"/>
-            <column name="LINE_NUMBER" value="1234567892"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER"> <!-- AssignmentStatus : ASSIGNED -->
-            <column name="ID" value="911d7592-a64f-47ff-b5ab-a3da08ad6d2b"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="399200"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 4"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="BUSY"/>
-            <column name="LINE_NUMBER" value="1234567893"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER"> <!-- AssignmentStatus : RESERVED -->
-            <column name="ID" value="08cd53fb-7624-4c66-be93-9512170ec226"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="486879"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 5"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="READY"/>
-            <column name="LINE_NUMBER" value="1234567894"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER"> <!-- AssignmentStatus : IN_PROGRESS -->
-            <column name="ID" value="c4aecdf9-5e3b-4640-9782-e87f1443606e"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="679852"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 6"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="ON_ROAD"/>
-            <column name="LINE_NUMBER" value="5352133421"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER"> <!-- AssignmentStatus : IN_PROGRESS -->
-            <column name="ID" value="9cf9abe6-7b6a-45b7-be25-e30916ecf9ae"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="974631"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 7"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="ON_ROAD"/>
-            <column name="LINE_NUMBER" value="5051239874"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER"> <!-- AssignmentStatus : IN_PROGRESS -->
-            <column name="ID" value="0d4531a2-5bfe-4004-a453-b66d8ebbe515"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="511552"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 8"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="ON_ROAD"/>
-            <column name="LINE_NUMBER" value="5055240136"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER">
-            <column name="ID" value="187afe6a-7443-4fb8-9e31-c5e3f3a7ef43"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="499370"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 9"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="IDLE"/>
-            <column name="LINE_NUMBER" value="5055256064"/>
             <column name="ROLE" value="VOLUNTEER"/>
             <column name="STATUS" value="ACTIVE"/>
             <column name="CREATED_USER" value="AYS"/>
@@ -295,69 +180,21 @@
             INSERT INTO AYS_ASSIGNMENT (ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
                                         LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
             VALUES ('c3f0f5de-ecec-4245-b91e-39ea25f6da05', '77ece256-bf0e-4bbe-801d-173083f8bdcf',
-                    '100L İçme Suyu İhtiyacı', 'Ahmet', 'Mehmet', '90', '5051548391',
+                    '100L İçme Suyu İhtiyacı', 'Charles', 'Miller', '90', '5051548391',
                     ST_GeomFromText('POINT(40.981210 29.026083)', 4326), 'AVAILABLE', 'AYS', CURRENT_TIMESTAMP);
 
             INSERT INTO AYS_ASSIGNMENT (ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
                                         LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
             VALUES ('2dd42a70-3151-4640-9c9d-547c5bb30096', '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4',
-                    'Kıyafet İhtiyacı', 'Cem', 'Orkun', '90', '5055936519',
+                    'Kıyafet İhtiyacı', 'Isabella', 'Evans', '90', '5055936519',
                     ST_GeomFromText('POINT(40.981210 29.000000)', 4326), 'AVAILABLE', 'AYS', CURRENT_TIMESTAMP);
 
             INSERT INTO AYS_ASSIGNMENT (ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
                                         LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
             VALUES ('a9b02d99-4c70-4409-b5f1-1da036cf891b', '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4',
-                    'Kıyafet İhtiyacı', 'Cem', 'Orkun', '90', '5057806917',
+                    'Kıyafet İhtiyacı', 'Emily', 'Taylor', '90', '5057806917',
                     ST_GeomFromText('POINT(40.981210 29.000000)', 4326), 'AVAILABLE', 'AYS', CURRENT_TIMESTAMP);
 
-            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
-                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
-            VALUES ('1de10714-280d-4270-a574-6e754871e3e8', 'c4b4e4db-5641-41f7-8222-a76deb1c065c',
-                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'Hemşire İhtiyacı', 'Tülay', 'Ay',
-                    '90', '5055252038', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
-                    'ASSIGNED', 'AYS', CURRENT_TIMESTAMP);
-
-            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
-                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
-            VALUES ('7cb8314f-d83c-4b42-ac5e-2cbe753df037', 'edb36891-b898-4c12-bcec-d9aaa5d45190',
-                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'Doktor İhtiyacı', 'Cem', 'Canan',
-                    '90', '5053488622', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
-                    'RESERVED', 'AYS', CURRENT_TIMESTAMP);
-
-            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
-                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
-            VALUES ('bb87741a-f3ff-478c-a119-7486da683071', '911d7592-a64f-47ff-b5ab-a3da08ad6d2b',
-                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'İlaç İhtiyacı', 'Ceylan', 'Orkun',
-                    '90', '5056724595', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
-                    'ASSIGNED', 'AYS', CURRENT_TIMESTAMP);
-
-            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
-                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
-            VALUES ('fff7dbdb-5f3b-4897-884b-d705a022cfad', '08cd53fb-7624-4c66-be93-9512170ec226',
-                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'Vitamin İhtiyacı', 'Akın', 'Can',
-                    '90', '5051172946', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
-                    'RESERVED', 'AYS', CURRENT_TIMESTAMP);
-
-            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
-                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
-            VALUES ('26729174-e053-4401-bdc2-43a3c38deb66', 'c4aecdf9-5e3b-4640-9782-e87f1443606e',
-                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'Ayakkabı İhtiyacı', 'Ali', 'Ak',
-                    '90', '5058452660', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
-                    'IN_PROGRESS', 'AYS', CURRENT_TIMESTAMP);
-
-            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
-                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
-            VALUES ('d5bd85e8-dcf7-4580-8576-e8b97ccbbe94', '9cf9abe6-7b6a-45b7-be25-e30916ecf9ae',
-                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', 'Ayakkabı İhtiyacı', 'Remziye', 'Kaya',
-                    '90', '5053098618', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
-                    'IN_PROGRESS', 'AYS', CURRENT_TIMESTAMP);
-
-            INSERT INTO AYS_ASSIGNMENT (ID, USER_ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
-                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
-            VALUES ('163ae6f2-714a-4ed7-83aa-455a166d0db2', '0d4531a2-5bfe-4004-a453-b66d8ebbe515',
-                    '77ece256-bf0e-4bbe-801d-173083f8bdcf', '100 Isıtıcı İhtiyacı', 'Celil', 'Karabulut',
-                    '90', '5057834743', ST_GeomFromText('POINT(40.981210 29.000000)', 4326),
-                    'IN_PROGRESS', 'AYS', CURRENT_TIMESTAMP);
         </sql>
         <!-- ===================== -->
         <!-- DML of AYS_ASSIGNMENT -->
@@ -370,9 +207,11 @@
         <insert tableName="AYS_ADMIN_USER_REGISTER_APPLICATION">
             <column name="ID" value="3cfeb994-88f4-48d0-b105-309f42f91412"/>
             <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="REASON" value="Ahbap Kurucusu Haluk Levent İçin Oluşturuldu."/>
+            <column name="REASON"
+                    value="A kurumunun kurucu üyesi olan Linda Murphy için Afet Yönetim Sistemine dahil olabilmesi için oluşturulmuştur."
+            />
             <column name="STATUS" value="WAITING"/>
-            <column name="CREATED_USER" value="Agit Rubar Demir"/>
+            <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
         <!-- ========================================== -->
