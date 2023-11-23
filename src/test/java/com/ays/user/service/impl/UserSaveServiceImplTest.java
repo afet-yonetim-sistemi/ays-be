@@ -41,7 +41,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        List<UserEntity> usersFromDatabase = UserEntityBuilder.generateValidUserEntities(10);
+        List<UserEntity> usersFromDatabase = List.of(new UserEntityBuilder().withValidFields().build());
         Mockito.when(userRepository.findAll())
                 .thenReturn(usersFromDatabase);
 
@@ -78,7 +78,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        List<UserEntity> usersFromDatabase = UserEntityBuilder.generateValidUserEntities(10);
+        List<UserEntity> usersFromDatabase = List.of(new UserEntityBuilder().withValidFields().build());
         usersFromDatabase.get(0).setCountryCode(mockUserSaveRequest.getPhoneNumber().getCountryCode());
         usersFromDatabase.get(0).setLineNumber(mockUserSaveRequest.getPhoneNumber().getLineNumber());
         Mockito.when(userRepository.findAll())

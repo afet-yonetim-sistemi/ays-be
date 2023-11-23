@@ -37,6 +37,40 @@ class AdminUserSystemTest extends AbstractSystemTest {
     private static final String BASE_PATH = "/api/v1";
 
     @Test
+    void givenValidUserListRequest_whenSuperAdminUsersFound_thenReturnAdminUsersResponse() throws Exception {
+
+        // Given
+        AdminUserListRequest adminUserListRequest = new AdminUserListRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Page<AdminUserEntity> adminUserEntities = new PageImpl<>(
+                AdminUserEntityBuilder.generateValidUserEntities(1)
+        );
+        List<AdminUser> adminUsers = adminUserEntityToAdminUserMapper.map(adminUserEntities.getContent());
+        AysPage<AdminUser> pageOfUsers = AysPage.of(adminUserEntities, adminUsers);
+
+        // Then
+        List<AdminUsersResponse> adminUsersResponses = adminUserToAdminUserResponseMapper.map(pageOfUsers.getContent());
+        AysPageResponse<AdminUsersResponse> pageOfAdminUsersResponse = AysPageResponse.<AdminUsersResponse>builder()
+                .of(pageOfUsers)
+                .content(adminUsersResponses)
+                .build();
+
+        AysResponse<AysPageResponse<AdminUsersResponse>> response = AysResponse.successOf(pageOfAdminUsersResponse);
+        String endpoint = BASE_PATH.concat("/admins");
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, superAdminToken.getAccessToken(), adminUserListRequest))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(response.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(response.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
+    }
+
+    @Test
     void givenValidUserListRequest_whenAdminUsersFound_thenReturnAdminUsersResponse() throws Exception {
 
         // Given
@@ -61,7 +95,7 @@ class AdminUserSystemTest extends AbstractSystemTest {
         AysResponse<AysPageResponse<AdminUsersResponse>> response = AysResponse.successOf(pageOfAdminUsersResponse);
         String endpoint = BASE_PATH.concat("/admins");
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, adminUserTokenOne.getAccessToken(), adminUserListRequest))
+                        .post(endpoint, adminUserToken.getAccessToken(), adminUserListRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
@@ -80,7 +114,7 @@ class AdminUserSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/admins");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userTokenOne.getAccessToken(), adminUserListRequest);
+                .post(endpoint, userToken.getAccessToken(), adminUserListRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)

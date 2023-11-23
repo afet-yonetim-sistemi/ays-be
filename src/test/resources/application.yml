@@ -1,4 +1,8 @@
 spring:
+  datasource:
+    username: ays
+    password: ayspass
+    url: jdbc:tc:mysql:8.0.33///test
   sql:
     init:
       mode: always
@@ -13,13 +17,3 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
-ays:
-  db:
-    name: mysql
-    username: ays
-    password: :ayspass
-    url: jdbc:mysql://localhost:3306/test
-    maximum-pool-size: 5
-    connection-timeout: 180000
-    maximum-lifetime: 170000
