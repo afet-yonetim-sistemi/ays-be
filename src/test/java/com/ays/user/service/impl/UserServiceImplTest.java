@@ -73,6 +73,7 @@ class UserServiceImplTest extends AbstractUnitTest {
 
         AysPageBuilder.assertEquals(mockAysPageUsers, aysPageUsers);
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
         Mockito.verify(identity, Mockito.times(1))
@@ -102,6 +103,7 @@ class UserServiceImplTest extends AbstractUnitTest {
 
         Assertions.assertEquals(mockUser.getFirstName(), user.getFirstName());
 
+        // Verify
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
         Mockito.verify(userRepository, Mockito.times(1))
@@ -126,6 +128,7 @@ class UserServiceImplTest extends AbstractUnitTest {
                 () -> userService.getUserById(mockUserId)
         );
 
+        // Verify
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
         Mockito.verify(userRepository, Mockito.times(1))
@@ -172,6 +175,7 @@ class UserServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(mockUpdateRequest.getRole(), mockUserEntity.getRole());
         Assertions.assertEquals(mockUpdateRequest.getStatus(), mockUserEntity.getStatus());
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
         Mockito.verify(userRepository, Mockito.times(1))
@@ -205,12 +209,11 @@ class UserServiceImplTest extends AbstractUnitTest {
                 () -> userService.updateUser(mockUserId, mockUpdateRequest)
         );
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
-
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
-
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
     }
@@ -245,6 +248,7 @@ class UserServiceImplTest extends AbstractUnitTest {
                 () -> userService.updateUser(mockUserId, mockUpdateRequest)
         );
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
         Mockito.verify(identity, Mockito.times(1))
@@ -281,6 +285,7 @@ class UserServiceImplTest extends AbstractUnitTest {
                 () -> userService.updateUser(mockUserId, mockUpdateRequest)
         );
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
         Mockito.verify(identity, Mockito.times(1))
@@ -320,6 +325,7 @@ class UserServiceImplTest extends AbstractUnitTest {
 
         Assertions.assertEquals(UserStatus.DELETED, mockUserEntity.getStatus());
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
         Mockito.verify(userRepository, Mockito.times(1))
@@ -352,6 +358,7 @@ class UserServiceImplTest extends AbstractUnitTest {
                 () -> userService.deleteUser(mockUserId)
         );
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
         Mockito.verify(identity, Mockito.times(1))
@@ -376,6 +383,7 @@ class UserServiceImplTest extends AbstractUnitTest {
                 () -> userService.deleteUser(mockUserId)
         );
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByIdAndInstitutionId(Mockito.anyString(), Mockito.anyString());
         Mockito.verify(identity, Mockito.times(1))

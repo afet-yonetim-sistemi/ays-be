@@ -63,6 +63,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Assertions.assertNotNull(aysToken.getAccessTokenExpiresAt());
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
+        // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(2)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getRefreshTokenExpireDay();
@@ -91,6 +92,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Assertions.assertNotNull(aysToken.getAccessTokenExpiresAt());
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
+        // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(2)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getRefreshTokenExpireDay();
@@ -119,6 +121,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Assertions.assertNotNull(aysToken.getAccessTokenExpiresAt());
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
+        // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
@@ -147,6 +150,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Assertions.assertNotNull(aysToken.getAccessTokenExpiresAt());
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
+        // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
@@ -174,6 +178,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         // Then
         tokenService.verifyAndValidate(mockJwt);
 
+        // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
@@ -196,6 +201,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
                 () -> tokenService.verifyAndValidate(mockJwt)
         );
 
+        // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
@@ -235,6 +241,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
 
         Assertions.assertEquals(mockClaims, claims);
 
+        // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();

@@ -40,7 +40,7 @@ class AssignmentRejectHandlerTest extends AbstractUnitTest {
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
+                .withSupportStatus(UserSupportStatus.READY)
                 .build();
         AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
                 .withValidFields()
@@ -78,7 +78,7 @@ class AssignmentRejectHandlerTest extends AbstractUnitTest {
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
+                .withSupportStatus(UserSupportStatus.READY)
                 .build();
         AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
                 .withValidFields()

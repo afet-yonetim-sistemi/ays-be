@@ -10,22 +10,10 @@ import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
 import com.ays.user.model.enums.UserSupportStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
 
     public UserEntityBuilder() {
         super(UserEntity.class);
-    }
-
-    public static List<UserEntity> generateValidUserEntities(int size) {
-        List<UserEntity> userEntities = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            UserEntity userEntity = new UserEntityBuilder().withValidFields().build();
-            userEntities.add(userEntity);
-        }
-        return userEntities;
     }
 
     public UserEntityBuilder withValidFields() {
@@ -37,18 +25,12 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.ACTIVE)
-                .withUserSupportStatus(UserSupportStatus.IDLE)
-                .withInstitutionId(institutionEntity.getId())
+                .withSupportStatus(UserSupportStatus.IDLE)
                 .withInstitution(institutionEntity);
     }
 
     public UserEntityBuilder withId(String id) {
         data.setId(id);
-        return this;
-    }
-
-    public UserEntityBuilder withInstitutionId(String institutionId) {
-        data.setInstitutionId(institutionId);
         return this;
     }
 
@@ -67,7 +49,7 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
         return this;
     }
 
-    public UserEntityBuilder withUserSupportStatus(UserSupportStatus userSupportStatus) {
+    public UserEntityBuilder withSupportStatus(UserSupportStatus userSupportStatus) {
         data.setSupportStatus(userSupportStatus);
         return this;
     }
@@ -80,6 +62,11 @@ public class UserEntityBuilder extends TestDataBuilder<UserEntity> {
 
     public UserEntityBuilder withRole(UserRole role) {
         data.setRole(role);
+        return this;
+    }
+
+    public UserEntityBuilder withInstitutionId(String institutionId) {
+        data.setInstitutionId(institutionId);
         return this;
     }
 

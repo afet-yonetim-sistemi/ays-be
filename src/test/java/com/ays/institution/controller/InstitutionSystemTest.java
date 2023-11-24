@@ -58,7 +58,7 @@ class InstitutionSystemTest extends AbstractSystemTest {
     void givenNothing_whenUserUnauthorizedForSummary_thenReturnAccessDeniedException() throws Exception {
 
         // When
-        String mockAccessToken = userTokenOne.getAccessToken();
+        String mockAccessToken = userToken.getAccessToken();
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders

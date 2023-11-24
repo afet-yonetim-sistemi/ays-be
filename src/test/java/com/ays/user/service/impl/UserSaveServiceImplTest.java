@@ -41,7 +41,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        List<UserEntity> usersFromDatabase = UserEntityBuilder.generateValidUserEntities(10);
+        List<UserEntity> usersFromDatabase = List.of(new UserEntityBuilder().withValidFields().build());
         Mockito.when(userRepository.findAll())
                 .thenReturn(usersFromDatabase);
 
@@ -64,6 +64,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
         Assertions.assertNotNull(user.getPassword());
         Assertions.assertEquals(6, user.getPassword().length());
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1)).findAll();
         Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
         Mockito.verify(passwordEncoder, Mockito.times(1)).encode(Mockito.anyString());
@@ -78,7 +79,7 @@ class UserSaveServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        List<UserEntity> usersFromDatabase = UserEntityBuilder.generateValidUserEntities(10);
+        List<UserEntity> usersFromDatabase = List.of(new UserEntityBuilder().withValidFields().build());
         usersFromDatabase.get(0).setCountryCode(mockUserSaveRequest.getPhoneNumber().getCountryCode());
         usersFromDatabase.get(0).setLineNumber(mockUserSaveRequest.getPhoneNumber().getLineNumber());
         Mockito.when(userRepository.findAll())

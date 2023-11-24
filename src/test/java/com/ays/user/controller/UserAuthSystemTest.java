@@ -13,7 +13,7 @@ import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
-import com.ays.util.AysTestData;
+import com.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -30,8 +30,8 @@ class UserAuthSystemTest extends AbstractSystemTest {
     void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysLoginRequest loginRequest = new AysLoginRequestBuilder()
-                .withUsername(AysTestData.User.VALID_USERNAME_ONE)
-                .withPassword(AysTestData.User.VALID_PASSWORD_ONE)
+                .withUsername(AysValidTestData.User.USERNAME)
+                .withPassword(AysValidTestData.User.PASSWORD)
                 .build();
 
         // Then
@@ -61,7 +61,7 @@ class UserAuthSystemTest extends AbstractSystemTest {
     void givenValidTokenRefreshRequest_whenAccessTokenGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysTokenRefreshRequest tokenRefreshRequest = AysTokenRefreshRequest.builder()
-                .refreshToken(userTokenOne.getRefreshToken())
+                .refreshToken(userToken.getRefreshToken())
                 .build();
 
         // Then
@@ -91,14 +91,14 @@ class UserAuthSystemTest extends AbstractSystemTest {
     void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
         // Given
         AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(userTokenOne.getRefreshToken())
+                .refreshToken(userToken.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, userTokenOne.getAccessToken(), tokenInvalidateRequest))
+                        .post(endpoint, userToken.getAccessToken(), tokenInvalidateRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -115,13 +115,13 @@ class UserAuthSystemTest extends AbstractSystemTest {
     void givenValidAysTokenInvalidateRequest_whenUserUnauthorizedForTokensInvalidating_thenReturnAccessDeniedException() throws Exception {
         // Given
         AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(userTokenOne.getRefreshToken())
+                .refreshToken(userToken.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, adminUserTokenOne.getAccessToken(), tokenInvalidateRequest);
+                .post(endpoint, adminUserToken.getAccessToken(), tokenInvalidateRequest);
 
         AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)

@@ -14,7 +14,12 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
-import com.ays.user.model.dto.request.*;
+import com.ays.user.model.dto.request.UserListRequest;
+import com.ays.user.model.dto.request.UserListRequestBuilder;
+import com.ays.user.model.dto.request.UserSaveRequest;
+import com.ays.user.model.dto.request.UserSaveRequestBuilder;
+import com.ays.user.model.dto.request.UserUpdateRequest;
+import com.ays.user.model.dto.request.UserUpdateRequestBuilder;
 import com.ays.user.model.dto.response.UserResponse;
 import com.ays.user.model.dto.response.UserSavedResponse;
 import com.ays.user.model.dto.response.UserSavedResponseBuilder;
@@ -50,9 +55,10 @@ class UserControllerTest extends AbstractRestControllerTest {
     private UserSaveService userSaveService;
 
 
-    private static final UserToUsersResponseMapper USER_TO_USERS_RESPONSE_MAPPER = UserToUsersResponseMapper.initialize();
-    private static final UserToUserResponseMapper USER_TO_USER_RESPONSE_MAPPER = UserToUserResponseMapper.initialize();
-    private static final UserEntityToUserMapper USER_ENTITY_TO_USER_MAPPER = UserEntityToUserMapper.initialize();
+    private final UserToUsersResponseMapper userToUsersResponseMapper = UserToUsersResponseMapper.initialize();
+    private final UserToUserResponseMapper userToUserResponseMapper = UserToUserResponseMapper.initialize();
+    private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
+
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -95,6 +101,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.password")
                         .value(mockResponse.getResponse().getPassword()));
 
+        // Verify
         Mockito.verify(userSaveService, Mockito.times(1))
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
@@ -130,6 +137,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userSaveService, Mockito.never())
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
@@ -165,6 +173,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userSaveService, Mockito.never())
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
@@ -225,6 +234,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userSaveService, Mockito.times(0))
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
@@ -305,16 +315,16 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // When
         Page<UserEntity> mockUserEntities = new PageImpl<>(
-                UserEntityBuilder.generateValidUserEntities(1)
+                List.of(new UserEntityBuilder().withValidFields().build())
         );
-        List<User> mockUsers = USER_ENTITY_TO_USER_MAPPER.map(mockUserEntities.getContent());
+        List<User> mockUsers = userEntityToUserMapper.map(mockUserEntities.getContent());
         AysPage<User> mockAysPageOfUsers = AysPage.of(mockUserEntities, mockUsers);
         Mockito.when(userService.getAllUsers(Mockito.any(UserListRequest.class)))
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
         String endpoint = BASE_PATH.concat("/users");
-        List<UsersResponse> mockUsersResponses = USER_TO_USERS_RESPONSE_MAPPER.map(mockAysPageOfUsers.getContent());
+        List<UsersResponse> mockUsersResponses = userToUsersResponseMapper.map(mockAysPageOfUsers.getContent());
         AysPageResponse<UsersResponse> pageOfUsersResponse = AysPageResponse.<UsersResponse>builder()
                 .of(mockAysPageOfUsers)
                 .content(mockUsersResponses)
@@ -373,7 +383,7 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user/").concat(mockUserId);
-        UserResponse mockUserResponse = USER_TO_USER_RESPONSE_MAPPER.map(mockUser);
+        UserResponse mockUserResponse = userToUserResponseMapper.map(mockUser);
         AysResponse<UserResponse> mockAysResponse = AysResponse.successOf(mockUserResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .get(endpoint, mockAdminUserToken.getAccessToken()))
