@@ -5,7 +5,7 @@ import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequ
 import com.ays.common.model.AysPage;
 
 /**
- * Admin users registration application service, which holds the registration information regarding the system user.
+ * Admin Users Verification application service, which holds the verification information regarding the system user.
  */
 public interface AdminUserRegisterApplicationService {
 
