@@ -11,17 +11,9 @@ public class AssignmentSaveRequestBuilder extends TestDataBuilder<AssignmentSave
     }
 
     public AssignmentSaveRequestBuilder withValidFields() {
-        this.withFirstName("First Name");
-        this.withLastName("Last Name");
         this.withLatitude(0.0);
         this.withLongitude(0.0);
-        this.withDescription("Description");
         this.withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build());
-        return this;
-    }
-
-    public AssignmentSaveRequestBuilder withDescription(String description) {
-        data.setDescription(description);
         return this;
     }
 

@@ -19,7 +19,7 @@ import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.repository.InstitutionRepository;
 import com.ays.institution.util.exception.AysInstitutionNotExistException;
-import com.ays.util.AysTestData;
+import com.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -54,7 +54,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
-                .withEmail(AysTestData.VALID_EMAIL)
+                .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
 
@@ -144,7 +144,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
-                .withEmail(AysTestData.VALID_EMAIL)
+                .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
         AdminUserRegisterApplicationEntity mockAdminUserRegisterApplicationEntity =
@@ -202,7 +202,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
-                .withEmail(AysTestData.VALID_EMAIL).build();
+                .withEmail(AysValidTestData.EMAIL).build();
 
         AdminUserRegisterApplicationEntity mockAdminUserRegisterApplicationEntity = new AdminUserRegisterApplicationEntityBuilder()
                 .withValidFields()
@@ -238,7 +238,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
-                .withEmail(AysTestData.VALID_EMAIL).build();
+                .withEmail(AysValidTestData.EMAIL).build();
 
         AdminUserRegisterApplicationEntity mockAdminUserRegisterApplicationEntity = new AdminUserRegisterApplicationEntityBuilder()
                 .withValidFields()
@@ -280,7 +280,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
-                .withEmail(AysTestData.VALID_EMAIL)
+                .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
         AdminUserRegisterApplicationEntity mockAdminUserRegisterApplicationEntity = new AdminUserRegisterApplicationEntityBuilder()

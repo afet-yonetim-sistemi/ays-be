@@ -388,7 +388,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
         AssignmentListRequest mockListRequest = new AssignmentListRequestBuilder().withValidValues().build();
 
         // When
-        List<AssignmentEntity> mockAssignmentEntities = AssignmentEntityBuilder.generateValidAssignmentEntities(1);
+        List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder().withValidFields().build());
         Page<AssignmentEntity> mockPageAssignmentEntities = new PageImpl<>(mockAssignmentEntities);
         List<Assignment> mockAssignments = assignmentEntityToAssignmentMapper.map(mockAssignmentEntities);
         AysPage<Assignment> mockAysPageOfAssignments = AysPage

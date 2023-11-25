@@ -1,27 +1,25 @@
 package com.ays;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
 abstract class AbstractTestContainerConfiguration {
 
-    static MySQLContainer<?> MYSQL_CONTAINER = new MySQLContainer<>("mysql:8.0.33");
+    private static final MySQLContainer<?> MYSQL_CONTAINER = new MySQLContainer<>("mysql:8.0.33")
+            .withUsername("ays")
+            .withPassword("ayspass")
+            .withDatabaseName("test");
 
-    @BeforeAll
-    static void beforeAll() {
-        MYSQL_CONTAINER.withReuse(true);
+    static {
         MYSQL_CONTAINER.start();
     }
 
     @DynamicPropertySource
-    private static void overrideProps(DynamicPropertyRegistry dynamicPropertyRegistry) {
-        dynamicPropertyRegistry.add("ays.db.username", MYSQL_CONTAINER::getUsername);
-        dynamicPropertyRegistry.add("ays.db.password", MYSQL_CONTAINER::getPassword);
-        dynamicPropertyRegistry.add("ays.db.url", MYSQL_CONTAINER::getJdbcUrl);
+    static void overrideProps(DynamicPropertyRegistry dynamicPropertyRegistry) {
+        dynamicPropertyRegistry.add("spring.datasource.username", MYSQL_CONTAINER::getUsername);
+        dynamicPropertyRegistry.add("spring.datasource.password", MYSQL_CONTAINER::getPassword);
+        dynamicPropertyRegistry.add("spring.datasource.url", MYSQL_CONTAINER::getJdbcUrl);
     }
 
 }

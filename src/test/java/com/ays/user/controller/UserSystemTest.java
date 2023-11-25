@@ -7,11 +7,18 @@ import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
+import com.ays.common.util.AysRandomUtil;
 import com.ays.common.util.exception.model.AysError;
 import com.ays.common.util.exception.model.AysErrorBuilder;
+import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
-import com.ays.user.model.dto.request.*;
+import com.ays.user.model.dto.request.UserListRequest;
+import com.ays.user.model.dto.request.UserListRequestBuilder;
+import com.ays.user.model.dto.request.UserSaveRequest;
+import com.ays.user.model.dto.request.UserSaveRequestBuilder;
+import com.ays.user.model.dto.request.UserUpdateRequest;
+import com.ays.user.model.dto.request.UserUpdateRequestBuilder;
 import com.ays.user.model.dto.response.UserResponse;
 import com.ays.user.model.dto.response.UserSavedResponse;
 import com.ays.user.model.dto.response.UserSavedResponseBuilder;
@@ -20,12 +27,14 @@ import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
 import com.ays.user.model.mapper.UserEntityToUserMapper;
 import com.ays.user.model.mapper.UserToUserResponseMapper;
 import com.ays.user.model.mapper.UserToUsersResponseMapper;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
-import com.ays.util.AysTestData;
+import com.ays.util.AysValidTestData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -34,6 +43,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
+import java.util.Optional;
 
 class UserSystemTest extends AbstractSystemTest {
 
@@ -43,6 +53,12 @@ class UserSystemTest extends AbstractSystemTest {
 
 
     private static final String BASE_PATH = "/api/v1";
+
+
+    private void initialize(UserEntity mockUserEntity) {
+        userRepository.save(mockUserEntity);
+    }
+
 
     @Test
     void givenValidUserSaveRequest_whenUserSaved_thenReturnUserSavedResponse() throws Exception {
@@ -56,7 +72,7 @@ class UserSystemTest extends AbstractSystemTest {
         UserSavedResponse userSavedResponse = new UserSavedResponseBuilder().build();
         AysResponse<UserSavedResponse> response = AysResponseBuilder.successOf(userSavedResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, adminUserTokenOne.getAccessToken(), userSaveRequest))
+                        .post(endpoint, adminUserToken.getAccessToken(), userSaveRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -83,7 +99,7 @@ class UserSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/user");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userTokenOne.getAccessToken(), userSaveRequest);
+                .post(endpoint, userToken.getAccessToken(), userSaveRequest);
 
         AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -113,7 +129,7 @@ class UserSystemTest extends AbstractSystemTest {
         String endpoint = BASE_PATH.concat("/user");
         AysError errorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, adminUserTokenOne.getAccessToken(), userSaveRequest))
+                        .post(endpoint, adminUserToken.getAccessToken(), userSaveRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -144,7 +160,7 @@ class UserSystemTest extends AbstractSystemTest {
         String endpoint = BASE_PATH.concat("/user");
         AysError errorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, adminUserTokenOne.getAccessToken(), userSaveRequest))
+                        .post(endpoint, adminUserToken.getAccessToken(), userSaveRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -161,6 +177,7 @@ class UserSystemTest extends AbstractSystemTest {
                         .isNotEmpty());
     }
 
+
     @Test
     void givenValidUserListRequest_whenUsersFound_thenReturnUsersResponse() throws Exception {
         // Given
@@ -168,7 +185,7 @@ class UserSystemTest extends AbstractSystemTest {
 
         // When
         Page<UserEntity> userEntities = new PageImpl<>(
-                UserEntityBuilder.generateValidUserEntities(1)
+                List.of(new UserEntityBuilder().withValidFields().build())
         );
         List<User> users = userEntityToUserMapper.map(userEntities.getContent());
         AysPage<User> pageOfUsers = AysPage.of(userEntities, users);
@@ -182,7 +199,7 @@ class UserSystemTest extends AbstractSystemTest {
                 .build();
         AysResponse<AysPageResponse<UsersResponse>> response = AysResponse.successOf(pageOfUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, adminUserTokenOne.getAccessToken(), userListRequest))
+                        .post(endpoint, adminUserToken.getAccessToken(), userListRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -203,7 +220,7 @@ class UserSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/users");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userTokenOne.getAccessToken(), userListRequest);
+                .post(endpoint, userToken.getAccessToken(), userListRequest);
 
         AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -219,10 +236,11 @@ class UserSystemTest extends AbstractSystemTest {
                         .doesNotExist());
     }
 
+
     @Test
     void givenValidUserId_whenUserFound_thenReturnUserResponse() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_ONE;
+        String userId = AysValidTestData.User.ID;
         User user = new UserBuilder()
                 .withId(userId)
                 .build();
@@ -232,7 +250,7 @@ class UserSystemTest extends AbstractSystemTest {
         UserResponse userResponse = userToUserResponseMapper.map(user);
         AysResponse<UserResponse> response = AysResponse.successOf(userResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(endpoint, adminUserTokenOne.getAccessToken()))
+                        .get(endpoint, adminUserToken.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -248,12 +266,12 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenValidValidUserId_whenUserUnauthorizedForGetting_thenReturnAccessDeniedException() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_ONE;
+        String userId = AysValidTestData.User.ID;
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(userId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, userTokenOne.getAccessToken());
+                .get(endpoint, userToken.getAccessToken());
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -272,8 +290,20 @@ class UserSystemTest extends AbstractSystemTest {
 
     @Test
     void givenValidUserIdAndUserUpdateRequest_whenUserUpdated_thenReturnAysResponseOfSuccess() throws Exception {
+
+        // Initialize
+        InstitutionEntity mockInstitutionEntity = institutionRepository
+                .findById(AysValidTestData.Institution.ID).get();
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withValidFields()
+                .withInstitutionId(mockInstitutionEntity.getId())
+                .withInstitution(mockInstitutionEntity)
+                .withSupportStatus(UserSupportStatus.READY)
+                .build();
+        this.initialize(mockUserEntity);
+
         // Given
-        String userId = AysTestData.User.VALID_ID_TWO;
+        String userId = mockUserEntity.getId();
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.PASSIVE).build();
@@ -282,7 +312,7 @@ class UserSystemTest extends AbstractSystemTest {
         String endpoint = BASE_PATH.concat("/user/".concat(userId));
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(endpoint, adminUserTokenOne.getAccessToken(), mockUpdateRequest))
+                        .put(endpoint, adminUserToken.getAccessToken(), mockUpdateRequest))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -298,7 +328,7 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenValidUserIdAndUserUpdateRequest_whenUserUnauthorizedForUpdating_thenReturnAccessDeniedException() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_TWO;
+        String userId = AysRandomUtil.generateUUID();
         UserUpdateRequest mockUpdateRequest = new UserUpdateRequestBuilder()
                 .withRole(UserRole.VOLUNTEER)
                 .withStatus(UserStatus.PASSIVE).build();
@@ -306,7 +336,7 @@ class UserSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(userId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(endpoint, userTokenTwo.getAccessToken(), mockUpdateRequest);
+                .put(endpoint, userToken.getAccessToken(), mockUpdateRequest);
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -322,16 +352,29 @@ class UserSystemTest extends AbstractSystemTest {
                         .doesNotExist());
     }
 
+
     @Test
     void givenValidUserId_whenUserDeleted_thenReturnAysResponseOfSuccess() throws Exception {
+
+        // Initialize
+        InstitutionEntity mockInstitutionEntity = institutionRepository
+                .findById(AysValidTestData.Institution.ID).get();
+        UserEntity mockUserEntity = new UserEntityBuilder()
+                .withValidFields()
+                .withInstitutionId(mockInstitutionEntity.getId())
+                .withInstitution(mockInstitutionEntity)
+                .withSupportStatus(UserSupportStatus.READY)
+                .build();
+        this.initialize(mockUserEntity);
+
         // Given
-        String userId = AysTestData.User.VALID_ID_THREE;
+        String userId = mockUserEntity.getId();
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(userId));
         AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
-                        .delete(endpoint, adminUserTokenTwo.getAccessToken()))
+                        .delete(endpoint, adminUserToken.getAccessToken()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.status().isOk())
                 .andExpect(AysMockResultMatchersBuilders.time()
@@ -342,17 +385,22 @@ class UserSystemTest extends AbstractSystemTest {
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+
+        // Verify
+        Optional<UserEntity> userEntity = userRepository.findById(mockUserEntity.getId());
+        Assertions.assertTrue(userEntity.isPresent());
+        Assertions.assertEquals(UserStatus.DELETED, userEntity.get().getStatus());
     }
 
     @Test
     void givenValidValidUserId_whenUserUnauthorizedForDeleting_thenReturnAccessDeniedException() throws Exception {
         // Given
-        String userId = AysTestData.User.VALID_ID_THREE;
+        String userId = AysRandomUtil.generateUUID();
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(userId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, userTokenThree.getAccessToken());
+                .get(endpoint, userToken.getAccessToken());
 
         AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
         mockMvc.perform(mockHttpServletRequestBuilder)
@@ -367,4 +415,5 @@ class UserSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
+
 }
