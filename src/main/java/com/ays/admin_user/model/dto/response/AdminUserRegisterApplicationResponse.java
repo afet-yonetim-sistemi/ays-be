@@ -3,7 +3,6 @@ package com.ays.admin_user.model.dto.response;
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.dto.response.BaseResponse;
-import com.ays.institution.model.dto.response.InstitutionResponse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +21,19 @@ public class AdminUserRegisterApplicationResponse extends BaseResponse {
     private String reason;
     private String rejectReason;
     private AdminUserRegisterApplicationStatus status;
-    private InstitutionResponse institution;
+    private Institution institution;
     private AdminUser user;
 
+
+    /**
+     * A DTO (Data Transfer Object) representing an institution in an admin user register application of response.
+     */
+    @Getter
+    @Setter
+    public static class Institution {
+        private String id;
+        private String name;
+    }
 
     /**
      * A DTO (Data Transfer Object) representing an admin users in an admin user register application of response.
