@@ -51,7 +51,7 @@ public class AdminUserRegisterApplicationListRequest extends AysPagingRequest im
     @AssertTrue
     @Override
     public boolean isSortPropertyAccepted() {
-        final Set<String> acceptedFilterFields = Set.of();
+        final Set<String> acceptedFilterFields = Set.of("createdAt");
         return this.isPropertyAccepted(acceptedFilterFields);
     }
 
