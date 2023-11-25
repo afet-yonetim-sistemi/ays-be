@@ -29,6 +29,13 @@ public class AdminUserRegisterApplicationController {
 
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.initialize();
 
+    /**
+     * Gets a list of admin user register applications in the system.
+     * Requires SUPER_ADMIN authority.
+     *
+     * @param request The request object containing the list criteria.
+     * @return A response object containing a paginated list of admin user register applications.
+     */
     @PostMapping("/registration-applications")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
     public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> getRegistrationApplications(@RequestBody AdminUserRegisterApplicationListRequest request) {
