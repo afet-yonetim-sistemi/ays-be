@@ -19,9 +19,7 @@ import org.mapstruct.factory.Mappers;
 public interface AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper extends BaseMapper<AdminUserRegisterApplication, AdminUserRegisterApplicationsResponse> {
 
     @Override
-    @Mapping(target = "user.id", source = "adminUser.id")
-    @Mapping(target = "user.firstName", source = "adminUser.firstName")
-    @Mapping(target = "user.lastName", source = "adminUser.lastName")
+    @Mapping(target = "user", source = "adminUser")
     AdminUserRegisterApplicationsResponse map(AdminUserRegisterApplication source);
 
     /**
