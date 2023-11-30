@@ -2,6 +2,7 @@ package com.ays.user.model.dto.response;
 
 import com.ays.user.model.enums.UserRole;
 import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +18,6 @@ public class UsersResponse {
     private String lastName;
     private UserRole role;
     private UserStatus status;
+    private UserSupportStatus supportStatus;
 
 }
