@@ -17,9 +17,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper extends BaseMapper<AdminUserRegisterApplication, AdminUserRegisterApplicationsResponse> {
 
-    @Override
-    AdminUserRegisterApplicationsResponse map(AdminUserRegisterApplication source);
-
     /**
      * Initializes the mapper.
      *
