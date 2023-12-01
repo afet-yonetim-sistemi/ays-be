@@ -38,7 +38,6 @@
         <jsonwebtoken.version>0.11.5</jsonwebtoken.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <snakeyaml.version>2.2</snakeyaml.version>
-
     </properties>
 
     <dependencies>

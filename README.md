@@ -185,22 +185,6 @@ docker compose down -v
 
 ---
 
-## Running the app with Kubernetes
-
-```
-kubectl apply -f deployment.yaml
-kubectl apply -f service.yaml
-```
-
-You should be able to see the service, deployment and pods. If you want to access the service using internal IP,
-try using NodePort instead of LoadBalancer in service.yaml or simply use port forwarding:
-
-```
-kubectl port-forward service/ays-be 9790:9790
-```
-
----
-
 ---
 
 # [How to Contribute](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/CONTRIBUTING.md)
@@ -264,9 +248,6 @@ The project follows [the semantic versioning](https://semver.org/) i.e. MAJOR.MI
 
 ## Project Documents
 
-AYS technical analysis can be
-found [here](https://docs.google.com/document/d/1_GyROvXrsD88udD6z_KfF-Q5Cs77YLHDglqafRXIV_o/edit).
-
 For other information, you can contact the project's [Discord channel](https://discord.gg/HeunQcqg).
 
 ---
@@ -275,7 +256,7 @@ For other information, you can contact the project's [Discord channel](https://d
 
 ### AYS Local Environments
 
-https://fromsmash.com/sX28.CH0NF-dt
+[Download Local Postman Environments](https://www.mediafire.com/file/h803vir89ccxk81/postman_local_environments.zip/file)
 
 ### AYS APIs | PUBLIC
 
