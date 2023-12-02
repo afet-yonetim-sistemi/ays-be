@@ -35,7 +35,7 @@ public class AdminUserRegisterApplicationEntityBuilder extends TestDataBuilder<A
         return this;
     }
 
-    public AdminUserRegisterApplicationEntityBuilder withStatus(AdminUserRegisterApplicationStatus status){
+    public AdminUserRegisterApplicationEntityBuilder withStatus(AdminUserRegisterApplicationStatus status) {
         data.setStatus(status);
         return this;
     }

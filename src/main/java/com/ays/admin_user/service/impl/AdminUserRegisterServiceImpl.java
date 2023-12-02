@@ -51,10 +51,10 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
      *
      * @param registerRequest the request object containing the information for the new admin user
      * @throws AysAdminUserRegisterApplicationCodeNotValidException if the verificationId provided is not valid
-     * @throws AysInstitutionNotExistException                       if the requested institution does not exist
-     * @throws AysAdminUserAlreadyExistsByEmailException             if an admin user with the same email already exists
-     * @throws AysAdminUserAlreadyExistsByUsernameException          if an admin user with the same username already exists
-     * @throws AysAdminUserAlreadyExistsByPhoneNumberException       if an admin user with the same phone number already exists
+     * @throws AysInstitutionNotExistException                      if the requested institution does not exist
+     * @throws AysAdminUserAlreadyExistsByEmailException            if an admin user with the same email already exists
+     * @throws AysAdminUserAlreadyExistsByUsernameException         if an admin user with the same username already exists
+     * @throws AysAdminUserAlreadyExistsByPhoneNumberException      if an admin user with the same phone number already exists
      */
     @Override
     @Transactional

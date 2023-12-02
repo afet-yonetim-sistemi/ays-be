@@ -22,7 +22,7 @@ public class AdminUserRegisterApplicationResponse extends BaseResponse {
     private String rejectReason;
     private AdminUserRegisterApplicationStatus status;
     private Institution institution;
-    private AdminUser user;
+    private AdminUser adminUser;
 
 
     /**

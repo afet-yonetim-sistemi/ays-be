@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * This class provides the security configuration for the application.
  * It is annotated with {@link Configuration}, {@link EnableWebSecurity} and {@link EnableGlobalAuthentication}.
- * The {@link SecurityFilterChain} is defined in the {@link #filterChain(HttpSecurity, AysBearerTokenAuthenticationFilter ,CustomAuthenticationEntryPoint )} (HttpSecurity, AysBearerTokenAuthenticationFilter)}
+ * The {@link SecurityFilterChain} is defined in the {@link #filterChain(HttpSecurity, AysBearerTokenAuthenticationFilter, CustomAuthenticationEntryPoint)} (HttpSecurity, AysBearerTokenAuthenticationFilter)}
  * method which sets up the security configuration for HTTP requests.
  * The {@link SessionAuthenticationStrategy} is defined in the {@link #sessionAuthenticationStrategy()} method which registers
  * the session authentication strategy with the session registry.

@@ -10,22 +10,21 @@ import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
+import com.ays.common.model.AysPage;
+import com.ays.common.model.AysPageBuilder;
 import com.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import com.ays.common.model.AysPage;
-import com.ays.common.model.AysPageBuilder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+import java.util.Optional;
 
 class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
 

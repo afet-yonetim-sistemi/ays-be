@@ -1,7 +1,11 @@
 package com.ays.auth.model.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * AysTokenInvalidateRequest is a request class used for invalidating a token.

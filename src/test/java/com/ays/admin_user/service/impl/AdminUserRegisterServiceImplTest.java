@@ -58,7 +58,6 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 .withPhoneNumber(mockPhoneNumber).build();
 
 
-
         AdminUserRegisterApplicationEntity mockAdminUserRegisterApplicationEntity = new AdminUserRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .build();

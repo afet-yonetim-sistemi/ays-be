@@ -4,7 +4,6 @@ import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
 import com.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 
@@ -17,10 +16,6 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper extends BaseMapper<AdminUserRegisterApplication, AdminUserRegisterApplicationResponse> {
-
-    @Override
-    @Mapping(target = "user", source = "adminUser")
-    AdminUserRegisterApplicationResponse map(AdminUserRegisterApplication source);
 
     /**
      * Initializes the mapper.
