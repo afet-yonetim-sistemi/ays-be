@@ -1,6 +1,8 @@
 package com.ays;
 
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
+import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
+import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.config.AysTokenConfigurationParameter;
 import com.ays.auth.model.AysToken;
@@ -43,6 +45,12 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @Autowired
     protected AssignmentRepository assignmentRepository;
+
+    @Autowired
+    protected AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;
+
+    @Autowired
+    protected AdminUserRepository adminUserRepository;
 
 
     protected AysToken superAdminToken;

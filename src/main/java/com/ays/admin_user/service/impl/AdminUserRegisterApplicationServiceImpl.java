@@ -6,6 +6,7 @@ import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
+import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
 import com.ays.common.model.AysPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
 
 
     private final AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper = AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.initialize();
+
 
     /**
      * Retrieves a paginated list of admin user registration applications based on the specified filters
@@ -50,4 +52,20 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
                 registerApplications
         );
     }
+
+    /**
+     * Retrieves an admin user register application by id.
+     *
+     * @param id The id of the register application.
+     * @return An admin user register application.
+     */
+    @Override
+    public AdminUserRegisterApplication getRegistrationApplicationById(String id) {
+        final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
+                .findById(id)
+                .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdException(id));
+
+        return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
+    }
+
 }

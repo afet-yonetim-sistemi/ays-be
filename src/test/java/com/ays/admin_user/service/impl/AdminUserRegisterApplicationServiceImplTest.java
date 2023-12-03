@@ -9,8 +9,11 @@ import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntityBuilder
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
+import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
+import com.ays.common.util.AysRandomUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+import java.util.Optional;
 
 class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
@@ -94,6 +98,47 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
+
+    @Test
+    void givenAdminUserRegisterApplicationId_whenGettingAdminUserRegisterApplication_thenReturnAdminUserRegisterApplication() {
+
+        // Given
+        AdminUserRegisterApplicationEntity mockEntity = new AdminUserRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .build();
+        String mockId = mockEntity.getId();
+
+        // When
+        Mockito.when(adminUserRegisterApplicationRepository.findById(mockId))
+                .thenReturn(Optional.of(mockEntity));
+
+        // Then
+        adminUserRegisterApplicationService.getRegistrationApplicationById(mockId);
+
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
+                .findById(mockId);
+
+    }
+
+    @Test
+    void givenAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationNotFound_thenThrowAysAdminUserRegisterApplicationNotExistByIdException() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(adminUserRegisterApplicationRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysAdminUserRegisterApplicationNotExistByIdException.class,
+                () -> adminUserRegisterApplicationService.getRegistrationApplicationById(mockId)
+        );
+
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
+                .findById(mockId);
     }
 
 }

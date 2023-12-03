@@ -4,6 +4,7 @@ import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.common.model.AysPage;
 
+
 /**
  * Admin Users Verification application service, which holds the verification information regarding the system user.
  */
@@ -16,5 +17,13 @@ public interface AdminUserRegisterApplicationService {
      * @return Admin User Registration Application list
      */
     AysPage<AdminUserRegisterApplication> getRegistrationApplications(AdminUserRegisterApplicationListRequest listRequest);
+
+
+    /**
+     * Get registration application by id.
+     *
+     * @return Admin User Registration Application
+     */
+    AdminUserRegisterApplication getRegistrationApplicationById(String id);
 
 }

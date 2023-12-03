@@ -2,7 +2,12 @@ package com.ays.institution.model.entity;
 
 import com.ays.common.model.entity.BaseEntity;
 import com.ays.institution.model.enums.InstitutionStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
