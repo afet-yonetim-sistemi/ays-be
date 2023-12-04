@@ -57,3 +57,9 @@ management:
       exposure:
         include: info, health
       base-path: /public/actuator
+
+ays:
+  scheduler:
+    UnusedInvalidTokenDeletionScheduler:
+      cron: '0 0 */3 * * ?'
+      enabled: true

@@ -20,6 +20,17 @@ public interface AysInvalidTokenRepository extends JpaRepository<AysInvalidToken
      */
     Optional<AysInvalidTokenEntity> findByTokenId(String tokenId);
 
-    List<AysInvalidTokenEntity> findAllByCreatedAtBefore(LocalDateTime time);
+    /**
+     * Finds all invalid token entities that were created before the specified date.
+     *
+     * @param createdAt the date to search for
+     */
+    void deleteAllByCreatedAtBefore(LocalDateTime createdAt);
 
+    /**
+     * Finds all invalid token entities that were created before the specified date.
+     *
+     * @param createdAt the date to search for
+     */
+    List<AysInvalidTokenEntity> findAllByCreatedAtBefore(LocalDateTime createdAt);
 }

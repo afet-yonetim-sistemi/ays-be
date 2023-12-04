@@ -3,6 +3,8 @@ package com.ays.auth.model.entity;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
 
+import java.time.LocalDateTime;
+
 public class AysInvalidTokenEntityBuilder extends TestDataBuilder<AysInvalidTokenEntity> {
 
     public AysInvalidTokenEntityBuilder() {
@@ -12,7 +14,8 @@ public class AysInvalidTokenEntityBuilder extends TestDataBuilder<AysInvalidToke
     public AysInvalidTokenEntityBuilder withValidValues() {
         return new AysInvalidTokenEntityBuilder()
                 .id(1L)
-                .tokenId(AysRandomUtil.generateUUID());
+                .tokenId(AysRandomUtil.generateUUID())
+                .createdAt(LocalDateTime.now());
     }
 
     public AysInvalidTokenEntityBuilder id(Long id) {
@@ -22,6 +25,11 @@ public class AysInvalidTokenEntityBuilder extends TestDataBuilder<AysInvalidToke
 
     public AysInvalidTokenEntityBuilder tokenId(String tokenId) {
         data.setTokenId(tokenId);
+        return this;
+    }
+
+    public AysInvalidTokenEntityBuilder createdAt(LocalDateTime createdAt) {
+        data.setCreatedAt(createdAt);
         return this;
     }
 
