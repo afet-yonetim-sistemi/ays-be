@@ -17,4 +17,12 @@ public interface AysParameterService {
      */
     Set<AysParameter> getParameters(String prefixOfName);
 
+    /**
+     * Retrieves an AysParameter that has the specified name.
+     *
+     * @param name the name to search for
+     * @return an AysParameter entity
+     */
+    AysParameter getParameter(String name);
+
 }
