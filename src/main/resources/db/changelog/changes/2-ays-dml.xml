@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
-    <changeSet id="2-ays-ddl" author="agitrubard">
+    <changeSet id="2-ays-dml" author="ays">
         <!-- ==================== -->
         <!-- DML of AYS_PARAMETER -->
         <!-- ==================== -->
@@ -76,8 +76,8 @@
             <column name="USERNAME" value="ays-super-admin"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="superadmin@ays.com"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="FIRST_NAME" value="James"/>
+            <column name="LAST_NAME" value="William"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="LINE_NUMBER" value="1234567890"/>
             <column name="ROLE" value="SUPER_ADMIN"/>
@@ -85,15 +85,14 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
-
         <insert tableName="AYS_ADMIN_USER">
             <column name="ID" value="9262f0fc-93db-4f7e-81c6-aaad85c2b206"/>
             <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
             <column name="USERNAME" value="ays-admin-1"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="admin1@ays.com"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="FIRST_NAME" value="Kyle"/>
+            <column name="LAST_NAME" value="Joanne"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="LINE_NUMBER" value="1234567891"/>
             <column name="ROLE" value="ADMIN"/>
@@ -101,15 +100,14 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
-
         <insert tableName="AYS_ADMIN_USER">
             <column name="ID" value="87ab173b-1b7d-4264-abd7-438e5ed2c1fa"/>
             <column name="INSTITUTION_ID" value="91df7ae9-d5b9-44ae-b54f-d5d55359c4a4"/>
             <column name="USERNAME" value="ays-admin-2"/>
             <column name="PASSWORD" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="EMAIL" value="admin2@ays.com"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi"/>
+            <column name="FIRST_NAME" value="Olivia"/>
+            <column name="LAST_NAME" value="Ethan"/>
             <column name="COUNTRY_CODE" value="90"/>
             <column name="LINE_NUMBER" value="1234567892"/>
             <column name="ROLE" value="ADMIN"/>
@@ -122,21 +120,6 @@
         <!-- ===================== -->
 
 
-        <!-- =========================================== -->
-        <!-- DML of AYS_ADMIN_USER_REGISTER_VERIFICATION -->
-        <!-- =========================================== -->
-        <insert tableName="AYS_ADMIN_USER_REGISTER_VERIFICATION">
-            <column name="ID" value="3cfeb994-88f4-48d0-b105-309f42f91412"/>
-            <column name="REASON" value="Ahbap Kurucusu Haluk Levent İçin Oluşturuldu."/>
-            <column name="STATUS" value="WAITING"/>
-            <column name="CREATED_USER" value="Agit Rubar Demir"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-        <!-- =========================================== -->
-        <!-- DML of AYS_ADMIN_USER_REGISTER_VERIFICATION -->
-        <!-- =========================================== -->
-
-
         <!-- =============== -->
         <!-- DML of AYS_USER -->
         <!-- =============== -->
@@ -145,75 +128,26 @@
             <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
             <column name="USERNAME" value="232180"/>
             <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 1"/>
+            <column name="FIRST_NAME" value="Joseph"/>
+            <column name="LAST_NAME" value="Margaret"/>
             <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="IDLE"/>
+            <column name="SUPPORT_STATUS" value="BUSY"/>
             <column name="LINE_NUMBER" value="1234567890"/>
             <column name="ROLE" value="VOLUNTEER"/>
             <column name="STATUS" value="ACTIVE"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
-
         <insert tableName="AYS_USER">
             <column name="ID" value="0c8034d2-f91b-4ef4-bf6c-bdbeda945764"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="INSTITUTION_ID" value="91df7ae9-d5b9-44ae-b54f-d5d55359c4a4"/>
             <column name="USERNAME" value="930047"/>
             <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 2"/>
+            <column name="FIRST_NAME" value="Noah"/>
+            <column name="LAST_NAME" value="Patricia"/>
             <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="IDLE"/>
+            <column name="SUPPORT_STATUS" value="READY"/>
             <column name="LINE_NUMBER" value="1234567891"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER">
-            <column name="ID" value="edb36891-b898-4c12-bcec-d9aaa5d45190"/>
-            <column name="INSTITUTION_ID" value="91df7ae9-d5b9-44ae-b54f-d5d55359c4a4"/>
-            <column name="USERNAME" value="648193"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 3"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="IDLE"/>
-            <column name="LINE_NUMBER" value="1234567892"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER">
-            <column name="ID" value="911d7592-a64f-47ff-b5ab-a3da08ad6d2b"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="399200"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 4"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="READY"/>
-            <column name="LINE_NUMBER" value="1234567893"/>
-            <column name="ROLE" value="VOLUNTEER"/>
-            <column name="STATUS" value="ACTIVE"/>
-            <column name="CREATED_USER" value="AYS"/>
-            <column name="CREATED_AT" valueDate="now()"/>
-        </insert>
-
-        <insert tableName="AYS_USER">
-            <column name="ID" value="08cd53fb-7624-4c66-be93-9512170ec226"/>
-            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
-            <column name="USERNAME" value="486879"/>
-            <column name="PASSWORD" value="$2a$10$sx4rlwEudbcqHRU28dAg8ORpE4Dr.pCbX5AbxnDqazFcvGAyrvOEq"/>
-            <column name="FIRST_NAME" value="Afet Yönetim"/>
-            <column name="LAST_NAME" value="Sistemi 5"/>
-            <column name="COUNTRY_CODE" value="90"/>
-            <column name="SUPPORT_STATUS" value="READY"/>
-            <column name="LINE_NUMBER" value="1234567894"/>
             <column name="ROLE" value="VOLUNTEER"/>
             <column name="STATUS" value="ACTIVE"/>
             <column name="CREATED_USER" value="AYS"/>
@@ -222,6 +156,67 @@
         <!-- =============== -->
         <!-- DML of AYS_USER -->
         <!-- =============== -->
+
+
+        <!-- ======================== -->
+        <!-- DML of AYS_USER_LOCATION -->
+        <!-- ======================== -->
+        <sql>
+            <!-- Kadiköy, Rıhtım (40.991739, 29.024168) -->
+            INSERT INTO AYS_USER_LOCATION (USER_ID, POINT, CREATED_USER, CREATED_AT)
+            VALUES ('c4b4e4db-5641-41f7-8222-a76deb1c065c', ST_GeomFromText('POINT(40.991739 29.024168)', 4326),
+                    'AYS', CURRENT_TIMESTAMP);
+        </sql>
+        <!-- ======================== -->
+        <!-- DML of AYS_USER_LOCATION -->
+        <!-- ======================== -->
+
+
+        <!-- ===================== -->
+        <!-- DML of AYS_ASSIGNMENT -->
+        <!-- ===================== -->
+        <sql>
+            <!-- Kadiköy, Moda (40.981210, 29.026083) -->
+            INSERT INTO AYS_ASSIGNMENT (ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
+                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
+            VALUES ('c3f0f5de-ecec-4245-b91e-39ea25f6da05', '77ece256-bf0e-4bbe-801d-173083f8bdcf',
+                    '100L İçme Suyu İhtiyacı', 'Charles', 'Miller', '90', '5051548391',
+                    ST_GeomFromText('POINT(40.981210 29.026083)', 4326), 'AVAILABLE', 'AYS', CURRENT_TIMESTAMP);
+
+            INSERT INTO AYS_ASSIGNMENT (ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
+                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
+            VALUES ('2dd42a70-3151-4640-9c9d-547c5bb30096', '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4',
+                    'Kıyafet İhtiyacı', 'Isabella', 'Evans', '90', '5055936519',
+                    ST_GeomFromText('POINT(40.981210 29.000000)', 4326), 'AVAILABLE', 'AYS', CURRENT_TIMESTAMP);
+
+            INSERT INTO AYS_ASSIGNMENT (ID, INSTITUTION_ID, DESCRIPTION, FIRST_NAME, LAST_NAME, COUNTRY_CODE,
+                                        LINE_NUMBER, POINT, STATUS, CREATED_USER, CREATED_AT)
+            VALUES ('a9b02d99-4c70-4409-b5f1-1da036cf891b', '91df7ae9-d5b9-44ae-b54f-d5d55359c4a4',
+                    'Kıyafet İhtiyacı', 'Emily', 'Taylor', '90', '5057806917',
+                    ST_GeomFromText('POINT(40.981210 29.000000)', 4326), 'AVAILABLE', 'AYS', CURRENT_TIMESTAMP);
+
+        </sql>
+        <!-- ===================== -->
+        <!-- DML of AYS_ASSIGNMENT -->
+        <!-- ===================== -->
+
+
+        <!-- ========================================== -->
+        <!-- DML of AYS_ADMIN_USER_REGISTER_APPLICATION -->
+        <!-- ========================================== -->
+        <insert tableName="AYS_ADMIN_USER_REGISTER_APPLICATION">
+            <column name="ID" value="3cfeb994-88f4-48d0-b105-309f42f91412"/>
+            <column name="INSTITUTION_ID" value="77ece256-bf0e-4bbe-801d-173083f8bdcf"/>
+            <column name="REASON"
+                    value="A kurumunun kurucu üyesi olan Linda Murphy için Afet Yönetim Sistemine dahil olabilmesi için oluşturulmuştur."
+            />
+            <column name="STATUS" value="WAITING"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
+        <!-- ========================================== -->
+        <!-- DML of AYS_ADMIN_USER_REGISTER_APPLICATION -->
+        <!-- ========================================== -->
     </changeSet>
 
 </databaseChangeLog>

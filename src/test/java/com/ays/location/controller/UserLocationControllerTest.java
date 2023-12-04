@@ -48,6 +48,7 @@ class UserLocationControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
+        // Verify
         Mockito.verify(userLocationService, Mockito.times(1))
                 .saveUserLocation(Mockito.any(UserLocationSaveRequest.class));
     }

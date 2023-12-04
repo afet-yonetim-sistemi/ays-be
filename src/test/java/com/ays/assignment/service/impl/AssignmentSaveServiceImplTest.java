@@ -48,6 +48,7 @@ class AssignmentSaveServiceImplTest extends AbstractUnitTest {
         // Then
         assignmentSaveService.saveAssignment(mockAssignmentSaveRequest);
 
+        // Verify
         Mockito.verify(assignmentRepository, Mockito.times(1)).save(Mockito.any(AssignmentEntity.class));
         Mockito.verify(identity, Mockito.times(1)).getInstitutionId();
 

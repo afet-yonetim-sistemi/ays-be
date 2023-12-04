@@ -6,7 +6,11 @@ import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.enums.AysTokenClaims;
 import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
-import com.ays.auth.util.exception.*;
+import com.ays.auth.util.exception.PasswordNotValidException;
+import com.ays.auth.util.exception.UserIdNotValidException;
+import com.ays.auth.util.exception.UserNotActiveException;
+import com.ays.auth.util.exception.UserNotVerifiedException;
+import com.ays.auth.util.exception.UsernameNotValidException;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.service.UserAuthService;
@@ -87,7 +91,7 @@ class UserAuthServiceImpl implements UserAuthService {
 
         final UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new UserIdNotValidException(userId));
-        
+
         this.validateUserStatus(userEntity);
 
         return tokenService.generate(userEntity.getClaims(), refreshToken);

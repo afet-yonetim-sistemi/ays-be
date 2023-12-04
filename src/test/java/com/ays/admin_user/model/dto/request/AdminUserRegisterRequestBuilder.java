@@ -4,7 +4,7 @@ import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.util.AysRandomUtil;
-import com.ays.util.AysTestData;
+import com.ays.util.AysValidTestData;
 
 public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRegisterRequest> {
 
@@ -16,7 +16,7 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
         return this
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
-                .withEmail(AysTestData.VALID_EMAIL)
+                .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build());
     }
 

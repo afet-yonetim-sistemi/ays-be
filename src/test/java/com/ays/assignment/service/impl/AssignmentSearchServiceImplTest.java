@@ -49,7 +49,7 @@ class AssignmentSearchServiceImplTest extends AbstractUnitTest {
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
+                .withSupportStatus(UserSupportStatus.READY)
                 .build();
         Point mockAssignmentPoint = AysLocationUtil.generatePoint(
                 mockAssignmentSearchRequest.getLongitude(),
@@ -149,7 +149,7 @@ class AssignmentSearchServiceImplTest extends AbstractUnitTest {
 
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
-                .withUserSupportStatus(UserSupportStatus.READY)
+                .withSupportStatus(UserSupportStatus.READY)
                 .build();
         Point mockAssignmentPoint = AysLocationUtil.generatePoint(
                 mockAssignmentSearchRequest.getLongitude(),

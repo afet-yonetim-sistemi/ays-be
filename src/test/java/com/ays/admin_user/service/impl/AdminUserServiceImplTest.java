@@ -36,7 +36,8 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
     private AysIdentity identity;
 
 
-    private static final AdminUserEntityToAdminUserMapper ADMIN_ENTITY_TO_ADMIN_MAPPER = AdminUserEntityToAdminUserMapper.initialize();
+    private final AdminUserEntityToAdminUserMapper adminUserEntityToAdminUserMapper = AdminUserEntityToAdminUserMapper.initialize();
+
 
     @Test
     void givenUserListRequest_whenAdminWithRoleIsSuperAdmin_thenReturnAllAdminUsers() {
@@ -46,7 +47,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         List<AdminUserEntity> mockAdminUserEntities = Collections.singletonList(new AdminUserEntityBuilder().build());
         Page<AdminUserEntity> mockPageAdminUserEntities = new PageImpl<>(mockAdminUserEntities);
 
-        List<AdminUser> mockAdminUsers = ADMIN_ENTITY_TO_ADMIN_MAPPER.map(mockAdminUserEntities);
+        List<AdminUser> mockAdminUsers = adminUserEntityToAdminUserMapper.map(mockAdminUserEntities);
         AysPage<AdminUser> mockAysPageAdminUsers = AysPage.of(mockPageAdminUserEntities, mockAdminUsers);
 
         AysUserType userType = AysUserType.SUPER_ADMIN;
@@ -62,6 +63,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
 
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
+        // Verify
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findAll(mockAdminUserListRequest.toPageable());
     }
@@ -76,7 +78,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
         List<AdminUserEntity> mockAdminUserEntities = Collections.singletonList(mockAdminUserEntity);
         Page<AdminUserEntity> mockPageAdminUserEntities = new PageImpl<>(mockAdminUserEntities);
 
-        List<AdminUser> mockAdminUsers = ADMIN_ENTITY_TO_ADMIN_MAPPER.map(mockAdminUserEntities);
+        List<AdminUser> mockAdminUsers = adminUserEntityToAdminUserMapper.map(mockAdminUserEntities);
         AysPage<AdminUser> mockAysPageAdminUsers = AysPage.of(mockPageAdminUserEntities, mockAdminUsers);
 
         AysUserType userType = AysUserType.ADMIN;
@@ -93,6 +95,7 @@ class AdminUserServiceImplTest extends AbstractUnitTest {
 
         AysPageBuilder.assertEquals(mockAysPageAdminUsers, aysPageAdminUsers);
 
+        // Verify
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }

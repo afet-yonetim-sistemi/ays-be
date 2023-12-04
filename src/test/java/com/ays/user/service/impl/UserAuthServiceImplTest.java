@@ -11,7 +11,12 @@ import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.service.AysInvalidTokenService;
 import com.ays.auth.service.AysTokenService;
-import com.ays.auth.util.exception.*;
+import com.ays.auth.util.exception.PasswordNotValidException;
+import com.ays.auth.util.exception.TokenAlreadyInvalidatedException;
+import com.ays.auth.util.exception.TokenNotValidException;
+import com.ays.auth.util.exception.UserIdNotValidException;
+import com.ays.auth.util.exception.UserNotActiveException;
+import com.ays.auth.util.exception.UsernameNotValidException;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.model.enums.UserStatus;
@@ -71,12 +76,11 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
 
         Assertions.assertEquals(mockUserToken, token);
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findByUsername(mockLoginRequest.getUsername());
-
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .matches(mockLoginRequest.getPassword(), mockUserEntity.getPassword());
-
         Mockito.verify(tokenService, Mockito.times(1))
                 .generate(mockUserEntity.getClaims());
     }
