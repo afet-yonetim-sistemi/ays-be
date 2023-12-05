@@ -21,11 +21,11 @@ public class AysPaging {
      * <p>
      * This field is annotated with {@code @NotNull} to indicate that it cannot be null.
      * Additionally, it is annotated with {@code @Min(1)} to specify that the value must be at least 1,
-     * and {@code @Max(Integer.MAX_VALUE)} to set the maximum allowed value to Integer.MAX_VALUE.
+     * and {@code @Max(Long.MAX_VALUE)} to set the maximum allowed value to Long.MAX_VALUE.
      */
     @NotNull
     @Min(1)
-    @Max(Integer.MAX_VALUE)
+    @Max(Long.MAX_VALUE)
     public Long page;
 
     /**
