@@ -1,5 +1,7 @@
 package com.ays.common.model;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,23 +16,35 @@ import org.hibernate.validator.constraints.Range;
 public class AysPaging {
 
     /**
-     * The page number, which should be greater than or equal to 1.
+     * Represents the page number for pagination.
+     * The page number must be greater than or equal to 1.
+     * <p>
+     * This field is annotated with {@code @NotNull} to indicate that it cannot be null.
+     * Additionally, it is annotated with {@code @Min(1)} to specify that the value must be at least 1,
+     * and {@code @Max(Long.MAX_VALUE)} to set the maximum allowed value to Long.MAX_VALUE.
      */
     @NotNull
-    @Range(min = 1)
+    @Min(1)
+    @Max(Long.MAX_VALUE)
     public Long page;
 
     /**
-     * The number of elements in each page, which should be between 1 and 100.
+     * Represents the number of elements to be displayed per page in a paginated result set.
+     * The page size should be exactly 10.
+     *
+     * This field is annotated with {@code @NotNull} to indicate that it cannot be null.
+     * Additionally, it is annotated with a custom or library-specific {@code @Range} annotation,
+     * specifying that the valid page size is exactly 10.
      */
     @NotNull
     @Range(min = 10, max = 10)
     public Long pageSize;
 
     /**
-     * Gets the 0-based page number, which is used internally by Spring Data's pagination system.
+     * Retrieves the 0-based page number, which is utilized internally by Spring Data's pagination system.
+     * If the original page number is null, the method returns null.
      *
-     * @return The 0-based page number.
+     * @return The 0-based page number or null if the original page number is null.
      */
     public Long getPage() {
 
