@@ -189,6 +189,7 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 () -> adminUserRegisterApplicationService.getRegistrationApplicationSummaryById(mockId)
         );
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(mockId);
 
