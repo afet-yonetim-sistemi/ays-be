@@ -6,11 +6,13 @@ import com.ays.admin_user.model.AdminUserRegisterApplicationBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequestBuilder;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
+import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationSummaryResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntityBuilder;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper;
+import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
 import com.ays.common.model.AysPage;
@@ -40,7 +42,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
     private final AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper = AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.initialize();
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.initialize();
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper.initialize();
-
+    private final AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1/admin";
 
@@ -162,6 +164,37 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+    }
+
+    @Test
+    void givenValidAdminUserRegisterApplicationId_whenAdminUserApplicationFound_thenReturnAdminUserApplicationSummaryResponse() throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AdminUserRegisterApplication mockAdminUserRegisterApplication = new AdminUserRegisterApplicationBuilder()
+                .withId(mockId)
+                .build();
+
+        // When
+        Mockito.when(adminUserRegisterApplicationService.getRegistrationApplicationSummaryById(mockId))
+                .thenReturn(mockAdminUserRegisterApplication);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/registration-application/".concat(mockId).concat("/summary"));
+        AdminUserRegisterApplicationSummaryResponse mockResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper.map(mockAdminUserRegisterApplication);
+        AysResponse<AdminUserRegisterApplicationSummaryResponse> mockAysResponse = AysResponse.successOf(mockResponse);
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .get(endpoint))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
     }
 
 }
