@@ -26,4 +26,11 @@ public interface AdminUserRegisterApplicationService {
      */
     AdminUserRegisterApplication getRegistrationApplicationById(String id);
 
+    /**
+     * Get registration application summary by id.
+     *
+     * @param id registration application id
+     * @return Admin User Registration Application
+     */
+    AdminUserRegisterApplication getRegistrationApplicationSummaryById(String id);
 }
