@@ -74,4 +74,10 @@ class AdminUserRegisterApplicationController {
         );
     }
 
+    @GetMapping("/registration-application/{id}/summary")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    public AysResponse<?> getRegistrationApplicationSummaryById(@PathVariable String id) {
+        return null;
+    }
+
 }
