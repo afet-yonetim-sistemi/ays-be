@@ -91,7 +91,6 @@ class AdminUserRegisterApplicationController {
         final AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService
                 .getRegistrationApplicationSummaryById(id);
 
-
         return AysResponse.successOf(
                 adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper.map(registerApplication)
         );

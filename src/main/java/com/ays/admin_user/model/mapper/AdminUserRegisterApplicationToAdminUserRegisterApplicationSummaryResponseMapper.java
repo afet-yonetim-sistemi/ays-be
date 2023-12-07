@@ -3,6 +3,7 @@ package com.ays.admin_user.model.mapper;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationSummaryResponse;
 import com.ays.common.model.mapper.BaseMapper;
+import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -12,6 +13,7 @@ import org.mapstruct.factory.Mappers;
  * <p>The interface extends the MapStruct interface {@link BaseMapper}, which defines basic mapping methods.
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
+@Mapper
 public interface AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper extends BaseMapper<AdminUserRegisterApplication, AdminUserRegisterApplicationSummaryResponse> {
 
     /**
