@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * A DTO (Data Transfer Object) representing a list of admin user register applications
+ * A DTO (Data Transfer Object) representing an admin user register application summary
  */
 @Getter
 @Setter
