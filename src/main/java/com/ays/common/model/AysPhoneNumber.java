@@ -2,7 +2,7 @@ package com.ays.common.model;
 
 import com.ays.common.util.validation.PhoneNumber;
 import com.google.gson.Gson;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,13 +21,13 @@ public class AysPhoneNumber implements AysPhoneNumberAccessor {
     /**
      * The country code of the phone number
      */
-    @NotNull
+    @NotBlank
     private String countryCode;
 
     /**
      * The line number of the phone number
      */
-    @NotNull
+    @NotBlank
     private String lineNumber;
 
     /**
