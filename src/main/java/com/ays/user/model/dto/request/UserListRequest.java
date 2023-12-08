@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,6 +38,7 @@ public class UserListRequest extends AysPagingRequest implements AysFilteringReq
      */
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class Filter implements AysFiltering {
 
         @Name
