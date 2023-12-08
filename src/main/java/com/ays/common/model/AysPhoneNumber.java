@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @PhoneNumber
-public class AysPhoneNumber {
+public class AysPhoneNumber implements AysPhoneNumberAccessor {
 
     /**
      * The country code of the phone number, a non-null long value between 1 and 5 (inclusive).
