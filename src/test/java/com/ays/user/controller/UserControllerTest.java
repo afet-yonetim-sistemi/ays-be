@@ -6,6 +6,9 @@ import com.ays.assignment.model.dto.request.AssignmentUpdateRequestBuilder;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
+import com.ays.common.model.AysPhoneNumberFilterRequest;
+import com.ays.common.model.AysPhoneNumberFilterRequestBuilder;
+import com.ays.common.model.AysSorting;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
@@ -40,6 +43,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -344,6 +348,119 @@ class UserControllerTest extends AbstractRestControllerTest {
                         .isNotEmpty());
 
         Mockito.verify(userService, Mockito.times(1))
+                .getAllUsers(Mockito.any(UserListRequest.class));
+    }
+
+    @Test
+    void givenInvalidUserListRequest_whenSortFieldIsInvalid_thenReturnValidationError() throws Exception {
+
+        // Given
+        Sort invalidSort = Sort.by(Sort.Direction.ASC, "firstName");
+        UserListRequest mockUserListRequest = new UserListRequestBuilder()
+                .withValidValues()
+                .withSort(AysSorting.of(invalidSort))
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userService, Mockito.never())
+                .getAllUsers(Mockito.any(UserListRequest.class));
+    }
+
+    @Test
+    void givenInvalidUserListRequest_whenFilterFirstNameFieldIsInvalid_thenReturnValidationError() throws Exception {
+
+        // Given
+        UserListRequest.Filter invalidFilter = new UserListRequestBuilder.FilterBuilder()
+                .withValidValues()
+                .withFirstName("John 1234")
+                .build();
+        UserListRequest mockUserListRequest = new UserListRequestBuilder()
+                .withValidValues()
+                .withFilter(invalidFilter)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userService, Mockito.never())
+                .getAllUsers(Mockito.any(UserListRequest.class));
+    }
+
+    @Test
+    void givenInvalidUserListRequest_whenFilterPhoneNumberFieldIsInvalid_thenReturnValidationError() throws Exception {
+
+        // Given
+        AysPhoneNumberFilterRequest invalidPhoneNumber = new AysPhoneNumberFilterRequestBuilder()
+                .withValidValues()
+                .withCountryCode("90")
+                .withLineNumber("123456789")
+                .build();
+        UserListRequest.Filter filter = new UserListRequestBuilder.FilterBuilder()
+                .withValidValues()
+                .withPhoneNumber(invalidPhoneNumber)
+                .build();
+        UserListRequest mockUserListRequest = new UserListRequestBuilder()
+                .withValidValues()
+                .withFilter(filter)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockErrorResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.header()
+                        .value(mockErrorResponse.getHeader()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockErrorResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        Mockito.verify(userService, Mockito.never())
                 .getAllUsers(Mockito.any(UserListRequest.class));
     }
 
