@@ -5,6 +5,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.util.StringUtils;
 
 /**
  * A custom validator implementation for the {@link PhoneNumber} annotation.
@@ -25,7 +26,7 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
         final String lineNumber = phoneNumber.getLineNumber();
         final String fullNumber = "+" + countryCode + lineNumber;
 
-        if (countryCode == null || lineNumber == null) {
+        if (!StringUtils.hasText(countryCode) || !StringUtils.hasText(lineNumber)) {
             return true;
         }
 
