@@ -19,13 +19,13 @@ import lombok.Setter;
 public class AysPhoneNumber implements AysPhoneNumberAccessor {
 
     /**
-     * The country code of the phone number, a non-null long value between 1 and 5 (inclusive).
+     * The country code of the phone number
      */
     @NotNull
     private String countryCode;
 
     /**
-     * The line number of the phone number, a non-null long value between 1 and 10 (inclusive).
+     * The line number of the phone number
      */
     @NotNull
     private String lineNumber;
