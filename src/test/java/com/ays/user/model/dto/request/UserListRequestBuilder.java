@@ -2,8 +2,13 @@ package com.ays.user.model.dto.request;
 
 import com.ays.common.model.AysPaging;
 import com.ays.common.model.AysPagingBuilder;
+import com.ays.common.model.AysPhoneNumberFilterRequest;
+import com.ays.common.model.AysPhoneNumberFilterRequestBuilder;
 import com.ays.common.model.AysSorting;
 import com.ays.common.model.TestDataBuilder;
+import com.ays.user.model.enums.UserStatus;
+import com.ays.user.model.enums.UserSupportStatus;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -15,8 +20,14 @@ public class UserListRequestBuilder extends TestDataBuilder<UserListRequest> {
 
     public UserListRequestBuilder withValidValues() {
         return this
+                .withFilter(new FilterBuilder().withValidValues().build())
                 .withPagination(new AysPagingBuilder().withValidValues().build())
-                .withSort(null);
+                .withSort(AysSorting.of(Sort.by(Sort.Direction.ASC, "createdAt")));
+    }
+
+    public UserListRequestBuilder withFilter(UserListRequest.Filter filter) {
+        data.setFilter(filter);
+        return this;
     }
 
     public UserListRequestBuilder withPagination(AysPaging aysPaging) {
@@ -27,6 +38,46 @@ public class UserListRequestBuilder extends TestDataBuilder<UserListRequest> {
     public UserListRequestBuilder withSort(List<AysSorting> sorting) {
         data.setSort(sorting);
         return this;
+    }
+
+    public static class FilterBuilder extends TestDataBuilder<UserListRequest.Filter> {
+
+        public FilterBuilder() {
+            super(UserListRequest.Filter.class);
+        }
+
+        public FilterBuilder withValidValues() {
+            return this
+                    .withSupportStatuses(List.of(UserSupportStatus.READY, UserSupportStatus.ON_ROAD))
+                    .withStatuses(List.of(UserStatus.ACTIVE, UserStatus.DELETED))
+                    .withPhoneNumber(new AysPhoneNumberFilterRequestBuilder().withValidValues().build());
+        }
+
+        public FilterBuilder withFirstName(String firstName) {
+            data.setFirstName(firstName);
+            return this;
+        }
+
+        public FilterBuilder withLastName(String lastName) {
+            data.setLastName(lastName);
+            return this;
+        }
+
+        public FilterBuilder withSupportStatuses(List<UserSupportStatus> supportStatuses) {
+            data.setSupportStatuses(supportStatuses);
+            return this;
+        }
+
+        public FilterBuilder withStatuses(List<UserStatus> statuses) {
+            data.setStatuses(statuses);
+            return this;
+        }
+
+        public FilterBuilder withPhoneNumber(AysPhoneNumberFilterRequest phoneNumber) {
+            data.setPhoneNumber(phoneNumber);
+            return this;
+        }
+
     }
 
 }
