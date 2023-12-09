@@ -2,6 +2,8 @@ package com.ays.admin_user.service.impl;
 
 import com.ays.AbstractUnitTest;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequestBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequestBuilder;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
@@ -13,6 +15,10 @@ import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExist
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
 import com.ays.common.util.AysRandomUtil;
+import com.ays.institution.model.entity.InstitutionEntity;
+import com.ays.institution.model.entity.InstitutionEntityBuilder;
+import com.ays.institution.repository.InstitutionRepository;
+import com.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,6 +40,8 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
     @Mock
     private AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;
 
+    @Mock
+    private InstitutionRepository institutionRepository;
 
     private final AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper = AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.initialize();
 
@@ -139,6 +147,59 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(mockId);
+    }
+
+    @Test
+    void givenAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnAdminUserRegisterApplicationCreateResponse() {
+
+        // Given
+        AdminUserRegisterApplicationCreateRequest mockRequest = new AdminUserRegisterApplicationCreateRequestBuilder()
+                .withValidFields()
+                .build();
+        InstitutionEntity mockInstitutionEntity = new InstitutionEntityBuilder()
+                .withValidFields()
+                .withId(mockRequest.getInstitutionId())
+                .build();
+        AdminUserRegisterApplicationEntity mockEntity = new AdminUserRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withInstitutionId(mockInstitutionEntity.getId())
+                .withInstitution(mockInstitutionEntity)
+                .withReason(mockRequest.getReason())
+                .build();
+
+        // When
+        Mockito.when(adminUserRegisterApplicationRepository.save(Mockito.any(AdminUserRegisterApplicationEntity.class)))
+                .thenReturn(mockEntity);
+        Mockito.when(institutionRepository.existsActiveById(mockRequest.getInstitutionId()))
+                .thenReturn(true);
+
+        // Then
+        adminUserRegisterApplicationService.createRegistrationApplication(mockRequest);
+
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
+                .save(Mockito.any(AdminUserRegisterApplicationEntity.class));
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .existsActiveById(mockRequest.getInstitutionId());
+    }
+
+    @Test
+    void givenInvalidInstitutionId_whenCreatingAdminUserRegisterApplication_thenThrowAysInvalidAdminUserRegisterApplicationReasonException() {
+
+        // Given
+        AdminUserRegisterApplicationCreateRequest mockRequest = new AdminUserRegisterApplicationCreateRequestBuilder()
+                .withValidFields()
+                .withReason(null)
+                .build();
+
+        // When
+        Mockito.when(institutionRepository.existsActiveById(mockRequest.getInstitutionId()))
+                .thenReturn(false);
+
+        // Then
+        Assertions.assertThrows(
+                AysInstitutionNotExistException.class,
+                () -> adminUserRegisterApplicationService.createRegistrationApplication(mockRequest)
+        );
     }
 
 }

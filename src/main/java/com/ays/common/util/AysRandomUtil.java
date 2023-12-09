@@ -53,4 +53,21 @@ public class AysRandomUtil {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Generates a random string with the specified length.
+     * The generated string will be a random string with the specified length, consisting of uppercase and lowercase
+     * letters and digits.
+     *
+     * @param length the length of the generated string
+     * @return a random string with the specified length
+     */
+    public static String generateString(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            stringBuilder.append(characters.charAt(RANDOM.nextInt(characters.length())));
+        }
+        return stringBuilder.toString();
+    }
+
 }

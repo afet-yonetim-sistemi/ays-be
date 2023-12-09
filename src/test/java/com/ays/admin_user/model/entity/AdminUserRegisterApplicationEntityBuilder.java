@@ -27,7 +27,8 @@ public class AdminUserRegisterApplicationEntityBuilder extends TestDataBuilder<A
                 .withAdminUserId(adminUser.getId())
                 .withAdminUser(adminUser)
                 .withInstitutionId(institution.getId())
-                .withInstitution(institution);
+                .withInstitution(institution)
+                .withReason(AysRandomUtil.generateString(41));
     }
 
     public AdminUserRegisterApplicationEntityBuilder withId(String id) {
@@ -57,6 +58,11 @@ public class AdminUserRegisterApplicationEntityBuilder extends TestDataBuilder<A
 
     public AdminUserRegisterApplicationEntityBuilder withInstitution(InstitutionEntity institution) {
         data.setInstitution(institution);
+        return this;
+    }
+
+    public AdminUserRegisterApplicationEntityBuilder withReason(String reason) {
+        data.setReason(reason);
         return this;
     }
 
