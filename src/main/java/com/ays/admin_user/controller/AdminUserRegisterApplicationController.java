@@ -11,6 +11,7 @@ import com.ays.admin_user.service.AdminUserRegisterApplicationService;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,12 +45,17 @@ class AdminUserRegisterApplicationController {
      */
     @PostMapping("/registration-applications")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> getRegistrationApplications(@RequestBody AdminUserRegisterApplicationListRequest request) {
-        final AysPage<AdminUserRegisterApplication> pageOfRegisterApplications = adminUserRegisterApplicationService.getRegistrationApplications(request);
+    public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> getRegistrationApplications(
+            @RequestBody @Valid AdminUserRegisterApplicationListRequest request) {
+
+        final AysPage<AdminUserRegisterApplication> pageOfRegisterApplications = adminUserRegisterApplicationService
+                .getRegistrationApplications(request);
         final AysPageResponse<AdminUserRegisterApplicationsResponse> pageResponseOfRegisterApplication = AysPageResponse
                 .<AdminUserRegisterApplicationsResponse>builder()
                 .of(pageOfRegisterApplications)
-                .content(adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.map(pageOfRegisterApplications.getContent()))
+                .content(adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper
+                        .map(pageOfRegisterApplications.getContent())
+                )
                 .filteredBy(request.getFilter())
                 .build();
 
