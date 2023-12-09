@@ -13,7 +13,9 @@ import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Admin Register Application controller to perform register application api operations for admins.
  */
+@Validated
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
@@ -71,12 +74,15 @@ class AdminUserRegisterApplicationController {
      */
     @GetMapping("/registration-application/{id}")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<AdminUserRegisterApplicationResponse> getRegistrationApplicationById(@PathVariable String id) {
+    public AysResponse<AdminUserRegisterApplicationResponse> getRegistrationApplicationById(
+            @PathVariable @UUID String id) {
+
         final AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService
                 .getRegistrationApplicationById(id);
 
         return AysResponse.successOf(
-                adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper.map(registerApplication)
+                adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper
+                        .map(registerApplication)
         );
     }
 
