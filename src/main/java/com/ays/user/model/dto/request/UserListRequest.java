@@ -93,13 +93,13 @@ public class UserListRequest extends AysPagingRequest implements AysFilteringReq
 
         if (!CollectionUtils.isEmpty(this.filter.supportStatuses)) {
             Specification<C> supportStatusSpecification = (root, query, criteriaBuilder) ->
-                    criteriaBuilder.in(root.get("supportStatus")).value(this.filter.supportStatuses);
+                    root.get("supportStatus").in(this.filter.supportStatuses);
             specification = specification.and(supportStatusSpecification);
         }
 
         if (!CollectionUtils.isEmpty(this.filter.statuses)) {
             Specification<C> userStatusSpecification = (root, query, criteriaBuilder) ->
-                    criteriaBuilder.in(root.get("status")).value(this.filter.statuses);
+                    root.get("status").in(this.filter.statuses);
             specification = specification.and(userStatusSpecification);
         }
 
