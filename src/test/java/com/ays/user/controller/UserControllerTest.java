@@ -4,11 +4,11 @@ import com.ays.AbstractRestControllerTest;
 import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
 import com.ays.assignment.model.dto.request.AssignmentUpdateRequestBuilder;
 import com.ays.common.model.AysPage;
-import com.ays.common.model.AysPhoneNumber;
-import com.ays.common.model.AysPhoneNumberBuilder;
-import com.ays.common.model.dto.request.AysPhoneNumberFilterRequest;
-import com.ays.common.model.AysPhoneNumberFilterRequestBuilder;
 import com.ays.common.model.AysSorting;
+import com.ays.common.model.dto.request.AysPhoneNumberFilterRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberFilterRequestBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
@@ -70,7 +70,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     void givenValidUserSaveRequest_whenUserSaved_thenReturnUserSavedResponse() throws Exception {
         // Given
         UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .build();
 
         // When
@@ -186,7 +186,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     void givenValidUserSaveRequest_whenUserUnauthorizedForSaving_thenReturnAccessDeniedException() throws Exception {
         // Given
         UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .build();
 
         // Then
@@ -211,7 +211,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     @Test
     void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
         UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
@@ -246,7 +246,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     @Test
     void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
         UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()
@@ -281,7 +281,7 @@ class UserControllerTest extends AbstractRestControllerTest {
     void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
         final String invalidOperator = "123";
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
         UserSaveRequest mockUserSaveRequest = new UserSaveRequestBuilder()

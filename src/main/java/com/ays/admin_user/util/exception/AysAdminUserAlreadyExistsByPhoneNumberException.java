@@ -1,6 +1,6 @@
 package com.ays.admin_user.util.exception;
 
-import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.common.util.exception.AysAlreadyException;
 
 import java.io.Serial;
@@ -21,7 +21,7 @@ public class AysAdminUserAlreadyExistsByPhoneNumberException extends AysAlreadyE
      *
      * @param phoneNumber The phone number that already exists in the system.
      */
-    public AysAdminUserAlreadyExistsByPhoneNumberException(AysPhoneNumber phoneNumber) {
+    public AysAdminUserAlreadyExistsByPhoneNumberException(AysPhoneNumberRequest phoneNumber) {
         super("ADMIN USER ALREADY EXIST! countryCode:" + phoneNumber.getCountryCode() + " , " + "lineNumber:" + phoneNumber.getLineNumber());
     }
 

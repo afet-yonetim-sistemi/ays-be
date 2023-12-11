@@ -5,6 +5,8 @@ import com.ays.common.model.AysPaging;
 import com.ays.common.model.AysPagingBuilder;
 import com.ays.common.model.AysSorting;
 import com.ays.common.model.TestDataBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberFilterRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberFilterRequestBuilder;
 
 import java.util.List;
 
@@ -16,30 +18,13 @@ public class AssignmentListRequestBuilder extends TestDataBuilder<AssignmentList
 
     public AssignmentListRequestBuilder withValidValues() {
         return this
-                .initializeFilter()
-                .withStatuses(List.of(AssignmentStatus.AVAILABLE, AssignmentStatus.ASSIGNED))
-                .withPhoneNumber(new AssignmentListRequest.PhoneNumber("90", "1234567890"))
+                .withFilter(new FilterBuilder().withValidValues().build())
                 .withPagination(new AysPagingBuilder().withValidValues().build())
                 .withSort(null);
     }
 
-    private AssignmentListRequestBuilder initializeFilter() {
-        data.setFilter(new AssignmentListRequest.Filter());
-        return this;
-    }
-
     public AssignmentListRequestBuilder withFilter(AssignmentListRequest.Filter filter) {
         data.setFilter(filter);
-        return this;
-    }
-
-    public AssignmentListRequestBuilder withStatuses(List<AssignmentStatus> statuses) {
-        data.getFilter().setStatuses(statuses);
-        return this;
-    }
-
-    public AssignmentListRequestBuilder withPhoneNumber(AssignmentListRequest.PhoneNumber phoneNumber) {
-        data.getFilter().setPhoneNumber(phoneNumber);
         return this;
     }
 
@@ -53,4 +38,26 @@ public class AssignmentListRequestBuilder extends TestDataBuilder<AssignmentList
         return this;
     }
 
+    public static class FilterBuilder extends TestDataBuilder<AssignmentListRequest.Filter> {
+
+        public FilterBuilder() {
+            super(AssignmentListRequest.Filter.class);
+        }
+
+        public FilterBuilder withValidValues() {
+            return this
+                    .withStatuses(List.of(AssignmentStatus.AVAILABLE, AssignmentStatus.ASSIGNED))
+                    .withPhoneNumber(new AysPhoneNumberFilterRequestBuilder().withValidValues().build());
+        }
+
+        public FilterBuilder withStatuses(List<AssignmentStatus> statuses) {
+            data.setStatuses(statuses);
+            return this;
+        }
+
+        public FilterBuilder withPhoneNumber(AysPhoneNumberFilterRequest phoneNumber) {
+            data.setPhoneNumber(phoneNumber);
+            return this;
+        }
+    }
 }

@@ -27,7 +27,7 @@ import com.ays.assignment.model.mapper.AssignmentToAssignmentSummaryResponseMapp
 import com.ays.assignment.model.mapper.AssignmentToAssignmentUserResponseMapper;
 import com.ays.auth.model.AysToken;
 import com.ays.common.model.AysPage;
-import com.ays.common.model.AysPhoneNumberBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
@@ -122,7 +122,7 @@ class AssignmentSystemTest extends AbstractSystemTest {
     void givenValidAssignmentSaveRequest_whenUserUnauthorizedForSaving_thenReturnAccessDeniedException() throws Exception {
         // Given
         AssignmentSaveRequest mockAssignmentSaveRequest = new AssignmentSaveRequestBuilder()
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .build();
 
         // Then
