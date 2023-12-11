@@ -1,5 +1,6 @@
-package com.ays.common.model;
+package com.ays.common.model.dto.request;
 
+import com.ays.common.model.AysPhoneNumberAccessor;
 import com.ays.common.util.validation.PhoneNumber;
 import com.google.gson.Gson;
 import lombok.Getter;

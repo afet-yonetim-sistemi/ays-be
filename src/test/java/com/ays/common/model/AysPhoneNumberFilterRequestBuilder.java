@@ -1,8 +1,10 @@
 package com.ays.common.model;
 
+import com.ays.common.model.dto.request.AysPhoneNumberFilterRequest;
 import com.ays.common.util.AysRandomUtil;
 
 public class AysPhoneNumberFilterRequestBuilder extends TestDataBuilder<AysPhoneNumberFilterRequest> {
+
     public AysPhoneNumberFilterRequestBuilder() {
         super(AysPhoneNumberFilterRequest.class);
     }

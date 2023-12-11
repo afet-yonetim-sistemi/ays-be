@@ -2,7 +2,7 @@ package com.ays.user.model.dto.request;
 
 import com.ays.common.model.AysPaging;
 import com.ays.common.model.AysPagingBuilder;
-import com.ays.common.model.AysPhoneNumberFilterRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberFilterRequest;
 import com.ays.common.model.AysPhoneNumberFilterRequestBuilder;
 import com.ays.common.model.AysSorting;
 import com.ays.common.model.TestDataBuilder;

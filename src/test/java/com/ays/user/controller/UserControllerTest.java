@@ -6,7 +6,7 @@ import com.ays.assignment.model.dto.request.AssignmentUpdateRequestBuilder;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPhoneNumber;
 import com.ays.common.model.AysPhoneNumberBuilder;
-import com.ays.common.model.AysPhoneNumberFilterRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberFilterRequest;
 import com.ays.common.model.AysPhoneNumberFilterRequestBuilder;
 import com.ays.common.model.AysSorting;
 import com.ays.common.model.dto.response.AysPageResponse;

@@ -1,7 +1,7 @@
 package com.ays.user.model.dto.request;
 
 import com.ays.common.model.AysFiltering;
-import com.ays.common.model.AysPhoneNumberFilterRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberFilterRequest;
 import com.ays.common.model.dto.request.AysFilteringRequest;
 import com.ays.common.model.dto.request.AysPagingRequest;
 import com.ays.common.util.validation.Name;
