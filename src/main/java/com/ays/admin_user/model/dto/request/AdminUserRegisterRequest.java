@@ -1,6 +1,6 @@
 package com.ays.admin_user.model.dto.request;
 
-import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.common.util.validation.Name;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -38,7 +38,7 @@ public class AdminUserRegisterRequest {
 
     @Valid
     @NotNull
-    private AysPhoneNumber phoneNumber;
+    private AysPhoneNumberRequest phoneNumber;
 
     @NotBlank
     @Name

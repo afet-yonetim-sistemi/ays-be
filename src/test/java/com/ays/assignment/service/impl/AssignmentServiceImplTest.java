@@ -182,7 +182,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(null)
+                .withFilter(new AssignmentListRequestBuilder.FilterBuilder().withPhoneNumber(null).build())
                 .build();
 
         List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder()
@@ -215,7 +215,7 @@ class AssignmentServiceImplTest extends AbstractUnitTest {
 
         AssignmentListRequest assignmentListRequest = new AssignmentListRequestBuilder()
                 .withValidValues()
-                .withStatuses(null)
+                .withFilter(new AssignmentListRequestBuilder.FilterBuilder().withStatuses(null).build())
                 .build();
 
         List<AssignmentEntity> mockAssignmentEntities = List.of(new AssignmentEntityBuilder()
