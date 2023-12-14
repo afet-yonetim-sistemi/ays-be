@@ -46,9 +46,13 @@ class UserServiceImpl implements UserService {
     public AysPage<User> getAllUsers(final UserListRequest listRequest) {
 
         final Map<String, Object> filter = Map.of("institutionId", identity.getInstitutionId());
-        final Specification<UserEntity> specification = AysSpecification.<UserEntity>builder().and(filter);
 
-        Page<UserEntity> userEntities = userRepository.findAll(specification, listRequest.toPageable());
+        final Specification<UserEntity> institutionIdSpecification = AysSpecification.<UserEntity>builder().and(filter);
+        final Specification<UserEntity> requestedSpecifications = listRequest.toSpecification(UserEntity.class);
+
+        Page<UserEntity> userEntities = userRepository.findAll(requestedSpecifications.and(institutionIdSpecification),
+                listRequest.toPageable());
+
         List<User> users = userEntityToUserMapper.map(userEntities.getContent());
         return AysPage.of(
                 userEntities,

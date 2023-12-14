@@ -28,6 +28,14 @@ public interface AdminUserRegisterApplicationService {
     AdminUserRegisterApplication getRegistrationApplicationById(String id);
 
     /**
+     * Get registration application summary by id.
+     *
+     * @param id registration application id
+     * @return Admin User Registration Application
+     */
+    AdminUserRegisterApplication getRegistrationApplicationSummaryById(String id);
+
+    /**
      * Create a new admin user register application.
      *
      * @param request The request object containing the register application details.

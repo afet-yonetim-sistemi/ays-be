@@ -1,8 +1,8 @@
 package com.ays.admin_user.model.dto.request;
 
-import com.ays.common.model.AysPhoneNumber;
-import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.util.AysValidTestData;
 
@@ -17,7 +17,7 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysValidTestData.EMAIL)
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build());
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build());
     }
 
     public AdminUserRegisterRequestBuilder withApplicationId(String applicationId) {
@@ -30,7 +30,7 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
         return this;
     }
 
-    public AdminUserRegisterRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
+    public AdminUserRegisterRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }

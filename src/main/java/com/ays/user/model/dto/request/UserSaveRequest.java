@@ -1,6 +1,6 @@
 package com.ays.user.model.dto.request;
 
-import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.common.util.validation.Name;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -31,6 +31,6 @@ public class UserSaveRequest {
 
     @Valid
     @NotNull
-    private AysPhoneNumber phoneNumber;
+    private AysPhoneNumberRequest phoneNumber;
 
 }

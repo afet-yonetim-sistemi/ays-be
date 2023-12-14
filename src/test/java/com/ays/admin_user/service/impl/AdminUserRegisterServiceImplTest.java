@@ -14,8 +14,8 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByEmailExcepti
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberException;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationCodeNotValidException;
-import com.ays.common.model.AysPhoneNumber;
-import com.ays.common.model.AysPhoneNumberBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.repository.InstitutionRepository;
 import com.ays.institution.util.exception.AysInstitutionNotExistException;
@@ -50,7 +50,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenValidAdminUserRegisterRequest_thenAdminUserRegistered() {
 
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
@@ -139,7 +139,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenUsedApplicationIdFromAdminUserRegisterRequest_whenApplicationEntityStatusIsWaiting_thenThrowAysAdminUserRegisterApplicationCodeNotValidException() {
 
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
@@ -275,7 +275,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenExistingPhoneNumberFromAdminUserRegisterRequest_whenAdminUserExist_thenThrowAysAdminUserAlreadyExistsByPhoneNumberException() {
 
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder().withValidFields().build();
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
         AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())

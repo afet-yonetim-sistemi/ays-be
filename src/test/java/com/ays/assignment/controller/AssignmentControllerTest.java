@@ -31,7 +31,7 @@ import com.ays.assignment.service.AssignmentSaveService;
 import com.ays.assignment.service.AssignmentSearchService;
 import com.ays.assignment.service.AssignmentService;
 import com.ays.common.model.AysPage;
-import com.ays.common.model.AysPhoneNumberBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
@@ -81,7 +81,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     void givenValidAssignmentSaveRequest_whenAssignmentSaved_thenReturnAssignmentSavedResponse() throws Exception {
         // Given
         AssignmentSaveRequest mockAssignmentSaveRequest = new AssignmentSaveRequestBuilder()
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .build();
 
         // When
@@ -185,7 +185,7 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
     void givenValidAssignmentSaveRequest_whenUserUnauthorizedForSaving_thenReturnAccessDeniedException() throws Exception {
         // Given
         AssignmentSaveRequest mockAssignmentSaveRequest = new AssignmentSaveRequestBuilder()
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .build();
 
         // Then

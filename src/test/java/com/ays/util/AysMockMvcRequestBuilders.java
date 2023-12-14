@@ -26,6 +26,10 @@ public class AysMockMvcRequestBuilders {
                 .contentType(MediaType.APPLICATION_JSON);
     }
 
+    public MockHttpServletRequestBuilder get(String endpoint) {
+        return MockMvcRequestBuilders.get(endpoint);
+    }
+
     public MockHttpServletRequestBuilder get(String endpoint, String token) {
         return MockMvcRequestBuilders.get(endpoint)
                 .header(HttpHeaders.AUTHORIZATION, getTokenWithBearerPrefix(token));

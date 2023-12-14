@@ -1,8 +1,8 @@
 package com.ays.assignment.model.dto.request;
 
-import com.ays.common.model.AysPhoneNumber;
-import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 
 public class AssignmentSaveRequestBuilder extends TestDataBuilder<AssignmentSaveRequest> {
 
@@ -13,11 +13,11 @@ public class AssignmentSaveRequestBuilder extends TestDataBuilder<AssignmentSave
     public AssignmentSaveRequestBuilder withValidFields() {
         this.withLatitude(0.0);
         this.withLongitude(0.0);
-        this.withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build());
+        this.withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build());
         return this;
     }
 
-    public AssignmentSaveRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
+    public AssignmentSaveRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }
