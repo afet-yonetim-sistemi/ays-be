@@ -18,7 +18,7 @@ import org.springframework.scheduling.config.ScheduledTaskHolder;
 import java.time.LocalDateTime;
 
 
-public class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest {
+class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest {
     @Value("${ays.scheduler.UnusedInvalidTokenDeletionScheduler.cron}")
     private String expectedCronExpression;
 
@@ -29,11 +29,11 @@ public class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest 
     private UnusedInvalidTokenDeletionScheduler unusedInvalidTokenDeletionScheduler;
 
     private void initialize(AysInvalidTokenEntity mockAysInvalidTokenEntity) {
-        aysInvalidTokenRepository.save(mockAysInvalidTokenEntity);
+        invalidTokenRepository.save(mockAysInvalidTokenEntity);
     }
 
     @Test
-    public void whenUnusedInvalidTokenDeletionScheduled() {
+    void whenUnusedInvalidTokenDeletionScheduled() {
         CronTask cronTask = taskHolder.getScheduledTasks()
                 .stream()
                 .map(ScheduledTask::getTask)
@@ -47,7 +47,7 @@ public class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest 
     }
 
     @Test
-    public void whenWait10Seconds_thenClearInvalidToken() throws InterruptedException {
+    void whenWait10Seconds_thenClearInvalidToken() throws InterruptedException {
 
         // When
         String refreshTokenExpireDay = AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue();
@@ -63,11 +63,9 @@ public class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest 
                 .await()
                 .atMost(2, java.util.concurrent.TimeUnit.SECONDS)
                 .untilAsserted(() -> {
-                    // Check if scheduled method is called
                     Mockito.verify(unusedInvalidTokenDeletionScheduler, Mockito.atLeast(1)).scheduled();
 
-                    // Check if invalid token is deleted
-                    AysInvalidTokenEntity entity = aysInvalidTokenRepository.findById(mockAysInvalidTokenEntity.getId()).orElse(null);
+                    AysInvalidTokenEntity entity = invalidTokenRepository.findById(mockAysInvalidTokenEntity.getId()).orElse(null);
                     Assertions.assertNull(entity);
                 });
 

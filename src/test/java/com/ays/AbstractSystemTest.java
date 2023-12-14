@@ -54,7 +54,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected AdminUserRepository adminUserRepository;
 
     @Autowired
-    protected AysInvalidTokenRepository aysInvalidTokenRepository;
+    protected AysInvalidTokenRepository invalidTokenRepository;
 
 
     protected AysToken superAdminToken;

@@ -4,7 +4,6 @@ import com.ays.auth.model.entity.AysInvalidTokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,10 +26,4 @@ public interface AysInvalidTokenRepository extends JpaRepository<AysInvalidToken
      */
     void deleteAllByCreatedAtBefore(LocalDateTime createdAt);
 
-    /**
-     * Finds all invalid token entities that were created before the specified date.
-     *
-     * @param createdAt the date to search for
-     */
-    List<AysInvalidTokenEntity> findAllByCreatedAtBefore(LocalDateTime createdAt);
 }

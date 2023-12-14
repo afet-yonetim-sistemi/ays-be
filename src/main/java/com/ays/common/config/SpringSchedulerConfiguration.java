@@ -11,5 +11,5 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableScheduling
 @PropertySource("classpath:application.yml")
-public class SpringSchedulerConfiguration {
+class SpringSchedulerConfiguration {
 }

@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @ConditionalOnProperty(name = "ays.scheduler.UnusedInvalidTokenDeletionScheduler.enabled", havingValue = "true", matchIfMissing = true)
 class UnusedInvalidTokenDeletionScheduler {
 
-    private final AysInvalidTokenRepository aysInvalidTokenRepository;
-    private final AysParameterService aysParameterService;
+    private final AysInvalidTokenRepository invalidTokenRepository;
+    private final AysParameterService parameterService;
 
     /**
      * Clears all unused invalid tokens from the database.
@@ -28,9 +28,9 @@ class UnusedInvalidTokenDeletionScheduler {
     @Scheduled(cron = "${ays.scheduler.UnusedInvalidTokenDeletionScheduler.cron}")
     @Transactional
     public void scheduled() {
-        AysParameter refreshTokenExpireDayParameter = aysParameterService.getParameter("AUTH_REFRESH_TOKEN_EXPIRE_DAY");
+        AysParameter refreshTokenExpireDayParameter = parameterService.getParameter("AUTH_REFRESH_TOKEN_EXPIRE_DAY");
         LocalDateTime expirationThreshold = LocalDateTime.now().minusDays(Long.parseLong(refreshTokenExpireDayParameter.getDefinition()));
-        aysInvalidTokenRepository.deleteAllByCreatedAtBefore(expirationThreshold);
+        invalidTokenRepository.deleteAllByCreatedAtBefore(expirationThreshold);
     }
 
 }
