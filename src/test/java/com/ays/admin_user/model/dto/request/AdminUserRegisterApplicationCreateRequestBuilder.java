@@ -1,6 +1,7 @@
 package com.ays.admin_user.model.dto.request;
 
 import com.ays.common.model.TestDataBuilder;
+import com.ays.common.util.AysRandomTestUtil;
 import com.ays.common.util.AysRandomUtil;
 
 public class AdminUserRegisterApplicationCreateRequestBuilder extends TestDataBuilder<AdminUserRegisterApplicationCreateRequest> {
@@ -12,7 +13,7 @@ public class AdminUserRegisterApplicationCreateRequestBuilder extends TestDataBu
     public AdminUserRegisterApplicationCreateRequestBuilder withValidFields() {
         return this
                 .withInstitutionId(AysRandomUtil.generateUUID())
-                .withReason(AysRandomUtil.generateString(50));
+                .withReason(AysRandomTestUtil.generateString(50));
     }
 
     public AdminUserRegisterApplicationCreateRequestBuilder withInstitutionId(String institutionId) {

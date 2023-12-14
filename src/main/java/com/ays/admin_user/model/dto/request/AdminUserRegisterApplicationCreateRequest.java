@@ -23,7 +23,7 @@ public class AdminUserRegisterApplicationCreateRequest {
      * Reason for Registering Admin User
      */
     @NotBlank
-    @Size(min = 40, max = 512, message = "Reason must be between 40 and 512 characters")
+    @Size(min = 40, max = 512)
     private String reason;
 
 }

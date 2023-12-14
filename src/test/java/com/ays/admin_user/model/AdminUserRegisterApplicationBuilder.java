@@ -2,6 +2,7 @@ package com.ays.admin_user.model;
 
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.common.model.TestDataBuilder;
+import com.ays.common.util.AysRandomTestUtil;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.Institution;
 import com.ays.institution.model.entity.InstitutionBuilder;
@@ -20,7 +21,7 @@ public class AdminUserRegisterApplicationBuilder extends TestDataBuilder<AdminUs
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withInstitution(institution)
-                .withReason(AysRandomUtil.generateString(41))
+                .withReason(AysRandomTestUtil.generateString(41))
                 .withStatus(AdminUserRegisterApplicationStatus.WAITING);
     }
 

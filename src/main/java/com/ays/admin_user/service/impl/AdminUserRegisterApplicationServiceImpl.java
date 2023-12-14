@@ -9,6 +9,7 @@ import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationCreateRequest
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
+import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
 import com.ays.common.model.AysPage;
 import com.ays.institution.repository.InstitutionRepository;

@@ -6,9 +6,11 @@ import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRe
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationCreateResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
+import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationSummaryResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper;
+import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
 import com.ays.common.model.AysPage;
@@ -111,7 +113,6 @@ class AdminUserRegisterApplicationController {
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
     public AysResponse<AdminUserRegisterApplicationCreateResponse> createRegistrationApplication(@RequestBody @Valid AdminUserRegisterApplicationCreateRequest request) {
         AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService.createRegistrationApplication(request);
-        System.out.println("Work");
         return AysResponse.successOf(
                 adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper.map(registerApplication)
         );

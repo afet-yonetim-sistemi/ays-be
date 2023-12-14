@@ -2,6 +2,7 @@ package com.ays.admin_user.model.entity;
 
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.common.model.TestDataBuilder;
+import com.ays.common.util.AysRandomTestUtil;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.institution.model.entity.InstitutionEntityBuilder;
@@ -28,7 +29,7 @@ public class AdminUserRegisterApplicationEntityBuilder extends TestDataBuilder<A
                 .withAdminUser(adminUser)
                 .withInstitutionId(institution.getId())
                 .withInstitution(institution)
-                .withReason(AysRandomUtil.generateString(41));
+                .withReason(AysRandomTestUtil.generateString(41));
     }
 
     public AdminUserRegisterApplicationEntityBuilder withId(String id) {
