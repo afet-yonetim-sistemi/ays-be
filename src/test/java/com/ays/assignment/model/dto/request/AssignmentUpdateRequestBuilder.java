@@ -1,8 +1,8 @@
 package com.ays.assignment.model.dto.request;
 
-import com.ays.common.model.AysPhoneNumber;
-import com.ays.common.model.AysPhoneNumberBuilder;
 import com.ays.common.model.TestDataBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 
 public class AssignmentUpdateRequestBuilder extends TestDataBuilder<AssignmentUpdateRequest> {
     public AssignmentUpdateRequestBuilder() {
@@ -11,15 +11,12 @@ public class AssignmentUpdateRequestBuilder extends TestDataBuilder<AssignmentUp
 
     public AssignmentUpdateRequestBuilder withValidFields() {
         return this
-                .withPhoneNumber(new AysPhoneNumberBuilder()
-                        .withCountryCode("91")
-                        .withLineNumber("9876543210")
-                        .build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .withLatitude(2.0)
                 .withLongitude(2.0);
     }
 
-    public AssignmentUpdateRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
+    public AssignmentUpdateRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }

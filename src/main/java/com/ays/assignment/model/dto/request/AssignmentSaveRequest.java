@@ -1,6 +1,6 @@
 package com.ays.assignment.model.dto.request;
 
-import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.common.util.validation.Name;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -38,7 +38,7 @@ public class AssignmentSaveRequest {
 
     @Valid
     @NotNull
-    private AysPhoneNumber phoneNumber;
+    private AysPhoneNumberRequest phoneNumber;
 
     @NotNull
     @Min(value = -180)

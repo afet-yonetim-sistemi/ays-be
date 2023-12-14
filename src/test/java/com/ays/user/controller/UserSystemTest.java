@@ -2,8 +2,8 @@ package com.ays.user.controller;
 
 import com.ays.AbstractSystemTest;
 import com.ays.common.model.AysPage;
-import com.ays.common.model.AysPhoneNumber;
-import com.ays.common.model.AysPhoneNumberBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
@@ -64,7 +64,7 @@ class UserSystemTest extends AbstractSystemTest {
     void givenValidUserSaveRequest_whenUserSaved_thenReturnUserSavedResponse() throws Exception {
         // Given
         UserSaveRequest userSaveRequest = new UserSaveRequestBuilder()
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .build();
 
         // Then
@@ -93,7 +93,7 @@ class UserSystemTest extends AbstractSystemTest {
     void givenValidUserSaveRequest_whenUserUnauthorizedForSaving_thenReturnAccessDeniedException() throws Exception {
         // Given
         UserSaveRequest userSaveRequest = new UserSaveRequestBuilder()
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .build();
 
         // Then
@@ -118,7 +118,7 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
-        AysPhoneNumber phoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
         UserSaveRequest userSaveRequest = new UserSaveRequestBuilder()
@@ -149,7 +149,7 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
-        AysPhoneNumber phoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
         UserSaveRequest userSaveRequest = new UserSaveRequestBuilder()

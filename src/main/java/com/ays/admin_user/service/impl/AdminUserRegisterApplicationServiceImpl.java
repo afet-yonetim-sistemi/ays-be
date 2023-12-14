@@ -3,9 +3,11 @@ package com.ays.admin_user.service.impl;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
+import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
+import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
 import com.ays.common.model.AysPage;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +66,23 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
         final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
                 .findById(id)
                 .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdException(id));
+
+        return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
+    }
+
+    /**
+     * Retrieves an admin user register application by id and checks if it is waiting.
+     * If it is not waiting, throws an exception.
+     *
+     * @param id registration application id
+     * @return An admin user register application.
+     */
+    @Override
+    public AdminUserRegisterApplication getRegistrationApplicationSummaryById(String id) {
+        final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
+                .findById(id)
+                .filter(AdminUserRegisterApplicationEntity::isWaiting)
+                .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdAndStatusException(id, AdminUserRegisterApplicationStatus.WAITING));
 
         return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
     }

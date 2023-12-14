@@ -1,7 +1,7 @@
 package com.ays.user.service.impl;
 
 import com.ays.auth.model.AysIdentity;
-import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.user.model.User;
 import com.ays.user.model.dto.request.UserSaveRequest;
@@ -72,7 +72,7 @@ class UserSaveServiceImpl implements UserSaveService {
      * @param usersFromDatabase the list of user entities from the database
      * @throws AysUserAlreadyExistsByPhoneNumberException if a user with the same phone number already exists
      */
-    private void checkPhoneNumberExist(final AysPhoneNumber phoneNumber,
+    private void checkPhoneNumberExist(final AysPhoneNumberRequest phoneNumber,
                                        final List<UserEntity> usersFromDatabase) {
 
         final boolean isPhoneNumberExist = usersFromDatabase.stream()

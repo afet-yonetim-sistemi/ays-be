@@ -12,7 +12,7 @@ import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByEmailExcepti
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberException;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationCodeNotValidException;
-import com.ays.common.model.AysPhoneNumber;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.institution.repository.InstitutionRepository;
 import com.ays.institution.util.exception.AysInstitutionNotExistException;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +78,7 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
             throw new AysAdminUserAlreadyExistsByUsernameException(registerRequest.getUsername());
         }
 
-        final AysPhoneNumber phoneNumber = registerRequest.getPhoneNumber();
+        final AysPhoneNumberRequest phoneNumber = registerRequest.getPhoneNumber();
         if (adminUserRepository.existsByCountryCodeAndLineNumber(phoneNumber.getCountryCode(), phoneNumber.getLineNumber())) {
             throw new AysAdminUserAlreadyExistsByPhoneNumberException(phoneNumber);
         }

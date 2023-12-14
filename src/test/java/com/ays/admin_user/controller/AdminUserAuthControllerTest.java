@@ -13,8 +13,8 @@ import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequestBuilder;
 import com.ays.auth.model.dto.response.AysTokenResponse;
 import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
-import com.ays.common.model.AysPhoneNumber;
-import com.ays.common.model.AysPhoneNumberBuilder;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
+import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
@@ -74,7 +74,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     @Test
     void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
         AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
@@ -108,7 +108,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     @Test
     void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
         AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
@@ -143,7 +143,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
         // Given
         final String invalidOperator = "123";
-        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
         AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()

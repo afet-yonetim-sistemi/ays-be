@@ -4,8 +4,10 @@ package com.ays.admin_user.controller;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
+import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationSummaryResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper;
+import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
 import com.ays.common.model.AysPage;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
+@Validated
 class AdminUserRegisterApplicationController {
 
     private final AdminUserRegisterApplicationService adminUserRegisterApplicationService;
@@ -37,7 +40,7 @@ class AdminUserRegisterApplicationController {
 
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.initialize();
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper.initialize();
-
+    private final AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper.initialize();
 
     /**
      * Gets a list of admin user register applications in the system.
@@ -83,6 +86,23 @@ class AdminUserRegisterApplicationController {
         return AysResponse.successOf(
                 adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper
                         .map(registerApplication)
+        );
+    }
+
+    /**
+     * Gets an admin user register application summary in the system.
+     * Requires no authority.
+     *
+     * @param id The id of the register application.
+     * @return A response with the register application summary.
+     */
+    @GetMapping("/registration-application/{id}/summary")
+    public AysResponse<AdminUserRegisterApplicationSummaryResponse> getRegistrationApplicationSummaryById(@PathVariable @UUID String id) {
+        final AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService
+                .getRegistrationApplicationSummaryById(id);
+
+        return AysResponse.successOf(
+                adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper.map(registerApplication)
         );
     }
 
