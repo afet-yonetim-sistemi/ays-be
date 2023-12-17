@@ -2,10 +2,13 @@ package com.ays.admin_user.controller;
 
 
 import com.ays.admin_user.model.AdminUserRegisterApplication;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
+import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationCreateResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationSummaryResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
+import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper;
@@ -41,6 +44,8 @@ class AdminUserRegisterApplicationController {
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.initialize();
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper.initialize();
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper.initialize();
+    private final AdminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper.initialize();
+
 
     /**
      * Gets a list of admin user register applications in the system.
@@ -103,6 +108,22 @@ class AdminUserRegisterApplicationController {
 
         return AysResponse.successOf(
                 adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper.map(registerApplication)
+        );
+    }
+
+    /**
+     * Creates a new admin user register application.
+     * Requires SUPER_ADMIN authority.
+     *
+     * @param request The request object containing the register application details.
+     * @return A response object containing the created register application.
+     */
+    @PostMapping("/registration-application")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    public AysResponse<AdminUserRegisterApplicationCreateResponse> createRegistrationApplication(@RequestBody @Valid AdminUserRegisterApplicationCreateRequest request) {
+        AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService.createRegistrationApplication(request);
+        return AysResponse.successOf(
+                adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper.map(registerApplication)
         );
     }
 

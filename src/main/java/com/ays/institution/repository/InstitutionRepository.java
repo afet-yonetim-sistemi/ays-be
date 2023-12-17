@@ -21,4 +21,24 @@ public interface InstitutionRepository extends JpaRepository<InstitutionEntity, 
      */
     List<InstitutionEntity> findAllByStatusOrderByNameAsc(InstitutionStatus status);
 
+
+    /**
+     * Checks if an institution exists by id and status.
+     *
+     * @param id     the id of the institution
+     * @param status the status of the institution
+     * @return true if the institution exists, false otherwise
+     */
+    boolean existsByIdAndStatus(String id, InstitutionStatus status);
+
+
+    /**
+     * Checks if an institution exists by id and active status.
+     *
+     * @param id the id of the institution
+     * @return true if the institution exists, false otherwise
+     */
+    default boolean existsActiveById(String id) {
+        return this.existsByIdAndStatus(id, InstitutionStatus.ACTIVE);
+    }
 }

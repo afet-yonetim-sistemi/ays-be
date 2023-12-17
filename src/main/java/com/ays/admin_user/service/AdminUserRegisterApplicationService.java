@@ -1,6 +1,7 @@
 package com.ays.admin_user.service;
 
 import com.ays.admin_user.model.AdminUserRegisterApplication;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.common.model.AysPage;
 
@@ -33,4 +34,13 @@ public interface AdminUserRegisterApplicationService {
      * @return Admin User Registration Application
      */
     AdminUserRegisterApplication getRegistrationApplicationSummaryById(String id);
+
+    /**
+     * Create a new admin user register application.
+     *
+     * @param request The request object containing the register application details.
+     * @return A response object containing the created register application.
+     */
+    AdminUserRegisterApplication createRegistrationApplication(AdminUserRegisterApplicationCreateRequest request);
+
 }
