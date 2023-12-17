@@ -1,15 +1,19 @@
 package com.ays.admin_user.service.impl;
 
 import com.ays.admin_user.model.AdminUserRegisterApplication;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
+import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
 import com.ays.common.model.AysPage;
+import com.ays.institution.repository.InstitutionRepository;
+import com.ays.institution.util.exception.AysInstitutionNotExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,9 +31,11 @@ import java.util.List;
 public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegisterApplicationService {
 
     private final AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;
+    private final InstitutionRepository institutionRepository;
 
 
     private final AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper = AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.initialize();
+    private final AdminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper adminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper = AdminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper.initialize();
 
 
     /**
@@ -83,6 +89,25 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
                 .findById(id)
                 .filter(AdminUserRegisterApplicationEntity::isWaiting)
                 .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdAndStatusException(id, AdminUserRegisterApplicationStatus.WAITING));
+
+        return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
+    }
+
+    /**
+     * Creates a new admin user register application.
+     *
+     * @param request The request object containing the register application details.
+     * @return A response object containing the created register application.
+     */
+    @Override
+    public AdminUserRegisterApplication createRegistrationApplication(AdminUserRegisterApplicationCreateRequest request) {
+        boolean isInstitutionExists = institutionRepository.existsActiveById(request.getInstitutionId());
+        if (!isInstitutionExists) {
+            throw new AysInstitutionNotExistException(request.getInstitutionId());
+        }
+
+        AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper.mapForSaving(request);
+        adminUserRegisterApplicationRepository.save(registerApplicationEntity);
 
         return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
     }
