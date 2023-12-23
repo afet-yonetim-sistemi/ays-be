@@ -3,7 +3,6 @@ package com.ays.admin_user.model.dto.request;
 import com.ays.common.model.TestDataBuilder;
 import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
-import com.ays.common.util.AysRandomUtil;
 import com.ays.util.AysValidTestData;
 
 public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRegisterApplicationCompleteRequest> {
@@ -14,20 +13,8 @@ public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRe
 
     public AdminUserRegisterRequestBuilder withValidFields() {
         return this
-                .withApplicationId(AysRandomUtil.generateUUID())
-                .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build());
-    }
-
-    public AdminUserRegisterRequestBuilder withApplicationId(String applicationId) {
-        data.setApplicationId(applicationId);
-        return this;
-    }
-
-    public AdminUserRegisterRequestBuilder withInstitutionId(String institutionId) {
-        data.setInstitutionId(institutionId);
-        return this;
     }
 
     public AdminUserRegisterRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
