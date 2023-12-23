@@ -1,7 +1,7 @@
 package com.ays.admin_user.controller;
 
 import com.ays.AbstractSystemTest;
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
@@ -30,7 +30,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenValidAdminUserRegisterRequest_whenAdminUserRegistered_thenReturnSuccessResponse() throws Exception {
         // Given
-        AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(AysValidTestData.Institution.ID)
                 .withApplicationId(AysValidTestData.APPLICATION_ID)
@@ -58,7 +58,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
         AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
-        AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(phoneNumber).build();
 
@@ -88,7 +88,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
         AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
-        AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(phoneNumber).build();
 
@@ -119,7 +119,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
-        AdminUserRegisterRequest registerRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest registerRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(mockPhoneNumber).build();
 

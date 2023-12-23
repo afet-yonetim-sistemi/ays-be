@@ -1,7 +1,7 @@
 package com.ays.admin_user.service.impl;
 
 import com.ays.AbstractUnitTest;
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
@@ -51,7 +51,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
-        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysValidTestData.EMAIL)
@@ -96,7 +96,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 .thenReturn(mockCompletedVerificationEntity);
 
         // Then
-        adminUserRegisterService.register(mockAdminUserRegisterRequest);
+        adminUserRegisterService.register(mockAdminUserRegisterApplicationCompleteRequest);
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
@@ -118,7 +118,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenInvalidApplicationIdFromAdminUserRegisterRequest_whenApplicationEntityNotFound_thenThrowAysAdminUserRegisterApplicationCodeNotValidException() {
 
         // Given
-        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId("Invalid").build();
 
         // When
@@ -128,7 +128,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserRegisterApplicationCodeNotValidException.class,
-                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterApplicationCompleteRequest)
         );
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
@@ -140,7 +140,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
-        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysValidTestData.EMAIL)
@@ -157,7 +157,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserRegisterApplicationCodeNotValidException.class,
-                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterApplicationCompleteRequest)
         );
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
@@ -168,7 +168,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenInvalidInstitutionIdFromAdminUserRegisterRequest_whenInstitutionNotExist_thenThrowAysInstitutionNotExistException() {
 
         // Given
-        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId("Invalid").build();
 
@@ -185,7 +185,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysInstitutionNotExistException.class,
-                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterApplicationCompleteRequest)
         );
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
@@ -198,7 +198,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenExistingEmailFromAdminUserRegisterRequest_whenAdminUserExist_thenThrowAysAdminUserAlreadyExistsByEmailException() {
 
         // Given
-        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysValidTestData.EMAIL).build();
@@ -219,7 +219,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserAlreadyExistsByEmailException.class,
-                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterApplicationCompleteRequest)
         );
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
@@ -234,7 +234,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
     void givenExistingUsernameFromAdminUserRegisterRequest_whenAdminUserExist_thenThrowAysAdminUserAlreadyExistsByUsernameException() {
 
         // Given
-        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysValidTestData.EMAIL).build();
@@ -258,7 +258,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserAlreadyExistsByUsernameException.class,
-                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterApplicationCompleteRequest)
         );
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
@@ -276,7 +276,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
-        AdminUserRegisterRequest mockAdminUserRegisterRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
                 .withApplicationId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withEmail(AysValidTestData.EMAIL)
@@ -307,7 +307,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysAdminUserAlreadyExistsByPhoneNumberException.class,
-                () -> adminUserRegisterService.register(mockAdminUserRegisterRequest)
+                () -> adminUserRegisterService.register(mockAdminUserRegisterApplicationCompleteRequest)
         );
 
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))

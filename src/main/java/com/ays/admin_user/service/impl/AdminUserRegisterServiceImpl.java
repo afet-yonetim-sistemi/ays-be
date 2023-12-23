@@ -1,8 +1,9 @@
 package com.ays.admin_user.service.impl;
 
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
+import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterRequestToAdminUserEntityMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
 import com.ays.admin_user.repository.AdminUserRepository;
@@ -11,10 +12,9 @@ import com.ays.admin_user.service.AdminUserRegisterService;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByEmailException;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByPhoneNumberException;
 import com.ays.admin_user.util.exception.AysAdminUserAlreadyExistsByUsernameException;
-import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationCodeNotValidException;
+import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.institution.repository.InstitutionRepository;
-import com.ays.institution.util.exception.AysInstitutionNotExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,60 +38,55 @@ class AdminUserRegisterServiceImpl implements AdminUserRegisterService {
     private final AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;
     private static final AdminUserRegisterRequestToAdminUserEntityMapper adminUserRegisterRequestToAdminUserEntityMapper = AdminUserRegisterRequestToAdminUserEntityMapper.initialize();
 
-    private final InstitutionRepository institutionRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Registers a new admin user based on the given {@link AdminUserRegisterRequest} object. First, it retrieves
-     * the {@link AdminUserRegisterApplicationEntity} associated with the verificationId provided in the request.
-     * Then, it checks if the requested institution exists, if the email and username are unique, and finally
+     * Registers a new admin user based on the given {@link AdminUserRegisterApplicationCompleteRequest} object. First, it retrieves
+     * the {@link AdminUserRegisterApplicationEntity} associated with the applicationId provided as a parameter.
+     * Then, it checks if the requested email and username are unique, and finally
      * maps the request to an {@link AdminUserEntity} and saves it to the database. If successful, the verification
      * entity is completed and saved to the database.
      *
-     * @param registerRequest the request object containing the information for the new admin user
-     * @throws AysAdminUserRegisterApplicationCodeNotValidException if the verificationId provided is not valid
-     * @throws AysInstitutionNotExistException                      if the requested institution does not exist
-     * @throws AysAdminUserAlreadyExistsByEmailException            if an admin user with the same email already exists
-     * @throws AysAdminUserAlreadyExistsByUsernameException         if an admin user with the same username already exists
-     * @throws AysAdminUserAlreadyExistsByPhoneNumberException      if an admin user with the same phone number already exists
+     * @param applicationId the specified admin user register application id
+     * @param request       the request object containing the information for the new admin user
+     * @throws AysAdminUserRegisterApplicationNotExistByIdAndStatusException if the applicationId provided is not valid
+     * @throws AysAdminUserAlreadyExistsByEmailException                     if an admin user with the same email already exists
+     * @throws AysAdminUserAlreadyExistsByUsernameException                  if an admin user with the same username already exists
+     * @throws AysAdminUserAlreadyExistsByPhoneNumberException               if an admin user with the same phone number already exists
      */
     @Override
     @Transactional
-    public void register(final AdminUserRegisterRequest registerRequest) {
-        log.trace("Admin User Register Flow call starting for email of {}", registerRequest.getEmail());
+    public void completeRegistration(final String applicationId, final AdminUserRegisterApplicationCompleteRequest request) {
+        log.trace("Admin User Register Flow call starting for email of {}", request.getEmail());
 
-        final AdminUserRegisterApplicationEntity verificationEntity = adminUserRegisterApplicationRepository
-                .findById(registerRequest.getApplicationId())
+        final AdminUserRegisterApplicationEntity applicationEntity = adminUserRegisterApplicationRepository
+                .findById(applicationId)
                 .filter(AdminUserRegisterApplicationEntity::isWaiting)
-                .orElseThrow(() -> new AysAdminUserRegisterApplicationCodeNotValidException(registerRequest.getApplicationId()));
+                .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdAndStatusException(applicationId, AdminUserRegisterApplicationStatus.WAITING));
 
-        if (!institutionRepository.existsById(registerRequest.getInstitutionId())) {
-            throw new AysInstitutionNotExistException(registerRequest.getInstitutionId());
+        if (adminUserRepository.existsByEmail(request.getEmail())) {
+            throw new AysAdminUserAlreadyExistsByEmailException(request.getEmail());
         }
 
-        if (adminUserRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new AysAdminUserAlreadyExistsByEmailException(registerRequest.getEmail());
+        if (adminUserRepository.existsByUsername(request.getUsername())) {
+            throw new AysAdminUserAlreadyExistsByUsernameException(request.getUsername());
         }
 
-        if (adminUserRepository.existsByUsername(registerRequest.getUsername())) {
-            throw new AysAdminUserAlreadyExistsByUsernameException(registerRequest.getUsername());
-        }
-
-        final AysPhoneNumberRequest phoneNumber = registerRequest.getPhoneNumber();
+        final AysPhoneNumberRequest phoneNumber = request.getPhoneNumber();
         if (adminUserRepository.existsByCountryCodeAndLineNumber(phoneNumber.getCountryCode(), phoneNumber.getLineNumber())) {
             throw new AysAdminUserAlreadyExistsByPhoneNumberException(phoneNumber);
         }
         log.trace("Admin User Register Request checked successfully!");
 
-        final AdminUserEntity userEntityToBeSave = adminUserRegisterRequestToAdminUserEntityMapper
-                .mapForSaving(registerRequest, passwordEncoder.encode(registerRequest.getPassword()));
+        final AdminUserEntity userEntityToBeSaved = adminUserRegisterRequestToAdminUserEntityMapper
+                .mapForSaving(request, passwordEncoder.encode(request.getPassword()));
+        userEntityToBeSaved.setInstitutionId(applicationEntity.getInstitutionId());
 
-        adminUserRepository.save(userEntityToBeSave);
+        adminUserRepository.save(userEntityToBeSaved);
         log.trace("Admin User saved successfully!");
 
-        verificationEntity.complete(userEntityToBeSave.getId());
-        adminUserRegisterApplicationRepository.save(verificationEntity);
+        applicationEntity.complete(userEntityToBeSaved.getId());
+        adminUserRegisterApplicationRepository.save(applicationEntity);
         log.trace("Admin User Register Verification complete successfully!");
     }
 

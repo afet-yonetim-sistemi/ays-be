@@ -1,7 +1,7 @@
 package com.ays.admin_user.controller;
 
 import com.ays.AbstractRestControllerTest;
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
 import com.ays.admin_user.service.AdminUserAuthService;
 import com.ays.admin_user.service.AdminUserRegisterService;
@@ -45,7 +45,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidAdminUserRegisterRequest_whenAdminUserRegistered_thenReturnSuccessResponse() throws Exception {
         // Given
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields().build();
 
         // When
@@ -77,7 +77,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -111,7 +111,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -146,7 +146,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -178,7 +178,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     void givenNameWithNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
         // Given
         String invalidName = "John 1234";
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withFirstName(invalidName)
                 .withLastName(invalidName)
@@ -212,7 +212,7 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     void givenNameWithForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
         // Given
         String invalidName = "John *^%$#";
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
                 .withFirstName(invalidName)
                 .withLastName(invalidName)

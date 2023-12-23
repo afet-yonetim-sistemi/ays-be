@@ -6,10 +6,10 @@ import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.util.AysValidTestData;
 
-public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRegisterRequest> {
+public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRegisterApplicationCompleteRequest> {
 
     public AdminUserRegisterRequestBuilder() {
-        super(AdminUserRegisterRequest.class);
+        super(AdminUserRegisterApplicationCompleteRequest.class);
     }
 
     public AdminUserRegisterRequestBuilder withValidFields() {

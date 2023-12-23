@@ -15,16 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AdminUserRegisterRequest {
-
-    /**
-     * Registration Verification ID for Registering Admin User
-     */
-    @NotBlank
-    private String applicationId;
-
-    @NotBlank
-    private String institutionId;
+public class AdminUserRegisterApplicationCompleteRequest {
 
     @NotBlank
     private String username;

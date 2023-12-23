@@ -2,6 +2,7 @@ package com.ays.admin_user.controller;
 
 
 import com.ays.admin_user.model.AdminUserRegisterApplication;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationCreateResponse;
@@ -13,6 +14,7 @@ import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRe
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
+import com.ays.admin_user.service.AdminUserRegisterService;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
@@ -38,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 class AdminUserRegisterApplicationController {
 
     private final AdminUserRegisterApplicationService adminUserRegisterApplicationService;
-
+    private final AdminUserRegisterService adminUserRegisterService;
 
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.initialize();
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper.initialize();
@@ -116,6 +118,19 @@ class AdminUserRegisterApplicationController {
         return AysResponse.successOf(
                 adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper.map(registerApplication)
         );
+    }
+
+    /**
+     * This endpoint allows admin to register to platform.
+     *
+     * @param registerRequest A AdminRegisterRequest object required to register to platform.
+     * @return A AysResponse containing a Void object with success message of the newly created admin and
+     * the HTTP status code (201 CREATED).
+     */
+    @PostMapping("/register-application/{applicationId}/summary")
+    public AysResponse<Void> completeRegistration(@PathVariable String applicationId, @RequestBody @Valid AdminUserRegisterApplicationCompleteRequest registerRequest) {
+        adminUserRegisterService.completeRegistration(applicationId, registerRequest);
+        return AysResponse.SUCCESS;
     }
 
 }

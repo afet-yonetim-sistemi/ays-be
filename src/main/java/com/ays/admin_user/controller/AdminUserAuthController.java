@@ -1,8 +1,6 @@
 package com.ays.admin_user.controller;
 
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
 import com.ays.admin_user.service.AdminUserAuthService;
-import com.ays.admin_user.service.AdminUserRegisterService;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysTokenInvalidateRequest;
@@ -27,22 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 class AdminUserAuthController {
 
     private final AdminUserAuthService adminUserAuthService;
-    private final AdminUserRegisterService adminUserRegisterService;
     private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
-
-    /**
-     * This endpoint allows admin to register to platform.
-     *
-     * @param registerRequest A AdminRegisterRequest object required to register to platform.
-     * @return A AysResponse containing a Void object with success message of the newly created admin and
-     * the HTTP status code (201 CREATED).
-     */
-    @PostMapping("/register")
-    public AysResponse<Void> register(@RequestBody @Valid AdminUserRegisterRequest registerRequest) {
-        adminUserRegisterService.register(registerRequest);
-        return AysResponse.SUCCESS;
-    }
-
 
     /**
      * This endpoint allows admin to login to platform.
