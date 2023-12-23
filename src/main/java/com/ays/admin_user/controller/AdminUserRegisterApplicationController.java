@@ -127,7 +127,7 @@ class AdminUserRegisterApplicationController {
      * @return A AysResponse containing a Void object with success message of the newly created admin and
      * the HTTP status code (201 CREATED).
      */
-    @PostMapping("/register-application/{applicationId}/summary")
+    @PostMapping("/registration-application/{applicationId}/complete")
     public AysResponse<Void> completeRegistration(@PathVariable String applicationId, @RequestBody @Valid AdminUserRegisterApplicationCompleteRequest registerRequest) {
         adminUserRegisterService.completeRegistration(applicationId, registerRequest);
         return AysResponse.SUCCESS;
