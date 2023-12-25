@@ -128,7 +128,7 @@ class AdminUserRegisterApplicationController {
      * the HTTP status code (201 CREATED).
      */
     @PostMapping("/registration-application/{applicationId}/complete")
-    public AysResponse<Void> completeRegistration(@PathVariable String applicationId, @RequestBody @Valid AdminUserRegisterApplicationCompleteRequest registerRequest) {
+    public AysResponse<Void> completeRegistration(@PathVariable @UUID String applicationId, @RequestBody @Valid AdminUserRegisterApplicationCompleteRequest registerRequest) {
         adminUserRegisterService.completeRegistration(applicationId, registerRequest);
         return AysResponse.SUCCESS;
     }
