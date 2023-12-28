@@ -19,30 +19,82 @@ you maintain a collaborative and inclusive environment for everyone involved.
 
 ## How to Contribute
 
-To contribute to the project, please follow these steps:
+Thank you for considering contributing to our project! To make the process smooth, please follow these steps:
 
-1. Fork the repository to your GitHub account.
-2. Create a new branch for your contribution:
-    - Branch names should be descriptive and relate to the feature or bug you are addressing.
-    - Use kebab case (e.g., `fix-bug`, `add-new-feature`).
-    - Branches should follow the below `Naming Conventions of Branchs` header in [README.md](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/README.md) file.
-3. Make your changes in the branch you created.
-4. Test your changes thoroughly to ensure their work as expected.
-5. Commit your changes with clear and concise messages (see [Commit Messages](#commit-messages) section for more
-   details).
-6. Push your changes to your forked repository.
-7. Open a pull request (PR) against the `main` branch of the "afet-yonetim-sistemi" repository.
-    - Provide a clear and detailed description of the changes you made in the PR.
-    - Link any relevant issues or discussions in the PR description.
-    - Pull Request Headers should follow the below `Naming Conventions of Pull Requests` hader in [README.md](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/README.md) file.
+1. **Fork the Repository:**
+   - Visit our [GitHub repository](https://github.com/afet-yonetim-sistemi/ays-be) and fork it to your GitHub account.
 
-Once your PR is submitted, the project maintainers will review it and provide feedback. Be prepared to make additional
-changes based on the feedback received.
+2. **Create a New Branch:**
+   - Create a branch for your contribution by referring to
+     the [Naming Conventions of Branches](#branch-naming-conventions) for guidance.
+   - Ensure your feature branch is associated with the corresponding GitHub issue from the 'Development' section in
+     each issue page.
+
+3. **Make Changes:**
+   - Implement your changes in the branch you created.
+   - Thoroughly test your changes to ensure they work as expected.
+
+4. **Commit Changes:**
+   - Commit your changes with clear and concise messages. Refer to the [Commit Messages](#commit-messages) section for
+     guidance.
+
+5. **Push Changes:**
+   - Push your changes to your forked repository.
+
+6. **Open a Pull Request (PR):**
+   - Open a PR against the `main` branch of the original repository by referring to
+     the [Pull Request Naming Conventions](#pull-request-naming-conventions) for guidance.
+   - Provide a detailed description of your changes in the PR.
+   - Link relevant issues or discussions in the PR description.
+   - Follow the pull request naming conventions outlined below.
+   - PR title should contain the issue/feature/bug number.
+
+7. **Review and Feedback:**
+   - Once your PR is submitted, project maintainers will review it and provide feedback.
+   - Be responsive to feedback and make necessary changes.
+
+## Development Standards
+
+Our project adheres to the [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) for
+collaboration.
+Issues are managed on GitHub Discussions, with plans to transition them to Jira.
+
+### Branch Naming Conventions:
+
+- `bugfix/{jira-issue-number}/{optional-description}`
+- `feature/{jira-issue-number}/{optional-description}`
+- `refactor/{jira-issue-number}/{optional-description}`
+- `hotfix/{jira-issue-number}/{optional-description}`
+
+> Example : `feature/AYS-1/add-feature-to-handle-user-authentication`
+
+### Pull Request Naming Conventions:
+
+- `#{jira-issue-number} | {header-for-summary-of-development}`
+
+> Example : `#AYS-1 | Add feature to handle user authentication`
+
+Here are some additional standards to keep in mind:
+
+- Link your feature branch to the corresponding GitHub issue.
+- `main` branch is protected.
+- PR should be linked to the relevant issue within the GitHub Project.
+- Only one code owner's approval is needed for merging feature branches.
+- PR should be squash-merged to avoid merge commit history.
+- PR should pass build and necessary tests before merging.
+- Releases should be tagged with a version.
+- Commit messages should be subjectless.
+- Resolve comments within the PR by the commenter.
+- PR should be concise and address one thing.
+- Avoid including secret/credential information.
+- Code should comply with existing coding standards; no new standards should be introduced without justification.
 
 ## Reporting Issues
 
-If you encounter any bugs, have feature requests, or want to provide general feedback, please feel free to open an issue
-in the "afet-yonetim-sistemi" repository. When creating an issue, please provide as much detail as possible, including:
+If you encounter any bugs, have feature requests, or want to provide general feedback, please feel free to open a
+discussion
+in the "afet-yonetim-sistemi" repository. When creating a discussion, please provide as much detail as possible,
+including:
 
 - A clear and descriptive title
 - Steps to reproduce the issue

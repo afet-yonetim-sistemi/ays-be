@@ -77,7 +77,7 @@ volunteers who are close to the relevant region and need, aims to manage the nee
 
 * TDD
 * Agile Kanban
-* GitHub Projects
+* Jira
 
 **Version Control**
 
@@ -189,66 +189,15 @@ docker compose down -v
 
 # [How to Contribute](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/CONTRIBUTING.md)
 
-The project is managed by [GitHub projects](https://github.com/orgs/afet-yonetim-sistemi/projects/3). You can assign
-an issue from the Todo list and start working on it.
+The project is managed by [Jira](https://afetyonetimsistemi.atlassian.net/jira/projects).
+You can assign an issue from the Todo list and start working on it.
 
-## Development Standards
-
-This project uses [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) for collaboration.
-You can see open issues [here](https://github.com/afet-yonetim-sistemi/ays-be/issues).
-You can start working one of the open issues by assigning it to yourself.
-
-For your feature branches, please ensure below:
-
-- Make sure to associate your feature branch with the GitHub issue from 'Development' section in each issue page.
-- main branch is protected.
-- PR should be linked to the relevant issue within the GitHub Project.
-- Your feature branches can be merged by pull request that is approved by at least one code owner.
-- PR should be squash-merged to avoid having merge commit history.
-- PR title and description should clearly define and explain the aim.
-- PR title should contain the issue/feature/bug number e.g. Issue 7 - Readme Update
-- PR should successfully complete build and any other necessary tests before being merged to main.
-- Branches should follow the below `Naming Conventions of Branchs` header.
-- Each release should be tagged with a version
-- Commit messages should be subjectless
-  e.g. Add README.md
-  e.g. Fix ...
-- Comments within the PR should only be resolved by the person who made the comment.
-- PR should be concise; don't try to fix/introduce more than one thing
-- Do not include/push secret/credential information
-- The code should comply with the existing code standards and previously established coding standards. No new standards
-  should be introduced, and if they are, the reasons for their addition should be stated, with the expectation that this
-  structure will be applied to the entire project.
-- Pull Request Headers should follow the below `Naming Conventions of Pull Requests` header.
-
-**Naming Conventions of Branchs**
-
-- `bugfix/{issue-number}/{optional-description}`
-    - Ex: `bugfix/0/authentication-flow` or `bugfix/0`
-- `feature/{issue-number}/{optional-description}`
-    - Ex: `feature/0/admin-register-flow` or `feature/0`
-- `refactor/{issue-number}/{optional-description}`
-    - Ex: `refactor/0/tests-classes` or `refactor/0`
-- `hotfix/{issue-number}/{optional-description}`
-    - Ex: `hotfix/0/authorization-flow` or `hotfix/0`
-
-**Naming Conventions of Pull Requests**
-
-- `#{issue-number} | {header-for-summary-of-development}`
-    - Ex: `#0 | Authentication/Authorization Flows Has Been Created`
-
-## Docker Image Name Conventions
-
-Docker images should be tagged as "org-name/project-name:version" e.g. "ays/ays-be:v1.0"
-"ays/ays-be" indicates the latest version.
-
-### Versioning
-
-The project follows [the semantic versioning](https://semver.org/) i.e. MAJOR.MINOR.PATCH e.g. v1.9.9.
+---
 
 ## Project Documents
 
-For other information, you can contact the project's [Discord channel](https://discord.gg/HeunQcqg).
+For other information, you can check [Confluence](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/overview)
+Page.
 
 ---
 

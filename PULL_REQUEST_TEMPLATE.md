@@ -1,41 +1,38 @@
-### Description
-
 Please provide a brief description of the changes made in this pull request.
-
-### Related Issue
-
-If this pull request is related to any GitHub issue, please mention it here with the appropriate issue number.
-
-### Proposed Changes
-
-Please provide a brief and descriptive title for your pull request, summarizing the changes or features introduced. It
-should be in English and clearly indicate the purpose of the pull request. Optionally, you can provide a more detailed
-description of what you have done.
-
-- Branches should follow the below `Naming Conventions of Branchs` header in [README.md](https://github.com/afet-yonetim-sistemi/ays-be/edit/main/README.md) File
-
-### Additional Information
-
-If there's any additional information or context that the reviewers should know, please provide it here.
 
 ### Checklist
 
-Please check the following before submitting your pull request:
+Before submitting your pull request, ensure the following:
 
-- [ ] I have tested my changes locally and they are working as expected.
-- [ ] The code is formatted according to the project's coding guidelines and style.
-- [ ] Necessary documentation has been added or existing documentation has been updated.
-- [ ] Relevant unit tests have been written and included.
-- [ ] Relevant integration tests have been written and included.
-- [ ] The code has been reviewed to ensure its quality.
-- [ ] The code does not contain any issues flagged by SonarLint.
-- [ ] Default reviewers have been assigned to this pull request.
-- [ ] Assignees have been added if necessary.
-- [ ] Labels have been applied if necessary.
-- [ ] If an issue is opened and this pull request is related to that issue, it should not be associated with any project
-  board or milestone. However, if there is no issue, the pull request should be associated with the appropriate project
-  board (BE Board, In Review column) and milestone to track the progress.
+- [ ] **Title and Branch Naming Conventions:**
+    - The pull request title follows the
+      standard: [Pull Request Naming Conventions](CONTRIBUTING.md#pull-request-naming-conventions).
+    - The branch name follows one of the conventions outlined in
+      the [Branch Naming Conventions](CONTRIBUTING.md#branch-naming-conventions).
 
-### Reviewers
+- [ ] **Local Testing:**
+    - I have tested my changes locally on Postman, and they are working as expected.
 
-The default project maintainers and team members will be automatically assigned as reviewers for this pull request.
+- [ ] **Code Quality:**
+    - The code is formatted according to the project's coding guidelines and style.
+    - The code has been reviewed to ensure its quality.
+    - The code does not contain any issues flagged by SonarLint.
+
+- [ ] **Documentation:**
+    - Necessary documentation has been added or existing documentation has been updated, specifically detailing changes
+      made in Postman.
+
+- [ ] **Testing:**
+    - Relevant unit tests have been written and included.
+    - Relevant integration tests have been written and included.
+
+- [ ] **Reviewers and Assignees:**
+    - Default reviewers have been assigned to this pull request.
+    - Assignees have been added if necessary.
+
+- [ ] **Labels and Associations:**
+    - No specific actions are required in the Labels and Associations section for this pull request.
+
+- [ ] **Jira Issue Transition:**
+    - If this pull request is related to a Jira issue, ensure that the issue is moved to the "In Review" status on the
+      Jira board.
