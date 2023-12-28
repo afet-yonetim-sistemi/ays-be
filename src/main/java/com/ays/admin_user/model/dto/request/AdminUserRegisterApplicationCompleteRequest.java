@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Represents a request to register a new administrator user. The request includes fields for the required user
+ * Represents a request to complete an admin-user register application. The request includes fields for the required user
  * information, such as the user's username, email, password, and phone number, as well as their first and last name.
  */
 @Getter

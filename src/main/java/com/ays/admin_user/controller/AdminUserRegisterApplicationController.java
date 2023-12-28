@@ -121,11 +121,10 @@ class AdminUserRegisterApplicationController {
     }
 
     /**
-     * This endpoint allows admin to register to platform.
+     * This endpoint allows admins to complete their admin-user register applications.
      *
-     * @param registerRequest A AdminRegisterRequest object required to register to platform.
-     * @return A AysResponse containing a Void object with success message of the newly created admin and
-     * the HTTP status code (201 CREATED).
+     * @param registerRequest An {@link AdminUserRegisterApplicationCompleteRequest} object required to complete the application.
+     * @return An {@link AysResponse} containing a Void object with success message.
      */
     @PostMapping("/registration-application/{applicationId}/complete")
     public AysResponse<Void> completeRegistration(@PathVariable @UUID String applicationId, @RequestBody @Valid AdminUserRegisterApplicationCompleteRequest registerRequest) {

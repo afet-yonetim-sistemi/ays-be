@@ -12,6 +12,6 @@ public interface AdminUserRegisterService {
      *
      * @param registerRequest the AdminUserRegisterRequest entity
      */
-    void completeRegistration(String applicationId,AdminUserRegisterApplicationCompleteRequest registerRequest);
+    void completeRegistration(String applicationId, AdminUserRegisterApplicationCompleteRequest registerRequest);
 
 }
