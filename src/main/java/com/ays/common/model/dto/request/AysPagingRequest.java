@@ -35,15 +35,15 @@ public abstract class AysPagingRequest extends AysSortingRequest {
 
         if (super.isSortable()) {
             return PageRequest.of(
-                    Math.toIntExact(pagination.getPage()),
-                    Math.toIntExact(pagination.getPageSize()),
+                    this.pagination.getPage() - 1,
+                    this.pagination.getPageSize(),
                     super.toSort()
             );
         }
 
         return PageRequest.of(
-                Math.toIntExact(pagination.getPage()),
-                Math.toIntExact(pagination.getPageSize())
+                this.pagination.getPage() - 1,
+                this.pagination.getPageSize()
         );
     }
 }

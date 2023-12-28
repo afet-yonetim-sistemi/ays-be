@@ -1,58 +1,35 @@
 package com.ays.common.model;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 /**
- * A class representing paging parameters for a query. It includes the page number and page size.
- * The page number is 1-based, but internally, it is stored as 0-based to comply with Spring Data's pagination system.
+ * The class `Paging` is a data model used for pagination operations. It includes essential
+ * pagination parameters such as page number and page size.
+ * <p>
+ * Instances of the `Paging` class can be used in pagination operations, and using this class
+ * to validate pagination parameters from user input can be beneficial.
+ * <p>
+ * Note: This class is designed to assist in proper pagination operations and can be used
+ * to ensure that parameters like page number or page size stay within certain bounds.
  */
 @Getter
 @Setter
 public class AysPaging {
 
     /**
-     * Represents the page number for pagination.
-     * The page number must be greater than or equal to 1.
-     * <p>
-     * This field is annotated with {@code @NotNull} to indicate that it cannot be null.
-     * Additionally, it is annotated with {@code @Min(1)} to specify that the value must be at least 1,
-     * and {@code @Max(Long.MAX_VALUE)} to set the maximum allowed value to Long.MAX_VALUE.
+     * Represents the page number.
+     * This value should be between 1 and 99999999.
      */
-    @NotNull
-    @Min(1)
-    @Max(Long.MAX_VALUE)
-    public Long page;
+    @Range(min = 1, max = 99999999)
+    public int page;
 
     /**
-     * Represents the number of elements to be displayed per page in a paginated result set.
-     * The page size should be exactly 10.
-     *
-     * This field is annotated with {@code @NotNull} to indicate that it cannot be null.
-     * Additionally, it is annotated with a custom or library-specific {@code @Range} annotation,
-     * specifying that the valid page size is exactly 10.
+     * Represents the page size.
+     * This value should be between 10 and 10, specifying the number of items per page.
      */
-    @NotNull
-    @Range(min = 10, max = 10)
-    public Long pageSize;
-
-    /**
-     * Retrieves the 0-based page number, which is utilized internally by Spring Data's pagination system.
-     * If the original page number is null, the method returns null.
-     *
-     * @return The 0-based page number or null if the original page number is null.
-     */
-    public Long getPage() {
-
-        if (this.page == null) {
-            return null;
-        }
-
-        return this.page - 1;
-    }
+    @Range(min = 1, max = 99999999)
+    public int pageSize;
 
 }

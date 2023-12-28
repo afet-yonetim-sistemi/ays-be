@@ -8,16 +8,16 @@ public class AysPagingBuilder extends TestDataBuilder<AysPaging> {
 
     public AysPagingBuilder withValidValues() {
         return this
-                .withPage(1L)
-                .withPageSize(10L);
+                .withPage(1)
+                .withPageSize(10);
     }
 
-    public AysPagingBuilder withPage(Long page) {
+    public AysPagingBuilder withPage(int page) {
         data.setPage(page);
         return this;
     }
 
-    public AysPagingBuilder withPageSize(Long pageSize) {
+    public AysPagingBuilder withPageSize(int pageSize) {
         data.setPageSize(pageSize);
         return this;
     }
