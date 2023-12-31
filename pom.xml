@@ -231,6 +231,12 @@
             <version>${easy-random-core.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- ================= -->
         <!-- test dependencies -->
         <!-- ================= -->
