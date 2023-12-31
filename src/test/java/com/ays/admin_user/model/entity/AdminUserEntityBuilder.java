@@ -33,6 +33,7 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
                 .withUsername(String.valueOf(AysRandomUtil.generateNumber(6)))
                 .withPassword("$2a$10$H/lKEaKsusQztOaJmYTAi.4MAmjvnxWOh0DY.XrgwHy5D2gENVIky")
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withEmail("test@example.com")
                 .withStatus(AdminUserStatus.ACTIVE)
                 .withInstitutionId(institutionEntity.getId())
                 .withInstitution(institutionEntity);
