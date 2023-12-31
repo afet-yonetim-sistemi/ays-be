@@ -1,6 +1,8 @@
 package com.ays.admin_user.controller;
 
 import com.ays.AbstractRestControllerTest;
+import com.ays.admin_user.model.AdminUser;
+import com.ays.admin_user.model.AdminUserBuilder;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.AdminUserRegisterApplicationBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
@@ -14,6 +16,7 @@ import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsRespon
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntityBuilder;
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
+import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper;
@@ -279,6 +282,70 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
+    }
+
+    @Test
+    void givenValidAdminUserRegisterApplicationId_whenApproveAdminUserRegisterApplication_thenReturnNothing() throws Exception {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AdminUser mockAdminUser = new AdminUserBuilder()
+                .withValidFields()
+                .withStatus(AdminUserStatus.NOT_VERIFIED)
+                .build();
+        AdminUserRegisterApplication mockAdminUserRegisterApplication = new AdminUserRegisterApplicationBuilder()
+                .withId(mockId)
+                .withAdminUser(mockAdminUser)
+                .withStatus(AdminUserRegisterApplicationStatus.COMPLETED)
+                .build();
+
+        // When
+        Mockito.when(adminUserRegisterApplicationService.approveRegistrationApplication(mockId))
+                .thenReturn(mockAdminUserRegisterApplication);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/registration-application/".concat(mockId).concat("/approve"));
+        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+
+        mockMvc.perform(AysMockMvcRequestBuilders
+                        .post(endpoint, mockSuperAdminToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockAysResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        Mockito.verify(adminUserRegisterApplicationService, Mockito.times(1))
+                .approveRegistrationApplication(mockId);
+    }
+
+    @Test
+    void givenValidAdminUserRegisterApplicationId_whenUnauthorizedForApprovingAdminUserRegisterApplication_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/registration-application/".concat(mockId).concat("/approve"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken());
+
+        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.time()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.httpStatus()
+                        .value(mockResponse.getHttpStatus().name()))
+                .andExpect(AysMockResultMatchersBuilders.isSuccess()
+                        .value(mockResponse.getIsSuccess()))
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
     }
 
 }

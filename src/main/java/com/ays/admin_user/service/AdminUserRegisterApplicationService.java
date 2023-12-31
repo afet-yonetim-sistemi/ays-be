@@ -43,4 +43,12 @@ public interface AdminUserRegisterApplicationService {
      */
     AdminUserRegisterApplication createRegistrationApplication(AdminUserRegisterApplicationCreateRequest request);
 
+    /**
+     * Approve a new admin user register application.
+     *
+     * @param id The id of the register application.
+     * @return A response object containing the created register application.
+     */
+    AdminUserRegisterApplication approveRegistrationApplication(String id);
+
 }

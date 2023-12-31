@@ -8,6 +8,7 @@ import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
+import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
@@ -31,6 +32,7 @@ import java.util.List;
 public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegisterApplicationService {
 
     private final AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;
+    private final AdminUserRepository adminUserRepository;
     private final InstitutionRepository institutionRepository;
 
 
@@ -107,6 +109,26 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
         }
 
         AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper.mapForSaving(request);
+        adminUserRegisterApplicationRepository.save(registerApplicationEntity);
+
+        return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
+    }
+
+    /**
+     * Approves a new admin user register application.
+     *
+     * @param id The id of the register application.
+     * @return A response object containing the created register application.
+     */
+    @Override
+    public AdminUserRegisterApplication approveRegistrationApplication(String id) {
+        final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
+                .findById(id)
+                .filter(AdminUserRegisterApplicationEntity::isCompleted)
+                .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdAndStatusException(id, AdminUserRegisterApplicationStatus.COMPLETED));
+
+        registerApplicationEntity.verify();
+        registerApplicationEntity.getAdminUser().activate();
         adminUserRegisterApplicationRepository.save(registerApplicationEntity);
 
         return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);

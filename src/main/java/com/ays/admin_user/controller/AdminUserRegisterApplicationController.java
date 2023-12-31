@@ -131,4 +131,20 @@ class AdminUserRegisterApplicationController {
         );
     }
 
+    /**
+     * Approves an admin user register application.
+     * Requires SUPER_ADMIN authority.
+     *
+     * @param id The id of the register application.
+     * @return A response object containing the approved register application.
+     */
+    @PostMapping("/registration-application/{id}/approve")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    public AysResponse<Void> approveRegistrationApplication(
+            @PathVariable @UUID String id) {
+
+        adminUserRegisterApplicationService.approveRegistrationApplication(id);
+        return AysResponse.SUCCESS;
+    }
+
 }
