@@ -47,7 +47,7 @@ class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest {
     }
 
     @Test
-    void whenWait10Seconds_thenClearInvalidToken() throws InterruptedException {
+    void whenWait10Seconds_thenClearInvalidToken() {
 
         // When
         String refreshTokenExpireDay = AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue();
