@@ -136,7 +136,7 @@ class AdminUserRegisterApplicationController {
      * Requires SUPER_ADMIN authority.
      *
      * @param id The id of the register application.
-     * @return A response object containing the approved register application.
+     * @return A success response.
      */
     @PostMapping("/registration-application/{id}/approve")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
