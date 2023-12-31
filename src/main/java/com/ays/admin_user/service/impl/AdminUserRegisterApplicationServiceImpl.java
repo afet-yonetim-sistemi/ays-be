@@ -118,10 +118,9 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
      * Approves a new admin user register application.
      *
      * @param id The id of the register application.
-     * @return A response object containing the created register application.
      */
     @Override
-    public AdminUserRegisterApplication approveRegistrationApplication(String id) {
+    public void approveRegistrationApplication(String id) {
         final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
                 .findById(id)
                 .filter(AdminUserRegisterApplicationEntity::isCompleted)
@@ -130,8 +129,6 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
         registerApplicationEntity.verify();
         registerApplicationEntity.getAdminUser().activate();
         adminUserRegisterApplicationRepository.save(registerApplicationEntity);
-
-        return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
     }
 
 }

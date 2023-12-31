@@ -1,8 +1,6 @@
 package com.ays.admin_user.controller;
 
 import com.ays.AbstractRestControllerTest;
-import com.ays.admin_user.model.AdminUser;
-import com.ays.admin_user.model.AdminUserBuilder;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.AdminUserRegisterApplicationBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
@@ -16,7 +14,6 @@ import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsRespon
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntityBuilder;
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
-import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper;
@@ -288,19 +285,9 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
     void givenValidAdminUserRegisterApplicationId_whenApproveAdminUserRegisterApplication_thenReturnNothing() throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminUser mockAdminUser = new AdminUserBuilder()
-                .withValidFields()
-                .withStatus(AdminUserStatus.NOT_VERIFIED)
-                .build();
-        AdminUserRegisterApplication mockAdminUserRegisterApplication = new AdminUserRegisterApplicationBuilder()
-                .withId(mockId)
-                .withAdminUser(mockAdminUser)
-                .withStatus(AdminUserRegisterApplicationStatus.COMPLETED)
-                .build();
 
         // When
-        Mockito.when(adminUserRegisterApplicationService.approveRegistrationApplication(mockId))
-                .thenReturn(mockAdminUserRegisterApplication);
+        Mockito.doNothing().when(adminUserRegisterApplicationService).approveRegistrationApplication(mockId);
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/".concat(mockId).concat("/approve"));
