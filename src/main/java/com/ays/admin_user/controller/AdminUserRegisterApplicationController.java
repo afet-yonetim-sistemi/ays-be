@@ -140,8 +140,7 @@ class AdminUserRegisterApplicationController {
      */
     @PostMapping("/registration-application/{id}/approve")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<Void> approveRegistrationApplication(
-            @PathVariable @UUID String id) {
+    public AysResponse<Void> approveRegistrationApplication(@PathVariable @UUID String id) {
 
         adminUserRegisterApplicationService.approveRegistrationApplication(id);
         return AysResponse.SUCCESS;
