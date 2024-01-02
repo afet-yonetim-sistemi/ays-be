@@ -306,6 +306,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationService, Mockito.times(1))
                 .approveRegistrationApplication(mockId);
     }
