@@ -16,6 +16,7 @@ import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.enums.AdminUserStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
+import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
 import com.ays.common.model.AysPage;
@@ -45,6 +46,9 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
     @Mock
     private AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;
+
+    @Mock
+    private AdminUserRepository adminUserRepository;
 
     @Mock
     private InstitutionRepository institutionRepository;
@@ -287,8 +291,13 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
         // Then
         adminUserRegisterApplicationService.rejectRegistrationApplication(mockId, mockRequest);
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(mockId);
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
+                .save(Mockito.any(AdminUserRegisterApplicationEntity.class));
+        Mockito.verify(adminUserRepository, Mockito.times(1))
+                .save(Mockito.any(AdminUserEntity.class));
     }
 
     @Test
@@ -310,8 +319,13 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 () -> adminUserRegisterApplicationService.rejectRegistrationApplication(mockId, mockRequest)
         );
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(mockId);
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(0))
+                .save(Mockito.any(AdminUserRegisterApplicationEntity.class));
+        Mockito.verify(adminUserRepository, Mockito.times(0))
+                .save(Mockito.any(AdminUserEntity.class));
     }
 
     @Test
@@ -343,8 +357,13 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 () -> adminUserRegisterApplicationService.rejectRegistrationApplication(mockId, mockRequest)
         );
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(mockId);
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(0))
+                .save(Mockito.any(AdminUserRegisterApplicationEntity.class));
+        Mockito.verify(adminUserRepository, Mockito.times(0))
+                .save(Mockito.any(AdminUserEntity.class));
     }
 
 }

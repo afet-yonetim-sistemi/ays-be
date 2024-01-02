@@ -4,11 +4,13 @@ import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequest;
+import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
+import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
@@ -32,6 +34,7 @@ import java.util.List;
 public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegisterApplicationService {
 
     private final AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;
+    private final AdminUserRepository adminUserRepository;
     private final InstitutionRepository institutionRepository;
 
 
@@ -125,10 +128,13 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
                 .findById(id)
                 .filter(AdminUserRegisterApplicationEntity::isCompleted)
                 .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdAndStatusException(id, AdminUserRegisterApplicationStatus.WAITING));
+        final AdminUserEntity adminUser = registerApplicationEntity.getAdminUser();
 
         registerApplicationEntity.reject(request.getRejectReason());
-        registerApplicationEntity.getAdminUser().passivate();
         adminUserRegisterApplicationRepository.save(registerApplicationEntity);
+
+        adminUser.passivate();
+        adminUserRepository.save(adminUser);
     }
 
 }

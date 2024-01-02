@@ -141,8 +141,8 @@ class AdminUserRegisterApplicationController {
      */
     @PostMapping("/registration-application/{id}/reject")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<Void> rejectRegistrationApplication(
-            @PathVariable @UUID String id, @RequestBody @Valid AdminUserRegisterApplicationRejectRequest request) {
+    public AysResponse<Void> rejectRegistrationApplication(@PathVariable @UUID String id,
+                                                           @RequestBody @Valid AdminUserRegisterApplicationRejectRequest request) {
 
         adminUserRegisterApplicationService.rejectRegistrationApplication(id, request);
         return AysResponse.SUCCESS;

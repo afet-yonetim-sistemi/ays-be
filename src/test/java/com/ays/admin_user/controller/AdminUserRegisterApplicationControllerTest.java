@@ -312,6 +312,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationService, Mockito.times(1))
                 .rejectRegistrationApplication(Mockito.eq(mockId), Mockito.any(AdminUserRegisterApplicationRejectRequest.class));
 
@@ -343,6 +344,10 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                         .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminUserRegisterApplicationService, Mockito.times(0))
+                .rejectRegistrationApplication(Mockito.eq(mockId), Mockito.any(AdminUserRegisterApplicationRejectRequest.class));
     }
 
 }
