@@ -147,7 +147,7 @@ class AysTokenServiceImpl implements AysTokenService {
      * @return the parsed JWT claims as a {@link Claims} object
      */
     @Override
-    public Claims getClaims(String token) {
+    public Claims getPayload(String token) {
         return Jwts.parser()
                 .verifyWith(tokenConfiguration.getPublicKey())
                 .build()

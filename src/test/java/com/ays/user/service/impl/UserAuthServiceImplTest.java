@@ -187,7 +187,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.doNothing().when(tokenService)
                 .verifyAndValidate(mockRefreshToken);
 
-        Mockito.when(tokenService.getClaims(mockRefreshToken))
+        Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockClaims);
 
         Mockito.when(userRepository.findById(mockUserEntity.getId()))
@@ -206,7 +206,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(tokenService, Mockito.times(1))
                 .verifyAndValidate(mockRefreshToken);
         Mockito.verify(tokenService, Mockito.times(1))
-                .getClaims(mockRefreshToken);
+                .getPayload(mockRefreshToken);
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(mockUserEntity.getId());
         Mockito.verify(tokenService, Mockito.times(1))
@@ -258,7 +258,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         );
 
         // When
-        Mockito.when(tokenService.getClaims(mockRefreshToken))
+        Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockClaims);
 
         Mockito.when(userRepository.findById(mockUserEntity.getId()))
@@ -271,7 +271,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         );
 
         Mockito.verify(tokenService, Mockito.times(1))
-                .getClaims(mockRefreshToken);
+                .getPayload(mockRefreshToken);
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(mockUserEntity.getId());
     }
@@ -300,7 +300,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.doNothing().when(tokenService)
                 .verifyAndValidate(mockRefreshToken);
 
-        Mockito.when(tokenService.getClaims(mockRefreshToken))
+        Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockClaims);
 
         Mockito.when(userRepository.findById(mockUserEntity.getId()))
@@ -315,7 +315,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(tokenService, Mockito.times(1))
                 .verifyAndValidate(mockRefreshToken);
         Mockito.verify(tokenService, Mockito.times(1))
-                .getClaims(mockRefreshToken);
+                .getPayload(mockRefreshToken);
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(mockUserEntity.getId());
     }
@@ -344,14 +344,14 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.doNothing().when(tokenService)
                 .verifyAndValidate(mockRefreshToken);
 
-        Mockito.when(tokenService.getClaims(mockRefreshToken))
+        Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockRefreshTokenClaims);
         Mockito.doNothing().when(invalidTokenService)
                 .checkForInvalidityOfToken(mockRefreshTokenId);
 
         Mockito.when(identity.getAccessToken())
                 .thenReturn(mockAccessToken);
-        Mockito.when(tokenService.getClaims(mockAccessToken))
+        Mockito.when(tokenService.getPayload(mockAccessToken))
                 .thenReturn(mockAccessTokenClaims);
 
         Mockito.doNothing().when(invalidTokenService)
@@ -364,7 +364,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .verifyAndValidate(Mockito.anyString());
 
         Mockito.verify(tokenService, Mockito.times(2))
-                .getClaims(Mockito.anyString());
+                .getPayload(Mockito.anyString());
         Mockito.verify(invalidTokenService, Mockito.times(1))
                 .checkForInvalidityOfToken(Mockito.anyString());
 
@@ -394,7 +394,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .verifyAndValidate(Mockito.anyString());
 
         Mockito.verify(tokenService, Mockito.times(0))
-                .getClaims(Mockito.anyString());
+                .getPayload(Mockito.anyString());
         Mockito.verify(invalidTokenService, Mockito.times(0))
                 .checkForInvalidityOfToken(Mockito.anyString());
 
@@ -422,7 +422,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.doNothing().when(tokenService)
                 .verifyAndValidate(mockRefreshToken);
 
-        Mockito.when(tokenService.getClaims(mockRefreshToken))
+        Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockRefreshTokenClaims);
         Mockito.doThrow(TokenAlreadyInvalidatedException.class)
                 .when(invalidTokenService).checkForInvalidityOfToken(mockRefreshTokenId);
@@ -437,7 +437,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
                 .verifyAndValidate(Mockito.anyString());
 
         Mockito.verify(tokenService, Mockito.times(1))
-                .getClaims(Mockito.anyString());
+                .getPayload(Mockito.anyString());
         Mockito.verify(invalidTokenService, Mockito.times(1))
                 .checkForInvalidityOfToken(Mockito.anyString());
 
