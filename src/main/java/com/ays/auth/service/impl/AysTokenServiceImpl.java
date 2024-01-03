@@ -10,10 +10,11 @@ import com.ays.common.util.AysListUtil;
 import com.ays.common.util.AysRandomUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,6 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,25 +54,29 @@ class AysTokenServiceImpl implements AysTokenService {
 
         final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
         final String accessToken = Jwts.builder()
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(tokenConfiguration.getIssuer())
-                .setIssuedAt(tokenIssuedAt)
-                .setExpiration(accessTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .addClaims(claims)
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(tokenConfiguration.getIssuer())
+                .issuedAt(tokenIssuedAt)
+                .expiration(accessTokenExpiresAt)
+                .signWith(tokenConfiguration.getPrivateKey())
+                .claims(claims)
                 .compact();
 
         final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireDay());
         final JwtBuilder refreshTokenBuilder = Jwts.builder();
         final String refreshToken = refreshTokenBuilder
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(tokenConfiguration.getIssuer())
-                .setIssuedAt(tokenIssuedAt)
-                .setExpiration(refreshTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(tokenConfiguration.getIssuer())
+                .issuedAt(tokenIssuedAt)
+                .expiration(refreshTokenExpiresAt)
+                .signWith(tokenConfiguration.getPrivateKey())
                 .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
-                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .compact();
 
         return AysToken.builder()
@@ -97,13 +101,15 @@ class AysTokenServiceImpl implements AysTokenService {
         final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
 
         final String accessToken = Jwts.builder()
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(tokenConfiguration.getIssuer())
-                .setIssuedAt(accessTokenIssuedAt)
-                .setExpiration(accessTokenExpiresAt)
-                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .addClaims(claims)
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(tokenConfiguration.getIssuer())
+                .issuedAt(accessTokenIssuedAt)
+                .expiration(accessTokenExpiresAt)
+                .signWith(tokenConfiguration.getPrivateKey())
+                .claims(claims)
                 .compact();
 
         return AysToken.builder()
@@ -118,35 +124,35 @@ class AysTokenServiceImpl implements AysTokenService {
      * This method parses the token using the public key from the {@link AysTokenConfigurationParameter},
      * and throws a {@link TokenNotValidException} if the token is not valid due to being malformed, expired or having an invalid signature.
      *
-     * @param jwt The JWT (JSON Web Token) to be verified and validated.
+     * @param token The JWT (JSON Web Token) to be verified and validated.
      * @throws TokenNotValidException If the token is not valid due to being malformed, expired or having an invalid signature.
      */
     @Override
-    public void verifyAndValidate(String jwt) {
+    public void verifyAndValidate(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(tokenConfiguration.getPublicKey())
+            Jwts.parser()
+                    .verifyWith(tokenConfiguration.getPublicKey())
                     .build()
-                    .parseClaimsJws(jwt)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
         } catch (MalformedJwtException | ExpiredJwtException | SignatureException exception) {
-            throw new TokenNotValidException(jwt, exception);
+            throw new TokenNotValidException(token, exception);
         }
     }
 
     /**
      * Parses the given JWT and returns its claims as a {@link Claims} object.
      *
-     * @param jwt the JWT string to parse
+     * @param token the JWT string to parse
      * @return the parsed JWT claims as a {@link Claims} object
      */
     @Override
-    public Claims getClaims(String jwt) {
-        return Jwts.parserBuilder()
-                .setSigningKey(tokenConfiguration.getPublicKey())
+    public Claims getClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(tokenConfiguration.getPublicKey())
                 .build()
-                .parseClaimsJws(jwt)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     /**
@@ -160,27 +166,32 @@ class AysTokenServiceImpl implements AysTokenService {
     @Override
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
 
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(tokenConfiguration.getPublicKey())
+        Jws<Claims> claims = Jwts.parser()
+                .verifyWith(tokenConfiguration.getPublicKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token);
+
+        JwsHeader header = claims.getHeader();
+        Claims payload = claims.getPayload();
 
         final Jwt jwt = new Jwt(
                 token,
-                Instant.ofEpochSecond(((Double) claims.get(AysTokenClaims.ISSUED_AT.getValue())).intValue()),
-                Instant.ofEpochSecond(((Double) claims.get(AysTokenClaims.EXPIRES_AT.getValue())).intValue()),
-                Map.of(AysTokenClaims.ALGORITHM.getValue(), SignatureAlgorithm.RS512.getValue()),
-                claims
+                payload.getIssuedAt().toInstant(),
+                payload.getExpiration().toInstant(),
+                Map.of(
+                        AysTokenClaims.TYPE.getValue(), header.getType(),
+                        AysTokenClaims.ALGORITHM.getValue(), header.getAlgorithm()
+                ),
+                payload
         );
 
-        final AysUserType userType = AysUserType.valueOf(claims.get(AysTokenClaims.USER_TYPE.getValue()).toString());
+        final AysUserType userType = AysUserType.valueOf(payload.get(AysTokenClaims.USER_TYPE.getValue()).toString());
 
         final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(userType.name()));
 
         if (userType == AysUserType.USER) {
-            final List<String> roles = AysListUtil.to(claims.get(AysTokenClaims.ROLES.getValue()), String.class);
+            final List<String> roles = AysListUtil.to(payload.get(AysTokenClaims.ROLES.getValue()), String.class);
             roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
         }
 
