@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -121,6 +122,7 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
      * @param id The id of the register application.
      */
     @Override
+    @Transactional
     public void approveRegistrationApplication(String id) {
         final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
                 .findById(id)
