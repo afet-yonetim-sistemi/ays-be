@@ -293,7 +293,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
     void givenValidAdminUserRegisterRequest_whenAdminUserRegistered_thenReturnSuccessResponse() throws Exception {
 
         // Given
-        String applicationId = AysRandomUtil.generateUUID();
+        String mockId = AysRandomUtil.generateUUID();
         AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields().build();
 
@@ -301,7 +301,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         Mockito.doNothing().when(adminUserRegisterService).completeRegistration(Mockito.anyString(), Mockito.any());
 
         // Then
-        String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockRequest))
@@ -323,8 +323,9 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
     @Test
     void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+
         // Given
-        String applicationId = AysRandomUtil.generateUUID();
+        String mockId = AysRandomUtil.generateUUID();
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
@@ -333,7 +334,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .withPhoneNumber(mockPhoneNumber).build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockRequest))
@@ -359,8 +360,9 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
     @Test
     void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+
         // Given
-        String applicationId = AysRandomUtil.generateUUID();
+        String mockId = AysRandomUtil.generateUUID();
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
@@ -369,7 +371,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .withPhoneNumber(mockPhoneNumber).build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockRequest))
@@ -395,8 +397,9 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
     @Test
     void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+
         // Given
-        String applicationId = AysRandomUtil.generateUUID();
+        String mockId = AysRandomUtil.generateUUID();
         final String invalidOperator = "123";
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
@@ -406,7 +409,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .withPhoneNumber(mockPhoneNumber).build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockRequest))
@@ -432,8 +435,9 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
     @Test
     void givenNameWithNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+
         // Given
-        String applicationId = AysRandomUtil.generateUUID();
+        String mockId = AysRandomUtil.generateUUID();
         String invalidName = "John 1234";
         AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
@@ -442,7 +446,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockRequest))
@@ -468,8 +472,9 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
     @Test
     void givenNameWithForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+
         // Given
-        String applicationId = AysRandomUtil.generateUUID();
+        String mockId = AysRandomUtil.generateUUID();
         String invalidName = "John *^%$#";
         AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
                 .withValidFields()
@@ -478,7 +483,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockRequest))
