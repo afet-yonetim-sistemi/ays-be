@@ -5,34 +5,34 @@ import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.util.AysValidTestData;
 
-public class AdminUserRegisterRequestBuilder extends TestDataBuilder<AdminUserRegisterApplicationCompleteRequest> {
+public class AdminUserRegisterApplicationCompleteRequestBuilder extends TestDataBuilder<AdminUserRegisterApplicationCompleteRequest> {
 
-    public AdminUserRegisterRequestBuilder() {
+    public AdminUserRegisterApplicationCompleteRequestBuilder() {
         super(AdminUserRegisterApplicationCompleteRequest.class);
     }
 
-    public AdminUserRegisterRequestBuilder withValidFields() {
+    public AdminUserRegisterApplicationCompleteRequestBuilder withValidFields() {
         return this
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build());
     }
 
-    public AdminUserRegisterRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
+    public AdminUserRegisterApplicationCompleteRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }
 
-    public AdminUserRegisterRequestBuilder withEmail(String email) {
+    public AdminUserRegisterApplicationCompleteRequestBuilder withEmail(String email) {
         data.setEmail(email);
         return this;
     }
 
-    public AdminUserRegisterRequestBuilder withFirstName(String firstName) {
+    public AdminUserRegisterApplicationCompleteRequestBuilder withFirstName(String firstName) {
         data.setFirstName(firstName);
         return this;
     }
 
-    public AdminUserRegisterRequestBuilder withLastName(String lastName) {
+    public AdminUserRegisterApplicationCompleteRequestBuilder withLastName(String lastName) {
         data.setLastName(lastName);
         return this;
     }

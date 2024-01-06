@@ -2,7 +2,7 @@ package com.ays.admin_user.service.impl;
 
 import com.ays.AbstractUnitTest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequestBuilder;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
@@ -47,7 +47,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Given
         String applicationId = AysRandomUtil.generateUUID();
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
-        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -109,7 +109,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         String applicationId = "Invalid";
-        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields().build();
 
         // When
@@ -133,7 +133,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Given
         String applicationId = AysRandomUtil.generateUUID();
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
-        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -161,7 +161,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         String applicationId = AysRandomUtil.generateUUID();
-        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withEmail(AysValidTestData.EMAIL).build();
 
         AdminUserRegisterApplicationEntity mockAdminUserRegisterApplicationEntity = new AdminUserRegisterApplicationEntityBuilder()
@@ -192,7 +192,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
 
         // Given
         String applicationId = AysRandomUtil.generateUUID();
-        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withEmail(AysValidTestData.EMAIL).build();
 
         AdminUserRegisterApplicationEntity mockAdminUserRegisterApplicationEntity = new AdminUserRegisterApplicationEntityBuilder()
@@ -229,7 +229,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Given
         String applicationId = AysRandomUtil.generateUUID();
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
-        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockAdminUserRegisterApplicationCompleteRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 

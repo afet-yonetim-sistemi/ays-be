@@ -4,11 +4,11 @@ import com.ays.AbstractRestControllerTest;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.AdminUserRegisterApplicationBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequestBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequestBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequestBuilder;
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationCreateResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationSummaryResponse;
@@ -294,7 +294,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields().build();
 
         // When
@@ -329,7 +329,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
-        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -366,7 +366,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
-        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -404,7 +404,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
-        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -439,7 +439,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         // Given
         String mockId = AysRandomUtil.generateUUID();
         String invalidName = "John 1234";
-        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withFirstName(invalidName)
                 .withLastName(invalidName)
@@ -476,7 +476,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         // Given
         String mockId = AysRandomUtil.generateUUID();
         String invalidName = "John *^%$#";
-        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterRequestBuilder()
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withFirstName(invalidName)
                 .withLastName(invalidName)
