@@ -126,9 +126,10 @@ class AdminUserRegisterApplicationController {
      * @param registerRequest An {@link AdminUserRegisterApplicationCompleteRequest} object required to complete the application.
      * @return An {@link AysResponse} containing a Void object with success message.
      */
-    @PostMapping("/registration-application/{applicationId}/complete")
-    public AysResponse<Void> completeRegistration(@PathVariable @UUID String applicationId, @RequestBody @Valid AdminUserRegisterApplicationCompleteRequest registerRequest) {
-        adminUserRegisterService.completeRegistration(applicationId, registerRequest);
+    @PostMapping("/registration-application/{id}/complete")
+    public AysResponse<Void> completeRegistration(@PathVariable @UUID String id,
+                                                  @RequestBody @Valid AdminUserRegisterApplicationCompleteRequest registerRequest) {
+        adminUserRegisterService.completeRegistration(id, registerRequest);
         return AysResponse.SUCCESS;
     }
 
