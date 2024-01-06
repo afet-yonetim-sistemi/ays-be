@@ -89,6 +89,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
         // Then
         adminUserRegisterService.completeRegistration(applicationId, mockAdminUserRegisterApplicationCompleteRequest);
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
@@ -121,6 +122,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 () -> adminUserRegisterService.completeRegistration(applicationId, mockAdminUserRegisterApplicationCompleteRequest)
         );
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
     }
@@ -149,6 +151,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 () -> adminUserRegisterService.completeRegistration(applicationId, mockAdminUserRegisterApplicationCompleteRequest)
         );
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
     }
@@ -177,6 +180,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 () -> adminUserRegisterService.completeRegistration(applicationId, mockAdminUserRegisterApplicationCompleteRequest)
         );
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
@@ -210,6 +214,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 () -> adminUserRegisterService.completeRegistration(applicationId, mockAdminUserRegisterApplicationCompleteRequest)
         );
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
@@ -253,6 +258,7 @@ class AdminUserRegisterServiceImplTest extends AbstractUnitTest {
                 () -> adminUserRegisterService.completeRegistration(applicationId, mockAdminUserRegisterApplicationCompleteRequest)
         );
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
