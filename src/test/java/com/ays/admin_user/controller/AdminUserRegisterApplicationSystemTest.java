@@ -283,11 +283,22 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
 
     @Test
     void givenValidAdminUserRegisterRequest_whenAdminUserRegistered_thenReturnSuccessResponse() throws Exception {
-        // Given
-        String applicationId = AysValidTestData.APPLICATION_ID;
-        AdminUserRegisterApplicationCompleteRequest registerRequest = new AdminUserRegisterRequestBuilder()
+
+        // Initialize
+        AdminUserEntity adminUserEntity = adminUserRepository.findById(AysValidTestData.AdminUser.ID).get();
+        AdminUserRegisterApplicationEntity applicationEntity = new AdminUserRegisterApplicationEntityBuilder()
                 .withValidFields()
+                .withAdminUserId(adminUserEntity.getId())
+                .withAdminUser(adminUserEntity)
+                .withInstitutionId(adminUserEntity.getInstitutionId())
+                .withInstitution(adminUserEntity.getInstitution())
                 .build();
+        this.initialize(applicationEntity);
+
+        // Given
+        String applicationId = applicationEntity.getId();
+        AdminUserRegisterApplicationCompleteRequest registerRequest = new AdminUserRegisterRequestBuilder()
+                .withValidFields().build();
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
@@ -309,8 +320,19 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
     @Test
     void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
 
+        // Initialize
+        AdminUserEntity adminUserEntity = adminUserRepository.findById(AysValidTestData.AdminUser.ID).get();
+        AdminUserRegisterApplicationEntity applicationEntity = new AdminUserRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withAdminUserId(adminUserEntity.getId())
+                .withAdminUser(adminUserEntity)
+                .withInstitutionId(adminUserEntity.getInstitutionId())
+                .withInstitution(adminUserEntity.getInstitution())
+                .build();
+        this.initialize(applicationEntity);
+
         // Given
-        String applicationId = AysValidTestData.APPLICATION_ID;
+        String applicationId = applicationEntity.getId();
         AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
@@ -342,8 +364,19 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
     @Test
     void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
 
+        // Initialize
+        AdminUserEntity adminUserEntity = adminUserRepository.findById(AysValidTestData.AdminUser.ID).get();
+        AdminUserRegisterApplicationEntity applicationEntity = new AdminUserRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withAdminUserId(adminUserEntity.getId())
+                .withAdminUser(adminUserEntity)
+                .withInstitutionId(adminUserEntity.getInstitutionId())
+                .withInstitution(adminUserEntity.getInstitution())
+                .build();
+        this.initialize(applicationEntity);
+
         // Given
-        String applicationId = AysValidTestData.APPLICATION_ID;
+        String applicationId = applicationEntity.getId();
         AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
@@ -375,8 +408,19 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
     @Test
     void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
 
+        // Initialize
+        AdminUserEntity adminUserEntity = adminUserRepository.findById(AysValidTestData.AdminUser.ID).get();
+        AdminUserRegisterApplicationEntity applicationEntity = new AdminUserRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withAdminUserId(adminUserEntity.getId())
+                .withAdminUser(adminUserEntity)
+                .withInstitutionId(adminUserEntity.getInstitutionId())
+                .withInstitution(adminUserEntity.getInstitution())
+                .build();
+        this.initialize(applicationEntity);
+
         // Given
-        String applicationId = AysValidTestData.APPLICATION_ID;
+        String applicationId = adminUserEntity.getId();
         final String invalidOperator = "123";
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
