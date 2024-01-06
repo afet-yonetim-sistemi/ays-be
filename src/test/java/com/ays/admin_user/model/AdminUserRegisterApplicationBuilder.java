@@ -17,10 +17,14 @@ public class AdminUserRegisterApplicationBuilder extends TestDataBuilder<AdminUs
         final Institution institution = new InstitutionBuilder()
                 .withValidFields()
                 .build();
+        final AdminUser adminUser = new AdminUserBuilder()
+                .withValidFields()
+                .build();
 
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withInstitution(institution)
+                .withAdminUser(adminUser)
                 .withReason(AysRandomTestUtil.generateString(41))
                 .withStatus(AdminUserRegisterApplicationStatus.WAITING);
     }
@@ -42,6 +46,11 @@ public class AdminUserRegisterApplicationBuilder extends TestDataBuilder<AdminUs
 
     public AdminUserRegisterApplicationBuilder withStatus(AdminUserRegisterApplicationStatus status) {
         data.setStatus(status);
+        return this;
+    }
+
+    public AdminUserRegisterApplicationBuilder withAdminUser(AdminUser adminUser) {
+        data.setAdminUser(adminUser);
         return this;
     }
 }

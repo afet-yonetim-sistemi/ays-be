@@ -91,6 +91,10 @@ public class AdminUserEntity extends BaseEntity {
         return this.institutionId == null;
     }
 
+    public void activate() {
+        this.status = AdminUserStatus.ACTIVE;
+    }
+
     public void passivate() {
         this.status = AdminUserStatus.PASSIVE;
     }

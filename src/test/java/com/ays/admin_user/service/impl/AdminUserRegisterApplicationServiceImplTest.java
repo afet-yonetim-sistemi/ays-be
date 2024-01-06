@@ -6,6 +6,8 @@ import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRe
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequestBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequestBuilder;
+import com.ays.admin_user.model.entity.AdminUserEntity;
+import com.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequestBuilder;
 import com.ays.admin_user.model.entity.AdminUserEntity;
@@ -263,6 +265,96 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 AysInstitutionNotExistException.class,
                 () -> adminUserRegisterApplicationService.createRegistrationApplication(mockRequest)
         );
+    }
+
+    @Test
+    void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationApproved_thenReturnNothing() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminUserStatus.NOT_VERIFIED)
+                .build();
+        AdminUserRegisterApplicationEntity mockEntity = new AdminUserRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminUserRegisterApplicationStatus.COMPLETED)
+                .withAdminUserId(mockAdminUserEntity.getId())
+                .withAdminUser(mockAdminUserEntity)
+                .build();
+
+        // When
+        Mockito.when(adminUserRegisterApplicationRepository.findById(mockId))
+                .thenReturn(Optional.of(mockEntity));
+        Mockito.when(adminUserRegisterApplicationRepository.save(Mockito.any(AdminUserRegisterApplicationEntity.class)))
+                .thenReturn(mockEntity);
+
+        // Then
+        adminUserRegisterApplicationService.approveRegistrationApplication(mockId);
+
+        // Verify
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
+                .findById(mockId);
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
+                .save(Mockito.any(AdminUserRegisterApplicationEntity.class));
+        Mockito.verify(adminUserRepository, Mockito.times(1))
+                .save(Mockito.any(AdminUserEntity.class));
+    }
+
+    @Test
+    void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationNotFound_thenThrowAysAdminUserRegisterApplicationNotExistByIdAndStatusException() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(adminUserRegisterApplicationRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysAdminUserRegisterApplicationNotExistByIdAndStatusException.class,
+                () -> adminUserRegisterApplicationService.approveRegistrationApplication(mockId)
+        );
+
+        // Verify
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
+                .findById(mockId);
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(0))
+                .save(Mockito.any(AdminUserRegisterApplicationEntity.class));
+        Mockito.verify(adminUserRepository, Mockito.times(0))
+                .save(Mockito.any(AdminUserEntity.class));
+
+    }
+
+    @Test
+    void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationFoundWithoutCompletedStatus_thenThrowAysAdminUserRegisterApplicationNotExistByIdAndStatusException() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AdminUserRegisterApplicationEntity mockEntity = new AdminUserRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminUserRegisterApplicationStatus.WAITING)
+                .build();
+
+        // When
+        Mockito.when(adminUserRegisterApplicationRepository.findById(mockId))
+                .thenReturn(Optional.of(mockEntity));
+
+        // Then
+        Assertions.assertThrows(
+                AysAdminUserRegisterApplicationNotExistByIdAndStatusException.class,
+                () -> adminUserRegisterApplicationService.approveRegistrationApplication(mockId)
+        );
+
+        // Verify
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(1))
+                .findById(mockId);
+        Mockito.verify(adminUserRegisterApplicationRepository, Mockito.times(0))
+                .save(Mockito.any(AdminUserRegisterApplicationEntity.class));
+        Mockito.verify(adminUserRepository, Mockito.times(0))
+                .save(Mockito.any(AdminUserEntity.class));
+
     }
 
     @Test

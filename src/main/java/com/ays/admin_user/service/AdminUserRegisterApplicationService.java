@@ -45,6 +45,13 @@ public interface AdminUserRegisterApplicationService {
     AdminUserRegisterApplication createRegistrationApplication(AdminUserRegisterApplicationCreateRequest request);
 
     /**
+     * Approve a new admin user register application.
+     *
+     * @param id The id of the register application.
+     */
+    void approveRegistrationApplication(String id);
+
+    /**
      * Rejects an admin user register application.
      * Requires SUPER_ADMIN authority.
      *

@@ -3,6 +3,7 @@ package com.ays.admin_user.service.impl;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
+import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
@@ -115,6 +116,27 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
         adminUserRegisterApplicationRepository.save(registerApplicationEntity);
 
         return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
+    }
+
+    /**
+     * Approves a new admin user register application.
+     *
+     * @param id The id of the register application.
+     */
+    @Override
+    @Transactional
+    public void approveRegistrationApplication(String id) {
+        final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
+                .findById(id)
+                .filter(AdminUserRegisterApplicationEntity::isCompleted)
+                .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdAndStatusException(id, AdminUserRegisterApplicationStatus.COMPLETED));
+        final AdminUserEntity adminUser = registerApplicationEntity.getAdminUser();
+
+        registerApplicationEntity.verify();
+        adminUserRegisterApplicationRepository.save(registerApplicationEntity);
+
+        adminUser.activate();
+        adminUserRepository.save(adminUser);
     }
 
     /**
