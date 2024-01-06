@@ -11,8 +11,8 @@ import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntityBuilder
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper;
 import com.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
-import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
+import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationSummaryNotExistByIdException;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysPageBuilder;
 import com.ays.common.util.AysRandomUtil;
@@ -182,7 +182,7 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationId_whenThereIsNoAdminUserRegisterApplicationWithWaitingStatus_thenThrowAysAdminUserRegisterApplicationNotExistByIdAndStatusException() {
+    void givenValidAdminUserRegisterApplicationId_whenThereIsNoAdminUserRegisterApplicationWithWaitingStatus_thenThrowAysAdminUserRegisterApplicationSummaryNotExistByIdException() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -193,7 +193,7 @@ class AdminUserRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminUserRegisterApplicationNotExistByIdAndStatusException.class,
+                AysAdminUserRegisterApplicationSummaryNotExistByIdException.class,
                 () -> adminUserRegisterApplicationService.getRegistrationApplicationSummaryById(mockId)
         );
 
