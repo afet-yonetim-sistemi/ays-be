@@ -91,6 +91,10 @@ public class AdminUserEntity extends BaseEntity {
         return this.institutionId == null;
     }
 
+    public void activate() {
+        this.status = AdminUserStatus.ACTIVE;
+    }
+
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
 
