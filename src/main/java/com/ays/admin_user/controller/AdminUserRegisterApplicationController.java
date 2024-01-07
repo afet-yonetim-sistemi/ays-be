@@ -4,6 +4,7 @@ package com.ays.admin_user.controller;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequest;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationCreateResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationSummaryResponse;
@@ -129,6 +130,37 @@ class AdminUserRegisterApplicationController {
                 adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper
                         .map(registerApplication)
         );
+    }
+
+    /**
+     * Approves an admin user register application.
+     * Requires SUPER_ADMIN authority.
+     *
+     * @param id The id of the register application.
+     * @return A success response.
+     */
+    @PostMapping("/registration-application/{id}/approve")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    public AysResponse<Void> approveRegistrationApplication(@PathVariable @UUID String id) {
+
+        adminUserRegisterApplicationService.approveRegistrationApplication(id);
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Rejects an admin user register application.
+     * Requires SUPER_ADMIN authority.
+     *
+     * @param id The id of the register application.
+     * @return A response object containing the rejected register application.
+     */
+    @PostMapping("/registration-application/{id}/reject")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    public AysResponse<Void> rejectRegistrationApplication(@PathVariable @UUID String id,
+                                                           @RequestBody @Valid AdminUserRegisterApplicationRejectRequest request) {
+
+        adminUserRegisterApplicationService.rejectRegistrationApplication(id, request);
+        return AysResponse.SUCCESS;
     }
 
 }

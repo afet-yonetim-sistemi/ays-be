@@ -85,7 +85,7 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
 
         tokenService.verifyAndValidate(refreshToken);
         final String userId = tokenService
-                .getClaims(refreshToken)
+                .getPayload(refreshToken)
                 .get(AysTokenClaims.USER_ID.getValue()).toString();
 
         final AdminUserEntity adminUserEntity = adminUserRepository.findById(userId)
@@ -118,11 +118,11 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
     public void invalidateTokens(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
-        final String refreshTokenId = tokenService.getClaims(refreshToken)
+        final String refreshTokenId = tokenService.getPayload(refreshToken)
                 .get(AysTokenClaims.JWT_ID.getValue()).toString();
         invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
 
-        final String accessTokenId = tokenService.getClaims(identity.getAccessToken())
+        final String accessTokenId = tokenService.getPayload(identity.getAccessToken())
                 .get(AysTokenClaims.JWT_ID.getValue()).toString();
         invalidTokenService.invalidateTokens(Set.of(accessTokenId, refreshTokenId));
     }

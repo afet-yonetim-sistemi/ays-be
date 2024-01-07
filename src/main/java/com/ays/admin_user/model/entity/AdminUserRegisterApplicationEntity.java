@@ -63,8 +63,22 @@ public class AdminUserRegisterApplicationEntity extends BaseEntity {
         return AdminUserRegisterApplicationStatus.WAITING.equals(this.status);
     }
 
+    public boolean isCompleted() {
+        return AdminUserRegisterApplicationStatus.COMPLETED.equals(this.status);
+    }
+
     public void complete(final String adminUserId) {
         this.adminUserId = adminUserId;
         this.status = AdminUserRegisterApplicationStatus.COMPLETED;
     }
+
+    public void verify() {
+        this.status = AdminUserRegisterApplicationStatus.VERIFIED;
+    }
+
+    public void reject(final String rejectReason) {
+        this.rejectReason = rejectReason;
+        this.status = AdminUserRegisterApplicationStatus.REJECTED;
+    }
+
 }

@@ -4,6 +4,7 @@ import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
 import com.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 
@@ -18,6 +19,15 @@ import org.mapstruct.factory.Mappers;
 public interface AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper extends BaseMapper<AdminUserRegisterApplication, AdminUserRegisterApplicationResponse> {
 
     /**
+     * Maps an instance of {@link AdminUserRegisterApplication} to {@link AdminUserRegisterApplicationResponse}.
+     *
+     * @param source The source object of type {@link AdminUserRegisterApplication} to be mapped.
+     * @return An instance of {@link AdminUserRegisterApplicationResponse} containing the mapped data.
+     */
+    @Mapping(target = "adminUser.phoneNumber", source = "source.adminUser.phoneNumber")
+    AdminUserRegisterApplicationResponse map(AdminUserRegisterApplication source);
+
+    /**
      * Initializes the mapper.
      *
      * @return the initialized mapper object.
@@ -25,4 +35,5 @@ public interface AdminUserRegisterApplicationToAdminUserRegisterApplicationRespo
     static AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper initialize() {
         return Mappers.getMapper(AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper.class);
     }
+
 }

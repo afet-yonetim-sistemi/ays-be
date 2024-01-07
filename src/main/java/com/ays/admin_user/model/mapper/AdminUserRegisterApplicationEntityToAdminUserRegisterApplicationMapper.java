@@ -16,7 +16,13 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper extends BaseMapper<AdminUserRegisterApplicationEntity, AdminUserRegisterApplication> {
 
+    /**
+     * Initializes the mapper.
+     *
+     * @return the initialized mapper object.
+     */
     static AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper initialize() {
         return Mappers.getMapper(AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.class);
     }
+
 }
