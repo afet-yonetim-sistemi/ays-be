@@ -14,8 +14,9 @@ import com.ays.common.util.AysRandomUtil;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.model.entity.UserEntityBuilder;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -164,12 +164,14 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         // Given
         long currentTimeMillis = System.currentTimeMillis();
         String mockJwt = Jwts.builder()
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(MOCK_ISSUER)
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
-                .signWith(MOCK_PRIVATE_KEY, SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(MOCK_ISSUER)
+                .issuedAt(new Date(currentTimeMillis))
+                .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
+                .signWith(MOCK_PRIVATE_KEY)
                 .compact();
 
         // When
@@ -217,29 +219,31 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Map<String, Object> mockAdminUserClaims = mockAdminUserEntity.getClaims();
 
         long currentTimeMillis = System.currentTimeMillis();
-        String mockJwt = Jwts.builder()
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(MOCK_ISSUER)
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
-                .signWith(MOCK_PRIVATE_KEY, SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .addClaims(mockAdminUserClaims)
+        String mockToken = Jwts.builder()
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(MOCK_ISSUER)
+                .issuedAt(new Date(currentTimeMillis))
+                .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
+                .signWith(MOCK_PRIVATE_KEY)
+                .claims(mockAdminUserClaims)
                 .compact();
 
-        Claims mockClaims = Jwts.parserBuilder()
-                .setSigningKey(MOCK_PUBLIC_KEY)
+        Claims mockPayload = Jwts.parser()
+                .verifyWith(MOCK_PUBLIC_KEY)
                 .build()
-                .parseClaimsJws(mockJwt)
-                .getBody();
+                .parseSignedClaims(mockToken)
+                .getPayload();
 
         // When
         Mockito.when(tokenConfiguration.getPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
 
         // Then
-        Claims claims = tokenService.getClaims(mockJwt);
+        Claims claims = tokenService.getPayload(mockToken);
 
-        Assertions.assertEquals(mockClaims, claims);
+        Assertions.assertEquals(mockPayload, claims);
 
         // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getIssuer();
@@ -257,27 +261,29 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Map<String, Object> mockUserClaims = mockUserEntity.getClaims();
 
         long currentTimeMillis = System.currentTimeMillis();
-        String mockJwt = Jwts.builder()
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(MOCK_ISSUER)
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
-                .signWith(MOCK_PRIVATE_KEY, SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .addClaims(mockUserClaims)
+        String mockToken = Jwts.builder()
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(MOCK_ISSUER)
+                .issuedAt(new Date(currentTimeMillis))
+                .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
+                .signWith(MOCK_PRIVATE_KEY)
+                .claims(mockUserClaims)
                 .compact();
 
-        Claims mockClaims = Jwts.parserBuilder()
-                .setSigningKey(MOCK_PUBLIC_KEY)
+        Claims mockClaims = Jwts.parser()
+                .verifyWith(MOCK_PUBLIC_KEY)
                 .build()
-                .parseClaimsJws(mockJwt)
-                .getBody();
+                .parseSignedClaims(mockToken)
+                .getPayload();
 
         // When
         Mockito.when(tokenConfiguration.getPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
 
         // Then
-        Claims claims = tokenService.getClaims(mockJwt);
+        Claims claims = tokenService.getPayload(mockToken);
 
         Assertions.assertEquals(mockClaims, claims);
 
@@ -297,27 +303,34 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(MOCK_ISSUER)
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
-                .signWith(MOCK_PRIVATE_KEY, SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .addClaims(mockAdminUserClaims)
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(MOCK_ISSUER)
+                .issuedAt(new Date(currentTimeMillis))
+                .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
+                .signWith(MOCK_PRIVATE_KEY)
+                .claims(mockAdminUserClaims)
                 .compact();
 
-        Claims mockClaims = Jwts.parserBuilder()
-                .setSigningKey(MOCK_PUBLIC_KEY)
+        Jws<Claims> mockClaims = Jwts.parser()
+                .verifyWith(MOCK_PUBLIC_KEY)
                 .build()
-                .parseClaimsJws(mockToken)
-                .getBody();
+                .parseSignedClaims(mockToken);
+
+        JwsHeader mockHeader = mockClaims.getHeader();
+        Claims mockPayload = mockClaims.getPayload();
 
         Jwt mockJwt = new Jwt(
                 mockToken,
-                Instant.ofEpochSecond(((Double) mockClaims.get(AysTokenClaims.ISSUED_AT.getValue())).intValue()),
-                Instant.ofEpochSecond(((Double) mockClaims.get(AysTokenClaims.EXPIRES_AT.getValue())).intValue()),
-                Map.of(AysTokenClaims.ALGORITHM.getValue(), SignatureAlgorithm.RS512.getValue()),
-                mockClaims
+                mockPayload.getIssuedAt().toInstant(),
+                mockPayload.getExpiration().toInstant(),
+                Map.of(
+                        AysTokenClaims.TYPE.getValue(), mockHeader.getType(),
+                        AysTokenClaims.ALGORITHM.getValue(), mockHeader.getAlgorithm()
+                ),
+                mockPayload
         );
 
         List<SimpleGrantedAuthority> mockAuthorities = new ArrayList<>();
@@ -351,32 +364,39 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(MOCK_ISSUER)
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
-                .signWith(MOCK_PRIVATE_KEY, SignatureAlgorithm.RS512)
-                .claim(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .addClaims(mockUserClaims)
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(MOCK_ISSUER)
+                .issuedAt(new Date(currentTimeMillis))
+                .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
+                .signWith(MOCK_PRIVATE_KEY)
+                .claims(mockUserClaims)
                 .compact();
 
-        Claims mockClaims = Jwts.parserBuilder()
-                .setSigningKey(MOCK_PUBLIC_KEY)
+        Jws<Claims> mockClaims = Jwts.parser()
+                .verifyWith(MOCK_PUBLIC_KEY)
                 .build()
-                .parseClaimsJws(mockToken)
-                .getBody();
+                .parseSignedClaims(mockToken);
+
+        JwsHeader mockHeader = mockClaims.getHeader();
+        Claims mockPayload = mockClaims.getPayload();
 
         Jwt mockJwt = new Jwt(
                 mockToken,
-                Instant.ofEpochSecond(((Double) mockClaims.get(AysTokenClaims.ISSUED_AT.getValue())).intValue()),
-                Instant.ofEpochSecond(((Double) mockClaims.get(AysTokenClaims.EXPIRES_AT.getValue())).intValue()),
-                Map.of(AysTokenClaims.ALGORITHM.getValue(), SignatureAlgorithm.RS512.getValue()),
-                mockClaims
+                mockPayload.getIssuedAt().toInstant(),
+                mockPayload.getExpiration().toInstant(),
+                Map.of(
+                        AysTokenClaims.TYPE.getValue(), mockHeader.getType(),
+                        AysTokenClaims.ALGORITHM.getValue(), mockHeader.getAlgorithm()
+                ),
+                mockPayload
         );
 
         List<SimpleGrantedAuthority> mockAuthorities = new ArrayList<>();
         mockAuthorities.add(new SimpleGrantedAuthority(AysUserType.USER.name()));
-        List<String> roles = AysListUtil.to(mockClaims.get(AysTokenClaims.ROLES.getValue()), String.class);
+        List<String> roles = AysListUtil.to(mockPayload.get(AysTokenClaims.ROLES.getValue()), String.class);
         roles.forEach(role -> mockAuthorities.add(new SimpleGrantedAuthority(role)));
 
         UsernamePasswordAuthenticationToken mockAuthentication = UsernamePasswordAuthenticationToken

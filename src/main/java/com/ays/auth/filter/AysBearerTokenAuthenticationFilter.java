@@ -46,7 +46,7 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
             tokenService.verifyAndValidate(jwt);
 
-            final String tokenId = tokenService.getClaims(jwt)
+            final String tokenId = tokenService.getPayload(jwt)
                     .get(AysTokenClaims.JWT_ID.getValue()).toString();
             invalidTokenService.checkForInvalidityOfToken(tokenId);
 
