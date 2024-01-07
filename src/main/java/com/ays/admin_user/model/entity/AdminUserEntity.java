@@ -95,6 +95,10 @@ public class AdminUserEntity extends BaseEntity {
         this.status = AdminUserStatus.ACTIVE;
     }
 
+    public void passivate() {
+        this.status = AdminUserStatus.PASSIVE;
+    }
+
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
 

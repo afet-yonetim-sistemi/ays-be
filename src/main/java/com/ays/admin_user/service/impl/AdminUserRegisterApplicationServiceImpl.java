@@ -4,6 +4,8 @@ import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequest;
+import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
 import com.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper;
@@ -134,6 +136,28 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
         adminUserRegisterApplicationRepository.save(registerApplicationEntity);
 
         adminUser.activate();
+        adminUserRepository.save(adminUser);
+    }
+
+    /**
+     * Rejects an admin user register application by id.
+     *
+     * @param id      The id of the register application.
+     * @param request The request object containing the rejection details.
+     */
+    @Override
+    @Transactional
+    public void rejectRegistrationApplication(String id, AdminUserRegisterApplicationRejectRequest request) {
+        final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
+                .findById(id)
+                .filter(AdminUserRegisterApplicationEntity::isCompleted)
+                .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdAndStatusException(id, AdminUserRegisterApplicationStatus.WAITING));
+        final AdminUserEntity adminUser = registerApplicationEntity.getAdminUser();
+
+        registerApplicationEntity.reject(request.getRejectReason());
+        adminUserRegisterApplicationRepository.save(registerApplicationEntity);
+
+        adminUser.passivate();
         adminUserRepository.save(adminUser);
     }
 

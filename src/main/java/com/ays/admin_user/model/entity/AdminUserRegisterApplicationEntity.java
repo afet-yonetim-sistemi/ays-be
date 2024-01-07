@@ -75,4 +75,10 @@ public class AdminUserRegisterApplicationEntity extends BaseEntity {
     public void verify() {
         this.status = AdminUserRegisterApplicationStatus.VERIFIED;
     }
+
+    public void reject(final String rejectReason) {
+        this.rejectReason = rejectReason;
+        this.status = AdminUserRegisterApplicationStatus.REJECTED;
+    }
+
 }
