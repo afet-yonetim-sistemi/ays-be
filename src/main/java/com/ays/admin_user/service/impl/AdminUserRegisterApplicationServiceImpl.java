@@ -3,7 +3,6 @@ package com.ays.admin_user.service.impl;
 import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
-import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
@@ -15,6 +14,7 @@ import com.ays.admin_user.repository.AdminUserRepository;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdAndStatusException;
 import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationNotExistByIdException;
+import com.ays.admin_user.util.exception.AysAdminUserRegisterApplicationSummaryNotExistByIdException;
 import com.ays.common.model.AysPage;
 import com.ays.institution.repository.InstitutionRepository;
 import com.ays.institution.util.exception.AysInstitutionNotExistException;
@@ -94,7 +94,7 @@ public class AdminUserRegisterApplicationServiceImpl implements AdminUserRegiste
         final AdminUserRegisterApplicationEntity registerApplicationEntity = adminUserRegisterApplicationRepository
                 .findById(id)
                 .filter(AdminUserRegisterApplicationEntity::isWaiting)
-                .orElseThrow(() -> new AysAdminUserRegisterApplicationNotExistByIdAndStatusException(id, AdminUserRegisterApplicationStatus.WAITING));
+                .orElseThrow(() -> new AysAdminUserRegisterApplicationSummaryNotExistByIdException(id));
 
         return adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper.map(registerApplicationEntity);
     }
