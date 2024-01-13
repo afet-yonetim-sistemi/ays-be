@@ -7,6 +7,7 @@ import com.ays.assignment.repository.AssignmentRepository;
 import com.ays.auth.config.AysTokenConfigurationParameter;
 import com.ays.auth.model.AysToken;
 import com.ays.auth.model.enums.AysTokenClaims;
+import com.ays.auth.repository.AysInvalidTokenRepository;
 import com.ays.common.util.AysRandomUtil;
 import com.ays.institution.repository.InstitutionRepository;
 import com.ays.super_admin.entity.SuperAdminEntityBuilder;
@@ -15,7 +16,6 @@ import com.ays.user.repository.UserRepository;
 import com.ays.util.AysValidTestData;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,6 +51,9 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @Autowired
     protected AdminUserRepository adminUserRepository;
+
+    @Autowired
+    protected AysInvalidTokenRepository invalidTokenRepository;
 
 
     protected AysToken superAdminToken;
@@ -97,26 +100,29 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
         final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
         final String accessToken = Jwts.builder()
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(tokenConfiguration.getIssuer())
-                .setIssuedAt(tokenIssuedAt)
-                .setExpiration(accessTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .addClaims(claims)
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(tokenConfiguration.getIssuer())
+                .issuedAt(tokenIssuedAt)
+                .expiration(accessTokenExpiresAt)
+                .signWith(tokenConfiguration.getPrivateKey())
+                .claims(claims)
                 .compact();
 
         final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireDay());
         final JwtBuilder refreshTokenBuilder = Jwts.builder();
         final String refreshToken = refreshTokenBuilder
-                .setId(AysRandomUtil.generateUUID())
-                .setIssuer(tokenConfiguration.getIssuer())
-                .setIssuedAt(tokenIssuedAt)
-                .setExpiration(refreshTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey(), SignatureAlgorithm.RS512)
-                .setHeaderParam(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(tokenConfiguration.getIssuer())
+                .issuedAt(tokenIssuedAt)
+                .expiration(refreshTokenExpiresAt)
+                .signWith(tokenConfiguration.getPrivateKey())
                 .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
-                .claim(AysTokenClaims.USERNAME.getValue(), claims.get(AysTokenClaims.USERNAME.getValue()))
                 .compact();
 
         return AysToken.builder()

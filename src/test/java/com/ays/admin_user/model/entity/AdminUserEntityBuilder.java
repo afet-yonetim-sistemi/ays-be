@@ -28,11 +28,14 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
 
     public AdminUserEntityBuilder withValidFields() {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidFields().build();
+        final String id = AysRandomUtil.generateUUID();
+
         return this
-                .withId(AysRandomUtil.generateUUID())
+                .withId(id)
                 .withUsername(String.valueOf(AysRandomUtil.generateNumber(6)))
                 .withPassword("$2a$10$H/lKEaKsusQztOaJmYTAi.4MAmjvnxWOh0DY.XrgwHy5D2gENVIky")
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
+                .withEmail(id + "@ays.com")
                 .withStatus(AdminUserStatus.ACTIVE)
                 .withInstitutionId(institutionEntity.getId())
                 .withInstitution(institutionEntity);

@@ -10,7 +10,7 @@ spring:
   datasource:
     username: ${AYS_DB_USERNAME:ays}
     password: ${AYS_DB_PASSWORD:ayspass}
-    url: jdbc:mysql://${AYS_DB_IP:localhost}:${AYS_DB_PORT:3306}/ays
+    url: jdbc:mysql://${AYS_DB_IP:localhost}:${AYS_DB_PORT:3307}/ays
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       username: ${spring.datasource.username}
@@ -57,3 +57,9 @@ management:
       exposure:
         include: info, health
       base-path: /public/actuator
+
+ays:
+  scheduler:
+    UnusedInvalidTokenDeletionScheduler:
+      cron: '0 0 */3 * * ?'
+      enabled: true

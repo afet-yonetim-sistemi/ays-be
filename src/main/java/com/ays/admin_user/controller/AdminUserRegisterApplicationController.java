@@ -5,6 +5,7 @@ import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequest;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationCreateResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationResponse;
 import com.ays.admin_user.model.dto.response.AdminUserRegisterApplicationSummaryResponse;
@@ -33,10 +34,10 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Admin Register Application controller to perform register application api operations for admins.
  */
+@Validated
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
-@Validated
 class AdminUserRegisterApplicationController {
 
     private final AdminUserRegisterApplicationService adminUserRegisterApplicationService;
@@ -57,12 +58,17 @@ class AdminUserRegisterApplicationController {
      */
     @PostMapping("/registration-applications")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> getRegistrationApplications(@RequestBody AdminUserRegisterApplicationListRequest request) {
+    public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> getRegistrationApplications(
+            @RequestBody @Valid AdminUserRegisterApplicationListRequest request) {
+
         final AysPage<AdminUserRegisterApplication> pageOfRegisterApplications = adminUserRegisterApplicationService.getRegistrationApplications(request);
         final AysPageResponse<AdminUserRegisterApplicationsResponse> pageResponseOfRegisterApplication = AysPageResponse
                 .<AdminUserRegisterApplicationsResponse>builder()
                 .of(pageOfRegisterApplications)
-                .content(adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.map(pageOfRegisterApplications.getContent()))
+                .content(
+                        adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper
+                                .map(pageOfRegisterApplications.getContent())
+                )
                 .filteredBy(request.getFilter())
                 .build();
 
@@ -70,7 +76,7 @@ class AdminUserRegisterApplicationController {
     }
 
     /**
-     * Gets an admin user register application detail in the system.
+     * Gets an admin user registers application detail in the system.
      * Requires SUPER_ADMIN authority.
      *
      * @param id The id of the register application.
@@ -78,7 +84,9 @@ class AdminUserRegisterApplicationController {
      */
     @GetMapping("/registration-application/{id}")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<AdminUserRegisterApplicationResponse> getRegistrationApplicationById(@PathVariable String id) {
+    public AysResponse<AdminUserRegisterApplicationResponse> getRegistrationApplicationById(
+            @PathVariable @UUID String id) {
+
         final AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService
                 .getRegistrationApplicationById(id);
 
@@ -95,7 +103,9 @@ class AdminUserRegisterApplicationController {
      * @return A response with the register application summary.
      */
     @GetMapping("/registration-application/{id}/summary")
-    public AysResponse<AdminUserRegisterApplicationSummaryResponse> getRegistrationApplicationSummaryById(@PathVariable @UUID String id) {
+    public AysResponse<AdminUserRegisterApplicationSummaryResponse> getRegistrationApplicationSummaryById(
+            @PathVariable @UUID String id) {
+
         final AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService
                 .getRegistrationApplicationSummaryById(id);
 
@@ -108,16 +118,51 @@ class AdminUserRegisterApplicationController {
      * Creates a new admin user register application.
      * Requires SUPER_ADMIN authority.
      *
-     * @param request The request object containing the register application details.
+     * @param createRequest The request object containing the register application details.
      * @return A response object containing the created register application.
      */
     @PostMapping("/registration-application")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
-    public AysResponse<AdminUserRegisterApplicationCreateResponse> createRegistrationApplication(@RequestBody @Valid AdminUserRegisterApplicationCreateRequest request) {
-        AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService.createRegistrationApplication(request);
+    public AysResponse<AdminUserRegisterApplicationCreateResponse> createRegistrationApplication(
+            @RequestBody @Valid AdminUserRegisterApplicationCreateRequest createRequest) {
+
+        AdminUserRegisterApplication registerApplication = adminUserRegisterApplicationService
+                .createRegistrationApplication(createRequest);
         return AysResponse.successOf(
-                adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper.map(registerApplication)
+                adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper
+                        .map(registerApplication)
         );
+    }
+
+    /**
+     * Approves an admin user register application.
+     * Requires SUPER_ADMIN authority.
+     *
+     * @param id The id of the register application.
+     * @return A success response.
+     */
+    @PostMapping("/registration-application/{id}/approve")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    public AysResponse<Void> approveRegistrationApplication(@PathVariable @UUID String id) {
+
+        adminUserRegisterApplicationService.approveRegistrationApplication(id);
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * Rejects an admin user register application.
+     * Requires SUPER_ADMIN authority.
+     *
+     * @param id The id of the register application.
+     * @return A response object containing the rejected register application.
+     */
+    @PostMapping("/registration-application/{id}/reject")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    public AysResponse<Void> rejectRegistrationApplication(@PathVariable @UUID String id,
+                                                           @RequestBody @Valid AdminUserRegisterApplicationRejectRequest request) {
+
+        adminUserRegisterApplicationService.rejectRegistrationApplication(id, request);
+        return AysResponse.SUCCESS;
     }
 
     /**

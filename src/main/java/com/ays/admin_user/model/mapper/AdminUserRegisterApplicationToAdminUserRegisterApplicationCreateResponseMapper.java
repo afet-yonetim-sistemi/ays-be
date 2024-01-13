@@ -27,4 +27,5 @@ public interface AdminUserRegisterApplicationToAdminUserRegisterApplicationCreat
     static AdminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper initialize() {
         return Mappers.getMapper(AdminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper.class);
     }
+
 }

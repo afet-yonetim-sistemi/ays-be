@@ -34,4 +34,15 @@ class AysParameterServiceImpl implements AysParameterService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Retrieves an AysParameter entity that has the given name.
+     *
+     * @param name the name to search for
+     * @return an AysParameter entity
+     */
+    @Override
+    public AysParameter getParameter(final String name) {
+        return aysParameterEntityToAysParameterMapper.map(parameterRepository.findByName(name));
+    }
+
 }

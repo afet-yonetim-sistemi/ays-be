@@ -19,7 +19,7 @@ public class AdminUserRegisterApplicationSummaryResponse {
     @Getter
     @Setter
     public static class Institution {
-        private String id;
+
         private String name;
     }
 }

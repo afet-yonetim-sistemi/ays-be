@@ -38,7 +38,7 @@ public interface AysTokenService {
      *
      * @param jwt jwt text
      */
-    Claims getClaims(String jwt);
+    Claims getPayload(String jwt);
 
     /**
      * Get Authentication Info from JWT
