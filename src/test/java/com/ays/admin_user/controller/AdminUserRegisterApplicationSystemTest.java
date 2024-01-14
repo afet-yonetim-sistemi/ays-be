@@ -159,7 +159,13 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
                         .value(mockAysResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .exists());
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.response("adminUser.phoneNumber")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("adminUser.phoneNumber.countryCode")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("adminUser.phoneNumber.lineNumber")
+                        .isNotEmpty());
     }
 
     @Test
