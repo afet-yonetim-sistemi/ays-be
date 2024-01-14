@@ -18,8 +18,8 @@ import org.mapstruct.factory.Mappers;
 public interface UserEntityToUserMapper extends BaseMapper<UserEntity, User> {
 
     @Override
-    @Mapping(target = "phoneNumber.countryCode", source = "source.countryCode")
-    @Mapping(target = "phoneNumber.lineNumber", source = "source.lineNumber")
+    @Mapping(target = "phoneNumber.countryCode", source = "countryCode")
+    @Mapping(target = "phoneNumber.lineNumber", source = "lineNumber")
     User map(UserEntity source);
 
     /**
