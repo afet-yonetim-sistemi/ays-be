@@ -4,6 +4,7 @@ import com.ays.admin_user.model.AdminUserRegisterApplication;
 import com.ays.admin_user.model.entity.AdminUserRegisterApplicationEntity;
 import com.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -15,6 +16,11 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface AdminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper extends BaseMapper<AdminUserRegisterApplicationEntity, AdminUserRegisterApplication> {
+
+    @Override
+    @Mapping(target = "adminUser.phoneNumber.countryCode", source = "adminUser.countryCode")
+    @Mapping(target = "adminUser.phoneNumber.lineNumber", source = "adminUser.lineNumber")
+    AdminUserRegisterApplication map(AdminUserRegisterApplicationEntity entity);
 
     /**
      * Initializes the mapper.

@@ -20,8 +20,8 @@ public interface AdminUserEntityToAdminUserMapper extends BaseMapper<AdminUserEn
 
 
     @Override
-    @Mapping(target = "phoneNumber.countryCode", source = "source.countryCode")
-    @Mapping(target = "phoneNumber.lineNumber", source = "source.lineNumber")
+    @Mapping(target = "phoneNumber.countryCode", source = "countryCode")
+    @Mapping(target = "phoneNumber.lineNumber", source = "lineNumber")
     AdminUser map(AdminUserEntity source);
 
     /**
