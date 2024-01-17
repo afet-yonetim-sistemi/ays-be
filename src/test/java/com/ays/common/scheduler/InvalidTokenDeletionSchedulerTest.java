@@ -18,7 +18,7 @@ import org.springframework.scheduling.config.ScheduledTaskHolder;
 import java.time.LocalDateTime;
 
 
-class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest {
+class InvalidTokenDeletionSchedulerTest extends AbstractSystemTest {
     @Value("${ays.scheduler.UnusedInvalidTokenDeletionScheduler.cron}")
     private String expectedCronExpression;
 
@@ -26,7 +26,7 @@ class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest {
     private ScheduledTaskHolder taskHolder;
 
     @SpyBean
-    private UnusedInvalidTokenDeletionScheduler unusedInvalidTokenDeletionScheduler;
+    private InvalidTokenDeletionScheduler invalidTokenDeletionScheduler;
 
     private void initialize(AysInvalidTokenEntity mockAysInvalidTokenEntity) {
         invalidTokenRepository.save(mockAysInvalidTokenEntity);
@@ -63,7 +63,7 @@ class UnusedInvalidTokenDeletionSchedulerTest extends AbstractSystemTest {
                 .await()
                 .atMost(2, java.util.concurrent.TimeUnit.SECONDS)
                 .untilAsserted(() -> {
-                    Mockito.verify(unusedInvalidTokenDeletionScheduler, Mockito.atLeast(1)).scheduled();
+                    Mockito.verify(invalidTokenDeletionScheduler, Mockito.atLeast(1)).deleteInvalidTokens();
 
                     AysInvalidTokenEntity entity = invalidTokenRepository.findById(mockAysInvalidTokenEntity.getId()).orElse(null);
                     Assertions.assertNull(entity);

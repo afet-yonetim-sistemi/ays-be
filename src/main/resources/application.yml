@@ -60,6 +60,6 @@ management:
 
 ays:
   scheduler:
-    UnusedInvalidTokenDeletionScheduler:
-      cron: '0 0 */3 * * ?'
-      enabled: true
+    invalid-tokens-deletion:
+      cron: ${INVALID_TOKENS_DELETION_CRON:'0 0 */3 * * ?'}
+      enable: ${INVALID_TOKENS_DELETION_ENABLED:true}
