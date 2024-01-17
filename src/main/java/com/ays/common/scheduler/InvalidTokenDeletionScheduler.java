@@ -1,5 +1,6 @@
 package com.ays.common.scheduler;
 
+import com.ays.auth.model.enums.AysConfigurationParameter;
 import com.ays.auth.repository.AysInvalidTokenRepository;
 import com.ays.parameter.model.AysParameter;
 import com.ays.parameter.service.AysParameterService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * Scheduled task for deleting unused invalid tokens from the system.
@@ -32,8 +34,12 @@ class InvalidTokenDeletionScheduler {
     @Transactional
     @Scheduled(cron = "${ays.scheduler.invalid-tokens-deletion.cron}")
     public void deleteInvalidTokens() {
-        AysParameter refreshTokenExpireDayParameter = parameterService.getParameter("AUTH_REFRESH_TOKEN_EXPIRE_DAY");
-        LocalDateTime expirationThreshold = LocalDateTime.now().minusDays(Long.parseLong(refreshTokenExpireDayParameter.getDefinition()));
+        final AysParameter refreshTokenExpireDayParameter = Optional
+                .ofNullable(parameterService.getParameter(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.name()))
+                .orElse(AysParameter.from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY));
+
+        LocalDateTime expirationThreshold = LocalDateTime.now()
+                .minusDays(Long.parseLong(refreshTokenExpireDayParameter.getDefinition()));
 
         log.trace("Clearing all unused invalid tokens created before {}", expirationThreshold);
         invalidTokenRepository.deleteAllByCreatedAtBefore(expirationThreshold);
