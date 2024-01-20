@@ -55,6 +55,7 @@ class UserServiceImpl implements UserService {
 
         List<User> users = userEntityToUserMapper.map(userEntities.getContent());
         return AysPage.of(
+                listRequest.getFilter(),
                 userEntities,
                 users
         );

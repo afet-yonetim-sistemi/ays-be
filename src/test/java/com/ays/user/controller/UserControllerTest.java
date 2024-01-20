@@ -17,12 +17,7 @@ import com.ays.common.util.exception.model.AysError;
 import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
-import com.ays.user.model.dto.request.UserListRequest;
-import com.ays.user.model.dto.request.UserListRequestBuilder;
-import com.ays.user.model.dto.request.UserSaveRequest;
-import com.ays.user.model.dto.request.UserSaveRequestBuilder;
-import com.ays.user.model.dto.request.UserUpdateRequest;
-import com.ays.user.model.dto.request.UserUpdateRequestBuilder;
+import com.ays.user.model.dto.request.*;
 import com.ays.user.model.dto.response.UserResponse;
 import com.ays.user.model.dto.response.UserSavedResponse;
 import com.ays.user.model.dto.response.UserSavedResponseBuilder;
@@ -322,7 +317,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 List.of(new UserEntityBuilder().withValidFields().build())
         );
         List<User> mockUsers = userEntityToUserMapper.map(mockUserEntities.getContent());
-        AysPage<User> mockAysPageOfUsers = AysPage.of(mockUserEntities, mockUsers);
+        AysPage<User> mockAysPageOfUsers = AysPage.of(mockUserListRequest.getFilter(), mockUserEntities, mockUsers);
         Mockito.when(userService.getAllUsers(Mockito.any(UserListRequest.class)))
                 .thenReturn(mockAysPageOfUsers);
 
