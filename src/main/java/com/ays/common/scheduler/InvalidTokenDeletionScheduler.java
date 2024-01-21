@@ -15,8 +15,15 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
- * Scheduled task for deleting unused invalid tokens from the system.
- * This task is triggered based on a configured cron expression and a conditional property.
+ * Scheduled task to delete invalid tokens that are no longer in use.
+ * <p>
+ * This scheduler is enabled based on the configuration property
+ * {@code ays.scheduler.invalid-tokens-deletion.enable}.
+ *
+ * @see AysInvalidTokenRepository
+ * @see AysParameterService
+ * @see AysParameter
+ * @see AysConfigurationParameter
  */
 @Slf4j
 @Component
@@ -28,8 +35,17 @@ class InvalidTokenDeletionScheduler {
     private final AysParameterService parameterService;
 
     /**
-     * Deletes invalid tokens created before a specified expiration threshold.
-     * The scheduled task is executed at regular intervals based on the configured cron expression.
+     * Scheduled task method to delete invalid tokens that are no longer in use.
+     * This method is triggered based on the cron expression specified in the configuration property
+     * {@code ays.scheduler.invalid-tokens-deletion.cron}.
+     * <p>
+     * The method retrieves the expiration threshold for invalid tokens based on the configured refresh token
+     * expiration day parameter. It then deletes all invalid tokens created before this threshold.
+     *
+     * @see AysInvalidTokenRepository#deleteAllByCreatedAtBefore(LocalDateTime)
+     * @see AysParameterService#getParameter(String)
+     * @see AysParameter
+     * @see AysConfigurationParameter#AUTH_REFRESH_TOKEN_EXPIRE_DAY
      */
     @Transactional
     @Scheduled(cron = "${ays.scheduler.invalid-tokens-deletion.cron}")
