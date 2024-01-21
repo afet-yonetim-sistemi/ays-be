@@ -7,13 +7,24 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Repository interface for performing CRUD operations on UserAssignmentEntity objects.
  */
 public interface AssignmentRepository extends JpaRepository<AssignmentEntity, String>, JpaSpecificationExecutor<AssignmentEntity> {
+
+    /**
+     * Retrieves a list of {@link AssignmentEntity} instances with a specific status and created before a given timestamp.
+     *
+     * @param status    The {@link AssignmentStatus} to filter assignments by.
+     * @param createdAt The timestamp indicating the maximum creation time for assignments to be included.
+     * @return A list of {@link AssignmentEntity} instances that match the specified criteria.
+     */
+    List<AssignmentEntity> findAllByStatusAndCreatedAtBefore(AssignmentStatus status, LocalDateTime createdAt);
 
     /**
      * Checks whether an assignment exists for a specific user ID and status.
