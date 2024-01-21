@@ -11,6 +11,8 @@ import com.ays.location.util.AysLocationUtil;
 import com.ays.user.model.entity.UserEntity;
 import org.locationtech.jts.geom.Point;
 
+import java.time.LocalDateTime;
+
 public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
 
     public AssignmentEntityBuilder() {
@@ -48,6 +50,11 @@ public class AssignmentEntityBuilder extends TestDataBuilder<AssignmentEntity> {
 
     public AssignmentEntityBuilder withPoint(Point point) {
         data.setPoint(point);
+        return this;
+    }
+
+    public AssignmentEntityBuilder withCreatedAt(LocalDateTime createdAt) {
+        data.setCreatedAt(createdAt);
         return this;
     }
 
