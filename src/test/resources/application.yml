@@ -23,3 +23,6 @@ ays:
     invalid-tokens-deletion:
       cron: 0/1 * * ? * *
       enable: true
+    reserved-assignments-regulation:
+      cron: 0/1 * * ? * *
+      enable: true
