@@ -322,7 +322,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 List.of(new UserEntityBuilder().withValidFields().build())
         );
         List<User> mockUsers = userEntityToUserMapper.map(mockUserEntities.getContent());
-        AysPage<User> mockAysPageOfUsers = AysPage.of(mockUserEntities, mockUsers);
+        AysPage<User> mockAysPageOfUsers = AysPage.of(mockUserListRequest.getFilter(), mockUserEntities, mockUsers);
         Mockito.when(userService.getAllUsers(Mockito.any(UserListRequest.class)))
                 .thenReturn(mockAysPageOfUsers);
 

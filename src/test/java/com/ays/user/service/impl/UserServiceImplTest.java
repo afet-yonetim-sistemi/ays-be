@@ -58,7 +58,7 @@ class UserServiceImplTest extends AbstractUnitTest {
         Page<UserEntity> mockPageUserEntities = new PageImpl<>(mockUserEntities);
 
         List<User> mockUsers = userEntityToUserMapper.map(mockUserEntities);
-        AysPage<User> mockAysPageUsers = AysPage.of(mockPageUserEntities, mockUsers);
+        AysPage<User> mockAysPageUsers = AysPage.of(mockUserListRequest.getFilter(), mockPageUserEntities, mockUsers);
 
         String mockInstitutionId = AysRandomUtil.generateUUID();
 
