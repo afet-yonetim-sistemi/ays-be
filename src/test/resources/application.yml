@@ -20,6 +20,9 @@ spring:
 
 ays:
   scheduler:
-    UnusedInvalidTokenDeletionScheduler:
-      cron: '0/1 * * ? * *'
-      enabled: true
+    invalid-tokens-deletion:
+      cron: 0/1 * * ? * *
+      enable: true
+    reserved-assignments-regulation:
+      cron: 0/1 * * ? * *
+      enable: true

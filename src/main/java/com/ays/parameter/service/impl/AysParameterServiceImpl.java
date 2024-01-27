@@ -1,6 +1,7 @@
 package com.ays.parameter.service.impl;
 
 import com.ays.parameter.model.AysParameter;
+import com.ays.parameter.model.entity.AysParameterEntity;
 import com.ays.parameter.model.mapper.AysParameterEntityToAysParameterMapper;
 import com.ays.parameter.repository.AysParameterRepository;
 import com.ays.parameter.service.AysParameterService;
@@ -42,7 +43,8 @@ class AysParameterServiceImpl implements AysParameterService {
      */
     @Override
     public AysParameter getParameter(final String name) {
-        return aysParameterEntityToAysParameterMapper.map(parameterRepository.findByName(name));
+        final AysParameterEntity parameterEntity = parameterRepository.findByName(name);
+        return aysParameterEntityToAysParameterMapper.map(parameterEntity);
     }
 
 }

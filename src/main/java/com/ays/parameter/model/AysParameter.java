@@ -30,4 +30,12 @@ public class AysParameter {
                 .map(AysParameter::getDefinition)
                 .orElse(null);
     }
+
+    public static AysParameter from(final AysConfigurationParameter configurationParameter) {
+        return AysParameter.builder()
+                .name(configurationParameter.name())
+                .definition(configurationParameter.getDefaultValue())
+                .build();
+    }
+
 }
