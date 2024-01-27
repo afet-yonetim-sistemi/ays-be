@@ -1,10 +1,7 @@
 package com.ays.admin_user.controller;
 
 import com.ays.AbstractRestControllerTest;
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequestBuilder;
 import com.ays.admin_user.service.AdminUserAuthService;
-import com.ays.admin_user.service.AdminUserRegisterService;
 import com.ays.auth.model.dto.request.AysLoginRequest;
 import com.ays.auth.model.dto.request.AysLoginRequestBuilder;
 import com.ays.auth.model.dto.request.AysTokenInvalidateRequest;
@@ -13,12 +10,9 @@ import com.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import com.ays.auth.model.dto.request.AysTokenRefreshRequestBuilder;
 import com.ays.auth.model.dto.response.AysTokenResponse;
 import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
-import com.ays.common.model.dto.request.AysPhoneNumberRequest;
-import com.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
-import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -33,214 +27,10 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     @MockBean
     private AdminUserAuthService adminUserAuthService;
 
-    @MockBean
-    private AdminUserRegisterService adminUserRegisterService;
-
-
     private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1/authentication/admin";
-
-    @Test
-    void givenValidAdminUserRegisterRequest_whenAdminUserRegistered_thenReturnSuccessResponse() throws Exception {
-        // Given
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
-                .withValidFields().build();
-
-        // When
-        Mockito.doNothing().when(adminUserRegisterService).register(Mockito.any());
-
-        // Then
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
-
-        // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(1))
-                .register(Mockito.any());
-    }
-
-    @Test
-    void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("ABC")
-                .withLineNumber("ABC").build();
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
-                .withValidFields()
-                .withPhoneNumber(mockPhoneNumber).build();
-
-        // Then
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
-                .register(Mockito.any());
-    }
-
-    @Test
-    void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("456786745645")
-                .withLineNumber("6546467456435548676845321346656654").build();
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
-                .withValidFields()
-                .withPhoneNumber(mockPhoneNumber).build();
-
-        // Then
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
-                .register(Mockito.any());
-    }
-
-    @Test
-    void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        final String invalidOperator = "123";
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("90")
-                .withLineNumber(invalidOperator + "6327218").build();
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
-                .withValidFields()
-                .withPhoneNumber(mockPhoneNumber).build();
-
-        // Then
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
-                .register(Mockito.any());
-    }
-
-    @Test
-    void givenNameWithNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        String invalidName = "John 1234";
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
-                .withValidFields()
-                .withFirstName(invalidName)
-                .withLastName(invalidName)
-                .build();
-
-        // Then
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
-                .register(Mockito.any());
-    }
-
-    @Test
-    void givenNameWithForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        String invalidName = "John *^%$#";
-        AdminUserRegisterRequest mockRequest = new AdminUserRegisterRequestBuilder()
-                .withValidFields()
-                .withFirstName(invalidName)
-                .withLastName(invalidName)
-                .build();
-
-        // Then
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/register"), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
-                .register(Mockito.any());
-    }
 
     @Test
     void givenValidLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {

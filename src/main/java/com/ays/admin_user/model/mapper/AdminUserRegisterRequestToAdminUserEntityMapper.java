@@ -1,6 +1,6 @@
 package com.ays.admin_user.model.mapper;
 
-import com.ays.admin_user.model.dto.request.AdminUserRegisterRequest;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
 import com.ays.admin_user.model.entity.AdminUserEntity;
 import com.ays.admin_user.model.enums.AdminRole;
 import com.ays.admin_user.model.enums.AdminUserStatus;
@@ -10,26 +10,25 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
- * AdminUserRegisterRequestToAdminUserEntityMapper is an interface that defines the mapping between an {@link AdminUserRegisterRequest} and an {@link AdminUserEntity}.
+ * AdminUserRegisterRequestToAdminUserEntityMapper is an interface that defines the mapping between an {@link AdminUserRegisterApplicationCompleteRequest} and an {@link AdminUserEntity}.
  * This interface uses the MapStruct annotation @Mapper to generate an implementation of this interface at compile-time.
  * <p>The class provides a static method {@code initialize()} that returns an instance of the generated mapper implementation.
  * <p>The interface extends the MapStruct interface {@link BaseMapper}, which defines basic mapping methods.
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
 @Mapper
-public interface AdminUserRegisterRequestToAdminUserEntityMapper extends BaseMapper<AdminUserRegisterRequest, AdminUserEntity> {
+public interface AdminUserRegisterRequestToAdminUserEntityMapper extends BaseMapper<AdminUserRegisterApplicationCompleteRequest, AdminUserEntity> {
 
     /**
-     * Maps an {@link AdminUserRegisterRequest} object to an {@link AdminUserEntity} object for saving in the database.
+     * Maps an {@link AdminUserRegisterApplicationCompleteRequest} object to an {@link AdminUserEntity} object for saving in the database.
      *
-     * @param registerRequest the {@link AdminUserRegisterRequest} object to be mapped.
+     * @param registerRequest the {@link AdminUserRegisterApplicationCompleteRequest} object to be mapped.
      * @param encodedPassword the {@link String} object.
      * @return the mapped {@link AdminUserEntity} object.
      */
-    default AdminUserEntity mapForSaving(AdminUserRegisterRequest registerRequest, String encodedPassword) {
+    default AdminUserEntity mapForSaving(AdminUserRegisterApplicationCompleteRequest registerRequest, String encodedPassword) {
         return AdminUserEntity.builder()
                 .id(AysRandomUtil.generateUUID())
-                .institutionId(registerRequest.getInstitutionId())
                 .username(registerRequest.getUsername())
                 .email(registerRequest.getEmail())
                 .password(encodedPassword)

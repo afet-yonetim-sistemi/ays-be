@@ -2,6 +2,7 @@ package com.ays.admin_user.controller;
 
 
 import com.ays.admin_user.model.AdminUserRegisterApplication;
+import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCompleteRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationCreateRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationListRequest;
 import com.ays.admin_user.model.dto.request.AdminUserRegisterApplicationRejectRequest;
@@ -14,6 +15,7 @@ import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRe
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper;
 import com.ays.admin_user.model.mapper.AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper;
 import com.ays.admin_user.service.AdminUserRegisterApplicationService;
+import com.ays.admin_user.service.AdminUserRegisterService;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
@@ -39,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 class AdminUserRegisterApplicationController {
 
     private final AdminUserRegisterApplicationService adminUserRegisterApplicationService;
-
+    private final AdminUserRegisterService adminUserRegisterService;
 
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.initialize();
     private final AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper = AdminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper.initialize();
@@ -160,6 +162,19 @@ class AdminUserRegisterApplicationController {
                                                            @RequestBody @Valid AdminUserRegisterApplicationRejectRequest request) {
 
         adminUserRegisterApplicationService.rejectRegistrationApplication(id, request);
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * This endpoint allows admins to complete their admin-user register applications.
+     *
+     * @param registerRequest An {@link AdminUserRegisterApplicationCompleteRequest} object required to complete the application.
+     * @return An {@link AysResponse} containing a Void object with success message.
+     */
+    @PostMapping("/registration-application/{id}/complete")
+    public AysResponse<Void> completeRegistration(@PathVariable @UUID String id,
+                                                  @RequestBody @Valid AdminUserRegisterApplicationCompleteRequest registerRequest) {
+        adminUserRegisterService.completeRegistration(id, registerRequest);
         return AysResponse.SUCCESS;
     }
 

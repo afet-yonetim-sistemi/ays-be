@@ -77,6 +77,7 @@ class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/authentication/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/admin/registration-application/*/summary").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/admin/registration-application/*/complete").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
