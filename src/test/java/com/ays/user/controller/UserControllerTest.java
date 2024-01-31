@@ -333,7 +333,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .of(mockAysPageOfUsers)
                 .content(mockUsersResponses)
                 .build();
-        AysResponse<AysPageResponse<UsersResponse>> mockAysResponse = AysResponse.successOf(pageOfUsersResponse);
+        AysResponse<AysPageResponse<UsersResponse>> mockResponse = AysResponse.successOf(pageOfUsersResponse);
         mockMvc.perform(AysMockMvcRequestBuilders
                         .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
                 .andDo(MockMvcResultHandlers.print())
@@ -341,10 +341,12 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
+                        .value(mockResponse.getHttpStatus().getReasonPhrase()))
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+                        .value(mockResponse.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.content[0].createdAt")
                         .isNotEmpty());
 
         Mockito.verify(userService, Mockito.times(1))

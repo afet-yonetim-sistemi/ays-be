@@ -6,6 +6,8 @@ import com.ays.user.model.enums.UserSupportStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 /**
  * A DTO (Data Transfer Object) representing a list of users in a paginated response.
  */
@@ -19,5 +21,6 @@ public class UsersResponse {
     private UserRole role;
     private UserStatus status;
     private UserSupportStatus supportStatus;
+    private LocalDateTime createdAt;
 
 }

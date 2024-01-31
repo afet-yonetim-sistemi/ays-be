@@ -181,7 +181,11 @@ class UserSystemTest extends AbstractSystemTest {
     @Test
     void givenValidUserListRequest_whenUsersFound_thenReturnUsersResponse() throws Exception {
         // Given
-        UserListRequest userListRequest = new UserListRequestBuilder().withValidValues().build();
+        UserListRequest userListRequest = new UserListRequestBuilder()
+                .withValidValues()
+                .withFilter(null)
+                .withSort(null)
+                .build();
 
         // When
         Page<UserEntity> userEntities = new PageImpl<>(
@@ -209,6 +213,8 @@ class UserSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
                         .value(response.getIsSuccess()))
                 .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.content[0].createdAt")
                         .isNotEmpty());
     }
 
