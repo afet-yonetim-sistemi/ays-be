@@ -347,7 +347,7 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.content[0].createdAt")
-                        .exists());
+                        .isNotEmpty());
 
         Mockito.verify(userService, Mockito.times(1))
                 .getAllUsers(Mockito.any(UserListRequest.class));

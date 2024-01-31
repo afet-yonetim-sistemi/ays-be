@@ -215,7 +215,7 @@ class UserSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.content[0].createdAt")
-                        .exists());
+                        .isNotEmpty());
     }
 
     @Test
