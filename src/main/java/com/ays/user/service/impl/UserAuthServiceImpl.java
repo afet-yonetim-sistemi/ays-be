@@ -14,6 +14,7 @@ import com.ays.auth.util.exception.UsernameNotValidException;
 import com.ays.user.model.entity.UserEntity;
 import com.ays.user.repository.UserRepository;
 import com.ays.user.service.UserAuthService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -85,9 +86,14 @@ class UserAuthServiceImpl implements UserAuthService {
     public AysToken refreshAccessToken(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
-        final String userId = tokenService
-                .getPayload(refreshToken)
-                .get(AysTokenClaims.USER_ID.getValue()).toString();
+
+        final Claims claims = tokenService.getPayload(refreshToken);
+
+        final String refreshTokenId = claims.getId();
+
+        invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
+
+        final String userId = claims.get(AysTokenClaims.USER_ID.getValue()).toString();
 
         final UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new UserIdNotValidException(userId));

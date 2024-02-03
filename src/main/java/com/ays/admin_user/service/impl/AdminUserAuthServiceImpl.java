@@ -14,6 +14,7 @@ import com.ays.auth.util.exception.UserIdNotValidException;
 import com.ays.auth.util.exception.UserNotActiveException;
 import com.ays.auth.util.exception.UserNotVerifiedException;
 import com.ays.auth.util.exception.UsernameNotValidException;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -84,9 +85,14 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
     public AysToken refreshAccessToken(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);
-        final String userId = tokenService
-                .getPayload(refreshToken)
-                .get(AysTokenClaims.USER_ID.getValue()).toString();
+
+        final Claims claims = tokenService.getPayload(refreshToken);
+
+        final String refreshTokenId = claims.getId();
+
+        invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
+
+        final String userId = claims.get(AysTokenClaims.USER_ID.getValue()).toString();
 
         final AdminUserEntity adminUserEntity = adminUserRepository.findById(userId)
                 .orElseThrow(() -> new UserIdNotValidException(userId));

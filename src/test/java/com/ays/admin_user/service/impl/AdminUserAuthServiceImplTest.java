@@ -187,6 +187,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 .matches(Mockito.anyString(), Mockito.anyString());
     }
 
+
     @Test
     void givenValidRefreshToken_whenRefreshTokenValidated_thenReturnAysToken() {
         // Given
@@ -214,6 +215,9 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockClaims);
 
+        Mockito.doNothing().when(invalidTokenService)
+                .checkForInvalidityOfToken(Mockito.anyString());
+
         Mockito.when(adminUserRepository.findById(mockAdminUserEntity.getId()))
                 .thenReturn(Optional.of(mockAdminUserEntity));
 
@@ -227,10 +231,13 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(mockAdminUserToken.getAccessTokenExpiresAt(), token.getAccessTokenExpiresAt());
         Assertions.assertEquals(mockAdminUserToken.getRefreshToken(), token.getRefreshToken());
 
+        // Verify
         Mockito.verify(tokenService, Mockito.times(1))
                 .verifyAndValidate(mockRefreshToken);
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(mockRefreshToken);
+        Mockito.verify(invalidTokenService, Mockito.times(1))
+                .checkForInvalidityOfToken(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findById(mockAdminUserEntity.getId());
         Mockito.verify(tokenService, Mockito.times(1))
@@ -256,8 +263,68 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 () -> adminUserAuthService.refreshAccessToken(mockRefreshToken)
         );
 
+        // Verify
         Mockito.verify(tokenService, Mockito.times(1))
                 .verifyAndValidate(mockRefreshToken);
+        Mockito.verify(tokenService, Mockito.times(0))
+                .getPayload(mockRefreshToken);
+        Mockito.verify(invalidTokenService, Mockito.times(0))
+                .checkForInvalidityOfToken(Mockito.anyString());
+        Mockito.verify(adminUserRepository, Mockito.times(0))
+                .findById(Mockito.anyString());
+        Mockito.verify(tokenService, Mockito.times(0))
+                .generate(Mockito.anyMap(), Mockito.anyString());
+
+    }
+
+    @Test
+    void givenInvalidRefreshToken_whenRefreshTokenAlreadyInvalidated_thenThrowTokenAlreadyInvalidatedException() {
+        // Given
+        String mockRefreshToken = """
+                eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJkNzVmOWFkMS04Njc4LTRhMWYtOWRlMi03MjY3NjgzYzQyZTUi
+                LCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTY3MzQsImV4cCI6MTY5NDk0MzEzNCwidXNlcklkIjoiOTI2MmYwZmMtOTNkYi00ZjdlL
+                TgxYzYtYWFhZDg1YzJiMjA2In0.SVSZnIo2TnYz_tjlfpdzcokRM0waDC2ZdnlL5thjWHB3YSA5ZFwRg2vhqRj9-04UELO0W6XsBk
+                B8dKf4HJBTJu1En2uRXqiB3zRuYHrdCL0tDBVzORUNAOdr9ZC_a3lDDFdE-sfPxvrxiPooIhJ3fphnPG5V0Bo0m3ngzFSnMMVyYDB
+                F7x5Qq4f6WXsE7PWmoC40_2yI7X4k4lQV05luWyI27zjqcb3NNFDroWuk1Mwa06dqtcGMxL6o9AiksZk58Yvw3aR5e_FthiIXxVWh
+                joK-v_J6szj0HNsUQ_9YKmXE2zOtUlirQ_lUOEVyz79NM4iIHv9-L8I6N_o9BIuOKw
+                """;
+
+        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder()
+                .withStatus(AdminUserStatus.ACTIVE).build();
+
+        Claims mockClaims = AysTokenBuilder.getValidClaims(
+                mockAdminUserEntity.getId(),
+                mockAdminUserEntity.getUsername()
+        );
+
+        // When
+        Mockito.doNothing().when(tokenService)
+                .verifyAndValidate(mockRefreshToken);
+
+        Mockito.when(tokenService.getPayload(mockRefreshToken))
+                .thenReturn(mockClaims);
+
+        Mockito.doThrow(TokenAlreadyInvalidatedException.class)
+                .when(invalidTokenService)
+                .checkForInvalidityOfToken(Mockito.anyString());
+
+        // Then
+        Assertions.assertThrows(
+                TokenAlreadyInvalidatedException.class,
+                () -> adminUserAuthService.refreshAccessToken(mockRefreshToken)
+        );
+
+        // Verify
+        Mockito.verify(tokenService, Mockito.times(1))
+                .verifyAndValidate(mockRefreshToken);
+        Mockito.verify(tokenService, Mockito.times(1))
+                .getPayload(mockRefreshToken);
+        Mockito.verify(invalidTokenService, Mockito.times(1))
+                .checkForInvalidityOfToken(Mockito.anyString());
+        Mockito.verify(adminUserRepository, Mockito.times(0))
+                .findById(mockAdminUserEntity.getId());
+        Mockito.verify(tokenService, Mockito.times(0))
+                .generate(mockAdminUserEntity.getClaims(), mockRefreshToken);
     }
 
     @Test
@@ -287,6 +354,9 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockClaims);
 
+        Mockito.doNothing().when(invalidTokenService)
+                .checkForInvalidityOfToken(Mockito.anyString());
+
         Mockito.when(adminUserRepository.findById(mockAdminUserEntity.getId()))
                 .thenReturn(Optional.empty());
 
@@ -296,12 +366,17 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 () -> adminUserAuthService.refreshAccessToken(mockRefreshToken)
         );
 
+        // Verify
         Mockito.verify(tokenService, Mockito.times(1))
                 .verifyAndValidate(mockRefreshToken);
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(mockRefreshToken);
+        Mockito.verify(invalidTokenService, Mockito.times(1))
+                .checkForInvalidityOfToken(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
-                .findById(mockAdminUserEntity.getId());
+                .findById(Mockito.anyString());
+        Mockito.verify(tokenService, Mockito.times(0))
+                .generate(Mockito.anyMap(), Mockito.anyString());
     }
 
     @Test
@@ -325,9 +400,14 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         );
 
         // When
-        Mockito.doNothing().when(tokenService).verifyAndValidate(mockRefreshToken);
+        Mockito.doNothing().when(tokenService)
+                .verifyAndValidate(mockRefreshToken);
 
-        Mockito.when(tokenService.getPayload(mockRefreshToken)).thenReturn(mockClaims);
+        Mockito.when(tokenService.getPayload(mockRefreshToken))
+                .thenReturn(mockClaims);
+
+        Mockito.doNothing().when(invalidTokenService)
+                .checkForInvalidityOfToken(Mockito.anyString());
 
         Mockito.when(adminUserRepository.findById(mockAdminUserEntity.getId()))
                 .thenReturn(Optional.of(mockAdminUserEntity));
@@ -338,14 +418,17 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 () -> adminUserAuthService.refreshAccessToken(mockRefreshToken)
         );
 
+        // Verify
         Mockito.verify(tokenService, Mockito.times(1))
                 .verifyAndValidate(mockRefreshToken);
-
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(mockRefreshToken);
-
+        Mockito.verify(invalidTokenService, Mockito.times(1))
+                .checkForInvalidityOfToken(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
-                .findById(mockAdminUserEntity.getId());
+                .findById(Mockito.anyString());
+        Mockito.verify(tokenService, Mockito.times(0))
+                .generate(Mockito.anyMap(), Mockito.anyString());
     }
 
     @Test
@@ -375,6 +458,9 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockClaims);
 
+        Mockito.doNothing().when(invalidTokenService)
+                .checkForInvalidityOfToken(Mockito.anyString());
+
         Mockito.when(adminUserRepository.findById(mockAdminUserEntity.getId()))
                 .thenReturn(Optional.of(mockAdminUserEntity));
 
@@ -384,15 +470,19 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 () -> adminUserAuthService.refreshAccessToken(mockRefreshToken)
         );
 
+        // Verify
         Mockito.verify(tokenService, Mockito.times(1))
                 .verifyAndValidate(mockRefreshToken);
-
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(mockRefreshToken);
-
+        Mockito.verify(invalidTokenService, Mockito.times(1))
+                .checkForInvalidityOfToken(Mockito.anyString());
         Mockito.verify(adminUserRepository, Mockito.times(1))
-                .findById(mockAdminUserEntity.getId());
+                .findById(Mockito.anyString());
+        Mockito.verify(tokenService, Mockito.times(0))
+                .generate(Mockito.anyMap(), Mockito.anyString());
     }
+
 
     @Test
     void givenValidRefreshToken_whenRefreshTokenAndAccessTokenValidated_thenInvalidateToken() {
