@@ -45,7 +45,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
@@ -86,22 +85,24 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-applications");
-        List<AdminUserRegisterApplicationsResponse> mockResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.map(mockList);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        List<AdminUserRegisterApplicationsResponse> mockApplicationsResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationsResponseMapper.map(mockList);
         AysPageResponse<AdminUserRegisterApplicationsResponse> pageOfResponse = AysPageResponse.<AdminUserRegisterApplicationsResponse>builder()
                 .of(mockAysPage)
-                .content(mockResponse)
+                .content(mockApplicationsResponse)
                 .build();
+        AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> mockResponse = AysResponse
+                .successOf(pageOfResponse);
 
-        AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> mockAysResponse = AysResponse.successOf(pageOfResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationService, Mockito.times(1))
                 .getRegistrationApplications(Mockito.any(AdminUserRegisterApplicationListRequest.class));
     }
@@ -109,55 +110,60 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
     @Test
     void givenValidAdminUserRegisterApplicationListRequest_whenUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
         // Given
-        AdminUserRegisterApplicationListRequest mockListRequest = new AdminUserRegisterApplicationListRequestBuilder().withValidValues().build();
+        AdminUserRegisterApplicationListRequest mockListRequest = new AdminUserRegisterApplicationListRequestBuilder()
+                .withValidValues()
+                .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-applications");
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken(), mockListRequest);
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockUserToken.getAccessToken(), mockListRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminUserRegisterApplicationService, Mockito.never())
+                .getRegistrationApplications(Mockito.any(AdminUserRegisterApplicationListRequest.class));
     }
 
     @Test
     void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationFound_thenReturnAdminUserRegisterApplicationResponse() throws Exception {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockApplicationId = AysRandomUtil.generateUUID();
 
         // When
-        AdminUserRegisterApplication mockData = new AdminUserRegisterApplicationBuilder()
-                .withId(mockId)
+        AdminUserRegisterApplication mockRegisterApplication = new AdminUserRegisterApplicationBuilder()
+                .withId(mockApplicationId)
                 .build();
-        Mockito.when(adminUserRegisterApplicationService.getRegistrationApplicationById(mockId))
-                .thenReturn(mockData);
-
+        Mockito.when(adminUserRegisterApplicationService.getRegistrationApplicationById(mockApplicationId))
+                .thenReturn(mockRegisterApplication);
 
         // Then
-        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId);
-        AdminUserRegisterApplicationResponse mockResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper.map(mockData);
-        AysResponse<AdminUserRegisterApplicationResponse> mockAysResponse = AysResponse.successOf(mockResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(endpoint, mockSuperAdminToken.getAccessToken()))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockApplicationId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockSuperAdminToken.getAccessToken());
+
+        AdminUserRegisterApplicationResponse mockApplicationResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper
+                .map(mockRegisterApplication);
+        AysResponse<AdminUserRegisterApplicationResponse> mockResponse = AysResponse
+                .successOf(mockApplicationResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationService, Mockito.times(1))
-                .getRegistrationApplicationById(mockId);
+                .getRegistrationApplicationById(mockApplicationId);
 
     }
 
@@ -165,25 +171,24 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
     void givenValidAdminUserRegisterApplicationId_whenUnauthorizedForGettingAdminUserRegisterApplicationById_thenReturnAccessDeniedException() throws Exception {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockApplicationId = AysRandomUtil.generateUUID();
 
         // Then
-        String endpoint = BASE_PATH.concat("/registration-application/".concat(mockId));
+        String endpoint = BASE_PATH.concat("/registration-application/".concat(mockApplicationId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminUserRegisterApplicationService, Mockito.never())
+                .getRegistrationApplicationById(mockApplicationId);
     }
 
     @Test
@@ -199,7 +204,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         Institution mockInstitution = new InstitutionBuilder()
                 .withId(mockRequest.getInstitutionId())
                 .build();
-        AdminUserRegisterApplication mockData = new AdminUserRegisterApplicationBuilder()
+        AdminUserRegisterApplication mockRegisterApplication = new AdminUserRegisterApplicationBuilder()
                 .withValidFields()
                 .withInstitution(mockInstitution)
                 .withReason(mockRequest.getReason())
@@ -207,26 +212,24 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .build();
 
         Mockito.when(adminUserRegisterApplicationService.createRegistrationApplication(Mockito.any(AdminUserRegisterApplicationCreateRequest.class)))
-                .thenReturn(mockData);
+                .thenReturn(mockRegisterApplication);
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application");
-        AdminUserRegisterApplicationCreateResponse mockResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper.map(mockData);
-        AysResponse<AdminUserRegisterApplicationCreateResponse> mockAysResponse = AysResponse.successOf(mockResponse);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest);
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        AdminUserRegisterApplicationCreateResponse mockApplicationCreateResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper
+                .map(mockRegisterApplication);
+        AysResponse<AdminUserRegisterApplicationCreateResponse> mockResponse = AysResponse.successOf(mockApplicationCreateResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(adminUserRegisterApplicationService, Mockito.times(1))
                 .createRegistrationApplication(Mockito.any(AdminUserRegisterApplicationCreateRequest.class));
 
@@ -246,18 +249,17 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminUserRegisterApplicationService, Mockito.never())
+                .createRegistrationApplication(Mockito.any(AdminUserRegisterApplicationCreateRequest.class));
     }
 
     @Test
@@ -275,18 +277,17 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/".concat(mockId).concat("/summary"));
-        AdminUserRegisterApplicationSummaryResponse mockResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper.map(mockAdminUserRegisterApplication);
-        AysResponse<AdminUserRegisterApplicationSummaryResponse> mockAysResponse = AysResponse.successOf(mockResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(endpoint))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint);
+
+        AdminUserRegisterApplicationSummaryResponse mockSummaryResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper
+                .map(mockAdminUserRegisterApplication);
+        AysResponse<AdminUserRegisterApplicationSummaryResponse> mockResponse = AysResponse
+                .successOf(mockSummaryResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
     }
@@ -304,17 +305,14 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
@@ -337,26 +335,19 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
+        Mockito.verify(adminUserRegisterService, Mockito.never())
                 .completeRegistration(Mockito.anyString(), Mockito.any());
     }
 
@@ -374,26 +365,19 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
+        Mockito.verify(adminUserRegisterService, Mockito.never())
                 .completeRegistration(Mockito.anyString(), Mockito.any());
     }
 
@@ -412,26 +396,19 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
+        Mockito.verify(adminUserRegisterService, Mockito.never())
                 .completeRegistration(Mockito.anyString(), Mockito.any());
     }
 
@@ -449,26 +426,19 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
+        Mockito.verify(adminUserRegisterService, Mockito.never())
                 .completeRegistration(Mockito.anyString(), Mockito.any());
     }
 
@@ -486,50 +456,41 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.times(0))
+        Mockito.verify(adminUserRegisterService, Mockito.never())
                 .completeRegistration(Mockito.anyString(), Mockito.any());
     }
+
     @Test
     void givenValidAdminUserRegisterApplicationId_whenApproveAdminUserRegisterApplication_thenReturnNothing() throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.doNothing().when(adminUserRegisterApplicationService).approveRegistrationApplication(mockId);
+        Mockito.doNothing()
+                .when(adminUserRegisterApplicationService).approveRegistrationApplication(mockId);
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/".concat(mockId).concat("/approve"));
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken());
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockSuperAdminToken.getAccessToken()))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
@@ -549,21 +510,16 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken());
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminUserRegisterApplicationService, Mockito.times(0))
+        Mockito.verify(adminUserRegisterApplicationService, Mockito.never())
                 .approveRegistrationApplication(mockId);
     }
 
@@ -581,18 +537,14 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/reject");
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest);
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
@@ -616,21 +568,16 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminUserRegisterApplicationService, Mockito.times(0))
+        Mockito.verify(adminUserRegisterApplicationService, Mockito.never())
                 .rejectRegistrationApplication(Mockito.eq(mockId), Mockito.any(AdminUserRegisterApplicationRejectRequest.class));
     }
 

@@ -3,9 +3,10 @@ package com.ays.user.controller;
 import com.ays.AbstractSystemTest;
 import com.ays.auth.model.AysToken;
 import com.ays.common.model.dto.response.AysResponse;
-import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.institution.model.entity.InstitutionEntity;
+import com.ays.institution.model.entity.InstitutionEntityBuilder;
 import com.ays.user.model.User;
 import com.ays.user.model.UserBuilder;
 import com.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
@@ -20,7 +21,6 @@ import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.Map;
 
@@ -34,7 +34,11 @@ class UserSelfSystemTest extends AbstractSystemTest {
 
     private AysToken mockUserToken;
 
-    private void initialize(UserEntity mockUserEntity) {
+    private void initialize(InstitutionEntity mockInstitutionEntity,
+                            UserEntity mockUserEntity) {
+
+        institutionRepository.save(mockInstitutionEntity);
+
         UserEntity userEntity = userRepository.save(mockUserEntity);
 
         final Map<String, Object> claimsOfMockUser = userEntity.getClaims();
@@ -44,32 +48,30 @@ class UserSelfSystemTest extends AbstractSystemTest {
     @Test
     void whenUserFound_thenReturnUserSelfResponse() throws Exception {
         // Initialize
-        InstitutionEntity mockInstitutionEntity = institutionRepository
-                .findById(AysValidTestData.Institution.ID).get();
+        InstitutionEntity mockInstitutionEntity = new InstitutionEntityBuilder()
+                .withValidFields()
+                .build();
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
                 .withInstitutionId(mockInstitutionEntity.getId())
-                .withInstitution(mockInstitutionEntity)
+                .withInstitution(null)
                 .withSupportStatus(UserSupportStatus.READY)
                 .build();
-        this.initialize(mockUserEntity);
+        this.initialize(mockInstitutionEntity, mockUserEntity);
 
         // When
         User mockUser = new UserBuilder().build();
 
         // Then
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(BASE_PATH, mockUserToken.getAccessToken());
+
         UserSelfResponse mockUserSelfResponse = userToUserSelfResponseMapper.map(mockUser);
         AysResponse<UserSelfResponse> mockAysResponse = AysResponse.successOf(mockUserSelfResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH, mockUserToken.getAccessToken()))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockAysResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
     }
@@ -83,17 +85,12 @@ class UserSelfSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(BASE_PATH, mockAccessToken);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
@@ -109,7 +106,7 @@ class UserSelfSystemTest extends AbstractSystemTest {
                 .withInstitution(mockInstitutionEntity)
                 .withSupportStatus(UserSupportStatus.IDLE)
                 .build();
-        this.initialize(mockUserEntity);
+        this.initialize(mockInstitutionEntity, mockUserEntity);
 
         // Given
         UserSupportStatus userSupportStatus = UserSupportStatus.READY;
@@ -118,18 +115,15 @@ class UserSelfSystemTest extends AbstractSystemTest {
                 .withSupportStatus(userSupportStatus).build();
 
         // Then
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
+        String endpoint = BASE_PATH.concat("/status/support");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest);
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(BASE_PATH.concat("/status/support"), mockUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -143,20 +137,16 @@ class UserSelfSystemTest extends AbstractSystemTest {
                 .withSupportStatus(userSupportStatus).build();
 
         // Then
+        String endpoint = BASE_PATH.concat("/status/support");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(BASE_PATH.concat("/status/support"), adminUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest);
+                .put(endpoint, adminUserToken.getAccessToken(), mockUserSupportStatusUpdateRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 

@@ -13,8 +13,8 @@ import com.ays.admin_user.service.AdminUserService;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.dto.response.AysPageResponse;
 import com.ays.common.model.dto.response.AysResponse;
-import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -23,12 +23,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class AdminUserControllerTest extends AbstractRestControllerTest {
 
@@ -47,7 +43,9 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
     void givenValidUserListRequest_whenAdminUsersFound_thenReturnAdminUsersResponse() throws Exception {
 
         // Given
-        AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
+        AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder()
+                .withValidValues()
+                .build();
 
         // When
         Page<AdminUserEntity> mockAdminUserEntities = new PageImpl<>(
@@ -59,22 +57,22 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
                 .thenReturn(mockAysPageOfUsers);
 
         // Then
+        String endpoint = BASE_PATH.concat("/admins");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockAdminUserListRequest);
+
         List<AdminUsersResponse> mockAdminUsersResponses = adminUserToAdminUsersResponseMapper.map(mockAysPageOfUsers.getContent());
         AysPageResponse<AdminUsersResponse> pageOfAdminUsersResponse = AysPageResponse.<AdminUsersResponse>builder()
                 .of(mockAysPageOfUsers)
                 .content(mockAdminUsersResponses)
                 .build();
+        AysResponse<AysPageResponse<AdminUsersResponse>> mockResponse = AysResponse.successOf(pageOfAdminUsersResponse);
 
-        AysResponse<AysPageResponse<AdminUsersResponse>> mockAysResponse = AysResponse.successOf(pageOfAdminUsersResponse);
-        String endpoint = BASE_PATH.concat("/admins");
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockAdminUserListRequest))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockAysResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockAysResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
 
         // Verify
         Mockito.verify(adminUserService, Mockito.times(1))
@@ -84,21 +82,26 @@ class AdminUserControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidUserListRequest_whenAdminUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
         // Given
-        AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder().withValidValues().build();
+        AdminUserListRequest mockAdminUserListRequest = new AdminUserListRequestBuilder()
+                .withValidValues()
+                .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admins");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockAdminUserListRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminUserService, Mockito.never())
+                .getAdminUsers(Mockito.any(AdminUserListRequest.class));
     }
 
 }

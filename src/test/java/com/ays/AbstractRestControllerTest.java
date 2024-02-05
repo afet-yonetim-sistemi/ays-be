@@ -10,6 +10,7 @@ import com.ays.parameter.model.AysParameterBuilder;
 import com.ays.parameter.service.AysParameterService;
 import com.ays.super_admin.entity.SuperAdminEntityBuilder;
 import com.ays.user.model.entity.UserEntityBuilder;
+import com.ays.util.AysMockMvc;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
 import java.util.Map;
@@ -34,7 +34,8 @@ import java.util.Set;
 public abstract class AbstractRestControllerTest extends AbstractTestContainerConfiguration {
 
     @Autowired
-    protected MockMvc mockMvc;
+    protected AysMockMvc aysMockMvc;
+
     protected AysToken mockSuperAdminToken;
     protected AysToken mockAdminUserToken;
     protected AysToken mockUserToken;

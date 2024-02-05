@@ -6,8 +6,8 @@ import com.ays.assignment.model.entity.AssignmentEntityBuilder;
 import com.ays.assignment.model.enums.AssignmentStatus;
 import com.ays.auth.model.AysToken;
 import com.ays.common.model.dto.response.AysResponse;
-import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.institution.model.entity.InstitutionEntity;
 import com.ays.location.model.dto.request.UserLocationSaveRequest;
 import com.ays.location.model.dto.request.UserLocationSaveRequestBuilder;
@@ -19,7 +19,6 @@ import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.Map;
 
@@ -70,17 +69,14 @@ class UserLocationSystemTest extends AbstractSystemTest {
                 .build();
 
         // Then
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH, mockUserToken.getAccessToken(), mockUserLocationSaveRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(BASE_PATH, mockUserToken.getAccessToken(), mockUserLocationSaveRequest);
+
+        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -96,17 +92,12 @@ class UserLocationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(BASE_PATH, adminUserToken.getAccessToken(), mockUserLocationSaveRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
