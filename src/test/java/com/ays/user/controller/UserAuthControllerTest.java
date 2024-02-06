@@ -38,7 +38,7 @@ class UserAuthControllerTest extends AbstractRestControllerTest {
         // Given
         AysLoginRequest mockRequest = new AysLoginRequestBuilder().build();
 
-        // when
+        // When
         Mockito.when(userAuthService.authenticate(Mockito.any()))
                 .thenReturn(mockUserToken);
 

@@ -110,7 +110,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
 
         mockUserEntity.updateSupportStatus(userSupportStatus);
 
-        // when
+        // When
         Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
         Mockito.when(userRepository.findById(mockUserEntity.getId()))
                 .thenReturn(Optional.of(mockUserEntity));
@@ -119,7 +119,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
         Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
                 .thenReturn(mockUserEntity);
 
-        // then
+        // Then
         userSelfService.updateUserSupportStatus(mockUpdateRequest);
 
         Mockito.verify(userRepository, Mockito.times(1))
