@@ -1,6 +1,6 @@
 package com.ays.common.util.validation;
 
-import com.ays.common.model.AysPhoneNumberAccessor;
+import com.ays.common.model.dto.request.AysPhoneNumberRequest;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import jakarta.validation.ConstraintValidator;
@@ -9,19 +9,19 @@ import org.springframework.util.StringUtils;
 
 /**
  * A custom validator implementation for the {@link PhoneNumber} annotation.
- * Validates whether the provided {@link AysPhoneNumberAccessor} object is a valid phone number or not based on E.164 international standard.
+ * Validates whether the provided {@link AysPhoneNumberRequest} object is a valid phone number or not based on E.164 international standard.
  */
-class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneNumberAccessor> {
+class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneNumberRequest> {
 
     /**
-     * Validates an AysPhoneNumberAccessor object based on E.164 international standard.
+     * Validates an AysPhoneNumberRequest object based on E.164 international standard.
      *
      * @param phoneNumber The AysPhoneNumberAccessor object to be validated.
      * @param context     The context for validation.
      * @return True if the number is valid, false otherwise.
      */
     @Override
-    public boolean isValid(AysPhoneNumberAccessor phoneNumber, ConstraintValidatorContext context) {
+    public boolean isValid(AysPhoneNumberRequest phoneNumber, ConstraintValidatorContext context) {
         final String countryCode = phoneNumber.getCountryCode();
         final String lineNumber = phoneNumber.getLineNumber();
         final String fullNumber = "+" + countryCode + lineNumber;
