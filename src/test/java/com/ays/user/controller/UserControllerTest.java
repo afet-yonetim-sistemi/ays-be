@@ -431,7 +431,7 @@ class UserControllerTest extends AbstractRestControllerTest {
         AysPhoneNumberFilterRequest invalidPhoneNumber = new AysPhoneNumberFilterRequestBuilder()
                 .withValidValues()
                 .withCountryCode("90")
-                .withLineNumber("123456789")
+                .withLineNumber("23")
                 .build();
         UserListRequest.Filter filter = new UserListRequestBuilder.FilterBuilder()
                 .withValidValues()
