@@ -13,7 +13,6 @@ import com.ays.institution.repository.InstitutionRepository;
 import com.ays.super_admin.entity.SuperAdminEntityBuilder;
 import com.ays.user.model.entity.UserEntityBuilder;
 import com.ays.user.repository.UserRepository;
-import com.ays.util.AysMockMvc;
 import com.ays.util.AysValidTestData;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

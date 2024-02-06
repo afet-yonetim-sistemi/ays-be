@@ -1,7 +1,8 @@
-package com.ays.util;
+package com.ays;
 
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.util.AysMockResultMatchersBuilders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
