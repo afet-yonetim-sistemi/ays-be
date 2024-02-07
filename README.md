@@ -205,19 +205,12 @@ Page.
 
 ### AYS Local Environments
 
-[Download Local Postman Environments](https://www.mediafire.com/file/h803vir89ccxk81/postman_local_environments.zip/file)
-
-### AYS APIs | PUBLIC
-
-https://documenter.getpostman.com/view/26813504/2s9Y5VVQ82
-
-### AYS APIs | AUTH
-
-https://documenter.getpostman.com/view/26813504/2s93kz55K3
+- [Download Local Postman Environments](https://www.mediafire.com/file/82l4a7z9v3z12ot/ays-be-postman-local-environments.zip/file)
 
 ### AYS APIs
 
-https://documenter.getpostman.com/view/26813504/2s93kz55Jz
+- [View Postman Collection](https://documenter.getpostman.com/view/26813504/2s93kz55Jz)
+- [Download Postman Collection](https://www.mediafire.com/file/dykop0sb2w0icjv/ays-be-postman-collection.zip/file)
 
 ---
 
