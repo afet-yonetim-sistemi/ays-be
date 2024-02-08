@@ -1,8 +1,7 @@
 package com.ays.common.model.dto.request;
 
-import com.ays.common.model.AysPhoneNumberAccessor;
-import com.ays.common.util.validation.PhoneNumber;
-import com.google.gson.Gson;
+import com.ays.common.util.AysJsonUtil;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,17 +10,18 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@PhoneNumber
-public class AysPhoneNumberFilterRequest implements AysPhoneNumberAccessor {
+public class AysPhoneNumberFilterRequest {
 
     /**
      * The country code of the phone number
      */
+    @Size(min = 1, max = 3)
     private String countryCode;
 
     /**
      * The line number of the phone number
      */
+    @Size(min = 7, max = 15)
     private String lineNumber;
 
     /**
@@ -29,6 +29,6 @@ public class AysPhoneNumberFilterRequest implements AysPhoneNumberAccessor {
      */
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return AysJsonUtil.toJson(this);
     }
 }

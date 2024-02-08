@@ -1,8 +1,7 @@
 package com.ays.common.model.dto.request;
 
-import com.ays.common.model.AysPhoneNumberAccessor;
+import com.ays.common.util.AysJsonUtil;
 import com.ays.common.util.validation.PhoneNumber;
-import com.google.gson.Gson;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @PhoneNumber
-public class AysPhoneNumberRequest implements AysPhoneNumberAccessor {
+public class AysPhoneNumberRequest {
 
     /**
      * The country code of the phone number
@@ -32,7 +31,7 @@ public class AysPhoneNumberRequest implements AysPhoneNumberAccessor {
      */
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return AysJsonUtil.toJson(this);
     }
 
 }
