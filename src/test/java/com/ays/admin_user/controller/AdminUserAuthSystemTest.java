@@ -10,12 +10,12 @@ import com.ays.auth.model.dto.response.AysTokenResponseBuilder;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 class AdminUserAuthSystemTest extends AbstractSystemTest {
@@ -30,18 +30,16 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
                 .withPassword(AysValidTestData.AdminUser.PASSWORD).build();
 
         // Then
-        AysResponse<AysTokenResponse> response = AysResponseBuilder
+        String endpoint = BASE_PATH.concat("/token");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, loginRequest);
+
+        AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder
                 .successOf(new AysTokenResponseBuilder().build());
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/token"), loginRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
@@ -50,7 +48,6 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .isNotEmpty());
-
     }
 
     @Test
@@ -61,18 +58,16 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
                 .build();
 
         // Then
-        AysResponse<AysTokenResponse> response = AysResponseBuilder
+        String endpoint = BASE_PATH.concat("/token/refresh");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, tokenRefreshRequest);
+
+        AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder
                 .successOf(new AysTokenResponseBuilder().build());
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/token/refresh"), tokenRefreshRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
@@ -86,23 +81,20 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
     @Test
     void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
         // Given
-        AysTokenInvalidateRequest mockRequest = AysTokenInvalidateRequest.builder()
+        AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
                 .refreshToken(adminUserToken.getRefreshToken())
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
-        AysResponse<Void> response = AysResponseBuilder.SUCCESS;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, adminUserToken.getAccessToken(), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, adminUserToken.getAccessToken(), tokenInvalidateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -119,17 +111,12 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), tokenInvalidateRequest);
 
-        AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 

@@ -41,7 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
@@ -96,17 +95,11 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
         );
         AysPageResponse<AdminUserRegisterApplication> pageResponse = AysPageResponse.<AdminUserRegisterApplication>builder()
                 .of(page).build();
-        AysResponse<AysPageResponse<AdminUserRegisterApplication>> response = AysResponse.successOf(pageResponse);
+        AysResponse<AysPageResponse<AdminUserRegisterApplication>> mockResponse = AysResponse.successOf(pageResponse);
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
     }
@@ -124,18 +117,12 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), adminUserRegisterApplicationListRequest);
 
-        AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
@@ -175,19 +162,14 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
 
         AdminUserRegisterApplicationResponse adminUserRegisterApplicationResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationResponseMapper
                 .map(adminUserRegisterApplication);
-        AysResponse<AdminUserRegisterApplicationResponse> response = AysResponse.successOf(adminUserRegisterApplicationResponse);
+        AysResponse<AdminUserRegisterApplicationResponse> mockResponse = AysResponse
+                .successOf(adminUserRegisterApplicationResponse);
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .exists())
+                        .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.response("adminUser.phoneNumber")
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.response("adminUser.phoneNumber.countryCode")
@@ -207,18 +189,12 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, userToken.getAccessToken());
 
-        AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
@@ -247,19 +223,14 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
                 .build();
         AdminUserRegisterApplicationCreateResponse adminUserRegisterApplicationCreateResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationCreateResponseMapper
                 .map(adminUserRegisterApplication);
-        AysResponse<AdminUserRegisterApplicationCreateResponse> response = AysResponse.successOf(adminUserRegisterApplicationCreateResponse);
+        AysResponse<AdminUserRegisterApplicationCreateResponse> mockResponse = AysResponse
+                .successOf(adminUserRegisterApplicationCreateResponse);
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .exists());
+                        .isNotEmpty());
     }
 
     @Test
@@ -282,18 +253,12 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), createRequest);
 
-        AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
@@ -323,23 +288,18 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/".concat(applicationId).concat("/summary"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint);
 
         AdminUserRegisterApplication adminUserRegisterApplication = adminUserRegisterApplicationEntityToAdminUserRegisterApplicationMapper
                 .map(adminUserRegisterApplicationEntity);
         AdminUserRegisterApplicationSummaryResponse adminUserRegisterApplicationSummaryResponse = adminUserRegisterApplicationToAdminUserRegisterApplicationSummaryResponseMapper
                 .map(adminUserRegisterApplication);
-        AysResponse<AdminUserRegisterApplicationSummaryResponse> response = AysResponse.successOf(adminUserRegisterApplicationSummaryResponse);
+        AysResponse<AdminUserRegisterApplicationSummaryResponse> mockResponse = AysResponse.successOf(adminUserRegisterApplicationSummaryResponse);
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(endpoint))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
     }
@@ -373,19 +333,14 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, completeRequest);
 
-        AysResponse<Void> response = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, completeRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -422,23 +377,14 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, completeRequest);
 
-        AysError response = AysErrorBuilder.VALIDATION_ERROR;
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, completeRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(response.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
     }
@@ -475,23 +421,14 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, completeRequest);
 
-        AysError response = AysErrorBuilder.VALIDATION_ERROR;
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, completeRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(response.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
     }
@@ -529,23 +466,14 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(applicationId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, completeRequest);
 
-        AysError response = AysErrorBuilder.VALIDATION_ERROR;
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, completeRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(response.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
     }
@@ -578,18 +506,14 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/".concat(applicationId).concat("/approve"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminToken.getAccessToken());
 
-        AysResponse<Void> response = AysResponse.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, superAdminToken.getAccessToken()))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(true))
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -605,18 +529,12 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken());
 
-        AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
@@ -654,17 +572,11 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), rejectRequest);
 
-        AysResponse<Void> response = AysResponse.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -683,18 +595,12 @@ class AdminUserRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), rejectRequest);
 
-        AysResponse<AysError> response = AysResponseBuilder.FORBIDDEN;
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(response.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(response.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 

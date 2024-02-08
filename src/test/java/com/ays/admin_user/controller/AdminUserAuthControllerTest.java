@@ -13,13 +13,13 @@ import com.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import com.ays.common.model.dto.response.AysResponse;
 import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 class AdminUserAuthControllerTest extends AbstractRestControllerTest {
@@ -35,72 +35,71 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
-        AysLoginRequest mockRequest = new AysLoginRequestBuilder().build();
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder().build();
 
         // When
-        Mockito.when(adminUserAuthService.authenticate(Mockito.any())).thenReturn(mockAdminUserToken);
+        Mockito.when(adminUserAuthService.authenticate(Mockito.any()))
+                .thenReturn(mockAdminUserToken);
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
-        AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/token"), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        String endpoint = BASE_PATH.concat("/token");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockLoginRequest);
+
+        AysTokenResponse mockTokenResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
+        AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder.successOf(mockTokenResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
-                        .value(mockAysResponse.getResponse().getAccessToken()))
+                        .value(mockResponse.getResponse().getAccessToken()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
-                        .value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
+                        .value(mockResponse.getResponse().getAccessTokenExpiresAt()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
-                        .value(mockAysResponse.getResponse().getRefreshToken()));
+                        .value(mockResponse.getResponse().getRefreshToken()));
 
         // Verify
         Mockito.verify(adminUserAuthService, Mockito.times(1))
                 .authenticate(Mockito.any());
     }
 
+
     @Test
     void givenValidTokenRefreshRequest_whenAccessTokenGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
-        AysTokenRefreshRequest mockRequest = AysTokenRefreshRequestBuilder.VALID_FOR_ADMIN;
+        AysTokenRefreshRequest mockTokenRefreshRequest = AysTokenRefreshRequestBuilder.VALID_FOR_ADMIN;
 
         // When
         Mockito.when(adminUserAuthService.refreshAccessToken(Mockito.any())).thenReturn(mockAdminUserToken);
 
         // Then
-        AysTokenResponse mockResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
-        AysResponse<AysTokenResponse> mockAysResponse = AysResponseBuilder.successOf(mockResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(BASE_PATH.concat("/token/refresh"), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        String endpoint = BASE_PATH.concat("/token/refresh");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockTokenRefreshRequest);
+
+        AysTokenResponse mockTokenResponse = aysTokenToAysTokenResponseMapper.map(mockAdminUserToken);
+        AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder.successOf(mockTokenResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
-                        .value(mockAysResponse.getResponse().getAccessToken()))
+                        .value(mockResponse.getResponse().getAccessToken()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
-                        .value(mockAysResponse.getResponse().getAccessTokenExpiresAt()))
+                        .value(mockResponse.getResponse().getAccessTokenExpiresAt()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
-                        .value(mockAysResponse.getResponse().getRefreshToken()));
+                        .value(mockResponse.getResponse().getRefreshToken()));
 
         // Verify
         Mockito.verify(adminUserAuthService, Mockito.times(1))
                 .refreshAccessToken(Mockito.anyString());
     }
+
 
     @Test
     void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
@@ -112,17 +111,14 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/token/invalidate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest);
+
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
@@ -141,18 +137,17 @@ class AdminUserAuthControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminUserAuthService, Mockito.never())
+                .invalidateTokens(Mockito.any());
     }
 
 }

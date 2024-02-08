@@ -2,8 +2,8 @@ package com.ays.institution.controller;
 
 import com.ays.AbstractRestControllerTest;
 import com.ays.common.model.dto.response.AysResponse;
-import com.ays.common.model.dto.response.AysResponseBuilder;
 import com.ays.common.util.exception.model.AysError;
+import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.institution.model.Institution;
 import com.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import com.ays.institution.model.entity.InstitutionBuilder;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
@@ -39,43 +38,48 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
                 new InstitutionBuilder().withValidFields().build()
         );
 
-        Mockito.when(institutionService.getSummaryOfActiveInstitutions()).thenReturn(mockActiveInstitutions);
+        Mockito.when(institutionService.getSummaryOfActiveInstitutions())
+                .thenReturn(mockActiveInstitutions);
 
         // Then
-        List<InstitutionsSummaryResponse> mockActiveInstitutionsSummaryResponses = institutionToInstitutionsSummaryResponseMapper.map(mockActiveInstitutions);
-        AysResponse<List<InstitutionsSummaryResponse>> mockAysResponse = AysResponse.successOf(mockActiveInstitutionsSummaryResponses);
+        String endpoint = BASE_PATH.concat("/summary");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockSuperAdminToken.getAccessToken());
 
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(BASE_PATH.concat("/summary"), mockSuperAdminToken.getAccessToken()))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        List<InstitutionsSummaryResponse> mockActiveInstitutionsSummaryResponses = institutionToInstitutionsSummaryResponseMapper
+                .map(mockActiveInstitutions);
+        AysResponse<List<InstitutionsSummaryResponse>> mockResponse = AysResponse
+                .successOf(mockActiveInstitutionsSummaryResponses);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
 
+        // Verify
+        Mockito.verify(institutionService, Mockito.times(1))
+                .getSummaryOfActiveInstitutions();
     }
 
     @Test
     void whenUserUnauthorizedForSummary_thenReturnAccessDeniedException() throws Exception {
 
-        // When
+        // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(BASE_PATH.concat("/summary"), mockUserToken.getAccessToken());
 
-        // Then
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus().value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(institutionService, Mockito.never())
+                .getSummaryOfActiveInstitutions();
     }
 
 }

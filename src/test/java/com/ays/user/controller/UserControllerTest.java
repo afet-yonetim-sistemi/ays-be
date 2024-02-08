@@ -45,7 +45,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
@@ -83,21 +82,18 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest);
+
         UserSavedResponse mockUserSavedResponse = new UserSavedResponseBuilder()
                 .withUsername(mockUser.getUsername())
                 .withPassword(mockUser.getPassword())
                 .build();
         AysResponse<UserSavedResponse> mockResponse = AysResponseBuilder.successOf(mockUserSavedResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.username")
@@ -122,22 +118,14 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest);
 
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
@@ -158,22 +146,14 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest);
 
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
@@ -194,17 +174,12 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockUserSaveRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
@@ -220,26 +195,19 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(userSaveService, Mockito.times(0))
+        Mockito.verify(userSaveService, Mockito.never())
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
 
@@ -255,25 +223,19 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
-        Mockito.verify(userSaveService, Mockito.times(0))
+        // Verify
+        Mockito.verify(userSaveService, Mockito.never())
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
 
@@ -290,25 +252,19 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserSaveRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
-        Mockito.verify(userSaveService, Mockito.times(0))
+        // Verify
+        Mockito.verify(userSaveService, Mockito.never())
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
 
@@ -328,27 +284,25 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest);
+
         List<UsersResponse> mockUsersResponses = userToUsersResponseMapper.map(mockAysPageOfUsers.getContent());
         AysPageResponse<UsersResponse> pageOfUsersResponse = AysPageResponse.<UsersResponse>builder()
                 .of(mockAysPageOfUsers)
                 .content(mockUsersResponses)
                 .build();
         AysResponse<AysPageResponse<UsersResponse>> mockResponse = AysResponse.successOf(pageOfUsersResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.content[0].createdAt")
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userService, Mockito.times(1))
                 .getAllUsers(Mockito.any(UserListRequest.class));
     }
@@ -365,24 +319,18 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userService, Mockito.never())
                 .getAllUsers(Mockito.any(UserListRequest.class));
     }
@@ -402,24 +350,18 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userService, Mockito.never())
                 .getAllUsers(Mockito.any(UserListRequest.class));
     }
@@ -444,24 +386,18 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest);
+
         AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .post(endpoint, mockAdminUserToken.getAccessToken(), mockUserListRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockErrorResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.header()
-                        .value(mockErrorResponse.getHeader()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockErrorResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist())
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userService, Mockito.never())
                 .getAllUsers(Mockito.any(UserListRequest.class));
     }
@@ -476,18 +412,17 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockUserListRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(userService, Mockito.never())
+                .getAllUsers(Mockito.any(UserListRequest.class));
     }
 
     @Test
@@ -502,21 +437,19 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user/").concat(mockUserId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminUserToken.getAccessToken());
+
         UserResponse mockUserResponse = userToUserResponseMapper.map(mockUser);
-        AysResponse<UserResponse> mockAysResponse = AysResponse.successOf(mockUserResponse);
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .get(endpoint, mockAdminUserToken.getAccessToken()))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        AysResponse<UserResponse> mockResponse = AysResponse.successOf(mockUserResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
 
+        // Verify
         Mockito.verify(userService, Mockito.times(1))
                 .getUserById(mockUserId);
     }
@@ -531,18 +464,17 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(userService, Mockito.never())
+                .getUserById(mockUserId);
     }
 
 
@@ -561,20 +493,18 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .put(endpoint, mockAdminUserToken.getAccessToken(), mockUpdateRequest))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminUserToken.getAccessToken(), mockUpdateRequest);
+
+        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
+        // Verify
         Mockito.verify(userService, Mockito.times(1))
                 .updateUser(Mockito.anyString(), Mockito.any(UserUpdateRequest.class));
     }
@@ -592,18 +522,17 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(userService, Mockito.never())
+                .updateUser(Mockito.anyString(), Mockito.any(UserUpdateRequest.class));
     }
 
     @Test
@@ -616,20 +545,18 @@ class UserControllerTest extends AbstractRestControllerTest {
 
         // Then
         String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
-        AysResponse<Void> mockAysResponse = AysResponse.SUCCESS;
-        mockMvc.perform(AysMockMvcRequestBuilders
-                        .delete(endpoint, mockAdminUserToken.getAccessToken()))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockAysResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockAysResponse.getIsSuccess()))
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminUserToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
+        // Verify
         Mockito.verify(userService, Mockito.times(1))
                 .deleteUser(Mockito.anyString());
     }
@@ -644,17 +571,16 @@ class UserControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
-        AysResponse<AysError> mockResponse = AysResponseBuilder.FORBIDDEN;
-        mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.time()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.httpStatus()
-                        .value(mockResponse.getHttpStatus().name()))
-                .andExpect(AysMockResultMatchersBuilders.isSuccess()
-                        .value(mockResponse.getIsSuccess()))
-                .andExpect(AysMockResultMatchersBuilders.response()
+        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(userService, Mockito.never())
+                .deleteUser(Mockito.anyString());
     }
 }
