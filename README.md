@@ -108,7 +108,7 @@ First of all, generate personal access token with this url : https://github.com/
 
 # Before Running Locally On IDE
 
-> 1. If you haven't `~/m2/settings.xml` file skip the step without reading the after section.
+> 1. If you have `~/m2/settings.xml` file in your computer, skip the step without reading the after section.
      If you aren't using the `~/.m2/settings.xml` file to actively, you can be back up it before creating
      the new `settings.xml` file, if you want. If you are using actively, after the perform step 3 you can
      manually merge the `settings.xml` file in the project with the `~/.m2/settings.xml` file and skip step 2 and 4.
