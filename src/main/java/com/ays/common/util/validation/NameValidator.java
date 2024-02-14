@@ -20,10 +20,11 @@ class NameValidator implements ConstraintValidator<Name, String> {
      *   <li>Turkish special characters: ÇçĞğİıÖöŞşÜü</li>
      *   <li>Common punctuation: space( ), comma(,), period(.), apostrophe('), hyphen(-)</li>
      * </ul>
+     *  It also avoids strings that start with special characters
      * </p>
      * <p>
      */
-    static final String NAME_REGEX = "^[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]+$";
+    static final String NAME_REGEX = "^(?![^a-zA-ZÇçĞğİıÖöŞşÜü]).*[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]+$";
     static final Integer NAME_MIN_LENGTH = 2;
     static final Integer NAME_MAX_LENGTH = 255;
 
@@ -39,6 +40,7 @@ class NameValidator implements ConstraintValidator<Name, String> {
      *
      * <p>Some invalid names are:</p>
      * <ul>
+     *     <li>?Menekşe</li>
      *     <li>John Doe 123</li>
      *     <li>Ahmet?*</li>
      *     <li>Mehmet!</li>
