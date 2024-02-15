@@ -40,6 +40,8 @@ import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import com.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -412,42 +414,18 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .completeRegistration(Mockito.anyString(), Mockito.any());
     }
 
-    @Test
-    void givenNameWithNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "John 1234",
+            "John *^%$#",
+            " John",
+            "? John",
+            "J"
+    })
+    void givenInvalidAdminUserRegisterApplicationCompleteRequestWithParametrizedInvalidNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        String invalidName = "John 1234";
-        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
-                .withValidFields()
-                .withFirstName(invalidName)
-                .withLastName(invalidName)
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockRequest);
-
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.never())
-                .completeRegistration(Mockito.anyString(), Mockito.any());
-    }
-
-    @Test
-    void givenNameWithForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
-
-        // Given
-        String mockId = AysRandomUtil.generateUUID();
-        String invalidName = "John *^%$#";
         AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withFirstName(invalidName)
