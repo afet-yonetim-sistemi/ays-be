@@ -12,7 +12,7 @@
     </parent>
 
     <description>AYS Services</description>
-    <groupId>com.ays</groupId>
+    <groupId>org.ays</groupId>
     <artifactId>ays-be</artifactId>
     <version>1.0.0.MVP</version>
     <name>ays-be</name>
@@ -104,7 +104,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.ays</groupId>
+            <groupId>org.ays</groupId>
             <artifactId>ays-be-encryption-utility</artifactId>
             <version>${ays-be-encryption-utility.version}</version>
         </dependency>
@@ -259,7 +259,7 @@
 
     <repositories>
         <repository>
-            <id>com.ays</id>
+            <id>org.ays</id>
             <url>https://maven.pkg.github.com/afet-yonetim-sistemi/ays-be-encryption-utility</url>
         </repository>
     </repositories>

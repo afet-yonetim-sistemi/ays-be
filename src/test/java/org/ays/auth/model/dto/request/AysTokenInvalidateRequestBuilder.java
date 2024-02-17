@@ -1,0 +1,13 @@
+package org.ays.auth.model.dto.request;
+
+public class AysTokenInvalidateRequestBuilder {
+
+    public static final AysTokenInvalidateRequest VALID_FOR_ADMIN = AysTokenInvalidateRequest.builder()
+            .refreshToken("eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiNzQ2YWQ4MS0wYjQwLTQ1ZjEtYTI5Zi1mNzBjNTZmNzU1OTMiLCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTYwNjksImV4cCI6MTY5NDk0MjQ2OSwidXNlcklkIjoiOTI2MmYwZmMtOTNkYi00ZjdlLTgxYzYtYWFhZDg1YzJiMjA2In0.d2hsQZagjKpv8DbYYhwadq6PbHj1xYOnG8Hx3R4S_4DCKRRfh4Z37SiyMU4cllNc_VCFHz3WXLYzuOmfET-j1FQq2gbEHYv1MN2umvtyKeb6YXuqOfUsTPZP-c-TKRywsHUvM-TMPA4t6CV_rUr9CDYFJ-cARrxu6GJg7GrjXRYj2MpWsa_SeTrXfow26TBkrxYtlJLmLGalW4eculLutWcMKeK-93gPRCURQ-fYmWaOTuxanabJq2GtYKnGmweXo6uZxDc8Swf7zDIDIqYsuI87hwN642HVulQdYfDMYeaf6O1f-ga932REc8zaYV4b8DNI4Duhwm4ev_IVbsZojg")
+            .build();
+
+    public static final AysTokenInvalidateRequest VALID_FOR_USER = AysTokenInvalidateRequest.builder()
+            .refreshToken("eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiNTFhODMwMC0xMjg4LTQxYzQtOGI4Zi03MGI3OTc3OTBlMDAiLCJpc3MiOiJBWVMiLCJpYXQiOjE2OTk4MTY3NTIsImV4cCI6MTY5OTkwMzE1MiwidXNlcklkIjoiYzRiNGU0ZGItNTY0MS00MWY3LTgyMjItYTc2ZGViMWMwNjVjIn0.aPPB30ihZqnZllGwjpzXbK_oH-BkY9T1xcuBqaKkmYMyoYPcMgiIwrIpdhduO3qmcSF7SuNydZPDy6jdVkfzt_A_Y1xwihcLO_S3_gmtav5ydDBEmS5y1HizbnIWibEjiLe0j3gQF3cBySs5WPUWIaKFDx-3tqrd_wUan3-FbSSevO9zzd38NULAJNqwlHq_X1xz8j65vkJvN7jxQ9r1-ks_vzFg5MCrl60I4HzclznMfEiOOsCD_BCRWyBf985U5eELScOyRvx_SAaQ7xY4C5nJu1hFRj4AhPiLWOLWxbxmE2rrbMM8KdkiDhWiO9Y3sdDv3QRFEvRGRlk-HyWFrQ")
+            .build();
+
+}
