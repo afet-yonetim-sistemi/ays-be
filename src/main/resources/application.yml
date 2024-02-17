@@ -34,7 +34,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 springdoc:
-  packagesToScan: com.ays
+  packagesToScan: org.ays
   cache:
     disabled: false
   swagger-ui:
