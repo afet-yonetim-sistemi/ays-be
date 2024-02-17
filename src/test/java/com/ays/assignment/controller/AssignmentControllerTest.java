@@ -40,6 +40,8 @@ import com.ays.common.util.exception.model.AysErrorBuilder;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -104,38 +106,16 @@ class AssignmentControllerTest extends AbstractRestControllerTest {
                 .saveAssignment(Mockito.any(AssignmentSaveRequest.class));
     }
 
-    @Test
-    void givenInvalidAssignmentSaveRequestWithNameContainingNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "John 1234",
+            "John *^%$#",
+            " John",
+            "? John",
+            "J"
+    })
+    void givenInvalidAssignmentSaveRequestWithParametrizedInvalidNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
         // Given
-        String invalidName = "John 1234";
-        AssignmentSaveRequest mockRequest = new AssignmentSaveRequestBuilder()
-                .withValidFields()
-                .withFirstName(invalidName)
-                .withLastName(invalidName)
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/assignment");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest);
-
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(assignmentSaveService, Mockito.never())
-                .saveAssignment(Mockito.any(AssignmentSaveRequest.class));
-    }
-
-    @Test
-    void givenInvalidAssignmentSaveRequestWithNameContainingForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        String invalidName = "John *^%$#";
         AssignmentSaveRequest mockRequest = new AssignmentSaveRequestBuilder()
                 .withValidFields()
                 .withFirstName(invalidName)

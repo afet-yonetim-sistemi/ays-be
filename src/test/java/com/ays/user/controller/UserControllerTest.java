@@ -1,8 +1,6 @@
 package com.ays.user.controller;
 
 import com.ays.AbstractRestControllerTest;
-import com.ays.assignment.model.dto.request.AssignmentUpdateRequest;
-import com.ays.assignment.model.dto.request.AssignmentUpdateRequestBuilder;
 import com.ays.common.model.AysPage;
 import com.ays.common.model.AysSorting;
 import com.ays.common.model.dto.request.AysPhoneNumberFilterRequest;
@@ -39,6 +37,8 @@ import com.ays.user.service.UserService;
 import com.ays.util.AysMockMvcRequestBuilders;
 import com.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -106,39 +106,17 @@ class UserControllerTest extends AbstractRestControllerTest {
                 .saveUser(Mockito.any(UserSaveRequest.class));
     }
 
-    @Test
-    void givenInvalidUserSaveRequestWithNameContainingNumber_whenNameIsNotValid_thenReturnValidationError() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "John 1234",
+            "John *^%$#",
+            " John",
+            "? John",
+            "J"
+    })
+    void givenInvalidUserSaveRequestWithParametrizedInvalidNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
         // Given
-        String invalidName = "John 1234";
         UserSaveRequest mockRequest = new UserSaveRequestBuilder()
-                .withValidFields()
-                .withFirstName(invalidName)
-                .withLastName(invalidName)
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/user");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest);
-
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(userSaveService, Mockito.never())
-                .saveUser(Mockito.any(UserSaveRequest.class));
-    }
-
-    @Test
-    void givenInvalidUserSaveRequestWithNameContainingForbiddenSpecialChars_whenNameIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        String invalidName = "John *^%$#";
-        AssignmentUpdateRequest mockRequest = new AssignmentUpdateRequestBuilder()
                 .withValidFields()
                 .withFirstName(invalidName)
                 .withLastName(invalidName)
