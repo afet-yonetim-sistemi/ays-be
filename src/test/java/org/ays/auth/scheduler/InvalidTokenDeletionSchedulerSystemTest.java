@@ -1,4 +1,4 @@
-package org.ays.common.scheduler;
+package org.ays.auth.scheduler;
 
 import org.awaitility.Awaitility;
 import org.ays.AbstractSystemTest;
