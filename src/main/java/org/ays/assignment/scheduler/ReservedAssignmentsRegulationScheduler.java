@@ -1,4 +1,4 @@
-package org.ays.common.scheduler;
+package org.ays.assignment.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package org.ays.common.scheduler;
+package org.ays.assignment.scheduler;
 
 import org.ays.AbstractUnitTest;
 import org.ays.assignment.model.entity.AssignmentEntity;
