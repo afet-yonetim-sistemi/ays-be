@@ -1,5 +1,3 @@
-Please provide a brief description of the changes made in this pull request.
-
 ### Checklist
 
 Before submitting your pull request, ensure the following:
@@ -32,7 +30,3 @@ Before submitting your pull request, ensure the following:
 
 - [ ] **Labels and Associations:**
     - No specific actions are required in the Labels and Associations section for this pull request.
-
-- [ ] **Jira Issue Transition:**
-    - If this pull request is related to a Jira issue, ensure that the issue is moved to the "In Review" status on the
-      Jira board.
