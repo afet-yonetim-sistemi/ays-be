@@ -3,17 +3,15 @@ package org.ays.common.util.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-
 /**
  * A custom validator implementation for the {@link Email} annotation.
  * Validates whether the provided email invalid domain
  * specified regular expression.
  */
-
 class EmailValidator implements ConstraintValidator<Email, String> {
 
     private static final String EMAIL_REGEX =
-            "^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+" + "([.-]?[a-zA-Z0-9]+)+\\.[a-zA-Z]{2,}$";
+            "^[a-zA-Z0-9._%+-]+[a-zA-Z0-9]+@[a-zA-Z0-9]+[.-]?[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$";
 
     /**
      * Checks whether the given value is a valid email or not.
@@ -36,11 +34,6 @@ class EmailValidator implements ConstraintValidator<Email, String> {
      */
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
-
-        if (!email.matches(EMAIL_REGEX)) {
-            return false;
-        }
-
         return email.matches(EMAIL_REGEX);
     }
 }

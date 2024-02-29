@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
 /**
  * Annotation to validate email using {@link EmailValidator}.
  */
-
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EmailValidator.class)
@@ -37,5 +36,4 @@ public @interface Email {
      * @return the payload
      */
     Class<? extends Payload>[] payload() default {};
-
 }
