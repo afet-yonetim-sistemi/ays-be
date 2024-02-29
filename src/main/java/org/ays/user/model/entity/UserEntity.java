@@ -94,7 +94,7 @@ public class UserEntity extends BaseEntity {
     }
 
     public boolean isReady() {
-        return this.isActive() && UserSupportStatus.READY.equals(this.supportStatus);
+        return UserSupportStatus.READY.equals(this.supportStatus);
     }
 
     public void delete() {
