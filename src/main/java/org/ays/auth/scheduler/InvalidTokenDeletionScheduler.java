@@ -1,6 +1,5 @@
 package org.ays.auth.scheduler;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.auth.model.enums.AysConfigurationParameter;
 import org.ays.auth.repository.AysInvalidTokenRepository;
@@ -27,12 +26,20 @@ import java.util.Optional;
  */
 @Slf4j
 @Component
-@RequiredArgsConstructor
 @ConditionalOnProperty(name = "ays.scheduler.invalid-tokens-deletion.enable", havingValue = "true")
 class InvalidTokenDeletionScheduler {
 
     private final AysInvalidTokenRepository invalidTokenRepository;
     private final AysParameterService parameterService;
+
+    public InvalidTokenDeletionScheduler(AysInvalidTokenRepository invalidTokenRepository,
+                                         AysParameterService parameterService) {
+
+        this.invalidTokenRepository = invalidTokenRepository;
+        this.parameterService = parameterService;
+
+        log.info("InvalidTokenDeletionScheduler is enabled.");
+    }
 
     /**
      * Scheduled task method to delete invalid tokens that are no longer in use.
