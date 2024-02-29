@@ -1,6 +1,5 @@
 package org.ays.assignment.scheduler;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.assignment.model.entity.AssignmentEntity;
 import org.ays.assignment.model.enums.AssignmentStatus;
@@ -25,11 +24,16 @@ import java.util.List;
  */
 @Slf4j
 @Component
-@RequiredArgsConstructor
 @ConditionalOnProperty(name = "ays.scheduler.reserved-assignments-regulation.enable", havingValue = "true")
 class ReservedAssignmentsRegulationScheduler {
 
     private final AssignmentRepository assignmentRepository;
+
+    public ReservedAssignmentsRegulationScheduler(AssignmentRepository assignmentRepository) {
+        this.assignmentRepository = assignmentRepository;
+
+        log.info("ReservedAssignmentsRegulationScheduler is enabled.");
+    }
 
     /**
      * Scheduled task method to update reserved assignments to available status.
