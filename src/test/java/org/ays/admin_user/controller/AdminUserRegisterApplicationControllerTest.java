@@ -450,6 +450,79 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
                 .completeRegistration(Mockito.anyString(), Mockito.any());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abc.def@mail.c",
+            "abc.def@mail#archive.com",
+            "abc.def@mail",
+            "abcdef@mail..com",
+            "abc-@mail.com"
+    })
+    void givenInvalidAdminUserRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
+                .withValidFields()
+                .withEmail(invalidEmail)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(adminUserRegisterService, Mockito.never())
+                .completeRegistration(Mockito.anyString(), Mockito.any());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abcdef@mail.com",
+            "abc+def@archive.com",
+            "john.doe123@example.co.uk",
+            "admin_123@example.org",
+            "admin-test@ays.com",
+            "üşengeç-birkız@mail.com"
+    })
+    void givenValidAdminUserRegisterApplicationCompleteRequestWithParametrizedValidEmails_whenEmailsAreValid_thenReturnSuccessResponse(String validEmail) throws Exception {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
+                .withValidFields()
+                .withEmail(validEmail)
+                .build();
+
+        // When
+        Mockito.doNothing().when(adminUserRegisterService).completeRegistration(Mockito.anyString(), Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminUserRegisterService, Mockito.times(1))
+                .completeRegistration(Mockito.anyString(), Mockito.any());
+    }
+
     @Test
     void givenValidAdminUserRegisterApplicationId_whenApproveAdminUserRegisterApplication_thenReturnNothing() throws Exception {
         // Given

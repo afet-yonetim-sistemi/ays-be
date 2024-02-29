@@ -1,12 +1,12 @@
 package org.ays.admin_user.model.dto.request;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
+import org.ays.common.util.validation.Email;
 import org.ays.common.util.validation.Name;
 
 /**
