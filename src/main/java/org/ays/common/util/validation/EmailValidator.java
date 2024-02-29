@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 class EmailValidator implements ConstraintValidator<Email, String> {
 
     private static final String EMAIL_REGEX =
-            "^[a-zA-Z0-9._%+-]+[a-zA-Z0-9]+@[a-zA-Z0-9]+[.-]?[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$";
+            "^[a-zA-Z0-9çğıöşü._%+-]+[a-zA-Z0-9çğıöşü]+@[a-zA-Z0-9]+[.-]?[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$";
 
     /**
      * Checks whether the given value is a valid email or not.
