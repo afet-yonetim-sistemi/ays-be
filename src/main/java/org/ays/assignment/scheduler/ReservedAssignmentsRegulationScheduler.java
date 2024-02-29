@@ -57,8 +57,7 @@ class ReservedAssignmentsRegulationScheduler {
                 LocalDateTime.now().minusSeconds(20)
         );
 
-        assignmentEntities.forEach(assignment -> assignment.setStatus(AssignmentStatus.AVAILABLE));
-
+        assignmentEntities.forEach(AssignmentEntity::available);
         assignmentRepository.saveAll(assignmentEntities);
 
         log.trace("All reserved assignments are updated to available.");
