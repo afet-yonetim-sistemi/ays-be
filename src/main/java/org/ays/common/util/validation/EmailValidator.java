@@ -2,6 +2,7 @@ package org.ays.common.util.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.util.StringUtils;
 
 /**
  * A custom validator implementation for the {@link Email} annotation.
@@ -34,6 +35,10 @@ class EmailValidator implements ConstraintValidator<Email, String> {
      */
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
+
+        if (!StringUtils.hasText(email)) {
+            return true;
+        }
         return email.matches(EMAIL_REGEX);
     }
 }
