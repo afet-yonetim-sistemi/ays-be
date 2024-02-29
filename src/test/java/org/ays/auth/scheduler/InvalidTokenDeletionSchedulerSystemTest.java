@@ -42,7 +42,7 @@ class InvalidTokenDeletionSchedulerSystemTest extends AbstractSystemTest {
                 .map(ScheduledTask::getTask)
                 .filter(CronTask.class::isInstance)
                 .map(CronTask.class::cast)
-                .filter(task -> task.toString().contains("common.scheduler.InvalidTokenDeletionScheduler"))
+                .filter(task -> task.toString().contains(InvalidTokenDeletionScheduler.class.getSimpleName()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No scheduled tasks"));
 
@@ -50,9 +50,9 @@ class InvalidTokenDeletionSchedulerSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void whenWait10Seconds_thenClearInvalidToken() {
+    void whenWait2Seconds_thenClearInvalidToken() {
 
-        // When
+        // Initialize
         int refreshTokenExpireDay = Integer
                 .parseInt(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue());
         List<AysInvalidTokenEntity> mockInvalidTokenEntities = List.of(
@@ -72,12 +72,15 @@ class InvalidTokenDeletionSchedulerSystemTest extends AbstractSystemTest {
                 .await()
                 .atMost(2, java.util.concurrent.TimeUnit.SECONDS)
                 .untilAsserted(() -> {
+
                     Mockito.verify(invalidTokenDeletionScheduler, Mockito.atLeast(1))
                             .deleteInvalidTokens();
 
                     mockInvalidTokenEntities.forEach(mockInvalidTokenEntity -> {
+
                         Optional<AysInvalidTokenEntity> invalidTokenEntity = invalidTokenRepository
                                 .findById(mockInvalidTokenEntity.getId());
+
                         Assertions.assertTrue(invalidTokenEntity.isEmpty());
                     });
                 });
