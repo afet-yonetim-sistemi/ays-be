@@ -9,6 +9,7 @@ import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.user.model.entity.UserEntity;
 import org.ays.user.model.entity.UserEntityBuilder;
+import org.ays.user.model.enums.UserSupportStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -25,7 +26,6 @@ import java.util.Optional;
 
 class ReservedAssignmentsRegulationSchedulerSystemTest extends AbstractSystemTest {
 
-
     @Value("${ays.scheduler.reserved-assignments-regulation.cron}")
     private String expectedCronExpression;
 
@@ -35,12 +35,12 @@ class ReservedAssignmentsRegulationSchedulerSystemTest extends AbstractSystemTes
     @SpyBean
     private ReservedAssignmentsRegulationScheduler reservedAssignmentsRegulationScheduler;
 
-    private void initialize(InstitutionEntity institutionEntity,
-                            UserEntity userEntity,
+    private void initialize(InstitutionEntity mockInstitutionEntity,
+                            UserEntity mockUserEntity,
                             List<AssignmentEntity> mockAssignmentEntities) {
 
-        institutionRepository.save(institutionEntity);
-        userRepository.save(userEntity);
+        institutionRepository.save(mockInstitutionEntity);
+        userRepository.save(mockUserEntity);
         assignmentRepository.saveAll(mockAssignmentEntities);
     }
 
@@ -52,7 +52,7 @@ class ReservedAssignmentsRegulationSchedulerSystemTest extends AbstractSystemTes
                 .map(ScheduledTask::getTask)
                 .filter(CronTask.class::isInstance)
                 .map(CronTask.class::cast)
-                .filter(task -> task.toString().contains("common.scheduler.ReservedAssignmentsRegulationScheduler"))
+                .filter(task -> task.toString().contains(ReservedAssignmentsRegulationScheduler.class.getSimpleName()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No scheduled tasks"));
 
@@ -60,7 +60,7 @@ class ReservedAssignmentsRegulationSchedulerSystemTest extends AbstractSystemTes
     }
 
     @Test
-    void whenWait10Seconds_thenClearInvalidToken() {
+    void whenWait2Seconds_thenUpdateReservedAssignmentsToAvailableAndUserToBusy() {
 
         // Initialize
         InstitutionEntity mockInstitutionEntity = new InstitutionEntityBuilder()
@@ -68,12 +68,14 @@ class ReservedAssignmentsRegulationSchedulerSystemTest extends AbstractSystemTes
                 .build();
         UserEntity mockUserEntity = new UserEntityBuilder()
                 .withValidFields()
+                .withSupportStatus(UserSupportStatus.READY)
                 .withInstitutionId(mockInstitutionEntity.getId())
                 .withInstitution(null)
                 .build();
         List<AssignmentEntity> mockAssignmentEntities = List.of(
                 new AssignmentEntityBuilder()
                         .withValidFields()
+                        .withStatus(AssignmentStatus.RESERVED)
                         .withCreatedAt(LocalDateTime.now().minusSeconds(20))
                         .withInstitutionId(mockInstitutionEntity.getId())
                         .withInstitution(null)
@@ -82,6 +84,7 @@ class ReservedAssignmentsRegulationSchedulerSystemTest extends AbstractSystemTes
                         .build(),
                 new AssignmentEntityBuilder()
                         .withValidFields()
+                        .withStatus(AssignmentStatus.RESERVED)
                         .withCreatedAt(LocalDateTime.now().minusSeconds(20))
                         .withInstitutionId(mockInstitutionEntity.getId())
                         .withInstitution(null)
@@ -96,18 +99,20 @@ class ReservedAssignmentsRegulationSchedulerSystemTest extends AbstractSystemTes
                 .await()
                 .atMost(2, java.util.concurrent.TimeUnit.SECONDS)
                 .untilAsserted(() -> {
+
                     Mockito.verify(reservedAssignmentsRegulationScheduler, Mockito.atLeast(1))
                             .updateReservedAssignmentsToAvailable();
 
                     mockAssignmentEntities.forEach(mockAssignmentEntity -> {
+
                         Optional<AssignmentEntity> assignmentEntity = assignmentRepository
                                 .findById(mockAssignmentEntity.getId());
 
                         Assertions.assertTrue(assignmentEntity.isPresent());
                         Assertions.assertEquals(AssignmentStatus.AVAILABLE, assignmentEntity.get().getStatus());
+                        Assertions.assertNull(assignmentEntity.get().getUserId());
                     });
                 });
-
     }
 
 }
