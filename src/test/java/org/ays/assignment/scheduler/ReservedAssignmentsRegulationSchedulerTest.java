@@ -16,7 +16,7 @@ import java.util.List;
 class ReservedAssignmentsRegulationSchedulerTest extends AbstractUnitTest {
 
     @InjectMocks
-    private ReservedAssignmentsRegulationScheduler reservedAssignmentsRegulationSchedulerMock;
+    private ReservedAssignmentsRegulationScheduler reservedAssignmentsRegulationScheduler;
 
     @Mock
     private AssignmentRepository assignmentRepository;
@@ -41,15 +41,15 @@ class ReservedAssignmentsRegulationSchedulerTest extends AbstractUnitTest {
         )).thenReturn(mockAssignmentEntities);
 
         // Then
-        reservedAssignmentsRegulationSchedulerMock.updateReservedAssignmentsToAvailable();
+        reservedAssignmentsRegulationScheduler.updateReservedAssignmentsToAvailable();
 
         // Verify
-        Mockito.verify(assignmentRepository, Mockito.atLeast(1))
+        Mockito.verify(assignmentRepository, Mockito.times(1))
                 .findAllByStatusAndCreatedAtBefore(
                         Mockito.any(AssignmentStatus.class),
                         Mockito.any(LocalDateTime.class)
                 );
-        Mockito.verify(assignmentRepository, Mockito.atLeast(1))
+        Mockito.verify(assignmentRepository, Mockito.times(1))
                 .saveAll(Mockito.anyList());
     }
 
