@@ -42,7 +42,8 @@ public abstract class BaseEntity {
                 .map(Jwt.class::cast)
                 .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
                 .orElse("AYS");
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = Optional.ofNullable(this.createdAt)
+                .orElse(LocalDateTime.now());
     }
 
 
@@ -60,6 +61,7 @@ public abstract class BaseEntity {
                 .map(Jwt.class::cast)
                 .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
                 .orElse("AYS");
-        this.updatedAt = LocalDateTime.now();
+        this.updatedAt = Optional.ofNullable(this.updatedAt)
+                .orElse(LocalDateTime.now());
     }
 }
