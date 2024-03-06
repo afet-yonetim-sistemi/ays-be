@@ -50,7 +50,7 @@ class SecurityConfiguration {
      * @return the new instance of {@link SessionAuthenticationStrategy}
      */
     @Bean
-    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+    SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
@@ -64,9 +64,9 @@ class SecurityConfiguration {
      * @throws Exception if there is an error setting up the filter chain
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                           AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
-                                           CustomAuthenticationEntryPoint customAuthenticationEntryPoint)
+    SecurityFilterChain filterChain(HttpSecurity httpSecurity,
+                                    AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
+                                    CustomAuthenticationEntryPoint customAuthenticationEntryPoint)
             throws Exception {
 
         httpSecurity
@@ -109,7 +109,8 @@ class SecurityConfiguration {
      * @return the new instance of {@link PasswordEncoder}
      */
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
