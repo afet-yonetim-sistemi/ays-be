@@ -4,6 +4,7 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
 import org.ays.admin_user.model.entity.AdminUserEntityBuilder;
+import org.ays.admin_user.model.enums.AdminRole;
 import org.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
 import org.ays.admin_user.repository.AdminUserRepository;
 import org.ays.assignment.repository.AssignmentRepository;
@@ -13,7 +14,6 @@ import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.repository.AysInvalidTokenRepository;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.repository.InstitutionRepository;
-import org.ays.super_admin.entity.SuperAdminEntityBuilder;
 import org.ays.user.model.entity.UserEntityBuilder;
 import org.ays.user.repository.UserRepository;
 import org.ays.util.AysValidTestData;
@@ -65,9 +65,10 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @BeforeEach
     protected void setUp() {
-        final Map<String, Object> claimsOfSuperAdmin = new SuperAdminEntityBuilder()
+        final Map<String, Object> claimsOfSuperAdmin = new AdminUserEntityBuilder()
                 .withId(AysValidTestData.SuperAdminUser.ID)
                 .withUsername(AysValidTestData.SuperAdminUser.USERNAME)
+                .withRole(AdminRole.SUPER_ADMIN)
                 .withInstitutionId(null)
                 .build()
                 .getClaims();
