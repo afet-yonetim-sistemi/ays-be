@@ -13,7 +13,7 @@ public class AysUserCannotUpdateSupportStatusException extends AysAlreadyExcepti
      * Unique serial version ID.
      */
     @Serial
-    private static final long serialVersionUID = -3686691276790127586L;
+    private static final long serialVersionUID = -4727384445754973709L;
 
     /**
      * Constructs a new {@code AysUserCannotUpdateSupportStatusException} with the specified id and assignmentId.

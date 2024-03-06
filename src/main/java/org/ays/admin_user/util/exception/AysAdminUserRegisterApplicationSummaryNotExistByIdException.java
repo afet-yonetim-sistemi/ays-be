@@ -17,7 +17,7 @@ public class AysAdminUserRegisterApplicationSummaryNotExistByIdException extends
      * Unique identifier for serialization.
      */
     @Serial
-    private static final long serialVersionUID = 8416712253227498925L;
+    private static final long serialVersionUID = 1262328240991745084L;
 
     /**
      * Constructs a new AysAdminUserRegisterApplicationSummaryNotExistByIdException with the specified ID.
