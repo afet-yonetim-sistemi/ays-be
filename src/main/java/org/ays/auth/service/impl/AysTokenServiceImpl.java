@@ -48,34 +48,26 @@ class AysTokenServiceImpl implements AysTokenService {
      */
     @Override
     public AysToken generate(final Map<String, Object> claims) {
+
         final long currentTimeMillis = System.currentTimeMillis();
 
-        final Date tokenIssuedAt = new Date(currentTimeMillis);
+        final JwtBuilder tokenBuilder = this.initializeTokenBuilder(currentTimeMillis);
 
-        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
-        final String accessToken = Jwts.builder()
-                .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .and()
+        final Date accessTokenExpiresAt = DateUtils.addMinutes(
+                new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute()
+        );
+        final String accessToken = tokenBuilder
                 .id(AysRandomUtil.generateUUID())
-                .issuer(tokenConfiguration.getIssuer())
-                .issuedAt(tokenIssuedAt)
                 .expiration(accessTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey())
                 .claims(claims)
                 .compact();
 
-        final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireDay());
-        final JwtBuilder refreshTokenBuilder = Jwts.builder();
-        final String refreshToken = refreshTokenBuilder
-                .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .and()
+        final Date refreshTokenExpiresAt = DateUtils.addDays(
+                new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireDay()
+        );
+        final String refreshToken = tokenBuilder
                 .id(AysRandomUtil.generateUUID())
-                .issuer(tokenConfiguration.getIssuer())
-                .issuedAt(tokenIssuedAt)
                 .expiration(refreshTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey())
                 .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
                 .compact();
 
@@ -85,6 +77,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .refreshToken(refreshToken)
                 .build();
     }
+
 
     /**
      * Generates an access token based on the provided claims and refresh token.
@@ -97,18 +90,13 @@ class AysTokenServiceImpl implements AysTokenService {
     public AysToken generate(final Map<String, Object> claims, final String refreshToken) {
 
         final long currentTimeMillis = System.currentTimeMillis();
-        final Date accessTokenIssuedAt = new Date(currentTimeMillis);
-        final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
 
-        final String accessToken = Jwts.builder()
-                .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .and()
+        final Date accessTokenExpiresAt = DateUtils.addMinutes(
+                new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute()
+        );
+        final String accessToken = this.initializeTokenBuilder(currentTimeMillis)
                 .id(AysRandomUtil.generateUUID())
-                .issuer(tokenConfiguration.getIssuer())
-                .issuedAt(accessTokenIssuedAt)
                 .expiration(accessTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey())
                 .claims(claims)
                 .compact();
 
@@ -118,6 +106,29 @@ class AysTokenServiceImpl implements AysTokenService {
                 .refreshToken(refreshToken)
                 .build();
     }
+
+    /**
+     * Initializes a JwtBuilder for creating a JSON Web Token (JWT) with the specified current time.
+     *
+     * @param currentTimeMillis The current time in milliseconds to be used as the "issued at" claim.
+     * @return JwtBuilder instance configured with default and provided settings.
+     * <p>
+     * The JWT will have the following claims set:
+     * - Header with the token type set to Bearer.
+     * - Issuer claim set to the configured issuer from the token configuration.
+     * - Issued At (iat) claim set to the specified current time.
+     * - Signature configured with the private key from the token configuration.
+     */
+    private JwtBuilder initializeTokenBuilder(long currentTimeMillis) {
+        return Jwts.builder()
+                .header()
+                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .and()
+                .issuer(tokenConfiguration.getIssuer())
+                .issuedAt(new Date(currentTimeMillis))
+                .signWith(tokenConfiguration.getPrivateKey());
+    }
+
 
     /**
      * Verifies and validates the given JWT (JSON Web Token).
