@@ -6,8 +6,6 @@ import lombok.experimental.UtilityClass;
 public class AysValidTestData {
 
     public static final String EMAIL = "test@ays.com";
-    public static final String APPLICATION_ID = "3cfeb994-88f4-48d0-b105-309f42f91412";
-
 
     public static class SuperAdminUser {
         public static final String ID = "ea29a0bd-ad5d-4068-88c3-a8835b8d555e";

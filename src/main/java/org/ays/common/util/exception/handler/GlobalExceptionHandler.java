@@ -29,7 +29,7 @@ import java.sql.SQLException;
 class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    protected ResponseEntity<Object> handleJsonParseErrors(final HttpMessageNotReadableException exception) {
+    ResponseEntity<Object> handleJsonParseErrors(final HttpMessageNotReadableException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -40,7 +40,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    protected ResponseEntity<Object> handleValidationErrors(final MethodArgumentTypeMismatchException exception) {
+    ResponseEntity<Object> handleValidationErrors(final MethodArgumentTypeMismatchException exception) {
 
         log.error(exception.getMessage(), exception);
 
@@ -52,7 +52,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<Object> handleValidationErrors(final MethodArgumentNotValidException exception) {
+    ResponseEntity<Object> handleValidationErrors(final MethodArgumentNotValidException exception) {
 
         log.error(exception.getMessage(), exception);
 
@@ -64,7 +64,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    protected ResponseEntity<Object> handlePathVariableErrors(final ConstraintViolationException exception) {
+    ResponseEntity<Object> handlePathVariableErrors(final ConstraintViolationException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.subErrors(exception.getConstraintViolations())
@@ -75,7 +75,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AysNotExistException.class)
-    protected ResponseEntity<Object> handleNotExistError(final AysNotExistException exception) {
+    ResponseEntity<Object> handleNotExistError(final AysNotExistException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -87,7 +87,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AysAlreadyException.class)
-    protected ResponseEntity<Object> handleAlreadyExistError(final AysAlreadyException exception) {
+    ResponseEntity<Object> handleAlreadyExistError(final AysAlreadyException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -99,7 +99,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AysProcessException.class)
-    protected ResponseEntity<Object> handleProcessError(final AysProcessException exception) {
+    ResponseEntity<Object> handleProcessError(final AysProcessException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -111,7 +111,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleProcessError(final Exception exception) {
+    ResponseEntity<Object> handleProcessError(final Exception exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -122,7 +122,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AysAuthException.class)
-    protected ResponseEntity<Object> handleAuthError(final AysAuthException exception) {
+    ResponseEntity<Object> handleAuthError(final AysAuthException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -133,7 +133,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    protected ResponseEntity<Object> handleAccessDeniedError(final AccessDeniedException exception) {
+    ResponseEntity<Object> handleAccessDeniedError(final AccessDeniedException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -144,7 +144,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(SQLException.class)
-    protected ResponseEntity<Object> handleSQLError(final SQLException exception) {
+    ResponseEntity<Object> handleSQLError(final SQLException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -155,7 +155,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+    ResponseEntity<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
         log.error(exception.getMessage(), exception);
 
         AysError aysError = AysError.builder()
@@ -167,7 +167,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    protected ResponseEntity<Object> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
+    ResponseEntity<Object> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
 
         log.error(exception.getMessage(), exception);
 
@@ -180,7 +180,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataAccessException.class)
-    protected ResponseEntity<Object> handleDataAccessException(DataAccessException exception) {
+    ResponseEntity<Object> handleDataAccessException(DataAccessException exception) {
 
         log.error(exception.getMessage(), exception);
 

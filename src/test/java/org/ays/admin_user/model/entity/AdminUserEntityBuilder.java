@@ -1,5 +1,6 @@
 package org.ays.admin_user.model.entity;
 
+import org.ays.admin_user.model.enums.AdminRole;
 import org.ays.admin_user.model.enums.AdminUserStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
@@ -69,6 +70,11 @@ public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
 
     public AdminUserEntityBuilder withStatus(AdminUserStatus status) {
         data.setStatus(status);
+        return this;
+    }
+
+    public AdminUserEntityBuilder withRole(AdminRole adminRole) {
+        data.setRole(adminRole);
         return this;
     }
 

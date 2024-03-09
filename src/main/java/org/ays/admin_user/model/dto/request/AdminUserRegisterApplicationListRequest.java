@@ -3,6 +3,7 @@ package org.ays.admin_user.model.dto.request;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -21,6 +22,7 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 public class AdminUserRegisterApplicationListRequest extends AysPagingRequest implements AysFilteringRequest {
 
     @Valid

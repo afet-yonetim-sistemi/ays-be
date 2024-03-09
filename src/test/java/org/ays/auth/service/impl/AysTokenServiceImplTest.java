@@ -64,10 +64,10 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
         // Verify
-        Mockito.verify(tokenConfiguration, Mockito.times(2)).getIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getRefreshTokenExpireDay();
-        Mockito.verify(tokenConfiguration, Mockito.times(2)).getPrivateKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getPrivateKey();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
@@ -93,10 +93,10 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
         // Verify
-        Mockito.verify(tokenConfiguration, Mockito.times(2)).getIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getIssuer();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getRefreshTokenExpireDay();
-        Mockito.verify(tokenConfiguration, Mockito.times(2)).getPrivateKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getPrivateKey();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }

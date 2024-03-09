@@ -4,6 +4,7 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
 import org.ays.admin_user.model.entity.AdminUserEntityBuilder;
+import org.ays.admin_user.model.enums.AdminRole;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.enums.AysTokenClaims;
@@ -11,7 +12,6 @@ import org.ays.common.util.AysRandomUtil;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.model.AysParameterBuilder;
 import org.ays.parameter.service.AysParameterService;
-import org.ays.super_admin.entity.SuperAdminEntityBuilder;
 import org.ays.user.model.entity.UserEntityBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,8 +52,8 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
                 .thenReturn(parameters);
 
         this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);
-        this.mockSuperAdminToken = this.generate(new SuperAdminEntityBuilder().withValidFields().build().getClaims());
-        this.mockAdminUserToken = this.generate(new AdminUserEntityBuilder().build().getClaims());
+        this.mockSuperAdminToken = this.generate(new AdminUserEntityBuilder().withValidFields().withRole(AdminRole.SUPER_ADMIN).withInstitutionId(null).build().getClaims());
+        this.mockAdminUserToken = this.generate(new AdminUserEntityBuilder().withRole(AdminRole.ADMIN).build().getClaims());
         this.mockUserToken = this.generate(new UserEntityBuilder().build().getClaims());
     }
 
