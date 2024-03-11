@@ -7,14 +7,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version>
+        <version>3.2.3</version>
         <relativePath/>
     </parent>
 
     <description>AYS Services</description>
     <groupId>org.ays</groupId>
     <artifactId>ays-be</artifactId>
-    <version>1.0.0.MVP</version>
+    <version>1.1.0.MVP</version>
     <name>ays-be</name>
     <packaging>jar</packaging>
 
