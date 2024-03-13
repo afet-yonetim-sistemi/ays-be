@@ -237,6 +237,38 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Invalid reason with special characters: #$%",
+            "Too short",
+            "                                 a"
+    })
+    void givenInvalidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnValidationError(String invalidReason) throws Exception {
+
+        // Given
+        AdminUserRegisterApplicationCreateRequest createRequest = new AdminUserRegisterApplicationCreateRequestBuilder()
+                .withValidFields()
+                .withReason(invalidReason)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/registration-application");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken(), createRequest);
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(adminUserRegisterApplicationService, Mockito.never())
+                .createRegistrationApplication(Mockito.any(AdminUserRegisterApplicationCreateRequest.class));
+    }
+
     @Test
     void givenValidAdminUserRegisterApplicationCreateRequest_whenUnauthorizedForCreatingAdminUserRegisterApplication_thenReturnAccessDeniedException() throws Exception {
 
