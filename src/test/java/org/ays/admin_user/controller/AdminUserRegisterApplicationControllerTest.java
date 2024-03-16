@@ -484,6 +484,41 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "abc.def@mail.c",
+            "abc.def@mail#archive.com",
+            "abc.def@mail",
+            "abcdef@mail..com",
+            "abc-@mail.com"
+    })
+    void givenInvalidAdminUserRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
+                .withValidFields()
+                .withEmail(invalidEmail)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(adminUserRegisterService, Mockito.never())
+                .completeRegistration(Mockito.anyString(), Mockito.any());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
             "abcdef@mail.com",
             "abc+def@archive.com",
             "john.doe123@example.co.uk",
