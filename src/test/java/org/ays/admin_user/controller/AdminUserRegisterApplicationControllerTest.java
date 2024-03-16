@@ -484,36 +484,39 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "abc.def@mail.c",
-            "abc.def@mail#archive.com",
-            "abc.def@mail",
-            "abcdef@mail..com",
-            "abc-@mail.com"
+            "abcdef@mail.com",
+            "abc+def@archive.com",
+            "john.doe123@example.co.uk",
+            "admin_123@example.org",
+            "admin-test@ays.com",
+            "üşengeç-birkız@mail.com"
     })
-    void givenInvalidAdminUserRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
-
+    void givenValidAdminUserRegisterApplicationCompleteRequestWithParametrizedValidEmails_whenEmailsAreValid_thenReturnSuccessResponse(String validEmail) throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AdminUserRegisterApplicationCompleteRequest mockRequest = new AdminUserRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
-                .withEmail(invalidEmail)
+                .withEmail(validEmail)
                 .build();
+
+        // When
+        Mockito.doNothing().when(adminUserRegisterService).completeRegistration(Mockito.anyString(), Mockito.any());
 
         // Then
         String endpoint = BASE_PATH.concat("/registration-application/").concat(mockId).concat("/complete");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
 
         // Verify
-        Mockito.verify(adminUserRegisterService, Mockito.never())
+        Mockito.verify(adminUserRegisterService, Mockito.times(1))
                 .completeRegistration(Mockito.anyString(), Mockito.any());
     }
 
