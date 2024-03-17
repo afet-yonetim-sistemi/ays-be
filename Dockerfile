@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM maven:3.8.4-openjdk-17-slim AS build
+FROM maven:3.9.6-amazoncorretto-17 AS build
 
 # Copy Maven files for dependency resolution
 COPY pom.xml ./
@@ -15,10 +15,7 @@ COPY settings.xml settings.xml
 RUN mvn --settings settings.xml clean install -DskipTests
 
 # Stage 2: Run stage
-FROM openjdk:17-jdk-slim
-
-# Install curl
-RUN apt-get update && apt-get install -y curl
+FROM amazoncorretto:17
 
 # Set working directory
 WORKDIR ays-be
