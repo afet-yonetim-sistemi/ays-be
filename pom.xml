@@ -24,21 +24,24 @@
         <java.version>17</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.version>3.11.0</maven.compiler.version>
+        <maven.compiler.version>3.12.1</maven.compiler.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <mysql.version>8.2.0</mysql.version>
+        <mysql.version>8.3.0</mysql.version>
 
         <ays-be-encryption-utility.version>1.0.1</ays-be-encryption-utility.version>
-        <libphonenumber.version>8.13.27</libphonenumber.version>
-        <testcontainers.version>1.19.3</testcontainers.version>
-        <liquibase.version>4.25.1</liquibase.version>
+        <libphonenumber.version>8.13.32</libphonenumber.version>
+        <testcontainers.version>1.19.7</testcontainers.version>
+        <liquibase.version>4.26.0</liquibase.version>
         <easy-random-core.version>5.0.0</easy-random-core.version>
-        <springdoc.openapi-starter-webmvc-ui.version>2.3.0</springdoc.openapi-starter-webmvc-ui.version>
+        <springdoc.openapi-starter-webmvc-ui.version>2.4.0</springdoc.openapi-starter-webmvc-ui.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-        <jsonwebtoken.version>0.12.3</jsonwebtoken.version>
+        <jsonwebtoken.version>0.12.5</jsonwebtoken.version>
         <bouncycastle.version>1.77</bouncycastle.version>
         <json-path.version>2.9.0</json-path.version>
+        <commons-compress.version>1.26.1</commons-compress.version>
+        <objenesis.version>3.3</objenesis.version>
+        <nimbus-jose-jwt.version>9.37.3</nimbus-jose-jwt.version>
     </properties>
 
     <dependencies>
@@ -124,6 +127,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.nimbusds</groupId>
+                    <artifactId>nimbus-jose-jwt</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>${nimbus-jose-jwt.version}</version>
         </dependency>
 
         <dependency>
@@ -189,6 +204,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.objenesis</groupId>
+                    <artifactId>objenesis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>${objenesis.version}</version>
         </dependency>
 
         <dependency>
@@ -201,6 +228,18 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-compress</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>${commons-compress.version}</version>
         </dependency>
 
         <dependency>
@@ -220,6 +259,12 @@
             <artifactId>easy-random-core</artifactId>
             <version>${easy-random-core.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.objenesis</groupId>
+                    <artifactId>objenesis</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
