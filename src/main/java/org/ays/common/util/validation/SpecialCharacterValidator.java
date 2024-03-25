@@ -28,7 +28,9 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
 
         int realCharacterCount = value.replaceAll("\\s", "").length();
 
-        if (value.matches("^\\d+$")) {
+        boolean isIncludeOnlyDigits = value.matches("^\\d+$");
+
+        if (isIncludeOnlyDigits) {
             return false;
         }
 
