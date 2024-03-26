@@ -241,7 +241,8 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
     @ValueSource(strings = {
             "Invalid reason with special characters: #$%",
             "Too short",
-            "                                 a"
+            "                                      a",
+            "151201485621548562154851458614125461254125412"
     })
     void givenInvalidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnValidationError(String invalidReason) throws Exception {
 
