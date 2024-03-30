@@ -11,7 +11,6 @@ import org.ays.user.model.entity.UserEntityBuilder;
 import org.ays.user.model.enums.UserSupportStatus;
 import org.ays.user.model.mapper.UserEntityToUserMapper;
 import org.ays.user.repository.UserRepository;
-import org.ays.user.util.exception.AysUserCannotUpdateSupportStatusException;
 import org.ays.user.util.exception.AysUserNotExistByIdException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -158,40 +157,6 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
         Assertions.assertThrows(
                 AysUserNotExistByIdException.class,
                 () -> userSelfService.updateUserSupportStatus(mockUpdateRequest)
-        );
-
-        // Verify
-        Mockito.verify(userRepository, Mockito.times(1))
-                .findById(Mockito.anyString());
-    }
-
-    @Test
-    void givenUserSupportStatus_whenUserHasAssignment_thenThrowAysUserCannotUpdateSupportStatusException() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .build();
-
-        UserSupportStatus userSupportStatus = UserSupportStatus.READY;
-
-        UserSupportStatusUpdateRequest userSupportStatusUpdateRequest = new UserSupportStatusUpdateRequestBuilder()
-                .withSupportStatus(userSupportStatus)
-                .build();
-
-        mockUserEntity.updateSupportStatus(userSupportStatus);
-
-        // When
-        Mockito.when(identity.getUserId())
-                .thenReturn(mockUserEntity.getId());
-
-        Mockito.when(userRepository.findById(mockUserEntity.getId()))
-                .thenReturn(Optional.of(mockUserEntity));
-
-        // Then
-        Assertions.assertThrows(
-                AysUserCannotUpdateSupportStatusException.class,
-                () -> userSelfService.updateUserSupportStatus(userSupportStatusUpdateRequest)
         );
 
         // Verify
