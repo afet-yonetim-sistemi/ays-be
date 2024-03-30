@@ -1,33 +1,4 @@
-# AYS | Afet Yönetim Sistemi API  [![Application Status](https://github.com/afet-yonetim-sistemi/ays-be/actions/workflows/application-health-checker.yml/badge.svg)](https://github.com/afet-yonetim-sistemi/ays-be/actions/workflows/application-health-checker.yml)
-
-## Description
-
-**Disaster Management System** ,which is named as **AYS(AFET YÖNETİM SİSTEMİ)**, is an open source and voluntary
-project.
-The aim is to manage the needs that arise during a natural disaster.
-It manages the coordination of the need processes between volunteers and institutions in the disaster area.
-
-This project is designed to be used by non-governmental organizations and volunteers of related organizations.
-Organizations and the volunteers to be registered by the organizations, the needs in the disaster area,
-volunteers who are close to the relevant region and need, aims to manage the needs quickly and accurately.
-
-## Processes
-
-- **Institute (Institution) user Processes** :
-  It is aimed to ensure resource management of the organization in case of a disaster and to carry out these processes
-  according to the relevant scenarios.
-  It allocates workloads for volunteers according to the needs and follows up.
-
-- **Admin** :
-  The role of Admin takes part in the management of users and institutions that voluntarily participate in the role. It
-  follows up institutions and users.
-
-
-- **User** :
-  It represents the users who are in the relevant disaster area and want to take part in disaster processes voluntarily.
-  Users who want to participate voluntarily can contact the relevant organizations for the needs in their region.
-  can be automatically assigned, or interested volunteers can choose from the needs in their region
-  select the most appropriate assignment and complete the relevant process.
+# AYS | Afet Yönetim Sistemi APIs  [![Application Status](https://github.com/afet-yonetim-sistemi/ays-be/actions/workflows/application-health-checker.yml/badge.svg)](https://github.com/afet-yonetim-sistemi/ays-be/actions/workflows/application-health-checker.yml)
 
 ## Tech Stack
 
