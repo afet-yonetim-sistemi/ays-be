@@ -25,7 +25,7 @@ class InvalidTokenDeletionSchedulerTest extends AbstractUnitTest {
 
 
     @Test
-    void whenReservedAssignmentsUpdateToAvailableByBefore20Seconds_thenSaveAll() {
+    void whenInvalidTokensToExpiredAfterExpirationOfRefreshToken_thenDeleteAllExpiredTokenIds() {
 
         // When
         AysParameter mockParameter = AysParameter

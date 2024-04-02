@@ -7,7 +7,6 @@ import org.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import org.ays.admin_user.model.enums.AdminRole;
 import org.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
 import org.ays.admin_user.repository.AdminUserRepository;
-import org.ays.assignment.repository.AssignmentRepository;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.enums.AysTokenClaims;
@@ -41,9 +40,6 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @Autowired
     protected UserRepository userRepository;
-
-    @Autowired
-    protected AssignmentRepository assignmentRepository;
 
     @Autowired
     protected AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;

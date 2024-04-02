@@ -1,9 +1,6 @@
 package org.ays.user.service.impl;
 
 import org.ays.AbstractUnitTest;
-import org.ays.assignment.model.entity.AssignmentEntity;
-import org.ays.assignment.model.entity.AssignmentEntityBuilder;
-import org.ays.assignment.repository.AssignmentRepository;
 import org.ays.auth.model.AysIdentity;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.User;
@@ -14,7 +11,6 @@ import org.ays.user.model.entity.UserEntityBuilder;
 import org.ays.user.model.enums.UserSupportStatus;
 import org.ays.user.model.mapper.UserEntityToUserMapper;
 import org.ays.user.repository.UserRepository;
-import org.ays.user.util.exception.AysUserCannotUpdateSupportStatusException;
 import org.ays.user.util.exception.AysUserNotExistByIdException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,9 +27,6 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private AssignmentRepository assignmentRepository;
 
     @Mock
     private AysIdentity identity;
@@ -55,6 +48,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(identity.getUserId())
                 .thenReturn(mockUserId);
+
         Mockito.when(userRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUserEntity));
 
@@ -64,8 +58,10 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(mockUser.getId(), user.getId());
         Assertions.assertEquals(mockUser.getUsername(), user.getUsername());
 
+        // Verify
         Mockito.verify(identity, Mockito.times(1))
                 .getUserId();
+
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(mockUserId);
     }
@@ -78,6 +74,7 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(identity.getUserId())
                 .thenReturn(mockUserId);
+
         Mockito.when(userRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
@@ -87,8 +84,10 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
                 () -> userSelfService.getUserSelfInformation()
         );
 
+        // Verify
         Mockito.verify(identity, Mockito.times(1))
                 .getUserId();
+
         Mockito.verify(userRepository)
                 .findById(Mockito.anyString());
     }
@@ -111,21 +110,22 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
         mockUserEntity.updateSupportStatus(userSupportStatus);
 
         // When
-        Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
+        Mockito.when(identity.getUserId())
+                .thenReturn(mockUserEntity.getId());
+
         Mockito.when(userRepository.findById(mockUserEntity.getId()))
                 .thenReturn(Optional.of(mockUserEntity));
-        Mockito.when(assignmentRepository.findByUserId(identity.getUserId()))
-                .thenReturn(Optional.empty());
+
         Mockito.when(userRepository.save(Mockito.any(UserEntity.class)))
                 .thenReturn(mockUserEntity);
 
         // Then
         userSelfService.updateUserSupportStatus(mockUpdateRequest);
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserId(Mockito.anyString());
+
         Mockito.verify(userRepository, Mockito.times(1))
                 .save(Mockito.any(UserEntity.class));
     }
@@ -147,7 +147,9 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
         mockUserEntity.updateSupportStatus(userSupportStatus);
 
         // When
-        Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
+        Mockito.when(identity.getUserId())
+                .thenReturn(mockUserEntity.getId());
+
         Mockito.when(userRepository.findById(Mockito.anyString()))
                 .thenThrow(AysUserNotExistByIdException.class);
 
@@ -157,48 +159,9 @@ class UserSelfServiceImplTest extends AbstractUnitTest {
                 () -> userSelfService.updateUserSupportStatus(mockUpdateRequest)
         );
 
+        // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
-    }
-
-    @Test
-    void givenUserSupportStatus_whenUserHasAssignment_thenThrowAysUserCannotUpdateSupportStatusException() {
-
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .build();
-        AssignmentEntity mockAssignmentEntity = new AssignmentEntityBuilder()
-                .withValidFields()
-                .withUserId(mockUserEntity.getId())
-                .withUser(mockUserEntity)
-                .build();
-
-        UserSupportStatus userSupportStatus = UserSupportStatus.READY;
-
-        UserSupportStatusUpdateRequest userSupportStatusUpdateRequest = new UserSupportStatusUpdateRequestBuilder()
-                .withSupportStatus(userSupportStatus)
-                .build();
-
-        mockUserEntity.updateSupportStatus(userSupportStatus);
-
-        // When
-        Mockito.when(identity.getUserId()).thenReturn(mockUserEntity.getId());
-        Mockito.when(userRepository.findById(mockUserEntity.getId()))
-                .thenReturn(Optional.of(mockUserEntity));
-        Mockito.when(assignmentRepository.findByUserId(identity.getUserId()))
-                .thenReturn(Optional.of(mockAssignmentEntity));
-
-        // Then
-        Assertions.assertThrows(
-                AysUserCannotUpdateSupportStatusException.class,
-                () -> userSelfService.updateUserSupportStatus(userSupportStatusUpdateRequest)
-        );
-
-        Mockito.verify(userRepository, Mockito.times(1))
-                .findById(Mockito.anyString());
-        Mockito.verify(assignmentRepository, Mockito.times(1))
-                .findByUserId(Mockito.anyString());
     }
 
 }
