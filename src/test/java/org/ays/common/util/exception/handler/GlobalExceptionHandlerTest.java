@@ -14,7 +14,6 @@ import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.security.access.AccessDeniedException;
@@ -43,17 +42,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         AysErrorResponse mockErrorResponse = AysErrorResponse.subErrors(mockException)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.BAD_REQUEST);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleValidationErrors(mockException);
-
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-        AysErrorResponse aerrorResponse = (AysErrorResponse) responseEntity.getBody();
-        this.checkAysError(mockErrorResponse, aerrorResponse);
+        AysErrorResponse errorResponse = globalExceptionHandler.handleValidationErrors(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
 
     }
 
@@ -72,16 +64,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         AysErrorResponse mockErrorResponse = AysErrorResponse.subErrors(mockException.getBindingResult().getFieldErrors())
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.BAD_REQUEST);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleValidationErrors(mockException);
-
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleValidationErrors(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -94,16 +80,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         AysErrorResponse mockErrorResponse = AysErrorResponse.subErrors(mockException.getConstraintViolations())
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.BAD_REQUEST);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handlePathVariableErrors(mockException);
-
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handlePathVariableErrors(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -125,15 +105,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .header(AysErrorResponse.Header.NOT_FOUND.getName())
                 .message(mockException.getMessage())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.NOT_FOUND);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleNotExistError(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleNotExistError(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -155,14 +130,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .header(AysErrorResponse.Header.PROCESS_ERROR.getName())
                 .message(mockException.getMessage())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleProcessError(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleProcessError(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -176,15 +147,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .httpStatus(HttpStatus.FORBIDDEN)
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.FORBIDDEN);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleAccessDeniedError(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleAccessDeniedError(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -198,15 +164,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleSQLError(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleSQLError(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -227,15 +188,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .message(mockException.getMessage())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.UNAUTHORIZED);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleAuthError(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleAuthError(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -249,15 +205,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.METHOD_NOT_ALLOWED);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleHttpRequestMethodNotSupportedException(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleHttpRequestMethodNotSupportedException(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -271,14 +222,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .httpStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleHttpMediaTypeNotSupportedException(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
+        AysErrorResponse errorResponse = globalExceptionHandler.handleHttpMediaTypeNotSupportedException(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -294,15 +241,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleDataAccessException(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleDataAccessException(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -317,15 +259,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
-        ResponseEntity<Object> mockResponseEntity = new ResponseEntity<>(mockErrorResponse, HttpStatus.BAD_REQUEST);
 
         // Then
-        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleJsonParseErrors(mockException);
-        Assertions.assertEquals(mockResponseEntity.getStatusCode(), responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getHeaders());
-        Assertions.assertNotNull(responseEntity.getStatusCode());
-        Assertions.assertNotNull(responseEntity.getBody());
-
+        AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
     private void checkAysError(AysErrorResponse mockErrorResponse, AysErrorResponse errorResponse) {
@@ -333,10 +270,15 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         Assertions.assertEquals(mockErrorResponse.getHeader(), errorResponse.getHeader());
         Assertions.assertEquals(mockErrorResponse.getMessage(), errorResponse.getMessage());
         Assertions.assertEquals(mockErrorResponse.getIsSuccess(), errorResponse.getIsSuccess());
-        Assertions.assertEquals(mockErrorResponse.getSubErrors().size(), errorResponse.getSubErrors().size());
-        Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getMessage(), errorResponse.getSubErrors().get(0).getMessage());
-        Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getField(), errorResponse.getSubErrors().get(0).getField());
-        Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getValue(), errorResponse.getSubErrors().get(0).getValue());
-        Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getType(), errorResponse.getSubErrors().get(0).getType());
+
+        if (mockErrorResponse.getSubErrors() != null) {
+            Assertions.assertEquals(mockErrorResponse.getSubErrors().size(), errorResponse.getSubErrors().size());
+            Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getMessage(), errorResponse.getSubErrors().get(0).getMessage());
+            Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getField(), errorResponse.getSubErrors().get(0).getField());
+            Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getValue(), errorResponse.getSubErrors().get(0).getValue());
+            Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getType(), errorResponse.getSubErrors().get(0).getType());
+        }
+
     }
+
 }
