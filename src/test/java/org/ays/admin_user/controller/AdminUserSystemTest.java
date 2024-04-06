@@ -12,8 +12,8 @@ import org.ays.admin_user.model.mapper.AdminUserToAdminUsersResponseMapper;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
-import org.ays.common.util.exception.model.AysError;
 import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -112,7 +112,7 @@ class AdminUserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), adminUserListRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

@@ -9,8 +9,8 @@ import org.ays.auth.model.dto.response.AysTokenResponse;
 import org.ays.auth.model.dto.response.AysTokenResponseBuilder;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
-import org.ays.common.util.exception.model.AysError;
 import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
@@ -111,7 +111,7 @@ class AdminUserAuthSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), tokenInvalidateRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

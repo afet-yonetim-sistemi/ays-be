@@ -2,7 +2,7 @@ package org.ays;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.dto.response.AysResponse;
-import org.ays.common.util.exception.model.AysError;
+import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,7 +34,7 @@ public class AysMockMvc {
     }
 
     public ResultActions perform(final MockHttpServletRequestBuilder mockHttpServletRequestBuilder,
-                                 final AysError mockErrorResponse) throws Exception {
+                                 final AysErrorResponse mockErrorResponse) throws Exception {
 
         return mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(MockMvcResultHandlers.print())

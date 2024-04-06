@@ -32,8 +32,8 @@ import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.common.util.exception.model.AysError;
 import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
@@ -121,7 +121,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockListRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -180,7 +180,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -257,7 +257,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), createRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -284,7 +284,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -373,7 +373,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -403,7 +403,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -434,7 +434,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -470,7 +470,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -505,7 +505,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -594,7 +594,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken());
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -652,7 +652,7 @@ class AdminUserRegisterApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

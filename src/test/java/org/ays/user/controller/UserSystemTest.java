@@ -8,8 +8,8 @@ import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.common.util.exception.model.AysError;
 import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.user.model.User;
 import org.ays.user.model.UserBuilder;
@@ -97,7 +97,7 @@ class UserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), userSaveRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -121,7 +121,7 @@ class UserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminUserToken.getAccessToken(), userSaveRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -145,7 +145,7 @@ class UserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminUserToken.getAccessToken(), userSaveRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -202,7 +202,7 @@ class UserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), userListRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -243,7 +243,7 @@ class UserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, userToken.getAccessToken());
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isForbidden())
@@ -277,7 +277,7 @@ class UserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, userToken.getAccessToken(), updateRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -299,7 +299,7 @@ class UserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, userToken.getAccessToken(), updateRequest);
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -355,7 +355,7 @@ class UserSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, userToken.getAccessToken());
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

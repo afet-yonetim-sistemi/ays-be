@@ -4,14 +4,14 @@ import org.springframework.http.HttpStatus;
 
 public class AysErrorBuilder {
 
-    public static final AysError VALIDATION_ERROR = AysError.builder()
+    public static final AysErrorResponse VALIDATION_ERROR = AysErrorResponse.builder()
             .httpStatus(HttpStatus.BAD_REQUEST)
-            .header(AysError.Header.VALIDATION_ERROR.getName())
+            .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
             .isSuccess(false).build();
 
-    public static final AysError FORBIDDEN = AysError.builder()
+    public static final AysErrorResponse FORBIDDEN = AysErrorResponse.builder()
             .httpStatus(HttpStatus.FORBIDDEN)
-            .header(AysError.Header.AUTH_ERROR.getName())
+            .header(AysErrorResponse.Header.AUTH_ERROR.getName())
             .isSuccess(false).build();
 
 }

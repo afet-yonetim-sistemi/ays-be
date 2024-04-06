@@ -23,7 +23,7 @@ import java.util.Set;
  */
 @Getter
 @Builder
-public class AysError {
+public class AysErrorResponse {
 
     /**
      * The time when the error occurred.
@@ -123,16 +123,16 @@ public class AysError {
 
 
     /**
-     * A static method that creates an {@link AysErrorBuilder} instance with the given list of {@link FieldError} objects
+     * A static method that creates an {@link AysErrorResponseBuilder} instance with the given list of {@link FieldError} objects
      * as sub-errors.
      *
-     * @param fieldErrors a {@link List} of {@link FieldError} objects to be used as sub-errors in the {@link AysError} instance
-     * @return an instance of {@link AysErrorBuilder} with the given list of {@link FieldError} objects as sub-errors
+     * @param fieldErrors a {@link List} of {@link FieldError} objects to be used as sub-errors in the {@link AysErrorResponse} instance
+     * @return an instance of {@link AysErrorResponseBuilder} with the given list of {@link FieldError} objects as sub-errors
      */
-    public static AysError.AysErrorBuilder subErrors(final List<FieldError> fieldErrors) {
+    public static AysErrorResponse.AysErrorResponseBuilder subErrors(final List<FieldError> fieldErrors) {
 
         if (CollectionUtils.isEmpty(fieldErrors)) {
-            return AysError.builder();
+            return AysErrorResponse.builder();
         }
 
         final List<SubError> subErrorErrors = new ArrayList<>();
@@ -155,20 +155,20 @@ public class AysError {
             subErrorErrors.add(sisSubErrorBuilder.build());
         });
 
-        return AysError.builder().subErrors(subErrorErrors);
+        return AysErrorResponse.builder().subErrors(subErrorErrors);
     }
 
     /**
-     * A static method that creates an {@link AysErrorBuilder} instance with the given set of {@link ConstraintViolation} objects
+     * A static method that creates an {@link AysErrorResponseBuilder} instance with the given set of {@link ConstraintViolation} objects
      * as sub-errors.
      *
-     * @param constraintViolations a {@link Set} of {@link ConstraintViolation} objects to be used as sub-errors in the {@link AysError} instance
-     * @return an instance of {@link AysErrorBuilder} with the given set of {@link ConstraintViolation} objects as sub-errors
+     * @param constraintViolations a {@link Set} of {@link ConstraintViolation} objects to be used as sub-errors in the {@link AysErrorResponse} instance
+     * @return an instance of {@link AysErrorResponseBuilder} with the given set of {@link ConstraintViolation} objects as sub-errors
      */
-    public static AysError.AysErrorBuilder subErrors(final Set<ConstraintViolation<?>> constraintViolations) {
+    public static AysErrorResponse.AysErrorResponseBuilder subErrors(final Set<ConstraintViolation<?>> constraintViolations) {
 
         if (CollectionUtils.isEmpty(constraintViolations)) {
-            return AysError.builder();
+            return AysErrorResponse.builder();
         }
 
         final List<SubError> subErrors = new ArrayList<>();
@@ -183,18 +183,18 @@ public class AysError {
                 )
         );
 
-        return AysError.builder().subErrors(subErrors);
+        return AysErrorResponse.builder().subErrors(subErrors);
     }
 
     /**
-     * A static method that creates an {@link AysErrorBuilder} instance with the given {@link MethodArgumentTypeMismatchException}
+     * A static method that creates an {@link AysErrorResponseBuilder} instance with the given {@link MethodArgumentTypeMismatchException}
      * as a sub-error.
      *
-     * @param exception a {@link MethodArgumentTypeMismatchException} object to be used as a sub-error in the {@link AysError} instance
-     * @return an instance of {@link AysErrorBuilder} with the given {@link MethodArgumentTypeMismatchException} object as a sub-error
+     * @param exception a {@link MethodArgumentTypeMismatchException} object to be used as a sub-error in the {@link AysErrorResponse} instance
+     * @return an instance of {@link AysErrorResponseBuilder} with the given {@link MethodArgumentTypeMismatchException} object as a sub-error
      */
-    public static AysError.AysErrorBuilder subErrors(final MethodArgumentTypeMismatchException exception) {
-        return AysError.builder()
+    public static AysErrorResponse.AysErrorResponseBuilder subErrors(final MethodArgumentTypeMismatchException exception) {
+        return AysErrorResponse.builder()
                 .subErrors(List.of(
                         SubError.builder()
                                 .message(exception.getMessage().split(";")[0])
