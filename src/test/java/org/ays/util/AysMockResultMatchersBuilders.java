@@ -16,11 +16,6 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.time");
     }
 
-
-    public static JsonPathResultMatchers httpStatus() {
-        return MockMvcResultMatchers.jsonPath("$.httpStatus");
-    }
-
     public static JsonPathResultMatchers header() {
         return MockMvcResultMatchers.jsonPath("$.header");
     }
@@ -28,7 +23,6 @@ public class AysMockResultMatchersBuilders {
     public static JsonPathResultMatchers isSuccess() {
         return MockMvcResultMatchers.jsonPath("$.isSuccess");
     }
-
 
     public static JsonPathResultMatchers response() {
         return MockMvcResultMatchers.jsonPath("$.response");

@@ -3,7 +3,6 @@ package org.ays.common.model.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -23,11 +22,6 @@ public class AysResponse<T> {
     private LocalDateTime time = LocalDateTime.now();
 
     /**
-     * The HTTP status of the response.
-     */
-    private HttpStatus httpStatus;
-
-    /**
      * Indicates whether the API request was successful or not.
      */
     private Boolean isSuccess;
@@ -43,7 +37,6 @@ public class AysResponse<T> {
      * A pre-defined success response with no content.
      */
     public static final AysResponse<Void> SUCCESS = AysResponse.<Void>builder()
-            .httpStatus(HttpStatus.OK)
             .isSuccess(true).build();
 
     /**
@@ -55,7 +48,6 @@ public class AysResponse<T> {
      */
     public static <T> AysResponse<T> successOf(final T response) {
         return AysResponse.<T>builder()
-                .httpStatus(HttpStatus.OK)
                 .isSuccess(true)
                 .response(response).build();
     }
