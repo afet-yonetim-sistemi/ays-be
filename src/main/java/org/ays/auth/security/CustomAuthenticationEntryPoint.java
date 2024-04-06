@@ -47,7 +47,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         final AysErrorResponse error = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
-                .httpStatus(HttpStatus.UNAUTHORIZED)
                 .isSuccess(false)
                 .build();
         final String responseBody = OBJECT_MAPPER

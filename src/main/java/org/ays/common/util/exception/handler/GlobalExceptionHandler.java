@@ -34,7 +34,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
     }
@@ -46,7 +45,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.subErrors(exception)
-                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
     }
@@ -58,7 +56,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.subErrors(exception.getBindingResult().getFieldErrors())
-                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
     }
@@ -69,7 +66,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.subErrors(exception.getConstraintViolations())
-                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
     }
@@ -80,7 +76,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.NOT_FOUND)
                 .header(AysErrorResponse.Header.NOT_FOUND.getName())
                 .message(exception.getMessage())
                 .build();
@@ -92,7 +87,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.CONFLICT)
                 .header(AysErrorResponse.Header.ALREADY_EXIST.getName())
                 .message(exception.getMessage())
                 .build();
@@ -104,7 +98,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.PROCESS_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
@@ -116,7 +109,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.PROCESS_ERROR.getName())
                 .build();
     }
@@ -127,7 +119,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.UNAUTHORIZED)
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .build();
     }
@@ -138,7 +129,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.FORBIDDEN)
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .build();
     }
@@ -149,7 +139,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())
                 .build();
     }
@@ -160,7 +149,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
     }
@@ -172,7 +160,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
     }
@@ -184,7 +171,6 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())
                 .build();
     }

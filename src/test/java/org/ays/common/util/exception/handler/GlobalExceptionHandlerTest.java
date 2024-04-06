@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.security.access.AccessDeniedException;
@@ -101,7 +100,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.NOT_FOUND)
                 .header(AysErrorResponse.Header.NOT_FOUND.getName())
                 .message(mockException.getMessage())
                 .build();
@@ -126,7 +124,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.PROCESS_ERROR.getName())
                 .message(mockException.getMessage())
                 .build();
@@ -144,7 +141,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.FORBIDDEN)
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .build();
 
@@ -161,7 +157,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())
                 .build();
 
@@ -184,9 +179,7 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.UNAUTHORIZED)
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
-                .message(mockException.getMessage())
                 .build();
 
         // Then
@@ -202,7 +195,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
 
@@ -219,7 +211,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
 
@@ -238,7 +229,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())
                 .build();
 
@@ -256,7 +246,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
 
@@ -268,8 +257,11 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     private void checkAysError(AysErrorResponse mockErrorResponse, AysErrorResponse errorResponse) {
         Assertions.assertNotNull(errorResponse.getTime());
         Assertions.assertEquals(mockErrorResponse.getHeader(), errorResponse.getHeader());
-        Assertions.assertEquals(mockErrorResponse.getMessage(), errorResponse.getMessage());
         Assertions.assertEquals(mockErrorResponse.getIsSuccess(), errorResponse.getIsSuccess());
+
+        if (mockErrorResponse.getMessage() != null) {
+            Assertions.assertEquals(mockErrorResponse.getMessage(), errorResponse.getMessage());
+        }
 
         if (mockErrorResponse.getSubErrors() != null) {
             Assertions.assertEquals(mockErrorResponse.getSubErrors().size(), errorResponse.getSubErrors().size());

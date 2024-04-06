@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -30,24 +29,24 @@ public class AysErrorResponse {
      */
     @Builder.Default
     private LocalDateTime time = LocalDateTime.now();
-    /**
-     * The httpStatus of the error response.
-     */
-    private HttpStatus httpStatus;
+
     /**
      * The header of the error response.
      */
     private String header;
+
     /**
      * The message describing the error.
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
+
     /**
      * Indicates if the API call was successful or not.
      */
     @Builder.Default
     private final Boolean isSuccess = false;
+
     /**
      * List of sub-errors.
      */
