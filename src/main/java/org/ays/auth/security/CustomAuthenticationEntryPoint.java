@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.ays.common.util.exception.model.AysError;
+import org.ays.common.util.exception.model.AysErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -45,9 +45,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
 
-        final AysError error = AysError.builder()
-                .header(AysError.Header.AUTH_ERROR.getName())
-                .httpStatus(HttpStatus.UNAUTHORIZED)
+        final AysErrorResponse error = AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .isSuccess(false)
                 .build();
         final String responseBody = OBJECT_MAPPER

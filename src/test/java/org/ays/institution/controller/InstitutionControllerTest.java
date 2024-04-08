@@ -2,8 +2,8 @@ package org.ays.institution.controller;
 
 import org.ays.AbstractRestControllerTest;
 import org.ays.common.model.dto.response.AysResponse;
-import org.ays.common.util.exception.model.AysError;
 import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import org.ays.institution.model.entity.InstitutionBuilder;
@@ -69,7 +69,7 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(BASE_PATH.concat("/summary"), mockUserToken.getAccessToken());
 
-        AysError mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
