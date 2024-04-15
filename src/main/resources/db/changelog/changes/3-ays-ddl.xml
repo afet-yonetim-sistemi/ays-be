@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="3-ays-ddl" author="ays">
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+        <createTable tableName="AYS_EMERGENCY_EVACUATION_APPLICATION">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="INSTITUTION_ID" type="VARCHAR(36)">
+                <constraints nullable="true"
+                             foreignKeyName="FK__AYS_EMERGENCY_EVACUATION_APPLICATION__INSTITUTION_ID"
+                             referencedTableName="AYS_INSTITUTION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="REFERENCE_NUMBER" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTRY_CODE" type="VARCHAR(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LINE_NUMBER" type="VARCHAR(13)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ADDRESS" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERSON_COUNT" type="INTEGER(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HAS_OBSTACLE_PERSON_EXIST" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_IN_PERSON" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_CITY" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_DISTRICT" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="APPLICANT_FIRST_NAME" type="VARCHAR(255)"/>
+            <column name="APPLICANT_PERSON_LAST_NAME" type="VARCHAR(255)"/>
+            <column name="APPLICANT_PERSON_COUNTRY_CODE" type="VARCHAR(7)"/>
+            <column name="APPLICANT_PERSON_LINE_NUMBER" type="VARCHAR(13)"/>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql>
+            ALTER TABLE `AYS_EMERGENCY_EVACUATION_APPLICATION`
+                ADD CONSTRAINT `C__AYS_EMERGENCY_EVACUATION_APPLICATION__STATUS` CHECK (`STATUS` IN
+                                                                                        ('PENDING',
+                                                                                         'IN_REVIEW',
+                                                                                         'IN_PROGRESS',
+                                                                                         'RECEIVED_FIRST_APPROVE',
+                                                                                         'RECEIVED_SECOND_APPROVE',
+                                                                                         'RECEIVED_THIRD_APPROVE',
+                                                                                         'COMPLETED',
+                                                                                         'CANCELLED'));
+        </sql>
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+    </changeSet>
+
+</databaseChangeLog>
