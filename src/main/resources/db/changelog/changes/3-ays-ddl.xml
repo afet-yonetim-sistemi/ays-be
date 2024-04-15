@@ -56,9 +56,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="APPLICANT_FIRST_NAME" type="VARCHAR(255)"/>
-            <column name="APPLICANT_PERSON_LAST_NAME" type="VARCHAR(255)"/>
-            <column name="APPLICANT_PERSON_COUNTRY_CODE" type="VARCHAR(7)"/>
-            <column name="APPLICANT_PERSON_LINE_NUMBER" type="VARCHAR(13)"/>
+            <column name="APPLICANT_LAST_NAME" type="VARCHAR(255)"/>
+            <column name="APPLICANT_COUNTRY_CODE" type="VARCHAR(7)"/>
+            <column name="APPLICANT_LINE_NUMBER" type="VARCHAR(13)"/>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
                 <constraints nullable="false"/>
             </column>
