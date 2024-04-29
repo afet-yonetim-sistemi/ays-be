@@ -237,7 +237,7 @@
         <insert tableName="AYS_USER_V2">
             <column name="ID" value="f882cb9c-9341-473b-a040-3fbd05c09ac6"/>
             <column name="INSTITUTION_ID" value="c5f9f610-f1c8-48a4-b1e9-1fee95f5a51f"/>
-            <column name="EMAIL" value="james.william@afetyonetimsistemi.org"/>
+            <column name="EMAIL_ADDRESS" value="james.william@afetyonetimsistemi.org"/>
             <column name="FIRST_NAME" value="James"/>
             <column name="LAST_NAME" value="William"/>
             <column name="COUNTRY_CODE" value="90"/>
@@ -251,7 +251,7 @@
         <insert tableName="AYS_USER_V2">
             <column name="ID" value="9ebcd692-fc0b-4f76-9948-3dd246d73758"/>
             <column name="INSTITUTION_ID" value="08cd4b85-bb28-4e4a-a322-fb7b293d97f8"/>
-            <column name="EMAIL" value="kyle.joanne@afetyonetimsistemi.org"/>
+            <column name="EMAIL_ADDRESS" value="kyle.joanne@afetyonetimsistemi.org"/>
             <column name="FIRST_NAME" value="Kyle"/>
             <column name="LAST_NAME" value="Joanne"/>
             <column name="COUNTRY_CODE" value="90"/>
@@ -264,7 +264,7 @@
         <insert tableName="AYS_USER_V2">
             <column name="ID" value="cf1587fd-f800-42f2-ac6e-bd7b1c4d993d"/>
             <column name="INSTITUTION_ID" value="08cd4b85-bb28-4e4a-a322-fb7b293d97f8"/>
-            <column name="EMAIL" value="diego.ruiz@afetyonetimsistemi.org"/>
+            <column name="EMAIL_ADDRESS" value="diego.ruiz@afetyonetimsistemi.org"/>
             <column name="FIRST_NAME" value="Diego"/>
             <column name="LAST_NAME" value="Ruiz"/>
             <column name="COUNTRY_CODE" value="90"/>
@@ -278,7 +278,7 @@
         <insert tableName="AYS_USER_V2">
             <column name="ID" value="5160acee-a1ba-46c0-a555-12637b2ac7fc"/>
             <column name="INSTITUTION_ID" value="d95b59c7-9ac1-4be3-a981-33af1d3f8386"/>
-            <column name="EMAIL" value="olivia.ethan@afetyonetimsistemi.org"/>
+            <column name="EMAIL_ADDRESS" value="olivia.ethan@afetyonetimsistemi.org"/>
             <column name="FIRST_NAME" value="Olivia"/>
             <column name="LAST_NAME" value="Ethan"/>
             <column name="COUNTRY_CODE" value="90"/>
@@ -291,7 +291,7 @@
         <insert tableName="AYS_USER_V2">
             <column name="ID" value="1be3ff7c-8f72-4f25-bbba-6db030f61629"/>
             <column name="INSTITUTION_ID" value="d95b59c7-9ac1-4be3-a981-33af1d3f8386"/>
-            <column name="EMAIL" value="martha.ray@afetyonetimsistemi.org"/>
+            <column name="EMAIL_ADDRESS" value="martha.ray@afetyonetimsistemi.org"/>
             <column name="FIRST_NAME" value="Martha"/>
             <column name="LAST_NAME" value="Ray"/>
             <column name="COUNTRY_CODE" value="90"/>
