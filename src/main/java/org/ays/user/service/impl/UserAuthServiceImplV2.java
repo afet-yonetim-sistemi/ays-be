@@ -52,11 +52,10 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
             throw new PasswordNotValidException();
         }
 
-        final UserLoginAttemptEntity loginAttemptEntity = loginAttemptRepository.findByUserId(userEntity.getId());
-
         this.validateUserStatus(userEntity);
         this.validateUserSourcePagePermission(userEntity, loginRequest.getSourcePage());
 
+        final UserLoginAttemptEntity loginAttemptEntity = loginAttemptRepository.findByUserId(userEntity.getId());
         loginAttemptEntity.success();
         loginAttemptRepository.save(loginAttemptEntity);
 
