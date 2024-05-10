@@ -10,7 +10,7 @@ import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
 import org.ays.auth.util.exception.EmailAddressNotValidException;
 import org.ays.auth.util.exception.PasswordNotValidException;
-import org.ays.auth.util.exception.UserDoesNotAccessException;
+import org.ays.auth.util.exception.UserDoesNotAccessPageException;
 import org.ays.auth.util.exception.UserIdNotValidException;
 import org.ays.auth.util.exception.UserNotActiveException;
 import org.ays.auth.util.exception.UserNotVerifiedException;
@@ -72,7 +72,7 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
                 .anyMatch(permission -> permission.getName().equals(sourcePage.getPermission()));
 
         if (!hasUserPermission) {
-            throw new UserDoesNotAccessException(userEntity.getId(), sourcePage);
+            throw new UserDoesNotAccessPageException(userEntity.getId(), sourcePage);
         }
     }
 

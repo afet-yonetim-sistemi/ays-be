@@ -5,7 +5,7 @@ import org.ays.user.model.enums.SourcePage;
 
 import java.io.Serial;
 
-public class UserDoesNotAccessException extends AysAuthException {
+public class UserDoesNotAccessPageException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -13,7 +13,7 @@ public class UserDoesNotAccessException extends AysAuthException {
     @Serial
     private static final long serialVersionUID = -1433927234948182106L;
 
-    public UserDoesNotAccessException(String userId, SourcePage sourcePage) {
+    public UserDoesNotAccessPageException(String userId, SourcePage sourcePage) {
         super("USER NOT ALLOWED TO ACCESS THE SOURCE PAGE! userId:" + userId + " sourcePage:" + sourcePage);
     }
 
