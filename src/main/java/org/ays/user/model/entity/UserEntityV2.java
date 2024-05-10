@@ -67,7 +67,7 @@ public class UserEntityV2 extends BaseEntity {
     private UserStatus status;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private UserPasswordEntity password;
+    private PasswordEntity password;
 
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
@@ -126,7 +126,7 @@ public class UserEntityV2 extends BaseEntity {
     @AllArgsConstructor
     @EqualsAndHashCode(callSuper = true)
     @Table(name = "AYS_USER_PASSWORD")
-    public static class UserPasswordEntity extends BaseEntity {
+    public static class PasswordEntity extends BaseEntity {
 
         @Id
         @Column(name = "ID")
