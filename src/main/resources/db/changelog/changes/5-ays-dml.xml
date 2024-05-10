@@ -157,22 +157,22 @@
 
         <insert tableName="AYS_PERMISSION">
             <column name="ID" value="3acd9954-2810-4d30-8c6b-69f7655a7a04"/>
-            <column name="NAME" value="application:registeration:list"/>
-            <column name="CATEGORY" value="REGISTERATION_APPLICATION_MANAGEMENT"/>
+            <column name="NAME" value="application:registration:list"/>
+            <column name="CATEGORY" value="REGISTRATION_APPLICATION_MANAGEMENT"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
         <insert tableName="AYS_PERMISSION">
             <column name="ID" value="a6363a30-07e0-4e31-bbbe-b93842c8b60a"/>
-            <column name="NAME" value="application:registeration:detail"/>
-            <column name="CATEGORY" value="REGISTERATION_APPLICATION_MANAGEMENT"/>
+            <column name="NAME" value="application:registration:detail"/>
+            <column name="CATEGORY" value="REGISTRATION_APPLICATION_MANAGEMENT"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
         <insert tableName="AYS_PERMISSION">
             <column name="ID" value="c6b17120-116c-4b07-ae1a-ceeb725a6eeb"/>
-            <column name="NAME" value="application:registeration:conclude"/>
-            <column name="CATEGORY" value="REGISTERATION_APPLICATION_MANAGEMENT"/>
+            <column name="NAME" value="application:registration:conclude"/>
+            <column name="CATEGORY" value="REGISTRATION_APPLICATION_MANAGEMENT"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
