@@ -54,7 +54,7 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
 
         final UserLoginAttemptEntity loginAttemptEntity = loginAttemptRepository.findByUserId(userEntity.getId());
 
-        this.validaUserStatus(userEntity);
+        this.validateUserStatus(userEntity);
         this.validateUserSourcePagePermission(userEntity, loginRequest.getSourcePage());
 
         loginAttemptEntity.success();
@@ -106,12 +106,12 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
         final UserEntityV2 userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new UserIdNotValidException(userId));
 
-        this.validaUserStatus(userEntity);
+        this.validateUserStatus(userEntity);
 
         return tokenService.generate(userEntity.getClaims(), refreshToken);
     }
 
-    private void validaUserStatus(final UserEntityV2 userEntity) {
+    private void validateUserStatus(final UserEntityV2 userEntity) {
 
         if (!userEntity.isActive()) {
             throw new UserNotActiveException(userEntity.getId());
