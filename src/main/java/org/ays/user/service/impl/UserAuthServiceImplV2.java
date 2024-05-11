@@ -15,7 +15,6 @@ import org.ays.auth.util.exception.UserIdNotValidException;
 import org.ays.auth.util.exception.UserNotActiveException;
 import org.ays.auth.util.exception.UserNotVerifiedException;
 import org.ays.user.model.entity.RoleEntity;
-import org.ays.user.model.entity.UserEntity;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserLoginAttemptEntity;
 import org.ays.user.model.enums.SourcePage;
@@ -78,7 +77,7 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
 
     /**
      * Refreshes an access token based on the provided refresh token. First, it verifies and validates the
-     * refresh token using the {@link AysTokenService}. Then, it retrieves the {@link UserEntity} associated
+     * refresh token using the {@link AysTokenService}. Then, it retrieves the {@link UserEntityV2} associated
      * with the username stored in the refresh token's claims. If successful, a new access token is generated
      * using the {@link AysTokenService} and returned.
      *
