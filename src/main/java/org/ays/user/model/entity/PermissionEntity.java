@@ -12,6 +12,14 @@ import lombok.Setter;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.user.model.enums.PermissionCategory;
 
+/**
+ * Represents permissions stored in the "AYS_PERMISSION" table.
+ *
+ * <p>
+ * This class extends the BaseEntity class and includes fields for the unique identifier
+ * of the permission, its name, and its category.
+ * </p>
+ */
 @Entity
 @Getter
 @Setter

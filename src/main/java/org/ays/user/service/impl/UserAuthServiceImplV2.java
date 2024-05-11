@@ -13,7 +13,6 @@ import org.ays.auth.util.exception.PasswordNotValidException;
 import org.ays.auth.util.exception.UserDoesNotAccessPageException;
 import org.ays.auth.util.exception.UserIdNotValidException;
 import org.ays.auth.util.exception.UserNotActiveException;
-import org.ays.auth.util.exception.UserNotVerifiedException;
 import org.ays.user.model.entity.RoleEntity;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserLoginAttemptEntity;
@@ -27,6 +26,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
+/**
+ * Provides authentication services for users.
+ *
+ * <p>
+ * This service class handles user authentication, token generation, and token refresh functionalities.
+ *
+ * <p>
+ * It interacts with user repositories, password encoders, token services, and identity services to authenticate users,
+ * generate access tokens, and refresh access tokens securely.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -41,6 +50,23 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
 
     private final AysIdentity identity;
 
+    /**
+     * Authenticates a user based on the provided login request.
+     *
+     * <p>
+     * This method retrieves the user entity associated with the provided email address from the repository.
+     * It then verifies the password against the encoded password stored in the database. If the password
+     * is valid, it proceeds to validate the user's status and permissions for the requested source page.
+     * Upon successful authentication, it updates the user's last login attempt and generates an access token.
+     * </p>
+     *
+     * @param loginRequest The login request containing the user's email address, password, and source page.
+     * @return AysToken representing the access token generated upon successful authentication.
+     * @throws EmailAddressNotValidException  If the provided email address is not valid or does not exist.
+     * @throws PasswordNotValidException      If the provided password is not valid.
+     * @throws UserNotActiveException         If the user's status is not active.
+     * @throws UserDoesNotAccessPageException If the user does not have permission to access the requested page.
+     */
     @Override
     public AysToken authenticate(final AysLoginRequestV2 loginRequest) {
 
@@ -62,6 +88,17 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
         return tokenService.generate(claimsOfUser);
     }
 
+    /**
+     * Validates whether the user has permission to access the specified source page.
+     *
+     * <p>
+     * This method checks if the user's roles contain any permissions associated with the specified source page.
+     * If the user has permission, it returns true; otherwise, it throws a UserDoesNotAccessPageException.
+     *
+     * @param userEntity The user entity for which permissions are to be checked.
+     * @param sourcePage The source page for which permission is to be validated.
+     * @throws UserDoesNotAccessPageException If the user does not have permission to access the specified source page.
+     */
     private void validateUserSourcePagePermission(final UserEntityV2 userEntity,
                                                   final SourcePage sourcePage) {
 
@@ -75,19 +112,22 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
         }
     }
 
-
     /**
-     * Refreshes an access token based on the provided refresh token. First, it verifies and validates the
-     * refresh token using the {@link AysTokenService}. Then, it retrieves the {@link UserEntityV2} associated
-     * with the username stored in the refresh token's claims. If successful, a new access token is generated
-     * using the {@link AysTokenService} and returned.
+     * Refreshes the access token using the provided refresh token.
      *
-     * @param refreshToken the refresh token used for generating a new access token
-     * @return a new access token for the authenticated user
+     * <p>
+     * This method verifies and validates the provided refresh token. If the token is valid,
+     * it retrieves the user ID from the token payload and fetches the corresponding user entity.
+     * It then validates the user's status and generates a new access token based on the user's
+     * claims and the provided refresh token.
+     * </p>
+     *
+     * @param refreshToken The refresh token used to generate a new access token.
+     * @return AysToken representing the new access token generated upon successful token refresh.
      * @throws UserIdNotValidException   if an user with the provided userId is not found
-     * @throws UserNotVerifiedException  if the user is not verified
      * @throws UserNotActiveException    if the user is not active
      * @throws PasswordNotValidException if the provided password is not valid
+     * @throws UserNotActiveException    If the user's status is not active.
      */
     @Override
     public AysToken refreshAccessToken(final String refreshToken) {
@@ -112,6 +152,16 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
         return tokenService.generate(claimsOfUser, refreshToken);
     }
 
+    /**
+     * Validates the status of the user entity.
+     *
+     * <p>
+     * This method checks if the status of the user entity is active. If the user is not active,
+     * it throws a UserNotActiveException.
+     *
+     * @param userEntity The user entity for which the status is to be validated.
+     * @throws UserNotActiveException If the user's status is not active.
+     */
     private void validateUserStatus(final UserEntityV2 userEntity) {
 
         if (!userEntity.isActive()) {

@@ -3,6 +3,15 @@ package org.ays.user.model.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Enumerates source pages with associated permissions.
+ *
+ * <p>
+ * This enum provides constants for different source pages, each associated with a permission.
+ *
+ * <p>
+ * Each constant represents a source page and its corresponding permission string.
+ */
 @Getter
 @RequiredArgsConstructor
 public enum SourcePage {

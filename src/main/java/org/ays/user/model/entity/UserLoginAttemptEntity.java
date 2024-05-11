@@ -11,6 +11,18 @@ import org.ays.common.model.entity.BaseEntity;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents user login attempts recorded in the "AYS_USER_LOGIN_ATTEMPT" table.
+ *
+ * <p>
+ * This class extends the BaseEntity class and includes fields for the unique identifier
+ * of the login attempt, associated user ID, and the date and time of the last successful login.
+ * </p>
+ *
+ * <p>
+ * It provides a method to update the last login time when a login attempt is successful.
+ * </p>
+ */
 @Entity
 @Getter
 @Setter

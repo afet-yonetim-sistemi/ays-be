@@ -20,6 +20,19 @@ import org.ays.user.model.enums.RoleStatus;
 
 import java.util.Set;
 
+/**
+ * Represents roles stored in the "AYS_ROLE" table.
+ *
+ * <p>
+ * This class extends the BaseEntity class and includes fields for the unique identifier
+ * of the role, institution ID, name, and status.
+ * </p>
+ *
+ * <p>
+ * It provides methods to check whether a role is active, passive, or deleted, and to delete
+ * a role by updating its status.
+ * </p>
+ */
 @Entity
 @Getter
 @Setter

@@ -25,6 +25,13 @@ import org.ays.user.model.enums.UserStatus;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Represents user data in the "AYS_USER_V2" table.
+ * Includes fields for user details such as ID, email, name, etc.
+ * Provides methods for checking user status and generating JWT claims.
+ * Manages user passwords via the embedded PasswordEntity class.
+ * Utilizes JPA annotations for database mapping.
+ */
 @Entity
 @Getter
 @Setter
@@ -93,6 +100,13 @@ public class UserEntityV2 extends BaseEntity {
         this.status = UserStatus.DELETED;
     }
 
+    /**
+     * Generates JWT (JSON Web Token) claims for the user based on their data and login attempt information.
+     *
+     * @param loginAttemptEntity The UserLoginAttemptEntity object containing login attempt information.
+     * @return Claims object containing JWT claims including institution ID, institution name, user ID, user first name,
+     * user last name, user email address, user permissions, and optionally user last login time if available.
+     */
     public Claims getClaims(final UserLoginAttemptEntity loginAttemptEntity) {
         final ClaimsBuilder claimsBuilder = Jwts.claims();
 
@@ -119,7 +133,12 @@ public class UserEntityV2 extends BaseEntity {
                 .collect(Collectors.toSet());
     }
 
-
+    /**
+     * Represents user passwords stored in the "AYS_USER_PASSWORD" table.
+     * Includes fields for password ID, associated user ID, and encrypted password value.
+     * Establishes a lazy-loaded one-to-one relationship with UserEntityV2.
+     * Facilitates secure management of user passwords.
+     */
     @Entity
     @Getter
     @Setter
