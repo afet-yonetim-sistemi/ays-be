@@ -11,12 +11,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
@@ -30,9 +27,6 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_USER_V2")
 public class UserEntityV2 extends BaseEntity {
@@ -121,9 +115,6 @@ public class UserEntityV2 extends BaseEntity {
     @Entity
     @Getter
     @Setter
-    @SuperBuilder
-    @NoArgsConstructor
-    @AllArgsConstructor
     @EqualsAndHashCode(callSuper = true)
     @Table(name = "AYS_USER_PASSWORD")
     public static class PasswordEntity extends BaseEntity {
@@ -143,6 +134,5 @@ public class UserEntityV2 extends BaseEntity {
         private UserEntityV2 user;
 
     }
-
 
 }

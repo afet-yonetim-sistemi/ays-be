@@ -11,12 +11,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.user.model.enums.RoleStatus;
@@ -26,9 +23,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_ROLE")
 public class RoleEntity extends BaseEntity {
