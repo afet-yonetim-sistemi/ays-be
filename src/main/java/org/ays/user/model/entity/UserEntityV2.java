@@ -1,5 +1,8 @@
 package org.ays.user.model.entity;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ClaimsBuilder;
+import io.jsonwebtoken.Jwts;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,8 +22,6 @@ import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.user.model.enums.UserStatus;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -92,15 +93,22 @@ public class UserEntityV2 extends BaseEntity {
         this.status = UserStatus.DELETED;
     }
 
-    public Map<String, Object> getClaims() {
-        final Map<String, Object> claims = new HashMap<>();
-        claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
-        claims.put(AysTokenClaims.USER_ID.getValue(), this.id);
-        claims.put(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
-        claims.put(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        claims.put(AysTokenClaims.USER_EMAIL_ADDRESS.getValue(), this.emailAddress);
-        claims.put(AysTokenClaims.USER_PERMISSIONS.getValue(), this.getPermissionNames());
-        return claims;
+    public Claims getClaims(final UserLoginAttemptEntity loginAttemptEntity) {
+        final ClaimsBuilder claimsBuilder = Jwts.claims();
+
+        claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), this.institution.getId());
+        claimsBuilder.add(AysTokenClaims.INSTITUTION_NAME.getValue(), this.institution.getName());
+        claimsBuilder.add(AysTokenClaims.USER_ID.getValue(), this.id);
+        claimsBuilder.add(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
+        claimsBuilder.add(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
+        claimsBuilder.add(AysTokenClaims.USER_EMAIL_ADDRESS.getValue(), this.emailAddress);
+        claimsBuilder.add(AysTokenClaims.USER_PERMISSIONS.getValue(), this.getPermissionNames());
+
+        if (loginAttemptEntity.getLastLoginAt() != null) {
+            claimsBuilder.add(AysTokenClaims.USER_LAST_LOGIN_AT.getValue(), loginAttemptEntity.getLastLoginAt().toString());
+        }
+
+        return claimsBuilder.build();
     }
 
     private Set<String> getPermissionNames() {

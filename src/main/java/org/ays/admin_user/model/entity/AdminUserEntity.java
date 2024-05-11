@@ -1,5 +1,8 @@
 package org.ays.admin_user.model.entity;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ClaimsBuilder;
+import io.jsonwebtoken.Jwts;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,9 +24,6 @@ import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.model.enums.AysUserType;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Admin User entity, which holds the information regarding the system user.
@@ -100,22 +100,22 @@ public class AdminUserEntity extends BaseEntity {
         this.status = AdminUserStatus.PASSIVE;
     }
 
-    public Map<String, Object> getClaims() {
-        final Map<String, Object> claims = new HashMap<>();
+    public Claims getClaims() {
+        final ClaimsBuilder claimsBuilder = Jwts.claims();
 
         if (this.isSuperAdmin()) {
-            claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.SUPER_ADMIN);
+            claimsBuilder.add(AysTokenClaims.USER_TYPE.getValue(), AysUserType.SUPER_ADMIN);
         } else {
-            claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
-            claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
-            claims.put(AysTokenClaims.INSTITUTION_NAME.getValue(), this.institution.getName());
+            claimsBuilder.add(AysTokenClaims.USER_TYPE.getValue(), AysUserType.ADMIN);
+            claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
+            claimsBuilder.add(AysTokenClaims.INSTITUTION_NAME.getValue(), this.institution.getName());
         }
 
-        claims.put(AysTokenClaims.USER_ID.getValue(), this.id);
-        claims.put(AysTokenClaims.USERNAME.getValue(), this.username);
-        claims.put(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
-        claims.put(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        return claims;
+        claimsBuilder.add(AysTokenClaims.USER_ID.getValue(), this.id);
+        claimsBuilder.add(AysTokenClaims.USERNAME.getValue(), this.username);
+        claimsBuilder.add(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
+        claimsBuilder.add(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
+        return claimsBuilder.build();
     }
 
 }

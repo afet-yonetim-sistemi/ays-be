@@ -58,7 +58,8 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
         loginAttemptEntity.success();
         loginAttemptRepository.save(loginAttemptEntity);
 
-        return tokenService.generate(userEntity.getClaims());
+        final Claims claimsOfUser = userEntity.getClaims(loginAttemptEntity);
+        return tokenService.generate(claimsOfUser);
     }
 
     private void validateUserSourcePagePermission(final UserEntityV2 userEntity,
@@ -106,7 +107,9 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
 
         this.validateUserStatus(userEntity);
 
-        return tokenService.generate(userEntity.getClaims(), refreshToken);
+        final UserLoginAttemptEntity loginAttemptEntity = loginAttemptRepository.findByUserId(userEntity.getId());
+        final Claims claimsOfUser = userEntity.getClaims(loginAttemptEntity);
+        return tokenService.generate(claimsOfUser, refreshToken);
     }
 
     private void validateUserStatus(final UserEntityV2 userEntity) {

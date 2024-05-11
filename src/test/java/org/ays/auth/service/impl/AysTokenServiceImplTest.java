@@ -47,7 +47,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     void givenValidAdminUserClaims_whenTokensGenerated_thenReturnAysToken() {
         // Given
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().build();
-        Map<String, Object> mockAdminUserClaims = mockAdminUserEntity.getClaims();
+        Claims mockAdminUserClaims = mockAdminUserEntity.getClaims();
 
         // When
         Mockito.when(tokenConfiguration.getIssuer()).thenReturn(MOCK_ISSUER);
@@ -76,7 +76,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     void givenValidUserClaims_whenTokensGenerated_thenReturnAysToken() {
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder().withValidFields().build();
-        Map<String, Object> mockUserClaims = mockUserEntity.getClaims();
+        Claims mockUserClaims = mockUserEntity.getClaims();
 
         // When
         Mockito.when(tokenConfiguration.getIssuer()).thenReturn(MOCK_ISSUER);
@@ -105,7 +105,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     void givenValidAdminUserClaimsAndRefreshToken_whenAccessTokenGenerated_thenReturnAysToken() {
         // Given
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().build();
-        Map<String, Object> mockAdminUserClaims = mockAdminUserEntity.getClaims();
+        Claims mockAdminUserClaims = mockAdminUserEntity.getClaims();
 
         // When
         Mockito.when(tokenConfiguration.getIssuer()).thenReturn(MOCK_ISSUER);
@@ -134,7 +134,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     void givenValidUserClaimsAndRefreshToken_whenAccessTokenGenerated_thenReturnAysToken() {
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder().withValidFields().build();
-        Map<String, Object> mockUserClaims = mockUserEntity.getClaims();
+        Claims mockUserClaims = mockUserEntity.getClaims();
 
         // When
         Mockito.when(tokenConfiguration.getIssuer()).thenReturn(MOCK_ISSUER);
@@ -216,7 +216,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     void givenValidJwt_whenJwtParsed_thenReturnAdminUserClaims() {
         // Given
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().build();
-        Map<String, Object> mockAdminUserClaims = mockAdminUserEntity.getClaims();
+        Claims mockAdminUserClaims = mockAdminUserEntity.getClaims();
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
@@ -258,7 +258,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     void givenValidJwt_whenJwtParsed_thenReturnUserClaims() {
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder().withValidFields().build();
-        Map<String, Object> mockUserClaims = mockUserEntity.getClaims();
+        Claims mockUserClaims = mockUserEntity.getClaims();
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
@@ -299,7 +299,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     void givenValidToken_whenTokenParsedAndAdminUserAuthoritiesAdded_thenReturnAuthenticatedUsernamePasswordAuthenticationToken() {
         // Given
         AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().build();
-        Map<String, Object> mockAdminUserClaims = mockAdminUserEntity.getClaims();
+        Claims mockAdminUserClaims = mockAdminUserEntity.getClaims();
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
@@ -360,7 +360,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     void givenValidToken_whenTokenParsedAndUserAuthoritiesAdded_thenReturnAuthenticatedUsernamePasswordAuthenticationToken() {
         // Given
         UserEntity mockUserEntity = new UserEntityBuilder().withValidFields().build();
-        Map<String, Object> mockUserClaims = mockUserEntity.getClaims();
+        Claims mockUserClaims = mockUserEntity.getClaims();
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()

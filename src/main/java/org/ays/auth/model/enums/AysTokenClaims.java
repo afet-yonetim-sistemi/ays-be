@@ -23,6 +23,7 @@ public enum AysTokenClaims {
     USER_PERMISSIONS("userPermissions"),
     USER_FIRST_NAME("userFirstName"),
     USER_LAST_NAME("userLastName"),
+    USER_LAST_LOGIN_AT("userLastLoginAt"),
     INSTITUTION_ID("institutionId"),
     INSTITUTION_NAME("institutionName"),
     ISSUED_AT("iat"),

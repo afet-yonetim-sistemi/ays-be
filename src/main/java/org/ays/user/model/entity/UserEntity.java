@@ -1,5 +1,8 @@
 package org.ays.user.model.entity;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ClaimsBuilder;
+import io.jsonwebtoken.Jwts;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,9 +26,7 @@ import org.ays.user.model.enums.UserRole;
 import org.ays.user.model.enums.UserStatus;
 import org.ays.user.model.enums.UserSupportStatus;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User entity, which holds the information regarding the system user.
@@ -114,14 +115,14 @@ public class UserEntity extends BaseEntity {
         this.supportStatus = UserSupportStatus.ON_ROAD;
     }
 
-    public Map<String, Object> getClaims() {
-        final Map<String, Object> claims = new HashMap<>();
-        claims.put(AysTokenClaims.USER_ID.getValue(), this.id);
-        claims.put(AysTokenClaims.USERNAME.getValue(), this.username);
-        claims.put(AysTokenClaims.USER_TYPE.getValue(), AysUserType.USER);
-        claims.put(AysTokenClaims.ROLES.getValue(), List.of(this.role));
-        claims.put(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
-        return claims;
+    public Claims getClaims() {
+        final ClaimsBuilder claimsBuilder = Jwts.claims();
+        claimsBuilder.add(AysTokenClaims.USER_ID.getValue(), this.id);
+        claimsBuilder.add(AysTokenClaims.USERNAME.getValue(), this.username);
+        claimsBuilder.add(AysTokenClaims.USER_TYPE.getValue(), AysUserType.USER);
+        claimsBuilder.add(AysTokenClaims.ROLES.getValue(), List.of(this.role));
+        claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), this.institutionId);
+        return claimsBuilder.build();
     }
 
     public void update(UserUpdateRequest updateRequest) {
