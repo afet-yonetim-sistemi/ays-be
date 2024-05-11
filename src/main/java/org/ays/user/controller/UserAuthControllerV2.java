@@ -32,7 +32,7 @@ class UserAuthControllerV2 {
     /**
      * This endpoint allows user to login to platform.
      *
-     * @param loginRequest A AysLoginRequest object required to login to platform.
+     * @param loginRequest An AysLoginRequest object required to login to platform.
      * @return An AysResponse containing an AysTokenResponse object and the HTTP status code (200 OK).
      */
     @PostMapping("/token")
