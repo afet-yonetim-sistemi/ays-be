@@ -30,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 import java.util.Set;
 
+@Deprecated(since = "AdminUserAuthServiceImplTest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class AdminUserAuthServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks

@@ -24,6 +24,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated(since = "AdminUserServiceImplTest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class AdminUserServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks

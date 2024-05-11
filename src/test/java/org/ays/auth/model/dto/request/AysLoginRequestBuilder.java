@@ -2,6 +2,7 @@ package org.ays.auth.model.dto.request;
 
 import org.ays.common.model.TestDataBuilder;
 
+@Deprecated(since = "AysLoginRequestBuilder V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AysLoginRequestBuilder extends TestDataBuilder<AysLoginRequest> {
 
     public AysLoginRequestBuilder() {
