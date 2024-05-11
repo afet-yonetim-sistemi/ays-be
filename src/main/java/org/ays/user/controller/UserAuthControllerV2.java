@@ -48,8 +48,8 @@ class UserAuthControllerV2 {
     /**
      * This endpoint allows user to refresh token.
      *
-     * @param refreshRequest A AysTokenRefreshRequest object used to send a token.
-     * @return A AysResponse containing an AysTokenResponse object and the HTTP status code (200 OK).
+     * @param refreshRequest An AysTokenRefreshRequest object used to send a token.
+     * @return An AysResponse containing an AysTokenResponse object and the HTTP status code (200 OK).
      */
     @PostMapping("/token/refresh")
     public AysResponse<AysTokenResponse> refreshToken(@RequestBody @Valid AysTokenRefreshRequest refreshRequest) {
