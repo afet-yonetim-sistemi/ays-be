@@ -8,6 +8,7 @@ import java.io.Serial;
 /**
  * This exception is thrown when attempting to create an admin user with a phone number that already exists in the system.
  */
+@Deprecated(since = "AysAdminUserAlreadyExistsByPhoneNumberException V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AysAdminUserAlreadyExistsByPhoneNumberException extends AysAlreadyException {
 
     /**
