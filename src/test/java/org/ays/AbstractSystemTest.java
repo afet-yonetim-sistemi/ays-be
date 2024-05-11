@@ -14,6 +14,7 @@ import org.ays.auth.repository.AysInvalidTokenRepository;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.user.model.entity.UserEntityBuilder;
+import org.ays.user.model.entity.UserEntityV2Builder;
 import org.ays.user.repository.UserRepository;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +55,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected AysToken superAdminToken;
     protected AysToken adminUserToken;
     protected AysToken userToken;
+    protected AysToken userTokenV2;
 
 
     @Autowired
@@ -86,6 +88,14 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .build()
                 .getClaims();
         this.userToken = this.generate(claimsOfUser);
+
+        final Map<String, Object> claimsOfUserV2 = new UserEntityV2Builder()
+                .withId(AysValidTestData.UserV2.ID)
+                .withEmailAddress(AysValidTestData.UserV2.EMAIL_ADDRESS)
+                .withInstitutionId(AysValidTestData.UserV2.INSTITUTION_ID)
+                .build()
+                .getClaims();
+        this.userTokenV2 = this.generate(claimsOfUserV2);
     }
 
 
