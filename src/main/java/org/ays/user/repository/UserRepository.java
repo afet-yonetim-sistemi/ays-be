@@ -9,6 +9,7 @@ import java.util.Optional;
 /**
  * Repository interface for performing CRUD operations on UserEntity objects.
  */
+@Deprecated(since = "UserRepository V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public interface UserRepository extends JpaRepository<UserEntity, String>, JpaSpecificationExecutor<UserEntity> {
 
     /**

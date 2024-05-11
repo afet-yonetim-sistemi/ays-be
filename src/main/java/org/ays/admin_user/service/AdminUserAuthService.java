@@ -6,6 +6,7 @@ import org.ays.auth.model.dto.request.AysLoginRequest;
 /**
  * Admin Auth service to perform admin user related authentication operations.
  */
+@Deprecated(since = "AdminUserAuthService V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public interface AdminUserAuthService {
 
     /**

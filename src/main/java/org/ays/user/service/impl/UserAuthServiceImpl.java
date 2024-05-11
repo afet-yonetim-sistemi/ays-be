@@ -31,6 +31,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Deprecated(since = "UserAuthServiceImpl V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class UserAuthServiceImpl implements UserAuthService {
 
     private final UserRepository userRepository;

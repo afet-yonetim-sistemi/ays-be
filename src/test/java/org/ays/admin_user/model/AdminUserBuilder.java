@@ -6,6 +6,7 @@ import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionBuilder;
 
+@Deprecated(since = "AdminUserBuilder V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AdminUserBuilder extends TestDataBuilder<AdminUser> {
 
     public AdminUserBuilder() {

@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 
+@Deprecated(since = "AdminUserControllerTest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class AdminUserControllerTest extends AbstractRestControllerTest {
 
     @MockBean

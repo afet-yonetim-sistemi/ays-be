@@ -16,6 +16,7 @@ import org.ays.institution.model.Institution;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
+@Deprecated(since = "AdminUser V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AdminUser extends BaseDomainModel {
 
     private String id;

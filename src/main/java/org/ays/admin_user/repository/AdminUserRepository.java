@@ -9,6 +9,7 @@ import java.util.Optional;
 /**
  * Repository interface for performing CRUD operations on {@link AdminUserEntity} in the database.
  */
+@Deprecated(since = "AdminUserRepository V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public interface AdminUserRepository extends JpaRepository<AdminUserEntity, String>,
         JpaSpecificationExecutor<AdminUserEntity> {
 

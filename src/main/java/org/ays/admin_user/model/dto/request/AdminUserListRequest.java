@@ -14,6 +14,7 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@Deprecated(since = "AdminUserListRequest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AdminUserListRequest extends AysPagingRequest {
 
     /**

@@ -38,6 +38,7 @@ import java.util.Map;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_USER")
+@Deprecated(since = "UserEntity V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class UserEntity extends BaseEntity {
 
     @Id

@@ -7,6 +7,7 @@ import org.ays.common.model.AysPage;
 /**
  * Admin User service to perform admin user related business operations.
  */
+@Deprecated(since = "AdminUserService V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public interface AdminUserService {
 
     /**

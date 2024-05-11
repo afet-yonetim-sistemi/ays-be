@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/authentication")
 @RequiredArgsConstructor
+@Deprecated(since = "UserAuthController V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class UserAuthController {
 
     private final UserAuthService userAuthService;

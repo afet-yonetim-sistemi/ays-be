@@ -11,6 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Deprecated(since = "AysLoginRequest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AysLoginRequest {
 
     @NotBlank
