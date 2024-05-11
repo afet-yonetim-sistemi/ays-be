@@ -130,7 +130,7 @@ public class UserEntityV2 extends BaseEntity {
 
         @Id
         @Column(name = "ID")
-        private String id;
+        private Long id;
 
         @Column(name = "USER_ID")
         private String userId;
