@@ -57,7 +57,7 @@ class AdminUserRegisterApplicationController {
      * @return A response object containing a paginated list of admin user register applications.
      */
     @PostMapping("/registration-applications")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:list')")
     public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> getRegistrationApplications(
             @RequestBody @Valid AdminUserRegisterApplicationListRequest request) {
 
@@ -83,7 +83,7 @@ class AdminUserRegisterApplicationController {
      * @return A response with the register application detail.
      */
     @GetMapping("/registration-application/{id}")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:detail')")
     public AysResponse<AdminUserRegisterApplicationResponse> getRegistrationApplicationById(
             @PathVariable @UUID String id) {
 
@@ -122,7 +122,7 @@ class AdminUserRegisterApplicationController {
      * @return A response object containing the created register application.
      */
     @PostMapping("/registration-application")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:conclude')")
     public AysResponse<AdminUserRegisterApplicationCreateResponse> createRegistrationApplication(
             @RequestBody @Valid AdminUserRegisterApplicationCreateRequest createRequest) {
 
@@ -142,7 +142,7 @@ class AdminUserRegisterApplicationController {
      * @return A success response.
      */
     @PostMapping("/registration-application/{id}/approve")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:conclude')")
     public AysResponse<Void> approveRegistrationApplication(@PathVariable @UUID String id) {
 
         adminUserRegisterApplicationService.approveRegistrationApplication(id);
@@ -157,7 +157,7 @@ class AdminUserRegisterApplicationController {
      * @return A response object containing the rejected register application.
      */
     @PostMapping("/registration-application/{id}/reject")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:conclude')")
     public AysResponse<Void> rejectRegistrationApplication(@PathVariable @UUID String id,
                                                            @RequestBody @Valid AdminUserRegisterApplicationRejectRequest request) {
 
