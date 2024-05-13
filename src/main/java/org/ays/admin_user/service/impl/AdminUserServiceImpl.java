@@ -29,6 +29,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Deprecated(since = "AdminUserServiceImpl V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AdminUserServiceImpl implements AdminUserService {
 
     private final AdminUserRepository adminUserRepository;

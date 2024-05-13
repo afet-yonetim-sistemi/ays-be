@@ -7,6 +7,7 @@ import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.RequiredTypeException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ class AysTokenServiceImpl implements AysTokenService {
      * @return AysToken object containing the access token and refresh token.
      */
     @Override
-    public AysToken generate(final Map<String, Object> claims) {
+    public AysToken generate(final Claims claims) {
 
         final long currentTimeMillis = System.currentTimeMillis();
 
@@ -87,7 +88,7 @@ class AysTokenServiceImpl implements AysTokenService {
      * @return AysToken object containing the generated access token and refresh token.
      */
     @Override
-    public AysToken generate(final Map<String, Object> claims, final String refreshToken) {
+    public AysToken generate(final Claims claims, final String refreshToken) {
 
         final long currentTimeMillis = System.currentTimeMillis();
 
@@ -141,12 +142,21 @@ class AysTokenServiceImpl implements AysTokenService {
     @Override
     public void verifyAndValidate(String token) {
         try {
-            Jwts.parser()
+            final Jws<Claims> claims = Jwts.parser()
                     .verifyWith(tokenConfiguration.getPublicKey())
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        } catch (MalformedJwtException | ExpiredJwtException | SignatureException exception) {
+                    .parseSignedClaims(token);
+
+            final JwsHeader header = claims.getHeader();
+            if (!OAuth2AccessToken.TokenType.BEARER.getValue().equals(header.getType())) {
+                throw new RequiredTypeException(token);
+            }
+
+            if (!Jwts.SIG.RS256.getId().equals(header.getAlgorithm())) {
+                throw new SignatureException(token);
+            }
+
+        } catch (MalformedJwtException | ExpiredJwtException | SignatureException | RequiredTypeException exception) {
             throw new TokenNotValidException(token, exception);
         }
     }
@@ -196,13 +206,18 @@ class AysTokenServiceImpl implements AysTokenService {
                 payload
         );
 
-        final AysUserType userType = AysUserType.valueOf(payload.get(AysTokenClaims.USER_TYPE.getValue()).toString());
-
         final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(userType.name()));
+        if (payload.get(AysTokenClaims.USER_TYPE.getValue()) != null) {
+            final AysUserType userType = AysUserType.valueOf(payload.get(AysTokenClaims.USER_TYPE.getValue()).toString());
 
-        if (userType == AysUserType.USER) {
-            final List<String> roles = AysListUtil.to(payload.get(AysTokenClaims.ROLES.getValue()), String.class);
+            authorities.add(new SimpleGrantedAuthority(userType.name()));
+
+            if (userType == AysUserType.USER) {
+                final List<String> roles = AysListUtil.to(payload.get(AysTokenClaims.ROLES.getValue()), String.class);
+                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+            }
+        } else {
+            final List<String> roles = AysListUtil.to(payload.get(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
             roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
         }
 

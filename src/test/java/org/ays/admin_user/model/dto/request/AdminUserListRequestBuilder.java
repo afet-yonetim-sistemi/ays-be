@@ -7,6 +7,7 @@ import org.ays.common.model.TestDataBuilder;
 
 import java.util.List;
 
+@Deprecated(since = "AdminUserListRequestBuilder V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AdminUserListRequestBuilder extends TestDataBuilder<AdminUserListRequest> {
 
     public AdminUserListRequestBuilder() {

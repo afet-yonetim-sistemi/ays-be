@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+@Deprecated(since = "AdminUserAuthSystemTest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class AdminUserAuthSystemTest extends AbstractSystemTest {
 
     private static final String BASE_PATH = "/api/v1/authentication/admin";

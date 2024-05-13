@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/authentication/admin")
 @RequiredArgsConstructor
+@Deprecated(since = "AdminUserAuthController V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class AdminUserAuthController {
 
     private final AdminUserAuthService adminUserAuthService;

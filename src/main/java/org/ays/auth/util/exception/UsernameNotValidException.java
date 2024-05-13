@@ -8,6 +8,7 @@ import java.io.Serial;
  * An exception that is thrown when a username is not valid.
  * Extends {@link AysAuthException}.
  */
+@Deprecated(since = "UsernameNotValidException V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class UsernameNotValidException extends AysAuthException {
 
     /**

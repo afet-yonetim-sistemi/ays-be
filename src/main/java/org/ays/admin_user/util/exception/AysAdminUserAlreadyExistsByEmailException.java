@@ -8,6 +8,7 @@ import java.io.Serial;
  * Exception indicating that an admin user already exists with the specified email address.
  * This exception is a subclass of AysAlreadyException.
  */
+@Deprecated(since = "AysAdminUserAlreadyExistsByEmailException V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AysAdminUserAlreadyExistsByEmailException extends AysAlreadyException {
 
     /**

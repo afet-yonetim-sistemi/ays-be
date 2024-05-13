@@ -12,6 +12,7 @@ import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated(since = "AdminUserEntityBuilder V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AdminUserEntityBuilder extends TestDataBuilder<AdminUserEntity> {
 
     public AdminUserEntityBuilder() {

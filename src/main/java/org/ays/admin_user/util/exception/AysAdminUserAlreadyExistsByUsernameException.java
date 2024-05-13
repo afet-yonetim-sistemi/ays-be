@@ -8,6 +8,7 @@ import java.io.Serial;
  * Exception indicating that an admin user already exists with the specified username.
  * This exception is a subclass of AysAlreadyException.
  */
+@Deprecated(since = "AysAdminUserAlreadyExistsByUsernameException V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AysAdminUserAlreadyExistsByUsernameException extends AysAlreadyException {
 
     /**

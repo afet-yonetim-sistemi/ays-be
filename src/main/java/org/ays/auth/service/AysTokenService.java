@@ -4,8 +4,6 @@ import io.jsonwebtoken.Claims;
 import org.ays.auth.model.AysToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import java.util.Map;
-
 /**
  * AYS Token service to handle with JWT processes
  */
@@ -14,17 +12,17 @@ public interface AysTokenService {
     /**
      * Generate AysToken with Claims.
      *
-     * @param claims Map Object
+     * @param claims Claims Object
      */
-    AysToken generate(Map<String, Object> claims);
+    AysToken generate(Claims claims);
 
     /**
      * Generate AysToken with Claims for refresh token.
      *
-     * @param claims       Map Object
+     * @param claims       Claims Object
      * @param refreshToken refreshToken text
      */
-    AysToken generate(Map<String, Object> claims, String refreshToken);
+    AysToken generate(Claims claims, String refreshToken);
 
     /**
      * Verify and Validate JWT

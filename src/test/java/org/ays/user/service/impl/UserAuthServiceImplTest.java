@@ -32,6 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 import java.util.Set;
 
+@Deprecated(since = "UserAuthServiceImplTest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class UserAuthServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks
@@ -249,7 +250,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(userRepository, Mockito.times(0))
                 .findById(Mockito.anyString());
         Mockito.verify(tokenService, Mockito.times(0))
-                .generate(Mockito.anyMap(), Mockito.anyString());
+                .generate(Mockito.any(Claims.class), Mockito.anyString());
     }
 
     @Test
@@ -353,7 +354,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(mockUserEntity.getId());
         Mockito.verify(tokenService, Mockito.times(0))
-                .generate(Mockito.anyMap(), Mockito.anyString());
+                .generate(Mockito.any(Claims.class), Mockito.anyString());
     }
 
     @Test
@@ -405,7 +406,7 @@ class UserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(userRepository, Mockito.times(1))
                 .findById(mockUserEntity.getId());
         Mockito.verify(tokenService, Mockito.times(0))
-                .generate(Mockito.anyMap(), Mockito.anyString());
+                .generate(Mockito.any(Claims.class), Mockito.anyString());
     }
 
 

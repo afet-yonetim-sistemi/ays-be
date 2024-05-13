@@ -30,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 import java.util.Set;
 
+@Deprecated(since = "AdminUserAuthServiceImplTest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class AdminUserAuthServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks
@@ -66,7 +67,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(true);
 
-        Mockito.when(tokenService.generate(Mockito.anyMap()))
+        Mockito.when(tokenService.generate(Mockito.any(Claims.class)))
                 .thenReturn(mockAdminUserToken);
 
         // Then
@@ -81,7 +82,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
                 .matches(Mockito.anyString(), Mockito.anyString());
 
         Mockito.verify(tokenService, Mockito.times(1))
-                .generate(Mockito.anyMap());
+                .generate(Mockito.any(Claims.class));
     }
 
     @Test
@@ -273,7 +274,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(adminUserRepository, Mockito.times(0))
                 .findById(Mockito.anyString());
         Mockito.verify(tokenService, Mockito.times(0))
-                .generate(Mockito.anyMap(), Mockito.anyString());
+                .generate(Mockito.any(Claims.class), Mockito.anyString());
 
     }
 
@@ -376,7 +377,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
         Mockito.verify(tokenService, Mockito.times(0))
-                .generate(Mockito.anyMap(), Mockito.anyString());
+                .generate(Mockito.any(Claims.class), Mockito.anyString());
     }
 
     @Test
@@ -428,7 +429,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
         Mockito.verify(tokenService, Mockito.times(0))
-                .generate(Mockito.anyMap(), Mockito.anyString());
+                .generate(Mockito.any(Claims.class), Mockito.anyString());
     }
 
     @Test
@@ -480,7 +481,7 @@ class AdminUserAuthServiceImplTest extends AbstractUnitTest {
         Mockito.verify(adminUserRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
         Mockito.verify(tokenService, Mockito.times(0))
-                .generate(Mockito.anyMap(), Mockito.anyString());
+                .generate(Mockito.any(Claims.class), Mockito.anyString());
     }
 
 

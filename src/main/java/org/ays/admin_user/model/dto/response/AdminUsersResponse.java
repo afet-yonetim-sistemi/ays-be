@@ -10,6 +10,7 @@ import org.ays.institution.model.dto.response.InstitutionResponse;
  */
 @Getter
 @Setter
+@Deprecated(since = "AdminUsersResponse V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public class AdminUsersResponse {
 
     private String id;

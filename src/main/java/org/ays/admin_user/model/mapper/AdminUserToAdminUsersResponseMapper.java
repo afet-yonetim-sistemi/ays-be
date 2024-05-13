@@ -14,6 +14,7 @@ import org.mapstruct.factory.Mappers;
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
 @Mapper
+@Deprecated(since = "AdminUserToAdminUsersResponseMapper V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public interface AdminUserToAdminUsersResponseMapper extends BaseMapper<AdminUser, AdminUsersResponse> {
 
     /**

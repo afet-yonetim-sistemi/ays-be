@@ -1,5 +1,6 @@
 package org.ays.user.controller;
 
+import io.jsonwebtoken.Claims;
 import org.ays.AbstractSystemTest;
 import org.ays.auth.model.AysToken;
 import org.ays.common.model.dto.response.AysResponse;
@@ -22,8 +23,6 @@ import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.util.Map;
-
 class UserSelfSystemTest extends AbstractSystemTest {
 
     private final UserToUserSelfResponseMapper userToUserSelfResponseMapper = UserToUserSelfResponseMapper.initialize();
@@ -41,7 +40,7 @@ class UserSelfSystemTest extends AbstractSystemTest {
 
         UserEntity userEntity = userRepository.save(mockUserEntity);
 
-        final Map<String, Object> claimsOfMockUser = userEntity.getClaims();
+        final Claims claimsOfMockUser = userEntity.getClaims();
         this.mockUserToken = this.generate(claimsOfMockUser);
     }
 

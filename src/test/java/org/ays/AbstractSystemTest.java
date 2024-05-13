@@ -1,5 +1,6 @@
 package org.ays;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
@@ -14,6 +15,9 @@ import org.ays.auth.repository.AysInvalidTokenRepository;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.user.model.entity.UserEntityBuilder;
+import org.ays.user.model.entity.UserEntityV2Builder;
+import org.ays.user.model.entity.UserLoginAttemptEntity;
+import org.ays.user.model.entity.UserLoginAttemptEntityBuilder;
 import org.ays.user.repository.UserRepository;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +29,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import java.util.Date;
-import java.util.Map;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -54,6 +57,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected AysToken superAdminToken;
     protected AysToken adminUserToken;
     protected AysToken userToken;
+    protected AysToken userTokenV2;
 
 
     @Autowired
@@ -61,7 +65,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @BeforeEach
     protected void setUp() {
-        final Map<String, Object> claimsOfSuperAdmin = new AdminUserEntityBuilder()
+        final Claims claimsOfSuperAdmin = new AdminUserEntityBuilder()
                 .withId(AysValidTestData.SuperAdminUser.ID)
                 .withUsername(AysValidTestData.SuperAdminUser.USERNAME)
                 .withRole(AdminRole.SUPER_ADMIN)
@@ -70,7 +74,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .getClaims();
         this.superAdminToken = this.generate(claimsOfSuperAdmin);
 
-        final Map<String, Object> claimsOfAdminUser = new AdminUserEntityBuilder()
+        final Claims claimsOfAdminUser = new AdminUserEntityBuilder()
                 .withId(AysValidTestData.AdminUser.ID)
                 .withUsername(AysValidTestData.AdminUser.USERNAME)
                 .withEmail(AysValidTestData.AdminUser.EMAIL)
@@ -79,17 +83,32 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .getClaims();
         this.adminUserToken = this.generate(claimsOfAdminUser);
 
-        final Map<String, Object> claimsOfUser = new UserEntityBuilder()
+        final Claims claimsOfUser = new UserEntityBuilder()
                 .withId(AysValidTestData.User.ID)
                 .withUsername(AysValidTestData.User.USERNAME)
                 .withInstitutionId(AysValidTestData.Institution.ID)
                 .build()
                 .getClaims();
         this.userToken = this.generate(claimsOfUser);
+
+
+        final String userId = AysValidTestData.UserV2.ID;
+        final UserLoginAttemptEntity userLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
+                .withValidFields()
+                .withUserId(userId)
+                .build();
+        final Claims claimsOfUserV2 = new UserEntityV2Builder()
+                .withValidFields()
+                .withId(userId)
+                .withEmailAddress(AysValidTestData.UserV2.EMAIL_ADDRESS)
+                .withInstitutionId(AysValidTestData.UserV2.INSTITUTION_ID)
+                .build()
+                .getClaims(userLoginAttemptEntity);
+        this.userTokenV2 = this.generate(claimsOfUserV2);
     }
 
 
-    protected AysToken generate(Map<String, Object> claims) {
+    protected AysToken generate(Claims claims) {
         final long currentTimeMillis = System.currentTimeMillis();
 
         final Date tokenIssuedAt = new Date(currentTimeMillis);

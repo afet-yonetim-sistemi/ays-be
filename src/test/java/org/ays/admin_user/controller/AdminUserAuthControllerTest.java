@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+@Deprecated(since = "AdminUserAuthControllerTest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class AdminUserAuthControllerTest extends AbstractRestControllerTest {
 
     @MockBean

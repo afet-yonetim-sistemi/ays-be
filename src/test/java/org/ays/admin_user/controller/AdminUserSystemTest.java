@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 
+@Deprecated(since = "AdminUserSystemTest V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 class AdminUserSystemTest extends AbstractSystemTest {
 
     private final AdminUserToAdminUsersResponseMapper adminUserToAdminUserResponseMapper = AdminUserToAdminUsersResponseMapper.initialize();

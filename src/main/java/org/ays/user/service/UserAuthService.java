@@ -6,6 +6,7 @@ import org.ays.auth.model.dto.request.AysLoginRequest;
 /**
  * User Auth service to perform user related authentication operations.
  */
+@Deprecated(since = "UserAuthService V2 Production'a alınınca burası silinecektir.", forRemoval = true)
 public interface UserAuthService {
 
     /**
