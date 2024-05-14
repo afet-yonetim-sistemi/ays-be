@@ -122,7 +122,7 @@ class AdminUserRegisterApplicationController {
      * @return A response object containing the created register application.
      */
     @PostMapping("/registration-application")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:conclude')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:create')")
     public AysResponse<AdminUserRegisterApplicationCreateResponse> createRegistrationApplication(
             @RequestBody @Valid AdminUserRegisterApplicationCreateRequest createRequest) {
 

@@ -37,7 +37,7 @@ class InstitutionController {
      * @return An {@link AysResponse} containing a list of {@link InstitutionResponse} representing the summary of institutions.
      */
     @GetMapping("/institutions/summary")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:create')")
     public AysResponse<List<InstitutionsSummaryResponse>> getSummaryOfActiveInstitutions() {
 
         final List<Institution> institutionsSummary = institutionService.getSummaryOfActiveInstitutions();
