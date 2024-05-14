@@ -1,11 +1,11 @@
 package org.ays.user.model.entity;
 
 import org.ays.common.model.TestDataBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.enums.PermissionCategory;
 import org.ays.user.model.enums.RoleStatus;
 
 import java.util.Set;
-import java.util.UUID;
 
 public class RoleEntityBuilder extends TestDataBuilder<RoleEntity> {
 
@@ -19,7 +19,7 @@ public class RoleEntityBuilder extends TestDataBuilder<RoleEntity> {
                 new PermissionEntityBuilder().withValidFields().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
         );
         return this
-                .withId(UUID.randomUUID().toString())
+                .withId(AysRandomUtil.generateUUID())
                 .withName("admin")
                 .withPermissions(permissionEntities)
                 .withStatus(RoleStatus.ACTIVE);
