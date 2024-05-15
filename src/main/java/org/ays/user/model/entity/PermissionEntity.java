@@ -38,4 +38,7 @@ public class PermissionEntity extends BaseEntity {
     @Column(name = "CATEGORY")
     private PermissionCategory category;
 
+    @Column(name = "IS_SUPER")
+    private boolean isSuper;
+
 }

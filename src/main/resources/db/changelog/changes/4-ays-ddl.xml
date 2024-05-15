@@ -18,6 +18,9 @@
             <column name="CATEGORY" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="IS_SUPER" type="BOOLEAN" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
                 <constraints nullable="false"/>
             </column>
