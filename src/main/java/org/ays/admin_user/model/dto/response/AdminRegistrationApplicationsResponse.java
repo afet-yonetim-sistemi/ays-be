@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class AdminUserRegistrationApplicationsResponse {
+public class AdminRegistrationApplicationsResponse {
 
     private String id;
     private String reason;
