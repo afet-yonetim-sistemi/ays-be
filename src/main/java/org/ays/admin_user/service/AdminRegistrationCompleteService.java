@@ -1,6 +1,6 @@
 package org.ays.admin_user.service;
 
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 
 /**
  * Admin Register service to perform admin related authentication operations.
@@ -12,6 +12,6 @@ public interface AdminRegistrationCompleteService {
      *
      * @param registerRequest the AdminUserRegisterRequest entity
      */
-    void complete(String applicationId, AdminRegisterApplicationCompleteRequest registerRequest);
+    void complete(String applicationId, AdminRegistrationApplicationCompleteRequest registerRequest);
 
 }

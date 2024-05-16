@@ -3,7 +3,6 @@ package org.ays.admin_user.controller;
 import org.ays.AbstractSystemTest;
 import org.ays.admin_user.model.AdminRegisterApplicationBuilder;
 import org.ays.admin_user.model.AdminRegistrationApplication;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
@@ -11,6 +10,7 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
@@ -407,7 +407,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Given
         String applicationId = adminRegisterApplicationEntity.getId();
-        AdminRegisterApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -455,7 +455,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
-        AdminRegisterApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(phoneNumber).build();
 
@@ -503,7 +503,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
-        AdminRegisterApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(phoneNumber).build();
 
@@ -552,7 +552,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
-        AdminRegisterApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .withPhoneNumber(mockPhoneNumber).build();
 

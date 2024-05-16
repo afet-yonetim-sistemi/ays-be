@@ -1,8 +1,8 @@
 package org.ays.admin_user.service.impl;
 
 import org.ays.AbstractUnitTest;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
@@ -63,7 +63,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
         AysPhoneNumberRequest mockPhoneNumber = mockCompleteRequest.getPhoneNumber();
@@ -162,7 +162,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
         AysPhoneNumberRequest mockPhoneNumber = mockCompleteRequest.getPhoneNumber();
@@ -252,7 +252,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = "Invalid";
-        AdminRegisterApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields().build();
 
         // When
@@ -275,7 +275,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -325,7 +325,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -377,7 +377,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         // Given
         String applicationId = AysRandomUtil.generateUUID();
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
-        AdminRegisterApplicationCompleteRequest mockAdminRegisterApplicationCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockAdminRegistrationApplicationCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
@@ -400,7 +400,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysUserAlreadyExistsByPhoneNumberException.class,
-                () -> adminUserRegisterService.complete(applicationId, mockAdminRegisterApplicationCompleteRequest)
+                () -> adminUserRegisterService.complete(applicationId, mockAdminRegistrationApplicationCompleteRequest)
         );
 
         // Verify

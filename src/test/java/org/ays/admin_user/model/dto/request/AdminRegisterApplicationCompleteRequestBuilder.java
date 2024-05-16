@@ -5,10 +5,10 @@ import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.util.AysValidTestData;
 
-public class AdminRegisterApplicationCompleteRequestBuilder extends TestDataBuilder<AdminRegisterApplicationCompleteRequest> {
+public class AdminRegisterApplicationCompleteRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationCompleteRequest> {
 
     public AdminRegisterApplicationCompleteRequestBuilder() {
-        super(AdminRegisterApplicationCompleteRequest.class);
+        super(AdminRegistrationApplicationCompleteRequest.class);
     }
 
     public AdminRegisterApplicationCompleteRequestBuilder withValidFields() {

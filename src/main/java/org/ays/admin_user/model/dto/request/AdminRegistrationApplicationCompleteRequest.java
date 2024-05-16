@@ -10,12 +10,15 @@ import org.ays.common.util.validation.Email;
 import org.ays.common.util.validation.Name;
 
 /**
- * Represents a request to complete an admin-user register application. The request includes fields for the required user
- * information.
+ * Represents a complete registration request for an admin user.
+ *
+ * <p>
+ * Encapsulates the necessary information for completing the admin registration process.
+ * </p>
  */
 @Getter
 @Setter
-public class AdminRegisterApplicationCompleteRequest {
+public class AdminRegistrationApplicationCompleteRequest {
 
     @Name
     @NotBlank

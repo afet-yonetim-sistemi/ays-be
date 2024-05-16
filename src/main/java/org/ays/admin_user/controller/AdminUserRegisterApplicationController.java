@@ -3,10 +3,10 @@ package org.ays.admin_user.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.admin_user.model.AdminRegistrationApplication;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
@@ -125,7 +125,7 @@ class AdminUserRegisterApplicationController {
 
     @PostMapping("/admin-registration-application/{id}/complete")
     public AysResponse<Void> complete(@PathVariable @UUID String id,
-                                      @RequestBody @Valid AdminRegisterApplicationCompleteRequest registerRequest) {
+                                      @RequestBody @Valid AdminRegistrationApplicationCompleteRequest registerRequest) {
 
         adminRegistrationCompleteService.complete(id, registerRequest);
         return AysResponse.SUCCESS;
