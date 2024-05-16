@@ -11,7 +11,7 @@ import java.io.Serial;
  * Typically, this exception is thrown when an operation or query is performed on an admin register application
  * entity using an ID that does not correspond to an existing admin register application.
  */
-public class AysAdminRegisterApplicationNotExistByIdException extends AysNotExistException {
+public class AysAdminRegistrationApplicationNotExistByIdException extends AysNotExistException {
 
     /**
      * Unique identifier for serialization.
@@ -24,7 +24,7 @@ public class AysAdminRegisterApplicationNotExistByIdException extends AysNotExis
      *
      * @param id The ID of the admin register application that does not exist.
      */
-    public AysAdminRegisterApplicationNotExistByIdException(String id) {
+    public AysAdminRegistrationApplicationNotExistByIdException(String id) {
         super("ADMIN REGISTER APPLICATION NOT EXIST! id:" + id);
     }
 
