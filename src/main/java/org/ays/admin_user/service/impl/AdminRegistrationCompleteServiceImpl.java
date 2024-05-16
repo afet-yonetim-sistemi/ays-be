@@ -79,7 +79,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
         if (userRepository.existsByCountryCodeAndLineNumber(phoneNumber.getCountryCode(), phoneNumber.getLineNumber())) {
             throw new AysUserAlreadyExistsByPhoneNumberException(phoneNumber);
         }
-        log.trace("Admin User Register Request checked successfully!");
+        log.trace("Admin Registration Request checked successfully!");
 
         final UserEntityV2 userEntity = adminRegisterRequestToUserEntityMapper
                 .mapForSaving(request)
@@ -97,7 +97,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
 
         applicationEntity.complete(userEntity.getId());
         adminRegistrationApplicationRepository.save(applicationEntity);
-        log.trace("Admin Register Verification complete successfully!");
+        log.trace("Admin Registration Verification complete successfully!");
     }
 
     /**
