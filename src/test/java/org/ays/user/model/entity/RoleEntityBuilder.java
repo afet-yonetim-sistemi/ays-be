@@ -45,4 +45,10 @@ public class RoleEntityBuilder extends TestDataBuilder<RoleEntity> {
         return this;
     }
 
+    public RoleEntityBuilder withInstitutionId(String institutionId) {
+        data.setInstitutionId(institutionId);
+        data.setInstitution(null);
+        return this;
+    }
+
 }

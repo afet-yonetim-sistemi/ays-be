@@ -6,19 +6,23 @@ import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
 import org.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import org.ays.admin_user.model.enums.AdminRole;
-import org.ays.admin_user.repository.AdminUserRegisterApplicationRepository;
+import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
 import org.ays.admin_user.repository.AdminUserRepository;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.repository.AysInvalidTokenRepository;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.user.model.entity.UserEntityBuilder;
 import org.ays.user.model.entity.UserEntityV2Builder;
 import org.ays.user.model.entity.UserLoginAttemptEntity;
 import org.ays.user.model.entity.UserLoginAttemptEntityBuilder;
+import org.ays.user.repository.PermissionRepository;
+import org.ays.user.repository.RoleRepository;
 import org.ays.user.repository.UserRepository;
+import org.ays.user.repository.UserRepositoryV2;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +49,16 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected UserRepository userRepository;
 
     @Autowired
-    protected AdminUserRegisterApplicationRepository adminUserRegisterApplicationRepository;
+    protected UserRepositoryV2 userRepositoryV2;
+
+    @Autowired
+    protected RoleRepository roleRepository;
+
+    @Autowired
+    protected PermissionRepository permissionRepository;
+
+    @Autowired
+    protected AdminRegisterApplicationRepository adminRegisterApplicationRepository;
 
     @Autowired
     protected AdminUserRepository adminUserRepository;
@@ -92,6 +105,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
         this.userToken = this.generate(claimsOfUser);
 
 
+        final InstitutionEntity institutionEntity = institutionRepository.findById(AysValidTestData.UserV2.INSTITUTION_ID).get();
         final String userId = AysValidTestData.UserV2.ID;
         final UserLoginAttemptEntity userLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
                 .withValidFields()
@@ -101,7 +115,8 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
                 .withValidFields()
                 .withId(userId)
                 .withEmailAddress(AysValidTestData.UserV2.EMAIL_ADDRESS)
-                .withInstitutionId(AysValidTestData.UserV2.INSTITUTION_ID)
+                .withInstitutionId(institutionEntity.getId())
+                .withInstitution(institutionEntity)
                 .build()
                 .getClaims(userLoginAttemptEntity);
         this.userTokenV2 = this.generate(claimsOfUserV2);

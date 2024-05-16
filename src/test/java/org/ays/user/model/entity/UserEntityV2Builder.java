@@ -1,6 +1,7 @@
 package org.ays.user.model.entity;
 
 import org.ays.common.model.AysPhoneNumber;
+import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
@@ -26,7 +27,7 @@ public class UserEntityV2Builder extends TestDataBuilder<UserEntityV2> {
                 .withValue(AysValidTestData.PASSWORD_ENCRYPTED)
                 .build();
 
-        Set<RoleEntity> roles = Set.of(
+        Set<RoleEntity> roleEntities = Set.of(
                 new RoleEntityBuilder().withValidFields().build()
         );
 
@@ -34,9 +35,10 @@ public class UserEntityV2Builder extends TestDataBuilder<UserEntityV2> {
 
         return this
                 .withId(id)
+                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build())
                 .withEmailAddress(RandomStringUtils.randomAlphabetic(8).concat("@afetyonetimsistemi.org"))
                 .withPassword(passwordEntity)
-                .withRoles(roles)
+                .withRoles(roleEntities)
                 .withStatus(UserStatus.ACTIVE)
                 .withInstitution(institutionEntity);
     }
@@ -74,6 +76,7 @@ public class UserEntityV2Builder extends TestDataBuilder<UserEntityV2> {
 
     public UserEntityV2Builder withInstitutionId(String institutionId) {
         data.setInstitutionId(institutionId);
+        data.setInstitution(null);
         return this;
     }
 
@@ -82,7 +85,7 @@ public class UserEntityV2Builder extends TestDataBuilder<UserEntityV2> {
         return this;
     }
 
-    private static class PasswordEntityBuilder extends TestDataBuilder<UserEntityV2.PasswordEntity> {
+    public static class PasswordEntityBuilder extends TestDataBuilder<UserEntityV2.PasswordEntity> {
 
         public PasswordEntityBuilder() {
             super(UserEntityV2.PasswordEntity.class);
