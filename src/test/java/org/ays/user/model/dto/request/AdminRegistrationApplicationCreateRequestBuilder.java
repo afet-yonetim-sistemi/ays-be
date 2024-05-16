@@ -1,9 +1,8 @@
-package org.ays.admin_user.model.dto.request;
+package org.ays.user.model.dto.request;
 
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 
 public class AdminRegistrationApplicationCreateRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationCreateRequest> {
 

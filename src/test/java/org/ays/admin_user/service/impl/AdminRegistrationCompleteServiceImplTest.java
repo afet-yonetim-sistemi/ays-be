@@ -1,12 +1,12 @@
 package org.ays.admin_user.service.impl;
 
 import org.ays.AbstractUnitTest;
-import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.PermissionEntityBuilder;
