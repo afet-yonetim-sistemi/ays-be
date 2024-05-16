@@ -2,7 +2,6 @@ package org.ays.admin_user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
@@ -18,6 +17,7 @@ import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegist
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
+import org.ays.user.model.AdminRegistrationApplication;
 import org.ays.user.service.AdminRegistrationApplicationService;
 import org.ays.user.service.AdminRegistrationCompleteService;
 import org.hibernate.validator.constraints.UUID;

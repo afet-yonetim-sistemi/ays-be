@@ -1,7 +1,6 @@
 package org.ays.admin_user.service.impl;
 
 import org.ays.AbstractUnitTest;
-import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
@@ -19,6 +18,7 @@ import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
+import org.ays.user.model.AdminRegistrationApplication;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserEntityV2Builder;
 import org.ays.user.model.enums.UserStatus;

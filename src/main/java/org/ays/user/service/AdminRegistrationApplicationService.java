@@ -1,10 +1,10 @@
 package org.ays.user.service;
 
-import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.common.model.AysPage;
+import org.ays.user.model.AdminRegistrationApplication;
 
 /**
  * Service interface for managing admin registration applications.

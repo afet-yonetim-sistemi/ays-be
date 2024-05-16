@@ -1,7 +1,6 @@
 package org.ays.admin_user.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
@@ -34,6 +33,7 @@ import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionBuilder;
+import org.ays.user.model.AdminRegistrationApplication;
 import org.ays.user.service.AdminRegistrationApplicationService;
 import org.ays.user.service.AdminRegistrationCompleteService;
 import org.ays.util.AysMockMvcRequestBuilders;

@@ -1,4 +1,4 @@
-package org.ays.admin_user.model;
+package org.ays.user.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
-import org.ays.user.model.UserV2;
 
 /**
  * Domain model class representing an admin user registration application.
