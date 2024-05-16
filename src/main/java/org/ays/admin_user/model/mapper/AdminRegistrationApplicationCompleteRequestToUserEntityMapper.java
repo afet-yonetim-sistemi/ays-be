@@ -1,8 +1,8 @@
 package org.ays.admin_user.model.mapper;
 
-import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.enums.UserStatus;
 

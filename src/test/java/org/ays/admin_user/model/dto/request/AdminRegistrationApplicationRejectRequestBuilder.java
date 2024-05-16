@@ -2,6 +2,7 @@ package org.ays.admin_user.model.dto.request;
 
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomTestUtil;
+import org.ays.user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 
 public class AdminRegistrationApplicationRejectRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationRejectRequest> {
 

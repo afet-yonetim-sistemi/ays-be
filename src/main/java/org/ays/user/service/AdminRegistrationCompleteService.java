@@ -1,6 +1,6 @@
 package org.ays.user.service;
 
-import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 
 /**
  * Admin Register service to perform admin related authentication operations.

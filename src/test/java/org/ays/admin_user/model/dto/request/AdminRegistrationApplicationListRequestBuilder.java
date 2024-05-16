@@ -4,6 +4,7 @@ import org.ays.common.model.AysPaging;
 import org.ays.common.model.AysPagingBuilder;
 import org.ays.common.model.AysSorting;
 import org.ays.common.model.TestDataBuilder;
+import org.ays.user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 import org.springframework.data.domain.Sort;
 

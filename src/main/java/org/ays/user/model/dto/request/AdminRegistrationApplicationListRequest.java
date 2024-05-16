@@ -1,4 +1,4 @@
-package org.ays.admin_user.model.dto.request;
+package org.ays.user.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;

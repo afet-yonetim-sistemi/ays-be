@@ -2,9 +2,9 @@ package org.ays.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCompleteRequestToUserEntityMapper;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
+import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
