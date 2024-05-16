@@ -1,6 +1,6 @@
 package org.ays.admin_user.model.dto.request;
 
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.AysPaging;
 import org.ays.common.model.AysPagingBuilder;
 import org.ays.common.model.AysSorting;
@@ -23,7 +23,7 @@ public class AdminRegisterApplicationListRequestBuilder extends TestDataBuilder<
 
         return this
                 .initializeFilter()
-                .withStatuses(List.of(AdminRegisterApplicationStatus.WAITING))
+                .withStatuses(List.of(AdminRegistrationApplicationStatus.WAITING))
                 .withPagination(new AysPagingBuilder().withValidValues().build())
                 .withSort(List.of(createdAtSort));
     }
@@ -38,7 +38,7 @@ public class AdminRegisterApplicationListRequestBuilder extends TestDataBuilder<
         return this;
     }
 
-    public AdminRegisterApplicationListRequestBuilder withStatuses(List<AdminRegisterApplicationStatus> statuses) {
+    public AdminRegisterApplicationListRequestBuilder withStatuses(List<AdminRegistrationApplicationStatus> statuses) {
         data.getFilter().setStatuses(statuses);
         return this;
     }

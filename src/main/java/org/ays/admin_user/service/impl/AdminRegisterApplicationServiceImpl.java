@@ -6,7 +6,7 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateReques
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
@@ -128,7 +128,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
         final AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
                 .filter(AdminRegisterApplicationEntity::isCompleted)
-                .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegisterApplicationStatus.COMPLETED));
+                .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.COMPLETED));
         final UserEntityV2 userEntity = registerApplicationEntity.getUser();
 
         registerApplicationEntity.verify();
@@ -150,7 +150,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
         final AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
                 .filter(AdminRegisterApplicationEntity::isCompleted)
-                .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegisterApplicationStatus.WAITING));
+                .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
         final UserEntityV2 userEntity = registerApplicationEntity.getUser();
 
         registerApplicationEntity.reject(request.getRejectReason());

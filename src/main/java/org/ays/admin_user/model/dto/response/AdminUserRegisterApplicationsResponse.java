@@ -2,7 +2,7 @@ package org.ays.admin_user.model.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ public class AdminUserRegisterApplicationsResponse {
 
     private String id;
     private String reason;
-    private AdminRegisterApplicationStatus status;
+    private AdminRegistrationApplicationStatus status;
     private Institution institution;
     private User user;
     private String createdUser;

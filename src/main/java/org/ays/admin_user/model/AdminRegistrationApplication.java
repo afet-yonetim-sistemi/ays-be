@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
 import org.ays.user.model.UserV2;
@@ -26,7 +26,7 @@ public class AdminRegistrationApplication extends BaseDomainModel {
     private String id;
     private String reason;
     private String rejectReason;
-    private AdminRegisterApplicationStatus status;
+    private AdminRegistrationApplicationStatus status;
 
     private UserV2 user;
     private Institution institution;

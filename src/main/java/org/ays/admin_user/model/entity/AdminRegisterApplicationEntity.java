@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.user.model.entity.UserEntityV2;
@@ -55,7 +55,7 @@ public class AdminRegisterApplicationEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private AdminRegisterApplicationStatus status;
+    private AdminRegistrationApplicationStatus status;
 
     @OneToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
@@ -71,7 +71,7 @@ public class AdminRegisterApplicationEntity extends BaseEntity {
      * @return true if the status is 'WAITING', false otherwise
      */
     public boolean isWaiting() {
-        return AdminRegisterApplicationStatus.WAITING.equals(this.status);
+        return AdminRegistrationApplicationStatus.WAITING.equals(this.status);
     }
 
     /**
@@ -80,7 +80,7 @@ public class AdminRegisterApplicationEntity extends BaseEntity {
      * @return true if the status is 'COMPLETED', false otherwise
      */
     public boolean isCompleted() {
-        return AdminRegisterApplicationStatus.COMPLETED.equals(this.status);
+        return AdminRegistrationApplicationStatus.COMPLETED.equals(this.status);
     }
 
     /**
@@ -90,14 +90,14 @@ public class AdminRegisterApplicationEntity extends BaseEntity {
      */
     public void complete(final String userId) {
         this.userId = userId;
-        this.status = AdminRegisterApplicationStatus.COMPLETED;
+        this.status = AdminRegistrationApplicationStatus.COMPLETED;
     }
 
     /**
      * Marks the registration application as verified.
      */
     public void verify() {
-        this.status = AdminRegisterApplicationStatus.VERIFIED;
+        this.status = AdminRegistrationApplicationStatus.VERIFIED;
     }
 
     /**
@@ -107,7 +107,7 @@ public class AdminRegisterApplicationEntity extends BaseEntity {
      */
     public void reject(final String rejectReason) {
         this.rejectReason = rejectReason;
-        this.status = AdminRegisterApplicationStatus.REJECTED;
+        this.status = AdminRegistrationApplicationStatus.REJECTED;
     }
 
 }

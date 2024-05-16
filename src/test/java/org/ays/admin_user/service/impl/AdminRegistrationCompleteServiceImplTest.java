@@ -5,7 +5,7 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequ
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
 import org.ays.admin_user.util.exception.AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.admin_user.util.exception.AysUserAlreadyExistsByEmailException;
@@ -282,7 +282,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         // When
         AdminRegisterApplicationEntity mockAdminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
-                .withStatus(AdminRegisterApplicationStatus.COMPLETED)
+                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .build();
         Mockito.when(adminRegisterApplicationRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockAdminRegisterApplicationEntity));

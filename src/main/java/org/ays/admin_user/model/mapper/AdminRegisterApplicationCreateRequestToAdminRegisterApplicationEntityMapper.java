@@ -2,7 +2,7 @@ package org.ays.admin_user.model.mapper;
 
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.common.util.AysRandomUtil;
 import org.mapstruct.Mapper;
@@ -33,7 +33,7 @@ public interface AdminRegisterApplicationCreateRequestToAdminRegisterApplication
                 .id(AysRandomUtil.generateUUID())
                 .institutionId(registerRequest.getInstitutionId())
                 .reason(registerRequest.getReason())
-                .status(AdminRegisterApplicationStatus.WAITING)
+                .status(AdminRegistrationApplicationStatus.WAITING)
                 .build();
     }
 

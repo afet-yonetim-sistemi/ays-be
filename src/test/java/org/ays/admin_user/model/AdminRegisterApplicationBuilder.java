@@ -1,6 +1,6 @@
 package org.ays.admin_user.model;
 
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
@@ -30,7 +30,7 @@ public class AdminRegisterApplicationBuilder extends TestDataBuilder<AdminRegist
                 .withInstitution(institution)
                 .withUser(user)
                 .withReason(AysRandomTestUtil.generateString(41))
-                .withStatus(AdminRegisterApplicationStatus.WAITING);
+                .withStatus(AdminRegistrationApplicationStatus.WAITING);
     }
 
     public AdminRegisterApplicationBuilder withId(String id) {
@@ -48,7 +48,7 @@ public class AdminRegisterApplicationBuilder extends TestDataBuilder<AdminRegist
         return this;
     }
 
-    public AdminRegisterApplicationBuilder withStatus(AdminRegisterApplicationStatus status) {
+    public AdminRegisterApplicationBuilder withStatus(AdminRegistrationApplicationStatus status) {
         data.setStatus(status);
         return this;
     }

@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.dto.response.BaseResponse;
 
@@ -24,7 +24,7 @@ public class AdminRegisterApplicationResponse extends BaseResponse {
     private String id;
     private String reason;
     private String rejectReason;
-    private AdminRegisterApplicationStatus status;
+    private AdminRegistrationApplicationStatus status;
     private Institution institution;
     private User user;
 

@@ -1,6 +1,6 @@
 package org.ays.admin_user.util.exception;
 
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.util.exception.AysNotExistException;
 
 import java.io.Serial;
@@ -27,7 +27,7 @@ public class AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException 
      * @param applicationStatus the applicationStatus of admin register application.
      */
     public AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(final String id,
-                                                                              final AdminRegisterApplicationStatus applicationStatus) {
+                                                                              final AdminRegistrationApplicationStatus applicationStatus) {
 
         super("ADMIN REGISTER APPLICATION NOT EXIST OR STATUS IS NOT WAITING! id:" + id + ", status:" + applicationStatus);
     }

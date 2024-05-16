@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.AysFiltering;
 import org.ays.common.model.dto.request.AysFilteringRequest;
 import org.ays.common.model.dto.request.AysPagingRequest;
@@ -39,7 +39,7 @@ public class AdminRegisterApplicationListRequest extends AysPagingRequest implem
         /**
          * List of admin registration application's statuses used for filtering.
          */
-        private List<AdminRegisterApplicationStatus> statuses;
+        private List<AdminRegistrationApplicationStatus> statuses;
 
     }
 

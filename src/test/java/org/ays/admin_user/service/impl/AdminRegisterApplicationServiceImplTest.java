@@ -10,7 +10,7 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectReques
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
 import org.ays.admin_user.util.exception.AysAdminRegisterApplicationNotExistByIdException;
@@ -95,7 +95,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         // Given
         AdminRegisterApplicationListRequest listRequest = new AdminRegisterApplicationListRequestBuilder()
                 .withValidValues()
-                .withStatuses(List.of(AdminRegisterApplicationStatus.WAITING))
+                .withStatuses(List.of(AdminRegistrationApplicationStatus.WAITING))
                 .build();
 
         List<AdminRegisterApplicationEntity> mockEntities = List.of(
@@ -170,7 +170,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         String mockId = AysRandomUtil.generateUUID();
         AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
-                .withStatus(AdminRegisterApplicationStatus.WAITING)
+                .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
         AdminRegistrationApplication mockAdminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntity);
 
@@ -285,7 +285,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .build();
         AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
-                .withStatus(AdminRegisterApplicationStatus.COMPLETED)
+                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .withUser(mockUserEntity)
                 .build();
 
@@ -345,7 +345,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         String mockId = AysRandomUtil.generateUUID();
         AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
-                .withStatus(AdminRegisterApplicationStatus.WAITING)
+                .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
 
         // When
@@ -382,7 +382,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         AdminRegisterApplicationEntity mockApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUser(mockUserEntity)
-                .withStatus(AdminRegisterApplicationStatus.COMPLETED)
+                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .build();
         AdminRegisterApplicationRejectRequest mockRejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
@@ -448,7 +448,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUser(mockUserEntity)
-                .withStatus(AdminRegisterApplicationStatus.WAITING)
+                .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
         AdminRegisterApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()

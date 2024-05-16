@@ -16,7 +16,7 @@ import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
@@ -89,7 +89,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .post(endpoint, superAdminToken.getAccessToken(), listRequest);
 
         List<AdminRegisterApplicationEntity> adminRegisterApplicationEntities = List.of(
-                new AdminRegisterApplicationEntityBuilder().withValidFields().withStatus(AdminRegisterApplicationStatus.WAITING).build()
+                new AdminRegisterApplicationEntityBuilder().withValidFields().withStatus(AdminRegistrationApplicationStatus.WAITING).build()
         );
         Page<AdminRegisterApplicationEntity> pageOfEntities = new PageImpl<>(
                 adminRegisterApplicationEntities
@@ -591,7 +591,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .build();
         AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
-                .withStatus(AdminRegisterApplicationStatus.COMPLETED)
+                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
@@ -655,7 +655,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .build();
         AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
-                .withStatus(AdminRegisterApplicationStatus.COMPLETED)
+                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();

@@ -17,7 +17,7 @@ import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResp
 import org.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
-import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
@@ -210,7 +210,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                 .withValidFields()
                 .withInstitution(mockInstitution)
                 .withReason(mockRequest.getReason())
-                .withStatus(AdminRegisterApplicationStatus.WAITING)
+                .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
 
         Mockito.when(adminRegisterApplicationService.create(Mockito.any(AdminRegisterApplicationCreateRequest.class)))
