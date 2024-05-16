@@ -1,4 +1,4 @@
-package org.ays.admin_user.service.impl;
+package org.ays.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +7,6 @@ import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCompleteRequestToUserEntityMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
-import org.ays.admin_user.service.AdminRegistrationCompleteService;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
@@ -16,6 +15,7 @@ import org.ays.user.repository.PermissionRepository;
 import org.ays.user.repository.RoleRepository;
 import org.ays.user.repository.UserPasswordRepository;
 import org.ays.user.repository.UserRepositoryV2;
+import org.ays.user.service.AdminRegistrationCompleteService;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.user.util.exception.AysUserAlreadyExistsByEmailException;
 import org.ays.user.util.exception.AysUserAlreadyExistsByPhoneNumberException;

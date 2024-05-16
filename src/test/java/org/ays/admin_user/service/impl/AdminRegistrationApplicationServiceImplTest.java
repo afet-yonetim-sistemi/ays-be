@@ -24,6 +24,7 @@ import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserEntityV2Builder;
 import org.ays.user.model.enums.UserStatus;
 import org.ays.user.repository.UserRepositoryV2;
+import org.ays.user.service.impl.AdminRegistrationApplicationServiceImpl;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;

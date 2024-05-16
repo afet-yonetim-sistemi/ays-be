@@ -1,4 +1,4 @@
-package org.ays.admin_user.service.impl;
+package org.ays.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.admin_user.model.AdminRegistrationApplication;
@@ -10,12 +10,12 @@ import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
-import org.ays.admin_user.service.AdminRegistrationApplicationService;
 import org.ays.common.model.AysPage;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.repository.UserRepositoryV2;
+import org.ays.user.service.AdminRegistrationApplicationService;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;

@@ -23,8 +23,6 @@ import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegist
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper;
-import org.ays.admin_user.service.AdminRegistrationApplicationService;
-import org.ays.admin_user.service.AdminRegistrationCompleteService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
@@ -36,6 +34,8 @@ import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionBuilder;
+import org.ays.user.service.AdminRegistrationApplicationService;
+import org.ays.user.service.AdminRegistrationCompleteService;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;

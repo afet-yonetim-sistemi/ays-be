@@ -1,4 +1,4 @@
-package org.ays.admin_user.service;
+package org.ays.user.service;
 
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;

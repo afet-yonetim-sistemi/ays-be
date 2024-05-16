@@ -15,11 +15,11 @@ import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegist
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper;
-import org.ays.admin_user.service.AdminRegistrationApplicationService;
-import org.ays.admin_user.service.AdminRegistrationCompleteService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
+import org.ays.user.service.AdminRegistrationApplicationService;
+import org.ays.user.service.AdminRegistrationCompleteService;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
