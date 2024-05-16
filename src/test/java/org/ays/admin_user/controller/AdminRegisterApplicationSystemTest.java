@@ -4,11 +4,11 @@ import org.ays.AbstractSystemTest;
 import org.ays.admin_user.model.AdminRegisterApplicationBuilder;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
@@ -280,7 +280,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         this.initialize(institutionEntity);
 
         // Given
-        AdminRegisterApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(institutionEntity.getId())
                 .build();
@@ -315,7 +315,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         this.initialize(institutionEntity);
 
         // Given
-        AdminRegisterApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(institutionEntity.getId())
                 .build();

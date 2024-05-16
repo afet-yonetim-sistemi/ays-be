@@ -3,8 +3,8 @@ package org.ays.admin_user.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.admin_user.model.AdminRegistrationApplication;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
@@ -124,7 +124,7 @@ class AdminUserRegistrationApplicationController {
     @PostMapping("/admin-registration-application")
     @PreAuthorize("hasAnyAuthority('application:registration:create')")
     public AysResponse<AdminRegistrationApplicationCreateResponse> create(
-            @RequestBody @Valid AdminRegisterApplicationCreateRequest createRequest) {
+            @RequestBody @Valid AdminRegistrationApplicationCreateRequest createRequest) {
 
         AdminRegistrationApplication registerApplication = adminRegistrationApplicationService
                 .create(createRequest);

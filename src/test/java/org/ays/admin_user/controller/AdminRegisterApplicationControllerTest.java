@@ -4,11 +4,11 @@ import org.ays.AbstractRestControllerTest;
 import org.ays.admin_user.model.AdminRegisterApplicationBuilder;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
@@ -197,7 +197,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
     void givenValidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnAdminUserRegisterApplicationCreateResponse() throws Exception {
 
         // Given
-        AdminRegisterApplicationCreateRequest mockRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegisterApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(AysValidTestData.Institution.ID)
                 .build();
@@ -213,7 +213,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
 
-        Mockito.when(adminRegistrationApplicationService.create(Mockito.any(AdminRegisterApplicationCreateRequest.class)))
+        Mockito.when(adminRegistrationApplicationService.create(Mockito.any(AdminRegistrationApplicationCreateRequest.class)))
                 .thenReturn(mockRegisterApplication);
 
         // Then
@@ -233,7 +233,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Verify
         Mockito.verify(adminRegistrationApplicationService, Mockito.times(1))
-                .create(Mockito.any(AdminRegisterApplicationCreateRequest.class));
+                .create(Mockito.any(AdminRegistrationApplicationCreateRequest.class));
 
     }
 
@@ -247,7 +247,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
     void givenInvalidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnValidationError(String invalidReason) throws Exception {
 
         // Given
-        AdminRegisterApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withReason(invalidReason)
                 .build();
@@ -267,14 +267,14 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Verify
         Mockito.verify(adminRegistrationApplicationService, Mockito.never())
-                .create(Mockito.any(AdminRegisterApplicationCreateRequest.class));
+                .create(Mockito.any(AdminRegistrationApplicationCreateRequest.class));
     }
 
     @Test
     void givenValidAdminUserRegisterApplicationCreateRequest_whenUnauthorizedForCreatingAdminUserRegisterApplication_thenReturnAccessDeniedException() throws Exception {
 
         // Given
-        AdminRegisterApplicationCreateRequest mockRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegisterApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(AysValidTestData.Institution.ID)
                 .build();
@@ -294,7 +294,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Verify
         Mockito.verify(adminRegistrationApplicationService, Mockito.never())
-                .create(Mockito.any(AdminRegisterApplicationCreateRequest.class));
+                .create(Mockito.any(AdminRegistrationApplicationCreateRequest.class));
     }
 
     @Test

@@ -4,10 +4,10 @@ import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
 
-public class AdminRegisterApplicationCreateRequestBuilder extends TestDataBuilder<AdminRegisterApplicationCreateRequest> {
+public class AdminRegisterApplicationCreateRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationCreateRequest> {
 
     public AdminRegisterApplicationCreateRequestBuilder() {
-        super(AdminRegisterApplicationCreateRequest.class);
+        super(AdminRegistrationApplicationCreateRequest.class);
     }
 
     public AdminRegisterApplicationCreateRequestBuilder withValidFields() {

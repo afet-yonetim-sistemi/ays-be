@@ -2,7 +2,7 @@ package org.ays.admin_user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.admin_user.model.AdminRegistrationApplication;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
@@ -105,7 +105,7 @@ public class AdminRegistrationApplicationServiceImpl implements AdminRegistratio
      * @return A response object containing the created register application.
      */
     @Override
-    public AdminRegistrationApplication create(AdminRegisterApplicationCreateRequest request) {
+    public AdminRegistrationApplication create(AdminRegistrationApplicationCreateRequest request) {
         boolean isInstitutionExists = institutionRepository.existsActiveById(request.getInstitutionId());
         if (!isInstitutionExists) {
             throw new AysInstitutionNotExistException(request.getInstitutionId());

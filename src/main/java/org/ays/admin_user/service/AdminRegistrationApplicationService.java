@@ -1,7 +1,7 @@
 package org.ays.admin_user.service;
 
 import org.ays.admin_user.model.AdminRegistrationApplication;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.common.model.AysPage;
@@ -43,7 +43,7 @@ public interface AdminRegistrationApplicationService {
      * @param request The request containing the details for creating a new application.
      * @return The newly created admin registration application.
      */
-    AdminRegistrationApplication create(AdminRegisterApplicationCreateRequest request);
+    AdminRegistrationApplication create(AdminRegistrationApplicationCreateRequest request);
 
     /**
      * Approves an admin registration application.
