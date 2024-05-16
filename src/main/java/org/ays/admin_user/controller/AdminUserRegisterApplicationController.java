@@ -30,6 +30,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller for managing admin registration applications.
+ *
+ * <p>
+ * This controller provides endpoints for listing, retrieving, creating, approving,
+ * rejecting, and completing admin registration applications.
+ * </p>
+ */
 @Validated
 @RestController
 @RequestMapping("/api/v1")
@@ -44,9 +52,15 @@ class AdminUserRegisterApplicationController {
     private final AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper.initialize();
     private final AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper adminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper.initialize();
 
-
+    /**
+     * Retrieves all admin registration applications based on the provided request parameters.
+     * Requires 'application:registration:list' authority.
+     *
+     * @param request The request object containing filtering and pagination parameters.
+     * @return A response containing a paginated list of admin registration applications.
+     */
     @PostMapping("/admin-registration-applications")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:list')")
+    @PreAuthorize("hasAnyAuthority('application:registration:list')")
     public AysResponse<AysPageResponse<AdminRegistrationApplicationsResponse>> findAll(
             @RequestBody @Valid AdminRegistrationApplicationListRequest request) {
 
@@ -64,8 +78,15 @@ class AdminUserRegisterApplicationController {
         return AysResponse.successOf(pageResponseOfRegisterApplication);
     }
 
+    /**
+     * Retrieves a specific admin registration application by its ID.
+     * Requires 'application:registration:detail' authority.
+     *
+     * @param id The ID of the admin registration application to retrieve.
+     * @return A response containing the requested admin registration application.
+     */
     @GetMapping("/admin-registration-application/{id}")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:detail')")
+    @PreAuthorize("hasAnyAuthority('application:registration:detail')")
     public AysResponse<AdminRegistrationApplicationResponse> findById(@PathVariable @UUID String id) {
 
         final AdminRegistrationApplication registerApplication = adminRegisterApplicationService.findById(id);
@@ -76,11 +97,11 @@ class AdminUserRegisterApplicationController {
     }
 
     /**
-     * Gets an admin register application summary in the system.
+     * Retrieves a summary of a specific admin registration application by its ID.
      * Requires no authority.
      *
-     * @param id The id of the register application.
-     * @return A response with the register application summary.
+     * @param id The ID of the admin registration application to retrieve the summary for.
+     * @return A response containing the summary of the admin registration application.
      */
     @GetMapping("/admin-registration-application/{id}/summary")
     public AysResponse<AdminRegistrationApplicationSummaryResponse> findSummaryById(@PathVariable @UUID String id) {
@@ -93,8 +114,15 @@ class AdminUserRegisterApplicationController {
         );
     }
 
+    /**
+     * Creates a new admin registration application.
+     * Requires 'application:registration:create' authority.
+     *
+     * @param createRequest The request containing details for creating the admin registration application.
+     * @return A response containing the created admin registration application details.
+     */
     @PostMapping("/admin-registration-application")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:create')")
+    @PreAuthorize("hasAnyAuthority('application:registration:create')")
     public AysResponse<AdminRegistrationApplicationCreateResponse> create(
             @RequestBody @Valid AdminRegisterApplicationCreateRequest createRequest) {
 
@@ -106,16 +134,31 @@ class AdminUserRegisterApplicationController {
         );
     }
 
+    /**
+     * Approves an admin registration application.
+     * Requires 'application:registration:conclude' authority.
+     *
+     * @param id The ID of the admin registration application to approve.
+     * @return A success response upon successful approval.
+     */
     @PostMapping("/admin-registration-application/{id}/approve")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:conclude')")
+    @PreAuthorize("hasAnyAuthority('application:registration:conclude')")
     public AysResponse<Void> approve(@PathVariable @UUID String id) {
 
         adminRegisterApplicationService.approve(id);
         return AysResponse.SUCCESS;
     }
 
+    /**
+     * Rejects an admin registration application.
+     * Requires 'application:registration:conclude' authority.
+     *
+     * @param id      The ID of the admin registration application to reject.
+     * @param request The request containing rejection details.
+     * @return A success response upon successful rejection.
+     */
     @PostMapping("/admin-registration-application/{id}/reject")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:conclude')")
+    @PreAuthorize("hasAnyAuthority('application:registration:conclude')")
     public AysResponse<Void> reject(@PathVariable @UUID String id,
                                     @RequestBody @Valid AdminRegistrationApplicationRejectRequest request) {
 
@@ -123,6 +166,13 @@ class AdminUserRegisterApplicationController {
         return AysResponse.SUCCESS;
     }
 
+    /**
+     * Marks an admin registration application as complete.
+     *
+     * @param id              The ID of the admin registration application to mark as complete.
+     * @param registerRequest The request containing completion details.
+     * @return A success response upon successful completion.
+     */
     @PostMapping("/admin-registration-application/{id}/complete")
     public AysResponse<Void> complete(@PathVariable @UUID String id,
                                       @RequestBody @Valid AdminRegistrationApplicationCompleteRequest registerRequest) {
