@@ -2,12 +2,12 @@ package org.ays.admin_user.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.admin_user.model.AdminRegistrationApplication;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
@@ -384,7 +384,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
                 .withUser(mockUserEntity)
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .build();
-        AdminRegistrationApplicationRejectRequest mockRejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRejectRequest = new AdminRegistrationApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -411,7 +411,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -450,7 +450,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
                 .withUser(mockUserEntity)
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
-        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 

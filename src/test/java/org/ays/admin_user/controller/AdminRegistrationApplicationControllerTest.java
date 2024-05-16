@@ -3,7 +3,6 @@ package org.ays.admin_user.controller;
 import org.ays.AbstractRestControllerTest;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
@@ -11,6 +10,7 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRe
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
@@ -612,7 +612,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -643,7 +643,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
