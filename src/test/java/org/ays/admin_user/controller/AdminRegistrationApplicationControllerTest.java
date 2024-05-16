@@ -3,12 +3,12 @@ package org.ays.admin_user.controller;
 import org.ays.AbstractRestControllerTest;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
@@ -197,7 +197,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     void givenValidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnAdminUserRegisterApplicationCreateResponse() throws Exception {
 
         // Given
-        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(AysValidTestData.Institution.ID)
                 .build();
@@ -247,7 +247,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     void givenInvalidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnValidationError(String invalidReason) throws Exception {
 
         // Given
-        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withReason(invalidReason)
                 .build();
@@ -274,7 +274,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     void givenValidAdminUserRegisterApplicationCreateRequest_whenUnauthorizedForCreatingAdminUserRegisterApplication_thenReturnAccessDeniedException() throws Exception {
 
         // Given
-        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(AysValidTestData.Institution.ID)
                 .build();

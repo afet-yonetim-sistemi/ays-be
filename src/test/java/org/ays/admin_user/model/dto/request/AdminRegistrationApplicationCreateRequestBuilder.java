@@ -4,24 +4,24 @@ import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
 
-public class AdminRegisterApplicationCreateRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationCreateRequest> {
+public class AdminRegistrationApplicationCreateRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationCreateRequest> {
 
-    public AdminRegisterApplicationCreateRequestBuilder() {
+    public AdminRegistrationApplicationCreateRequestBuilder() {
         super(AdminRegistrationApplicationCreateRequest.class);
     }
 
-    public AdminRegisterApplicationCreateRequestBuilder withValidFields() {
+    public AdminRegistrationApplicationCreateRequestBuilder withValidFields() {
         return this
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withReason(AysRandomTestUtil.generateString(50));
     }
 
-    public AdminRegisterApplicationCreateRequestBuilder withInstitutionId(String institutionId) {
+    public AdminRegistrationApplicationCreateRequestBuilder withInstitutionId(String institutionId) {
         data.setInstitutionId(institutionId);
         return this;
     }
 
-    public AdminRegisterApplicationCreateRequestBuilder withReason(String reason) {
+    public AdminRegistrationApplicationCreateRequestBuilder withReason(String reason) {
         data.setReason(reason);
         return this;
     }

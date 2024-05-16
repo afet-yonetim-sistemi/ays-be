@@ -2,10 +2,10 @@ package org.ays.admin_user.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.admin_user.model.AdminRegistrationApplication;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
@@ -219,7 +219,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
     void givenAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnAdminUserRegisterApplicationCreateResponse() {
 
         // Given
-        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidFields()
                 .build();
         InstitutionEntity mockInstitutionEntity = new InstitutionEntityBuilder()
@@ -254,7 +254,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
     void givenInvalidInstitutionId_whenCreatingAdminUserRegisterApplication_thenThrowAysInvalidAdminUserRegisterApplicationReasonException() {
 
         // Given
-        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withReason(null)
                 .build();

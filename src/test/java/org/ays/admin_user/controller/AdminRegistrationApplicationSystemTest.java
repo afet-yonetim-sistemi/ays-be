@@ -3,12 +3,12 @@ package org.ays.admin_user.controller;
 import org.ays.AbstractSystemTest;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
@@ -280,7 +280,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         this.initialize(institutionEntity);
 
         // Given
-        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(institutionEntity.getId())
                 .build();
@@ -315,7 +315,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         this.initialize(institutionEntity);
 
         // Given
-        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegisterApplicationCreateRequestBuilder()
+        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(institutionEntity.getId())
                 .build();
