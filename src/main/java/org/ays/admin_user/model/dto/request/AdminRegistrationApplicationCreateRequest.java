@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.ays.common.util.validation.NoSpecialCharacters;
 
 /**
- * Represents a request to register a new administrator user application. The request includes fields for the required
+ * Represents a request to register a new admin application. The request includes fields for the required
  * application institution id and reason.
  */
 @Getter
