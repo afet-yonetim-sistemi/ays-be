@@ -12,8 +12,8 @@ import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegi
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
 import org.ays.admin_user.service.AdminRegisterApplicationService;
 import org.ays.admin_user.util.exception.AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException;
-import org.ays.admin_user.util.exception.AysAdminRegisterApplicationSummaryNotExistByIdException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
+import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
@@ -93,7 +93,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
         final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
                 .filter(AdminRegistrationApplicationEntity::isWaiting)
-                .orElseThrow(() -> new AysAdminRegisterApplicationSummaryNotExistByIdException(id));
+                .orElseThrow(() -> new AysAdminRegistrationApplicationSummaryNotExistByIdException(id));
 
         return adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntity);
     }

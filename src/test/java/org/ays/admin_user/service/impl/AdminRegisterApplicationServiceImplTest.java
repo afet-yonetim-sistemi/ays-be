@@ -14,8 +14,8 @@ import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
 import org.ays.admin_user.util.exception.AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException;
-import org.ays.admin_user.util.exception.AysAdminRegisterApplicationSummaryNotExistByIdException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
+import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.util.AysRandomUtil;
@@ -206,7 +206,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegisterApplicationSummaryNotExistByIdException.class,
+                AysAdminRegistrationApplicationSummaryNotExistByIdException.class,
                 () -> adminUserRegisterApplicationService.findAllSummaryById(mockId)
         );
 
