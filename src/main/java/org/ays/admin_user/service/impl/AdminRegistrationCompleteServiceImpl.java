@@ -8,9 +8,6 @@ import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCompleteRequestToUserEntityMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.service.AdminRegistrationCompleteService;
-import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
-import org.ays.admin_user.util.exception.AysUserAlreadyExistsByEmailException;
-import org.ays.admin_user.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
@@ -19,6 +16,9 @@ import org.ays.user.repository.PermissionRepository;
 import org.ays.user.repository.RoleRepository;
 import org.ays.user.repository.UserPasswordRepository;
 import org.ays.user.repository.UserRepositoryV2;
+import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
+import org.ays.user.util.exception.AysUserAlreadyExistsByEmailException;
+import org.ays.user.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,8 +59,8 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
      * @param id      the ID of the admin registration application
      * @param request the admin registration request containing user details
      * @throws AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException if the registration application does not exist or is not in a waiting status
-     * @throws AysUserAlreadyExistsByEmailException                               if a user with the provided email already exists
-     * @throws AysUserAlreadyExistsByPhoneNumberException                         if a user with the provided phone number already exists
+     * @throws AysUserAlreadyExistsByEmailException                                   if a user with the provided email already exists
+     * @throws AysUserAlreadyExistsByPhoneNumberException                             if a user with the provided phone number already exists
      */
     @Override
     public void complete(final String id, final AdminRegistrationApplicationCompleteRequest request) {

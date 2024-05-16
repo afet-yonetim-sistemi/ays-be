@@ -1,4 +1,4 @@
-package org.ays.admin_user.util.exception;
+package org.ays.user.util.exception;
 
 import org.ays.common.util.exception.AysAlreadyException;
 

@@ -11,14 +11,14 @@ import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCreateRequest
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.service.AdminRegistrationApplicationService;
-import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
-import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
-import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.repository.UserRepositoryV2;
+import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
+import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
+import org.ays.user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
