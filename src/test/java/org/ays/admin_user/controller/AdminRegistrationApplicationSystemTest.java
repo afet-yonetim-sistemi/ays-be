@@ -3,13 +3,13 @@ package org.ays.admin_user.controller;
 import org.ays.AbstractSystemTest;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
@@ -79,7 +79,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     void givenValidAdminRegisterApplicationListRequest_whenAdminRegisterApplicationsFound_thenReturnAdminRegisterApplicationsResponse() throws Exception {
 
         // Given
-        AdminRegistrationApplicationListRequest listRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest listRequest = new AdminRegistrationApplicationListRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -149,7 +149,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     void givenValidAdminRegisterApplicationListRequest_whenUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
 
         // Given
-        AdminRegistrationApplicationListRequest adminRegistrationApplicationListRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest adminRegistrationApplicationListRequest = new AdminRegistrationApplicationListRequestBuilder()
                 .withValidValues()
                 .build();
 

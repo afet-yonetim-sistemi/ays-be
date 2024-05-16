@@ -9,13 +9,13 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-public class AdminRegisterApplicationListRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationListRequest> {
+public class AdminRegistrationApplicationListRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationListRequest> {
 
-    public AdminRegisterApplicationListRequestBuilder() {
+    public AdminRegistrationApplicationListRequestBuilder() {
         super(AdminRegistrationApplicationListRequest.class);
     }
 
-    public AdminRegisterApplicationListRequestBuilder withValidValues() {
+    public AdminRegistrationApplicationListRequestBuilder withValidValues() {
         final AysSorting createdAtSort = AysSorting.builder()
                 .property("createdAt")
                 .direction(Sort.Direction.DESC)
@@ -28,27 +28,27 @@ public class AdminRegisterApplicationListRequestBuilder extends TestDataBuilder<
                 .withSort(List.of(createdAtSort));
     }
 
-    private AdminRegisterApplicationListRequestBuilder initializeFilter() {
+    private AdminRegistrationApplicationListRequestBuilder initializeFilter() {
         data.setFilter(new AdminRegistrationApplicationListRequest.Filter());
         return this;
     }
 
-    public AdminRegisterApplicationListRequestBuilder withFilter(AdminRegistrationApplicationListRequest.Filter filter) {
+    public AdminRegistrationApplicationListRequestBuilder withFilter(AdminRegistrationApplicationListRequest.Filter filter) {
         data.setFilter(filter);
         return this;
     }
 
-    public AdminRegisterApplicationListRequestBuilder withStatuses(List<AdminRegistrationApplicationStatus> statuses) {
+    public AdminRegistrationApplicationListRequestBuilder withStatuses(List<AdminRegistrationApplicationStatus> statuses) {
         data.getFilter().setStatuses(statuses);
         return this;
     }
 
-    public AdminRegisterApplicationListRequestBuilder withPagination(AysPaging aysPaging) {
+    public AdminRegistrationApplicationListRequestBuilder withPagination(AysPaging aysPaging) {
         data.setPagination(aysPaging);
         return this;
     }
 
-    public AdminRegisterApplicationListRequestBuilder withSort(List<AysSorting> sorting) {
+    public AdminRegistrationApplicationListRequestBuilder withSort(List<AysSorting> sorting) {
         data.setSort(sorting);
         return this;
     }

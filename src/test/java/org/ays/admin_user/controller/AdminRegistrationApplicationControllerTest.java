@@ -3,13 +3,13 @@ package org.ays.admin_user.controller;
 import org.ays.AbstractRestControllerTest;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
@@ -72,7 +72,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     void givenValidAdminUserRegisterApplicationListRequest_whenAdminUserRegisterApplicationsFound_thenReturnAysPageResponseOfAdminUserRegisterApplicationsResponse() throws Exception {
 
         // Given
-        AdminRegistrationApplicationListRequest mockListRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest mockListRequest = new AdminRegistrationApplicationListRequestBuilder()
                 .withValidValues().build();
 
         // When
@@ -112,7 +112,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     @Test
     void givenValidAdminUserRegisterApplicationListRequest_whenUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
         // Given
-        AdminRegistrationApplicationListRequest mockListRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest mockListRequest = new AdminRegistrationApplicationListRequestBuilder()
                 .withValidValues()
                 .build();
 
