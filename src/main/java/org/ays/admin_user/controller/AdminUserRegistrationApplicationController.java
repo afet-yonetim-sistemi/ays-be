@@ -11,10 +11,10 @@ import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateR
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationsResponse;
-import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationsResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper;
+import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper;
 import org.ays.admin_user.service.AdminRegistrationApplicationService;
 import org.ays.admin_user.service.AdminRegistrationCompleteService;
 import org.ays.common.model.AysPage;
@@ -48,7 +48,7 @@ class AdminUserRegistrationApplicationController {
     private final AdminRegistrationCompleteService adminRegistrationCompleteService;
 
     private final AdminRegisterApplicationToAdminRegisterApplicationsResponseMapper adminRegisterApplicationToAdminRegisterApplicationsResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationsResponseMapper.initialize();
-    private final AdminRegisterApplicationToAdminRegisterApplicationResponseMapper adminRegisterApplicationToAdminRegisterApplicationResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationResponseMapper.initialize();
+    private final AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper.initialize();
     private final AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper.initialize();
     private final AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper.initialize();
 
@@ -92,7 +92,7 @@ class AdminUserRegistrationApplicationController {
         final AdminRegistrationApplication registerApplication = adminRegistrationApplicationService.findById(id);
 
         return AysResponse.successOf(
-                adminRegisterApplicationToAdminRegisterApplicationResponseMapper.map(registerApplication)
+                adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper.map(registerApplication)
         );
     }
 

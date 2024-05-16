@@ -15,15 +15,15 @@ import org.mapstruct.factory.Mappers;
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
 @Mapper
-public interface AdminRegisterApplicationToAdminRegisterApplicationResponseMapper extends BaseMapper<AdminRegistrationApplication, AdminRegistrationApplicationResponse> {
+public interface AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper extends BaseMapper<AdminRegistrationApplication, AdminRegistrationApplicationResponse> {
 
     /**
      * Initializes the mapper.
      *
      * @return the initialized mapper object.
      */
-    static AdminRegisterApplicationToAdminRegisterApplicationResponseMapper initialize() {
-        return Mappers.getMapper(AdminRegisterApplicationToAdminRegisterApplicationResponseMapper.class);
+    static AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper initialize() {
+        return Mappers.getMapper(AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper.class);
     }
 
 }
