@@ -12,7 +12,7 @@ import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
-import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
+import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
@@ -46,7 +46,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
     private AdminRegisterApplicationServiceImpl adminUserRegisterApplicationService;
 
     @Mock
-    private AdminRegisterApplicationRepository adminRegisterApplicationRepository;
+    private AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
 
     @Mock
     private UserRepositoryV2 userRepository;
@@ -75,7 +75,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+        Mockito.when(adminRegistrationApplicationRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageEntities);
 
         // Then
@@ -85,7 +85,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         AysPageBuilder.assertEquals(mockAysPage, aysPage);
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
 
@@ -107,7 +107,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+        Mockito.when(adminRegistrationApplicationRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageEntities);
 
         // Then
@@ -116,7 +116,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         AysPageBuilder.assertEquals(mockAysPage, aysPage);
 
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
 
@@ -130,14 +130,14 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         String mockId = mockEntity.getId();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
 
         // Then
         adminUserRegisterApplicationService.findById(mockId);
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
 
     }
@@ -149,7 +149,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         String mockId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.empty());
 
         // Then
@@ -159,7 +159,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
     }
 
@@ -175,7 +175,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         AdminRegistrationApplication mockAdminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntity);
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
 
         // Then
@@ -189,7 +189,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         Assertions.assertEquals(mockAdminRegistrationApplication.getInstitution().getId(), adminRegistrationApplication.getInstitution().getId());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
 
     }
@@ -201,7 +201,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         String mockId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.empty());
 
         // Then
@@ -211,7 +211,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
     }
 
@@ -233,7 +233,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.save(Mockito.any(AdminRegistrationApplicationEntity.class)))
+        Mockito.when(adminRegistrationApplicationRepository.save(Mockito.any(AdminRegistrationApplicationEntity.class)))
                 .thenReturn(mockEntity);
 
         Mockito.when(institutionRepository.existsActiveById(mockRequest.getInstitutionId()))
@@ -243,7 +243,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         adminUserRegisterApplicationService.create(mockRequest);
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(institutionRepository, Mockito.times(1))
@@ -290,20 +290,20 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
 
-        Mockito.when(adminRegisterApplicationRepository.save(Mockito.any(AdminRegistrationApplicationEntity.class)))
+        Mockito.when(adminRegistrationApplicationRepository.save(Mockito.any(AdminRegistrationApplicationEntity.class)))
                 .thenReturn(mockEntity);
 
         // Then
         adminUserRegisterApplicationService.approve(mockId);
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.times(1))
@@ -317,7 +317,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         String mockId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.empty());
 
         // Then
@@ -327,10 +327,10 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.never())
                 .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.never())
@@ -349,7 +349,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
 
         // Then
@@ -359,10 +359,10 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.never())
                 .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.never())
@@ -389,17 +389,17 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockApplicationEntity));
 
         // Then
         adminUserRegisterApplicationService.reject(mockId, mockRejectRequest);
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.times(1))
@@ -416,7 +416,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.empty());
 
         // Then
@@ -426,10 +426,10 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.never())
                 .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.never())
@@ -455,7 +455,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.findById(mockId))
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
 
         // Then
@@ -465,10 +465,10 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.never())
                 .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.never())

@@ -6,7 +6,7 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationComplete
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterRequestToUserEntityMapper;
-import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
+import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.service.AdminRegistrationCompleteService;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.admin_user.util.exception.AysUserAlreadyExistsByEmailException;
@@ -42,7 +42,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
     private final UserPasswordRepository userPasswordRepository;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
-    private final AdminRegisterApplicationRepository adminRegisterApplicationRepository;
+    private final AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -66,7 +66,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
     public void complete(final String id, final AdminRegistrationApplicationCompleteRequest request) {
         log.trace("Admin Register Flow call starting for email of {}", request.getEmailAddress());
 
-        final AdminRegistrationApplicationEntity applicationEntity = adminRegisterApplicationRepository
+        final AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository
                 .findById(id)
                 .filter(AdminRegistrationApplicationEntity::isWaiting)
                 .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
@@ -96,7 +96,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
         log.trace("Admin saved successfully!");
 
         applicationEntity.complete(userEntity.getId());
-        adminRegisterApplicationRepository.save(applicationEntity);
+        adminRegistrationApplicationRepository.save(applicationEntity);
         log.trace("Admin Register Verification complete successfully!");
     }
 

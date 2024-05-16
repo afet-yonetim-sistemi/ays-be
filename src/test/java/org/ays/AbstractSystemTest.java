@@ -6,7 +6,7 @@ import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
 import org.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import org.ays.admin_user.model.enums.AdminRole;
-import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
+import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.repository.AdminUserRepository;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
@@ -58,7 +58,7 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected PermissionRepository permissionRepository;
 
     @Autowired
-    protected AdminRegisterApplicationRepository adminRegisterApplicationRepository;
+    protected AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
 
     @Autowired
     protected AdminUserRepository adminUserRepository;

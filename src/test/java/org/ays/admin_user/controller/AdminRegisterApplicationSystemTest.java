@@ -69,7 +69,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         institutionRepository.save(institutionEntity);
         roleRepository.save(roleEntity);
         userRepositoryV2.save(userEntity);
-        adminRegisterApplicationRepository.save(adminRegistrationApplicationEntity);
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
     }
 
 
