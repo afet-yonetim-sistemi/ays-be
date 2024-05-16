@@ -53,7 +53,7 @@ import java.util.List;
 class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest {
 
     @MockBean
-    private AdminRegistrationApplicationService adminRegisterApplicationService;
+    private AdminRegistrationApplicationService adminRegistrationApplicationService;
 
     @MockBean
     private AdminRegistrationCompleteService adminRegistrationCompleteService;
@@ -82,7 +82,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage
                 .of(mockListRequest.getFilter(), mockPageEntities, mockList);
 
-        Mockito.when(adminRegisterApplicationService.findAll(Mockito.any(AdminRegistrationApplicationListRequest.class)))
+        Mockito.when(adminRegistrationApplicationService.findAll(Mockito.any(AdminRegistrationApplicationListRequest.class)))
                 .thenReturn(mockAysPage);
 
         // Then
@@ -105,7 +105,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationService, Mockito.times(1))
                 .findAll(Mockito.any(AdminRegistrationApplicationListRequest.class));
     }
 
@@ -130,7 +130,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationService, Mockito.never())
                 .findAll(Mockito.any(AdminRegistrationApplicationListRequest.class));
     }
 
@@ -144,7 +144,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
         AdminRegistrationApplication mockRegisterApplication = new AdminRegisterApplicationBuilder()
                 .withId(mockApplicationId)
                 .build();
-        Mockito.when(adminRegisterApplicationService.findById(mockApplicationId))
+        Mockito.when(adminRegistrationApplicationService.findById(mockApplicationId))
                 .thenReturn(mockRegisterApplication);
 
         // Then
@@ -164,7 +164,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationService, Mockito.times(1))
                 .findById(mockApplicationId);
 
     }
@@ -189,7 +189,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationService, Mockito.never())
                 .findById(mockApplicationId);
     }
 
@@ -213,7 +213,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
 
-        Mockito.when(adminRegisterApplicationService.create(Mockito.any(AdminRegisterApplicationCreateRequest.class)))
+        Mockito.when(adminRegistrationApplicationService.create(Mockito.any(AdminRegisterApplicationCreateRequest.class)))
                 .thenReturn(mockRegisterApplication);
 
         // Then
@@ -232,7 +232,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationService, Mockito.times(1))
                 .create(Mockito.any(AdminRegisterApplicationCreateRequest.class));
 
     }
@@ -266,7 +266,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationService, Mockito.never())
                 .create(Mockito.any(AdminRegisterApplicationCreateRequest.class));
     }
 
@@ -293,7 +293,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationService, Mockito.never())
                 .create(Mockito.any(AdminRegisterApplicationCreateRequest.class));
     }
 
@@ -307,7 +307,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                 .build();
 
         // When
-        Mockito.when(adminRegisterApplicationService.findAllSummaryById(mockId))
+        Mockito.when(adminRegistrationApplicationService.findAllSummaryById(mockId))
                 .thenReturn(mockAdminRegistrationApplication);
 
         // Then
@@ -563,7 +563,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // When
         Mockito.doNothing()
-                .when(adminRegisterApplicationService).approve(mockId);
+                .when(adminRegistrationApplicationService).approve(mockId);
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/approve"));
@@ -579,7 +579,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationService, Mockito.times(1))
                 .approve(mockId);
     }
 
@@ -603,7 +603,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationService, Mockito.never())
                 .approve(mockId);
     }
 
@@ -617,7 +617,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                 .build();
 
         // When
-        Mockito.doNothing().when(adminRegisterApplicationService).reject(mockId, mockRequest);
+        Mockito.doNothing().when(adminRegistrationApplicationService).reject(mockId, mockRequest);
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/reject");
@@ -633,7 +633,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationService, Mockito.times(1))
                 .reject(Mockito.eq(mockId), Mockito.any(AdminRegistrationApplicationRejectRequest.class));
 
     }
@@ -661,7 +661,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(adminRegisterApplicationService, Mockito.never())
+        Mockito.verify(adminRegistrationApplicationService, Mockito.never())
                 .reject(Mockito.eq(mockId), Mockito.any(AdminRegistrationApplicationRejectRequest.class));
     }
 
