@@ -248,21 +248,21 @@
 
 
         <!-- ===================================== -->
-        <!-- DDL of AYS_ADMIN_REGISTER_APPLICATION -->
+        <!-- DDL of AYS_ADMIN_REGISTRATION_APPLICATION -->
         <!-- ===================================== -->
-        <createTable tableName="AYS_ADMIN_REGISTER_APPLICATION">
+        <createTable tableName="AYS_ADMIN_REGISTRATION_APPLICATION">
             <column name="ID" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="INSTITUTION_ID" type="VARCHAR(36)">
                 <constraints nullable="false"
-                             foreignKeyName="FK__AYS_ADMIN_REGISTER_APPLICATION__INSTITUTION_ID"
+                             foreignKeyName="FK__AYS_ADMIN_REGISTRATION_APPLICATION__INSTITUTION_ID"
                              referencedTableName="AYS_INSTITUTION"
                              referencedColumnNames="ID"
                 />
             </column>
             <column name="USER_ID" type="VARCHAR(36)">
-                <constraints foreignKeyName="FK__AYS_ADMIN_REGISTER_APPLICATION__USER_ID"
+                <constraints foreignKeyName="FK__AYS_ADMIN_REGISTRATION_APPLICATION__USER_ID"
                              referencedTableName="AYS_USER_V2"
                              referencedColumnNames="ID"
                 />
@@ -285,11 +285,11 @@
         </createTable>
 
         <sql>
-            ALTER TABLE `AYS_ADMIN_REGISTER_APPLICATION`
-                ADD CONSTRAINT `C__AYS_ADMIN_REGISTER_APPLICATION__STATUS` CHECK (`STATUS` IN ('WAITING', 'COMPLETED', 'VERIFIED', 'REJECTED'));
+            ALTER TABLE `AYS_ADMIN_REGISTRATION_APPLICATION`
+                ADD CONSTRAINT `C__AYS_ADMIN_REGISTRATION_APPLICATION__STATUS` CHECK (`STATUS` IN ('WAITING', 'COMPLETED', 'VERIFIED', 'REJECTED'));
         </sql>
         <!-- ===================================== -->
-        <!-- DDL of AYS_ADMIN_REGISTER_APPLICATION -->
+        <!-- DDL of AYS_ADMIN_REGISTRATION_APPLICATION -->
         <!-- ===================================== -->
     </changeSet>
 
