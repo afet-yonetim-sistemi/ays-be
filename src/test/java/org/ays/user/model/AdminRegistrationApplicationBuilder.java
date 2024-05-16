@@ -1,13 +1,10 @@
-package org.ays.admin_user.model;
+package org.ays.user.model;
 
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionBuilder;
-import org.ays.user.model.AdminRegistrationApplication;
-import org.ays.user.model.UserV2;
-import org.ays.user.model.UserV2Builder;
 import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 
 public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRegistrationApplication> {

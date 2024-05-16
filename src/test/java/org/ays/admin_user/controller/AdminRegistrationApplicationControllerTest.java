@@ -1,7 +1,6 @@
 package org.ays.admin_user.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
@@ -14,6 +13,7 @@ import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionBuilder;
 import org.ays.user.model.AdminRegistrationApplication;
+import org.ays.user.model.AdminRegistrationApplicationBuilder;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationCreateRequest;
