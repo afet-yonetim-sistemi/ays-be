@@ -8,8 +8,8 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
-import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
+import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
@@ -66,10 +66,10 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withFilter(null)
                 .build();
 
-        List<AdminRegisterApplicationEntity> mockEntities = List.of(
+        List<AdminRegistrationApplicationEntity> mockEntities = List.of(
                 new AdminRegisterApplicationEntityBuilder().withValidFields().build()
         );
-        Page<AdminRegisterApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
+        Page<AdminRegistrationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
 
         List<AdminRegistrationApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
@@ -98,10 +98,10 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withStatuses(List.of(AdminRegistrationApplicationStatus.WAITING))
                 .build();
 
-        List<AdminRegisterApplicationEntity> mockEntities = List.of(
+        List<AdminRegistrationApplicationEntity> mockEntities = List.of(
                 new AdminRegisterApplicationEntityBuilder().withValidFields().build()
         );
-        Page<AdminRegisterApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
+        Page<AdminRegistrationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
 
         List<AdminRegistrationApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
@@ -124,7 +124,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
     void givenAdminUserRegisterApplicationId_whenGettingAdminUserRegisterApplication_thenReturnAdminUserRegisterApplication() {
 
         // Given
-        AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .build();
         String mockId = mockEntity.getId();
@@ -168,7 +168,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
@@ -226,14 +226,14 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .withId(mockRequest.getInstitutionId())
                 .build();
-        AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withInstitution(mockInstitutionEntity)
                 .withReason(mockRequest.getReason())
                 .build();
 
         // When
-        Mockito.when(adminRegisterApplicationRepository.save(Mockito.any(AdminRegisterApplicationEntity.class)))
+        Mockito.when(adminRegisterApplicationRepository.save(Mockito.any(AdminRegistrationApplicationEntity.class)))
                 .thenReturn(mockEntity);
 
         Mockito.when(institutionRepository.existsActiveById(mockRequest.getInstitutionId()))
@@ -244,7 +244,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Verify
         Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(institutionRepository, Mockito.times(1))
                 .existsActiveById(Mockito.anyString());
@@ -283,7 +283,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
-        AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .withUser(mockUserEntity)
@@ -293,7 +293,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminRegisterApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
 
-        Mockito.when(adminRegisterApplicationRepository.save(Mockito.any(AdminRegisterApplicationEntity.class)))
+        Mockito.when(adminRegisterApplicationRepository.save(Mockito.any(AdminRegistrationApplicationEntity.class)))
                 .thenReturn(mockEntity);
 
         // Then
@@ -304,7 +304,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .findById(Mockito.anyString());
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.times(1))
                 .save(Mockito.any(UserEntityV2.class));
@@ -331,7 +331,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .findById(Mockito.anyString());
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.never())
                 .save(Mockito.any(UserEntityV2.class));
@@ -343,7 +343,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
@@ -363,7 +363,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .findById(Mockito.anyString());
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.never())
                 .save(Mockito.any(UserEntityV2.class));
@@ -379,7 +379,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
-        AdminRegisterApplicationEntity mockApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUser(mockUserEntity)
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
@@ -400,7 +400,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .findById(Mockito.anyString());
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.times(1))
                 .save(Mockito.any(UserEntityV2.class));
@@ -430,7 +430,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .findById(Mockito.anyString());
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.never())
                 .save(Mockito.any(UserEntityV2.class));
@@ -445,7 +445,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
-        AdminRegisterApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUser(mockUserEntity)
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
@@ -469,7 +469,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .findById(Mockito.anyString());
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
         Mockito.verify(userRepository, Mockito.never())
                 .save(Mockito.any(UserEntityV2.class));

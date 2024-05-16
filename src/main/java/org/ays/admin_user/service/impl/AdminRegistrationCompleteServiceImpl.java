@@ -3,7 +3,7 @@ package org.ays.admin_user.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
-import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
+import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterRequestToUserEntityMapper;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
@@ -66,9 +66,9 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
     public void complete(final String id, final AdminRegistrationApplicationCompleteRequest request) {
         log.trace("Admin Register Flow call starting for email of {}", request.getEmailAddress());
 
-        final AdminRegisterApplicationEntity applicationEntity = adminRegisterApplicationRepository
+        final AdminRegistrationApplicationEntity applicationEntity = adminRegisterApplicationRepository
                 .findById(id)
-                .filter(AdminRegisterApplicationEntity::isWaiting)
+                .filter(AdminRegistrationApplicationEntity::isWaiting)
                 .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
 
         if (userRepository.existsByEmailAddress(request.getEmailAddress())) {

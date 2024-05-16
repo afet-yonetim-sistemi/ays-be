@@ -15,8 +15,8 @@ import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateRespo
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
 import org.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
-import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
+import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
@@ -76,8 +76,8 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                 .withValidValues().build();
 
         // When
-        List<AdminRegisterApplicationEntity> mockEntities = List.of(new AdminRegisterApplicationEntityBuilder().withValidFields().build());
-        Page<AdminRegisterApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
+        List<AdminRegistrationApplicationEntity> mockEntities = List.of(new AdminRegisterApplicationEntityBuilder().withValidFields().build());
+        Page<AdminRegistrationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
         List<AdminRegistrationApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage
                 .of(mockListRequest.getFilter(), mockPageEntities, mockList);

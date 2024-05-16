@@ -14,8 +14,8 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationComplete
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
-import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
+import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
@@ -64,12 +64,12 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
     private void initialize(InstitutionEntity institutionEntity,
                             RoleEntity roleEntity,
                             UserEntityV2 userEntity,
-                            AdminRegisterApplicationEntity adminRegisterApplicationEntity) {
+                            AdminRegistrationApplicationEntity adminRegistrationApplicationEntity) {
 
         institutionRepository.save(institutionEntity);
         roleRepository.save(roleEntity);
         userRepositoryV2.save(userEntity);
-        adminRegisterApplicationRepository.save(adminRegisterApplicationEntity);
+        adminRegisterApplicationRepository.save(adminRegistrationApplicationEntity);
     }
 
 
@@ -88,10 +88,10 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), listRequest);
 
-        List<AdminRegisterApplicationEntity> adminRegisterApplicationEntities = List.of(
+        List<AdminRegistrationApplicationEntity> adminRegisterApplicationEntities = List.of(
                 new AdminRegisterApplicationEntityBuilder().withValidFields().withStatus(AdminRegistrationApplicationStatus.WAITING).build()
         );
-        Page<AdminRegisterApplicationEntity> pageOfEntities = new PageImpl<>(
+        Page<AdminRegistrationApplicationEntity> pageOfEntities = new PageImpl<>(
                 adminRegisterApplicationEntities
         );
         List<AdminRegistrationApplication> adminRegistrationApplications = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
@@ -185,19 +185,19 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
-        AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegisterApplicationEntity);
+        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
 
         // Given
-        String applicationId = adminRegisterApplicationEntity.getId();
+        String applicationId = adminRegistrationApplicationEntity.getId();
 
         // When
         AdminRegistrationApplication adminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
-                .map(adminRegisterApplicationEntity);
+                .map(adminRegistrationApplicationEntity);
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId);
@@ -352,15 +352,15 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
-        AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegisterApplicationEntity);
+        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
 
         // Given
-        String applicationId = adminRegisterApplicationEntity.getId();
+        String applicationId = adminRegistrationApplicationEntity.getId();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(applicationId).concat("/summary"));
@@ -368,7 +368,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .get(endpoint);
 
         AdminRegistrationApplication adminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
-                .map(adminRegisterApplicationEntity);
+                .map(adminRegistrationApplicationEntity);
         AdminRegisterApplicationSummaryResponse adminRegisterApplicationSummaryResponse = adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper
                 .map(adminRegistrationApplication);
         AysResponse<AdminRegisterApplicationSummaryResponse> mockResponse = AysResponse.successOf(adminRegisterApplicationSummaryResponse);
@@ -398,15 +398,15 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
-        AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegisterApplicationEntity);
+        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
 
         // Given
-        String applicationId = adminRegisterApplicationEntity.getId();
+        String applicationId = adminRegistrationApplicationEntity.getId();
         AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegisterApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
@@ -443,15 +443,15 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
-        AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegisterApplicationEntity);
+        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
 
         // Given
-        String applicationId = adminRegisterApplicationEntity.getId();
+        String applicationId = adminRegistrationApplicationEntity.getId();
         AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
@@ -491,15 +491,15 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
-        AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegisterApplicationEntity);
+        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
 
         // Given
-        String applicationId = adminRegisterApplicationEntity.getId();
+        String applicationId = adminRegistrationApplicationEntity.getId();
         AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
@@ -539,15 +539,15 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
-        AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegisterApplicationEntity);
+        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
 
         // Given
-        String applicationId = adminRegisterApplicationEntity.getId();
+        String applicationId = adminRegistrationApplicationEntity.getId();
         final String invalidOperator = "123";
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
@@ -589,16 +589,16 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .withInstitutionId(institutionEntity.getId())
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
-        AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegisterApplicationEntity);
+        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
 
         // Given
-        String applicationId = adminRegisterApplicationEntity.getId();
+        String applicationId = adminRegistrationApplicationEntity.getId();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(applicationId).concat("/approve"));
@@ -653,16 +653,16 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .withInstitutionId(institutionEntity.getId())
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
-        AdminRegisterApplicationEntity adminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegisterApplicationEntity);
+        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
 
         // Given
-        String applicationId = adminRegisterApplicationEntity.getId();
+        String applicationId = adminRegistrationApplicationEntity.getId();
         AdminRegisterApplicationRejectRequest rejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();

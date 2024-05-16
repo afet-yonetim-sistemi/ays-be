@@ -3,8 +3,8 @@ package org.ays.admin_user.service.impl;
 import org.ays.AbstractUnitTest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
-import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
+import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
 import org.ays.admin_user.util.exception.AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException;
@@ -69,11 +69,11 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         AysPhoneNumberRequest mockPhoneNumber = mockCompleteRequest.getPhoneNumber();
 
         // When
-        AdminRegisterApplicationEntity mockAdminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .build();
         Mockito.when(adminRegisterApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.of(mockAdminRegisterApplicationEntity));
+                .thenReturn(Optional.of(mockAdminRegistrationApplicationEntity));
 
         Mockito.when(userRepository.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
@@ -114,12 +114,12 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         Mockito.when(userPasswordRepository.save(Mockito.any(UserEntityV2.PasswordEntity.class)))
                 .thenReturn(mockUserPasswordEntity);
 
-        AdminRegisterApplicationEntity mockCompletedVerificationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockCompletedVerificationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .build();
         mockCompletedVerificationEntity.complete(mockUserEntity.getId());
         Mockito.when(adminRegisterApplicationRepository
-                        .save(Mockito.any(AdminRegisterApplicationEntity.class)))
+                        .save(Mockito.any(AdminRegistrationApplicationEntity.class)))
                 .thenReturn(mockCompletedVerificationEntity);
 
         // Then
@@ -154,7 +154,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .save(Mockito.any(UserEntityV2.PasswordEntity.class));
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
     }
 
     @Test
@@ -168,11 +168,11 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         AysPhoneNumberRequest mockPhoneNumber = mockCompleteRequest.getPhoneNumber();
 
         // When
-        AdminRegisterApplicationEntity mockAdminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .build();
         Mockito.when(adminRegisterApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.of(mockAdminRegisterApplicationEntity));
+                .thenReturn(Optional.of(mockAdminRegistrationApplicationEntity));
 
         Mockito.when(userRepository.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
@@ -204,12 +204,12 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         Mockito.when(userPasswordRepository.save(Mockito.any(UserEntityV2.PasswordEntity.class)))
                 .thenReturn(mockUserPasswordEntity);
 
-        AdminRegisterApplicationEntity mockCompletedVerificationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockCompletedVerificationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .build();
         mockCompletedVerificationEntity.complete(mockUserEntity.getId());
         Mockito.when(adminRegisterApplicationRepository
-                        .save(Mockito.any(AdminRegisterApplicationEntity.class)))
+                        .save(Mockito.any(AdminRegistrationApplicationEntity.class)))
                 .thenReturn(mockCompletedVerificationEntity);
 
         // Then
@@ -244,7 +244,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .save(Mockito.any(UserEntityV2.PasswordEntity.class));
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
     }
 
     @Test
@@ -280,12 +280,12 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        AdminRegisterApplicationEntity mockAdminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .build();
         Mockito.when(adminRegisterApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.of(mockAdminRegisterApplicationEntity));
+                .thenReturn(Optional.of(mockAdminRegistrationApplicationEntity));
 
         // Then
         Assertions.assertThrows(
@@ -317,7 +317,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .encode(Mockito.any(String.class));
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
     }
 
     @Test
@@ -330,11 +330,11 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        AdminRegisterApplicationEntity mockAdminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .build();
         Mockito.when(adminRegisterApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.ofNullable(mockAdminRegisterApplicationEntity));
+                .thenReturn(Optional.ofNullable(mockAdminRegistrationApplicationEntity));
 
         Mockito.when(userRepository.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(true);
@@ -368,7 +368,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .encode(Mockito.any(String.class));
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
     }
 
     @Test
@@ -381,12 +381,12 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
-        AdminRegisterApplicationEntity mockAdminRegisterApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .build();
         // When
         Mockito.when(adminRegisterApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.ofNullable(mockAdminRegisterApplicationEntity));
+                .thenReturn(Optional.ofNullable(mockAdminRegistrationApplicationEntity));
 
         Mockito.when(userRepository.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
@@ -426,7 +426,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .encode(Mockito.any(String.class));
 
         Mockito.verify(adminRegisterApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegisterApplicationEntity.class));
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
     }
 
 }

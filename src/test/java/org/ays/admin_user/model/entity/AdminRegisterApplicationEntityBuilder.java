@@ -9,10 +9,10 @@ import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserEntityV2Builder;
 
-public class AdminRegisterApplicationEntityBuilder extends TestDataBuilder<AdminRegisterApplicationEntity> {
+public class AdminRegisterApplicationEntityBuilder extends TestDataBuilder<AdminRegistrationApplicationEntity> {
 
     public AdminRegisterApplicationEntityBuilder() {
-        super(AdminRegisterApplicationEntity.class);
+        super(AdminRegistrationApplicationEntity.class);
     }
 
     public AdminRegisterApplicationEntityBuilder withValidFields() {

@@ -5,7 +5,7 @@ import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
-import org.ays.admin_user.model.entity.AdminRegisterApplicationEntity;
+import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
@@ -51,10 +51,10 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      */
     @Override
     public AysPage<AdminRegistrationApplication> findAll(AdminRegisterApplicationListRequest listRequest) {
-        final Specification<AdminRegisterApplicationEntity> filters = listRequest
-                .toSpecification(AdminRegisterApplicationEntity.class);
+        final Specification<AdminRegistrationApplicationEntity> filters = listRequest
+                .toSpecification(AdminRegistrationApplicationEntity.class);
 
-        final Page<AdminRegisterApplicationEntity> registerApplicationEntities = adminRegisterApplicationRepository
+        final Page<AdminRegistrationApplicationEntity> registerApplicationEntities = adminRegisterApplicationRepository
                 .findAll(filters, listRequest.toPageable());
 
         final List<AdminRegistrationApplication> registerApplications = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntities.getContent());
@@ -74,7 +74,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      */
     @Override
     public AdminRegistrationApplication findById(String id) {
-        final AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
+        final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
                 .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdException(id));
 
@@ -90,9 +90,9 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      */
     @Override
     public AdminRegistrationApplication findAllSummaryById(String id) {
-        final AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
+        final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
-                .filter(AdminRegisterApplicationEntity::isWaiting)
+                .filter(AdminRegistrationApplicationEntity::isWaiting)
                 .orElseThrow(() -> new AysAdminRegisterApplicationSummaryNotExistByIdException(id));
 
         return adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntity);
@@ -111,7 +111,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
             throw new AysInstitutionNotExistException(request.getInstitutionId());
         }
 
-        AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper.mapForSaving(request);
+        AdminRegistrationApplicationEntity registerApplicationEntity = adminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper.mapForSaving(request);
         adminRegisterApplicationRepository.save(registerApplicationEntity);
 
         return adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntity);
@@ -125,9 +125,9 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
     @Override
     @Transactional
     public void approve(String id) {
-        final AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
+        final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
-                .filter(AdminRegisterApplicationEntity::isCompleted)
+                .filter(AdminRegistrationApplicationEntity::isCompleted)
                 .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.COMPLETED));
         final UserEntityV2 userEntity = registerApplicationEntity.getUser();
 
@@ -147,9 +147,9 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
     @Override
     @Transactional
     public void reject(String id, AdminRegisterApplicationRejectRequest request) {
-        final AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
+        final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
-                .filter(AdminRegisterApplicationEntity::isCompleted)
+                .filter(AdminRegistrationApplicationEntity::isCompleted)
                 .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
         final UserEntityV2 userEntity = registerApplicationEntity.getUser();
 

@@ -35,7 +35,7 @@ import org.ays.user.model.entity.UserEntityV2;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_ADMIN_REGISTRATION_APPLICATION")
-public class AdminRegisterApplicationEntity extends BaseEntity {
+public class AdminRegistrationApplicationEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
