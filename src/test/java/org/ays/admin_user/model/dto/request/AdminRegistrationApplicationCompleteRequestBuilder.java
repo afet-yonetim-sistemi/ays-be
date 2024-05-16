@@ -5,34 +5,34 @@ import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.util.AysValidTestData;
 
-public class AdminRegisterApplicationCompleteRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationCompleteRequest> {
+public class AdminRegistrationApplicationCompleteRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationCompleteRequest> {
 
-    public AdminRegisterApplicationCompleteRequestBuilder() {
+    public AdminRegistrationApplicationCompleteRequestBuilder() {
         super(AdminRegistrationApplicationCompleteRequest.class);
     }
 
-    public AdminRegisterApplicationCompleteRequestBuilder withValidFields() {
+    public AdminRegistrationApplicationCompleteRequestBuilder withValidFields() {
         return this
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build());
     }
 
-    public AdminRegisterApplicationCompleteRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
+    public AdminRegistrationApplicationCompleteRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }
 
-    public AdminRegisterApplicationCompleteRequestBuilder withEmail(String email) {
+    public AdminRegistrationApplicationCompleteRequestBuilder withEmail(String email) {
         data.setEmailAddress(email);
         return this;
     }
 
-    public AdminRegisterApplicationCompleteRequestBuilder withFirstName(String firstName) {
+    public AdminRegistrationApplicationCompleteRequestBuilder withFirstName(String firstName) {
         data.setFirstName(firstName);
         return this;
     }
 
-    public AdminRegisterApplicationCompleteRequestBuilder withLastName(String lastName) {
+    public AdminRegistrationApplicationCompleteRequestBuilder withLastName(String lastName) {
         data.setLastName(lastName);
         return this;
     }

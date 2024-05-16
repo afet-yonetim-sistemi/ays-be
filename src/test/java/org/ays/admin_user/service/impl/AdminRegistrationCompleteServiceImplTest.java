@@ -1,8 +1,8 @@
 package org.ays.admin_user.service.impl;
 
 import org.ays.AbstractUnitTest;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
@@ -63,7 +63,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
         AysPhoneNumberRequest mockPhoneNumber = mockCompleteRequest.getPhoneNumber();
@@ -162,7 +162,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
         AysPhoneNumberRequest mockPhoneNumber = mockCompleteRequest.getPhoneNumber();
@@ -252,7 +252,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = "Invalid";
-        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidFields().build();
 
         // When
@@ -275,7 +275,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -325,7 +325,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -377,7 +377,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         // Given
         String applicationId = AysRandomUtil.generateUUID();
         AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
-        AdminRegistrationApplicationCompleteRequest mockAdminRegistrationApplicationCompleteRequest = new AdminRegisterApplicationCompleteRequestBuilder()
+        AdminRegistrationApplicationCompleteRequest mockAdminRegistrationApplicationCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withEmail(AysValidTestData.EMAIL)
                 .withPhoneNumber(mockPhoneNumber).build();
 
