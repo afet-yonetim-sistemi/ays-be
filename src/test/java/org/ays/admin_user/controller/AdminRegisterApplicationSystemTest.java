@@ -12,8 +12,8 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectReques
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
-import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
+import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
@@ -369,9 +369,9 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
 
         AdminRegistrationApplication adminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
                 .map(adminRegistrationApplicationEntity);
-        AdminRegisterApplicationSummaryResponse adminRegisterApplicationSummaryResponse = adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper
+        AdminRegistrationApplicationSummaryResponse adminRegistrationApplicationSummaryResponse = adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper
                 .map(adminRegistrationApplication);
-        AysResponse<AdminRegisterApplicationSummaryResponse> mockResponse = AysResponse.successOf(adminRegisterApplicationSummaryResponse);
+        AysResponse<AdminRegistrationApplicationSummaryResponse> mockResponse = AysResponse.successOf(adminRegistrationApplicationSummaryResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

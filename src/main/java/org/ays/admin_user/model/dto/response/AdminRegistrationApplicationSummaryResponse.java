@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Summary response class for an admin user registration application.
+ * Summary response class for an admin registration application.
  * <p>
  * This class provides a summary of the registration application,
  * including the application ID and institution details.
@@ -12,7 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AdminRegisterApplicationSummaryResponse {
+public class AdminRegistrationApplicationSummaryResponse {
 
     private String id;
     private Institution institution;

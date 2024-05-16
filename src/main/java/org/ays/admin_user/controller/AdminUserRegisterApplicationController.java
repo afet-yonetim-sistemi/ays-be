@@ -8,8 +8,8 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectReques
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
-import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
+import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
@@ -83,7 +83,7 @@ class AdminUserRegisterApplicationController {
      * @return A response with the register application summary.
      */
     @GetMapping("/admin-registration-application/{id}/summary")
-    public AysResponse<AdminRegisterApplicationSummaryResponse> findSummaryById(@PathVariable @UUID String id) {
+    public AysResponse<AdminRegistrationApplicationSummaryResponse> findSummaryById(@PathVariable @UUID String id) {
 
         final AdminRegistrationApplication registerApplication = adminRegisterApplicationService
                 .findAllSummaryById(id);
