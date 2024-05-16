@@ -1,8 +1,8 @@
 package org.ays.admin_user.controller;
 
 import org.ays.AbstractSystemTest;
-import org.ays.admin_user.model.AdminRegisterApplicationBuilder;
 import org.ays.admin_user.model.AdminRegistrationApplication;
+import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
@@ -290,7 +290,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), createRequest);
 
-        AdminRegistrationApplication adminRegistrationApplication = new AdminRegisterApplicationBuilder()
+        AdminRegistrationApplication adminRegistrationApplication = new AdminRegistrationApplicationBuilder()
                 .withId(AysRandomUtil.generateUUID())
                 .build();
         AdminRegistrationApplicationCreateResponse adminRegistrationApplicationCreateResponse = adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper

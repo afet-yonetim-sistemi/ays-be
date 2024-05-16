@@ -9,13 +9,13 @@ import org.ays.institution.model.entity.InstitutionBuilder;
 import org.ays.user.model.UserV2;
 import org.ays.user.model.UserV2Builder;
 
-public class AdminRegisterApplicationBuilder extends TestDataBuilder<AdminRegistrationApplication> {
+public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRegistrationApplication> {
 
-    public AdminRegisterApplicationBuilder() {
+    public AdminRegistrationApplicationBuilder() {
         super(AdminRegistrationApplication.class);
     }
 
-    public AdminRegisterApplicationBuilder withValidFields() {
+    public AdminRegistrationApplicationBuilder withValidFields() {
 
         final Institution institution = new InstitutionBuilder()
                 .withValidFields()
@@ -33,27 +33,27 @@ public class AdminRegisterApplicationBuilder extends TestDataBuilder<AdminRegist
                 .withStatus(AdminRegistrationApplicationStatus.WAITING);
     }
 
-    public AdminRegisterApplicationBuilder withId(String id) {
+    public AdminRegistrationApplicationBuilder withId(String id) {
         data.setId(id);
         return this;
     }
 
-    public AdminRegisterApplicationBuilder withInstitution(Institution institution) {
+    public AdminRegistrationApplicationBuilder withInstitution(Institution institution) {
         data.setInstitution(institution);
         return this;
     }
 
-    public AdminRegisterApplicationBuilder withReason(String reason) {
+    public AdminRegistrationApplicationBuilder withReason(String reason) {
         data.setReason(reason);
         return this;
     }
 
-    public AdminRegisterApplicationBuilder withStatus(AdminRegistrationApplicationStatus status) {
+    public AdminRegistrationApplicationBuilder withStatus(AdminRegistrationApplicationStatus status) {
         data.setStatus(status);
         return this;
     }
 
-    public AdminRegisterApplicationBuilder withUser(UserV2 user) {
+    public AdminRegistrationApplicationBuilder withUser(UserV2 user) {
         data.setUser(user);
         return this;
     }

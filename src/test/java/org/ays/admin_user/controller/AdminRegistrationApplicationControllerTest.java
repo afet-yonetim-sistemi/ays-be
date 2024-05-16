@@ -1,8 +1,8 @@
 package org.ays.admin_user.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.admin_user.model.AdminRegisterApplicationBuilder;
 import org.ays.admin_user.model.AdminRegistrationApplication;
+import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
@@ -141,7 +141,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         String mockApplicationId = AysRandomUtil.generateUUID();
 
         // When
-        AdminRegistrationApplication mockRegisterApplication = new AdminRegisterApplicationBuilder()
+        AdminRegistrationApplication mockRegisterApplication = new AdminRegistrationApplicationBuilder()
                 .withId(mockApplicationId)
                 .build();
         Mockito.when(adminRegistrationApplicationService.findById(mockApplicationId))
@@ -206,7 +206,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         Institution mockInstitution = new InstitutionBuilder()
                 .withId(mockRequest.getInstitutionId())
                 .build();
-        AdminRegistrationApplication mockRegisterApplication = new AdminRegisterApplicationBuilder()
+        AdminRegistrationApplication mockRegisterApplication = new AdminRegistrationApplicationBuilder()
                 .withValidFields()
                 .withInstitution(mockInstitution)
                 .withReason(mockRequest.getReason())
@@ -302,7 +302,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplication mockAdminRegistrationApplication = new AdminRegisterApplicationBuilder()
+        AdminRegistrationApplication mockAdminRegistrationApplication = new AdminRegistrationApplicationBuilder()
                 .withId(mockId)
                 .build();
 
