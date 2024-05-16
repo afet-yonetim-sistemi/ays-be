@@ -9,9 +9,9 @@ import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.dto.response.BaseResponse;
 
 /**
- * Response class for admin user registration application.
+ * Response class for admin registration application.
  * <p>
- * This class extends {@link BaseResponse} and contains information about the admin user registration application,
+ * This class extends {@link BaseResponse} and contains information about the admin registration application,
  * including the application status, institution details, and user details.
  * </p>
  */
@@ -19,7 +19,7 @@ import org.ays.common.model.dto.response.BaseResponse;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class AdminRegisterApplicationResponse extends BaseResponse {
+public class AdminRegistrationApplicationResponse extends BaseResponse {
 
     private String id;
     private String reason;

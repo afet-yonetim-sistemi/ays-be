@@ -7,8 +7,8 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateReques
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
-import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
+import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
@@ -66,7 +66,7 @@ class AdminUserRegisterApplicationController {
 
     @GetMapping("/admin-registration-application/{id}")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:detail')")
-    public AysResponse<AdminRegisterApplicationResponse> findById(@PathVariable @UUID String id) {
+    public AysResponse<AdminRegistrationApplicationResponse> findById(@PathVariable @UUID String id) {
 
         final AdminRegistrationApplication registerApplication = adminRegisterApplicationService.findById(id);
 
