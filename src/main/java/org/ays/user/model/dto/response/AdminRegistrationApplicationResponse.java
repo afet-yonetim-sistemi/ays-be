@@ -1,4 +1,4 @@
-package org.ays.admin_user.model.dto.response;
+package org.ays.user.model.dto.response;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
