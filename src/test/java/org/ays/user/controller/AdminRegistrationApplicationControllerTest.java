@@ -1,4 +1,4 @@
-package org.ays.admin_user.controller;
+package org.ays.user.controller;
 
 import org.ays.AbstractRestControllerTest;
 import org.ays.common.model.AysPage;
