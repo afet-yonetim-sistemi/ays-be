@@ -88,7 +88,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+                .post(endpoint, mockSuperAdminTokenV2.getAccessToken(), mockListRequest);
 
         List<AdminRegistrationApplicationsResponse> mockApplicationsResponse = adminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper.map(mockList);
         AysPageResponse<AdminRegistrationApplicationsResponse> pageOfResponse = AysPageResponse.<AdminRegistrationApplicationsResponse>builder()
@@ -150,7 +150,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockApplicationId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, mockSuperAdminToken.getAccessToken());
+                .get(endpoint, mockSuperAdminTokenV2.getAccessToken());
 
         AdminRegistrationApplicationResponse mockApplicationResponse = adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper
                 .map(mockRegisterApplication);
@@ -219,7 +219,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest);
+                .post(endpoint, mockSuperAdminTokenV2.getAccessToken(), mockRequest);
 
         AdminRegistrationApplicationCreateResponse mockApplicationCreateResponse = adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper
                 .map(mockRegisterApplication);
@@ -234,7 +234,6 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Verify
         Mockito.verify(adminRegistrationApplicationService, Mockito.times(1))
                 .create(Mockito.any(AdminRegistrationApplicationCreateRequest.class));
-
     }
 
     @ParameterizedTest
@@ -568,7 +567,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/approve"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminToken.getAccessToken());
+                .post(endpoint, mockSuperAdminTokenV2.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponse.SUCCESS;
 
@@ -622,7 +621,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/reject");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest);
+                .post(endpoint, mockSuperAdminTokenV2.getAccessToken(), mockRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 

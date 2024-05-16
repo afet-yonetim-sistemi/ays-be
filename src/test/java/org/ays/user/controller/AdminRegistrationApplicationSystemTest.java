@@ -86,7 +86,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, superAdminToken.getAccessToken(), listRequest);
+                .post(endpoint, superAdminTokenV2.getAccessToken(), listRequest);
 
         List<AdminRegistrationApplicationEntity> adminRegisterApplicationEntities = List.of(
                 new AdminRegisterApplicationEntityBuilder().withValidFields().withStatus(AdminRegistrationApplicationStatus.WAITING).build()
@@ -202,7 +202,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, superAdminToken.getAccessToken());
+                .get(endpoint, superAdminTokenV2.getAccessToken());
 
         AdminRegistrationApplicationResponse adminRegistrationApplicationResponse = adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper
                 .map(adminRegistrationApplication);
@@ -288,7 +288,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, superAdminToken.getAccessToken(), createRequest);
+                .post(endpoint, superAdminTokenV2.getAccessToken(), createRequest);
 
         AdminRegistrationApplication adminRegistrationApplication = new AdminRegistrationApplicationBuilder()
                 .withId(AysRandomUtil.generateUUID())
@@ -603,7 +603,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(applicationId).concat("/approve"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, superAdminToken.getAccessToken());
+                .post(endpoint, superAdminTokenV2.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponse.SUCCESS;
 
@@ -670,7 +670,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/reject");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, superAdminToken.getAccessToken(), rejectRequest);
+                .post(endpoint, superAdminTokenV2.getAccessToken(), rejectRequest);
 
         AysResponse<Void> mockResponse = AysResponse.SUCCESS;
 

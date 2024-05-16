@@ -31,8 +31,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
@@ -87,10 +87,10 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         Mockito.when(roleRepository.findByInstitutionId(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
-        List<PermissionEntity> mockPermissionEntities = List.of(
+        Set<PermissionEntity> mockPermissionEntities = Set.of(
                 new PermissionEntityBuilder().withValidFields().build()
         );
-        Mockito.when(permissionRepository.findAll())
+        Mockito.when(permissionRepository.findAllByIsSuperFalse())
                 .thenReturn(mockPermissionEntities);
 
         RoleEntity mockRoleEntity = new RoleEntityBuilder()
@@ -139,7 +139,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .findByInstitutionId(Mockito.anyString());
 
         Mockito.verify(permissionRepository, Mockito.times(1))
-                .findAll();
+                .findAllByIsSuperFalse();
 
         Mockito.verify(roleRepository, Mockito.times(1))
                 .save(Mockito.any(RoleEntity.class));
