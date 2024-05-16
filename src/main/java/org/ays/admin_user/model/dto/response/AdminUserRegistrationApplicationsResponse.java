@@ -7,16 +7,16 @@ import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import java.time.LocalDateTime;
 
 /**
- * Response class for admin user registration applications.
+ * Response class for admin registration applications.
  * <p>
- * This class contains information about admin user registration applications,
+ * This class contains information about admin registration applications,
  * including application status, institution details, user details, creator details,
  * and creation timestamp.
  * </p>
  */
 @Getter
 @Setter
-public class AdminUserRegisterApplicationsResponse {
+public class AdminUserRegistrationApplicationsResponse {
 
     private String id;
     private String reason;

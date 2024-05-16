@@ -10,7 +10,7 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequ
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
-import org.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
+import org.ays.admin_user.model.dto.response.AdminUserRegistrationApplicationsResponse;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper;
@@ -47,12 +47,12 @@ class AdminUserRegisterApplicationController {
 
     @PostMapping("/admin-registration-applications")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:list')")
-    public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> findAll(
+    public AysResponse<AysPageResponse<AdminUserRegistrationApplicationsResponse>> findAll(
             @RequestBody @Valid AdminRegistrationApplicationListRequest request) {
 
         final AysPage<AdminRegistrationApplication> pageOfRegisterApplications = adminRegisterApplicationService.findAll(request);
-        final AysPageResponse<AdminUserRegisterApplicationsResponse> pageResponseOfRegisterApplication = AysPageResponse
-                .<AdminUserRegisterApplicationsResponse>builder()
+        final AysPageResponse<AdminUserRegistrationApplicationsResponse> pageResponseOfRegisterApplication = AysPageResponse
+                .<AdminUserRegistrationApplicationsResponse>builder()
                 .of(pageOfRegisterApplications)
                 .content(
                         adminRegisterApplicationToAdminRegisterApplicationsResponseMapper

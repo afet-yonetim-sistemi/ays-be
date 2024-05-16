@@ -14,7 +14,7 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequ
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
-import org.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
+import org.ays.admin_user.model.dto.response.AdminUserRegistrationApplicationsResponse;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
@@ -90,12 +90,12 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
 
-        List<AdminUserRegisterApplicationsResponse> mockApplicationsResponse = adminRegisterApplicationToAdminRegisterApplicationsResponseMapper.map(mockList);
-        AysPageResponse<AdminUserRegisterApplicationsResponse> pageOfResponse = AysPageResponse.<AdminUserRegisterApplicationsResponse>builder()
+        List<AdminUserRegistrationApplicationsResponse> mockApplicationsResponse = adminRegisterApplicationToAdminRegisterApplicationsResponseMapper.map(mockList);
+        AysPageResponse<AdminUserRegistrationApplicationsResponse> pageOfResponse = AysPageResponse.<AdminUserRegistrationApplicationsResponse>builder()
                 .of(mockAysPage)
                 .content(mockApplicationsResponse)
                 .build();
-        AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> mockResponse = AysResponse
+        AysResponse<AysPageResponse<AdminUserRegistrationApplicationsResponse>> mockResponse = AysResponse
                 .successOf(pageOfResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
