@@ -1,4 +1,4 @@
-package org.ays.admin_user.repository;
+package org.ays.user.repository;
 
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

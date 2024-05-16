@@ -6,11 +6,11 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationComplete
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCompleteRequestToUserEntityMapper;
-import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
 import org.ays.user.model.entity.UserEntityV2;
+import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.PermissionRepository;
 import org.ays.user.repository.RoleRepository;
 import org.ays.user.repository.UserPasswordRepository;
