@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-class AdminUserRegisterApplicationController {
+class AdminUserRegistrationApplicationController {
 
     private final AdminRegistrationApplicationService adminRegisterApplicationService;
     private final AdminRegistrationCompleteService adminRegistrationCompleteService;
