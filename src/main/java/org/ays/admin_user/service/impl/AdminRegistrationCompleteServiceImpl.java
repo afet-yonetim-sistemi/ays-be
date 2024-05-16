@@ -8,7 +8,7 @@ import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterRequestToUserEntityMapper;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
 import org.ays.admin_user.service.AdminRegistrationCompleteService;
-import org.ays.admin_user.util.exception.AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException;
+import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.admin_user.util.exception.AysUserAlreadyExistsByEmailException;
 import org.ays.admin_user.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
@@ -58,7 +58,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
      *
      * @param id      the ID of the admin registration application
      * @param request the admin registration request containing user details
-     * @throws AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException if the registration application does not exist or is not in a waiting status
+     * @throws AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException if the registration application does not exist or is not in a waiting status
      * @throws AysUserAlreadyExistsByEmailException                               if a user with the provided email already exists
      * @throws AysUserAlreadyExistsByPhoneNumberException                         if a user with the provided phone number already exists
      */
@@ -69,7 +69,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
         final AdminRegistrationApplicationEntity applicationEntity = adminRegisterApplicationRepository
                 .findById(id)
                 .filter(AdminRegistrationApplicationEntity::isWaiting)
-                .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
+                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
 
         if (userRepository.existsByEmailAddress(request.getEmailAddress())) {
             throw new AysUserAlreadyExistsByEmailException(request.getEmailAddress());

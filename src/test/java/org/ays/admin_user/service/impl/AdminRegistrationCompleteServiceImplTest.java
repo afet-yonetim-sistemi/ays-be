@@ -7,7 +7,7 @@ import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
-import org.ays.admin_user.util.exception.AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException;
+import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.admin_user.util.exception.AysUserAlreadyExistsByEmailException;
 import org.ays.admin_user.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
@@ -261,7 +261,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 
@@ -289,7 +289,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 

@@ -13,8 +13,8 @@ import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.repository.AdminRegisterApplicationRepository;
-import org.ays.admin_user.util.exception.AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
+import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
@@ -322,7 +322,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
                 () -> adminUserRegisterApplicationService.approve(mockId)
         );
 
@@ -354,7 +354,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
                 () -> adminUserRegisterApplicationService.approve(mockId)
         );
 
@@ -421,7 +421,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
                 () -> adminUserRegisterApplicationService.reject(mockId, mockRequest)
         );
 
@@ -460,7 +460,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegisterApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
                 () -> adminUserRegisterApplicationService.reject(mockId, mockRequest)
         );
 
