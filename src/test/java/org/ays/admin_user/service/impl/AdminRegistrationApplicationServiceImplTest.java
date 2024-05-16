@@ -8,7 +8,6 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequ
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
-import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.common.model.AysPage;
@@ -19,6 +18,7 @@ import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.ays.user.model.AdminRegistrationApplication;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserEntityV2Builder;
 import org.ays.user.model.enums.UserStatus;

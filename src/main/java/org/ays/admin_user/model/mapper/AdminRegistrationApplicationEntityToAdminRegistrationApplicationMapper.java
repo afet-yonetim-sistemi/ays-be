@@ -1,8 +1,8 @@
 package org.ays.admin_user.model.mapper;
 
-import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.user.model.AdminRegistrationApplication;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

@@ -14,7 +14,6 @@ import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateR
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
-import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper;
@@ -32,6 +31,7 @@ import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.user.model.AdminRegistrationApplication;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
 import org.ays.user.model.entity.RoleEntityBuilder;

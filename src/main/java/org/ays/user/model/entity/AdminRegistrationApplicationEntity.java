@@ -1,4 +1,4 @@
-package org.ays.admin_user.model.entity;
+package org.ays.user.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +17,6 @@ import lombok.Setter;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
-import org.ays.user.model.entity.UserEntityV2;
 
 /**
  * Entity class representing an admin user registration application.

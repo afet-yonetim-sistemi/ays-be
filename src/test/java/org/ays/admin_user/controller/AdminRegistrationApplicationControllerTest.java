@@ -15,7 +15,6 @@ import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationRespons
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationsResponse;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
-import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper;
@@ -34,6 +33,7 @@ import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionBuilder;
 import org.ays.user.model.AdminRegistrationApplication;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.service.AdminRegistrationApplicationService;
 import org.ays.user.service.AdminRegistrationCompleteService;
 import org.ays.util.AysMockMvcRequestBuilders;

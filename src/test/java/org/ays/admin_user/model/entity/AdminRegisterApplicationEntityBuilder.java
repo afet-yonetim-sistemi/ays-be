@@ -6,6 +6,7 @@ import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserEntityV2Builder;
 

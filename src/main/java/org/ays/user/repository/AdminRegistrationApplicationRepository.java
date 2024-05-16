@@ -1,6 +1,6 @@
 package org.ays.user.repository;
 
-import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
