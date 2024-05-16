@@ -15,7 +15,7 @@ import org.mapstruct.factory.Mappers;
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
 @Mapper
-public interface AdminRegisterApplicationEntityToAdminRegisterApplicationMapper extends BaseMapper<AdminRegistrationApplicationEntity, AdminRegistrationApplication> {
+public interface AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper extends BaseMapper<AdminRegistrationApplicationEntity, AdminRegistrationApplication> {
 
     @Override
     @Mapping(target = "user.phoneNumber.countryCode", source = "user.countryCode")
@@ -28,8 +28,8 @@ public interface AdminRegisterApplicationEntityToAdminRegisterApplicationMapper 
      *
      * @return the initialized mapper object.
      */
-    static AdminRegisterApplicationEntityToAdminRegisterApplicationMapper initialize() {
-        return Mappers.getMapper(AdminRegisterApplicationEntityToAdminRegisterApplicationMapper.class);
+    static AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper initialize() {
+        return Mappers.getMapper(AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.class);
     }
 
 }

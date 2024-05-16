@@ -17,10 +17,10 @@ import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummary
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper;
+import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
@@ -51,7 +51,7 @@ import java.util.Set;
 
 class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
 
-    private final AdminRegisterApplicationEntityToAdminRegisterApplicationMapper adminRegisterApplicationEntityToAdminRegisterApplicationMapper = AdminRegisterApplicationEntityToAdminRegisterApplicationMapper.initialize();
+    private final AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper = AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.initialize();
     private final AdminRegisterApplicationToAdminRegisterApplicationResponseMapper adminRegisterApplicationToAdminRegisterApplicationResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationResponseMapper.initialize();
     private final AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper.initialize();
     private final AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper adminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper.initialize();
@@ -94,7 +94,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         Page<AdminRegistrationApplicationEntity> pageOfEntities = new PageImpl<>(
                 adminRegisterApplicationEntities
         );
-        List<AdminRegistrationApplication> adminRegistrationApplications = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
+        List<AdminRegistrationApplication> adminRegistrationApplications = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper
                 .map(adminRegisterApplicationEntities);
         AysPage<AdminRegistrationApplication> page = AysPage.of(
                 pageOfEntities,
@@ -196,7 +196,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         String applicationId = adminRegistrationApplicationEntity.getId();
 
         // When
-        AdminRegistrationApplication adminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
+        AdminRegistrationApplication adminRegistrationApplication = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper
                 .map(adminRegistrationApplicationEntity);
 
         // Then
@@ -367,7 +367,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
-        AdminRegistrationApplication adminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
+        AdminRegistrationApplication adminRegistrationApplication = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper
                 .map(adminRegistrationApplicationEntity);
         AdminRegistrationApplicationSummaryResponse adminRegistrationApplicationSummaryResponse = adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper
                 .map(adminRegistrationApplication);

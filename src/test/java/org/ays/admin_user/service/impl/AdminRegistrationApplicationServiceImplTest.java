@@ -11,7 +11,7 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRe
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
+import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
@@ -54,7 +54,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
     @Mock
     private InstitutionRepository institutionRepository;
 
-    private final AdminRegisterApplicationEntityToAdminRegisterApplicationMapper adminRegisterApplicationEntityToAdminRegisterApplicationMapper = AdminRegisterApplicationEntityToAdminRegisterApplicationMapper.initialize();
+    private final AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper = AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.initialize();
 
 
     @Test
@@ -71,7 +71,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
         );
         Page<AdminRegistrationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
 
-        List<AdminRegistrationApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
+        List<AdminRegistrationApplication> mockList = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(mockEntities);
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
 
         // When
@@ -103,7 +103,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
         );
         Page<AdminRegistrationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
 
-        List<AdminRegistrationApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
+        List<AdminRegistrationApplication> mockList = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(mockEntities);
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
 
         // When
@@ -172,7 +172,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
-        AdminRegistrationApplication mockAdminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntity);
+        AdminRegistrationApplication mockAdminRegistrationApplication = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(mockEntity);
 
         // When
         Mockito.when(adminRegistrationApplicationRepository.findById(mockId))

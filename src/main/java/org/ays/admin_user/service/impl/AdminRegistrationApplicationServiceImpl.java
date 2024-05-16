@@ -7,8 +7,8 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequ
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper;
+import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.service.AdminRegistrationApplicationService;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
@@ -39,7 +39,7 @@ public class AdminRegistrationApplicationServiceImpl implements AdminRegistratio
     private final UserRepositoryV2 userRepository;
     private final InstitutionRepository institutionRepository;
 
-    private final AdminRegisterApplicationEntityToAdminRegisterApplicationMapper adminRegisterApplicationEntityToAdminRegisterApplicationMapper = AdminRegisterApplicationEntityToAdminRegisterApplicationMapper.initialize();
+    private final AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper = AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.initialize();
     private final AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper = AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.initialize();
 
 
@@ -57,7 +57,7 @@ public class AdminRegistrationApplicationServiceImpl implements AdminRegistratio
         final Page<AdminRegistrationApplicationEntity> registerApplicationEntities = adminRegistrationApplicationRepository
                 .findAll(filters, listRequest.toPageable());
 
-        final List<AdminRegistrationApplication> registerApplications = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntities.getContent());
+        final List<AdminRegistrationApplication> registerApplications = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(registerApplicationEntities.getContent());
 
         return AysPage.of(
                 listRequest.getFilter(),
@@ -78,7 +78,7 @@ public class AdminRegistrationApplicationServiceImpl implements AdminRegistratio
                 .findById(id)
                 .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
 
-        return adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntity);
+        return adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(registerApplicationEntity);
     }
 
     /**
@@ -95,7 +95,7 @@ public class AdminRegistrationApplicationServiceImpl implements AdminRegistratio
                 .filter(AdminRegistrationApplicationEntity::isWaiting)
                 .orElseThrow(() -> new AysAdminRegistrationApplicationSummaryNotExistByIdException(id));
 
-        return adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntity);
+        return adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(registerApplicationEntity);
     }
 
     /**
@@ -114,7 +114,7 @@ public class AdminRegistrationApplicationServiceImpl implements AdminRegistratio
         AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.mapForSaving(request);
         adminRegistrationApplicationRepository.save(registerApplicationEntity);
 
-        return adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntity);
+        return adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(registerApplicationEntity);
     }
 
     /**
