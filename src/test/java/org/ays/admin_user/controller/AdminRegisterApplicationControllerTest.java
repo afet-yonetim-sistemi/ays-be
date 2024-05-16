@@ -23,7 +23,7 @@ import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterAp
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationsResponseMapper;
-import org.ays.admin_user.service.AdminRegisterApplicationService;
+import org.ays.admin_user.service.AdminRegistrationApplicationService;
 import org.ays.admin_user.service.AdminRegistrationCompleteService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
@@ -53,7 +53,7 @@ import java.util.List;
 class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest {
 
     @MockBean
-    private AdminRegisterApplicationService adminRegisterApplicationService;
+    private AdminRegistrationApplicationService adminRegisterApplicationService;
 
     @MockBean
     private AdminRegistrationCompleteService adminRegistrationCompleteService;

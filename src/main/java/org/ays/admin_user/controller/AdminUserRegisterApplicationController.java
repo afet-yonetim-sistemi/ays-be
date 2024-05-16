@@ -15,7 +15,7 @@ import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterAp
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationsResponseMapper;
-import org.ays.admin_user.service.AdminRegisterApplicationService;
+import org.ays.admin_user.service.AdminRegistrationApplicationService;
 import org.ays.admin_user.service.AdminRegistrationCompleteService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.response.AysPageResponse;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class AdminUserRegisterApplicationController {
 
-    private final AdminRegisterApplicationService adminRegisterApplicationService;
+    private final AdminRegistrationApplicationService adminRegisterApplicationService;
     private final AdminRegistrationCompleteService adminRegistrationCompleteService;
 
     private final AdminRegisterApplicationToAdminRegisterApplicationsResponseMapper adminRegisterApplicationToAdminRegisterApplicationsResponseMapper = AdminRegisterApplicationToAdminRegisterApplicationsResponseMapper.initialize();

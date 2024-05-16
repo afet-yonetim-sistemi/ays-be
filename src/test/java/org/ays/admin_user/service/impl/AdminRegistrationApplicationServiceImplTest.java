@@ -40,10 +40,10 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 import java.util.Optional;
 
-class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
+class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks
-    private AdminRegisterApplicationServiceImpl adminUserRegisterApplicationService;
+    private AdminRegistrationApplicationServiceImpl adminUserRegisterApplicationService;
 
     @Mock
     private AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;

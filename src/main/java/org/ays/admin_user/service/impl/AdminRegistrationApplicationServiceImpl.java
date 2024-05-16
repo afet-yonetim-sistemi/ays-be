@@ -10,7 +10,7 @@ import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
-import org.ays.admin_user.service.AdminRegisterApplicationService;
+import org.ays.admin_user.service.AdminRegistrationApplicationService;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
@@ -27,13 +27,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * This class implements the {@link AdminRegisterApplicationService} interface and provides verification operations for admin users.
+ * This class implements the {@link AdminRegistrationApplicationService} interface and provides verification operations for admin users.
  * It is annotated with {@code @Service} to indicate that it is a service component in the application.
  * The class is also annotated with {@code @RequiredArgsConstructor} to automatically generate a constructor based on the declared final fields.
  */
 @Service
 @RequiredArgsConstructor
-public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplicationService {
+public class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplicationService {
 
     private final AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
     private final UserRepositoryV2 userRepository;
