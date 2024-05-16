@@ -28,4 +28,21 @@ public interface UserRepositoryV2 extends JpaRepository<UserEntityV2, String>, J
      */
     Optional<UserEntityV2> findByIdAndInstitutionId(String id, String institutionId);
 
+    /**
+     * Checks if an {@link UserEntityV2} exists with the given email.
+     *
+     * @param emailAddress the email address of the user to check
+     * @return true if an {@link UserEntityV2} exists with the given emailAddress, false otherwise
+     */
+    boolean existsByEmailAddress(String emailAddress);
+
+    /**
+     * Checks if an {@link UserEntityV2} exists with the given country code and phone number.
+     *
+     * @param countryCode the country code of the user to check
+     * @param lineNumber  the phone number of the user to check
+     * @return true if an {@link UserEntityV2} exists with the given country code and phone number, false otherwise
+     */
+    boolean existsByCountryCodeAndLineNumber(String countryCode, String lineNumber);
+
 }

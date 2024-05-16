@@ -1,9 +1,9 @@
 package org.ays.admin_user.model.enums;
 
 /**
- * Enumeration keeping admin user status.
+ * Enumeration keeping admin status.
  */
-public enum AdminUserRegisterApplicationStatus {
+public enum AdminRegisterApplicationStatus {
 
     WAITING,
     COMPLETED,

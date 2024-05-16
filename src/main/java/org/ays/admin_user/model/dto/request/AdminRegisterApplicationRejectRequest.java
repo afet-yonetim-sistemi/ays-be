@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AdminUserRegisterApplicationRejectRequest {
+public class AdminRegisterApplicationRejectRequest {
 
     /**
      * Reject reason for Registering Admin User

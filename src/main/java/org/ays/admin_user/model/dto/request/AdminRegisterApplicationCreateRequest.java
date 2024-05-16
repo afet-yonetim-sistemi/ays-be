@@ -12,7 +12,7 @@ import org.ays.common.util.validation.NoSpecialCharacters;
  */
 @Getter
 @Setter
-public class AdminUserRegisterApplicationCreateRequest {
+public class AdminRegisterApplicationCreateRequest {
 
     /**
      * Institution ID for Registering Admin User

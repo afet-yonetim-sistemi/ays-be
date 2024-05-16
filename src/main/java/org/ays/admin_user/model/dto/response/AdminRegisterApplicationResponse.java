@@ -4,29 +4,32 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.dto.response.BaseResponse;
 
 /**
- * A DTO (Data Transfer Object) representing an admin user register application in a response.
+ * Response class for admin user registration application.
+ * <p>
+ * This class extends {@link BaseResponse} and contains information about the admin user registration application,
+ * including the application status, institution details, and user details.
+ * </p>
  */
 @Getter
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class AdminUserRegisterApplicationResponse extends BaseResponse {
+public class AdminRegisterApplicationResponse extends BaseResponse {
 
     private String id;
     private String reason;
     private String rejectReason;
-    private AdminUserRegisterApplicationStatus status;
+    private AdminRegisterApplicationStatus status;
     private Institution institution;
-    private AdminUser adminUser;
-
+    private User user;
 
     /**
-     * A DTO (Data Transfer Object) representing an institution in an admin user register application of response.
+     * Nested static class representing the institution details.
      */
     @Getter
     @Setter
@@ -36,16 +39,16 @@ public class AdminUserRegisterApplicationResponse extends BaseResponse {
     }
 
     /**
-     * A DTO (Data Transfer Object) representing an admin users in an admin user register application of response.
+     * Nested static class representing the user details.
      */
     @Getter
     @Setter
-    public static class AdminUser {
+    public static class User {
         private String id;
-        private String username;
-        private String email;
         private String firstName;
         private String lastName;
+        private String city;
+        private String emailAddress;
         private AysPhoneNumber phoneNumber;
     }
 

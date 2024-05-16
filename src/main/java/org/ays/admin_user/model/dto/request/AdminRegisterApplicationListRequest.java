@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.ays.admin_user.model.enums.AdminUserRegisterApplicationStatus;
+import org.ays.admin_user.model.enums.AdminRegisterApplicationStatus;
 import org.ays.common.model.AysFiltering;
 import org.ays.common.model.dto.request.AysFilteringRequest;
 import org.ays.common.model.dto.request.AysPagingRequest;
@@ -17,19 +17,19 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Represents a request object for fetching a list of admin user registration applications with pagination,sorting
+ * Represents a request object for fetching a list of admin registration applications with pagination,sorting
  * and filtering options. This class extends the {@link AysPagingRequest} class and adds additional validation rules for sorting.
  */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class AdminUserRegisterApplicationListRequest extends AysPagingRequest implements AysFilteringRequest {
+public class AdminRegisterApplicationListRequest extends AysPagingRequest implements AysFilteringRequest {
 
     @Valid
     private Filter filter;
 
     /**
-     * Represents a filtering configuration for admin user registration applications based on the class fields.
+     * Represents a filtering configuration for admin registration applications based on the class fields.
      */
     @Getter
     @Setter
@@ -37,9 +37,9 @@ public class AdminUserRegisterApplicationListRequest extends AysPagingRequest im
 
 
         /**
-         * List of admin user registration application's statuses used for filtering.
+         * List of admin registration application's statuses used for filtering.
          */
-        private List<AdminUserRegisterApplicationStatus> statuses;
+        private List<AdminRegisterApplicationStatus> statuses;
 
     }
 

@@ -11,18 +11,26 @@ import org.ays.common.util.validation.Name;
 
 /**
  * Represents a request to complete an admin-user register application. The request includes fields for the required user
- * information, such as the user's username, email, password, and phone number, as well as their first and last name.
+ * information.
  */
 @Getter
 @Setter
-public class AdminUserRegisterApplicationCompleteRequest {
+public class AdminRegisterApplicationCompleteRequest {
+
+    @Name
+    @NotBlank
+    private String firstName;
+
+    @Name
+    @NotBlank
+    private String lastName;
 
     @NotBlank
-    private String username;
+    private String city;
 
     @NotBlank
     @Email
-    private String email;
+    private String emailAddress;
 
     @NotBlank
     private String password;
@@ -30,13 +38,5 @@ public class AdminUserRegisterApplicationCompleteRequest {
     @Valid
     @NotNull
     private AysPhoneNumberRequest phoneNumber;
-
-    @NotBlank
-    @Name
-    private String firstName;
-
-    @NotBlank
-    @Name
-    private String lastName;
 
 }
