@@ -1,4 +1,4 @@
-package org.ays.admin_user.model.mapper;
+package org.ays.user.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.common.util.AysRandomUtil;

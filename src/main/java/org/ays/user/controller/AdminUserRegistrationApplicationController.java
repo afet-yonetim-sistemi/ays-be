@@ -2,10 +2,6 @@ package org.ays.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper;
-import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper;
-import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper;
-import org.ays.admin_user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
@@ -18,6 +14,10 @@ import org.ays.user.model.dto.response.AdminRegistrationApplicationCreateRespons
 import org.ays.user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationsResponse;
+import org.ays.user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper;
+import org.ays.user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper;
+import org.ays.user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper;
+import org.ays.user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper;
 import org.ays.user.service.AdminRegistrationApplicationService;
 import org.ays.user.service.AdminRegistrationCompleteService;
 import org.hibernate.validator.constraints.UUID;

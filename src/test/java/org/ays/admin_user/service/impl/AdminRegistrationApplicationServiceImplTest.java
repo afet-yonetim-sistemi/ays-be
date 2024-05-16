@@ -5,7 +5,6 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCreateRe
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
-import org.ays.admin_user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.util.AysRandomUtil;
@@ -22,6 +21,7 @@ import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserEntityV2Builder;
 import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.user.model.enums.UserStatus;
+import org.ays.user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.UserRepositoryV2;
 import org.ays.user.service.impl.AdminRegistrationApplicationServiceImpl;
