@@ -18,7 +18,7 @@ import org.mapstruct.factory.Mappers;
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
 @Mapper
-public interface AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper extends BaseMapper<AdminRegisterApplicationCreateRequest, AdminRegistrationApplicationEntity> {
+public interface AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper extends BaseMapper<AdminRegisterApplicationCreateRequest, AdminRegistrationApplicationEntity> {
 
     /**
      * Maps an {@link AdminRegisterApplicationCreateRequest} object to an {@link AdminRegistrationApplicationEntity}
@@ -42,7 +42,7 @@ public interface AdminRegisterApplicationCreateRequestToAdminRegisterApplication
      *
      * @return the initialized mapper object.
      */
-    static AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper initialize() {
-        return Mappers.getMapper(AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper.class);
+    static AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper initialize() {
+        return Mappers.getMapper(AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.class);
     }
 }

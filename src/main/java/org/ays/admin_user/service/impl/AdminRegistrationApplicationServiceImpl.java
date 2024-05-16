@@ -7,8 +7,8 @@ import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequ
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.admin_user.model.mapper.AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationEntityToAdminRegisterApplicationMapper;
+import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.service.AdminRegistrationApplicationService;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
@@ -40,7 +40,7 @@ public class AdminRegistrationApplicationServiceImpl implements AdminRegistratio
     private final InstitutionRepository institutionRepository;
 
     private final AdminRegisterApplicationEntityToAdminRegisterApplicationMapper adminRegisterApplicationEntityToAdminRegisterApplicationMapper = AdminRegisterApplicationEntityToAdminRegisterApplicationMapper.initialize();
-    private final AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper adminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper = AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper.initialize();
+    private final AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper = AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.initialize();
 
 
     /**
@@ -111,7 +111,7 @@ public class AdminRegistrationApplicationServiceImpl implements AdminRegistratio
             throw new AysInstitutionNotExistException(request.getInstitutionId());
         }
 
-        AdminRegistrationApplicationEntity registerApplicationEntity = adminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper.mapForSaving(request);
+        AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.mapForSaving(request);
         adminRegistrationApplicationRepository.save(registerApplicationEntity);
 
         return adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntity);
