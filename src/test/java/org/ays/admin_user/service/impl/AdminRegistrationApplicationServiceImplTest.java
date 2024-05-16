@@ -1,7 +1,6 @@
 package org.ays.admin_user.service.impl;
 
 import org.ays.AbstractUnitTest;
-import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.util.AysRandomUtil;
@@ -16,6 +15,7 @@ import org.ays.user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationListRequestBuilder;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationRejectRequestBuilder;
+import org.ays.user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.entity.UserEntityV2Builder;

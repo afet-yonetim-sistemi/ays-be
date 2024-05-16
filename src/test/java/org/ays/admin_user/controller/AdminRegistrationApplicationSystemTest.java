@@ -2,7 +2,6 @@ package org.ays.admin_user.controller;
 
 import org.ays.AbstractSystemTest;
 import org.ays.admin_user.model.AdminRegistrationApplicationBuilder;
-import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
@@ -26,6 +25,7 @@ import org.ays.user.model.dto.request.AdminRegistrationApplicationRejectRequestB
 import org.ays.user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
+import org.ays.user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
