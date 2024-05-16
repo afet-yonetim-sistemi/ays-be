@@ -1,7 +1,7 @@
 package org.ays.admin_user.service.impl;
 
 import org.ays.AbstractUnitTest;
-import org.ays.admin_user.model.AdminRegisterApplication;
+import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
@@ -71,15 +71,15 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         );
         Page<AdminRegisterApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
 
-        List<AdminRegisterApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
-        AysPage<AdminRegisterApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
+        List<AdminRegistrationApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
+        AysPage<AdminRegistrationApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
 
         // When
         Mockito.when(adminRegisterApplicationRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageEntities);
 
         // Then
-        AysPage<AdminRegisterApplication> aysPage = adminUserRegisterApplicationService
+        AysPage<AdminRegistrationApplication> aysPage = adminUserRegisterApplicationService
                 .findAll(listRequest);
 
         AysPageBuilder.assertEquals(mockAysPage, aysPage);
@@ -103,15 +103,15 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
         );
         Page<AdminRegisterApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
 
-        List<AdminRegisterApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
-        AysPage<AdminRegisterApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
+        List<AdminRegistrationApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
+        AysPage<AdminRegistrationApplication> mockAysPage = AysPage.of(listRequest.getFilter(), mockPageEntities, mockList);
 
         // When
         Mockito.when(adminRegisterApplicationRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
                 .thenReturn(mockPageEntities);
 
         // Then
-        AysPage<AdminRegisterApplication> aysPage = adminUserRegisterApplicationService
+        AysPage<AdminRegistrationApplication> aysPage = adminUserRegisterApplicationService
                 .findAll(listRequest);
 
         AysPageBuilder.assertEquals(mockAysPage, aysPage);
@@ -172,21 +172,21 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withValidFields()
                 .withStatus(AdminRegisterApplicationStatus.WAITING)
                 .build();
-        AdminRegisterApplication mockAdminRegisterApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntity);
+        AdminRegistrationApplication mockAdminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntity);
 
         // When
         Mockito.when(adminRegisterApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
 
         // Then
-        AdminRegisterApplication adminRegisterApplication = adminUserRegisterApplicationService.findAllSummaryById(mockId);
+        AdminRegistrationApplication adminRegistrationApplication = adminUserRegisterApplicationService.findAllSummaryById(mockId);
 
-        Assertions.assertEquals(mockAdminRegisterApplication.getId(), adminRegisterApplication.getId());
-        Assertions.assertEquals(mockAdminRegisterApplication.getStatus(), adminRegisterApplication.getStatus());
-        Assertions.assertEquals(mockAdminRegisterApplication.getReason(), adminRegisterApplication.getReason());
-        Assertions.assertEquals(mockAdminRegisterApplication.getRejectReason(), adminRegisterApplication.getRejectReason());
-        Assertions.assertEquals(mockAdminRegisterApplication.getUser().getId(), adminRegisterApplication.getUser().getId());
-        Assertions.assertEquals(mockAdminRegisterApplication.getInstitution().getId(), adminRegisterApplication.getInstitution().getId());
+        Assertions.assertEquals(mockAdminRegistrationApplication.getId(), adminRegistrationApplication.getId());
+        Assertions.assertEquals(mockAdminRegistrationApplication.getStatus(), adminRegistrationApplication.getStatus());
+        Assertions.assertEquals(mockAdminRegistrationApplication.getReason(), adminRegistrationApplication.getReason());
+        Assertions.assertEquals(mockAdminRegistrationApplication.getRejectReason(), adminRegistrationApplication.getRejectReason());
+        Assertions.assertEquals(mockAdminRegistrationApplication.getUser().getId(), adminRegistrationApplication.getUser().getId());
+        Assertions.assertEquals(mockAdminRegistrationApplication.getInstitution().getId(), adminRegistrationApplication.getInstitution().getId());
 
         // Verify
         Mockito.verify(adminRegisterApplicationRepository, Mockito.times(1))

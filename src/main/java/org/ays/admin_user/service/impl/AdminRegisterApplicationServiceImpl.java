@@ -1,7 +1,7 @@
 package org.ays.admin_user.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.admin_user.model.AdminRegisterApplication;
+import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
@@ -50,14 +50,14 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      * @return a paginated list of admin registration applications
      */
     @Override
-    public AysPage<AdminRegisterApplication> findAll(AdminRegisterApplicationListRequest listRequest) {
+    public AysPage<AdminRegistrationApplication> findAll(AdminRegisterApplicationListRequest listRequest) {
         final Specification<AdminRegisterApplicationEntity> filters = listRequest
                 .toSpecification(AdminRegisterApplicationEntity.class);
 
         final Page<AdminRegisterApplicationEntity> registerApplicationEntities = adminRegisterApplicationRepository
                 .findAll(filters, listRequest.toPageable());
 
-        final List<AdminRegisterApplication> registerApplications = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntities.getContent());
+        final List<AdminRegistrationApplication> registerApplications = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(registerApplicationEntities.getContent());
 
         return AysPage.of(
                 listRequest.getFilter(),
@@ -73,7 +73,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      * @return An admin register application.
      */
     @Override
-    public AdminRegisterApplication findById(String id) {
+    public AdminRegistrationApplication findById(String id) {
         final AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
                 .orElseThrow(() -> new AysAdminRegisterApplicationNotExistByIdException(id));
@@ -89,7 +89,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      * @return An admin register application.
      */
     @Override
-    public AdminRegisterApplication findAllSummaryById(String id) {
+    public AdminRegistrationApplication findAllSummaryById(String id) {
         final AdminRegisterApplicationEntity registerApplicationEntity = adminRegisterApplicationRepository
                 .findById(id)
                 .filter(AdminRegisterApplicationEntity::isWaiting)
@@ -105,7 +105,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      * @return A response object containing the created register application.
      */
     @Override
-    public AdminRegisterApplication create(AdminRegisterApplicationCreateRequest request) {
+    public AdminRegistrationApplication create(AdminRegisterApplicationCreateRequest request) {
         boolean isInstitutionExists = institutionRepository.existsActiveById(request.getInstitutionId());
         if (!isInstitutionExists) {
             throw new AysInstitutionNotExistException(request.getInstitutionId());

@@ -1,6 +1,6 @@
 package org.ays.admin_user.service;
 
-import org.ays.admin_user.model.AdminRegisterApplication;
+import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
@@ -18,7 +18,7 @@ public interface AdminRegisterApplicationService {
      * @param listRequest covering page and pageSize
      * @return Admin User Registration Application list
      */
-    AysPage<AdminRegisterApplication> findAll(AdminRegisterApplicationListRequest listRequest);
+    AysPage<AdminRegistrationApplication> findAll(AdminRegisterApplicationListRequest listRequest);
 
 
     /**
@@ -26,7 +26,7 @@ public interface AdminRegisterApplicationService {
      *
      * @return Admin User Registration Application
      */
-    AdminRegisterApplication findById(String id);
+    AdminRegistrationApplication findById(String id);
 
     /**
      * Get registration application summary by id.
@@ -34,7 +34,7 @@ public interface AdminRegisterApplicationService {
      * @param id registration application id
      * @return Admin User Registration Application
      */
-    AdminRegisterApplication findAllSummaryById(String id);
+    AdminRegistrationApplication findAllSummaryById(String id);
 
     /**
      * Create a new admin register application.
@@ -42,7 +42,7 @@ public interface AdminRegisterApplicationService {
      * @param request The request object containing the register application details.
      * @return A response object containing the created register application.
      */
-    AdminRegisterApplication create(AdminRegisterApplicationCreateRequest request);
+    AdminRegistrationApplication create(AdminRegisterApplicationCreateRequest request);
 
     /**
      * Approve a new admin register application.

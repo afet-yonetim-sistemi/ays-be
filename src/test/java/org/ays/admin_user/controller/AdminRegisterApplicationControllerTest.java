@@ -1,8 +1,8 @@
 package org.ays.admin_user.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.admin_user.model.AdminRegisterApplication;
 import org.ays.admin_user.model.AdminRegisterApplicationBuilder;
+import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
@@ -78,8 +78,8 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
         // When
         List<AdminRegisterApplicationEntity> mockEntities = List.of(new AdminRegisterApplicationEntityBuilder().withValidFields().build());
         Page<AdminRegisterApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
-        List<AdminRegisterApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
-        AysPage<AdminRegisterApplication> mockAysPage = AysPage
+        List<AdminRegistrationApplication> mockList = adminRegisterApplicationEntityToAdminRegisterApplicationMapper.map(mockEntities);
+        AysPage<AdminRegistrationApplication> mockAysPage = AysPage
                 .of(mockListRequest.getFilter(), mockPageEntities, mockList);
 
         Mockito.when(adminRegisterApplicationService.findAll(Mockito.any(AdminRegisterApplicationListRequest.class)))
@@ -141,7 +141,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
         String mockApplicationId = AysRandomUtil.generateUUID();
 
         // When
-        AdminRegisterApplication mockRegisterApplication = new AdminRegisterApplicationBuilder()
+        AdminRegistrationApplication mockRegisterApplication = new AdminRegisterApplicationBuilder()
                 .withId(mockApplicationId)
                 .build();
         Mockito.when(adminRegisterApplicationService.findById(mockApplicationId))
@@ -206,7 +206,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
         Institution mockInstitution = new InstitutionBuilder()
                 .withId(mockRequest.getInstitutionId())
                 .build();
-        AdminRegisterApplication mockRegisterApplication = new AdminRegisterApplicationBuilder()
+        AdminRegistrationApplication mockRegisterApplication = new AdminRegisterApplicationBuilder()
                 .withValidFields()
                 .withInstitution(mockInstitution)
                 .withReason(mockRequest.getReason())
@@ -302,13 +302,13 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegisterApplication mockAdminRegisterApplication = new AdminRegisterApplicationBuilder()
+        AdminRegistrationApplication mockAdminRegistrationApplication = new AdminRegisterApplicationBuilder()
                 .withId(mockId)
                 .build();
 
         // When
         Mockito.when(adminRegisterApplicationService.findAllSummaryById(mockId))
-                .thenReturn(mockAdminRegisterApplication);
+                .thenReturn(mockAdminRegistrationApplication);
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/summary"));
@@ -316,7 +316,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
                 .get(endpoint);
 
         AdminRegisterApplicationSummaryResponse mockSummaryResponse = adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper
-                .map(mockAdminRegisterApplication);
+                .map(mockAdminRegistrationApplication);
         AysResponse<AdminRegisterApplicationSummaryResponse> mockResponse = AysResponse
                 .successOf(mockSummaryResponse);
 

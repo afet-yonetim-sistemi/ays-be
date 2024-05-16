@@ -1,8 +1,8 @@
 package org.ays.admin_user.controller;
 
 import org.ays.AbstractSystemTest;
-import org.ays.admin_user.model.AdminRegisterApplication;
 import org.ays.admin_user.model.AdminRegisterApplicationBuilder;
+import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
@@ -94,15 +94,15 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         Page<AdminRegisterApplicationEntity> pageOfEntities = new PageImpl<>(
                 adminRegisterApplicationEntities
         );
-        List<AdminRegisterApplication> adminRegisterApplications = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
+        List<AdminRegistrationApplication> adminRegistrationApplications = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
                 .map(adminRegisterApplicationEntities);
-        AysPage<AdminRegisterApplication> page = AysPage.of(
+        AysPage<AdminRegistrationApplication> page = AysPage.of(
                 pageOfEntities,
-                adminRegisterApplications
+                adminRegistrationApplications
         );
-        AysPageResponse<AdminRegisterApplication> pageResponse = AysPageResponse.<AdminRegisterApplication>builder()
+        AysPageResponse<AdminRegistrationApplication> pageResponse = AysPageResponse.<AdminRegistrationApplication>builder()
                 .of(page).build();
-        AysResponse<AysPageResponse<AdminRegisterApplication>> mockResponse = AysResponse.successOf(pageResponse);
+        AysResponse<AysPageResponse<AdminRegistrationApplication>> mockResponse = AysResponse.successOf(pageResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -196,7 +196,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         String applicationId = adminRegisterApplicationEntity.getId();
 
         // When
-        AdminRegisterApplication adminRegisterApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
+        AdminRegistrationApplication adminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
                 .map(adminRegisterApplicationEntity);
 
         // Then
@@ -205,7 +205,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
                 .get(endpoint, superAdminToken.getAccessToken());
 
         AdminRegisterApplicationResponse adminRegisterApplicationResponse = adminRegisterApplicationToAdminRegisterApplicationResponseMapper
-                .map(adminRegisterApplication);
+                .map(adminRegistrationApplication);
         AysResponse<AdminRegisterApplicationResponse> mockResponse = AysResponse
                 .successOf(adminRegisterApplicationResponse);
 
@@ -290,11 +290,11 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), createRequest);
 
-        AdminRegisterApplication adminRegisterApplication = new AdminRegisterApplicationBuilder()
+        AdminRegistrationApplication adminRegistrationApplication = new AdminRegisterApplicationBuilder()
                 .withId(AysRandomUtil.generateUUID())
                 .build();
         AdminRegisterApplicationCreateResponse adminRegisterApplicationCreateResponse = adminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper
-                .map(adminRegisterApplication);
+                .map(adminRegistrationApplication);
         AysResponse<AdminRegisterApplicationCreateResponse> mockResponse = AysResponse
                 .successOf(adminRegisterApplicationCreateResponse);
 
@@ -367,10 +367,10 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
-        AdminRegisterApplication adminRegisterApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
+        AdminRegistrationApplication adminRegistrationApplication = adminRegisterApplicationEntityToAdminRegisterApplicationMapper
                 .map(adminRegisterApplicationEntity);
         AdminRegisterApplicationSummaryResponse adminRegisterApplicationSummaryResponse = adminRegisterApplicationToAdminRegisterApplicationSummaryResponseMapper
-                .map(adminRegisterApplication);
+                .map(adminRegistrationApplication);
         AysResponse<AdminRegisterApplicationSummaryResponse> mockResponse = AysResponse.successOf(adminRegisterApplicationSummaryResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)

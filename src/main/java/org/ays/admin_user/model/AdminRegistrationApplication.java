@@ -21,7 +21,7 @@ import org.ays.user.model.UserV2;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class AdminRegisterApplication extends BaseDomainModel {
+public class AdminRegistrationApplication extends BaseDomainModel {
 
     private String id;
     private String reason;

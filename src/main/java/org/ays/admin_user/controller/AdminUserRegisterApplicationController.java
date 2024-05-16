@@ -2,7 +2,7 @@ package org.ays.admin_user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ays.admin_user.model.AdminRegisterApplication;
+import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
@@ -50,7 +50,7 @@ class AdminUserRegisterApplicationController {
     public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> findAll(
             @RequestBody @Valid AdminRegisterApplicationListRequest request) {
 
-        final AysPage<AdminRegisterApplication> pageOfRegisterApplications = adminRegisterApplicationService.findAll(request);
+        final AysPage<AdminRegistrationApplication> pageOfRegisterApplications = adminRegisterApplicationService.findAll(request);
         final AysPageResponse<AdminUserRegisterApplicationsResponse> pageResponseOfRegisterApplication = AysPageResponse
                 .<AdminUserRegisterApplicationsResponse>builder()
                 .of(pageOfRegisterApplications)
@@ -68,7 +68,7 @@ class AdminUserRegisterApplicationController {
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:detail')")
     public AysResponse<AdminRegisterApplicationResponse> findById(@PathVariable @UUID String id) {
 
-        final AdminRegisterApplication registerApplication = adminRegisterApplicationService.findById(id);
+        final AdminRegistrationApplication registerApplication = adminRegisterApplicationService.findById(id);
 
         return AysResponse.successOf(
                 adminRegisterApplicationToAdminRegisterApplicationResponseMapper.map(registerApplication)
@@ -85,7 +85,7 @@ class AdminUserRegisterApplicationController {
     @GetMapping("/admin-registration-application/{id}/summary")
     public AysResponse<AdminRegisterApplicationSummaryResponse> findSummaryById(@PathVariable @UUID String id) {
 
-        final AdminRegisterApplication registerApplication = adminRegisterApplicationService
+        final AdminRegistrationApplication registerApplication = adminRegisterApplicationService
                 .findAllSummaryById(id);
 
         return AysResponse.successOf(
@@ -98,7 +98,7 @@ class AdminUserRegisterApplicationController {
     public AysResponse<AdminRegisterApplicationCreateResponse> create(
             @RequestBody @Valid AdminRegisterApplicationCreateRequest createRequest) {
 
-        AdminRegisterApplication registerApplication = adminRegisterApplicationService
+        AdminRegistrationApplication registerApplication = adminRegisterApplicationService
                 .create(createRequest);
         return AysResponse.successOf(
                 adminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper
