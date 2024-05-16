@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.admin_user.model.mapper.AdminRegisterRequestToUserEntityMapper;
+import org.ays.admin_user.model.mapper.AdminRegistrationApplicationCompleteRequestToUserEntityMapper;
 import org.ays.admin_user.repository.AdminRegistrationApplicationRepository;
 import org.ays.admin_user.service.AdminRegistrationCompleteService;
 import org.ays.admin_user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
@@ -46,7 +46,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
 
     private final PasswordEncoder passwordEncoder;
 
-    private final AdminRegisterRequestToUserEntityMapper adminRegisterRequestToUserEntityMapper = AdminRegisterRequestToUserEntityMapper.initialize();
+    private final AdminRegistrationApplicationCompleteRequestToUserEntityMapper adminRegistrationApplicationCompleteRequestToUserEntityMapper = AdminRegistrationApplicationCompleteRequestToUserEntityMapper.initialize();
 
     /**
      * Completes the registration process for an admin.
@@ -81,7 +81,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
         }
         log.trace("Admin Registration Request checked successfully!");
 
-        final UserEntityV2 userEntity = adminRegisterRequestToUserEntityMapper
+        final UserEntityV2 userEntity = adminRegistrationApplicationCompleteRequestToUserEntityMapper
                 .mapForSaving(request)
                 .institutionId(applicationEntity.getInstitutionId())
                 .build();

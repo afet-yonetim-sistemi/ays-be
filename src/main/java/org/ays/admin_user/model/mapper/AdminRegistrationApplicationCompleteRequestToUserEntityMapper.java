@@ -13,7 +13,7 @@ import org.ays.user.model.enums.UserStatus;
  * <p>The interface extends the MapStruct interface {@link BaseMapper}, which defines basic mapping methods.
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
-public interface AdminRegisterRequestToUserEntityMapper {
+public interface AdminRegistrationApplicationCompleteRequestToUserEntityMapper {
 
     /**
      * Maps an {@link AdminRegistrationApplicationCompleteRequest} object to an {@link UserEntityV2} object for saving in the database.
@@ -39,11 +39,11 @@ public interface AdminRegisterRequestToUserEntityMapper {
      *
      * @return the initialized mapper object.
      */
-    static AdminRegisterRequestToUserEntityMapper initialize() {
-        return new AdminRegisterRequestToUserEntityMapper() {
+    static AdminRegistrationApplicationCompleteRequestToUserEntityMapper initialize() {
+        return new AdminRegistrationApplicationCompleteRequestToUserEntityMapper() {
             @Override
             public UserEntityV2.UserEntityV2Builder mapForSaving(AdminRegistrationApplicationCompleteRequest registerRequest) {
-                return AdminRegisterRequestToUserEntityMapper.super.mapForSaving(registerRequest);
+                return AdminRegistrationApplicationCompleteRequestToUserEntityMapper.super.mapForSaving(registerRequest);
             }
         };
     }
