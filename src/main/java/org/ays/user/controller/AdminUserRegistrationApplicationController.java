@@ -1,4 +1,4 @@
-package org.ays.admin_user.controller;
+package org.ays.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
