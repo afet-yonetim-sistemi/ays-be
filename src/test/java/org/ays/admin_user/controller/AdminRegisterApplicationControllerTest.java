@@ -7,10 +7,10 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequ
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
@@ -612,7 +612,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -634,7 +634,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Verify
         Mockito.verify(adminRegisterApplicationService, Mockito.times(1))
-                .reject(Mockito.eq(mockId), Mockito.any(AdminRegisterApplicationRejectRequest.class));
+                .reject(Mockito.eq(mockId), Mockito.any(AdminRegistrationApplicationRejectRequest.class));
 
     }
 
@@ -643,7 +643,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -662,7 +662,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Verify
         Mockito.verify(adminRegisterApplicationService, Mockito.never())
-                .reject(Mockito.eq(mockId), Mockito.any(AdminRegisterApplicationRejectRequest.class));
+                .reject(Mockito.eq(mockId), Mockito.any(AdminRegistrationApplicationRejectRequest.class));
     }
 
 }

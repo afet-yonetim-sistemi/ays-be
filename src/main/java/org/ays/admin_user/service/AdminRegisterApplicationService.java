@@ -2,8 +2,8 @@ package org.ays.admin_user.service;
 
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.common.model.AysPage;
 
 
@@ -57,6 +57,6 @@ public interface AdminRegisterApplicationService {
      *
      * @param id The id of the register application.
      */
-    void reject(String id, AdminRegisterApplicationRejectRequest request);
+    void reject(String id, AdminRegistrationApplicationRejectRequest request);
 
 }

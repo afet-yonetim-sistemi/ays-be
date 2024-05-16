@@ -3,8 +3,8 @@ package org.ays.admin_user.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper;
@@ -146,7 +146,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      */
     @Override
     @Transactional
-    public void reject(String id, AdminRegisterApplicationRejectRequest request) {
+    public void reject(String id, AdminRegistrationApplicationRejectRequest request) {
         final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationRepository
                 .findById(id)
                 .filter(AdminRegistrationApplicationEntity::isCompleted)

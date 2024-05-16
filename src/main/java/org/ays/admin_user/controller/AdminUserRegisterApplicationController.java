@@ -4,9 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
@@ -117,7 +117,7 @@ class AdminUserRegisterApplicationController {
     @PostMapping("/admin-registration-application/{id}/reject")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:conclude')")
     public AysResponse<Void> reject(@PathVariable @UUID String id,
-                                    @RequestBody @Valid AdminRegisterApplicationRejectRequest request) {
+                                    @RequestBody @Valid AdminRegistrationApplicationRejectRequest request) {
 
         adminRegisterApplicationService.reject(id, request);
         return AysResponse.SUCCESS;

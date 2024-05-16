@@ -5,9 +5,9 @@ import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
@@ -384,7 +384,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withUser(mockUserEntity)
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .build();
-        AdminRegisterApplicationRejectRequest mockRejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -411,7 +411,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -450,7 +450,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
                 .withUser(mockUserEntity)
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .build();
-        AdminRegisterApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 

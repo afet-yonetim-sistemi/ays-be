@@ -7,10 +7,10 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequ
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
@@ -663,7 +663,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Given
         String applicationId = adminRegistrationApplicationEntity.getId();
-        AdminRegisterApplicationRejectRequest rejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest rejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
@@ -686,7 +686,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
 
         // Given
         String applicationId = AysRandomUtil.generateUUID();
-        AdminRegisterApplicationRejectRequest rejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
+        AdminRegistrationApplicationRejectRequest rejectRequest = new AdminRegisterApplicationRejectRequestBuilder()
                 .withValidFields()
                 .build();
 
