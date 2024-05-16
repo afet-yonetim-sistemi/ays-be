@@ -1,4 +1,4 @@
-package org.ays.admin_user.service.impl;
+package org.ays.user.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.common.model.AysPage;
@@ -24,7 +24,6 @@ import org.ays.user.model.enums.UserStatus;
 import org.ays.user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.UserRepositoryV2;
-import org.ays.user.service.impl.AdminRegistrationApplicationServiceImpl;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;

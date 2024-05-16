@@ -1,4 +1,4 @@
-package org.ays.admin_user.service.impl;
+package org.ays.user.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
@@ -20,7 +20,6 @@ import org.ays.user.repository.PermissionRepository;
 import org.ays.user.repository.RoleRepository;
 import org.ays.user.repository.UserPasswordRepository;
 import org.ays.user.repository.UserRepositoryV2;
-import org.ays.user.service.impl.AdminRegistrationCompleteServiceImpl;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.user.util.exception.AysUserAlreadyExistsByEmailException;
 import org.ays.user.util.exception.AysUserAlreadyExistsByPhoneNumberException;
