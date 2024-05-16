@@ -1,8 +1,8 @@
 package org.ays.admin_user.model.mapper;
 
 import org.ays.admin_user.model.AdminRegistrationApplication;
-import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
+import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -17,7 +17,7 @@ import org.mapstruct.factory.Mappers;
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
 @Mapper
-public interface AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper extends BaseMapper<AdminRegistrationApplication, AdminRegisterApplicationCreateResponse> {
+public interface AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper extends BaseMapper<AdminRegistrationApplication, AdminRegistrationApplicationCreateResponse> {
 
     /**
      * Initializes the mapper.

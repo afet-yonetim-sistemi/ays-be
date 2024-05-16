@@ -7,9 +7,9 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateReques
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
-import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
+import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminUserRegisterApplicationsResponse;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationToAdminRegisterApplicationResponseMapper;
@@ -95,7 +95,7 @@ class AdminUserRegisterApplicationController {
 
     @PostMapping("/admin-registration-application")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:create')")
-    public AysResponse<AdminRegisterApplicationCreateResponse> create(
+    public AysResponse<AdminRegistrationApplicationCreateResponse> create(
             @RequestBody @Valid AdminRegisterApplicationCreateRequest createRequest) {
 
         AdminRegistrationApplication registerApplication = adminRegisterApplicationService

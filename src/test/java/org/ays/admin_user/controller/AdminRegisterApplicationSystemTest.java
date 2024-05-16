@@ -11,9 +11,9 @@ import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectReques
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
-import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
+import org.ays.admin_user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
@@ -293,10 +293,10 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
         AdminRegistrationApplication adminRegistrationApplication = new AdminRegisterApplicationBuilder()
                 .withId(AysRandomUtil.generateUUID())
                 .build();
-        AdminRegisterApplicationCreateResponse adminRegisterApplicationCreateResponse = adminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper
+        AdminRegistrationApplicationCreateResponse adminRegistrationApplicationCreateResponse = adminRegisterApplicationToAdminRegisterApplicationCreateResponseMapper
                 .map(adminRegistrationApplication);
-        AysResponse<AdminRegisterApplicationCreateResponse> mockResponse = AysResponse
-                .successOf(adminRegisterApplicationCreateResponse);
+        AysResponse<AdminRegistrationApplicationCreateResponse> mockResponse = AysResponse
+                .successOf(adminRegistrationApplicationCreateResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
