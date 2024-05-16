@@ -14,9 +14,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
+import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 
 /**
  * Entity class representing an admin user registration application.

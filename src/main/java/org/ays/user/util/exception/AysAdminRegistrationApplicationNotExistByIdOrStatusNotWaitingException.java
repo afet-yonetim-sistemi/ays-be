@@ -1,7 +1,7 @@
 package org.ays.user.util.exception;
 
-import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.util.exception.AysNotExistException;
+import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 
 import java.io.Serial;
 

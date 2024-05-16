@@ -7,10 +7,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.AysFiltering;
 import org.ays.common.model.dto.request.AysFilteringRequest;
 import org.ays.common.model.dto.request.AysPagingRequest;
+import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;

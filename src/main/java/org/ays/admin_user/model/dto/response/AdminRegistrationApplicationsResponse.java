@@ -2,7 +2,7 @@ package org.ays.admin_user.model.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
+import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,5 @@
 package org.ays.admin_user.model;
 
-import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
@@ -9,6 +8,7 @@ import org.ays.institution.model.entity.InstitutionBuilder;
 import org.ays.user.model.AdminRegistrationApplication;
 import org.ays.user.model.UserV2;
 import org.ays.user.model.UserV2Builder;
+import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 
 public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRegistrationApplication> {
 

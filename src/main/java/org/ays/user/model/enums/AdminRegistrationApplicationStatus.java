@@ -1,4 +1,4 @@
-package org.ays.admin_user.model.enums;
+package org.ays.user.model.enums;
 
 /**
  * Represents the status of an admin registration application.
