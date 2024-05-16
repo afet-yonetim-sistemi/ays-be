@@ -2,8 +2,8 @@ package org.ays.admin_user.service;
 
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.common.model.AysPage;
 
 
@@ -13,12 +13,12 @@ import org.ays.common.model.AysPage;
 public interface AdminRegisterApplicationService {
 
     /**
-     * Get registration applications based on the specified filters in the {@link AdminRegisterApplicationListRequest}
+     * Get registration applications based on the specified filters in the {@link AdminRegistrationApplicationListRequest}
      *
      * @param listRequest covering page and pageSize
      * @return Admin User Registration Application list
      */
-    AysPage<AdminRegistrationApplication> findAll(AdminRegisterApplicationListRequest listRequest);
+    AysPage<AdminRegistrationApplication> findAll(AdminRegistrationApplicationListRequest listRequest);
 
 
     /**

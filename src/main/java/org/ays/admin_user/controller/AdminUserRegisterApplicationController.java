@@ -4,9 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
@@ -48,7 +48,7 @@ class AdminUserRegisterApplicationController {
     @PostMapping("/admin-registration-applications")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'application:registration:list')")
     public AysResponse<AysPageResponse<AdminUserRegisterApplicationsResponse>> findAll(
-            @RequestBody @Valid AdminRegisterApplicationListRequest request) {
+            @RequestBody @Valid AdminRegistrationApplicationListRequest request) {
 
         final AysPage<AdminRegistrationApplication> pageOfRegisterApplications = adminRegisterApplicationService.findAll(request);
         final AysPageResponse<AdminUserRegisterApplicationsResponse> pageResponseOfRegisterApplication = AysPageResponse

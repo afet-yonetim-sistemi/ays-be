@@ -9,10 +9,10 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-public class AdminRegisterApplicationListRequestBuilder extends TestDataBuilder<AdminRegisterApplicationListRequest> {
+public class AdminRegisterApplicationListRequestBuilder extends TestDataBuilder<AdminRegistrationApplicationListRequest> {
 
     public AdminRegisterApplicationListRequestBuilder() {
-        super(AdminRegisterApplicationListRequest.class);
+        super(AdminRegistrationApplicationListRequest.class);
     }
 
     public AdminRegisterApplicationListRequestBuilder withValidValues() {
@@ -29,11 +29,11 @@ public class AdminRegisterApplicationListRequestBuilder extends TestDataBuilder<
     }
 
     private AdminRegisterApplicationListRequestBuilder initializeFilter() {
-        data.setFilter(new AdminRegisterApplicationListRequest.Filter());
+        data.setFilter(new AdminRegistrationApplicationListRequest.Filter());
         return this;
     }
 
-    public AdminRegisterApplicationListRequestBuilder withFilter(AdminRegisterApplicationListRequest.Filter filter) {
+    public AdminRegisterApplicationListRequestBuilder withFilter(AdminRegistrationApplicationListRequest.Filter filter) {
         data.setFilter(filter);
         return this;
     }

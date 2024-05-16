@@ -6,11 +6,11 @@ import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
@@ -72,7 +72,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
     void givenValidAdminUserRegisterApplicationListRequest_whenAdminUserRegisterApplicationsFound_thenReturnAysPageResponseOfAdminUserRegisterApplicationsResponse() throws Exception {
 
         // Given
-        AdminRegisterApplicationListRequest mockListRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest mockListRequest = new AdminRegisterApplicationListRequestBuilder()
                 .withValidValues().build();
 
         // When
@@ -82,7 +82,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage
                 .of(mockListRequest.getFilter(), mockPageEntities, mockList);
 
-        Mockito.when(adminRegisterApplicationService.findAll(Mockito.any(AdminRegisterApplicationListRequest.class)))
+        Mockito.when(adminRegisterApplicationService.findAll(Mockito.any(AdminRegistrationApplicationListRequest.class)))
                 .thenReturn(mockAysPage);
 
         // Then
@@ -106,13 +106,13 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Verify
         Mockito.verify(adminRegisterApplicationService, Mockito.times(1))
-                .findAll(Mockito.any(AdminRegisterApplicationListRequest.class));
+                .findAll(Mockito.any(AdminRegistrationApplicationListRequest.class));
     }
 
     @Test
     void givenValidAdminUserRegisterApplicationListRequest_whenUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
         // Given
-        AdminRegisterApplicationListRequest mockListRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest mockListRequest = new AdminRegisterApplicationListRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -131,7 +131,7 @@ class AdminRegisterApplicationControllerTest extends AbstractRestControllerTest 
 
         // Verify
         Mockito.verify(adminRegisterApplicationService, Mockito.never())
-                .findAll(Mockito.any(AdminRegisterApplicationListRequest.class));
+                .findAll(Mockito.any(AdminRegistrationApplicationListRequest.class));
     }
 
     @Test

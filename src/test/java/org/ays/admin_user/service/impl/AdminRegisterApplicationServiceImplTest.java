@@ -4,10 +4,10 @@ import org.ays.AbstractUnitTest;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
@@ -61,7 +61,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
     void givenAdminUserRegisterApplicationListRequest_whenFilterNotGiven_thenReturnAysPageAdminRegisterApplicationsResponse() {
 
         // Given
-        AdminRegisterApplicationListRequest listRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest listRequest = new AdminRegisterApplicationListRequestBuilder()
                 .withValidValues()
                 .withFilter(null)
                 .build();
@@ -93,7 +93,7 @@ class AdminRegisterApplicationServiceImplTest extends AbstractUnitTest {
     void givenAdminUserRegisterApplicationListRequest_whenAdminUserRegisterApplicationStatusIsAvailable_thenReturnAysPageAdminRegisterApplicationsResponse() {
 
         // Given
-        AdminRegisterApplicationListRequest listRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest listRequest = new AdminRegisterApplicationListRequestBuilder()
                 .withValidValues()
                 .withStatuses(List.of(AdminRegistrationApplicationStatus.WAITING))
                 .build();

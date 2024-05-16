@@ -23,7 +23,7 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class AdminRegisterApplicationListRequest extends AysPagingRequest implements AysFilteringRequest {
+public class AdminRegistrationApplicationListRequest extends AysPagingRequest implements AysFilteringRequest {
 
     @Valid
     private Filter filter;

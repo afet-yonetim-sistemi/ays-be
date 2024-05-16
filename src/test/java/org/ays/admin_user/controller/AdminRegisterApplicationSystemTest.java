@@ -6,11 +6,11 @@ import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCompleteRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequestBuilder;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequestBuilder;
 import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationCreateResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationResponse;
 import org.ays.admin_user.model.dto.response.AdminRegisterApplicationSummaryResponse;
@@ -79,7 +79,7 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
     void givenValidAdminRegisterApplicationListRequest_whenAdminRegisterApplicationsFound_thenReturnAdminRegisterApplicationsResponse() throws Exception {
 
         // Given
-        AdminRegisterApplicationListRequest listRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest listRequest = new AdminRegisterApplicationListRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -149,14 +149,14 @@ class AdminRegisterApplicationSystemTest extends AbstractSystemTest {
     void givenValidAdminRegisterApplicationListRequest_whenUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
 
         // Given
-        AdminRegisterApplicationListRequest adminRegisterApplicationListRequest = new AdminRegisterApplicationListRequestBuilder()
+        AdminRegistrationApplicationListRequest adminRegistrationApplicationListRequest = new AdminRegisterApplicationListRequestBuilder()
                 .withValidValues()
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken(), adminRegisterApplicationListRequest);
+                .post(endpoint, userToken.getAccessToken(), adminRegistrationApplicationListRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 

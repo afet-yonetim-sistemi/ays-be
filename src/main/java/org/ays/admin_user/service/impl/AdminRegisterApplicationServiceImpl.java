@@ -3,8 +3,8 @@ package org.ays.admin_user.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.ays.admin_user.model.AdminRegistrationApplication;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationCreateRequest;
-import org.ays.admin_user.model.dto.request.AdminRegisterApplicationListRequest;
 import org.ays.admin_user.model.dto.request.AdminRegisterApplicationRejectRequest;
+import org.ays.admin_user.model.dto.request.AdminRegistrationApplicationListRequest;
 import org.ays.admin_user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.admin_user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.admin_user.model.mapper.AdminRegisterApplicationCreateRequestToAdminRegisterApplicationEntityMapper;
@@ -50,7 +50,7 @@ public class AdminRegisterApplicationServiceImpl implements AdminRegisterApplica
      * @return a paginated list of admin registration applications
      */
     @Override
-    public AysPage<AdminRegistrationApplication> findAll(AdminRegisterApplicationListRequest listRequest) {
+    public AysPage<AdminRegistrationApplication> findAll(AdminRegistrationApplicationListRequest listRequest) {
         final Specification<AdminRegistrationApplicationEntity> filters = listRequest
                 .toSpecification(AdminRegistrationApplicationEntity.class);
 
