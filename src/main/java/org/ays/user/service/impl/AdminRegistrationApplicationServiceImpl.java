@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplicationService {
+class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplicationService {
 
     private final AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
     private final UserRepositoryV2 userRepository;
