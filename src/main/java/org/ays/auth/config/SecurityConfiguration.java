@@ -1,5 +1,7 @@
 package org.ays.auth.config;
 
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.filter.AysBearerTokenAuthenticationFilter;
 import org.ays.auth.security.CustomAuthenticationEntryPoint;
@@ -22,8 +24,6 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 /**
  * This class provides the security configuration for the application.
@@ -79,6 +79,7 @@ class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/v2/authentication/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/admin/registration-application/*/summary").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/admin/registration-application/*/complete").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/emergency-evacuation").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
