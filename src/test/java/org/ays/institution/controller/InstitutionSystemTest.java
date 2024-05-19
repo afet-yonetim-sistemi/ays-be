@@ -36,7 +36,7 @@ class InstitutionSystemTest extends AbstractSystemTest {
         // Then
         String endpoint = BASE_PATH.concat("/summary");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, superAdminToken.getAccessToken());
+                .get(endpoint, superAdminTokenV2.getAccessToken());
 
         List<InstitutionsSummaryResponse> mockInstitutionResponses = institutionToInstitutionsSummaryResponseMapper
                 .map(mockActiveInstitutions);
