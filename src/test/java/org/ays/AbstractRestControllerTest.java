@@ -1,5 +1,6 @@
 package org.ays;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
@@ -13,6 +14,11 @@ import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.model.AysParameterBuilder;
 import org.ays.parameter.service.AysParameterService;
 import org.ays.user.model.entity.UserEntityBuilder;
+import org.ays.user.model.entity.UserEntityV2;
+import org.ays.user.model.entity.UserLoginAttemptEntity;
+import org.ays.user.repository.UserLoginAttemptRepository;
+import org.ays.user.repository.UserRepositoryV2;
+import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -25,6 +31,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @SpringBootTest
@@ -35,7 +42,16 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
     @Autowired
     protected AysMockMvc aysMockMvc;
 
+
+    @Autowired
+    protected UserRepositoryV2 userRepository;
+
+    @Autowired
+    protected UserLoginAttemptRepository loginAttemptRepository;
+
+
     protected AysToken mockSuperAdminToken;
+    protected AysToken mockSuperAdminTokenV2;
     protected AysToken mockAdminUserToken;
     protected AysToken mockUserToken;
 
@@ -55,6 +71,14 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
         this.mockSuperAdminToken = this.generate(new AdminUserEntityBuilder().withValidFields().withRole(AdminRole.SUPER_ADMIN).withInstitutionId(null).build().getClaims());
         this.mockAdminUserToken = this.generate(new AdminUserEntityBuilder().withRole(AdminRole.ADMIN).build().getClaims());
         this.mockUserToken = this.generate(new UserEntityBuilder().build().getClaims());
+
+        final Optional<UserEntityV2> userEntity = userRepository
+                .findById(AysValidTestData.SuperAdminUserV2.ID);
+        final Optional<UserLoginAttemptEntity> loginAttemptEntity = loginAttemptRepository
+                .findByUserId(userEntity.get().getId());
+        final Claims claimsOfMockSuperAdminUserToken = userEntity.get()
+                .getClaims(loginAttemptEntity.get());
+        this.mockSuperAdminTokenV2 = this.generate(claimsOfMockSuperAdminUserToken);
     }
 
     private AysToken generate(Map<String, Object> claims) {

@@ -86,7 +86,7 @@ class UserAuthServiceImplV2Test extends AbstractUnitTest {
                 .withUserId(mockUserEntity.getId())
                 .build();
         Mockito.when(userLoginAttemptRepository.findByUserId(mockUserEntity.getId()))
-                .thenReturn(mockUserLoginAttemptEntity);
+                .thenReturn(Optional.of(mockUserLoginAttemptEntity));
 
         mockUserLoginAttemptEntity.success();
         Mockito.when(userLoginAttemptRepository.save(Mockito.any(UserLoginAttemptEntity.class)))
@@ -335,7 +335,7 @@ class UserAuthServiceImplV2Test extends AbstractUnitTest {
                 .withUserId(mockUserEntity.getId())
                 .build();
         Mockito.when(userLoginAttemptRepository.findByUserId(mockUserEntity.getId()))
-                .thenReturn(mockUserLoginAttemptEntity);
+                .thenReturn(Optional.of(mockUserLoginAttemptEntity));
 
         Claims mockClaimsOfUser = mockUserEntity.getClaims(mockUserLoginAttemptEntity);
         Mockito.when(tokenService.generate(mockClaimsOfUser, mockRefreshToken))

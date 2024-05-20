@@ -42,16 +42,16 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
     private final AysIdentity identity;
 
     /**
-     * Authenticates an admin user based on the given {@link AysLoginRequest} object. First, it retrieves the
+     * Authenticates an admin based on the given {@link AysLoginRequest} object. First, it retrieves the
      * {@link AdminUserEntity} associated with the provided username. Then, it checks if the user is active and
      * verified, and if the provided password matches the one stored in the database. If successful, an access
      * token is generated using the {@link AysTokenService} and returned.
      *
      * @param loginRequest the request object containing the username and password for authentication
      * @return an access and refresh tokens for the authenticated admin user
-     * @throws UserIdNotValidException   if an admin user with the provided userId is not valid
-     * @throws UserNotVerifiedException  if the admin user is not verified
-     * @throws UserNotActiveException    if the admin user is not active
+     * @throws UserIdNotValidException   if an admin with the provided userId is not valid
+     * @throws UserNotVerifiedException  if the admin is not verified
+     * @throws UserNotActiveException    if the admin is not active
      * @throws PasswordNotValidException if the provided password is not valid
      */
     @Override
@@ -77,9 +77,9 @@ class AdminUserAuthServiceImpl implements AdminUserAuthService {
      *
      * @param refreshToken the refresh token used for generating a new access token
      * @return a new access token for the authenticated admin user
-     * @throws UserIdNotValidException   if an admin user with the provided userId is not found
-     * @throws UserNotVerifiedException  if the admin user is not verified
-     * @throws UserNotActiveException    if the admin user is not active
+     * @throws UserIdNotValidException   if an admin with the provided userId is not found
+     * @throws UserNotVerifiedException  if the admin is not verified
+     * @throws UserNotActiveException    if the admin is not active
      * @throws PasswordNotValidException if the provided password is not valid
      */
     @Override

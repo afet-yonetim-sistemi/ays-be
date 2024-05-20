@@ -3,6 +3,8 @@ package org.ays.user.repository;
 import org.ays.user.model.entity.UserLoginAttemptEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * The {@link UserLoginAttemptRepository} interface defines a repository for managing and accessing user login attempts
  * on the authentication side of the application. It extends the JpaRepository interface, providing CRUD operations for the
@@ -18,6 +20,6 @@ public interface UserLoginAttemptRepository extends JpaRepository<UserLoginAttem
      * @param userId The unique identifier of the user.
      * @return An {@link UserLoginAttemptEntity} object representing the user's login attempt.
      */
-    UserLoginAttemptEntity findByUserId(final String userId);
+    Optional<UserLoginAttemptEntity> findByUserId(String userId);
 
 }

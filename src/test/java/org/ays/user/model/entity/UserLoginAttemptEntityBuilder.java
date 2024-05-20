@@ -1,9 +1,9 @@
 package org.ays.user.model.entity;
 
 import org.ays.common.model.TestDataBuilder;
+import org.ays.common.util.AysRandomUtil;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class UserLoginAttemptEntityBuilder extends TestDataBuilder<UserLoginAttemptEntity> {
 
@@ -13,8 +13,8 @@ public class UserLoginAttemptEntityBuilder extends TestDataBuilder<UserLoginAtte
 
     public UserLoginAttemptEntityBuilder withValidFields() {
         return new UserLoginAttemptEntityBuilder()
-                .withId(UUID.randomUUID().toString())
-                .withUserId(UUID.randomUUID().toString())
+                .withId(AysRandomUtil.generateUUID())
+                .withUserId(AysRandomUtil.generateUUID())
                 .withLastLoginAt(LocalDateTime.now());
     }
 

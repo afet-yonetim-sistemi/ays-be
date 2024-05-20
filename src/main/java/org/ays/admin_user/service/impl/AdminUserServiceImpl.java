@@ -44,8 +44,8 @@ public class AdminUserServiceImpl implements AdminUserService {
      * for SUPER_ADMIN role or return the list of all admins in the same institution for ADMIN role.
      *
      * @param listRequest the request object covering page and pageSize
-     * @return admin user list
-     * @throws AccessDeniedException if an admin user role cannot be accessed
+     * @return admin list
+     * @throws AccessDeniedException if an admin role cannot be accessed
      */
     @Override
     public AysPage<AdminUser> getAdminUsers(AdminUserListRequest listRequest) {
@@ -62,7 +62,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      * Handle Super Admin method is used for getting all super admins of all institutions
      *
      * @param listRequest the request object covering page and pageSize
-     * @return super admin user list
+     * @return super admin list
      */
     private AysPage<AdminUser> getAdminAndSuperAdminUsersFromDatabase(AdminUserListRequest listRequest) {
         Page<AdminUserEntity> adminUserEntities = adminUserRepository.findAll(listRequest.toPageable());
@@ -74,7 +74,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      * Handle Admin method is used for getting all admins with the same institution
      *
      * @param listRequest the request object covering page and pageSize
-     * @return super admin user list
+     * @return super admin list
      */
     private AysPage<AdminUser> getAdminUsersFromDatabase(final AdminUserListRequest listRequest) {
 

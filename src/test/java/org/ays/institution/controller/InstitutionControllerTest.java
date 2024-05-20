@@ -44,7 +44,7 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
         // Then
         String endpoint = BASE_PATH.concat("/summary");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, mockSuperAdminToken.getAccessToken());
+                .get(endpoint, mockSuperAdminTokenV2.getAccessToken());
 
         List<InstitutionsSummaryResponse> mockActiveInstitutionsSummaryResponses = institutionToInstitutionsSummaryResponseMapper
                 .map(mockActiveInstitutions);

@@ -32,6 +32,10 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.response.".concat(path));
     }
 
+    public static JsonPathResultMatchers firstContent(String path) {
+        return MockMvcResultMatchers.jsonPath("$.response.content[0].".concat(path));
+    }
+
     public static JsonPathResultMatchers subErrors() {
         return MockMvcResultMatchers.jsonPath("$.subErrors");
     }

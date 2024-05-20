@@ -1,9 +1,8 @@
 package org.ays.user.model.entity;
 
 import org.ays.common.model.TestDataBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.enums.PermissionCategory;
-
-import java.util.UUID;
 
 public class PermissionEntityBuilder extends TestDataBuilder<PermissionEntity> {
 
@@ -13,7 +12,7 @@ public class PermissionEntityBuilder extends TestDataBuilder<PermissionEntity> {
 
     public PermissionEntityBuilder withValidFields() {
         return this
-                .withId(UUID.randomUUID().toString())
+                .withId(AysRandomUtil.generateUUID())
                 .withName("user:list")
                 .withCategory(PermissionCategory.USER_MANAGEMENT);
     }
