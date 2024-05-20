@@ -193,7 +193,14 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
                 .findById(mockApplicationId);
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "This is a valid text with sufficient length and contains alphabetic characters.",
+            "This text includes numbers 12345 and still should be accepted because it's within limits.",
+            "This text, which includes punctuation marks, should be accepted.",
+            " This text has leading and trailing spaces which should be trimmed and accepted. ",
+            "ÇalıŞkan ve dÜrüst İnsanlar her zaman başarıyı yakalar."
+    })
     void givenValidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnAdminUserRegisterApplicationCreateResponse() throws Exception {
 
         // Given

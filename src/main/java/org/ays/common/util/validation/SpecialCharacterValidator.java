@@ -15,14 +15,6 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
      * Regular expression pattern to match valid text with special characters, including Turkish characters.
      */
     private static final String SPECIAL_CHARACTERS_REGEX = "^[a-zA-Z0-9çğıöşüÇĞİÖŞÜ.,'\\-\\s_!]+$";
-    /**
-     * Minimum length allowed for the text.
-     */
-    private static final Integer MIN_LENGTH = 40;
-    /**
-     * Maximum length allowed for the text.
-     */
-    private static final Integer MAX_LENGTH = 512;
 
     /**
      * Checks if the value contains special characters and meets length requirements.
@@ -38,13 +30,6 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
         }
 
         value = value.trim();
-
-        if (value.isEmpty() || value.length() < MIN_LENGTH || value.length() > MAX_LENGTH) {
-            constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT MUST BE BETWEEN " + MIN_LENGTH + " AND " + MAX_LENGTH + " CHARACTERS LONG")
-                    .addConstraintViolation();
-            return false;
-        }
 
         boolean containsOnlyDigits = value.matches("^\\d+$");
 

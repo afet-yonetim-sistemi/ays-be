@@ -1,6 +1,7 @@
 package org.ays.user.model.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.util.validation.NoSpecialCharacters;
@@ -23,6 +24,7 @@ public class AdminRegistrationApplicationCreateRequest {
      * Reason for Registering Admin User
      */
     @NotBlank
+    @Size(min = 40, max = 512)
     @NoSpecialCharacters
     private String reason;
 
