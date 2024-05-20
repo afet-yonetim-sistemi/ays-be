@@ -9,10 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.ays.auth.model.enums.AysTokenClaims;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -35,13 +31,14 @@ public abstract class BaseEntity {
     protected LocalDateTime createdAt;
 
     @PrePersist
-    public void prePersist() {
-        this.createdUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(Authentication::getPrincipal)
-                .filter(user -> !"anonymousUser".equals(user))
-                .map(Jwt.class::cast)
-                .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
-                .orElse("AYS");
+    public void prePersist() { // TODO : Auth V2 Production'a alınınca buradaki yorum satırı kaldırılacak.
+//        this.createdUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+//                .map(Authentication::getPrincipal)
+//                .filter(user -> !"anonymousUser".equals(user))
+//                .map(Jwt.class::cast)
+//                .map(jwt -> jwt.getClaim(AysTokenClaims.USER_EMAIL_ADDRESS.getValue()).toString())
+//                .orElse("AYS");
+        this.createdUser = "AYS";
         this.createdAt = Optional.ofNullable(this.createdAt)
                 .orElse(LocalDateTime.now());
     }
@@ -54,13 +51,14 @@ public abstract class BaseEntity {
     protected LocalDateTime updatedAt;
 
     @PreUpdate
-    public void preUpdate() {
-        this.updatedUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(Authentication::getPrincipal)
-                .filter(user -> !"anonymousUser".equals(user))
-                .map(Jwt.class::cast)
-                .map(jwt -> jwt.getClaim(AysTokenClaims.USERNAME.getValue()).toString())
-                .orElse("AYS");
+    public void preUpdate() { // TODO : Auth V2 Production'a alınınca buradaki yorum satırı kaldırılacak.
+//        this.updatedUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+//                .map(Authentication::getPrincipal)
+//                .filter(user -> !"anonymousUser".equals(user))
+//                .map(Jwt.class::cast)
+//                .map(jwt -> jwt.getClaim(AysTokenClaims.USER_EMAIL_ADDRESS.getValue()).toString())
+//                .orElse("AYS");
+        this.createdUser = "AYS";
         this.updatedAt = LocalDateTime.now();
     }
 }

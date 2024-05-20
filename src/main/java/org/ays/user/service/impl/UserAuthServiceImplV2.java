@@ -20,10 +20,12 @@ import org.ays.user.model.enums.SourcePage;
 import org.ays.user.repository.UserLoginAttemptRepository;
 import org.ays.user.repository.UserRepositoryV2;
 import org.ays.user.service.UserAuthServiceV2;
+import org.ays.user.util.exception.AysUserLoginAttemptNotExistException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -37,8 +39,8 @@ import java.util.Set;
  * generate access tokens, and refresh access tokens securely.
  */
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 class UserAuthServiceImplV2 implements UserAuthServiceV2 {
 
     private final UserRepositoryV2 userRepository;
@@ -80,12 +82,35 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
         this.validateUserStatus(userEntity);
         this.validateUserSourcePagePermission(userEntity, loginRequest.getSourcePage());
 
-        final UserLoginAttemptEntity loginAttemptEntity = loginAttemptRepository.findByUserId(userEntity.getId());
-        loginAttemptEntity.success();
-        loginAttemptRepository.save(loginAttemptEntity);
-
+        final UserLoginAttemptEntity loginAttemptEntity = this.saveLoginAttempt(userEntity);
         final Claims claimsOfUser = userEntity.getClaims(loginAttemptEntity);
         return tokenService.generate(claimsOfUser);
+    }
+
+    /**
+     * Saves a login attempt for the specified user. If a login attempt already exists for the user,
+     * it marks the attempt as successful and updates it in the repository. If no prior login attempt
+     * exists, it creates a new one and saves it in the repository.
+     *
+     * @param userEntity the user for whom the login attempt is being recorded
+     * @return the saved or updated {@link UserLoginAttemptEntity} instance
+     */
+    private UserLoginAttemptEntity saveLoginAttempt(UserEntityV2 userEntity) {
+
+        final Optional<UserLoginAttemptEntity> loginAttemptEntityFromDatabase = loginAttemptRepository
+                .findByUserId(userEntity.getId());
+        if (loginAttemptEntityFromDatabase.isPresent()) {
+            UserLoginAttemptEntity loginAttemptEntity = loginAttemptEntityFromDatabase.get();
+            loginAttemptEntity.success();
+            loginAttemptRepository.save(loginAttemptEntity);
+            return loginAttemptEntity;
+        }
+
+        final UserLoginAttemptEntity loginAttemptEntity = UserLoginAttemptEntity.builder()
+                .userId(userEntity.getId())
+                .build();
+        loginAttemptRepository.save(loginAttemptEntity);
+        return loginAttemptEntity;
     }
 
     /**
@@ -147,7 +172,9 @@ class UserAuthServiceImplV2 implements UserAuthServiceV2 {
 
         this.validateUserStatus(userEntity);
 
-        final UserLoginAttemptEntity loginAttemptEntity = loginAttemptRepository.findByUserId(userEntity.getId());
+        final UserLoginAttemptEntity loginAttemptEntity = loginAttemptRepository.findByUserId(userId)
+                .orElseThrow(() -> new AysUserLoginAttemptNotExistException(userId));
+
         final Claims claimsOfUser = userEntity.getClaims(loginAttemptEntity);
         return tokenService.generate(claimsOfUser, refreshToken);
     }

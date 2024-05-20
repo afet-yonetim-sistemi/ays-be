@@ -32,12 +32,12 @@ class InstitutionController {
 
     /**
      * Retrieves a summary of all institutions.
-     * Requires the user to have the 'SUPER_ADMIN' authority.
+     * Requires the user to have the 'application:registration:create' authority.
      *
      * @return An {@link AysResponse} containing a list of {@link InstitutionResponse} representing the summary of institutions.
      */
     @GetMapping("/institutions/summary")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('application:registration:create')")
     public AysResponse<List<InstitutionsSummaryResponse>> getSummaryOfActiveInstitutions() {
 
         final List<Institution> institutionsSummary = institutionService.getSummaryOfActiveInstitutions();

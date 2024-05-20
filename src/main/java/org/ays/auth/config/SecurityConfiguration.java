@@ -1,7 +1,5 @@
 package org.ays.auth.config;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.filter.AysBearerTokenAuthenticationFilter;
 import org.ays.auth.security.CustomAuthenticationEntryPoint;
@@ -77,8 +75,8 @@ class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/authentication/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v2/authentication/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/admin/registration-application/*/summary").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/admin/registration-application/*/complete").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/admin-registration-application/*/summary").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/admin-registration-application/*/complete").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/emergency-evacuation").permitAll()
                         .anyRequest().authenticated()
                 )

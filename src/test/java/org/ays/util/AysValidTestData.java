@@ -11,6 +11,7 @@ public class AysValidTestData {
 
     public static class SuperAdminUserV2 {
         public static final String ID = "f882cb9c-9341-473b-a040-3fbd05c09ac6";
+        public static final String INSTITUTION_ID = "c5f9f610-f1c8-48a4-b1e9-1fee95f5a51f";
         public static final String EMAIL_ADDRESS = "james.william@afetyonetimsistemi.org";
     }
 

@@ -11,10 +11,14 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ays.common.model.entity.BaseEntity;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.user.model.enums.RoleStatus;
 
@@ -36,13 +40,17 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_ROLE")
 public class RoleEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
-    private String id;
+    @Builder.Default
+    private String id = AysRandomUtil.generateUUID();
 
     @Column(name = "INSTITUTION_ID")
     private String institutionId;
@@ -52,7 +60,8 @@ public class RoleEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private RoleStatus status;
+    @Builder.Default
+    private RoleStatus status = RoleStatus.ACTIVE;
 
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)

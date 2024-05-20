@@ -7,6 +7,7 @@ public enum UserStatus {
 
     ACTIVE,
     PASSIVE,
-    DELETED
+    DELETED,
+    NOT_VERIFIED
 
 }

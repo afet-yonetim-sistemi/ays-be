@@ -8,14 +8,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.common.model.entity.BaseEntity;
@@ -35,6 +40,9 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_USER_V2")
 public class UserEntityV2 extends BaseEntity {
@@ -96,6 +104,15 @@ public class UserEntityV2 extends BaseEntity {
         return UserStatus.DELETED.equals(this.status);
     }
 
+
+    public void activate() {
+        this.status = UserStatus.ACTIVE;
+    }
+
+    public void passivate() {
+        this.status = UserStatus.PASSIVE;
+    }
+
     public void delete() {
         this.status = UserStatus.DELETED;
     }
@@ -142,12 +159,16 @@ public class UserEntityV2 extends BaseEntity {
     @Entity
     @Getter
     @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @EqualsAndHashCode(callSuper = true)
     @Table(name = "AYS_USER_PASSWORD")
     public static class PasswordEntity extends BaseEntity {
 
         @Id
         @Column(name = "ID")
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
         @Column(name = "USER_ID")
@@ -157,7 +178,7 @@ public class UserEntityV2 extends BaseEntity {
         private String value;
 
         @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "user_id", referencedColumnName = "id")
+        @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
         private UserEntityV2 user;
 
     }

@@ -4,10 +4,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ays.common.model.entity.BaseEntity;
+import org.ays.common.util.AysRandomUtil;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +30,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "AYS_USER_LOGIN_ATTEMPT")
 public class UserLoginAttemptEntity extends BaseEntity {
@@ -35,7 +42,8 @@ public class UserLoginAttemptEntity extends BaseEntity {
      */
     @Id
     @Column(name = "ID")
-    private String id;
+    @Builder.Default
+    private String id = AysRandomUtil.generateUUID();
 
     /**
      * The user ID associated with the login attempt.
@@ -47,7 +55,8 @@ public class UserLoginAttemptEntity extends BaseEntity {
      * The date and time of the last successful login.
      */
     @Column(name = "LAST_LOGIN_AT")
-    private LocalDateTime lastLoginAt;
+    @Builder.Default
+    private LocalDateTime lastLoginAt = LocalDateTime.now();
 
     public void success() {
         this.lastLoginAt = LocalDateTime.now();

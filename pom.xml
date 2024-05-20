@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.4</version>
+        <version>3.2.5</version>
         <relativePath/>
     </parent>
 
@@ -28,20 +28,16 @@
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <mysql.version>8.3.0</mysql.version>
 
-        <ays-be-encryption-utility.version>1.0.1</ays-be-encryption-utility.version>
-        <libphonenumber.version>8.13.32</libphonenumber.version>
-        <testcontainers.version>1.19.7</testcontainers.version>
-        <liquibase.version>4.26.0</liquibase.version>
+        <ays-be-encryption-utility.version>1.0.2</ays-be-encryption-utility.version>
+        <libphonenumber.version>8.13.37</libphonenumber.version>
+        <testcontainers.version>1.19.8</testcontainers.version>
+        <liquibase.version>4.27.0</liquibase.version>
         <easy-random-core.version>5.0.0</easy-random-core.version>
         <springdoc.openapi-starter-webmvc-ui.version>2.4.0</springdoc.openapi-starter-webmvc-ui.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jsonwebtoken.version>0.12.5</jsonwebtoken.version>
-        <bouncycastle.version>1.78</bouncycastle.version>
-        <json-path.version>2.9.0</json-path.version>
-        <commons-compress.version>1.26.1</commons-compress.version>
-        <objenesis.version>3.3</objenesis.version>
-        <nimbus-jose-jwt.version>9.37.3</nimbus-jose-jwt.version>
+        <bouncycastle.version>1.78.1</bouncycastle.version>
     </properties>
 
     <dependencies>
@@ -57,17 +53,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
 
         <dependency>
@@ -194,18 +183,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.objenesis</groupId>
-                    <artifactId>objenesis</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.objenesis</groupId>
-            <artifactId>objenesis</artifactId>
-            <version>${objenesis.version}</version>
         </dependency>
 
         <dependency>
@@ -237,12 +214,6 @@
             <artifactId>easy-random-core</artifactId>
             <version>${easy-random-core.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.objenesis</groupId>
-                    <artifactId>objenesis</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -298,8 +269,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>
