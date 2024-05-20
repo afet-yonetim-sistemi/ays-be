@@ -239,6 +239,8 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     @ParameterizedTest
     @ValueSource(strings = {
             "Invalid reason with special characters: #$%",
+            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
+            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
             "Too short",
             "                                      a",
             "151201485621548562154851458614125461254125412"
