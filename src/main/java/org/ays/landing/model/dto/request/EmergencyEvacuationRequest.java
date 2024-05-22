@@ -1,9 +1,9 @@
 package org.ays.landing.model.dto.request;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
@@ -35,7 +35,7 @@ public class EmergencyEvacuationRequest {
     private String address;
 
     @NotNull
-    @Min(1)
+    @Positive
     private int personCount;
 
     @NotNull
@@ -46,4 +46,14 @@ public class EmergencyEvacuationRequest {
 
     @NotBlank
     private String targetDistrict;
+
+    @Name
+    private String applicantFirstName;
+
+    @Name
+    private String applicantLastName;
+
+    @Valid
+    @NotNull
+    private AysPhoneNumberRequest applicantPhoneNumber;
 }
