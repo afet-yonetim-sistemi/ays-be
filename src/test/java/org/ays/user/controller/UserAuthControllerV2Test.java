@@ -19,6 +19,8 @@ import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -35,11 +37,19 @@ class UserAuthControllerV2Test extends AbstractRestControllerTest {
 
     private static final String BASE_PATH = "/api/v2/authentication";
 
-    @Test
-    void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abcdef@mail.com",
+            "abc+def@archive.com",
+            "john.doe123@example.co.uk",
+            "admin_123@example.org",
+            "admin-test@ays.com",
+            "üşengeç-birkız@mail.com"
+    })
+    void givenValidLoginRequestWithValidEmailAddress_whenTokensGeneratedSuccessfully_thenReturnTokenResponse(String mockEmailAddress) throws Exception {
         // Given
-        AysLoginRequestV2 mockRequest = new AysLoginRequestV2Builder()
-                .withEmailAddress(AysValidTestData.EMAIL)
+        AysLoginRequestV2 mockLoginRequest = new AysLoginRequestV2Builder()
+                .withEmailAddress(mockEmailAddress)
                 .withPassword(AysValidTestData.PASSWORD)
                 .withSourcePage(SourcePage.INSTITUTION)
                 .build();
@@ -51,7 +61,7 @@ class UserAuthControllerV2Test extends AbstractRestControllerTest {
         // Then
         String endpoint = BASE_PATH.concat("/token");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockRequest);
+                .post(endpoint, mockLoginRequest);
 
         AysTokenResponse mockTokenResponse = aysTokenToAysTokenResponseMapper.map(mockUserToken);
         AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder.successOf(mockTokenResponse);
@@ -70,6 +80,40 @@ class UserAuthControllerV2Test extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(userAuthService, Mockito.times(1))
+                .authenticate(Mockito.any());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abc.def@mail.c",
+            "abc.def@mail#archive.com",
+            "abc.def@mail",
+            "abcdef@mail..com",
+            "abc-@mail.com"
+    })
+    void givenInvalidLoginRequestWithInvalidEmailAddress_whenEmailsAreNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
+        // Given
+        AysLoginRequestV2 mockLoginRequest = new AysLoginRequestV2Builder()
+                .withEmailAddress(mockEmailAddress)
+                .withPassword(AysValidTestData.PASSWORD)
+                .withSourcePage(SourcePage.INSTITUTION)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/token");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockLoginRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userAuthService, Mockito.never())
                 .authenticate(Mockito.any());
     }
 
