@@ -11,10 +11,13 @@ import org.springframework.util.StringUtils;
  */
 class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacters, String> {
 
-    private static final String SPECIAL_CHARACTERS_REGEX = "^[a-zA-Z0-9çğıöşü.,\\-\\s_!]+$";
+    /**
+     * Regular expression pattern to match valid text with special characters, including Turkish characters.
+     */
+    private static final String SPECIAL_CHARACTERS_REGEX = "^[a-zA-Z0-9çğıöşüÇĞİÖŞÜ.,'\\-\\s_!]+$";
 
     /**
-     * Checks if the value contains special characters.
+     * Checks if the value contains special characters and meets length requirements.
      *
      * @param value                      the value to validate
      * @param constraintValidatorContext context in which the constraint is evaluated
@@ -26,14 +29,42 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
             return true;
         }
 
-        int realCharacterCount = value.replaceAll("\\s", "").length();
+        value = value.trim();
 
-        boolean isIncludeOnlyDigits = value.matches("^\\d+$");
+        boolean containsOnlyDigits = value.matches("^\\d+$");
 
-        if (isIncludeOnlyDigits) {
+        if (containsOnlyDigits) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY DIGITS")
+                    .addConstraintViolation();
             return false;
         }
 
-        return realCharacterCount >= 40 && value.matches(SPECIAL_CHARACTERS_REGEX);
+        boolean containsOnlyPunctuation = value.matches("^\\p{Punct}+$");
+
+        if (containsOnlyPunctuation) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY PUNCTUATION MARKS")
+                    .addConstraintViolation();
+            return false;
+        }
+
+        boolean containsOnlySpecialCharacters = value.matches("^[\\p{Punct}£#$½]+$");
+
+        if (containsOnlySpecialCharacters) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY SPECIAL CHARACTERS")
+                    .addConstraintViolation();
+            return false;
+        }
+
+        if (!value.matches(SPECIAL_CHARACTERS_REGEX)) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CONTAINS INVALID CHARACTERS")
+                    .addConstraintViolation();
+            return false;
+        }
+
+        return true;
     }
 }
