@@ -1,5 +1,10 @@
 package org.ays.landing.model.mapper;
 
+import java.util.Optional;
+
+import jakarta.validation.Valid;
+import org.ays.common.model.AysPhoneNumber;
+import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.landing.model.dto.request.EmergencyEvacuationRequest;
@@ -38,10 +43,12 @@ public interface EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper ext
      */
     @Named("mapForSaving")
     default EmergencyEvacuationEntity mapForSaving(EmergencyEvacuationRequest evacuationRequest) {
+        @Valid Optional<AysPhoneNumberRequest> optionalApplicantPhoneNumber = Optional.ofNullable(evacuationRequest.getApplicantPhoneNumber());
         return EmergencyEvacuationEntity.builder()
                 .id(AysRandomUtil.generateUUID())
                 .firstName(evacuationRequest.getFirstName())
                 .lastName(evacuationRequest.getLastName())
+                .referenceNumber(AysRandomUtil.generateNumber(10))
                 .countryCode(evacuationRequest.getPhoneNumber().getCountryCode())
                 .lineNumber(evacuationRequest.getPhoneNumber().getLineNumber())
                 .address(evacuationRequest.getAddress())
@@ -51,8 +58,8 @@ public interface EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper ext
                 .targetDistrict(evacuationRequest.getTargetDistrict())
                 .applicantFirstName(evacuationRequest.getApplicantFirstName())
                 .applicantLastName(evacuationRequest.getApplicantLastName())
-                .applicantCountryCode(evacuationRequest.getApplicantPhoneNumber().getCountryCode())
-                .applicantLineNumber(evacuationRequest.getApplicantPhoneNumber().getLineNumber())
+                .applicantCountryCode(optionalApplicantPhoneNumber.map(AysPhoneNumberRequest::getCountryCode).orElse(null))
+                .applicantLineNumber(optionalApplicantPhoneNumber.map(AysPhoneNumberRequest::getLineNumber).orElse(null))
                 .status(EmergencyEvacuationApplicationStatus.PENDING)
                 .build();
     }

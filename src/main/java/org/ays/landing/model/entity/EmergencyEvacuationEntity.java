@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,8 +40,7 @@ public class EmergencyEvacuationEntity extends BaseEntity {
     private InstitutionEntity institutionId;
 
     @Column(name = "REFERENCE_NUMBER")
-    @Size(max = 10)
-    private String referenceNumber;
+    private Long referenceNumber;
 
     @Column(name = "FIRST_NAME")
     @Size(max = 255)
@@ -64,16 +62,13 @@ public class EmergencyEvacuationEntity extends BaseEntity {
     @Size(max = 250)
     private String address;
 
-    @Column(name = "PERSON_COUNT")
-    @Size(max = 3)
+    @Column(name = "PERSON_COUNT", length = 3)
     private int personCount;
 
     @Column(name = "HAS_OBSTACLE_PERSON_EXIST")
-    @NotBlank
     private boolean hasObstaclePersonExist;
 
     @Column(name = "IS_IN_PERSON")
-    @NotBlank
     private boolean isInPerson;
 
     @Column(name = "TARGET_CITY")

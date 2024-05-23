@@ -54,6 +54,5 @@ public class EmergencyEvacuationRequest {
     private String applicantLastName;
 
     @Valid
-    @NotNull
     private AysPhoneNumberRequest applicantPhoneNumber;
 }
