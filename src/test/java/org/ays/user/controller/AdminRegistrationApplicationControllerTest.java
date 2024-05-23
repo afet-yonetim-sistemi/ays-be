@@ -69,7 +69,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
 
 
     @Test
-    void givenValidAdminUserRegisterApplicationListRequest_whenAdminUserRegisterApplicationsFound_thenReturnAysPageResponseOfAdminUserRegisterApplicationsResponse() throws Exception {
+    void givenValidAdminRegisterApplicationListRequest_whenAdminRegisterApplicationsFound_thenReturnAysPageResponseOfAdminRegisterApplicationsResponse() throws Exception {
 
         // Given
         AdminRegistrationApplicationListRequest mockListRequest = new AdminRegistrationApplicationListRequestBuilder()
@@ -110,7 +110,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationListRequest_whenUserUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
+    void givenValidAdminRegisterApplicationListRequest_whenUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
         // Given
         AdminRegistrationApplicationListRequest mockListRequest = new AdminRegistrationApplicationListRequestBuilder()
                 .withValidValues()
@@ -135,7 +135,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationFound_thenReturnAdminUserRegisterApplicationResponse() throws Exception {
+    void givenValidAdminRegisterApplicationId_whenAdminRegisterApplicationFound_thenReturnAdminRegisterApplicationResponse() throws Exception {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
@@ -170,7 +170,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationId_whenUnauthorizedForGettingAdminUserRegisterApplicationById_thenReturnAccessDeniedException() throws Exception {
+    void givenValidAdminRegisterApplicationId_whenUnauthorizedForGettingAdminRegisterApplicationById_thenReturnAccessDeniedException() throws Exception {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
@@ -194,7 +194,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnAdminUserRegisterApplicationCreateResponse() throws Exception {
+    void givenValidAdminRegisterApplicationCreateRequest_whenCreatingAdminRegisterApplication_thenReturnAdminRegisterApplicationCreateResponse() throws Exception {
 
         // Given
         AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
@@ -243,7 +243,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
             "                                      a",
             "151201485621548562154851458614125461254125412"
     })
-    void givenInvalidAdminUserRegisterApplicationCreateRequest_whenCreatingAdminUserRegisterApplication_thenReturnValidationError(String invalidReason) throws Exception {
+    void givenInvalidAdminRegisterApplicationCreateRequest_whenCreatingAdminRegisterApplication_thenReturnValidationError(String invalidReason) throws Exception {
 
         // Given
         AdminRegistrationApplicationCreateRequest createRequest = new AdminRegistrationApplicationCreateRequestBuilder()
@@ -270,7 +270,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationCreateRequest_whenUnauthorizedForCreatingAdminUserRegisterApplication_thenReturnAccessDeniedException() throws Exception {
+    void givenValidAdminRegisterApplicationCreateRequest_whenUnauthorizedForCreatingAdminRegisterApplication_thenReturnAccessDeniedException() throws Exception {
 
         // Given
         AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
@@ -297,7 +297,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationId_whenAdminUserApplicationFound_thenReturnAdminUserApplicationSummaryResponse() throws Exception {
+    void givenValidAdminRegisterApplicationId_whenAdminApplicationFound_thenReturnAdminApplicationSummaryResponse() throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -327,7 +327,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterRequest_whenAdminUserRegistered_thenReturnSuccessResponse() throws Exception {
+    void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse() throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -454,7 +454,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
             "? John",
             "J"
     })
-    void givenInvalidAdminUserRegisterApplicationCompleteRequestWithParametrizedInvalidNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
+    void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -490,7 +490,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
             "abcdef@mail..com",
             "abc-@mail.com"
     })
-    void givenInvalidAdminUserRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
+    void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -526,7 +526,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
             "admin-test@ays.com",
             "üşengeç-birkız@mail.com"
     })
-    void givenValidAdminUserRegisterApplicationCompleteRequestWithParametrizedValidEmails_whenEmailsAreValid_thenReturnSuccessResponse(String validEmail) throws Exception {
+    void givenValidAdminRegisterApplicationCompleteRequestWithParametrizedValidEmails_whenEmailsAreValid_thenReturnSuccessResponse(String validEmail) throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
@@ -556,7 +556,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationId_whenApproveAdminUserRegisterApplication_thenReturnNothing() throws Exception {
+    void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplication_thenReturnNothing() throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -583,7 +583,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationId_whenUnauthorizedForApprovingAdminUserRegisterApplication_thenReturnAccessDeniedException() throws Exception {
+    void givenValidAdminRegisterApplicationId_whenUnauthorizedForApprovingAdminRegisterApplication_thenReturnAccessDeniedException() throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -607,7 +607,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationRejectRequest_whenRejectingAdminUserRegisterApplication_thenReturnSuccess() throws Exception {
+    void givenValidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnSuccess() throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -638,7 +638,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationRejectRequest_whenUnauthorizedForRejectingAdminUserRegisterApplication_thenReturnAccessDeniedException() throws Exception {
+    void givenValidAdminRegisterApplicationRejectRequest_whenUnauthorizedForRejectingAdminRegisterApplication_thenReturnAccessDeniedException() throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
