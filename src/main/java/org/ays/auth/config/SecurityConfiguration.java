@@ -79,7 +79,7 @@ class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/v2/authentication/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/admin-registration-application/*/summary").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/admin-registration-application/*/complete").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/emergency-evacuation").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/emergency-evacuation-application").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
