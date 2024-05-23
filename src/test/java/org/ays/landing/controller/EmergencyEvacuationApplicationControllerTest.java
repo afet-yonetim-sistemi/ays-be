@@ -8,7 +8,7 @@ import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.landing.controller.model.dto.request.EmergencyEvacuationRequestBuilder;
 import org.ays.landing.model.dto.request.EmergencyEvacuationRequest;
 import org.ays.landing.model.dto.response.EmergencyEvacuationApplicationResponse;
-import org.ays.landing.service.EmergencyEvacuationService;
+import org.ays.landing.service.EmergencyEvacuationApplicationService;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -19,9 +19,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class EmergencyEvacuationControllerTest extends AbstractRestControllerTest {
+class EmergencyEvacuationApplicationControllerTest extends AbstractRestControllerTest {
     @MockBean
-    private EmergencyEvacuationService emergencyEvacuationService;
+    private EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
+    private final String ENDPOINT = "/api/v1/emergency-evacuation-application";
 
     @Test
     void whenFirstNameEmptyShouldReturnInvalidEntityExceptionWith4XXError() throws Exception {
@@ -29,9 +30,8 @@ class EmergencyEvacuationControllerTest extends AbstractRestControllerTest {
         EmergencyEvacuationRequest emergencyEvacuationRequest = new EmergencyEvacuationRequest();
 
         // Then
-        String endpoint = "/api/v1/emergency-evacuation";
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, emergencyEvacuationRequest);
+                .post(ENDPOINT, emergencyEvacuationRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
@@ -50,9 +50,8 @@ class EmergencyEvacuationControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // Then
-        String endpoint = "/api/v1/emergency-evacuation";
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, emergencyEvacuationRequest);
+                .post(ENDPOINT, emergencyEvacuationRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
@@ -72,12 +71,12 @@ class EmergencyEvacuationControllerTest extends AbstractRestControllerTest {
         EmergencyEvacuationApplicationResponse createdResponse = EmergencyEvacuationApplicationResponse.builder().build();
 
         // When
-        when(emergencyEvacuationService.addEmergencyEvacuationRequest(emergencyEvacuationRequest)).thenReturn(createdResponse);
+        when(emergencyEvacuationApplicationService.addEmergencyEvacuationRequest(emergencyEvacuationRequest)).thenReturn(createdResponse);
 
         // Then
-        String endpoint = "/api/v1/emergency-evacuation";
+
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, emergencyEvacuationRequest);
+                .post(ENDPOINT, emergencyEvacuationRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
@@ -87,6 +86,6 @@ class EmergencyEvacuationControllerTest extends AbstractRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
 
-        verify(emergencyEvacuationService, times(1)).addEmergencyEvacuationRequest(any(EmergencyEvacuationRequest.class));
+        verify(emergencyEvacuationApplicationService, times(1)).addEmergencyEvacuationRequest(any(EmergencyEvacuationRequest.class));
     }
 }

@@ -17,6 +17,7 @@ public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<Emergency
 
     public EmergencyEvacuationRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
         data.setPhoneNumber(phoneNumber);
+        data.setApplicantPhoneNumber(phoneNumber);
         return this;
     }
 

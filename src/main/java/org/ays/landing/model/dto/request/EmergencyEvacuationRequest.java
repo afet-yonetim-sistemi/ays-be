@@ -14,7 +14,6 @@ import org.ays.common.util.validation.Name;
  * Represents a request to complete emergency evacuation request. The request includes fields for the required user
  * information, such as the user's phone number, as well as their first and last name.
  */
-
 @Getter
 @Setter
 public class EmergencyEvacuationRequest {

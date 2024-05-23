@@ -3,7 +3,6 @@ package org.ays.landing.model.mapper;
 import java.util.Optional;
 
 import jakarta.validation.Valid;
-import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.common.util.AysRandomUtil;
