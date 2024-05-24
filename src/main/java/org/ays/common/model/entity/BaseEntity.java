@@ -58,7 +58,7 @@ public abstract class BaseEntity {
 //                .map(Jwt.class::cast)
 //                .map(jwt -> jwt.getClaim(AysTokenClaims.USER_EMAIL_ADDRESS.getValue()).toString())
 //                .orElse("AYS");
-        this.createdUser = "AYS";
+        this.updatedUser = "AYS";
         this.updatedAt = LocalDateTime.now();
     }
 }

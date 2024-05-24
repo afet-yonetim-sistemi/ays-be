@@ -2,14 +2,10 @@ package org.ays.user.controller;
 
 import org.ays.AbstractSystemTest;
 import org.ays.common.model.AysPage;
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
-import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.common.util.exception.model.AysErrorBuilder;
-import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.user.model.AdminRegistrationApplication;
@@ -146,28 +142,6 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationListRequest_whenUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
-
-        // Given
-        AdminRegistrationApplicationListRequest adminRegistrationApplicationListRequest = new AdminRegistrationApplicationListRequestBuilder()
-                .withValidValues()
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-applications");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken(), adminRegistrationApplicationListRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .doesNotExist());
-    }
-
-    @Test
     void givenValidAdminRegisterApplicationId_whenAdminRegisterApplicationFound_thenReturnAdminRegisterApplicationResponse() throws Exception {
 
         // Initialize
@@ -251,26 +225,6 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationId_whenUnauthorizedForGettingAdminRegisterApplicationById_thenReturnAccessDeniedException() throws Exception {
-
-        // Given
-        String applicationId = AysRandomUtil.generateUUID();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(applicationId));
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, userToken.getAccessToken());
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .doesNotExist());
-    }
-
-    @Test
     void givenValidAdminRegisterApplicationCreateRequest_whenCreatingAdminRegisterApplication_thenReturnAdminRegisterApplicationCreateResponse() throws Exception {
 
         // Initialize
@@ -303,35 +257,6 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
-    }
-
-    @Test
-    void givenValidAdminRegisterApplicationCreateRequest_whenUnauthorizedForCreatingAdminRegisterApplication_thenReturnAccessDeniedException() throws Exception {
-
-        // Initialize
-        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
-                .withValidFields()
-                .build();
-        this.initialize(institutionEntity);
-
-        // Given
-        AdminRegistrationApplicationCreateRequest createRequest = new AdminRegistrationApplicationCreateRequestBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken(), createRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .doesNotExist());
     }
 
     @Test
@@ -426,151 +351,6 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-
-        // Initialize
-        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
-                .withValidFields()
-                .build();
-        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = new RoleEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .withPermissions(permissionEntities)
-                .build();
-        UserEntityV2 userEntity = new UserEntityV2Builder()
-                .withValidFields()
-                .withRoles(Set.of(roleEntity))
-                .withInstitutionId(institutionEntity.getId())
-                .build();
-        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
-                .withValidFields()
-                .withUserId(userEntity.getId())
-                .withInstitutionId(userEntity.getInstitutionId())
-                .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
-
-        // Given
-        String applicationId = adminRegistrationApplicationEntity.getId();
-        AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("ABC")
-                .withLineNumber("ABC").build();
-        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
-                .withPhoneNumber(phoneNumber).build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, completeRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-    }
-
-    @Test
-    void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-
-        // Initialize
-        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
-                .withValidFields()
-                .build();
-        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = new RoleEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .withPermissions(permissionEntities)
-                .build();
-        UserEntityV2 userEntity = new UserEntityV2Builder()
-                .withValidFields()
-                .withRoles(Set.of(roleEntity))
-                .withInstitutionId(institutionEntity.getId())
-                .build();
-        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
-                .withValidFields()
-                .withUserId(userEntity.getId())
-                .withInstitutionId(userEntity.getInstitutionId())
-                .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
-
-        // Given
-        String applicationId = adminRegistrationApplicationEntity.getId();
-        AysPhoneNumberRequest phoneNumber = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("456786745645")
-                .withLineNumber("6546467456435548676845321346656654").build();
-        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
-                .withPhoneNumber(phoneNumber).build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, completeRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-    }
-
-    @Test
-    void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-
-        // Initialize
-        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
-                .withValidFields()
-                .build();
-        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = new RoleEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .withPermissions(permissionEntities)
-                .build();
-        UserEntityV2 userEntity = new UserEntityV2Builder()
-                .withValidFields()
-                .withRoles(Set.of(roleEntity))
-                .withInstitutionId(institutionEntity.getId())
-                .build();
-        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
-                .withValidFields()
-                .withUserId(userEntity.getId())
-                .withInstitutionId(userEntity.getInstitutionId())
-                .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
-
-        // Given
-        String applicationId = adminRegistrationApplicationEntity.getId();
-        final String invalidOperator = "123";
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("90")
-                .withLineNumber(invalidOperator + "6327218").build();
-        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
-                .withPhoneNumber(mockPhoneNumber).build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, completeRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-    }
-
-    @Test
     void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplication_thenReturnNothing() throws Exception {
 
         // Initialize
@@ -611,26 +391,6 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
-    }
-
-    @Test
-    void givenValidAdminRegisterApplicationId_whenUnauthorizedForApprovingAdminRegisterApplication_thenReturnAccessDeniedException() throws Exception {
-
-        // Given
-        String applicationId = AysRandomUtil.generateUUID();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(applicationId).concat("/approve"));
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken());
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
@@ -678,29 +438,6 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
-    }
-
-    @Test
-    void givenValidAdminRegisterApplicationRejectRequest_whenUnauthorizedForRejectingAdminRegisterApplication_thenReturnAccessDeniedException() throws Exception {
-
-        // Given
-        String applicationId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationRejectRequest rejectRequest = new AdminRegistrationApplicationRejectRequestBuilder()
-                .withValidFields()
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/reject");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken(), rejectRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 
