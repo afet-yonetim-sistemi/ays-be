@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/emergency-evacuation-application")
 @RequiredArgsConstructor
-public class EmergencyEvacuationApplicationController {
-    private final EmergencyEvacuationApplicationService emergencyEvacuationService;
+class EmergencyEvacuationApplicationController {
+    private final EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
 
     /**
      * Creates an emergency evacuation application

@@ -18,5 +18,5 @@ public enum EmergencyEvacuationApplicationStatus {
 
     COMPLETED,
 
-    CANCELLED,
+    CANCELLED
 }

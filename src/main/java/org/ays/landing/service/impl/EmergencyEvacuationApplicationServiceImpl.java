@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationApplicationService {
+class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationApplicationService {
     private final EmergencyEvacuationApplicationRepository emergencyEvacuationApplicationRepository;
     private final EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper entityMapper
             = EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper.initialize();

@@ -37,7 +37,7 @@ public class EmergencyEvacuationEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private InstitutionEntity institutionId;
+    private InstitutionEntity institutionEntity;
 
     @Column(name = "REFERENCE_NUMBER")
     private Long referenceNumber;

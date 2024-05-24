@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Repository interface for performing CRUD operations on {@link EmergencyEvacuationEntity} in the database.
  */
-public interface EmergencyEvacuationApplicationRepository extends JpaRepository<EmergencyEvacuationEntity, Long> {
+public interface EmergencyEvacuationApplicationRepository extends JpaRepository<EmergencyEvacuationEntity, String> {
 }
