@@ -22,15 +22,15 @@ import java.util.Optional;
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
 @Mapper
-public interface EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper extends BaseMapper<EmergencyEvacuationApplicationRequest, EmergencyEvacuationApplicationEntity> {
+public interface EmergencyEvacuationApplicationRequestToEntityMapper extends BaseMapper<EmergencyEvacuationApplicationRequest, EmergencyEvacuationApplicationEntity> {
 
     /**
      * Initializes the mapper.
      *
      * @return the initialized mapper object.
      */
-    static EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper initialize() {
-        return Mappers.getMapper(EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper.class);
+    static EmergencyEvacuationApplicationRequestToEntityMapper initialize() {
+        return Mappers.getMapper(EmergencyEvacuationApplicationRequestToEntityMapper.class);
     }
 
     /**

@@ -3,8 +3,8 @@ package org.ays.emergency_application.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToEntityMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationEntityToEmergencyEvacuationResponseMapper;
-import org.ays.emergency_application.model.mapper.EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationApplicationService {
     private final EmergencyEvacuationApplicationRepository emergencyEvacuationApplicationRepository;
-    private final EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper entityMapper
-            = EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper.initialize();
+    private final EmergencyEvacuationApplicationRequestToEntityMapper entityMapper
+            = EmergencyEvacuationApplicationRequestToEntityMapper.initialize();
     private final EmergencyEvacuationEntityToEmergencyEvacuationResponseMapper responseMapper
             = EmergencyEvacuationEntityToEmergencyEvacuationResponseMapper.initialize();
 
