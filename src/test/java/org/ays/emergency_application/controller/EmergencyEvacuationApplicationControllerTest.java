@@ -72,7 +72,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         EmergencyEvacuationApplicationResponse createdResponse = EmergencyEvacuationApplicationResponse.builder().build();
 
         // When
-        when(emergencyEvacuationApplicationService.addEmergencyEvacuationRequest(emergencyEvacuationApplicationRequest)).thenReturn(createdResponse);
+        when(emergencyEvacuationApplicationService.create(emergencyEvacuationApplicationRequest)).thenReturn(createdResponse);
 
         // Then
 
@@ -87,6 +87,6 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
 
-        verify(emergencyEvacuationApplicationService, times(1)).addEmergencyEvacuationRequest(any(EmergencyEvacuationApplicationRequest.class));
+        verify(emergencyEvacuationApplicationService, times(1)).create(any(EmergencyEvacuationApplicationRequest.class));
     }
 }

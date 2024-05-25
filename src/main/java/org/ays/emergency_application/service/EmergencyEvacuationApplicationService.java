@@ -9,10 +9,11 @@ import org.ays.emergency_application.model.dto.response.EmergencyEvacuationAppli
 public interface EmergencyEvacuationApplicationService {
 
     /**
-     * Adds an emergency evacuation request
+     * Create an emergency evacuation request
      *
      * @param emergencyEvacuationApplicationRequest The emergency evacuation request containing application information
      * @return Emergency evacuation application response containing resulting data from the business logic
      */
-    EmergencyEvacuationApplicationResponse addEmergencyEvacuationRequest(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest);
+    EmergencyEvacuationApplicationResponse create(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest);
+
 }

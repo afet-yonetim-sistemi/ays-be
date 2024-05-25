@@ -32,7 +32,7 @@ class EmergencyEvacuationApplicationServiceImplTest {
         when(emergencyEvacuationApplicationRepository.save(any(EmergencyEvacuationEntity.class))).thenReturn(evacuationEntity);
 
         // When
-        emergencyEvacuationApplicationService.addEmergencyEvacuationRequest(request);
+        emergencyEvacuationApplicationService.create(request);
 
         // Then
         verify(emergencyEvacuationApplicationRepository, times(1)).save(any(EmergencyEvacuationEntity.class));

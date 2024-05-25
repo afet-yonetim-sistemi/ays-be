@@ -32,7 +32,7 @@ class EmergencyEvacuationApplicationController {
      */
     @PostMapping("/emergency-evacuation-application")
     public AysResponse<Void> create(@RequestBody @Valid EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
-        emergencyEvacuationApplicationService.addEmergencyEvacuationRequest(emergencyEvacuationApplicationRequest);
+        emergencyEvacuationApplicationService.create(emergencyEvacuationApplicationRequest);
         return AysResponse.SUCCESS;
     }
 
