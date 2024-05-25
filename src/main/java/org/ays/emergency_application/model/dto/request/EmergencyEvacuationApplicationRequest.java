@@ -3,11 +3,12 @@ package org.ays.emergency_application.model.dto.request;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.util.validation.Name;
+import org.hibernate.validator.constraints.Range;
 
 
 /**
@@ -31,22 +32,26 @@ public class EmergencyEvacuationApplicationRequest {
     private AysPhoneNumberRequest phoneNumber;
 
     @NotBlank
+    @Size(min = 2, max = 100)
     private String sourceCity;
 
     @NotBlank
+    @Size(min = 2, max = 100)
     private String sourceDistrict;
 
     @NotBlank
     private String address;
 
     @NotNull
-    @Positive
+    @Range(min = 1, max = 999)
     private Integer seatingCount;
 
     @NotBlank
+    @Size(min = 2, max = 100)
     private String targetCity;
 
     @NotBlank
+    @Size(min = 2, max = 100)
     private String targetDistrict;
 
 
