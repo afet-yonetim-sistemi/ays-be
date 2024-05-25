@@ -18,12 +18,12 @@ import org.ays.common.util.validation.Name;
 @Setter
 public class EmergencyEvacuationApplicationRequest {
 
-    @NotBlank
     @Name
+    @NotBlank
     private String firstName;
 
-    @NotBlank
     @Name
+    @NotBlank
     private String lastName;
 
     @Valid
@@ -31,20 +31,24 @@ public class EmergencyEvacuationApplicationRequest {
     private AysPhoneNumberRequest phoneNumber;
 
     @NotBlank
+    private String sourceCity;
+
+    @NotBlank
+    private String sourceDistrict;
+
+    @NotBlank
     private String address;
 
     @NotNull
     @Positive
-    private int personCount;
-
-    @NotNull
-    private boolean hasObstaclePersonExist;
+    private Integer seatingCount;
 
     @NotBlank
     private String targetCity;
 
     @NotBlank
     private String targetDistrict;
+
 
     @Name
     private String applicantFirstName;
@@ -54,4 +58,5 @@ public class EmergencyEvacuationApplicationRequest {
 
     @Valid
     private AysPhoneNumberRequest applicantPhoneNumber;
+
 }
