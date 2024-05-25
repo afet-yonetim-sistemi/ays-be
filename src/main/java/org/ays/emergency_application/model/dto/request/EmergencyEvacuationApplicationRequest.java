@@ -1,6 +1,8 @@
 package org.ays.emergency_application.model.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,27 +33,28 @@ public class EmergencyEvacuationApplicationRequest {
     @NotNull
     private AysPhoneNumberRequest phoneNumber;
 
+    @Name
     @NotBlank
-    @Size(min = 2, max = 100)
     private String sourceCity;
 
+    @Name
     @NotBlank
-    @Size(min = 2, max = 100)
     private String sourceDistrict;
 
     @NotBlank
+    @Size(min = 1, max = 250)
     private String address;
 
     @NotNull
     @Range(min = 1, max = 999)
     private Integer seatingCount;
 
+    @Name
     @NotBlank
-    @Size(min = 2, max = 100)
     private String targetCity;
 
+    @Name
     @NotBlank
-    @Size(min = 2, max = 100)
     private String targetDistrict;
 
 
@@ -63,5 +66,30 @@ public class EmergencyEvacuationApplicationRequest {
 
     @Valid
     private AysPhoneNumberRequest applicantPhoneNumber;
+
+
+    @JsonIgnore
+    @AssertTrue(message = "ALL APPLICANT FIELDS MUST BE FILLED")
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
+    private boolean isAllApplicantFieldsFilled() {
+
+        if (this.applicantFirstName == null && this.applicantLastName == null && this.applicantPhoneNumber == null) {
+            return true;
+        }
+
+        return this.applicantFirstName != null && this.applicantLastName != null && this.applicantPhoneNumber != null;
+    }
+
+    @JsonIgnore
+    @AssertTrue(message = "PHONE NUMBERS MUST NOT BE SAME ONE")
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
+    private boolean isPhoneNumberMustNotBeSameOne() {
+
+        if (this.applicantPhoneNumber == null) {
+            return true;
+        }
+
+        return !this.applicantPhoneNumber.getLineNumber().equals(this.phoneNumber.getLineNumber());
+    }
 
 }
