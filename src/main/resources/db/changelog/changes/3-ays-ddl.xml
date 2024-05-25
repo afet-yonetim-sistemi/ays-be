@@ -20,7 +20,7 @@
                 />
             </column>
             <column name="REFERENCE_NUMBER" type="VARCHAR(10)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="FIRST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
@@ -34,16 +34,16 @@
             <column name="LINE_NUMBER" type="VARCHAR(13)">
                 <constraints nullable="false"/>
             </column>
+            <column name="SOURCE_CITY" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SOURCE_DISTRICT" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
             <column name="ADDRESS" type="VARCHAR(250)">
                 <constraints nullable="false"/>
             </column>
-            <column name="PERSON_COUNT" type="INTEGER(3)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="HAS_OBSTACLE_PERSON_EXIST" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-            <column name="IS_IN_PERSON" type="BOOLEAN">
+            <column name="SEATING_COUNT" type="INTEGER(3)">
                 <constraints nullable="false"/>
             </column>
             <column name="TARGET_CITY" type="VARCHAR(100)">
@@ -59,6 +59,11 @@
             <column name="APPLICANT_LAST_NAME" type="VARCHAR(255)"/>
             <column name="APPLICANT_COUNTRY_CODE" type="VARCHAR(7)"/>
             <column name="APPLICANT_LINE_NUMBER" type="VARCHAR(13)"/>
+            <column name="IS_IN_PERSON" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HAS_OBSTACLE_PERSON_EXIST" type="BOOLEAN"/>
+            <column name="NOTES" type="VARCHAR(1000)"/>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
                 <constraints nullable="false"/>
             </column>
