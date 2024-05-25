@@ -4,11 +4,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -30,53 +31,47 @@ import org.ays.institution.model.entity.InstitutionEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "AYS_EMERGENCY_EVACUATION_APPLICATION")
-public class EmergencyEvacuationEntity extends BaseEntity {
+public class EmergencyEvacuationApplicationEntity extends BaseEntity {
+
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @OneToOne
-    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private InstitutionEntity institutionEntity;
+    @Column(name = "INSTITUTION_ID")
+    private String institutionId;
 
     @Column(name = "REFERENCE_NUMBER")
     private Long referenceNumber;
 
     @Column(name = "FIRST_NAME")
-    @Size(max = 255)
     private String firstName;
 
     @Column(name = "LAST_NAME")
-    @Size(max = 255)
     private String lastName;
 
     @Column(name = "COUNTRY_CODE")
-    @Size(max = 7)
     private String countryCode;
 
     @Column(name = "LINE_NUMBER")
-    @Size(max = 13)
     private String lineNumber;
 
+    @Column(name = "SOURCE_CITY")
+    private String sourceCity;
+
+    @Column(name = "SOURCE_DISTRICT")
+    private String sourceDistrict;
+
     @Column(name = "ADDRESS")
-    @Size(max = 250)
     private String address;
 
-    @Column(name = "PERSON_COUNT", length = 3)
-    private int personCount;
-
-    @Column(name = "HAS_OBSTACLE_PERSON_EXIST")
-    private boolean hasObstaclePersonExist;
-
-    @Column(name = "IS_IN_PERSON")
-    private boolean isInPerson;
+    @Column(name = "SEATING_COUNT")
+    private Integer seatingCount;
 
     @Column(name = "TARGET_CITY")
-    @Size(max = 100)
     private String targetCity;
 
     @Column(name = "TARGET_DISTRICT")
-    @Size(max = 50)
     private String targetDistrict;
 
     @Enumerated(EnumType.STRING)
@@ -84,19 +79,29 @@ public class EmergencyEvacuationEntity extends BaseEntity {
     private EmergencyEvacuationApplicationStatus status;
 
     @Column(name = "APPLICANT_FIRST_NAME")
-    @Size(max = 255)
     private String applicantFirstName;
 
     @Column(name = "APPLICANT_LAST_NAME")
-    @Size(max = 255)
     private String applicantLastName;
 
     @Column(name = "APPLICANT_COUNTRY_CODE")
-    @Size(max = 7)
     private String applicantCountryCode;
 
     @Column(name = "APPLICANT_LINE_NUMBER")
-    @Size(max = 13)
     private String applicantLineNumber;
+
+    @Column(name = "IS_IN_PERSON")
+    private boolean isInPerson;
+
+    @Column(name = "HAS_OBSTACLE_PERSON_EXIST")
+    private Boolean hasObstaclePersonExist;
+
+    @Column(name = "NOTES")
+    private String notes;
+
+
+    @OneToOne
+    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private InstitutionEntity institutionEntity;
 
 }

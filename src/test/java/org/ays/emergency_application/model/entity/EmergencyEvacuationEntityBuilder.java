@@ -2,9 +2,9 @@ package org.ays.emergency_application.model.entity;
 
 import org.ays.common.model.TestDataBuilder;
 
-public class EmergencyEvacuationEntityBuilder extends TestDataBuilder<EmergencyEvacuationEntity> {
+public class EmergencyEvacuationEntityBuilder extends TestDataBuilder<EmergencyEvacuationApplicationEntity> {
     public EmergencyEvacuationEntityBuilder() {
-        super(EmergencyEvacuationEntity.class);
+        super(EmergencyEvacuationApplicationEntity.class);
     }
 
     public EmergencyEvacuationEntityBuilder withValidFields() {
