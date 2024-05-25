@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequest;
-import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,21 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
  * The mapping path for this controller is "/api/v1/emergency-evacuation-application".
  */
 @RestController
-@RequestMapping("/api/v1/emergency-evacuation-application")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
 
     /**
-     * Creates an emergency evacuation application
+     * Endpoint to create a new emergency evacuation application.
+     * This method accepts a POST request with the emergency evacuation application details in the request body.
+     * The request body is validated before processing.
      *
-     * @param emergencyEvacuationRequest The request object containing emergency evacuation application
-     * @return An {@link AysResponse} containing a {@link EmergencyEvacuationApplicationResponse} representing the emergency evacuation response.
+     * @param emergencyEvacuationRequest the details of the emergency evacuation application
+     * @return a response indicating the success of the operation
      */
-    @PostMapping
-    public AysResponse<EmergencyEvacuationApplicationResponse> createEmergencyEvacuationApplication(@RequestBody @Valid EmergencyEvacuationRequest emergencyEvacuationRequest) {
-        return AysResponse.successOf(emergencyEvacuationApplicationService.addEmergencyEvacuationRequest(emergencyEvacuationRequest));
+    @PostMapping("/emergency-evacuation-application")
+    public AysResponse<Void> create(@RequestBody @Valid EmergencyEvacuationRequest emergencyEvacuationRequest) {
+        emergencyEvacuationApplicationService.addEmergencyEvacuationRequest(emergencyEvacuationRequest);
+        return AysResponse.SUCCESS;
     }
 
 }
