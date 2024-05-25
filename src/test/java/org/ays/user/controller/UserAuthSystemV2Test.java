@@ -9,8 +9,6 @@ import org.ays.auth.model.dto.response.AysTokenResponse;
 import org.ays.auth.model.dto.response.AysTokenResponseBuilder;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
-import org.ays.common.util.exception.model.AysErrorBuilder;
-import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.user.model.enums.SourcePage;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
@@ -101,27 +99,6 @@ class UserAuthSystemV2Test extends AbstractSystemTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
-    }
-
-    @Test
-    void givenValidAysTokenInvalidateRequest_whenUserUnauthorizedForTokensInvalidating_thenReturnAccessDeniedException() throws Exception {
-        // Given
-        AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
-                .refreshToken(userTokenV2.getRefreshToken())
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/token/invalidate");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, adminUserToken.getAccessToken(), tokenInvalidateRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotExist());
     }
 

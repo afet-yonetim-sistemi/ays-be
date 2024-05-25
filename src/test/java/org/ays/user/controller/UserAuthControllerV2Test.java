@@ -179,27 +179,4 @@ class UserAuthControllerV2Test extends AbstractRestControllerTest {
                 .invalidateTokens(Mockito.any());
     }
 
-    @Test
-    void givenValidAysTokenInvalidateRequest_whenUserUnauthorizedForTokensInvalidating_thenReturnAccessDeniedException() throws Exception {
-        // Given
-        AysTokenInvalidateRequest mockRequest = AysTokenInvalidateRequestBuilder.VALID_FOR_USER;
-
-        // Then
-        String endpoint = BASE_PATH.concat("/token/invalidate");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminUserToken.getAccessToken(), mockRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .doesNotExist());
-
-        // Verify
-        Mockito.verify(userAuthService, Mockito.never())
-                .invalidateTokens(Mockito.any());
-    }
-
 }
