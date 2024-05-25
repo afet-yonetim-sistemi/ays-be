@@ -10,7 +10,6 @@ import org.ays.auth.model.dto.response.AysTokenResponse;
 import org.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.user.service.UserAuthServiceV2;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +68,6 @@ class UserAuthControllerV2 {
      * @return AysResponse with a success message and no data
      */
     @PostMapping("/token/invalidate")
-    @PreAuthorize("hasAnyAuthority('USER')")
     public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
         userAuthService.invalidateTokens(invalidateRequest.getRefreshToken());
         return AysResponse.SUCCESS;
