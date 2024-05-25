@@ -1,7 +1,7 @@
 package org.ays.emergency_application.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequest;
+import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationEntityToEmergencyEvacuationResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper;
@@ -29,12 +29,12 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     /**
      * Adds an emergency evacuation application to the database
      *
-     * @param emergencyEvacuationRequest The emergency evacuation request containing application information
+     * @param emergencyEvacuationApplicationRequest The emergency evacuation request containing application information
      * @return Emergency evacuation application response
      */
     @Override
-    public EmergencyEvacuationApplicationResponse addEmergencyEvacuationRequest(EmergencyEvacuationRequest emergencyEvacuationRequest) {
-        var emergencyEvacuationEntity = entityMapper.mapForSaving(emergencyEvacuationRequest);
+    public EmergencyEvacuationApplicationResponse addEmergencyEvacuationRequest(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
+        var emergencyEvacuationEntity = entityMapper.mapForSaving(emergencyEvacuationApplicationRequest);
 
         emergencyEvacuationApplicationRepository.save(emergencyEvacuationEntity);
         return responseMapper.map(emergencyEvacuationEntity);

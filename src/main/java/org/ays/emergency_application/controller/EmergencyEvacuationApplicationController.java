@@ -3,7 +3,7 @@ package org.ays.emergency_application.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.dto.response.AysResponse;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequest;
+import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,12 +27,12 @@ class EmergencyEvacuationApplicationController {
      * This method accepts a POST request with the emergency evacuation application details in the request body.
      * The request body is validated before processing.
      *
-     * @param emergencyEvacuationRequest the details of the emergency evacuation application
+     * @param emergencyEvacuationApplicationRequest the details of the emergency evacuation application
      * @return a response indicating the success of the operation
      */
     @PostMapping("/emergency-evacuation-application")
-    public AysResponse<Void> create(@RequestBody @Valid EmergencyEvacuationRequest emergencyEvacuationRequest) {
-        emergencyEvacuationApplicationService.addEmergencyEvacuationRequest(emergencyEvacuationRequest);
+    public AysResponse<Void> create(@RequestBody @Valid EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
+        emergencyEvacuationApplicationService.addEmergencyEvacuationRequest(emergencyEvacuationApplicationRequest);
         return AysResponse.SUCCESS;
     }
 

@@ -1,6 +1,6 @@
 package org.ays.emergency_application.service;
 
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequest;
+import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
 
 /**
@@ -11,8 +11,8 @@ public interface EmergencyEvacuationApplicationService {
     /**
      * Adds an emergency evacuation request
      *
-     * @param emergencyEvacuationRequest The emergency evacuation request containing application information
+     * @param emergencyEvacuationApplicationRequest The emergency evacuation request containing application information
      * @return Emergency evacuation application response containing resulting data from the business logic
      */
-    EmergencyEvacuationApplicationResponse addEmergencyEvacuationRequest(EmergencyEvacuationRequest emergencyEvacuationRequest);
+    EmergencyEvacuationApplicationResponse addEmergencyEvacuationRequest(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest);
 }

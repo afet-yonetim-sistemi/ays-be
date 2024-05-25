@@ -16,7 +16,7 @@ import org.ays.common.util.validation.Name;
  */
 @Getter
 @Setter
-public class EmergencyEvacuationRequest {
+public class EmergencyEvacuationApplicationRequest {
 
     @NotBlank
     @Name

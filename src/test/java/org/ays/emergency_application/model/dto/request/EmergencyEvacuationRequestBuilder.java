@@ -4,9 +4,9 @@ import org.ays.common.model.TestDataBuilder;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 
-public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<EmergencyEvacuationRequest> {
+public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<EmergencyEvacuationApplicationRequest> {
     public EmergencyEvacuationRequestBuilder() {
-        super(EmergencyEvacuationRequest.class);
+        super(EmergencyEvacuationApplicationRequest.class);
     }
 
     public EmergencyEvacuationRequestBuilder withValidFields() {
