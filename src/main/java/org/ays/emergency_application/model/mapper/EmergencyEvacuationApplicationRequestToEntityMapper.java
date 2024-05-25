@@ -1,6 +1,5 @@
 package org.ays.emergency_application.model.mapper;
 
-import jakarta.validation.Valid;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.common.util.AysRandomUtil;
@@ -37,29 +36,32 @@ public interface EmergencyEvacuationApplicationRequestToEntityMapper extends Bas
      * Maps an {@link EmergencyEvacuationApplicationRequest} object to an {@link EmergencyEvacuationApplicationEntity}
      * object for saving in the database.
      *
-     * @param evacuationRequest the {@link EmergencyEvacuationApplicationRequest} object to be mapped.
+     * @param applicationRequest the {@link EmergencyEvacuationApplicationRequest} object to be mapped.
      * @return the mapped {@link EmergencyEvacuationApplicationEntity} object.
      */
     @Named("mapForSaving")
-    default EmergencyEvacuationApplicationEntity mapForSaving(EmergencyEvacuationApplicationRequest evacuationRequest) {
-        @Valid Optional<AysPhoneNumberRequest> optionalApplicantPhoneNumber = Optional.ofNullable(evacuationRequest.getApplicantPhoneNumber());
+    default EmergencyEvacuationApplicationEntity mapForSaving(EmergencyEvacuationApplicationRequest applicationRequest) {
+        Optional<AysPhoneNumberRequest> optionalApplicantPhoneNumber = Optional
+                .ofNullable(applicationRequest.getApplicantPhoneNumber());
+
         return EmergencyEvacuationApplicationEntity.builder()
-                .id(AysRandomUtil.generateUUID())
-                .firstName(evacuationRequest.getFirstName())
-                .lastName(evacuationRequest.getLastName())
+                .firstName(applicationRequest.getFirstName())
+                .lastName(applicationRequest.getLastName())
                 .referenceNumber(AysRandomUtil.generateNumber(10))
-                .countryCode(evacuationRequest.getPhoneNumber().getCountryCode())
-                .lineNumber(evacuationRequest.getPhoneNumber().getLineNumber())
-                .address(evacuationRequest.getAddress())
-                .personCount(evacuationRequest.getPersonCount())
-                .hasObstaclePersonExist(evacuationRequest.isHasObstaclePersonExist())
-                .targetCity(evacuationRequest.getTargetCity())
-                .targetDistrict(evacuationRequest.getTargetDistrict())
-                .applicantFirstName(evacuationRequest.getApplicantFirstName())
-                .applicantLastName(evacuationRequest.getApplicantLastName())
+                .countryCode(applicationRequest.getPhoneNumber().getCountryCode())
+                .lineNumber(applicationRequest.getPhoneNumber().getLineNumber())
+                .sourceCity(applicationRequest.getSourceCity())
+                .sourceDistrict(applicationRequest.getSourceDistrict())
+                .address(applicationRequest.getAddress())
+                .seatingCount(applicationRequest.getSeatingCount())
+                .targetCity(applicationRequest.getTargetCity())
+                .targetDistrict(applicationRequest.getTargetDistrict())
+                .applicantFirstName(applicationRequest.getApplicantFirstName())
+                .applicantLastName(applicationRequest.getApplicantLastName())
                 .applicantCountryCode(optionalApplicantPhoneNumber.map(AysPhoneNumberRequest::getCountryCode).orElse(null))
                 .applicantLineNumber(optionalApplicantPhoneNumber.map(AysPhoneNumberRequest::getLineNumber).orElse(null))
                 .status(EmergencyEvacuationApplicationStatus.PENDING)
                 .build();
     }
+
 }
