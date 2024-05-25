@@ -7,6 +7,7 @@ import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplication
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class implements the interface {@link EmergencyEvacuationApplicationService}
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  * The {@code @Transactional} annotation ensures that all the methods in this class are executed within a transactional context.
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationApplicationService {
 
