@@ -22,10 +22,10 @@
             <column name="REFERENCE_NUMBER" type="VARCHAR(10)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="FIRST_NAME" type="VARCHAR(255)">
+            <column name="FIRST_NAME" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="LAST_NAME" type="VARCHAR(255)">
+            <column name="LAST_NAME" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="COUNTRY_CODE" type="VARCHAR(7)">
@@ -55,8 +55,8 @@
             <column name="STATUS" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="APPLICANT_FIRST_NAME" type="VARCHAR(255)"/>
-            <column name="APPLICANT_LAST_NAME" type="VARCHAR(255)"/>
+            <column name="APPLICANT_FIRST_NAME" type="VARCHAR(100)"/>
+            <column name="APPLICANT_LAST_NAME" type="VARCHAR(100)"/>
             <column name="APPLICANT_COUNTRY_CODE" type="VARCHAR(7)"/>
             <column name="APPLICANT_LINE_NUMBER" type="VARCHAR(13)"/>
             <column name="IS_IN_PERSON" type="BOOLEAN">
