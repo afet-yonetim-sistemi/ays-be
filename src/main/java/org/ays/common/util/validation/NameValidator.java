@@ -26,7 +26,7 @@ class NameValidator implements ConstraintValidator<Name, String> {
      */
     private static final String NAME_REGEX = "^(?![^a-zA-ZÇçĞğİıÖöŞşÜü]).*[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]+$";
     private static final Integer NAME_MIN_LENGTH = 2;
-    private static final Integer NAME_MAX_LENGTH = 255;
+    private static final Integer NAME_MAX_LENGTH = 100;
 
     /**
      * Checks whether the given value is a valid name or not.
