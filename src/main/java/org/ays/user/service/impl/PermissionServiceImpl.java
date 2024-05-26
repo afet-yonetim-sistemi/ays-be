@@ -47,7 +47,7 @@ class PermissionServiceImpl implements PermissionService {
             return permissionEntityToPermissionMapper.map(permissionEntities);
         }
 
-        Set<PermissionEntity> permissionEntities = permissionRepository.findAllByIsSuperFalse(); // TODO : set yerine list kullanılmalı
+        Set<PermissionEntity> permissionEntities = permissionRepository.findAllByIsSuperFalse();
         return permissionEntityToPermissionMapper.map(permissionEntities);
     }
 

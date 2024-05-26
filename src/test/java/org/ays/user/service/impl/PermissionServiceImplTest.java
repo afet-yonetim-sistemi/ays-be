@@ -71,7 +71,7 @@ class PermissionServiceImplTest extends AbstractUnitTest {
         Mockito.when(identity.isSuperAdmin())
                 .thenReturn(false);
 
-        Set<PermissionEntity> mockPermissionEntities = Set.of( // TODO Set.of() kullanılmış, List.of() kullanılmalı
+        Set<PermissionEntity> mockPermissionEntities = Set.of(
                 new PermissionEntityBuilder().withValidFields().build(),
                 new PermissionEntityBuilder().withValidFields().build(),
                 new PermissionEntityBuilder().withValidFields().build(),
