@@ -91,7 +91,7 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
     private String applicantLineNumber;
 
     @Column(name = "IS_IN_PERSON")
-    private boolean isInPerson;
+    private Boolean isInPerson;
 
     @Column(name = "HAS_OBSTACLE_PERSON_EXIST")
     private Boolean hasObstaclePersonExist;
