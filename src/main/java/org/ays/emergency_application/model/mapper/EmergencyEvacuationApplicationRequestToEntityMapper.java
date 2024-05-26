@@ -43,7 +43,6 @@ public interface EmergencyEvacuationApplicationRequestToEntityMapper extends Bas
     default EmergencyEvacuationApplicationEntity mapForSaving(EmergencyEvacuationApplicationRequest applicationRequest) {
         Optional<AysPhoneNumberRequest> optionalApplicantPhoneNumber = Optional
                 .ofNullable(applicationRequest.getApplicantPhoneNumber());
-
         return EmergencyEvacuationApplicationEntity.builder()
                 .firstName(applicationRequest.getFirstName())
                 .lastName(applicationRequest.getLastName())
@@ -56,11 +55,12 @@ public interface EmergencyEvacuationApplicationRequestToEntityMapper extends Bas
                 .seatingCount(applicationRequest.getSeatingCount())
                 .targetCity(applicationRequest.getTargetCity())
                 .targetDistrict(applicationRequest.getTargetDistrict())
+                .status(EmergencyEvacuationApplicationStatus.PENDING)
                 .applicantFirstName(applicationRequest.getApplicantFirstName())
                 .applicantLastName(applicationRequest.getApplicantLastName())
                 .applicantCountryCode(optionalApplicantPhoneNumber.map(AysPhoneNumberRequest::getCountryCode).orElse(null))
                 .applicantLineNumber(optionalApplicantPhoneNumber.map(AysPhoneNumberRequest::getLineNumber).orElse(null))
-                .status(EmergencyEvacuationApplicationStatus.PENDING)
+                .isInPerson(Boolean.valueOf(optionalApplicantPhoneNumber.isEmpty()))
                 .build();
     }
 
