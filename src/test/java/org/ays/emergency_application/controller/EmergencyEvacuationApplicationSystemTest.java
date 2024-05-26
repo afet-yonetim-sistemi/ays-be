@@ -6,6 +6,7 @@ import org.ays.common.model.dto.response.AysResponseBuilder;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequestBuilder;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
+import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepositoryTest;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
@@ -50,6 +51,10 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
                 .findByFirstName(firstName);
 
         Assertions.assertTrue(applicationEntity.isPresent());
+        Assertions.assertNull(applicationEntity.get().getInstitutionId());
+        Assertions.assertNull(applicationEntity.get().getInstitutionEntity());
+        Assertions.assertNotNull(applicationEntity.get().getReferenceNumber());
+        Assertions.assertEquals(10, applicationEntity.get().getReferenceNumber().length());
         Assertions.assertEquals(applicationEntity.get().getFirstName(), firstName);
         Assertions.assertEquals(applicationEntity.get().getLastName(), applicationRequest.getLastName());
         Assertions.assertEquals(applicationEntity.get().getCountryCode(), applicationRequest.getPhoneNumber().getCountryCode());
@@ -60,10 +65,14 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
         Assertions.assertEquals(applicationEntity.get().getSeatingCount(), applicationRequest.getSeatingCount());
         Assertions.assertEquals(applicationEntity.get().getTargetCity(), applicationRequest.getTargetCity());
         Assertions.assertEquals(applicationEntity.get().getTargetDistrict(), applicationRequest.getTargetDistrict());
+        Assertions.assertEquals(EmergencyEvacuationApplicationStatus.PENDING, applicationEntity.get().getStatus());
         Assertions.assertEquals(applicationEntity.get().getApplicantFirstName(), applicationRequest.getApplicantFirstName());
         Assertions.assertEquals(applicationEntity.get().getApplicantLastName(), applicationRequest.getApplicantLastName());
         Assertions.assertEquals(applicationEntity.get().getApplicantCountryCode(), applicationRequest.getApplicantPhoneNumber().getCountryCode());
         Assertions.assertEquals(applicationEntity.get().getApplicantLineNumber(), applicationRequest.getApplicantPhoneNumber().getLineNumber());
+        Assertions.assertFalse(applicationEntity.get().getIsInPerson());
+        Assertions.assertNull(applicationEntity.get().getHasObstaclePersonExist());
+        Assertions.assertNull(applicationEntity.get().getNotes());
     }
 
     @Test
@@ -93,6 +102,10 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
                 .findByFirstName(firstName);
 
         Assertions.assertTrue(applicationEntity.isPresent());
+        Assertions.assertNull(applicationEntity.get().getInstitutionId());
+        Assertions.assertNull(applicationEntity.get().getInstitutionEntity());
+        Assertions.assertNotNull(applicationEntity.get().getReferenceNumber());
+        Assertions.assertEquals(10, applicationEntity.get().getReferenceNumber().length());
         Assertions.assertEquals(applicationEntity.get().getFirstName(), firstName);
         Assertions.assertEquals(applicationEntity.get().getLastName(), applicationRequest.getLastName());
         Assertions.assertEquals(applicationEntity.get().getCountryCode(), applicationRequest.getPhoneNumber().getCountryCode());
@@ -103,10 +116,14 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
         Assertions.assertEquals(applicationEntity.get().getSeatingCount(), applicationRequest.getSeatingCount());
         Assertions.assertEquals(applicationEntity.get().getTargetCity(), applicationRequest.getTargetCity());
         Assertions.assertEquals(applicationEntity.get().getTargetDistrict(), applicationRequest.getTargetDistrict());
+        Assertions.assertEquals(EmergencyEvacuationApplicationStatus.PENDING, applicationEntity.get().getStatus());
         Assertions.assertEquals(applicationEntity.get().getApplicantFirstName(), applicationRequest.getApplicantFirstName());
         Assertions.assertEquals(applicationEntity.get().getApplicantLastName(), applicationRequest.getApplicantLastName());
         Assertions.assertNull(applicationEntity.get().getApplicantCountryCode());
         Assertions.assertNull(applicationEntity.get().getApplicantLineNumber());
+        Assertions.assertTrue(applicationEntity.get().getIsInPerson());
+        Assertions.assertNull(applicationEntity.get().getHasObstaclePersonExist());
+        Assertions.assertNull(applicationEntity.get().getNotes());
     }
 
 }
