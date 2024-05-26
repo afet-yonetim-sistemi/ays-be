@@ -42,7 +42,7 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
     private String institutionId;
 
     @Column(name = "REFERENCE_NUMBER")
-    private Long referenceNumber;
+    private String referenceNumber;
 
     @Column(name = "FIRST_NAME")
     private String firstName;

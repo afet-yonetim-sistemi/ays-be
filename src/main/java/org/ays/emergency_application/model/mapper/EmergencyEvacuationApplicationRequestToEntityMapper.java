@@ -47,7 +47,7 @@ public interface EmergencyEvacuationApplicationRequestToEntityMapper extends Bas
         return EmergencyEvacuationApplicationEntity.builder()
                 .firstName(applicationRequest.getFirstName())
                 .lastName(applicationRequest.getLastName())
-                .referenceNumber(AysRandomUtil.generateNumber(10))
+                .referenceNumber(AysRandomUtil.generateNumber(10).toString())
                 .countryCode(applicationRequest.getPhoneNumber().getCountryCode())
                 .lineNumber(applicationRequest.getPhoneNumber().getLineNumber())
                 .sourceCity(applicationRequest.getSourceCity())
