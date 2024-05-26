@@ -217,8 +217,8 @@ class AysTokenServiceImpl implements AysTokenService {
                 roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
             }
         } else {
-            final List<String> roles = AysListUtil.to(payload.get(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
-            roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+            final List<String> permissions = AysListUtil.to(payload.get(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
+            permissions.forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission)));
         }
 
         return UsernamePasswordAuthenticationToken.authenticated(jwt, null, authorities);
