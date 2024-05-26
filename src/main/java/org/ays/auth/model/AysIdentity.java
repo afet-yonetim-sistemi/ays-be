@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.model.enums.AysUserType;
 import org.ays.common.model.enums.BeanScope;
+import org.ays.common.util.AysListUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * This class provides a representation of the identity of the authenticated user in the AYS service.
@@ -53,6 +56,11 @@ public class AysIdentity {
      */
     public String getUserId() {
         return this.getJwt().getClaim(AysTokenClaims.USER_ID.getValue());
+    }
+
+    public boolean isSuperAdmin() {
+        final List<String> permissions = AysListUtil.to(this.getJwt().getClaim(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
+        return permissions.stream().anyMatch(permission -> permission.equals("super"));
     }
 
     /**
