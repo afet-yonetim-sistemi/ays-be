@@ -45,6 +45,7 @@ public class AysIdentity {
      *
      * @return AysUserType as an admin user type
      */
+    @Deprecated(since = "Authentication V2 Production'a alınınca burası silinecektir.", forRemoval = true)
     public AysUserType getUserType() {
         return AysUserType.valueOf(this.getJwt().getClaim(AysTokenClaims.USER_TYPE.getValue()));
     }
