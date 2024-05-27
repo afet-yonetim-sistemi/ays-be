@@ -5,10 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.ays.common.util.validation.Name;
+import org.ays.common.util.validation.NoSpecialCharacters;
+import org.hibernate.validator.constraints.UUID;
 
-
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,8 +15,11 @@ import java.util.Set;
 public class RoleCreateRequest {
 
     @NotBlank
+    @Size(min = 2, max = 255)
+    @NoSpecialCharacters
     private String name;
 
     @NotEmpty
-    private Set<@NotBlank String> permissionIds;
+    private Set<@UUID String> permissionIds;
+
 }

@@ -9,46 +9,60 @@ import org.ays.user.repository.PermissionRepository;
 import org.ays.user.repository.RoleRepository;
 import org.ays.user.service.RoleService;
 import org.ays.user.util.exception.AysPermissionNotExistException;
+import org.ays.user.util.exception.AysRoleAlreadyExistsByNameException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
+// TODO : Add Javadoc
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService {
-
+class RoleServiceImpl implements RoleService {
 
     private final AysIdentity identity;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
 
+    // TODO : Add Javadoc
     @Override
-    public void createRole(RoleCreateRequest roleCreateRequest) {
+    public void create(final RoleCreateRequest createRequest) {
 
-        final Set<String> permissionIds = roleCreateRequest.getPermissionIds();
-        final Set<PermissionEntity> permissionEntities = permissionRepository.findByIdIn(permissionIds);
+        this.checkExistingRoleName(createRequest.getName());
 
-        if (permissionEntities.size() != permissionIds.size()) {
+        final Set<PermissionEntity> permissionEntities = this.checkExistingPermissionsAndGet(createRequest.getPermissionIds());
 
-            Set<String> foundIds = permissionEntities.stream()
-                    .map(PermissionEntity::getId)
-                    .collect(Collectors.toSet());
-            Set<String> notFoundIds = new HashSet<>(permissionIds);
-            notFoundIds.removeAll(foundIds);
-
-            throw new AysPermissionNotExistException(notFoundIds+""); // ??? Bunu sor
-        }
-        // TO DO : Dokümanı sor neden requestte saçma veriler var??
         final RoleEntity roleEntity = RoleEntity.builder()
-                .name(roleCreateRequest.getName())
+                .name(createRequest.getName())
                 .institutionId(identity.getInstitutionId())
                 .permissions(permissionEntities)
                 .build();
 
-         roleRepository.save(roleEntity);
-
+        roleRepository.save(roleEntity);
     }
+
+    // TODO : Add Javadoc
+    private void checkExistingRoleName(final String name) {
+        roleRepository.findByName(name)
+                .ifPresent(roleEntity -> {
+                    throw new AysRoleAlreadyExistsByNameException(name);
+                });
+    }
+
+    // TODO : Add Javadoc
+    private Set<PermissionEntity> checkExistingPermissionsAndGet(final Set<String> permissionIds) {
+        final Set<PermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(permissionIds);
+
+        if (permissionEntities.size() == permissionIds.size()) {
+            return permissionEntities;
+        }
+
+        Set<String> notExistsPermissionIds = permissionIds.stream().filter(
+                permissionId -> permissionEntities.stream()
+                        .noneMatch(permissionEntity -> permissionEntity.getId().equals(permissionId))
+        ).collect(Collectors.toSet());
+
+        throw new AysPermissionNotExistException(notExistsPermissionIds);
+    }
+
 }

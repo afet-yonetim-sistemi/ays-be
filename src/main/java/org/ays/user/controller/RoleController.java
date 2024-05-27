@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+// TODO : Add Javadoc
 @RestController
-@RequestMapping("/api/v1/role")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class RoleController {
+class RoleController {
 
-    final private RoleService roleService;
+    private final RoleService roleService;
 
-    @PostMapping
+    // TODO : Add Javadoc
+    @PostMapping("/role")
     @PreAuthorize("hasAnyAuthority('role:create')")
-    public AysResponse<Void> createRole(@RequestBody @Valid RoleCreateRequest role) {
-
-        roleService.createRole(role);
+    public AysResponse<Void> createRole(@RequestBody @Valid RoleCreateRequest createRequest) {
+        roleService.create(createRequest);
         return AysResponse.SUCCESS;
 
     }
-
 
 }
