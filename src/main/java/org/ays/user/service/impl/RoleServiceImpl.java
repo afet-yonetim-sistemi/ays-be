@@ -10,6 +10,7 @@ import org.ays.user.repository.RoleRepository;
 import org.ays.user.service.RoleService;
 import org.ays.user.util.exception.AysPermissionNotExistException;
 import org.ays.user.util.exception.AysRoleAlreadyExistsByNameException;
+import org.ays.user.util.exception.AysUserNotSuperAdminException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -51,16 +52,27 @@ class RoleServiceImpl implements RoleService {
 
     // TODO : Add Javadoc
     private Set<PermissionEntity> checkExistingPermissionsAndGet(final Set<String> permissionIds) {
-        final Set<PermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(permissionIds);
+        final Set<PermissionEntity> permissionEntitiesFromDatabase = permissionRepository.findAllByIdIn(permissionIds);
 
-        if (permissionEntities.size() == permissionIds.size()) {
-            return permissionEntities;
+        if (permissionEntitiesFromDatabase.size() == permissionIds.size()) {
+
+            if (identity.isSuperAdmin()) {
+                return permissionEntitiesFromDatabase;
+            }
+
+            boolean haveSuperPermissions = permissionEntitiesFromDatabase.stream()
+                    .anyMatch(PermissionEntity::isSuper);
+            if (haveSuperPermissions) {
+                throw new AysUserNotSuperAdminException(identity.getUserId());
+            }
+
+            return permissionEntitiesFromDatabase;
         }
 
-        Set<String> notExistsPermissionIds = permissionIds.stream().filter(
-                permissionId -> permissionEntities.stream()
-                        .noneMatch(permissionEntity -> permissionEntity.getId().equals(permissionId))
-        ).collect(Collectors.toSet());
+        Set<String> notExistsPermissionIds = permissionIds.stream()
+                .filter(permissionId -> permissionEntitiesFromDatabase.stream()
+                        .noneMatch(permissionEntity -> permissionEntity.getId().equals(permissionId)))
+                .collect(Collectors.toSet());
 
         throw new AysPermissionNotExistException(notExistsPermissionIds);
     }

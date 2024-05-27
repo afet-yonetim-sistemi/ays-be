@@ -25,7 +25,6 @@ class RoleController {
     public AysResponse<Void> createRole(@RequestBody @Valid RoleCreateRequest createRequest) {
         roleService.create(createRequest);
         return AysResponse.SUCCESS;
-
     }
 
 }
