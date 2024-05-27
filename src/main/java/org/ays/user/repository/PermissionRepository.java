@@ -18,4 +18,6 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, St
      */
     Set<PermissionEntity> findAllByIsSuperFalse();
 
+    Set<PermissionEntity> findByIdIn(Set<String> ids);
+
 }
