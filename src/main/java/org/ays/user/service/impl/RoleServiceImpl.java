@@ -12,12 +12,14 @@ import org.ays.user.util.exception.AysPermissionNotExistException;
 import org.ays.user.util.exception.AysRoleAlreadyExistsByNameException;
 import org.ays.user.util.exception.AysUserNotSuperAdminException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 // TODO : Add Javadoc
 @Service
+@Transactional
 @RequiredArgsConstructor
 class RoleServiceImpl implements RoleService {
 
