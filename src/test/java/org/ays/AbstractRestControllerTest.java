@@ -51,9 +51,11 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
 
 
     protected AysToken mockSuperAdminToken;
-    protected AysToken mockSuperAdminTokenV2;
     protected AysToken mockAdminUserToken;
     protected AysToken mockUserToken;
+    protected AysToken mockSuperAdminTokenV2;
+    protected AysToken mockUserTokenV2;
+    protected AysToken mockAdminTokenV2;
 
 
     @Mock
@@ -72,13 +74,29 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
         this.mockAdminUserToken = this.generate(new AdminUserEntityBuilder().withRole(AdminRole.ADMIN).build().getClaims());
         this.mockUserToken = this.generate(new UserEntityBuilder().build().getClaims());
 
-        final Optional<UserEntityV2> userEntity = userRepository
+        final Optional<UserEntityV2> superAdminEntity = userRepository
                 .findById(AysValidTestData.SuperAdminUserV2.ID);
-        final Optional<UserLoginAttemptEntity> loginAttemptEntity = loginAttemptRepository
+        final Optional<UserLoginAttemptEntity> superAdminLoginAttemptEntity = loginAttemptRepository
+                .findByUserId(superAdminEntity.get().getId());
+        final Claims claimsOfMockSuperAdminToken = superAdminEntity.get()
+                .getClaims(superAdminLoginAttemptEntity.get());
+        this.mockSuperAdminTokenV2 = this.generate(claimsOfMockSuperAdminToken);
+
+        final Optional<UserEntityV2> adminEntity = userRepository
+                .findById(AysValidTestData.AdminV2.ID);
+        final Optional<UserLoginAttemptEntity> adminLoginAttemptEntity = loginAttemptRepository
+                .findByUserId(adminEntity.get().getId());
+        final Claims claimsOfMockAdminToken = adminEntity.get()
+                .getClaims(adminLoginAttemptEntity.get());
+        this.mockAdminTokenV2 = this.generate(claimsOfMockAdminToken);
+
+        final Optional<UserEntityV2> userEntity = userRepository
+                .findById(AysValidTestData.UserV2.ID);
+        final Optional<UserLoginAttemptEntity> userLoginAttemptEntity = loginAttemptRepository
                 .findByUserId(userEntity.get().getId());
-        final Claims claimsOfMockSuperAdminUserToken = userEntity.get()
-                .getClaims(loginAttemptEntity.get());
-        this.mockSuperAdminTokenV2 = this.generate(claimsOfMockSuperAdminUserToken);
+        final Claims claimsOfMockUserToken = userEntity.get()
+                .getClaims(userLoginAttemptEntity.get());
+        this.mockUserTokenV2 = this.generate(claimsOfMockUserToken);
     }
 
     private AysToken generate(Map<String, Object> claims) {
