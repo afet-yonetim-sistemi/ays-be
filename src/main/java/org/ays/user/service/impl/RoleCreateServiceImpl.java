@@ -7,7 +7,7 @@ import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
 import org.ays.user.repository.PermissionRepository;
 import org.ays.user.repository.RoleRepository;
-import org.ays.user.service.RoleService;
+import org.ays.user.service.RoleCreateService;
 import org.ays.user.util.exception.AysPermissionNotExistException;
 import org.ays.user.util.exception.AysRoleAlreadyExistsByNameException;
 import org.ays.user.util.exception.AysUserNotSuperAdminException;
@@ -21,11 +21,12 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-class RoleServiceImpl implements RoleService {
+class RoleCreateServiceImpl implements RoleCreateService {
 
-    private final AysIdentity identity;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
+
+    private final AysIdentity identity;
 
     // TODO : Add Javadoc
     @Override

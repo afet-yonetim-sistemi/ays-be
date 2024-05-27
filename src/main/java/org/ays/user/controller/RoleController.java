@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.user.model.dto.request.RoleCreateRequest;
-import org.ays.user.service.RoleService;
+import org.ays.user.service.RoleCreateService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class RoleController {
 
-    private final RoleService roleService;
+    private final RoleCreateService roleCreateService;
 
     // TODO : Add Javadoc
     @PostMapping("/role")
     @PreAuthorize("hasAnyAuthority('role:create')")
     public AysResponse<Void> createRole(@RequestBody @Valid RoleCreateRequest createRequest) {
-        roleService.create(createRequest);
+        roleCreateService.create(createRequest);
         return AysResponse.SUCCESS;
     }
 

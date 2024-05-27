@@ -23,10 +23,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-class RoleServiceImplTest extends AbstractUnitTest {
+class RoleCreateServiceImplTest extends AbstractUnitTest {
 
     @InjectMocks
-    private RoleServiceImpl roleService;
+    private RoleCreateServiceImpl roleCreateService;
 
     @Mock
     private AysIdentity identity;
@@ -70,7 +70,7 @@ class RoleServiceImplTest extends AbstractUnitTest {
                 .thenReturn(Mockito.mock(RoleEntity.class));
 
         // Then
-        roleService.create(mockCreateRequest);
+        roleCreateService.create(mockCreateRequest);
 
         // Verify
         Mockito.verify(roleRepository, Mockito.times(1))
@@ -125,7 +125,7 @@ class RoleServiceImplTest extends AbstractUnitTest {
                 .thenReturn(Mockito.mock(RoleEntity.class));
 
         // Then
-        roleService.create(mockCreateRequest);
+        roleCreateService.create(mockCreateRequest);
 
         // Verify
         Mockito.verify(roleRepository, Mockito.times(1))
@@ -161,7 +161,7 @@ class RoleServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysRoleAlreadyExistsByNameException.class,
-                () -> roleService.create(mockCreateRequest)
+                () -> roleCreateService.create(mockCreateRequest)
         );
 
         // Verify
@@ -213,7 +213,7 @@ class RoleServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysUserNotSuperAdminException.class,
-                () -> roleService.create(mockCreateRequest)
+                () -> roleCreateService.create(mockCreateRequest)
         );
 
         // Verify
@@ -251,7 +251,7 @@ class RoleServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysPermissionNotExistException.class,
-                () -> roleService.create(mockCreateRequest)
+                () -> roleCreateService.create(mockCreateRequest)
         );
 
         // Verify

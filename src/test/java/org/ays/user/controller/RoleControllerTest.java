@@ -7,7 +7,7 @@ import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.user.model.dto.request.RoleCreateRequest;
 import org.ays.user.model.dto.request.RoleCreateRequestBuilder;
-import org.ays.user.service.RoleService;
+import org.ays.user.service.RoleCreateService;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import java.util.Set;
 class RoleControllerTest extends AbstractRestControllerTest {
 
     @MockBean
-    private RoleService roleService;
+    private RoleCreateService roleCreateService;
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -36,7 +36,7 @@ class RoleControllerTest extends AbstractRestControllerTest {
 
         // When
         Mockito.doNothing()
-                .when(roleService)
+                .when(roleCreateService)
                 .create(Mockito.any(RoleCreateRequest.class));
 
         // Then
@@ -53,7 +53,7 @@ class RoleControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(roleService, Mockito.times(1))
+        Mockito.verify(roleCreateService, Mockito.times(1))
                 .create(Mockito.any(RoleCreateRequest.class));
     }
 
@@ -77,7 +77,7 @@ class RoleControllerTest extends AbstractRestControllerTest {
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(roleService, Mockito.never())
+        Mockito.verify(roleCreateService, Mockito.never())
                 .create(Mockito.any(RoleCreateRequest.class));
     }
 
@@ -110,7 +110,7 @@ class RoleControllerTest extends AbstractRestControllerTest {
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(roleService, Mockito.never())
+        Mockito.verify(roleCreateService, Mockito.never())
                 .create(Mockito.any(RoleCreateRequest.class));
     }
 
@@ -136,7 +136,7 @@ class RoleControllerTest extends AbstractRestControllerTest {
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(roleService, Mockito.never())
+        Mockito.verify(roleCreateService, Mockito.never())
                 .create(Mockito.any(RoleCreateRequest.class));
     }
 
@@ -162,7 +162,7 @@ class RoleControllerTest extends AbstractRestControllerTest {
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(roleService, Mockito.never())
+        Mockito.verify(roleCreateService, Mockito.never())
                 .create(Mockito.any(RoleCreateRequest.class));
     }
 
@@ -192,7 +192,7 @@ class RoleControllerTest extends AbstractRestControllerTest {
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(roleService, Mockito.never())
+        Mockito.verify(roleCreateService, Mockito.never())
                 .create(Mockito.any(RoleCreateRequest.class));
     }
 
