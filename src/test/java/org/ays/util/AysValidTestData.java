@@ -15,6 +15,12 @@ public class AysValidTestData {
         public static final String EMAIL_ADDRESS = "james.william@afetyonetimsistemi.org";
     }
 
+    public static class AdminV2 {
+        public static final String ID = "9ebcd692-fc0b-4f76-9948-3dd246d73758";
+        public static final String INSTITUTION_ID = "08cd4b85-bb28-4e4a-a322-fb7b293d97f8";
+        public static final String EMAIL_ADDRESS = "kyle.joanne@afetyonetimsistemi.org";
+    }
+
     public static class UserV2 {
         public static final String ID = "cf1587fd-f800-42f2-ac6e-bd7b1c4d993d";
         public static final String INSTITUTION_ID = "08cd4b85-bb28-4e4a-a322-fb7b293d97f8";

@@ -12,13 +12,10 @@ import org.ays.auth.model.AysToken;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.repository.AysInvalidTokenRepository;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.user.model.entity.UserEntityBuilder;
 import org.ays.user.model.entity.UserEntityV2;
-import org.ays.user.model.entity.UserEntityV2Builder;
 import org.ays.user.model.entity.UserLoginAttemptEntity;
-import org.ays.user.model.entity.UserLoginAttemptEntityBuilder;
 import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.PermissionRepository;
 import org.ays.user.repository.RoleRepository;
@@ -74,9 +71,10 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
 
     protected AysToken superAdminToken;
-    protected AysToken superAdminTokenV2;
     protected AysToken adminUserToken;
     protected AysToken userToken;
+    protected AysToken superAdminTokenV2;
+    protected AysToken adminTokenV2;
     protected AysToken userTokenV2;
 
 
@@ -112,29 +110,29 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
         this.userToken = this.generate(claimsOfUser);
 
 
+        final Optional<UserEntityV2> superAdminEntity = userRepositoryV2
+                .findById(AysValidTestData.SuperAdminUserV2.ID);
+        final Optional<UserLoginAttemptEntity> superAdminLoginAttemptEntity = loginAttemptRepository
+                .findByUserId(superAdminEntity.get().getId());
+        final Claims claimsOfMockSuperAdminToken = superAdminEntity.get()
+                .getClaims(superAdminLoginAttemptEntity.get());
+        this.superAdminTokenV2 = this.generate(claimsOfMockSuperAdminToken);
+
+        final Optional<UserEntityV2> adminEntity = userRepositoryV2
+                .findById(AysValidTestData.AdminV2.ID);
+        final Optional<UserLoginAttemptEntity> adminLoginAttemptEntity = loginAttemptRepository
+                .findByUserId(adminEntity.get().getId());
+        final Claims claimsOfMockAdminToken = adminEntity.get()
+                .getClaims(adminLoginAttemptEntity.get());
+        this.adminTokenV2 = this.generate(claimsOfMockAdminToken);
+
         final Optional<UserEntityV2> userEntity = userRepositoryV2
                 .findById(AysValidTestData.SuperAdminUserV2.ID);
-        final Optional<UserLoginAttemptEntity> loginAttemptEntity = loginAttemptRepository
+        final Optional<UserLoginAttemptEntity> userLoginAttemptEntity = loginAttemptRepository
                 .findByUserId(userEntity.get().getId());
-        final Claims claimsOfMockSuperAdminUserToken = userEntity.get()
-                .getClaims(loginAttemptEntity.get());
-        this.superAdminTokenV2 = this.generate(claimsOfMockSuperAdminUserToken);
-
-        final InstitutionEntity institutionEntity = institutionRepository.findById(AysValidTestData.UserV2.INSTITUTION_ID).get();
-        final String userId = AysValidTestData.UserV2.ID;
-        final UserLoginAttemptEntity userLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
-                .withValidFields()
-                .withUserId(userId)
-                .build();
-        final Claims claimsOfUserV2 = new UserEntityV2Builder()
-                .withValidFields()
-                .withId(userId)
-                .withEmailAddress(AysValidTestData.UserV2.EMAIL_ADDRESS)
-                .withInstitutionId(institutionEntity.getId())
-                .withInstitution(institutionEntity)
-                .build()
-                .getClaims(userLoginAttemptEntity);
-        this.userTokenV2 = this.generate(claimsOfUserV2);
+        final Claims claimsOfMockUserToken = userEntity.get()
+                .getClaims(userLoginAttemptEntity.get());
+        this.userTokenV2 = this.generate(claimsOfMockUserToken);
     }
 
 

@@ -247,9 +247,9 @@
         <!-- ============================= -->
 
 
-        <!-- ===================================== -->
+        <!-- ========================================= -->
         <!-- DDL of AYS_ADMIN_REGISTRATION_APPLICATION -->
-        <!-- ===================================== -->
+        <!-- ========================================= -->
         <createTable tableName="AYS_ADMIN_REGISTRATION_APPLICATION">
             <column name="ID" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -288,9 +288,9 @@
             ALTER TABLE `AYS_ADMIN_REGISTRATION_APPLICATION`
                 ADD CONSTRAINT `C__AYS_ADMIN_REGISTRATION_APPLICATION__STATUS` CHECK (`STATUS` IN ('WAITING', 'COMPLETED', 'VERIFIED', 'REJECTED'));
         </sql>
-        <!-- ===================================== -->
+        <!-- ========================================= -->
         <!-- DDL of AYS_ADMIN_REGISTRATION_APPLICATION -->
-        <!-- ===================================== -->
+        <!-- ========================================= -->
     </changeSet>
 
 </databaseChangeLog>
