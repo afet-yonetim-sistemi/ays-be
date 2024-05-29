@@ -18,7 +18,12 @@ public interface PermissionRepository extends JpaRepository<PermissionEntity, St
      */
     Set<PermissionEntity> findAllByIsSuperFalse();
 
-    // TODO : Add Javadoc
+    /**
+     * Retrieves all permissions with the specified IDs.
+     *
+     * @param ids the set of permission IDs to retrieve
+     * @return a set of {@link PermissionEntity} objects with the specified IDs
+     */
     Set<PermissionEntity> findAllByIdIn(Set<String> ids);
 
 }

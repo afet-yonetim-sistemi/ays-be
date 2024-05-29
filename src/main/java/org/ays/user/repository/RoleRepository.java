@@ -19,7 +19,12 @@ public interface RoleRepository extends JpaRepository<RoleEntity, String> {
      */
     Optional<RoleEntity> findByInstitutionId(String institutionId);
 
-    // TODO : Add Javadoc
+    /**
+     * Finds a {@link RoleEntity} by the given role name.
+     *
+     * @param name the name of the role
+     * @return an {@link Optional} containing the {@link RoleEntity} if found, or empty if not found
+     */
     Optional<RoleEntity> findByName(String name);
 
 }

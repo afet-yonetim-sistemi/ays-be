@@ -17,7 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// TODO : Add Javadoc
+/**
+ * Service implementation for creating roles.
+ * <p>
+ * The {@code RoleCreateServiceImpl} class provides the implementation for the {@link RoleCreateService}
+ * interface, handling operations related to role creation. It interacts with the {@link RoleRepository}
+ * and {@link PermissionRepository} to manage role and permission data.
+ * </p>
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -28,7 +35,15 @@ class RoleCreateServiceImpl implements RoleCreateService {
 
     private final AysIdentity identity;
 
-    // TODO : Add Javadoc
+    /**
+     * Creates a new role based on the provided request.
+     * <p>
+     * This method checks if a role with the same name already exists and verifies the permissions
+     * provided in the request. If all checks pass, it saves the new role entity.
+     * </p>
+     *
+     * @param createRequest the request object containing the details for the new role.
+     */
     @Override
     public void create(final RoleCreateRequest createRequest) {
 
@@ -45,7 +60,14 @@ class RoleCreateServiceImpl implements RoleCreateService {
         roleRepository.save(roleEntity);
     }
 
-    // TODO : Add Javadoc
+    /**
+     * Checks if a role with the specified name already exists.
+     * <p>
+     * If a role with the given name is found, an {@link AysRoleAlreadyExistsByNameException} is thrown.
+     * </p>
+     *
+     * @param name the name of the role to check.
+     */
     private void checkExistingRoleName(final String name) {
         roleRepository.findByName(name)
                 .ifPresent(roleEntity -> {
@@ -53,7 +75,17 @@ class RoleCreateServiceImpl implements RoleCreateService {
                 });
     }
 
-    // TODO : Add Javadoc
+    /**
+     * Checks if the provided permission IDs exist and retrieves the corresponding permission entities.
+     * <p>
+     * If any of the provided permission IDs do not exist, an {@link AysPermissionNotExistException} is thrown.
+     * Additionally, if the user is not a super admin and any of the permissions are super permissions,
+     * an {@link AysUserNotSuperAdminException} is thrown.
+     * </p>
+     *
+     * @param permissionIds the set of permission IDs to check and retrieve.
+     * @return a set of {@link PermissionEntity} objects corresponding to the provided IDs.
+     */
     private Set<PermissionEntity> checkExistingPermissionsAndGet(final Set<String> permissionIds) {
         final Set<PermissionEntity> permissionEntitiesFromDatabase = permissionRepository.findAllByIdIn(permissionIds);
 

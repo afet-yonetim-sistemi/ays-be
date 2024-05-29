@@ -4,7 +4,9 @@ import org.ays.common.util.exception.AysAlreadyException;
 
 import java.io.Serial;
 
-// TODO : Add Javadoc
+/**
+ * Exception to be thrown when a user is not a super admin but tries to perform an action that requires super admin privileges.
+ */
 public class AysUserNotSuperAdminException extends AysAlreadyException {
 
     /**
@@ -13,7 +15,11 @@ public class AysUserNotSuperAdminException extends AysAlreadyException {
     @Serial
     private static final long serialVersionUID = -2209124211644478126L;
 
-    // TODO : Add Javadoc
+    /**
+     * Constructs a new AysUserNotSuperAdminException with the specified user ID.
+     *
+     * @param id the ID of the user who is not a super admin
+     */
     public AysUserNotSuperAdminException(String id) {
         super("USER IS NOT SUPER ADMIN! id:" + id);
     }
