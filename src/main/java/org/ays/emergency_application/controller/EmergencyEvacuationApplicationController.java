@@ -2,12 +2,15 @@ package org.ays.emergency_application.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
+import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,12 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
  * This controller handles the business operations for emergency evacuation applications in the system.
  * The mapping path for this controller is "/api/v1/emergency-evacuation-application".
  */
-@RestController
-@RequestMapping("/api/v1")
+@RestController("/api/v1")
 @RequiredArgsConstructor
 class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
+
+    // TODO AYS-222 : Add Javadoc
+    @PostMapping("/emergency-evacuation-application")
+    @PreAuthorize("hasAnyAuthority('emergency-evacuation-application:list')")
+    public AysResponse<AysPageResponse<EmergencyEvacuationApplicationsResponse>> findAll(
+            @RequestBody @Valid EmergencyEvacuationApplicationListRequest listRequest) {
+
+        return AysResponse.successOf(AysPageResponse.<EmergencyEvacuationApplicationsResponse>builder().build());
+    }
 
     /**
      * Endpoint to create a new emergency evacuation application.
