@@ -52,23 +52,6 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     private final AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper.initialize();
     private final AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper.initialize();
 
-
-    private void initialize(InstitutionEntity institutionEntity) {
-        institutionRepository.save(institutionEntity);
-    }
-
-    private void initialize(InstitutionEntity institutionEntity,
-                            RoleEntity roleEntity,
-                            UserEntityV2 userEntity,
-                            AdminRegistrationApplicationEntity adminRegistrationApplicationEntity) {
-
-        institutionRepository.save(institutionEntity);
-        roleRepository.save(roleEntity);
-        userRepositoryV2.save(userEntity);
-        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
-    }
-
-
     private static final String BASE_PATH = "/api/v1";
 
     @Test
@@ -148,23 +131,31 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
                 .withValidFields()
                 .build();
+        institutionRepository.save(institutionEntity);
+
         Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = new RoleEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .withPermissions(permissionEntities)
-                .build();
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
         UserEntityV2 userEntity = new UserEntityV2Builder()
                 .withValidFields()
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
+        userRepositoryV2.save(userEntity);
+
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
 
         // Given
         String applicationId = adminRegistrationApplicationEntity.getId();
@@ -231,7 +222,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
                 .withValidFields()
                 .build();
-        this.initialize(institutionEntity);
+        institutionRepository.save(institutionEntity);
 
         // Given
         AdminRegistrationApplicationCreateRequest createRequest = new AdminRegistrationApplicationCreateRequestBuilder()
@@ -266,23 +257,31 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
                 .withValidFields()
                 .build();
+        institutionRepository.save(institutionEntity);
+
         Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = new RoleEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .withPermissions(permissionEntities)
-                .build();
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
         UserEntityV2 userEntity = new UserEntityV2Builder()
                 .withValidFields()
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
+        userRepositoryV2.save(userEntity);
+
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
 
         // Given
         String applicationId = adminRegistrationApplicationEntity.getId();
@@ -312,23 +311,31 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
                 .withValidFields()
                 .build();
+        institutionRepository.save(institutionEntity);
+
         Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = new RoleEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .withPermissions(permissionEntities)
-                .build();
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
         UserEntityV2 userEntity = new UserEntityV2Builder()
                 .withValidFields()
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .build();
+        userRepositoryV2.save(userEntity);
+
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
 
         // Given
         String applicationId = adminRegistrationApplicationEntity.getId();
@@ -357,25 +364,33 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
                 .withValidFields()
                 .build();
+        institutionRepository.save(institutionEntity);
+
         Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = new RoleEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .withPermissions(permissionEntities)
-                .build();
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
         UserEntityV2 userEntity = new UserEntityV2Builder()
                 .withValidFields()
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
+        userRepositoryV2.save(userEntity);
+
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
 
         // Given
         String applicationId = adminRegistrationApplicationEntity.getId();
@@ -401,25 +416,32 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
                 .withValidFields()
                 .build();
+        institutionRepository.save(institutionEntity);
+
         Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = new RoleEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(institutionEntity.getId())
-                .withPermissions(permissionEntities)
-                .build();
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
         UserEntityV2 userEntity = new UserEntityV2Builder()
                 .withValidFields()
                 .withRoles(Set.of(roleEntity))
                 .withInstitutionId(institutionEntity.getId())
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
+        userRepositoryV2.save(userEntity);
+
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
                 .withValidFields()
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                 .withUserId(userEntity.getId())
                 .withInstitutionId(userEntity.getInstitutionId())
                 .build();
-        this.initialize(institutionEntity, roleEntity, userEntity, adminRegistrationApplicationEntity);
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
 
         // Given
         String applicationId = adminRegistrationApplicationEntity.getId();
