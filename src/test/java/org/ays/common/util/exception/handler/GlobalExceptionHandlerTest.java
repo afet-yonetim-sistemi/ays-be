@@ -139,7 +139,7 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     void givenHandleEndpointNotFoundException_whenThrowNoResourceFoundException_thenReturnAysError() {
 
         // Given
-        HttpMethod[] httpMethods = HttpMethod.values(); // Array containing all HTTP methods
+        HttpMethod[] httpMethods = HttpMethod.values();
 
         for (HttpMethod method : httpMethods) {
             NoResourceFoundException mockException = new NoResourceFoundException(method, "Resource not found");
