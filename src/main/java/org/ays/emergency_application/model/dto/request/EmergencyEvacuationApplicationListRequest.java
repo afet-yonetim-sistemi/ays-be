@@ -40,7 +40,7 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
 
         // TODO AYS-222 : Add Javadoc
         @Range(min = 1, max = 999)
-        private Integer personCount;
+        private Integer seatingCount;
 
         // TODO AYS-222 : Add Javadoc
         @Size(min = 2, max = 100)
@@ -97,9 +97,9 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
                     criteriaBuilder.like(root.get("referenceNumber"), "%" + this.filter.referenceNumber + "%"));
         }
 
-        if (this.filter.personCount != null) {
+        if (this.filter.seatingCount != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("personCount"), this.filter.personCount));
+                    criteriaBuilder.equal(root.get("personCount"), this.filter.seatingCount));
         }
 
         if (this.filter.targetCity != null) {

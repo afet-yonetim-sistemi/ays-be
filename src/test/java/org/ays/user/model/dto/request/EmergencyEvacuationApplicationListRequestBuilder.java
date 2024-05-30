@@ -51,8 +51,8 @@ public class EmergencyEvacuationApplicationListRequestBuilder extends TestDataBu
             return this;
         }
 
-        public FilterBuilder withPersonCount(Integer personCount) {
-            data.setPersonCount(personCount);
+        public FilterBuilder withSeatingCount(Integer seatingCount) {
+            data.setSeatingCount(seatingCount);
             return this;
         }
 
