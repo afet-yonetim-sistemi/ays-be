@@ -39,6 +39,14 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
         private String referenceNumber;
 
         // TODO AYS-222 : Add Javadoc
+        @Size(min = 2, max = 100)
+        private String sourceCity;
+
+        // TODO AYS-222 : Add Javadoc
+        @Size(min = 2, max = 100)
+        private String sourceDistrict;
+
+        // TODO AYS-222 : Add Javadoc
         @Range(min = 1, max = 999)
         private Integer seatingCount;
 
@@ -50,12 +58,12 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
         @Size(min = 2, max = 100)
         private String targetDistrict;
 
-        private Boolean isInPerson;
-
         /**
          * List of admin registration application's statuses used for filtering.
          */
         private List<EmergencyEvacuationApplicationStatus> statuses;
+
+        private Boolean isInPerson;
 
     }
 
@@ -83,18 +91,19 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
 
         Specification<C> specification = Specification.where(null);
 
-        if (!CollectionUtils.isEmpty(this.filter.statuses)) {
-            Specification<C> statusSpecification = this.filter.statuses.stream()
-                    .map(status -> (Specification<C>) (root, query, criteriaBuilder) ->
-                            criteriaBuilder.equal(root.get("status"), status))
-                    .reduce(Specification::or).orElse(null);
-
-            specification = specification.and(statusSpecification);
-        }
-
         if (this.filter.referenceNumber != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(root.get("referenceNumber"), "%" + this.filter.referenceNumber + "%"));
+        }
+
+        if (this.filter.sourceCity != null) {
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(root.get("sourceCity"), "%" + this.filter.sourceCity + "%"));
+        }
+
+        if (this.filter.sourceDistrict != null) {
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(root.get("sourceDistrict"), "%" + this.filter.sourceDistrict + "%"));
         }
 
         if (this.filter.seatingCount != null) {
@@ -110,6 +119,15 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
         if (this.filter.targetDistrict != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(root.get("targetDistrict"), "%" + this.filter.targetDistrict + "%"));
+        }
+
+        if (!CollectionUtils.isEmpty(this.filter.statuses)) {
+            Specification<C> statusSpecification = this.filter.statuses.stream()
+                    .map(status -> (Specification<C>) (root, query, criteriaBuilder) ->
+                            criteriaBuilder.equal(root.get("status"), status))
+                    .reduce(Specification::or).orElse(null);
+
+            specification = specification.and(statusSpecification);
         }
 
         if (this.filter.isInPerson != null) {
