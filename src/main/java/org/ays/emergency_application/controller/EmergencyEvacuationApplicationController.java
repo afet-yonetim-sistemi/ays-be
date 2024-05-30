@@ -2,11 +2,14 @@ package org.ays.emergency_application.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
+import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationsResponse;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToEmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
+    private final EmergencyEvacuationApplicationToEmergencyEvacuationApplicationsResponse toResponseMapper =
+            EmergencyEvacuationApplicationToEmergencyEvacuationApplicationsResponse.initialize();
 
     // TODO AYS-222 : Add Javadoc
     @PostMapping("/emergency-evacuation-application")
@@ -32,7 +37,13 @@ class EmergencyEvacuationApplicationController {
     public AysResponse<AysPageResponse<EmergencyEvacuationApplicationsResponse>> findAll(
             @RequestBody @Valid EmergencyEvacuationApplicationListRequest listRequest) {
 
-        return AysResponse.successOf(AysPageResponse.<EmergencyEvacuationApplicationsResponse>builder().build());
+        final AysPage<EmergencyEvacuationApplication> pageOfEmergencyEvacuationApplications = emergencyEvacuationApplicationService.getEmergencyEvacuationApplications(listRequest);
+
+        final AysPageResponse<EmergencyEvacuationApplicationsResponse> pageOfEmergencyEvacuationApplicationsResponse = AysPageResponse.<EmergencyEvacuationApplicationsResponse>builder()
+                .of(pageOfEmergencyEvacuationApplications)
+                .content(toResponseMapper.map(pageOfEmergencyEvacuationApplications.getContent()))
+                .build();
+        return AysResponse.successOf(pageOfEmergencyEvacuationApplicationsResponse);
     }
 
     /**
