@@ -108,7 +108,7 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
 
         if (this.filter.seatingCount != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("personCount"), this.filter.seatingCount));
+                    criteriaBuilder.equal(root.get("seatingCount"), this.filter.seatingCount));
         }
 
         if (this.filter.targetCity != null) {
