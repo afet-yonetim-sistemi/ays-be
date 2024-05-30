@@ -199,14 +199,15 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
             "This text includes numbers 12345 and still should be accepted because it's within limits.",
             "This text, which includes punctuation marks, should be accepted.",
             " This text has leading and trailing spaces which should be trimmed and accepted. ",
-            "ÇalıŞkan ve dÜrüst İnsanlar her zaman başarıyı yakalar."
+            "ÇalıŞkan ve dÜrüst İnsanlar her zaman başarıyı yakalar.(:;?/)"
     })
-    void givenValidAdminRegisterApplicationCreateRequest_whenCreatingAdminRegisterApplication_thenReturnAdminRegisterApplicationCreateResponse() throws Exception {
+    void givenValidAdminRegisterApplicationCreateRequest_whenCreatingAdminRegisterApplication_thenReturnAdminRegisterApplicationCreateResponse(String reason) throws Exception {
 
         // Given
         AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidFields()
                 .withInstitutionId(AysValidTestData.Institution.ID)
+                .withReason(reason)
                 .build();
 
         // When
@@ -250,7 +251,8 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
             "Too short",
             "                                      a",
-            "151201485621548562154851458614125461254125412"
+            "151201485621548562154851458614125461254125412",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum commodo turpis, sed venenatis sapien suscipit sit amet. Etiam malesuada, ligula in semper varius, nisi mi pulvinar libero, ut commodo dolor orci quis urna. Vivamus ac euismod ex. Proin vel vulputate orci. Ut id nibh finibus, mattis sem id, maximus ante. Proin fringilla ipsum at arcu venenatis, non bibendum justo luctus. Phasellus vestibulum feugiat est sit amet bibendum. Donec nulla leo, ultricies sed pharetra sed, hendrerit vel nunc."
     })
     void givenInvalidAdminRegisterApplicationCreateRequest_whenCreatingAdminRegisterApplication_thenReturnValidationError(String invalidReason) throws Exception {
 
