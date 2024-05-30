@@ -50,6 +50,8 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
         @Size(min = 2, max = 100)
         private String targetDistrict;
 
+        private Boolean isInPerson;
+
         /**
          * List of admin registration application's statuses used for filtering.
          */
@@ -108,6 +110,11 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
         if (this.filter.targetDistrict != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(root.get("targetDistrict"), "%" + this.filter.targetDistrict + "%"));
+        }
+
+        if (this.filter.isInPerson != null) {
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("isInPerson"), this.filter.isInPerson));
         }
 
         return specification;
