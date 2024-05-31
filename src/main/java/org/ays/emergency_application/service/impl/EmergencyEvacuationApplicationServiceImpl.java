@@ -41,14 +41,15 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      * @return A page of emergency evacuation applications. Each application includes details such as the ID, status, and other related information.
      */
     @Override
-    public AysPage<EmergencyEvacuationApplication> getEmergencyEvacuationApplications(EmergencyEvacuationApplicationListRequest listRequest) {
+    public AysPage<EmergencyEvacuationApplication> findAll(EmergencyEvacuationApplicationListRequest listRequest) {
 
-        final Specification<EmergencyEvacuationApplicationEntity> requestedSpecifications = listRequest.toSpecification(EmergencyEvacuationApplicationEntity.class);
+        final Specification<EmergencyEvacuationApplicationEntity> requestedSpecifications = listRequest
+                .toSpecification(EmergencyEvacuationApplicationEntity.class);
 
-        Page<EmergencyEvacuationApplicationEntity> emergencyEvacuationApplicationEntities = emergencyEvacuationApplicationRepository.findAll(requestedSpecifications,
-                listRequest.toPageable());
+        final Page<EmergencyEvacuationApplicationEntity> emergencyEvacuationApplicationEntities = emergencyEvacuationApplicationRepository
+                .findAll(requestedSpecifications, listRequest.toPageable());
 
-        List<EmergencyEvacuationApplication> emergencyEvacuationApplications = entityToEmergencyEvacuationApplicationMapper
+        final List<EmergencyEvacuationApplication> emergencyEvacuationApplications = entityToEmergencyEvacuationApplicationMapper
                 .map(emergencyEvacuationApplicationEntities.getContent());
 
         return AysPage.of(

@@ -16,7 +16,7 @@ public interface EmergencyEvacuationApplicationService {
      * @param listRequest The request parameters for retrieving the emergency evacuation applications. This includes pagination and filtering parameters.
      * @return A page of emergency evacuation applications. Each application includes details such as the ID, status, and other related information.
      */
-    AysPage<EmergencyEvacuationApplication> getEmergencyEvacuationApplications(EmergencyEvacuationApplicationListRequest listRequest);
+    AysPage<EmergencyEvacuationApplication> findAll(EmergencyEvacuationApplicationListRequest listRequest);
 
     /**
      * Create an emergency evacuation request

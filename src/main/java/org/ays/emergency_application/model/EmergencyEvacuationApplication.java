@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 
@@ -13,13 +14,13 @@ import org.ays.emergency_application.model.entity.EmergencyEvacuationApplication
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class EmergencyEvacuationApplication extends BaseDomainModel {
+
     private String id;
     private String institutionId;
     private String referenceNumber;
     private String firstName;
     private String lastName;
-    private String countryCode;
-    private String lineNumber;
+    private AysPhoneNumber phoneNumber;
     private String sourceCity;
     private String sourceDistrict;
     private String address;
@@ -29,9 +30,9 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
     private EmergencyEvacuationApplicationStatus status;
     private String applicantFirstName;
     private String applicantLastName;
-    private String applicantCountryCode;
-    private String applicantLineNumber;
+    private AysPhoneNumber applicantPhoneNumber;
     private Boolean isInPerson;
     private Boolean hasObstaclePersonExist;
     private String notes;
+
 }
