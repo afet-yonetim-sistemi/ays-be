@@ -16,7 +16,7 @@ public class EmergencyEvacuationApplicationsResponse {
     private String firstName;
     private String lastName;
     private AysPhoneNumber phoneNumber;
-    private Integer personCount;
+    private Integer seatingCount;
     private EmergencyEvacuationApplicationStatus status;
     private Boolean isInPerson;
     private LocalDateTime createdAt;
