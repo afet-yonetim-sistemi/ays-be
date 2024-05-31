@@ -28,8 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
-    private final EmergencyEvacuationApplicationToApplicationsResponseMapper toResponseMapper =
-            EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
+
+
+    private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
 
     // TODO AYS-222 : Add Javadoc
     @PostMapping("/emergency-evacuation-applications")
@@ -41,7 +42,7 @@ class EmergencyEvacuationApplicationController {
 
         final AysPageResponse<EmergencyEvacuationApplicationsResponse> pageOfEmergencyEvacuationApplicationsResponse = AysPageResponse.<EmergencyEvacuationApplicationsResponse>builder()
                 .of(pageOfEmergencyEvacuationApplications)
-                .content(toResponseMapper.map(pageOfEmergencyEvacuationApplications.getContent()))
+                .content(emergencyEvacuationApplicationToApplicationsResponseMapper.map(pageOfEmergencyEvacuationApplications.getContent()))
                 .build();
         return AysResponse.successOf(pageOfEmergencyEvacuationApplicationsResponse);
     }
