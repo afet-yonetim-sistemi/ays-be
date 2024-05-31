@@ -24,7 +24,7 @@ import java.util.List;
  * The {@code @Transactional} annotation ensures that all the methods in this class are executed within a transactional context.
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationApplicationService {
 
@@ -65,6 +65,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      * @param emergencyEvacuationApplicationRequest The emergency evacuation request containing application information
      */
     @Override
+    @Transactional
     public void create(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
         EmergencyEvacuationApplicationEntity applicationEntity = emergencyEvacuationApplicationRequestToEntityMapper
                 .mapForSaving(emergencyEvacuationApplicationRequest);
