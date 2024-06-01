@@ -32,4 +32,9 @@ public class PermissionEntityBuilder extends TestDataBuilder<PermissionEntity> {
         return this;
     }
 
+    public PermissionEntityBuilder withIsSuper(boolean isSuper) {
+        data.setSuper(isSuper);
+        return this;
+    }
+
 }

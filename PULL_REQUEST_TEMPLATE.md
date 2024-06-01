@@ -17,8 +17,7 @@ Before submitting your pull request, ensure the following:
     - The code does not contain any issues flagged by SonarLint.
 
 - [ ] **Documentation:**
-    - Necessary documentation has been added or existing documentation has been updated, specifically detailing changes
-      made in Postman.
+    - Necessary documentation has been added or existing documentation has been updated, specifically detailing changes made in Postman.
 
 - [ ] **Testing:**
     - Relevant unit tests have been written and included.
