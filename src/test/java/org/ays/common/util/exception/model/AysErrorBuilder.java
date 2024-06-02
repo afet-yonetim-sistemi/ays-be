@@ -10,4 +10,8 @@ public class AysErrorBuilder {
             .header(AysErrorResponse.Header.AUTH_ERROR.getName())
             .isSuccess(false).build();
 
+    public static final AysErrorResponse ALREADY_EXIST = AysErrorResponse.builder()
+            .header(AysErrorResponse.Header.ALREADY_EXIST.getName())
+            .isSuccess(false).build();
+
 }

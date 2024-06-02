@@ -3,8 +3,8 @@ package org.ays.common.util.exception;
 import java.io.Serial;
 
 /**
- * Base exception class for cases where an entity or resource is already present
- * when it shouldn't be. Typically used for operations that try to create or add
+ * Base exception class for cases where an entity or resource is already present.
+ * Typically, used for operations that try to create or add
  * something that already exists.
  */
 public abstract class AysAlreadyException extends RuntimeException {

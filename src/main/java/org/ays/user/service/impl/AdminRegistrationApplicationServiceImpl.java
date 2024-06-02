@@ -1,5 +1,7 @@
 package org.ays.user.service.impl;
 
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.AysPage;
 import org.ays.institution.repository.InstitutionRepository;
@@ -16,6 +18,7 @@ import org.ays.user.model.mapper.AdminRegistrationApplicationEntityToAdminRegist
 import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.UserRepositoryV2;
 import org.ays.user.service.AdminRegistrationApplicationService;
+import org.ays.user.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
@@ -23,8 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * This class implements the {@link AdminRegistrationApplicationService} interface and provides verification operations for admin users.
@@ -149,7 +150,13 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
     public void reject(String id, AdminRegistrationApplicationRejectRequest request) {
         final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationRepository
                 .findById(id)
-                .filter(AdminRegistrationApplicationEntity::isCompleted)
+                .map(entity -> {
+                    if (checkRejectStatusInvalid(entity)) {
+                        throw new AysAdminRegistrationApplicationAlreadyRejectedException(id, AdminRegistrationApplicationStatus.REJECTED);
+                    } else {
+                        return entity;
+                    }
+                })
                 .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
         final UserEntityV2 userEntity = registerApplicationEntity.getUser();
 
@@ -160,4 +167,8 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
         userRepository.save(userEntity);
     }
 
+    private boolean checkRejectStatusInvalid(AdminRegistrationApplicationEntity entity) {
+        return entity.isRejected() ||
+                entity.isCompleted();
+    }
 }
