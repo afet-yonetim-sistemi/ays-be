@@ -73,4 +73,12 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
         emergencyEvacuationApplicationRepository.save(applicationEntity);
     }
 
+    // TODO AYS-223 : Add Javadoc
+    @Override
+    public EmergencyEvacuationApplication findById(String id) {
+        EmergencyEvacuationApplicationEntity entity = emergencyEvacuationApplicationRepository.findById(id).orElse(null);
+        if (entity == null) return null;
+        return entityToEmergencyEvacuationApplicationMapper.map(entity);
+    }
+
 }
