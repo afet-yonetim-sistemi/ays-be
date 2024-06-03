@@ -9,6 +9,7 @@ import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
+import org.ays.user.model.enums.SourcePage;
 import org.ays.user.model.mapper.AdminRegistrationApplicationCompleteRequestToUserEntityMapper;
 import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.PermissionRepository;
@@ -116,6 +117,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
         final Optional<RoleEntity> roleEntityFromDatabase = roleRepository
                 .findAllByInstitutionId(institutionId).stream()
                 .filter(RoleEntity::isActive)
+                .filter(roleEntity -> roleEntity.getPermissions().stream().anyMatch(permissionEntity -> permissionEntity.getName().contains(SourcePage.INSTITUTION.getPermission())))
                 .findFirst();
         if (roleEntityFromDatabase.isPresent()) {
             userEntity.setRoles(Set.of(roleEntityFromDatabase.get()));
