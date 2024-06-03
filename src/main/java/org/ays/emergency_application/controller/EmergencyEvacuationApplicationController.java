@@ -8,14 +8,18 @@ import org.ays.common.model.dto.response.AysResponse;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationDetailResponse;
 import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationsResponse;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsDetailResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * REST controller class for managing emergency evacuation application-related operations via HTTP requests.
@@ -32,6 +36,9 @@ class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
 
+
+    private final EmergencyEvacuationApplicationToApplicationsDetailResponseMapper emergencyEvacuationApplicationToApplicationsDetailResponseMapper = EmergencyEvacuationApplicationToApplicationsDetailResponseMapper.initialize();
+
     // TODO AYS-222 : Add Javadoc
     @PostMapping("/emergency-evacuation-applications")
     @PreAuthorize("hasAnyAuthority('application:evacuation:list')")
@@ -45,6 +52,20 @@ class EmergencyEvacuationApplicationController {
                 .content(emergencyEvacuationApplicationToApplicationsResponseMapper.map(pageOfEmergencyEvacuationApplications.getContent()))
                 .build();
         return AysResponse.successOf(pageOfEmergencyEvacuationApplicationsResponse);
+    }
+
+    // TODO AYS-223 : Add Javadoc
+    @GetMapping("/emergency-evacuation-application/{id}")
+    @PreAuthorize("hasAuthority('application:evacuation:detail')")
+    public AysResponse<EmergencyEvacuationApplicationDetailResponse> findById(@PathVariable String id) {
+        final EmergencyEvacuationApplication application = emergencyEvacuationApplicationService.findById(id);
+
+        if (application == null) {
+            //return AysResponse.error("Emergency evacuation application not found for id: " + id);
+        }
+
+        final EmergencyEvacuationApplicationDetailResponse response = emergencyEvacuationApplicationToApplicationsDetailResponseMapper.map(application);
+        return AysResponse.successOf(response);
     }
 
     /**
