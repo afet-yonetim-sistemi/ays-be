@@ -114,7 +114,9 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
                               final String institutionId) {
 
         final Optional<RoleEntity> roleEntityFromDatabase = roleRepository
-                .findByInstitutionId(institutionId);
+                .findAllByInstitutionId(institutionId).stream()
+                .filter(RoleEntity::isActive)
+                .findFirst();
         if (roleEntityFromDatabase.isPresent()) {
             userEntity.setRoles(Set.of(roleEntityFromDatabase.get()));
             return;
