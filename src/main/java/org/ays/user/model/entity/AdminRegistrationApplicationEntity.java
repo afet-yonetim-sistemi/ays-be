@@ -117,4 +117,13 @@ public class AdminRegistrationApplicationEntity extends BaseEntity {
     public boolean isRejected() {
         return AdminRegistrationApplicationStatus.REJECTED.equals(this.status);
     }
+
+    /**
+     * Checks if the registration application status is 'VERIFIED'.
+     *
+     * @return true if the status is 'VERIFIED', false otherwise
+     */
+    public boolean isVerified() {
+        return AdminRegistrationApplicationStatus.VERIFIED.equals(this.status);
+    }
 }

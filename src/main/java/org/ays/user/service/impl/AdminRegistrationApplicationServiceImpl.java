@@ -19,6 +19,7 @@ import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.UserRepositoryV2;
 import org.ays.user.service.AdminRegistrationApplicationService;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
+import org.ays.user.util.exception.AysAdminRegistrationApplicationInCompleteException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
@@ -151,8 +152,10 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
         final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationRepository
                 .findById(id)
                 .map(entity -> {
-                    if (checkRejectStatusInvalid(entity)) {
-                        throw new AysAdminRegistrationApplicationAlreadyRejectedException(id, AdminRegistrationApplicationStatus.REJECTED);
+                    if (entity.isRejected() || entity.isVerified()) {
+                        throw new AysAdminRegistrationApplicationAlreadyRejectedException(id, entity.getStatus());
+                    } else if (entity.isWaiting()) {
+                        throw new AysAdminRegistrationApplicationInCompleteException(id, entity.getStatus());
                     } else {
                         return entity;
                     }
@@ -165,10 +168,5 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
 
         userEntity.passivate();
         userRepository.save(userEntity);
-    }
-
-    private boolean checkRejectStatusInvalid(AdminRegistrationApplicationEntity entity) {
-        return entity.isRejected() ||
-                entity.isCompleted();
     }
 }
