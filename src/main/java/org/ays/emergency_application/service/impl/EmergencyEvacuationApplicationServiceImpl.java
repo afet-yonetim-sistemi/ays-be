@@ -59,6 +59,14 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
         );
     }
 
+    // TODO AYS-223 : Add Javadoc
+    @Override
+    public EmergencyEvacuationApplication findById(String id) {
+        EmergencyEvacuationApplicationEntity entity = emergencyEvacuationApplicationRepository.findById(id).orElse(null);
+        if (entity == null) return null; // exception throw edecek
+        return entityToEmergencyEvacuationApplicationMapper.map(entity);
+    }
+
     /**
      * Create an emergency evacuation application to the database
      *
@@ -71,14 +79,6 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
                 .mapForSaving(emergencyEvacuationApplicationRequest);
 
         emergencyEvacuationApplicationRepository.save(applicationEntity);
-    }
-
-    // TODO AYS-223 : Add Javadoc
-    @Override
-    public EmergencyEvacuationApplication findById(String id) {
-        EmergencyEvacuationApplicationEntity entity = emergencyEvacuationApplicationRepository.findById(id).orElse(null);
-        if (entity == null) return null;
-        return entityToEmergencyEvacuationApplicationMapper.map(entity);
     }
 
 }
