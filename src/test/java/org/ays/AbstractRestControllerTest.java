@@ -64,6 +64,7 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
     private AysParameterService parameterService;
 
     @BeforeEach
+    @SuppressWarnings("OptionalGetWithoutIsPresent disabled because of the test data is valid")
     public void initializeAuth() {
         Set<AysParameter> parameters = AysParameterBuilder.getParameters();
         Mockito.when(parameterService.getParameters(Mockito.anyString()))
