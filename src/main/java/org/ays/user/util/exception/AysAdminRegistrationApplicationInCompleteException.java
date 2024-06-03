@@ -10,7 +10,7 @@ import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
  * This exception is a subclass of AysProcessException, which is typically used to indicate that an entity or
  * resource was incorrectly used during the process.
  * Typically, this exception is thrown when a rejection operation is performed on an admin register application
- * entity to an incomplete application.
+ * entity to an incomplete application, where its status is not set to 'COMPLETE'.
  */
 public class AysAdminRegistrationApplicationInCompleteException extends AysInvalidStatusException {
 

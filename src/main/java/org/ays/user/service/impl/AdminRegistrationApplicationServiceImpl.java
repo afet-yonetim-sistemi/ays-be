@@ -18,6 +18,7 @@ import org.ays.user.model.mapper.AdminRegistrationApplicationEntityToAdminRegist
 import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.UserRepositoryV2;
 import org.ays.user.service.AdminRegistrationApplicationService;
+import org.ays.user.util.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationInCompleteException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
@@ -129,8 +130,16 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
     public void approve(String id) {
         final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationRepository
                 .findById(id)
-                .filter(AdminRegistrationApplicationEntity::isCompleted)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.COMPLETED));
+                .map(entity -> {
+                    if (entity.isRejected() || entity.isVerified()) {
+                        throw new AysAdminRegistrationApplicationAlreadyApprovedException(id, entity.getStatus());
+                    } else if (entity.isWaiting()) {
+                        throw new AysAdminRegistrationApplicationInCompleteException(id, entity.getStatus());
+                    } else {
+                        return entity;
+                    }
+                })
+                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
         final UserEntityV2 userEntity = registerApplicationEntity.getUser();
 
         registerApplicationEntity.verify();
