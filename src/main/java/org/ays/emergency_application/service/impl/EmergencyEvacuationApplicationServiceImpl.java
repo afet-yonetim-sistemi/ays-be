@@ -33,7 +33,8 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     @Override
     public void create(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
         EmergencyEvacuationApplicationEntity applicationEntity = emergencyEvacuationApplicationRequestToEntityMapper
-                .mapForSaving(emergencyEvacuationApplicationRequest);
+                .map(emergencyEvacuationApplicationRequest);
+        applicationEntity.pending();
 
         emergencyEvacuationApplicationRepository.save(applicationEntity);
     }

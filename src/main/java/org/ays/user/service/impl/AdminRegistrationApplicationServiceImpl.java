@@ -111,10 +111,13 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
             throw new AysInstitutionNotExistException(request.getInstitutionId());
         }
 
-        AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.mapForSaving(request);
-        adminRegistrationApplicationRepository.save(registerApplicationEntity);
+        AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper
+                .map(request);
+        applicationEntity.waiting();
 
-        return adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(registerApplicationEntity);
+        adminRegistrationApplicationRepository.save(applicationEntity);
+
+        return adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(applicationEntity);
     }
 
     /**
