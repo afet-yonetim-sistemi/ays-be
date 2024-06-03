@@ -134,12 +134,14 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .build()
         );
         Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAllByIsSuperFalse());
         RoleEntity roleEntity = roleRepository.save(
                 new RoleEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .withInstitutionId(institutionEntity.getId())
                         .withPermissions(permissionEntities)
                         .build()
@@ -147,6 +149,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         UserEntityV2 userEntity = userRepositoryV2.save(
                 new UserEntityV2Builder()
                         .withValidFields()
+                        .withId(null)
                         .withRoles(Set.of(roleEntity))
                         .withInstitutionId(institutionEntity.getId())
                         .build()
@@ -154,6 +157,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
                 new AdminRegisterApplicationEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .withUserId(userEntity.getId())
                         .withInstitutionId(institutionEntity.getId())
                         .build()
@@ -224,6 +228,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .build()
         );
 
@@ -273,11 +278,13 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
                 new AdminRegisterApplicationEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .withUserId(null)
                         .withInstitutionId(institutionEntity.getId())
                         .withStatus(AdminRegistrationApplicationStatus.WAITING)
@@ -316,11 +323,13 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
                 new AdminRegisterApplicationEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .withUserId(null)
                         .withInstitutionId(institutionEntity.getId())
                         .withStatus(AdminRegistrationApplicationStatus.WAITING)
@@ -388,12 +397,14 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .build()
         );
         Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAllByIsSuperFalse());
         RoleEntity roleEntity = roleRepository.save(
                 new RoleEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .withInstitutionId(institutionEntity.getId())
                         .withPermissions(permissionEntities)
                         .build()
@@ -401,6 +412,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         UserEntityV2 userEntity = userRepositoryV2.save(
                 new UserEntityV2Builder()
                         .withValidFields()
+                        .withId(null)
                         .withRoles(Set.of(roleEntity))
                         .withInstitutionId(institutionEntity.getId())
                         .withStatus(UserStatus.NOT_VERIFIED)
@@ -409,6 +421,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
                 new AdminRegisterApplicationEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .withUserId(userEntity.getId())
                         .withInstitutionId(institutionEntity.getId())
                         .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
@@ -452,12 +465,14 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .build()
         );
         Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAllByIsSuperFalse());
         RoleEntity roleEntity = roleRepository.save(
                 new RoleEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .withInstitutionId(institutionEntity.getId())
                         .withPermissions(permissionEntities)
                         .build()
@@ -465,6 +480,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         UserEntityV2 userEntity = userRepositoryV2.save(
                 new UserEntityV2Builder()
                         .withValidFields()
+                        .withId(null)
                         .withRoles(Set.of(roleEntity))
                         .withInstitutionId(institutionEntity.getId())
                         .withStatus(UserStatus.NOT_VERIFIED)
@@ -473,6 +489,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
                 new AdminRegisterApplicationEntityBuilder()
                         .withValidFields()
+                        .withId(null)
                         .withUserId(userEntity.getId())
                         .withInstitutionId(institutionEntity.getId())
                         .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
