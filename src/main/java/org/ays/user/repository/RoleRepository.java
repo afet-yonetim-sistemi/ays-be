@@ -3,7 +3,6 @@ package org.ays.user.repository;
 import org.ays.user.model.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -13,10 +12,10 @@ import java.util.Set;
 public interface RoleRepository extends JpaRepository<RoleEntity, String> {
 
     /**
-     * Finds a {@link RoleEntity} by the given institution ID.
+     * Finds all {@link RoleEntity} instances associated with the given institution ID.
      *
      * @param institutionId the ID of the institution
-     * @return an {@link Optional} containing the {@link RoleEntity} if found, or empty if not found
+     * @return a {@link Set} containing all {@link RoleEntity} instances associated with the given institution ID
      */
     Set<RoleEntity> findAllByInstitutionId(String institutionId);
 
