@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception thrown when a user is active and attempting to perform an action that requires an active user.
  */
-public class AysUserAlreadyActiveException extends AysAlreadyException {
+public final class AysUserAlreadyActiveException extends AysAlreadyException {
 
     /**
      * Unique serial version ID.

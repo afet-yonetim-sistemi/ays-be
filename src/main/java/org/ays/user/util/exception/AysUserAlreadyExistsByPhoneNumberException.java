@@ -8,7 +8,7 @@ import java.io.Serial;
 /**
  * This exception is thrown when attempting to create a user with a phone number that already exists in the system.
  */
-public class AysUserAlreadyExistsByPhoneNumberException extends AysAlreadyException {
+public final class AysUserAlreadyExistsByPhoneNumberException extends AysAlreadyException {
 
     /**
      * Unique identifier for serialization.

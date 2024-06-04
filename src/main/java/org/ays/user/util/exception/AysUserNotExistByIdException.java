@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception to be thrown when a user with a given ID does not exist.
  */
-public class AysUserNotExistByIdException extends AysNotExistException {
+public final class AysUserNotExistByIdException extends AysNotExistException {
 
     /**
      * Unique serial version ID.

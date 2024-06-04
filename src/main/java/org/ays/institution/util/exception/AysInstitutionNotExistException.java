@@ -8,7 +8,7 @@ import java.io.Serial;
 /**
  * Exception thrown when an institution does not exist in the system.
  */
-public class AysInstitutionNotExistException extends AysNotExistException {
+public final class AysInstitutionNotExistException extends AysNotExistException {
 
     /**
      * Unique identifier for serialization.

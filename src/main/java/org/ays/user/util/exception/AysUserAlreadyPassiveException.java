@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception thrown when a user is passive and attempting to perform an action that requires a passive user.
  */
-public class AysUserAlreadyPassiveException extends AysAlreadyException {
+public final class AysUserAlreadyPassiveException extends AysAlreadyException {
 
     /**
      * Unique serial version ID.

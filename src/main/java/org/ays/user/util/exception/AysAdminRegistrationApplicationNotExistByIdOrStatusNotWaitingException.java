@@ -12,7 +12,7 @@ import java.io.Serial;
  * Typically, this exception is thrown when an operation or query is performed on an admin register application
  * entity using an ID that does not correspond to an existing admin register application.
  */
-public class AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException extends AysNotExistException {
+public final class AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException extends AysNotExistException {
 
     /**
      * Unique identifier for serialization.

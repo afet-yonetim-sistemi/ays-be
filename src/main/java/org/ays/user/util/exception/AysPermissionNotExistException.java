@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Exception to be thrown when a permission with a given ID does not exist.
  */
-public class AysPermissionNotExistException extends AysNotExistException {
+public final class AysPermissionNotExistException extends AysNotExistException {
 
     /**
      * Unique serial version ID.
