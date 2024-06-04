@@ -18,6 +18,6 @@ public class AysAdminRegistrationApplicationAlreadyApprovedException extends Ays
      */
     public AysAdminRegistrationApplicationAlreadyApprovedException(final String id,
                                                                    final AdminRegistrationApplicationStatus applicationStatus) {
-        super("ADMIN REGISTRATION APPLICATION WAS ALREADY APPROVED OR REJECTED WITH id: " + id + ", status:" + applicationStatus);
+        super("admin registration application was already approved or rejected! id: " + id + ", status:" + applicationStatus);
     }
 }
