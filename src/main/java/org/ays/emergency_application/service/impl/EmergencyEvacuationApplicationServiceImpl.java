@@ -59,11 +59,14 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
         );
     }
 
-    // TODO AYS-223 : Add Javadoc
+    /**
+     * Retrieves an emergency evacuation application by its ID.
+     * @param id The ID of the emergency evacuation application.
+     * @return the emergency evacuation application corresponding to the given ID.
+     */
     @Override
     public EmergencyEvacuationApplication findById(String id) {
         EmergencyEvacuationApplicationEntity entity = emergencyEvacuationApplicationRepository.findById(id).orElse(null);
-        if (entity == null) return null; // exception throw edecek
         return entityToEmergencyEvacuationApplicationMapper.map(entity);
     }
 
