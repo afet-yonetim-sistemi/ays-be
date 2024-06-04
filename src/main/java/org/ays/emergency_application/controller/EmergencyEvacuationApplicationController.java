@@ -54,16 +54,15 @@ class EmergencyEvacuationApplicationController {
         return AysResponse.successOf(pageOfEmergencyEvacuationApplicationsResponse);
     }
 
-    // TODO AYS-223 : Add Javadoc
+    /**
+     * Handles GET requests for retrieving the details of an emergency evacuation application by its ID.
+     * @param id the ID of the emergency evacuation application to retrieve
+     * @return a response entity containing the details of the emergency evacuation application
+     */
     @GetMapping("/emergency-evacuation-application/{id}")
     @PreAuthorize("hasAuthority('application:evacuation:detail')")
     public AysResponse<EmergencyEvacuationApplicationDetailResponse> findById(@PathVariable String id) {
         final EmergencyEvacuationApplication application = emergencyEvacuationApplicationService.findById(id);
-
-        if (application == null) {
-            //return AysResponse.error("Emergency evacuation application not found for id: " + id);
-        }
-
         final EmergencyEvacuationApplicationDetailResponse response = emergencyEvacuationApplicationToApplicationsDetailResponseMapper.map(application);
         return AysResponse.successOf(response);
     }
