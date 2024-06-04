@@ -29,7 +29,7 @@ public class AysAdminRegistrationApplicationInCompleteException extends AysInval
     public AysAdminRegistrationApplicationInCompleteException(final String id,
                                                               final AdminRegistrationApplicationStatus applicationStatus) {
 
-        super("ADMIN REGISTRATION APPLICATION IS NOT COMPLETE WITH id: " + id + ", status:" + applicationStatus);
+        super("admin registration application is not complete! id: " + id + ", status:" + applicationStatus);
     }
 
 }
