@@ -29,7 +29,7 @@ public class AysAdminRegistrationApplicationAlreadyRejectedException extends Ays
     public AysAdminRegistrationApplicationAlreadyRejectedException(final String id,
                                                                    final AdminRegistrationApplicationStatus applicationStatus) {
 
-        super("ADMIN REGISTRATION APPLICATION WAS ALREADY REJECTED WITH id: " + id + ", status:" + applicationStatus);
+        super("admin registration application was already rejected! id: " + id + ", status:" + applicationStatus);
     }
 
 }
