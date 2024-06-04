@@ -32,7 +32,12 @@ class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
 
-    // TODO AYS-222 : Add Javadoc
+    /**
+     * Handles POST requests for retrieving a paginated list of emergency evacuation applications.
+     *
+     * @param listRequest The request body containing the parameters for listing emergency evacuation applications.
+     * @return A response containing a paginated list of {@link EmergencyEvacuationApplicationsResponse}.
+     */
     @PostMapping("/emergency-evacuation-applications")
     @PreAuthorize("hasAnyAuthority('application:evacuation:list')")
     public AysResponse<AysPageResponse<EmergencyEvacuationApplicationsResponse>> findAll(
