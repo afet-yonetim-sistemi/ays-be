@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception thrown when a token is not valid.
  */
-public class TokenNotValidException extends AysAuthException {
+public final class TokenNotValidException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -22,7 +22,7 @@ public class TokenNotValidException extends AysAuthException {
      * @param cause The cause of the exception.
      */
     public TokenNotValidException(String jwt, Throwable cause) {
-        super("TOKEN IS NOT VALID! token: " + jwt, cause);
+        super("token is not valid! token: " + jwt, cause);
     }
 
 }

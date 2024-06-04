@@ -21,7 +21,7 @@ public class AysUserNotExistByIdException extends AysNotExistException {
      * @param id the ID of the user that does not exist
      */
     public AysUserNotExistByIdException(String id) {
-        super("USER NOT EXIST! id:" + id);
+        super("user not exist! id:" + id);
     }
 
 }

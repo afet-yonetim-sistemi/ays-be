@@ -25,7 +25,7 @@ public class AysAdminRegistrationApplicationSummaryNotExistByIdException extends
      * @param id The ID of the admin registration application that does not exist.
      */
     public AysAdminRegistrationApplicationSummaryNotExistByIdException(String id) {
-        super("ADMIN REGISTRATION APPLICATION NOT EXIST! id:" + id);
+        super("admin registration application not exist! id:" + id);
     }
 
 }

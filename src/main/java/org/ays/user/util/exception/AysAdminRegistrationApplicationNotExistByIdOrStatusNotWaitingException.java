@@ -29,7 +29,7 @@ public class AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingExcept
     public AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException(final String id,
                                                                                   final AdminRegistrationApplicationStatus applicationStatus) {
 
-        super("ADMIN REGISTRATION APPLICATION NOT EXIST OR STATUS IS NOT WAITING! id:" + id + ", status:" + applicationStatus);
+        super("admin registration application not exist or status is not waiting! id:" + id + ", status:" + applicationStatus);
     }
 
 }

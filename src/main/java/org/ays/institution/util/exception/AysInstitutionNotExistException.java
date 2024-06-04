@@ -22,7 +22,7 @@ public class AysInstitutionNotExistException extends AysNotExistException {
      * @param id the ID of the institution that does not exist
      */
     public AysInstitutionNotExistException(String id) {
-        super("INSTITUTION NOT EXIST! ID:" + id);
+        super("institution not exist! ID:" + id);
     }
 
 }

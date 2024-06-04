@@ -35,7 +35,7 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
 
         if (containsOnlyDigits) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY DIGITS")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot contain only digits")
                     .addConstraintViolation();
             return false;
         }
@@ -44,7 +44,7 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
 
         if (containsOnlyPunctuation) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY PUNCTUATION MARKS")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot contain only punctuation marks")
                     .addConstraintViolation();
             return false;
         }
@@ -53,14 +53,14 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
 
         if (containsOnlySpecialCharacters) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY SPECIAL CHARACTERS")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot contain only special characters")
                     .addConstraintViolation();
             return false;
         }
 
         if (!value.matches(VALID_CHARACTERS_REGEX)) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CONTAINS INVALID CHARACTERS")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("contains invalid characters")
                     .addConstraintViolation();
             return false;
         }

@@ -22,7 +22,7 @@ public class AysRoleAlreadyExistsByNameException extends AysAlreadyException {
      * @param name the name of the role that already exists
      */
     public AysRoleAlreadyExistsByNameException(String name) {
-        super("ROLE ALREADY EXIST! name:" + name);
+        super("role already exist! name:" + name);
     }
 
 }

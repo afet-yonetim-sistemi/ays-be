@@ -21,7 +21,7 @@ public class AysUserLoginAttemptNotExistException extends AysNotExistException {
      * @param userId the User ID of the user that does not exist
      */
     public AysUserLoginAttemptNotExistException(String userId) {
-        super("USER LOGIN ATTEMPT NOT EXIST! userId:" + userId);
+        super("user login attempt not exist! userId:" + userId);
     }
 
 }

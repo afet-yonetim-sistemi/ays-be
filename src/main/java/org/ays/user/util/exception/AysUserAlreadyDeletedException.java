@@ -21,7 +21,7 @@ public class AysUserAlreadyDeletedException extends AysAlreadyException {
      * @param id the id of the deleted user
      */
     public AysUserAlreadyDeletedException(String id) {
-        super("USER IS ALREADY DELETED! id:" + id);
+        super("user is already deleted! id:" + id);
     }
 
 }

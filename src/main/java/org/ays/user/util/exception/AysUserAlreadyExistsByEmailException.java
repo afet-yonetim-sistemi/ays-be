@@ -22,7 +22,7 @@ public class AysUserAlreadyExistsByEmailException extends AysAlreadyException {
      * @param emailAddress The email address of the user that already exists.
      */
     public AysUserAlreadyExistsByEmailException(String emailAddress) {
-        super("USER ALREADY EXIST! emailAddress:" + emailAddress);
+        super("user already exist! emailAddress:" + emailAddress);
     }
 
 }

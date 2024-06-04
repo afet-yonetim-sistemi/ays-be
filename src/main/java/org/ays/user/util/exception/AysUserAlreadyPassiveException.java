@@ -21,7 +21,7 @@ public class AysUserAlreadyPassiveException extends AysAlreadyException {
      * @param id the id of the passive user
      */
     public AysUserAlreadyPassiveException(String id) {
-        super("USER IS ALREADY PASSIVE! id:" + id);
+        super("user is already passive! id:" + id);
     }
 
 }

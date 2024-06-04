@@ -21,7 +21,7 @@ public class AysUserAlreadyActiveException extends AysAlreadyException {
      * @param id the id of the active user
      */
     public AysUserAlreadyActiveException(String id) {
-        super("USER IS ALREADY ACTIVE! id:" + id);
+        super("user is already active! id:" + id);
     }
 
 }

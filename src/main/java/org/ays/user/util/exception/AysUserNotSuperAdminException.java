@@ -21,7 +21,7 @@ public class AysUserNotSuperAdminException extends AysAlreadyException {
      * @param id the ID of the user who is not a super admin
      */
     public AysUserNotSuperAdminException(String id) {
-        super("USER IS NOT SUPER ADMIN! id:" + id);
+        super("user is not super admin! id:" + id);
     }
 
 }

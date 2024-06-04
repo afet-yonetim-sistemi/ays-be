@@ -8,7 +8,7 @@ import java.io.Serial;
  * An exception that is thrown when a emailAddress is not valid.
  * Extends {@link AysAuthException}.
  */
-public class EmailAddressNotValidException extends AysAuthException {
+public final class EmailAddressNotValidException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -20,7 +20,7 @@ public class EmailAddressNotValidException extends AysAuthException {
      * Constructs a new {@code emailAddressNotValidException} with a default message.
      */
     public EmailAddressNotValidException(final String emailAddress) {
-        super("EMAIL ADDRESS IS NOT VALID! emailAddress: " + emailAddress);
+        super("email address is not valid! emailAddress: " + emailAddress);
     }
 
 }

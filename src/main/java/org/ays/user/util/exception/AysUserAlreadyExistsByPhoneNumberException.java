@@ -22,7 +22,7 @@ public class AysUserAlreadyExistsByPhoneNumberException extends AysAlreadyExcept
      * @param phoneNumber The phone number that already exists in the system.
      */
     public AysUserAlreadyExistsByPhoneNumberException(AysPhoneNumberRequest phoneNumber) {
-        super("USER ALREADY EXIST! countryCode:" + phoneNumber.getCountryCode() + " , " + "lineNumber:" + phoneNumber.getLineNumber());
+        super("user already exist! countryCode:" + phoneNumber.getCountryCode() + " , " + "lineNumber:" + phoneNumber.getLineNumber());
     }
 
 }
