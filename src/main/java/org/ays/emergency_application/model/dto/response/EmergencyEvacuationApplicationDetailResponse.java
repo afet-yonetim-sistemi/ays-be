@@ -29,7 +29,6 @@ public class EmergencyEvacuationApplicationDetailResponse {
     private Boolean isInPerson;
     private Boolean hasObstaclePersonExist;
     private String notes;
-
     private String createdUser;
     private LocalDateTime createdAt;
     private String updatedUser;
