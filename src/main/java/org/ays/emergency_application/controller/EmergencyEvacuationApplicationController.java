@@ -62,9 +62,9 @@ class EmergencyEvacuationApplicationController {
     @GetMapping("/emergency-evacuation-application/{id}")
     @PreAuthorize("hasAuthority('application:evacuation:detail')")
     public AysResponse<EmergencyEvacuationApplicationDetailResponse> findById(@PathVariable String id) {
-        final EmergencyEvacuationApplication application = emergencyEvacuationApplicationService.findById(id);
-        final EmergencyEvacuationApplicationDetailResponse response = emergencyEvacuationApplicationToApplicationsDetailResponseMapper.map(application);
-        return AysResponse.successOf(response);
+        final EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationService.findById(id);
+        final EmergencyEvacuationApplicationDetailResponse emergencyEvacuationApplicationDetailResponse = emergencyEvacuationApplicationToApplicationsDetailResponseMapper.map(emergencyEvacuationApplication);
+        return AysResponse.successOf(emergencyEvacuationApplicationDetailResponse);
     }
 
     /**
