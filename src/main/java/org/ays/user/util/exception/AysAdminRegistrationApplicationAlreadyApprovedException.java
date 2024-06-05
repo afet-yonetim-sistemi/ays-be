@@ -14,7 +14,8 @@ public class AysAdminRegistrationApplicationAlreadyApprovedException extends Ays
     /**
      * Constructs a new AysAlreadyException with the specified detail message.
      *
-     * @param message the detail message.
+     * @param id the id of the approved application.
+     * @param applicationStatus the status of the already approved application.
      */
     public AysAdminRegistrationApplicationAlreadyApprovedException(final String id,
                                                                    final AdminRegistrationApplicationStatus applicationStatus) {
