@@ -24,6 +24,7 @@ import org.ays.user.model.enums.UserStatus;
 import org.ays.user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.UserRepositoryV2;
+import org.ays.user.util.exception.AysAdminRegistrationApplicationInCompleteException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.user.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
@@ -354,7 +355,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationInCompleteException.class,
                 () -> adminUserRegisterApplicationService.approve(mockId)
         );
 
@@ -460,7 +461,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationInCompleteException.class,
                 () -> adminUserRegisterApplicationService.reject(mockId, mockRequest)
         );
 

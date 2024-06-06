@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.AbstractRestControllerTest;
 import org.ays.common.util.exception.AysAuthException;
+import org.ays.common.util.exception.AysInvalidStatusException;
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.common.util.exception.AysProcessException;
 import org.ays.common.util.exception.model.AysErrorResponse;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.io.Serial;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
@@ -273,6 +275,31 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
+    }
+
+    @Test
+    void givenInvalidStatus_whenThrowAysInvalidStatusException_thenReturnAysErrorWithReturnAysError() {
+
+        // Given
+        AysInvalidStatusException mockException = new AysInvalidStatusException("Invalid status") {
+            @Serial
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public String getMessage() {
+                return "Invalid status";
+            }
+        };
+
+        // When
+        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.BAD_REQUEST.getName())
+                .message(mockException.getMessage())
+                .build();
+
+        // Then
+        AysErrorResponse errorResponse = globalExceptionHandler.handleInvalidStatusError(mockException);
         this.checkAysError(mockErrorResponse, errorResponse);
     }
 

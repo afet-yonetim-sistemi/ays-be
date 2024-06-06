@@ -1,11 +1,17 @@
 package org.ays.user.controller;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.ays.AbstractSystemTest;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.user.model.AdminRegistrationApplication;
@@ -41,18 +47,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
 
+    private static final String BASE_PATH = "/api/v1";
     private final AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper = AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.initialize();
     private final AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper.initialize();
     private final AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper.initialize();
     private final AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper.initialize();
-
-    private static final String BASE_PATH = "/api/v1";
 
     @Test
     void givenValidAdminRegisterApplicationListRequest_whenAdminRegisterApplicationsFound_thenReturnAdminRegisterApplicationsResponse() throws Exception {
@@ -410,6 +411,159 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
+    void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplicationForAlreadyApproved_thenReturnHttp409Conflict() throws Exception {
+        // Initialize
+        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
+                .withValidFields()
+                .build();
+        institutionRepository.save(institutionEntity);
+
+        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
+        UserEntityV2 userEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .withRoles(Set.of(roleEntity))
+                .withInstitutionId(institutionEntity.getId())
+                .withStatus(UserStatus.NOT_VERIFIED)
+                .build();
+        userRepositoryV2.save(userEntity);
+
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminRegistrationApplicationStatus.VERIFIED)
+                .withUserId(userEntity.getId())
+                .withInstitutionId(userEntity.getInstitutionId())
+                .build();
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
+
+        // Given
+        String applicationId = adminRegistrationApplicationEntity.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(applicationId).concat("/approve"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminTokenV2.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplicationForWaiting_thenReturnHttp400BadRequest() throws Exception {
+        // Initialize
+        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
+                .withValidFields()
+                .build();
+        institutionRepository.save(institutionEntity);
+
+        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
+        UserEntityV2 userEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .withRoles(Set.of(roleEntity))
+                .withInstitutionId(institutionEntity.getId())
+                .withStatus(UserStatus.NOT_VERIFIED)
+                .build();
+        userRepositoryV2.save(userEntity);
+
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminRegistrationApplicationStatus.WAITING)
+                .withUserId(userEntity.getId())
+                .withInstitutionId(userEntity.getInstitutionId())
+                .build();
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
+
+        // Given
+        String applicationId = adminRegistrationApplicationEntity.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(applicationId).concat("/approve"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminTokenV2.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.BAD_REQUEST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplicationForNonExisting_thenReturnHttp404NotFound() throws Exception {
+        // Initialize
+        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
+                .withValidFields()
+                .build();
+        institutionRepository.save(institutionEntity);
+
+        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
+        UserEntityV2 userEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .withRoles(Set.of(roleEntity))
+                .withInstitutionId(institutionEntity.getId())
+                .withStatus(UserStatus.NOT_VERIFIED)
+                .build();
+        userRepositoryV2.save(userEntity);
+
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
+                .withUserId(userEntity.getId())
+                .withInstitutionId(userEntity.getInstitutionId())
+                .build();
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
+
+        // Given
+        String someRandomId = AysRandomUtil.generateUUID();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(someRandomId).concat("/approve"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminTokenV2.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.NOT_FOUND;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isNotFound())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
     void givenValidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnNothing() throws Exception {
 
         // Initialize
@@ -459,6 +613,171 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenValidAdminRegisterApplicationRejectRequest_whenRejectAdminRegisterApplicationForAlreadyRejected_thenReturnHttp409Conflict() throws Exception {
+        // Initialize
+        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
+                .withValidFields()
+                .build();
+        institutionRepository.save(institutionEntity);
+
+        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
+        UserEntityV2 userEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .withRoles(Set.of(roleEntity))
+                .withInstitutionId(institutionEntity.getId())
+                .withStatus(UserStatus.NOT_VERIFIED)
+                .build();
+        userRepositoryV2.save(userEntity);
+
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminRegistrationApplicationStatus.REJECTED)
+                .withUserId(userEntity.getId())
+                .withInstitutionId(userEntity.getInstitutionId())
+                .build();
+
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
+
+
+        // Given
+        String applicationId = adminRegistrationApplicationEntity.getId();
+        AdminRegistrationApplicationRejectRequest rejectRequest = new AdminRegistrationApplicationRejectRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/reject");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminTokenV2.getAccessToken(), rejectRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenValidAdminRegisterApplicationRejectRequest_whenRejectAdminRegisterApplicationForWaiting_thenReturnHttp400BadRequest() throws Exception {
+        // Initialize
+        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
+                .withValidFields()
+                .build();
+        institutionRepository.save(institutionEntity);
+
+        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
+        UserEntityV2 userEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .withRoles(Set.of(roleEntity))
+                .withInstitutionId(institutionEntity.getId())
+                .withStatus(UserStatus.NOT_VERIFIED)
+                .build();
+        userRepositoryV2.save(userEntity);
+
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminRegistrationApplicationStatus.WAITING)
+                .withUserId(userEntity.getId())
+                .withInstitutionId(userEntity.getInstitutionId())
+                .build();
+
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
+
+
+        // Given
+        String applicationId = adminRegistrationApplicationEntity.getId();
+        AdminRegistrationApplicationRejectRequest rejectRequest = new AdminRegistrationApplicationRejectRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/reject");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminTokenV2.getAccessToken(), rejectRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.BAD_REQUEST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+    @Test
+    void givenValidAdminRegisterApplicationRejectRequest_whenRejectAdminRegisterApplicationForNonExisting_thenReturnHttp404NotFound() throws Exception {
+        // Initialize
+        InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
+                .withValidFields()
+                .build();
+        institutionRepository.save(institutionEntity);
+
+        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
+        RoleEntity roleEntity = roleRepository.save(
+                new RoleEntityBuilder()
+                        .withValidFields()
+                        .withInstitutionId(institutionEntity.getId())
+                        .withPermissions(permissionEntities)
+                        .build()
+        );
+
+        UserEntityV2 userEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .withRoles(Set.of(roleEntity))
+                .withInstitutionId(institutionEntity.getId())
+                .withStatus(UserStatus.NOT_VERIFIED)
+                .build();
+        userRepositoryV2.save(userEntity);
+
+        AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = new AdminRegisterApplicationEntityBuilder()
+                .withValidFields()
+                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
+                .withUserId(userEntity.getId())
+                .withInstitutionId(userEntity.getInstitutionId())
+                .build();
+
+        adminRegistrationApplicationRepository.save(adminRegistrationApplicationEntity);
+
+
+        // Given
+        String someRandomId = AysRandomUtil.generateUUID();
+        AdminRegistrationApplicationRejectRequest rejectRequest = new AdminRegistrationApplicationRejectRequestBuilder()
+                .withValidFields()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(someRandomId).concat("/reject");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminTokenV2.getAccessToken(), rejectRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.NOT_FOUND;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isNotFound())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
