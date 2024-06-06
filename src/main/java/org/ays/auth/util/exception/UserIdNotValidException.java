@@ -8,7 +8,7 @@ import java.io.Serial;
  * An exception that is thrown when a userId is not valid.
  * Extends {@link AysAuthException}.
  */
-public class UserIdNotValidException extends AysAuthException {
+public final class UserIdNotValidException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -20,7 +20,7 @@ public class UserIdNotValidException extends AysAuthException {
      * Constructs a new {@code UserIdNotValidException} with a default message.
      */
     public UserIdNotValidException(final String userId) {
-        super("USER ID IS NOT VALID! userId: " + userId);
+        super("user id is not valid! userId: " + userId);
     }
 
 }

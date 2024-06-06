@@ -9,7 +9,7 @@ import java.io.Serial;
  * Extends {@link AysAuthException}.
  */
 @Deprecated(since = "UsernameNotValidException V2 Production'a alınınca burası silinecektir.", forRemoval = true)
-public class UsernameNotValidException extends AysAuthException {
+public final class UsernameNotValidException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -21,7 +21,7 @@ public class UsernameNotValidException extends AysAuthException {
      * Constructs a new {@code UsernameNotValidException} with a default message.
      */
     public UsernameNotValidException(final String username) {
-        super("USERNAME IS NOT VALID! username: " + username);
+        super("username is not valid! username: " + username);
     }
 
 }

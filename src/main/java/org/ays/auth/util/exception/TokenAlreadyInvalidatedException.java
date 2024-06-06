@@ -9,7 +9,7 @@ import java.io.Serial;
  * that is already marked as invalid.
  * It extends the AysAuthException class and provides a specific error message indicating the already invalidated token.
  */
-public class TokenAlreadyInvalidatedException extends AysAuthException {
+public final class TokenAlreadyInvalidatedException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -23,7 +23,7 @@ public class TokenAlreadyInvalidatedException extends AysAuthException {
      * @param tokenId the ID of the token that is already invalidated
      */
     public TokenAlreadyInvalidatedException(String tokenId) {
-        super("TOKEN IS ALREADY INVALIDATED! tokenId: " + tokenId);
+        super("token is already invalidated! tokenId: " + tokenId);
     }
 
 }

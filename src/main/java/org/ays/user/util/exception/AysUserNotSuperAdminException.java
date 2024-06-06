@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception to be thrown when a user is not a super admin but tries to perform an action that requires super admin privileges.
  */
-public class AysUserNotSuperAdminException extends AysAlreadyException {
+public final class AysUserNotSuperAdminException extends AysAlreadyException {
 
     /**
      * Unique identifier for serialization.
@@ -21,7 +21,7 @@ public class AysUserNotSuperAdminException extends AysAlreadyException {
      * @param id the ID of the user who is not a super admin
      */
     public AysUserNotSuperAdminException(String id) {
-        super("USER IS NOT SUPER ADMIN! id:" + id);
+        super("user is not super admin! id:" + id);
     }
 
 }

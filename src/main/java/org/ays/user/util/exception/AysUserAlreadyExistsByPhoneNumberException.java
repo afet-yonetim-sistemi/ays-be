@@ -8,7 +8,7 @@ import java.io.Serial;
 /**
  * This exception is thrown when attempting to create a user with a phone number that already exists in the system.
  */
-public class AysUserAlreadyExistsByPhoneNumberException extends AysAlreadyException {
+public final class AysUserAlreadyExistsByPhoneNumberException extends AysAlreadyException {
 
     /**
      * Unique identifier for serialization.
@@ -22,7 +22,7 @@ public class AysUserAlreadyExistsByPhoneNumberException extends AysAlreadyExcept
      * @param phoneNumber The phone number that already exists in the system.
      */
     public AysUserAlreadyExistsByPhoneNumberException(AysPhoneNumberRequest phoneNumber) {
-        super("USER ALREADY EXIST! countryCode:" + phoneNumber.getCountryCode() + " , " + "lineNumber:" + phoneNumber.getLineNumber());
+        super("user already exist! countryCode:" + phoneNumber.getCountryCode() + " , " + "lineNumber:" + phoneNumber.getLineNumber());
     }
 
 }
