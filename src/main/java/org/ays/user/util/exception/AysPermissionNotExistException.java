@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Exception to be thrown when a permission with a given ID does not exist.
  */
-public class AysPermissionNotExistException extends AysNotExistException {
+public final class AysPermissionNotExistException extends AysNotExistException {
 
     /**
      * Unique serial version ID.
@@ -19,10 +19,10 @@ public class AysPermissionNotExistException extends AysNotExistException {
     /**
      * Constructs a new AysPermissionNotExistException with the specified permission IDs.
      *
-     * @param notFoundIds the IDs of the permissions don't exist
+     * @param ids the IDs of the permissions don't exist
      */
     public AysPermissionNotExistException(Set<String> ids) {
-        super("THE FOLLOWING PERMISSIONS WERE NOT FOUND! permissionIds:" + ids);
+        super("the following permissions were not found! permissionIds:" + ids);
     }
 
 }

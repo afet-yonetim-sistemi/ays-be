@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception thrown when a user is deleted and attempting to perform an action that requires a deleted user.
  */
-public class AysUserAlreadyDeletedException extends AysAlreadyException {
+public final class AysUserAlreadyDeletedException extends AysAlreadyException {
 
     /**
      * Unique serial version ID.
@@ -21,7 +21,7 @@ public class AysUserAlreadyDeletedException extends AysAlreadyException {
      * @param id the id of the deleted user
      */
     public AysUserAlreadyDeletedException(String id) {
-        super("USER IS ALREADY DELETED! id:" + id);
+        super("user is already deleted! id:" + id);
     }
 
 }

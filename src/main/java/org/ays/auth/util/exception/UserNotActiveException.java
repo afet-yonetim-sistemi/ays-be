@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception thrown when attempting to authenticate a user that is not active.
  */
-public class UserNotActiveException extends AysAuthException {
+public final class UserNotActiveException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -21,7 +21,7 @@ public class UserNotActiveException extends AysAuthException {
      * @param userId the userId of the user that is not active
      */
     public UserNotActiveException(String userId) {
-        super("USER IS NOT ACTIVE! userId:" + userId);
+        super("user is not active! userId:" + userId);
     }
 
 }

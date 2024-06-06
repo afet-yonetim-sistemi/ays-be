@@ -9,7 +9,7 @@ import java.io.Serial;
  * This exception should be thrown when a user attempts to authenticate but their account
  * is not yet verified. The exception includes the userId of the user in question.
  */
-public class UserNotVerifiedException extends AysAuthException {
+public final class UserNotVerifiedException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -23,7 +23,7 @@ public class UserNotVerifiedException extends AysAuthException {
      * @param userId the userId of the user who is not verified
      */
     public UserNotVerifiedException(String userId) {
-        super("USER IS NOT VERIFIED! userId:" + userId);
+        super("user is not verified! userId:" + userId);
     }
 
 }

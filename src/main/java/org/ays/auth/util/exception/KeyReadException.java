@@ -11,7 +11,7 @@ import java.io.Serial;
  * This exception includes the original exception that caused the failure to read the key, which can be accessed
  * using the getCause() method.
  */
-public class KeyReadException extends RuntimeException {
+public final class KeyReadException extends RuntimeException {
 
     /**
      * Unique identifier for serialization.
@@ -25,7 +25,7 @@ public class KeyReadException extends RuntimeException {
      * @param exception The original exception that caused the failure to read the key.
      */
     public KeyReadException(Exception exception) {
-        super("KEY COULD NOT BE READ!", exception);
+        super("key could not be read!", exception);
     }
 
 }
