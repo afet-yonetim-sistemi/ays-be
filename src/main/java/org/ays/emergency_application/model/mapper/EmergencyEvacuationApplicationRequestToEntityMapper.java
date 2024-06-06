@@ -1,16 +1,11 @@
 package org.ays.emergency_application.model.mapper;
 
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.mapper.BaseMapper;
-import org.ays.common.util.AysRandomUtil;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 import org.mapstruct.Mapper;
-import org.mapstruct.Named;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-
-import java.util.Optional;
 
 /**
  * EmergencyEvacuationRequestToEmergencyEvacuationEntityMapper is an interface that defines the
@@ -23,6 +18,13 @@ import java.util.Optional;
 @Mapper
 public interface EmergencyEvacuationApplicationRequestToEntityMapper extends BaseMapper<EmergencyEvacuationApplicationRequest, EmergencyEvacuationApplicationEntity> {
 
+    @Override
+    @Mapping(target = "countryCode", source = "phoneNumber.countryCode")
+    @Mapping(target = "lineNumber", source = "phoneNumber.lineNumber")
+    @Mapping(target = "applicantCountryCode", source = "applicantPhoneNumber.countryCode")
+    @Mapping(target = "applicantLineNumber", source = "applicantPhoneNumber.lineNumber")
+    EmergencyEvacuationApplicationEntity map(EmergencyEvacuationApplicationRequest applicationRequest);
+
     /**
      * Initializes the mapper.
      *
@@ -30,38 +32,6 @@ public interface EmergencyEvacuationApplicationRequestToEntityMapper extends Bas
      */
     static EmergencyEvacuationApplicationRequestToEntityMapper initialize() {
         return Mappers.getMapper(EmergencyEvacuationApplicationRequestToEntityMapper.class);
-    }
-
-    /**
-     * Maps an {@link EmergencyEvacuationApplicationRequest} object to an {@link EmergencyEvacuationApplicationEntity}
-     * object for saving in the database.
-     *
-     * @param applicationRequest the {@link EmergencyEvacuationApplicationRequest} object to be mapped.
-     * @return the mapped {@link EmergencyEvacuationApplicationEntity} object.
-     */
-    @Named("mapForSaving")
-    default EmergencyEvacuationApplicationEntity mapForSaving(EmergencyEvacuationApplicationRequest applicationRequest) {
-        Optional<AysPhoneNumberRequest> optionalApplicantPhoneNumber = Optional
-                .ofNullable(applicationRequest.getApplicantPhoneNumber());
-        return EmergencyEvacuationApplicationEntity.builder()
-                .firstName(applicationRequest.getFirstName())
-                .lastName(applicationRequest.getLastName())
-                .referenceNumber(AysRandomUtil.generateNumber(10).toString())
-                .countryCode(applicationRequest.getPhoneNumber().getCountryCode())
-                .lineNumber(applicationRequest.getPhoneNumber().getLineNumber())
-                .sourceCity(applicationRequest.getSourceCity())
-                .sourceDistrict(applicationRequest.getSourceDistrict())
-                .address(applicationRequest.getAddress())
-                .seatingCount(applicationRequest.getSeatingCount())
-                .targetCity(applicationRequest.getTargetCity())
-                .targetDistrict(applicationRequest.getTargetDistrict())
-                .status(EmergencyEvacuationApplicationStatus.PENDING)
-                .applicantFirstName(applicationRequest.getApplicantFirstName())
-                .applicantLastName(applicationRequest.getApplicantLastName())
-                .applicantCountryCode(optionalApplicantPhoneNumber.map(AysPhoneNumberRequest::getCountryCode).orElse(null))
-                .applicantLineNumber(optionalApplicantPhoneNumber.map(AysPhoneNumberRequest::getLineNumber).orElse(null))
-                .isInPerson(Boolean.valueOf(optionalApplicantPhoneNumber.isEmpty()))
-                .build();
     }
 
 }

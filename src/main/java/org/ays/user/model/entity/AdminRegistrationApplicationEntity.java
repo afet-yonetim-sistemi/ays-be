@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -38,6 +40,7 @@ public class AdminRegistrationApplicationEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "INSTITUTION_ID")
@@ -97,6 +100,13 @@ public class AdminRegistrationApplicationEntity extends BaseEntity {
      */
     public void verify() {
         this.status = AdminRegistrationApplicationStatus.VERIFIED;
+    }
+
+    /**
+     * Marks the registration application as waiting.
+     */
+    public void waiting() {
+        this.status = AdminRegistrationApplicationStatus.WAITING;
     }
 
     /**

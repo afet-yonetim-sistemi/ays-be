@@ -2,6 +2,8 @@ package org.ays.user.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -11,7 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ays.common.model.entity.BaseEntity;
-import org.ays.common.util.AysRandomUtil;
 
 import java.time.LocalDateTime;
 
@@ -42,8 +43,8 @@ public class UserLoginAttemptEntity extends BaseEntity {
      */
     @Id
     @Column(name = "ID")
-    @Builder.Default
-    private String id = AysRandomUtil.generateUUID();
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     /**
      * The user ID associated with the login attempt.

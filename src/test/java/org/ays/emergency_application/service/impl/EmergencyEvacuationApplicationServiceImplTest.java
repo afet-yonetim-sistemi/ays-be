@@ -34,7 +34,8 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
 
         // When
         EmergencyEvacuationApplicationEntity mockApplicationEntity = emergencyEvacuationApplicationRequestToEntityMapper
-                .mapForSaving(mockApplicationRequest);
+                .map(mockApplicationRequest);
+        mockApplicationEntity.pending();
         Mockito
                 .when(emergencyEvacuationApplicationRepository.save(Mockito.any(EmergencyEvacuationApplicationEntity.class)))
                 .thenReturn(mockApplicationEntity);

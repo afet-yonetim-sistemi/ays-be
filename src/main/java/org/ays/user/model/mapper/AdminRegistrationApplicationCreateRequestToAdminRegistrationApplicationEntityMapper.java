@@ -1,12 +1,9 @@
 package org.ays.user.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
-import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
-import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 import org.mapstruct.Mapper;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -21,23 +18,6 @@ import org.mapstruct.factory.Mappers;
 public interface AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper extends BaseMapper<AdminRegistrationApplicationCreateRequest, AdminRegistrationApplicationEntity> {
 
     /**
-     * Maps an {@link AdminRegistrationApplicationCreateRequest} object to an {@link AdminRegistrationApplicationEntity}
-     * object for saving in the database.
-     *
-     * @param registerRequest the {@link AdminRegistrationApplicationCreateRequest} object to be mapped.
-     * @return the mapped {@link AdminRegistrationApplicationEntity} object.
-     */
-    @Named("mapForSaving")
-    default AdminRegistrationApplicationEntity mapForSaving(AdminRegistrationApplicationCreateRequest registerRequest) {
-        return AdminRegistrationApplicationEntity.builder()
-                .id(AysRandomUtil.generateUUID())
-                .institutionId(registerRequest.getInstitutionId())
-                .reason(registerRequest.getReason())
-                .status(AdminRegistrationApplicationStatus.WAITING)
-                .build();
-    }
-
-    /**
      * Initializes the mapper.
      *
      * @return the initialized mapper object.
@@ -45,4 +25,5 @@ public interface AdminRegistrationApplicationCreateRequestToAdminRegistrationApp
     static AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper initialize() {
         return Mappers.getMapper(AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.class);
     }
+
 }
