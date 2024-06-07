@@ -110,6 +110,10 @@ public class AysErrorResponse {
          */
         PROCESS_ERROR("PROCESS ERROR"),
         /**
+         * BAD_REQUEST header.
+         */
+        BAD_REQUEST("BAD REQUEST"),
+        /**
          * AUTH_ERROR header.
          */
         AUTH_ERROR("AUTH ERROR");

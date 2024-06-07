@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -38,6 +40,7 @@ public class AdminRegistrationApplicationEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "INSTITUTION_ID")
@@ -100,6 +103,13 @@ public class AdminRegistrationApplicationEntity extends BaseEntity {
     }
 
     /**
+     * Marks the registration application as waiting.
+     */
+    public void waiting() {
+        this.status = AdminRegistrationApplicationStatus.WAITING;
+    }
+
+    /**
      * Marks the registration application as rejected and sets the rejection reason.
      *
      * @param rejectReason the reason for rejection
@@ -109,4 +119,21 @@ public class AdminRegistrationApplicationEntity extends BaseEntity {
         this.status = AdminRegistrationApplicationStatus.REJECTED;
     }
 
+    /**
+     * Checks if the registration application status is 'REJECTED'.
+     *
+     * @return true if the status is 'REJECTED', false otherwise
+     */
+    public boolean isRejected() {
+        return AdminRegistrationApplicationStatus.REJECTED.equals(this.status);
+    }
+
+    /**
+     * Checks if the registration application status is 'VERIFIED'.
+     *
+     * @return true if the status is 'VERIFIED', false otherwise
+     */
+    public boolean isVerified() {
+        return AdminRegistrationApplicationStatus.VERIFIED.equals(this.status);
+    }
 }

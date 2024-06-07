@@ -1,7 +1,6 @@
 package org.ays.user.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
-import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.enums.UserStatus;
@@ -24,7 +23,6 @@ public interface AdminRegistrationApplicationCompleteRequestToUserEntityMapper {
     default UserEntityV2.UserEntityV2Builder mapForSaving(final AdminRegistrationApplicationCompleteRequest registerRequest) {
 
         return UserEntityV2.builder()
-                .id(AysRandomUtil.generateUUID())
                 .emailAddress(registerRequest.getEmailAddress())
                 .firstName(registerRequest.getFirstName())
                 .lastName(registerRequest.getLastName())

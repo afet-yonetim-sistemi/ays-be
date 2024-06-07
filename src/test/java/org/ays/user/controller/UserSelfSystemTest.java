@@ -19,7 +19,6 @@ import org.ays.user.model.enums.UserSupportStatus;
 import org.ays.user.model.mapper.UserToUserSelfResponseMapper;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
-import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -33,30 +32,26 @@ class UserSelfSystemTest extends AbstractSystemTest {
 
     private AysToken mockUserToken;
 
-    private void initialize(InstitutionEntity mockInstitutionEntity,
-                            UserEntity mockUserEntity) {
-
-        institutionRepository.save(mockInstitutionEntity);
-
-        UserEntity userEntity = userRepository.save(mockUserEntity);
-
-        final Claims claimsOfMockUser = userEntity.getClaims();
-        this.mockUserToken = this.generate(claimsOfMockUser);
-    }
-
     @Test
     void whenUserFound_thenReturnUserSelfResponse() throws Exception {
         // Initialize
-        InstitutionEntity mockInstitutionEntity = new InstitutionEntityBuilder()
-                .withValidFields()
-                .build();
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(mockInstitutionEntity.getId())
-                .withInstitution(null)
-                .withSupportStatus(UserSupportStatus.READY)
-                .build();
-        this.initialize(mockInstitutionEntity, mockUserEntity);
+        InstitutionEntity institutionEntity = institutionRepository.save(
+                new InstitutionEntityBuilder()
+                        .withValidFields()
+                        .build()
+        );
+
+        UserEntity userEntity = userRepository.save(
+                new UserEntityBuilder()
+                        .withValidFields()
+                        .withInstitutionId(institutionEntity.getId())
+                        .withInstitution(null)
+                        .withSupportStatus(UserSupportStatus.READY)
+                        .build()
+        );
+
+        final Claims claimsOfMockUser = userEntity.getClaims();
+        this.mockUserToken = this.generate(claimsOfMockUser);
 
         // When
         User mockUser = new UserBuilder().build();
@@ -78,11 +73,11 @@ class UserSelfSystemTest extends AbstractSystemTest {
     @Test
     void givenInvalidAccessToken_whenUserUnauthorizedForGetting_thenReturnAccessDeniedException() throws Exception {
         // Given
-        String mockAccessToken = adminUserToken.getAccessToken();
+        String accessToken = adminUserToken.getAccessToken();
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH, mockAccessToken);
+                .get(BASE_PATH, accessToken);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
@@ -97,15 +92,23 @@ class UserSelfSystemTest extends AbstractSystemTest {
     @Test
     void givenValidUserSupportStatusUpdateRequest_whenUserRole_thenReturnSuccess() throws Exception {
         // Initialize
-        InstitutionEntity mockInstitutionEntity = institutionRepository
-                .findById(AysValidTestData.Institution.ID).get();
-        UserEntity mockUserEntity = new UserEntityBuilder()
-                .withValidFields()
-                .withInstitutionId(mockInstitutionEntity.getId())
-                .withInstitution(mockInstitutionEntity)
-                .withSupportStatus(UserSupportStatus.IDLE)
-                .build();
-        this.initialize(mockInstitutionEntity, mockUserEntity);
+        InstitutionEntity institutionEntity = institutionRepository.save(
+                new InstitutionEntityBuilder()
+                        .withValidFields()
+                        .build()
+        );
+
+        UserEntity userEntity = userRepository.save(
+                new UserEntityBuilder()
+                        .withValidFields()
+                        .withInstitutionId(institutionEntity.getId())
+                        .withInstitution(null)
+                        .withSupportStatus(UserSupportStatus.READY)
+                        .build()
+        );
+
+        final Claims claimsOfMockUser = userEntity.getClaims();
+        this.mockUserToken = this.generate(claimsOfMockUser);
 
         // Given
         UserSupportStatus userSupportStatus = UserSupportStatus.READY;

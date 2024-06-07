@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.AbstractRestControllerTest;
 import org.ays.common.util.exception.AysAuthException;
+import org.ays.common.util.exception.AysInvalidStatusException;
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.common.util.exception.AysProcessException;
 import org.ays.common.util.exception.model.AysErrorResponse;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpInputMessage;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,7 +24,9 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.io.Serial;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
@@ -131,6 +135,26 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleProcessError(mockException);
         this.checkAysError(mockErrorResponse, errorResponse);
+    }
+
+    @Test
+    void givenHandleEndpointNotFoundException_whenThrowNoResourceFoundException_thenReturnAysError() {
+
+        // Given
+        HttpMethod[] httpMethods = HttpMethod.values();
+
+        for (HttpMethod method : httpMethods) {
+            NoResourceFoundException mockException = new NoResourceFoundException(method, "Resource not found");
+
+            // When
+            AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
+                    .header(AysErrorResponse.Header.API_ERROR.getName())
+                    .build();
+
+            // Then
+            AysErrorResponse errorResponse = globalExceptionHandler.handleEndpointNotFoundError(mockException);
+            this.checkAysError(mockErrorResponse, errorResponse);
+        }
     }
 
     @Test
@@ -251,6 +275,31 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
+    }
+
+    @Test
+    void givenInvalidStatus_whenThrowAysInvalidStatusException_thenReturnAysErrorWithReturnAysError() {
+
+        // Given
+        AysInvalidStatusException mockException = new AysInvalidStatusException("Invalid status") {
+            @Serial
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public String getMessage() {
+                return "Invalid status";
+            }
+        };
+
+        // When
+        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.BAD_REQUEST.getName())
+                .message(mockException.getMessage())
+                .build();
+
+        // Then
+        AysErrorResponse errorResponse = globalExceptionHandler.handleInvalidStatusError(mockException);
         this.checkAysError(mockErrorResponse, errorResponse);
     }
 

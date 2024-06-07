@@ -7,7 +7,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,6 +48,7 @@ public class UserEntityV2 extends BaseEntity {
 
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "INSTITUTION_ID")
@@ -76,14 +76,14 @@ public class UserEntityV2 extends BaseEntity {
     @Column(name = "STATUS")
     private UserStatus status;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user")
     private PasswordEntity password;
 
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private InstitutionEntity institution;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "AYS_USER_ROLE_RELATION",
             joinColumns = @JoinColumn(name = "USER_ID"),
@@ -177,7 +177,7 @@ public class UserEntityV2 extends BaseEntity {
         @Column(name = "VALUE")
         private String value;
 
-        @OneToOne(fetch = FetchType.LAZY)
+        @OneToOne
         @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
         private UserEntityV2 user;
 
