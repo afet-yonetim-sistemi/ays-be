@@ -21,7 +21,7 @@ public @interface NoSpecialCharacters {
      *
      * @return the error message
      */
-    String message() default "The text cannot contain special characters";
+    String message() default "cannot contain special characters";
 
     /**
      * Returns the validation groups to which this constraint belongs.

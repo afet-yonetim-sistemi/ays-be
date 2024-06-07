@@ -81,7 +81,8 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     @Transactional
     public void create(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
         EmergencyEvacuationApplicationEntity applicationEntity = emergencyEvacuationApplicationRequestToEntityMapper
-                .mapForSaving(emergencyEvacuationApplicationRequest);
+                .map(emergencyEvacuationApplicationRequest);
+        applicationEntity.pending();
 
         emergencyEvacuationApplicationRepository.save(applicationEntity);
     }

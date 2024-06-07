@@ -84,8 +84,8 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 ))
                 .thenReturn(false);
 
-        Mockito.when(roleRepository.findByInstitutionId(Mockito.anyString()))
-                .thenReturn(Optional.empty());
+        Mockito.when(roleRepository.findAllByInstitutionId(Mockito.anyString()))
+                .thenReturn(Set.of());
 
         Set<PermissionEntity> mockPermissionEntities = Set.of(
                 new PermissionEntityBuilder().withValidFields().build()
@@ -136,7 +136,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .existsByCountryCodeAndLineNumber(Mockito.anyString(), Mockito.anyString());
 
         Mockito.verify(roleRepository, Mockito.times(1))
-                .findByInstitutionId(Mockito.anyString());
+                .findAllByInstitutionId(Mockito.anyString());
 
         Mockito.verify(permissionRepository, Mockito.times(1))
                 .findAllByIsSuperFalse();
@@ -186,8 +186,8 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         RoleEntity mockRoleEntity = new RoleEntityBuilder()
                 .withValidFields()
                 .build();
-        Mockito.when(roleRepository.findByInstitutionId(Mockito.anyString()))
-                .thenReturn(Optional.of(mockRoleEntity));
+        Mockito.when(roleRepository.findAllByInstitutionId(Mockito.anyString()))
+                .thenReturn(Set.of(mockRoleEntity));
 
         UserEntityV2 mockUserEntity = new UserEntityV2Builder()
                 .withValidFields()
@@ -226,7 +226,7 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
                 .existsByCountryCodeAndLineNumber(Mockito.anyString(), Mockito.anyString());
 
         Mockito.verify(roleRepository, Mockito.times(1))
-                .findByInstitutionId(Mockito.anyString());
+                .findAllByInstitutionId(Mockito.anyString());
 
         Mockito.verify(permissionRepository, Mockito.never())
                 .findAll();

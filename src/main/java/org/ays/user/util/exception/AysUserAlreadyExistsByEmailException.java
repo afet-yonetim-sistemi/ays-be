@@ -8,7 +8,7 @@ import java.io.Serial;
  * Exception indicating that an user already exists with the specified email address.
  * This exception is a subclass of AysAlreadyException.
  */
-public class AysUserAlreadyExistsByEmailException extends AysAlreadyException {
+public final class AysUserAlreadyExistsByEmailException extends AysAlreadyException {
 
     /**
      * Unique identifier for serialization.
@@ -22,7 +22,7 @@ public class AysUserAlreadyExistsByEmailException extends AysAlreadyException {
      * @param emailAddress The email address of the user that already exists.
      */
     public AysUserAlreadyExistsByEmailException(String emailAddress) {
-        super("USER ALREADY EXIST! emailAddress:" + emailAddress);
+        super("user already exist! emailAddress:" + emailAddress);
     }
 
 }

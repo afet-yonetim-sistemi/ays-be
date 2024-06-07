@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception to be thrown when a password is not valid.
  */
-public class PasswordNotValidException extends AysAuthException {
+public final class PasswordNotValidException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
@@ -19,7 +19,7 @@ public class PasswordNotValidException extends AysAuthException {
      * Constructs a new PasswordNotValidException with a default error message.
      */
     public PasswordNotValidException() {
-        super("PASSWORD IS NOT VALID!");
+        super("password is not valid!");
     }
 
 }

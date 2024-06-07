@@ -11,14 +11,17 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.common.model.AysFiltering;
 import org.ays.common.model.dto.request.AysFilteringRequest;
 import org.ays.common.model.dto.request.AysPagingRequest;
+import org.ays.common.util.validation.NoSpecialCharacters;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Set;
 
-// TODO AYS-222 : Add Javadoc
+/**
+ * A request class for handling the pagination and filtering of emergency evacuation applications.
+ * Extends {@link AysPagingRequest} and implements {@link AysFilteringRequest}.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
@@ -34,38 +37,34 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
     @Setter
     public static class Filter implements AysFiltering {
 
-        // TODO AYS-222 : Add Javadoc
         @Size(min = 1, max = 10)
         private String referenceNumber;
 
-        // TODO AYS-222 : Add Javadoc
+        @NoSpecialCharacters
         @Size(min = 2, max = 100)
         private String sourceCity;
 
-        // TODO AYS-222 : Add Javadoc
+        @NoSpecialCharacters
         @Size(min = 2, max = 100)
         private String sourceDistrict;
 
-        // TODO AYS-222 : Add Javadoc
         @Range(min = 1, max = 999)
         private Integer seatingCount;
 
-        // TODO AYS-222 : Add Javadoc
+        @NoSpecialCharacters
         @Size(min = 2, max = 100)
         private String targetCity;
 
-        // TODO AYS-222 : Add Javadoc
+        @NoSpecialCharacters
         @Size(min = 2, max = 100)
         private String targetDistrict;
 
-        /**
-         * List of admin registration application's statuses used for filtering.
-         */
-        private List<EmergencyEvacuationApplicationStatus> statuses;
+        private Set<EmergencyEvacuationApplicationStatus> statuses;
 
         private Boolean isInPerson;
 
     }
+
 
     /**
      * Overrides the {@link AysPagingRequest#isSortPropertyAccepted()} method to validate sorting options
@@ -81,7 +80,13 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
         return this.isPropertyAccepted(acceptedFilterFields);
     }
 
-    // TODO AYS-222 : Add Javadoc
+    /**
+     * Converts this request's filter configuration into a {@link Specification} for querying.
+     *
+     * @param clazz The class type to which the specification will be applied.
+     * @param <C>   The type of the class.
+     * @return A specification built based on the current filter configuration.
+     */
     @Override
     public <C> Specification<C> toSpecification(Class<C> clazz) {
 

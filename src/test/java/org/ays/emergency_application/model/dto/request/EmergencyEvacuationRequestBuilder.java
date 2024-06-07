@@ -12,6 +12,7 @@ public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<Emergency
 
     public EmergencyEvacuationRequestBuilder withValidFields() {
         return this
+                .withSeatingCount(1)
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
                 .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build());
     }

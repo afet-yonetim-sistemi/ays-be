@@ -9,22 +9,25 @@ import org.ays.emergency_application.model.entity.EmergencyEvacuationApplication
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Set;
 
 public class EmergencyEvacuationApplicationListRequestBuilder extends TestDataBuilder<EmergencyEvacuationApplicationListRequest> {
+
     public EmergencyEvacuationApplicationListRequestBuilder() {
         super(EmergencyEvacuationApplicationListRequest.class);
     }
 
     public EmergencyEvacuationApplicationListRequestBuilder withValidValues() {
-        return this
-                .withFilter(new FilterBuilder(EmergencyEvacuationApplicationListRequest.Filter.class).withValidValues().build())
-                .withPagination(new AysPagingBuilder().withValidValues().build())
-                .withSort(AysSorting.of(Sort.by(Sort.Direction.ASC, "createdAt")));
-    }
 
-    public EmergencyEvacuationApplicationListRequestBuilder withFilter(EmergencyEvacuationApplicationListRequest.Filter filter) {
-        data.setFilter(filter);
-        return this;
+        final AysSorting createdAtSort = AysSorting.builder()
+                .property("createdAt")
+                .direction(Sort.Direction.DESC)
+                .build();
+
+        return this
+                .withPagination(new AysPagingBuilder().withValidValues().build())
+                .withSort(List.of(createdAtSort))
+                .initializeFilter();
     }
 
     public EmergencyEvacuationApplicationListRequestBuilder withPagination(AysPaging aysPaging) {
@@ -37,38 +40,49 @@ public class EmergencyEvacuationApplicationListRequestBuilder extends TestDataBu
         return this;
     }
 
-    public static class FilterBuilder extends TestDataBuilder<EmergencyEvacuationApplicationListRequest.Filter> {
-        public FilterBuilder(Class<EmergencyEvacuationApplicationListRequest.Filter> clazz) {
-            super(clazz);
-        }
-
-        public FilterBuilder withValidValues() {
-            return this;
-        }
-
-        public FilterBuilder withReferenceNumber(String referenceNumber) {
-            data.setReferenceNumber(referenceNumber);
-            return this;
-        }
-
-        public FilterBuilder withSeatingCount(Integer seatingCount) {
-            data.setSeatingCount(seatingCount);
-            return this;
-        }
-
-        public FilterBuilder withTargetCity(String targetCity) {
-            data.setTargetCity(targetCity);
-            return this;
-        }
-
-        public FilterBuilder withTargetDistrict(String targetDistrict) {
-            data.setTargetDistrict(targetDistrict);
-            return this;
-        }
-
-        public FilterBuilder withStatuses(List<EmergencyEvacuationApplicationStatus> statuses) {
-            data.setStatuses(statuses);
-            return this;
-        }
+    private EmergencyEvacuationApplicationListRequestBuilder initializeFilter() {
+        data.setFilter(new EmergencyEvacuationApplicationListRequest.Filter());
+        return this;
     }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withFilter(EmergencyEvacuationApplicationListRequest.Filter filter) {
+        data.setFilter(filter);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withReferenceNumber(String referenceNumber) {
+        data.getFilter().setReferenceNumber(referenceNumber);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withSourceCity(String sourceCity) {
+        data.getFilter().setSourceCity(sourceCity);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withSourceDistrict(String sourceDistrict) {
+        data.getFilter().setSourceDistrict(sourceDistrict);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withSeatingCount(Integer seatingCount) {
+        data.getFilter().setSeatingCount(seatingCount);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withTargetCity(String targetCity) {
+        data.getFilter().setTargetCity(targetCity);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withTargetDistrict(String targetDistrict) {
+        data.getFilter().setTargetDistrict(targetDistrict);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withStatuses(Set<EmergencyEvacuationApplicationStatus> statuses) {
+        data.getFilter().setStatuses(statuses);
+        return this;
+    }
+
 }

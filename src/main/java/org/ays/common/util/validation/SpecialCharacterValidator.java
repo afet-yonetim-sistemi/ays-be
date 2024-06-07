@@ -14,7 +14,8 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
     /**
      * Regular expression pattern to match valid text with special characters, including Turkish characters.
      */
-    private static final String SPECIAL_CHARACTERS_REGEX = "^[a-zA-Z0-9çğıöşüÇĞİÖŞÜ.,'\\-\\s_!]+$";
+    private static final String VALID_CHARACTERS_REGEX = "^[a-zA-Z0-9çğıöşüÇĞİÖŞÜ.,';:?()\\-\\s!/]+$";
+
 
     /**
      * Checks if the value contains special characters and meets length requirements.
@@ -25,17 +26,16 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
      */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+
         if (!StringUtils.hasText(value)) {
             return true;
         }
-
-        value = value.trim();
 
         boolean containsOnlyDigits = value.matches("^\\d+$");
 
         if (containsOnlyDigits) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY DIGITS")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot contain only digits")
                     .addConstraintViolation();
             return false;
         }
@@ -44,7 +44,7 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
 
         if (containsOnlyPunctuation) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY PUNCTUATION MARKS")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot contain only punctuation marks")
                     .addConstraintViolation();
             return false;
         }
@@ -53,14 +53,14 @@ class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacte
 
         if (containsOnlySpecialCharacters) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CANNOT CONTAIN ONLY SPECIAL CHARACTERS")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot contain only special characters")
                     .addConstraintViolation();
             return false;
         }
 
-        if (!value.matches(SPECIAL_CHARACTERS_REGEX)) {
+        if (!value.matches(VALID_CHARACTERS_REGEX)) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("THE TEXT CONTAINS INVALID CHARACTERS")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("contains invalid characters")
                     .addConstraintViolation();
             return false;
         }

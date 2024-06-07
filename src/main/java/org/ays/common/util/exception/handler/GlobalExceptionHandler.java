@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.common.util.exception.AysAlreadyException;
 import org.ays.common.util.exception.AysAuthException;
+import org.ays.common.util.exception.AysInvalidStatusException;
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.common.util.exception.AysProcessException;
 import org.ays.common.util.exception.model.AysErrorResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.sql.SQLException;
 
@@ -81,6 +83,17 @@ class GlobalExceptionHandler {
                 .build();
     }
 
+    @ExceptionHandler(AysInvalidStatusException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    AysErrorResponse handleInvalidStatusError(final AysInvalidStatusException exception) {
+        log.error(exception.getMessage(), exception);
+
+        return AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.BAD_REQUEST.getName())
+                .message(exception.getMessage())
+                .build();
+    }
+
     @ExceptionHandler(AysAlreadyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     AysErrorResponse handleAlreadyExistError(final AysAlreadyException exception) {
@@ -110,6 +123,16 @@ class GlobalExceptionHandler {
 
         return AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.PROCESS_ERROR.getName())
+                .build();
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    AysErrorResponse handleEndpointNotFoundError(final NoResourceFoundException exception) {
+        log.error(exception.getMessage(), exception);
+
+        return AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.API_ERROR.getName())
                 .build();
     }
 
