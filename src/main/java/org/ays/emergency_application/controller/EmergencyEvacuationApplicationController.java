@@ -35,8 +35,6 @@ class EmergencyEvacuationApplicationController {
 
 
     private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
-
-
     private final EmergencyEvacuationApplicationToApplicationsDetailResponseMapper emergencyEvacuationApplicationToApplicationsDetailResponseMapper = EmergencyEvacuationApplicationToApplicationsDetailResponseMapper.initialize();
 
     /**
