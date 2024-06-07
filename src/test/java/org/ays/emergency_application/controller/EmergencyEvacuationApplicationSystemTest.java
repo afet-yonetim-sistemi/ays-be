@@ -43,6 +43,7 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
     void givenValidEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
 
         // Initialize
+        emergencyEvacuationApplicationRepository.deleteAll();
         EmergencyEvacuationApplicationEntity applicationEntity = emergencyEvacuationApplicationRepository.save(
                 new EmergencyEvacuationApplicationEntityBuilder()
                         .withValidFields()
@@ -126,6 +127,7 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
     void givenValidEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationsNotFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
 
         // Initialize
+        emergencyEvacuationApplicationRepository.deleteAll();
         emergencyEvacuationApplicationRepository.save(
                 new EmergencyEvacuationApplicationEntityBuilder()
                         .withValidFields()
