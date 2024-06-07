@@ -13,7 +13,9 @@ import org.ays.emergency_application.model.dto.response.EmergencyEvacuationAppli
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsDetailResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * This controller handles the business operations for emergency evacuation applications in the system.
  * The mapping path for this controller is "/api/v1/emergency-evacuation-application".
  */
+@Validated
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -64,7 +67,7 @@ class EmergencyEvacuationApplicationController {
      */
     @GetMapping("/emergency-evacuation-application/{id}")
     @PreAuthorize("hasAuthority('application:evacuation:detail')")
-    public AysResponse<EmergencyEvacuationApplicationDetailResponse> findById(@PathVariable String id) {
+    public AysResponse<EmergencyEvacuationApplicationDetailResponse> findById(@PathVariable @UUID String id) {
         final EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationService.findById(id);
         final EmergencyEvacuationApplicationDetailResponse emergencyEvacuationApplicationDetailResponse = emergencyEvacuationApplicationToApplicationsDetailResponseMapper.map(emergencyEvacuationApplication);
         return AysResponse.successOf(emergencyEvacuationApplicationDetailResponse);
