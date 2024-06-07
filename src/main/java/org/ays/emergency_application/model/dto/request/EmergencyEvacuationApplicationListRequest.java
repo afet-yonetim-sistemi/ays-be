@@ -11,6 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.common.model.AysFiltering;
 import org.ays.common.model.dto.request.AysFilteringRequest;
 import org.ays.common.model.dto.request.AysPagingRequest;
+import org.ays.common.util.validation.NoSpecialCharacters;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,18 +41,22 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
         @Size(min = 1, max = 10)
         private String referenceNumber;
 
+        @NoSpecialCharacters
         @Size(min = 2, max = 100)
         private String sourceCity;
 
+        @NoSpecialCharacters
         @Size(min = 2, max = 100)
         private String sourceDistrict;
 
         @Range(min = 1, max = 999)
         private Integer seatingCount;
 
+        @NoSpecialCharacters
         @Size(min = 2, max = 100)
         private String targetCity;
 
+        @NoSpecialCharacters
         @Size(min = 2, max = 100)
         private String targetDistrict;
 
