@@ -1,6 +1,5 @@
 package org.ays.emergency_application.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -8,11 +7,14 @@ import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 
-// TODO AYS-222 : Add Javadoc
+/**
+ * Represents an emergency evacuation application.
+ * Extends {@link BaseDomainModel} and includes details such as personal and contact information,
+ * location details, and application status.
+ */
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
 public class EmergencyEvacuationApplication extends BaseDomainModel {
 
     private String id;
