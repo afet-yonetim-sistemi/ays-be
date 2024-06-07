@@ -16,7 +16,6 @@ import org.ays.emergency_application.model.entity.EmergencyEvacuationApplication
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -60,7 +59,7 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
         @Size(min = 2, max = 100)
         private String targetDistrict;
 
-        private List<EmergencyEvacuationApplicationStatus> statuses;
+        private Set<EmergencyEvacuationApplicationStatus> statuses;
 
         private Boolean isInPerson;
 

@@ -5,9 +5,11 @@ import org.ays.common.model.AysPagingBuilder;
 import org.ays.common.model.AysSorting;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
+import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Set;
 
 public class EmergencyEvacuationApplicationListRequestBuilder extends TestDataBuilder<EmergencyEvacuationApplicationListRequest> {
 
@@ -75,6 +77,11 @@ public class EmergencyEvacuationApplicationListRequestBuilder extends TestDataBu
 
     public EmergencyEvacuationApplicationListRequestBuilder withTargetDistrict(String targetDistrict) {
         data.getFilter().setTargetDistrict(targetDistrict);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationListRequestBuilder withStatuses(Set<EmergencyEvacuationApplicationStatus> statuses) {
+        data.getFilter().setStatuses(statuses);
         return this;
     }
 
