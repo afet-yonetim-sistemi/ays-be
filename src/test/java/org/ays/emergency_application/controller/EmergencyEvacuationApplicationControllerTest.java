@@ -46,7 +46,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     private final String BASE_PATH = "/api/v1";
 
     @Test
-    void givenValidAdminRegisterApplicationListRequest_whenAdminRegisterApplicationsFound_thenReturnAysPageResponseOfAdminRegisterApplicationsResponse() throws Exception {
+    void givenValidEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -92,7 +92,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
             "",
             "151201485621548562154851458614125461254125412"
     })
-    void givenInvalidAdminRegisterApplicationListRequest_whenReferenceNumberNotValid_thenReturnValidationError(String referenceNumber) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationListRequest_whenReferenceNumberNotValid_thenReturnValidationError(String referenceNumber) throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -128,7 +128,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
     })
-    void givenInvalidAdminRegisterApplicationListRequest_whenSourceCityNotValid_thenReturnValidationError(String sourceCity) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationListRequest_whenSourceCityNotValid_thenReturnValidationError(String sourceCity) throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -164,7 +164,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
     })
-    void givenInvalidAdminRegisterApplicationListRequest_whenSourceDistrictNotValid_thenReturnValidationError(String sourceDistrict) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationListRequest_whenSourceDistrictNotValid_thenReturnValidationError(String sourceDistrict) throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -196,7 +196,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
             0,
             1000
     })
-    void givenInvalidAdminRegisterApplicationListRequest_whenSeatingCountNotValid_thenReturnValidationError(Integer seatingCount) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationListRequest_whenSeatingCountNotValid_thenReturnValidationError(Integer seatingCount) throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -232,7 +232,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
     })
-    void givenInvalidAdminRegisterApplicationListRequest_whenTargetCityNotValid_thenReturnValidationError(String targetCity) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationListRequest_whenTargetCityNotValid_thenReturnValidationError(String targetCity) throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -268,7 +268,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
     })
-    void givenInvalidAdminRegisterApplicationListRequest_whenTargetDistrictNotValid_thenReturnValidationError(String targetDistrict) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationListRequest_whenTargetDistrictNotValid_thenReturnValidationError(String targetDistrict) throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -295,7 +295,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     }
 
     @Test
-    void givenValidAdminRegisterApplicationListRequest_whenUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
+    void givenValidEmergencyEvacuationApplicationListRequest_whenUnauthorizedForListing_thenReturnAccessDeniedException() throws Exception {
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
                 .withValidValues()
