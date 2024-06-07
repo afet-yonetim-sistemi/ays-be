@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class EmergencyEvacuationApplicationDetailResponse {
+public class EmergencyEvacuationApplicationResponse {
 
     private String id;
     private String referenceNumber;
