@@ -23,8 +23,8 @@ import org.ays.user.model.dto.request.AdminRegistrationApplicationRejectRequestB
 import org.ays.user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
-import org.ays.user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntityBuilder;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
 import org.ays.user.model.entity.RoleEntityBuilder;
@@ -73,7 +73,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                 .post(endpoint, superAdminTokenV2.getAccessToken(), listRequest);
 
         List<AdminRegistrationApplicationEntity> adminRegisterApplicationEntities = List.of(
-                new AdminRegisterApplicationEntityBuilder().withValidFields().withStatus(AdminRegistrationApplicationStatus.WAITING).build()
+                new AdminRegistrationApplicationEntityBuilder().withValidFields().withStatus(AdminRegistrationApplicationStatus.WAITING).build()
         );
         Page<AdminRegistrationApplicationEntity> pageOfEntities = new PageImpl<>(
                 adminRegisterApplicationEntities
@@ -157,7 +157,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -284,7 +284,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(null)
@@ -329,7 +329,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(null)
@@ -419,7 +419,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -489,7 +489,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -546,7 +546,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -603,7 +603,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -658,7 +658,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -725,7 +725,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -766,7 +766,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(null)
@@ -826,7 +826,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())

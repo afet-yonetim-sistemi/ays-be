@@ -26,8 +26,8 @@ import org.ays.user.model.dto.response.AdminRegistrationApplicationCreateRespons
 import org.ays.user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationsResponse;
-import org.ays.user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntityBuilder;
 import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
 import org.ays.user.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper;
@@ -76,7 +76,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
                 .withValidValues().build();
 
         // When
-        List<AdminRegistrationApplicationEntity> mockEntities = List.of(new AdminRegisterApplicationEntityBuilder().withValidFields().build());
+        List<AdminRegistrationApplicationEntity> mockEntities = List.of(new AdminRegistrationApplicationEntityBuilder().withValidFields().build());
         Page<AdminRegistrationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
         List<AdminRegistrationApplication> mockList = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(mockEntities);
         AysPage<AdminRegistrationApplication> mockAysPage = AysPage
