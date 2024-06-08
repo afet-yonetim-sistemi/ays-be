@@ -4,7 +4,6 @@ import org.ays.common.util.exception.AysNotExistException;
 
 import java.io.Serial;
 
-
 /**
  * Exception thrown when an institution does not exist in the system.
  */
@@ -17,7 +16,7 @@ public final class AysInstitutionNotExistException extends AysNotExistException 
     private static final long serialVersionUID = -8080466932594432592L;
 
     /**
-     * Constructs a new {@code AysInstitutionNotExistException} with the specified ID.
+     * Constructs a new {@link AysInstitutionNotExistException} with the specified ID.
      *
      * @param id the ID of the institution that does not exist
      */

@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
- * AdminUserRegisterApplicationCreateRequestToAdminUserRegisterApplicationEntityMapper is an interface that defines the
+ * {@link AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper} is an interface that defines the
  * mapping between an {@link AdminRegistrationApplicationCreateRequest} and an {@link AdminRegistrationApplicationEntity}.
  * This interface uses the MapStruct annotation @Mapper to generate an implementation of this interface at compile-time.
  * <p>The class provides a static method {@code initialize()} that returns an instance of the generated mapper implementation.

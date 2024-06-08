@@ -16,7 +16,7 @@ public final class AysUserAlreadyPassiveException extends AysAlreadyException {
     private static final long serialVersionUID = -3686691276790127586L;
 
     /**
-     * Constructs a new {@code AysUserAlreadyPassiveException} with the specified id.
+     * Constructs a new {@link AysUserAlreadyPassiveException} with the specified id.
      *
      * @param id the id of the passive user
      */

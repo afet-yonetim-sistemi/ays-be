@@ -18,7 +18,7 @@ public final class UsernameNotValidException extends AysAuthException {
     private static final long serialVersionUID = 8712878086437207740L;
 
     /**
-     * Constructs a new {@code UsernameNotValidException} with a default message.
+     * Constructs a new {@link UsernameNotValidException} with a default message.
      */
     public UsernameNotValidException(final String username) {
         super("username is not valid! username: " + username);

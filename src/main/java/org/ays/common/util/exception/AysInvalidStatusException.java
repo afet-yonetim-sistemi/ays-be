@@ -14,7 +14,7 @@ public abstract class AysInvalidStatusException extends RuntimeException {
     private static final long serialVersionUID = 7261195193622257525L;
 
     /**
-     * Constructs a new {@code AysInvalidStatusException} with the specified detail message.
+     * Constructs a new {@link AysInvalidStatusException} with the specified detail message.
      *
      * @param message the detail message.
      */
