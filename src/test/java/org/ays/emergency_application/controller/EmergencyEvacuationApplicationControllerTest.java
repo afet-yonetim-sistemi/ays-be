@@ -323,8 +323,6 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
                 .findAll(Mockito.any(EmergencyEvacuationApplicationListRequest.class));
     }
 
-    // service - end to end
-
     @Test
     void givenValidEmergencyEvacuationApplicationId_whenEmergencyEvacuationApplicationFound_thenReturnEmergencyEvacuationApplicationResponse() throws Exception {
 
