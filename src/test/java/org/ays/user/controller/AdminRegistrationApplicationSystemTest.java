@@ -62,6 +62,23 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     @Test
     void givenValidAdminRegistrationApplicationListRequest_whenAdminRegistrationApplicationsFound_thenReturnAdminRegistrationApplicationsResponse() throws Exception {
 
+        // Initialize
+        InstitutionEntity institutionEntity = institutionRepository.save(
+                new InstitutionEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .build()
+        );
+        adminRegistrationApplicationRepository.save(
+                new AdminRegistrationApplicationEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withUserId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withStatus(AdminRegistrationApplicationStatus.WAITING)
+                        .build()
+        );
+
         // Given
         AdminRegistrationApplicationListRequest listRequest = new AdminRegistrationApplicationListRequestBuilder()
                 .withValidValues()
@@ -154,6 +171,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .withId(null)
                         .withRoles(Set.of(roleEntity))
                         .withInstitutionId(institutionEntity.getId())
+                        .withStatus(UserStatus.NOT_VERIFIED)
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
@@ -162,6 +180,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .withId(null)
                         .withUserId(userEntity.getId())
                         .withInstitutionId(institutionEntity.getId())
+                        .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                         .build()
         );
 
@@ -525,31 +544,11 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
 
-        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = roleRepository.save(
-                new RoleEntityBuilder()
-                        .withValidFields()
-                        .withId(null)
-                        .withInstitutionId(institutionEntity.getId())
-                        .withPermissions(permissionEntities)
-                        .build()
-        );
-
-        UserEntityV2 userEntity = userRepositoryV2.save(
-                new UserEntityV2Builder()
-                        .withValidFields()
-                        .withId(null)
-                        .withRoles(Set.of(roleEntity))
-                        .withInstitutionId(institutionEntity.getId())
-                        .withStatus(UserStatus.NOT_VERIFIED)
-                        .build()
-        );
-
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
                 new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
-                        .withUserId(userEntity.getId())
+                        .withUserId(null)
                         .withInstitutionId(institutionEntity.getId())
                         .withStatus(AdminRegistrationApplicationStatus.WAITING)
                         .build()
