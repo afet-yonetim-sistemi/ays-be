@@ -1,21 +1,32 @@
 package org.ays.emergency_application.controller;
 
 import org.ays.AbstractRestControllerTest;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
+import org.ays.emergency_application.model.EmergencyEvacuationApplication;
+import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequestBuilder;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
+import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntityBuilder;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepositoryTest;
+import org.ays.user.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTest {
 
@@ -23,7 +34,181 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
     private EmergencyEvacuationApplicationRepositoryTest emergencyEvacuationApplicationRepository;
 
 
+    private final EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper entityToEmergencyEvacuationApplicationMapper = EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper.initialize();
+
+
     private final String BASE_PATH = "/api/v1";
+
+    @Test
+    void givenValidEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
+
+        // Initialize
+        emergencyEvacuationApplicationRepository.deleteAll();
+        EmergencyEvacuationApplicationEntity applicationEntity = emergencyEvacuationApplicationRepository.save(
+                new EmergencyEvacuationApplicationEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(null)
+                        .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                        .withoutApplicant()
+                        .build()
+        );
+
+        // Given
+        EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
+                .withValidValues()
+                .withFilter(null)
+                .withSort(null)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+
+        List<EmergencyEvacuationApplicationEntity> emergencyEvacuationApplicationEntities = List.of(
+                new EmergencyEvacuationApplicationEntityBuilder().withValidFields().build()
+        );
+        Page<EmergencyEvacuationApplicationEntity> pageOfEntities = new PageImpl<>(
+                emergencyEvacuationApplicationEntities
+        );
+        List<EmergencyEvacuationApplication> adminRegistrationApplications = entityToEmergencyEvacuationApplicationMapper
+                .map(emergencyEvacuationApplicationEntities);
+        AysPage<EmergencyEvacuationApplication> page = AysPage.of(
+                pageOfEntities,
+                adminRegistrationApplications
+        );
+        AysPageResponse<EmergencyEvacuationApplication> pageResponse = AysPageResponse.<EmergencyEvacuationApplication>builder()
+                .of(page).build();
+        AysResponse<AysPageResponse<EmergencyEvacuationApplication>> mockResponse = AysResponse.successOf(pageResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("content.size()")
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("id")
+                        .value(applicationEntity.getId()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("referenceNumber")
+                        .value(applicationEntity.getReferenceNumber()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("firstName")
+                        .value(applicationEntity.getFirstName()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("lastName")
+                        .value(applicationEntity.getLastName()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("phoneNumber.countryCode")
+                        .value(applicationEntity.getCountryCode()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("phoneNumber.lineNumber")
+                        .value(applicationEntity.getLineNumber()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("seatingCount")
+                        .value(applicationEntity.getSeatingCount()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("status")
+                        .value(applicationEntity.getStatus().toString()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("isInPerson")
+                        .value(applicationEntity.getIsInPerson()))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("pageNumber")
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.response("pageSize")
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.response("totalPageCount")
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.response("totalElementCount")
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.response("sortedBy")
+                        .isEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("filteredBy")
+                        .isEmpty());
+    }
+
+    @Test
+    void givenValidEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationsNotFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
+
+        // Initialize
+        emergencyEvacuationApplicationRepository.deleteAll();
+        emergencyEvacuationApplicationRepository.save(
+                new EmergencyEvacuationApplicationEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withInstitutionId(null)
+                        .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                        .withoutApplicant()
+                        .build()
+        );
+
+        // Given
+        EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
+                .withValidValues()
+                .withStatuses(Set.of(EmergencyEvacuationApplicationStatus.COMPLETED))
+                .withSort(null)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+
+        List<EmergencyEvacuationApplicationEntity> emergencyEvacuationApplicationEntities = List.of(
+                new EmergencyEvacuationApplicationEntityBuilder().withValidFields().build()
+        );
+        Page<EmergencyEvacuationApplicationEntity> pageOfEntities = new PageImpl<>(
+                emergencyEvacuationApplicationEntities
+        );
+        List<EmergencyEvacuationApplication> adminRegistrationApplications = entityToEmergencyEvacuationApplicationMapper
+                .map(emergencyEvacuationApplicationEntities);
+        AysPage<EmergencyEvacuationApplication> page = AysPage.of(
+                pageOfEntities,
+                adminRegistrationApplications
+        );
+        AysPageResponse<EmergencyEvacuationApplication> pageResponse = AysPageResponse.<EmergencyEvacuationApplication>builder()
+                .of(page).build();
+        AysResponse<AysPageResponse<EmergencyEvacuationApplication>> mockResponse = AysResponse.successOf(pageResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("content.size()")
+                        .value(0))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("id")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("referenceNumber")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("firstName")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("lastName")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("phoneNumber.countryCode")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("phoneNumber.lineNumber")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("seatingCount")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("status")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("isInPerson")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.response("pageNumber")
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.response("pageSize")
+                        .value(0))
+                .andExpect(AysMockResultMatchersBuilders.response("totalPageCount")
+                        .value(0))
+                .andExpect(AysMockResultMatchersBuilders.response("totalElementCount")
+                        .value(0))
+                .andExpect(AysMockResultMatchersBuilders.response("sortedBy")
+                        .isEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("filteredBy")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("filteredBy.statuses")
+                        .isNotEmpty());
+    }
+
 
     @Test
     void givenValidEmergencyEvacuationApplicationRequest_whenApplicationSaved_thenReturnSuccessResponse() throws Exception {

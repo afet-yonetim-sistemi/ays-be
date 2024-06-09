@@ -73,7 +73,7 @@ public class AdminRegistrationApplicationListRequest extends AysPagingRequest im
 
         Specification<C> specification = Specification.where(null);
 
-        if (!CollectionUtils.isEmpty(this.filter.getStatuses())) {
+        if (!CollectionUtils.isEmpty(this.filter.statuses)) {
             Specification<C> statusSpecification = this.filter.statuses.stream().map(status ->
                             (Specification<C>) (root, query, criteriaBuilder) ->
                                     criteriaBuilder.equal(root.get("status"), status))
