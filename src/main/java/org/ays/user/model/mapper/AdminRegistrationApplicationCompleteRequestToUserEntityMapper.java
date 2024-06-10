@@ -6,7 +6,7 @@ import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.enums.UserStatus;
 
 /**
- * AdminUserRegisterRequestToAdminUserEntityMapper is an interface that defines the mapping between an {@link AdminRegistrationApplicationCompleteRequest} and an {@link UserEntityV2}.
+ * {@link AdminRegistrationApplicationCompleteRequestToUserEntityMapper} is an interface that defines the mapping between an {@link AdminRegistrationApplicationCompleteRequest} and an {@link UserEntityV2}.
  * This interface uses the MapStruct annotation @Mapper to generate an implementation of this interface at compile-time.
  * <p>The class provides a static method {@code initialize()} that returns an instance of the generated mapper implementation.
  * <p>The interface extends the MapStruct interface {@link BaseMapper}, which defines basic mapping methods.

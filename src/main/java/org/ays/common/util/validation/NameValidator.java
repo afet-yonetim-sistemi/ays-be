@@ -61,7 +61,7 @@ class NameValidator implements ConstraintValidator<Name, String> {
         if (value.length() < NAME_MIN_LENGTH || value.length() > NAME_MAX_LENGTH) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                            String.format("NAME MUST BE BETWEEN %d AND %d CHARACTERS LONG", NAME_MIN_LENGTH, NAME_MAX_LENGTH)
+                            String.format("name must be between %d and %d characters long", NAME_MIN_LENGTH, NAME_MAX_LENGTH)
                     )
                     .addConstraintViolation();
             return false;
@@ -69,7 +69,7 @@ class NameValidator implements ConstraintValidator<Name, String> {
 
         if (value.startsWith(" ") || value.endsWith(" ")) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("NAME MUST NOT START OR END WITH WHITESPACE")
+            context.buildConstraintViolationWithTemplate("name must not start or end with whitespace")
                     .addConstraintViolation();
             return false;
         }

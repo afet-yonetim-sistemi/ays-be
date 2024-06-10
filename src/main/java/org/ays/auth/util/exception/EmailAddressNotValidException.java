@@ -17,7 +17,7 @@ public final class EmailAddressNotValidException extends AysAuthException {
     private static final long serialVersionUID = 8716775556496272471L;
 
     /**
-     * Constructs a new {@code emailAddressNotValidException} with a default message.
+     * Constructs a new {@link EmailAddressNotValidException} with a default message.
      */
     public EmailAddressNotValidException(final String emailAddress) {
         super("email address is not valid! emailAddress: " + emailAddress);

@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
- * AdminUserEntityToAdminUserMapper is an interface that defines the
+ * {@link AdminUserEntityToAdminUserMapper} is an interface that defines the
  * mapping between an {@link AdminUserEntity} and an {@link AdminUser}.
  * This interface uses the MapStruct annotation @Mapper to generate an implementation of this interface at compile-time.
  * <p>The class provides a static method {@code initialize()} that returns an instance of the generated mapper implementation.
