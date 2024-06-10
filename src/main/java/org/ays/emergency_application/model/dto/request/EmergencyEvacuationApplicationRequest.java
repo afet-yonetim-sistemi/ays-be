@@ -69,7 +69,7 @@ public class EmergencyEvacuationApplicationRequest {
 
 
     @JsonIgnore
-    @AssertTrue(message = "ALL APPLICANT FIELDS MUST BE FILLED")
+    @AssertTrue(message = "all applicant fields must be filled")
     @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isAllApplicantFieldsFilled() {
 
@@ -81,7 +81,7 @@ public class EmergencyEvacuationApplicationRequest {
     }
 
     @JsonIgnore
-    @AssertTrue(message = "PHONE NUMBERS MUST NOT BE SAME ONE")
+    @AssertTrue(message = "phone numbers must not be same one")
     @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isPhoneNumberMustNotBeSameOne() {
 
