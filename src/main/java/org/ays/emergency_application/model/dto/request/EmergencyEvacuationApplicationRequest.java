@@ -42,7 +42,7 @@ public class EmergencyEvacuationApplicationRequest {
     private String sourceDistrict;
 
     @NotBlank
-    @Size(min = 1, max = 250)
+    @Size(min = 20, max = 250)
     private String address;
 
     @NotNull
