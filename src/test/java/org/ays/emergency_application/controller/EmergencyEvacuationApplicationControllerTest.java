@@ -331,7 +331,8 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
 
         // When
         EmergencyEvacuationApplication mockEmergencyEvacuationApplication = new EmergencyEvacuationApplicationBuilder()
-                .withValidFields(mockApplicationId)
+                .withValidFields()
+                .withId(mockApplicationId)
                 .build();
 
         Mockito.when(emergencyEvacuationApplicationService.findById(mockApplicationId))

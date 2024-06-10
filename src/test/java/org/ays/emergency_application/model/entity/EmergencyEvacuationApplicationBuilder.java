@@ -1,6 +1,7 @@
 package org.ays.emergency_application.model.entity;
 
 import org.ays.common.model.TestDataBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 
 public class EmergencyEvacuationApplicationBuilder extends TestDataBuilder<EmergencyEvacuationApplication> {
@@ -9,9 +10,9 @@ public class EmergencyEvacuationApplicationBuilder extends TestDataBuilder<Emerg
         super(EmergencyEvacuationApplication.class);
     }
 
-    public EmergencyEvacuationApplicationBuilder withValidFields(String id) {
+    public EmergencyEvacuationApplicationBuilder withValidFields() {
         return this
-                .withId(id);
+                .withId(AysRandomUtil.generateUUID());
     }
 
     public EmergencyEvacuationApplicationBuilder withId(String id) {
