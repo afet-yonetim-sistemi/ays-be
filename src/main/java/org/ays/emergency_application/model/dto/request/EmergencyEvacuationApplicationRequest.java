@@ -92,6 +92,10 @@ public class EmergencyEvacuationApplicationRequest {
             return true;
         }
 
+        if (StringUtils.isEmpty(this.applicantPhoneNumber.getLineNumber()) || StringUtils.isEmpty(this.phoneNumber.getLineNumber())) {
+            return true;
+        }
+
         return !this.applicantPhoneNumber.getLineNumber().equals(this.phoneNumber.getLineNumber());
     }
 
