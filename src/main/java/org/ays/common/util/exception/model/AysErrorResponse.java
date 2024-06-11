@@ -1,6 +1,7 @@
 package org.ays.common.util.exception.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolation;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -206,4 +208,29 @@ public class AysErrorResponse {
                                 .type(Objects.requireNonNull(exception.getRequiredType()).getSimpleName()).build()
                 ));
     }
+
+
+    /**
+     * A static method that creates an {@link AysErrorResponseBuilder} instance with the given {@link InvalidFormatException}
+     *
+     * @param exception the {@link InvalidFormatException} providing details of the invalid format.
+     * @return an instance of {@link AysErrorResponseBuilder} with the given {@link InvalidFormatException} object as a sub-error
+     */
+    public static AysErrorResponse.AysErrorResponseBuilder subErrors(final InvalidFormatException exception) {
+
+        return AysErrorResponse.builder()
+                .subErrors(List.of(
+                        SubError.builder()
+                                .message("must be accepted value")
+                                .field(
+                                        Optional.of(exception.getPath())
+                                                .filter(path -> path.size() > 1)
+                                                .map(path -> path.get(path.size() - 2).getFieldName())
+                                                .orElseGet(() -> exception.getPath().get(0).getFieldName())
+                                )
+                                .type(StringUtils.substringAfterLast(exception.getTargetType().getTypeName(), "."))
+                                .build()
+                ));
+    }
+
 }

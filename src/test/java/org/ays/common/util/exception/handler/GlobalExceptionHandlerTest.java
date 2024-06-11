@@ -1,5 +1,7 @@
 package org.ays.common.util.exception.handler;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.AbstractRestControllerTest;
@@ -270,6 +272,25 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
+                .build();
+
+        // Then
+        AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
+    }
+
+    @Test
+    void givenInvalidJsonFormat_whenThrowHttpMessageNotReadableException_thenReturnAysErrorResponse() {
+
+        // Given
+        InvalidFormatException mockInvalidFormatException = InvalidFormatException.from(null, "Invalid format", null, String.class);
+        JsonMappingException.Reference mockReference = new JsonMappingException.Reference("testObject", "testField");
+        mockInvalidFormatException.prependPath(mockReference);
+        HttpMessageNotReadableException mockException = new HttpMessageNotReadableException("Invalid JSON", mockInvalidFormatException);
+
+        // When
+        AysErrorResponse mockErrorResponse = AysErrorResponse.subErrors(mockInvalidFormatException)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
 

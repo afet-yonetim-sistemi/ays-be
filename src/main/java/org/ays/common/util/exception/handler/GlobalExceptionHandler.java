@@ -1,5 +1,6 @@
 package org.ays.common.util.exception.handler;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.common.util.exception.AysAlreadyException;
@@ -34,6 +35,12 @@ class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     AysErrorResponse handleJsonParseErrors(final HttpMessageNotReadableException exception) {
         log.error(exception.getMessage(), exception);
+
+        if (exception.getCause() instanceof InvalidFormatException invalidFormatException) {
+            return AysErrorResponse.subErrors(invalidFormatException)
+                    .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
+                    .build();
+        }
 
         return AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
