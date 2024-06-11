@@ -1,16 +1,18 @@
 package org.ays.common.util.exception.handler;
 
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.AbstractRestControllerTest;
 import org.ays.common.util.exception.AysAuthException;
-import org.ays.common.util.exception.AysInvalidStatusException;
+import org.ays.common.util.exception.AysBadRequestException;
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.common.util.exception.AysProcessException;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpInputMessage;
@@ -39,7 +41,7 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     @Test
     void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentTypeMismatchException_thenReturnAysError() {
         // Given
-        MethodArgumentTypeMismatchException mockException = new MethodArgumentTypeMismatchException("test", String.class, "username", null, null);
+        MethodArgumentTypeMismatchException mockException = new MethodArgumentTypeMismatchException("test", String.class, "username", Mockito.any(MethodParameter.class), null);
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.subErrors(mockException)
@@ -56,12 +58,7 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnAysError() throws NoSuchMethodException {
 
         // Given
-        Method method = GlobalExceptionHandlerTest.class.getDeclaredMethod("givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnAysError");
-        int parameterIndex = -1;
-
-        MethodParameter mockParameter = new MethodParameter(method, parameterIndex);
-        BindingResult mockBindingResult = new BeanPropertyBindingResult(null, null);
-        MethodArgumentNotValidException mockException = new MethodArgumentNotValidException(mockParameter, mockBindingResult);
+        MethodArgumentNotValidException mockException = this.getMethodArgumentNotValidException();
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.subErrors(mockException.getBindingResult().getFieldErrors())
@@ -71,6 +68,15 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleValidationErrors(mockException);
         this.checkAysError(mockErrorResponse, errorResponse);
+    }
+
+    private @NotNull MethodArgumentNotValidException getMethodArgumentNotValidException() throws NoSuchMethodException {
+        Method method = GlobalExceptionHandlerTest.class.getDeclaredMethod("givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnAysError");
+        int parameterIndex = -1;
+
+        MethodParameter mockParameter = new MethodParameter(method, parameterIndex);
+        BindingResult mockBindingResult = new BeanPropertyBindingResult(null, "");
+        return new MethodArgumentNotValidException(mockParameter, mockBindingResult);
     }
 
     @Test
@@ -94,6 +100,8 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // Given
         AysNotExistException mockException = new AysNotExistException("Resource not found") {
+
+            @Serial
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -118,6 +126,8 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // Given
         AysProcessException mockException = new AysProcessException("Internal server error") {
+
+            @Serial
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -193,6 +203,8 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     void givenAuthenticationFailure_whenThrowAysAuthException_thenReturnAysError() {
         // Given
         AysAuthException mockException = new AysAuthException("Authentication failed") {
+
+            @Serial
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -248,6 +260,8 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // Given
         DataAccessException mockException = new DataAccessException("Data access error") {
+
+            @Serial
             private static final long serialVersionUID = 1L;
         };
 
@@ -282,13 +296,13 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     void givenInvalidStatus_whenThrowAysInvalidStatusException_thenReturnAysErrorWithReturnAysError() {
 
         // Given
-        AysInvalidStatusException mockException = new AysInvalidStatusException("Invalid status") {
+        AysBadRequestException mockException = new AysBadRequestException("Bad request") {
             @Serial
             private static final long serialVersionUID = 1L;
 
             @Override
             public String getMessage() {
-                return "Invalid status";
+                return "Bad request";
             }
         };
 
@@ -299,7 +313,7 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
                 .build();
 
         // Then
-        AysErrorResponse errorResponse = globalExceptionHandler.handleInvalidStatusError(mockException);
+        AysErrorResponse errorResponse = globalExceptionHandler.handleBadRequestError(mockException);
         this.checkAysError(mockErrorResponse, errorResponse);
     }
 
