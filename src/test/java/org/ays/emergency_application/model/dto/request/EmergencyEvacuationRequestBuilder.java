@@ -14,7 +14,8 @@ public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<Emergency
         return this
                 .withSeatingCount(1)
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
-                .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build());
+                .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
+                .withAddress("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
     }
 
     public EmergencyEvacuationRequestBuilder withFirstName(String firstName) {

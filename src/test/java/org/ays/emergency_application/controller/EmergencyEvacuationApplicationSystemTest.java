@@ -1,6 +1,6 @@
 package org.ays.emergency_application.controller;
 
-import org.ays.AbstractRestControllerTest;
+import org.ays.AbstractSystemTest;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTest {
+class EmergencyEvacuationApplicationSystemTest extends AbstractSystemTest {
 
     @Autowired
     private EmergencyEvacuationApplicationRepositoryTest emergencyEvacuationApplicationRepository;
@@ -64,7 +64,7 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, adminTokenV2.getAccessToken(), mockListRequest);
 
         List<EmergencyEvacuationApplicationEntity> emergencyEvacuationApplicationEntities = List.of(
                 new EmergencyEvacuationApplicationEntityBuilder().withValidFields().build()
@@ -148,7 +148,7 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractRestControllerTes
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, adminTokenV2.getAccessToken(), mockListRequest);
 
         List<EmergencyEvacuationApplicationEntity> emergencyEvacuationApplicationEntities = List.of(
                 new EmergencyEvacuationApplicationEntityBuilder().withValidFields().build()
