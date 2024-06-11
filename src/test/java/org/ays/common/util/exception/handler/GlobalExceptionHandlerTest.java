@@ -12,7 +12,6 @@ import org.ays.common.util.exception.model.AysErrorResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpInputMessage;
@@ -39,9 +38,10 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     private GlobalExceptionHandler globalExceptionHandler;
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentTypeMismatchException_thenReturnAysError() {
         // Given
-        MethodArgumentTypeMismatchException mockException = new MethodArgumentTypeMismatchException("test", String.class, "username", Mockito.any(MethodParameter.class), null);
+        MethodArgumentTypeMismatchException mockException = new MethodArgumentTypeMismatchException("test", String.class, "username", null, null);
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.subErrors(mockException)
