@@ -1,7 +1,6 @@
 package org.ays.user.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.auth.model.dto.response.AysTokenResponse;
 import org.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import org.ays.auth.model.request.AysLoginRequestV2;
 import org.ays.auth.model.request.AysLoginRequestV2Builder;
@@ -9,6 +8,7 @@ import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequestBuilder;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequestBuilder;
+import org.ays.auth.model.response.AysTokenResponse;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
 import org.ays.common.util.exception.model.AysErrorBuilder;

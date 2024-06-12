@@ -1,4 +1,4 @@
-package org.ays.auth.model.dto.response;
+package org.ays.auth.model.response;
 
 import org.ays.common.model.TestDataBuilder;
 
