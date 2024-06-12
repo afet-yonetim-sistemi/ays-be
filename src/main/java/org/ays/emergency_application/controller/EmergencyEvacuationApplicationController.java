@@ -15,7 +15,6 @@ import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplication
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
  * This controller handles the business operations for emergency evacuation applications in the system.
  * The mapping path for this controller is "/api/v1/emergency-evacuation-application".
  */
-@Validated
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor

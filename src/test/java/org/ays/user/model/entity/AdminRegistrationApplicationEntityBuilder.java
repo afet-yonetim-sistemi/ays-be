@@ -7,13 +7,13 @@ import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 
-public class AdminRegisterApplicationEntityBuilder extends TestDataBuilder<AdminRegistrationApplicationEntity> {
+public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<AdminRegistrationApplicationEntity> {
 
-    public AdminRegisterApplicationEntityBuilder() {
+    public AdminRegistrationApplicationEntityBuilder() {
         super(AdminRegistrationApplicationEntity.class);
     }
 
-    public AdminRegisterApplicationEntityBuilder withValidFields() {
+    public AdminRegistrationApplicationEntityBuilder withValidFields() {
         final UserEntityV2 userEntity = new UserEntityV2Builder()
                 .withValidFields()
                 .build();
@@ -30,41 +30,41 @@ public class AdminRegisterApplicationEntityBuilder extends TestDataBuilder<Admin
                 .withReason(AysRandomTestUtil.generateString(41));
     }
 
-    public AdminRegisterApplicationEntityBuilder withId(String id) {
+    public AdminRegistrationApplicationEntityBuilder withId(String id) {
         data.setId(id);
         return this;
     }
 
-    public AdminRegisterApplicationEntityBuilder withStatus(AdminRegistrationApplicationStatus status) {
+    public AdminRegistrationApplicationEntityBuilder withStatus(AdminRegistrationApplicationStatus status) {
         data.setStatus(status);
         return this;
     }
 
-    public AdminRegisterApplicationEntityBuilder withUserId(String userId) {
+    public AdminRegistrationApplicationEntityBuilder withUserId(String userId) {
         data.setUserId(userId);
         data.setUser(null);
         return this;
     }
 
-    public AdminRegisterApplicationEntityBuilder withUser(UserEntityV2 userEntity) {
+    public AdminRegistrationApplicationEntityBuilder withUser(UserEntityV2 userEntity) {
         data.setUserId(userEntity.getId());
         data.setUser(userEntity);
         return this;
     }
 
-    public AdminRegisterApplicationEntityBuilder withInstitutionId(String institutionId) {
+    public AdminRegistrationApplicationEntityBuilder withInstitutionId(String institutionId) {
         data.setInstitutionId(institutionId);
         data.setInstitution(null);
         return this;
     }
 
-    public AdminRegisterApplicationEntityBuilder withInstitution(InstitutionEntity institutionEntity) {
+    public AdminRegistrationApplicationEntityBuilder withInstitution(InstitutionEntity institutionEntity) {
         data.setInstitutionId(institutionEntity.getId());
         data.setInstitution(institutionEntity);
         return this;
     }
 
-    public AdminRegisterApplicationEntityBuilder withReason(String reason) {
+    public AdminRegistrationApplicationEntityBuilder withReason(String reason) {
         data.setReason(reason);
         return this;
     }

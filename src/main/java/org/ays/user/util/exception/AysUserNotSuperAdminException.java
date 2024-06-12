@@ -1,13 +1,13 @@
 package org.ays.user.util.exception;
 
-import org.ays.common.util.exception.AysAlreadyException;
+import org.ays.common.util.exception.AysBadRequestException;
 
 import java.io.Serial;
 
 /**
  * Exception to be thrown when a user is not a super admin but tries to perform an action that requires super admin privileges.
  */
-public final class AysUserNotSuperAdminException extends AysAlreadyException {
+public final class AysUserNotSuperAdminException extends AysBadRequestException {
 
     /**
      * Unique identifier for serialization.

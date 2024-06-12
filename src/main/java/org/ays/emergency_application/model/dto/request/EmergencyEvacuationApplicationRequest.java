@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.util.validation.Name;
 import org.hibernate.validator.constraints.Range;
@@ -42,7 +43,7 @@ public class EmergencyEvacuationApplicationRequest {
     private String sourceDistrict;
 
     @NotBlank
-    @Size(min = 1, max = 250)
+    @Size(min = 20, max = 250)
     private String address;
 
     @NotNull
@@ -69,23 +70,29 @@ public class EmergencyEvacuationApplicationRequest {
 
 
     @JsonIgnore
-    @AssertTrue(message = "ALL APPLICANT FIELDS MUST BE FILLED")
+    @AssertTrue(message = "all applicant fields must be filled")
     @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isAllApplicantFieldsFilled() {
 
-        if (this.applicantFirstName == null && this.applicantLastName == null && this.applicantPhoneNumber == null) {
+        if (StringUtils.isEmpty(this.applicantFirstName) && StringUtils.isEmpty(this.applicantLastName) && this.applicantPhoneNumber == null) {
             return true;
         }
 
-        return this.applicantFirstName != null && this.applicantLastName != null && this.applicantPhoneNumber != null;
+        return !StringUtils.isEmpty(this.applicantFirstName) && !StringUtils.isEmpty(this.applicantLastName)
+                &&
+                this.applicantPhoneNumber != null && !this.applicantPhoneNumber.isEmpty();
     }
 
     @JsonIgnore
-    @AssertTrue(message = "PHONE NUMBERS MUST NOT BE SAME ONE")
+    @AssertTrue(message = "phone numbers must not be same one")
     @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isPhoneNumberMustNotBeSameOne() {
 
         if (this.applicantPhoneNumber == null) {
+            return true;
+        }
+
+        if (StringUtils.isEmpty(this.applicantPhoneNumber.getLineNumber()) || StringUtils.isEmpty(this.phoneNumber.getLineNumber())) {
             return true;
         }
 

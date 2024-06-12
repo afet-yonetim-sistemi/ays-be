@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Service implementation for managing permissions.
  * <p>
- * The {@code PermissionServiceImpl} class provides the implementation for the {@link PermissionService}
+ * The {@link PermissionServiceImpl} class provides the implementation for the {@link PermissionService}
  * interface, handling operations related to permissions. It interacts with the {@link PermissionRepository}
  * to retrieve permission data and uses a mapper to convert entities to domain models.
  * </p>

@@ -17,7 +17,7 @@ public final class UserIdNotValidException extends AysAuthException {
     private static final long serialVersionUID = -1446349672040126110L;
 
     /**
-     * Constructs a new {@code UserIdNotValidException} with a default message.
+     * Constructs a new {@link UserIdNotValidException} with a default message.
      */
     public UserIdNotValidException(final String userId) {
         super("user id is not valid! userId: " + userId);

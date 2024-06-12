@@ -9,7 +9,7 @@ import org.ays.user.model.enums.PermissionCategory;
 /**
  * Represents a permission entity in the system.
  * <p>
- * The {@code Permission} class extends {@link BaseDomainModel} and includes
+ * The {@link Permission} class extends {@link BaseDomainModel} and includes
  * details such as the permission's unique identifier, name, category, and
  * whether it is a super permission.
  * </p>

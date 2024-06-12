@@ -16,7 +16,7 @@ public final class AysUserAlreadyActiveException extends AysAlreadyException {
     private static final long serialVersionUID = -9064818847163094755L;
 
     /**
-     * Constructs a new {@code AysUserAlreadyDeletedException} with the specified id.
+     * Constructs a new {@link AysUserAlreadyDeletedException} with the specified id.
      *
      * @param id the id of the active user
      */

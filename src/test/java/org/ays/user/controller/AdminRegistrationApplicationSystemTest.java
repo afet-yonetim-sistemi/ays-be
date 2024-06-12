@@ -23,8 +23,8 @@ import org.ays.user.model.dto.request.AdminRegistrationApplicationRejectRequestB
 import org.ays.user.model.dto.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationResponse;
 import org.ays.user.model.dto.response.AdminRegistrationApplicationSummaryResponse;
-import org.ays.user.model.entity.AdminRegisterApplicationEntityBuilder;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
+import org.ays.user.model.entity.AdminRegistrationApplicationEntityBuilder;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
 import org.ays.user.model.entity.RoleEntityBuilder;
@@ -60,7 +60,24 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     private static final String BASE_PATH = "/api/v1";
 
     @Test
-    void givenValidAdminRegisterApplicationListRequest_whenAdminRegisterApplicationsFound_thenReturnAdminRegisterApplicationsResponse() throws Exception {
+    void givenValidAdminRegistrationApplicationListRequest_whenAdminRegistrationApplicationsFound_thenReturnAdminRegistrationApplicationsResponse() throws Exception {
+
+        // Initialize
+        InstitutionEntity institutionEntity = institutionRepository.save(
+                new InstitutionEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .build()
+        );
+        adminRegistrationApplicationRepository.save(
+                new AdminRegistrationApplicationEntityBuilder()
+                        .withValidFields()
+                        .withId(null)
+                        .withUserId(null)
+                        .withInstitutionId(institutionEntity.getId())
+                        .withStatus(AdminRegistrationApplicationStatus.WAITING)
+                        .build()
+        );
 
         // Given
         AdminRegistrationApplicationListRequest listRequest = new AdminRegistrationApplicationListRequestBuilder()
@@ -73,7 +90,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                 .post(endpoint, superAdminTokenV2.getAccessToken(), listRequest);
 
         List<AdminRegistrationApplicationEntity> adminRegisterApplicationEntities = List.of(
-                new AdminRegisterApplicationEntityBuilder().withValidFields().withStatus(AdminRegistrationApplicationStatus.WAITING).build()
+                new AdminRegistrationApplicationEntityBuilder().withValidFields().withStatus(AdminRegistrationApplicationStatus.WAITING).build()
         );
         Page<AdminRegistrationApplicationEntity> pageOfEntities = new PageImpl<>(
                 adminRegisterApplicationEntities
@@ -130,7 +147,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationId_whenAdminRegisterApplicationFound_thenReturnAdminRegisterApplicationResponse() throws Exception {
+    void givenValidAdminRegistrationApplicationId_whenAdminRegistrationApplicationFound_thenReturnAdminRegistrationApplicationResponse() throws Exception {
 
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
@@ -154,14 +171,16 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .withId(null)
                         .withRoles(Set.of(roleEntity))
                         .withInstitutionId(institutionEntity.getId())
+                        .withStatus(UserStatus.NOT_VERIFIED)
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
                         .withInstitutionId(institutionEntity.getId())
+                        .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
                         .build()
         );
 
@@ -224,7 +243,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationCreateRequest_whenCreatingAdminRegisterApplication_thenReturnAdminRegisterApplicationCreateResponse() throws Exception {
+    void givenValidAdminRegistrationApplicationCreateRequest_whenCreatingAdminRegistrationApplication_thenReturnAdminRegistrationApplicationCreateResponse() throws Exception {
 
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
@@ -274,7 +293,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationId_whenAdminApplicationFound_thenReturnAdminApplicationSummaryResponse() throws Exception {
+    void givenValidAdminRegistrationApplicationId_whenAdminApplicationFound_thenReturnAdminApplicationSummaryResponse() throws Exception {
 
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
@@ -284,7 +303,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(null)
@@ -319,7 +338,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse() throws Exception {
+    void givenValidAdminRegistrationApplicationCompleteRequest_whenAdminRegistered_thenReturnSuccessResponse() throws Exception {
 
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
@@ -329,7 +348,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(null)
@@ -391,7 +410,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplication_thenReturnNothing() throws Exception {
+    void givenValidAdminRegistrationApplicationId_whenApproveAdminRegistrationApplication_thenReturnNothing() throws Exception {
 
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
@@ -419,7 +438,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -459,7 +478,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplicationForAlreadyApproved_thenReturnHttp409Conflict() throws Exception {
+    void givenValidAdminRegistrationApplicationId_whenApproveAdminRegistrationApplicationForAlreadyApproved_thenReturnHttp409Conflict() throws Exception {
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
@@ -489,7 +508,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -516,7 +535,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplicationForWaiting_thenReturnHttp400BadRequest() throws Exception {
+    void givenValidAdminRegistrationApplicationId_whenApproveAdminRegistrationApplicationForWaiting_thenReturnHttp400BadRequest() throws Exception {
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
@@ -525,31 +544,11 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
 
-        Set<PermissionEntity> permissionEntities = new HashSet<>(permissionRepository.findAll());
-        RoleEntity roleEntity = roleRepository.save(
-                new RoleEntityBuilder()
-                        .withValidFields()
-                        .withId(null)
-                        .withInstitutionId(institutionEntity.getId())
-                        .withPermissions(permissionEntities)
-                        .build()
-        );
-
-        UserEntityV2 userEntity = userRepositoryV2.save(
-                new UserEntityV2Builder()
-                        .withValidFields()
-                        .withId(null)
-                        .withRoles(Set.of(roleEntity))
-                        .withInstitutionId(institutionEntity.getId())
-                        .withStatus(UserStatus.NOT_VERIFIED)
-                        .build()
-        );
-
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
-                        .withUserId(userEntity.getId())
+                        .withUserId(null)
                         .withInstitutionId(institutionEntity.getId())
                         .withStatus(AdminRegistrationApplicationStatus.WAITING)
                         .build()
@@ -573,7 +572,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplicationForNonExisting_thenReturnHttp404NotFound() throws Exception {
+    void givenValidAdminRegistrationApplicationId_whenApproveAdminRegistrationApplicationForNonExisting_thenReturnHttp404NotFound() throws Exception {
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
@@ -603,7 +602,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -630,7 +629,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnNothing() throws Exception {
+    void givenValidAdminRegistrationApplicationRejectRequest_whenRejectingAdminRegistrationApplication_thenReturnNothing() throws Exception {
 
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
@@ -658,7 +657,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
                         .build()
         );
         AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -695,7 +694,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationRejectRequest_whenRejectAdminRegisterApplicationForAlreadyRejected_thenReturnHttp409Conflict() throws Exception {
+    void givenValidAdminRegistrationApplicationRejectRequest_whenRejectAdminRegistrationApplicationForAlreadyRejected_thenReturnHttp409Conflict() throws Exception {
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
@@ -725,7 +724,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())
@@ -756,7 +755,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationRejectRequest_whenRejectAdminRegisterApplicationForWaiting_thenReturnHttp400BadRequest() throws Exception {
+    void givenValidAdminRegistrationApplicationRejectRequest_whenRejectAdminRegistrationApplicationForWaiting_thenReturnHttp400BadRequest() throws Exception {
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
@@ -766,7 +765,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         AdminRegistrationApplicationEntity adminRegistrationApplicationEntity = adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(null)
@@ -796,7 +795,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenValidAdminRegisterApplicationRejectRequest_whenRejectAdminRegisterApplicationForNonExisting_thenReturnHttp404NotFound() throws Exception {
+    void givenValidAdminRegistrationApplicationRejectRequest_whenRejectAdminRegistrationApplicationForNonExisting_thenReturnHttp404NotFound() throws Exception {
         // Initialize
         InstitutionEntity institutionEntity = institutionRepository.save(
                 new InstitutionEntityBuilder()
@@ -826,7 +825,7 @@ class AdminRegistrationApplicationSystemTest extends AbstractSystemTest {
         );
 
         adminRegistrationApplicationRepository.save(
-                new AdminRegisterApplicationEntityBuilder()
+                new AdminRegistrationApplicationEntityBuilder()
                         .withValidFields()
                         .withId(null)
                         .withUserId(userEntity.getId())

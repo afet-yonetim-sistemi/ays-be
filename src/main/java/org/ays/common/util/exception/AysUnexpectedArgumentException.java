@@ -14,7 +14,7 @@ public final class AysUnexpectedArgumentException extends RuntimeException {
     private static final long serialVersionUID = -7275175844050733904L;
 
     /**
-     * Constructs a new {@code AysUnexpectedArgumentException} with the specified unexpected object.
+     * Constructs a new {@link AysUnexpectedArgumentException} with the specified unexpected object.
      *
      * @param object the unexpected object.
      */

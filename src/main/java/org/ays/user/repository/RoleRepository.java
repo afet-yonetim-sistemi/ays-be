@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * Repository interface for managing {@link RoleEntity} instances.
- * Extends {@link JpaRepository} to provide CRUD operations for {@code RoleEntity} objects.
+ * Extends {@link JpaRepository} to provide CRUD operations for {@link RoleEntity} objects.
  */
 public interface RoleRepository extends JpaRepository<RoleEntity, String> {
 

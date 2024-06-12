@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Service interface for managing permissions.
  * <p>
- * The {@code PermissionService} interface defines the contract for permission-related operations.
+ * The {@link PermissionService} interface defines the contract for permission-related operations.
  * It provides a method for retrieving all permissions available in the system.
  * </p>
  */

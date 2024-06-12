@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Service implementation for creating roles.
  * <p>
- * The {@code RoleCreateServiceImpl} class provides the implementation for the {@link RoleCreateService}
+ * The {@link RoleCreateServiceImpl} class provides the implementation for the {@link RoleCreateService}
  * interface, handling operations related to role creation. It interacts with the {@link RoleRepository}
  * and {@link PermissionRepository} to manage role and permission data.
  * </p>

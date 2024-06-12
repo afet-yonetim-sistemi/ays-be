@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.common.util.exception.AysAlreadyException;
 import org.ays.common.util.exception.AysAuthException;
-import org.ays.common.util.exception.AysInvalidStatusException;
+import org.ays.common.util.exception.AysBadRequestException;
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.common.util.exception.AysProcessException;
 import org.ays.common.util.exception.model.AysErrorResponse;
@@ -83,9 +83,9 @@ class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(AysInvalidStatusException.class)
+    @ExceptionHandler(AysBadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    AysErrorResponse handleInvalidStatusError(final AysInvalidStatusException exception) {
+    AysErrorResponse handleBadRequestError(final AysBadRequestException exception) {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()

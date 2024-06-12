@@ -14,7 +14,7 @@ public abstract class AysNotExistException extends RuntimeException {
     private static final long serialVersionUID = -3046469863777315718L;
 
     /**
-     * Constructs a new {@code AysNotExistException} with the specified detail message.
+     * Constructs a new {@link AysNotExistException} with the specified detail message.
      *
      * @param message the detail message.
      */

@@ -34,4 +34,8 @@ public class AysPhoneNumberRequest {
         return AysJsonUtil.toJson(this);
     }
 
+    public boolean isEmpty() {
+        return this.countryCode == null && this.lineNumber == null;
+    }
+
 }
