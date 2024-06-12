@@ -2,7 +2,7 @@ package org.ays.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.user.model.dto.request.RoleCreateRequest;
 import org.ays.user.service.RoleCreateService;
 import org.springframework.security.access.prepost.PreAuthorize;

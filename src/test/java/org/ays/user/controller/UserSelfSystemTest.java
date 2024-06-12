@@ -3,7 +3,7 @@ package org.ays.user.controller;
 import io.jsonwebtoken.Claims;
 import org.ays.AbstractSystemTest;
 import org.ays.auth.model.AysToken;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.entity.InstitutionEntity;

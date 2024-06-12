@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.ays.common.model.AysPhoneNumber;
-import org.ays.common.model.dto.response.BaseResponse;
+import org.ays.common.model.response.BaseResponse;
 import org.ays.user.model.enums.UserRole;
 import org.ays.user.model.enums.UserStatus;
 import org.ays.user.model.enums.UserSupportStatus;

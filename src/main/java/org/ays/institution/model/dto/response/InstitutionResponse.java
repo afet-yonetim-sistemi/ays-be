@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.ays.common.model.dto.response.BaseResponse;
+import org.ays.common.model.response.BaseResponse;
 
 /**
  * This class represents the response for a single institution.

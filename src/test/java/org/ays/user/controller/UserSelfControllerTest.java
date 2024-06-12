@@ -1,7 +1,7 @@
 package org.ays.user.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.user.model.User;

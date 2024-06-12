@@ -1,7 +1,7 @@
 package org.ays.institution.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.dto.response.InstitutionResponse;
 import org.ays.institution.model.dto.response.InstitutionsSummaryResponse;

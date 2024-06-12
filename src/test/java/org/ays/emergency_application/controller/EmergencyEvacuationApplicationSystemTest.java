@@ -2,9 +2,9 @@ package org.ays.emergency_application.controller;
 
 import org.ays.AbstractSystemTest;
 import org.ays.common.model.AysPage;
-import org.ays.common.model.dto.response.AysPageResponse;
-import org.ays.common.model.dto.response.AysResponse;
-import org.ays.common.model.dto.response.AysResponseBuilder;
+import org.ays.common.model.response.AysPageResponse;
+import org.ays.common.model.response.AysResponse;
+import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;

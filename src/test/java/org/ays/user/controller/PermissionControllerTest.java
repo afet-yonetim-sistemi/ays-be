@@ -1,7 +1,7 @@
 package org.ays.user.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.user.model.Permission;
 import org.ays.user.model.PermissionBuilder;
 import org.ays.user.model.dto.response.PermissionsResponse;

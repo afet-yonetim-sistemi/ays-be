@@ -2,9 +2,9 @@ package org.ays.user.controller;
 
 import org.ays.AbstractSystemTest;
 import org.ays.common.model.AysPage;
-import org.ays.common.model.dto.response.AysPageResponse;
-import org.ays.common.model.dto.response.AysResponse;
-import org.ays.common.model.dto.response.AysResponseBuilder;
+import org.ays.common.model.response.AysPageResponse;
+import org.ays.common.model.response.AysResponse;
+import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;

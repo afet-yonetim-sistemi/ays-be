@@ -2,7 +2,7 @@ package org.ays.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.user.model.User;
 import org.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
 import org.ays.user.model.dto.response.UserSelfResponse;

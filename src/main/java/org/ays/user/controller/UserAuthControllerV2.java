@@ -8,7 +8,7 @@ import org.ays.auth.model.request.AysLoginRequestV2;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.response.AysTokenResponse;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.user.service.UserAuthServiceV2;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

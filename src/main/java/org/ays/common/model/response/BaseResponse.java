@@ -1,4 +1,4 @@
-package org.ays.common.model.dto.response;
+package org.ays.common.model.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

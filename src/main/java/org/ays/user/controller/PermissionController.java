@@ -1,7 +1,7 @@
 package org.ays.user.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.user.model.Permission;
 import org.ays.user.model.dto.response.PermissionsResponse;
 import org.ays.user.model.mapper.PermissionToPermissionsResponseMapper;

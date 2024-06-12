@@ -1,7 +1,7 @@
 package org.ays;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.springframework.stereotype.Component;

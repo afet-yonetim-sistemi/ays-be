@@ -1,7 +1,7 @@
 package org.ays.institution.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.Institution;
