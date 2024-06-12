@@ -121,8 +121,10 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
         // When
         Mockito.when(emergencyEvacuationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
+
         // Then
         emergencyEvacuationApplicationService.findById(mockId);
+
         // Verify
         Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
@@ -148,7 +150,6 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
         Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
     }
-
 
     @Test
     void givenValidEmergencyEvacuationRequest_ShouldCreateEmergencyEvacuationApplicationCorrectly() {
