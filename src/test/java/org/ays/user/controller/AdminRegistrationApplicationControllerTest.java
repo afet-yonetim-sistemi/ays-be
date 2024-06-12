@@ -2,11 +2,11 @@ package org.ays.user.controller;
 
 import org.ays.AbstractRestControllerTest;
 import org.ays.common.model.AysPage;
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
+import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;

@@ -2,7 +2,7 @@ package org.ays.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.User;
 import org.ays.user.model.dto.request.UserSaveRequest;

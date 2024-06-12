@@ -4,7 +4,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.springframework.util.StringUtils;
 
 /**

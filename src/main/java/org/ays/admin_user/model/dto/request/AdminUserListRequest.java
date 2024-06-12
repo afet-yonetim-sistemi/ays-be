@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.AssertTrue;
 import lombok.Getter;
 import lombok.Setter;
-import org.ays.common.model.dto.request.AysPagingRequest;
+import org.ays.common.model.request.AysPagingRequest;
 
 import java.util.Set;
 

@@ -1,8 +1,8 @@
 package org.ays.user.service.impl;
 
 import org.ays.AbstractUnitTest;
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
+import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;

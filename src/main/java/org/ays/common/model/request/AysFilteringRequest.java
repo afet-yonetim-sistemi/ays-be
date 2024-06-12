@@ -1,4 +1,4 @@
-package org.ays.common.model.dto.request;
+package org.ays.common.model.request;
 
 import org.springframework.data.jpa.domain.Specification;
 

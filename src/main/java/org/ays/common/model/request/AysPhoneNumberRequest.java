@@ -1,27 +1,29 @@
-package org.ays.common.model.dto.request;
+package org.ays.common.model.request;
 
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.util.AysJsonUtil;
+import org.ays.common.util.validation.PhoneNumber;
 
 /**
- * A class representing a phone number in filtering requests, including its country code and line number.
+ * A class representing a phone number in requests, including its country code and line number.
  */
 @Getter
 @Setter
-public class AysPhoneNumberFilterRequest {
+@PhoneNumber
+public class AysPhoneNumberRequest {
 
     /**
      * The country code of the phone number
      */
-    @Size(min = 1, max = 3)
+    @NotBlank
     private String countryCode;
 
     /**
      * The line number of the phone number
      */
-    @Size(min = 7, max = 15)
+    @NotBlank
     private String lineNumber;
 
     /**
@@ -31,4 +33,9 @@ public class AysPhoneNumberFilterRequest {
     public String toString() {
         return AysJsonUtil.toJson(this);
     }
+
+    public boolean isEmpty() {
+        return this.countryCode == null && this.lineNumber == null;
+    }
+
 }

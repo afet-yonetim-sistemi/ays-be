@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.validation.Name;
 import org.hibernate.validator.constraints.Range;
 

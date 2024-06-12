@@ -1,6 +1,6 @@
 package org.ays.user.util.exception;
 
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.exception.AysAlreadyException;
 
 import java.io.Serial;
