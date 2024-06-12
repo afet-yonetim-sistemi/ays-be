@@ -1,5 +1,7 @@
 package org.ays.common.util.exception.model;
 
+import org.ays.common.model.response.AysErrorResponse;
+
 public class AysErrorBuilder {
 
     public static final AysErrorResponse VALIDATION_ERROR = AysErrorResponse.builder()

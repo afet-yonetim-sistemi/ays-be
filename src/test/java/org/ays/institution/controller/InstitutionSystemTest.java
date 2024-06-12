@@ -1,9 +1,9 @@
 package org.ays.institution.controller;
 
 import org.ays.AbstractSystemTest;
+import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.util.exception.model.AysErrorBuilder;
-import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import org.ays.institution.model.entity.InstitutionBuilder;

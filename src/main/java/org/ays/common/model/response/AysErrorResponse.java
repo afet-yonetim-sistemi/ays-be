@@ -1,4 +1,4 @@
-package org.ays.common.util.exception.model;
+package org.ays.common.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.ConstraintViolation;

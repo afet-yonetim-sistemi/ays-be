@@ -1,9 +1,9 @@
 package org.ays.user.controller;
 
 import org.ays.AbstractRestControllerTest;
+import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.util.exception.model.AysErrorBuilder;
-import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.user.model.User;
 import org.ays.user.model.UserBuilder;
 import org.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
