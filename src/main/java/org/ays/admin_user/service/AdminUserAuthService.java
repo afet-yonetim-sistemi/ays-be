@@ -1,7 +1,7 @@
 package org.ays.admin_user.service;
 
 import org.ays.auth.model.AysToken;
-import org.ays.auth.model.dto.request.AysLoginRequest;
+import org.ays.auth.model.request.AysLoginRequest;
 
 /**
  * Admin Auth service to perform admin user related authentication operations.

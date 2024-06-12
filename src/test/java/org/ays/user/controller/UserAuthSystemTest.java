@@ -1,12 +1,12 @@
 package org.ays.user.controller;
 
 import org.ays.AbstractSystemTest;
-import org.ays.auth.model.dto.request.AysLoginRequest;
-import org.ays.auth.model.dto.request.AysLoginRequestBuilder;
-import org.ays.auth.model.dto.request.AysTokenInvalidateRequest;
-import org.ays.auth.model.dto.request.AysTokenRefreshRequest;
 import org.ays.auth.model.dto.response.AysTokenResponse;
 import org.ays.auth.model.dto.response.AysTokenResponseBuilder;
+import org.ays.auth.model.request.AysLoginRequest;
+import org.ays.auth.model.request.AysLoginRequestBuilder;
+import org.ays.auth.model.request.AysTokenInvalidateRequest;
+import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
 import org.ays.common.util.exception.model.AysErrorBuilder;

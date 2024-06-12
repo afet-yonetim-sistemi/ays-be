@@ -1,7 +1,7 @@
 package org.ays.user.service;
 
 import org.ays.auth.model.AysToken;
-import org.ays.auth.model.dto.request.AysLoginRequest;
+import org.ays.auth.model.request.AysLoginRequest;
 
 /**
  * User Auth service to perform user related authentication operations.

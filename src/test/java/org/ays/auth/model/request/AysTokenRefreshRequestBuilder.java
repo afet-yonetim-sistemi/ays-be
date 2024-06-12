@@ -1,12 +1,16 @@
-package org.ays.auth.model.dto.request;
+package org.ays.auth.model.request;
 
-public class AysTokenInvalidateRequestBuilder {
+public class AysTokenRefreshRequestBuilder {
 
-    public static final AysTokenInvalidateRequest VALID_FOR_ADMIN = AysTokenInvalidateRequest.builder()
+    public static final AysTokenRefreshRequest VALID_FOR_SUPER_ADMIN = AysTokenRefreshRequest.builder()
+            .refreshToken("eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJmOGQwNzY3Ny03OGNiLTRmNDEtOTIyZi05ODRlZGM0YjU0MmUiLCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTU4MDksImV4cCI6MTY5NDk0MjIwOSwidXNlcklkIjoiZWEyOWEwYmQtYWQ1ZC00MDY4LTg4YzMtYTg4MzViOGQ1NTVlIn0.fKW2bEfBRRcTPZaR6pAUiRoH7y4GY6soGTHLoNwrYWKNJcR58SnvI6FpH7e20ZJfiI3UoplH4fvvetptcHA3YFtMaykUFNKtXCIKVjrC69Mu02CEmA5NJ4J8aGmTD125pPxduM49TcFAFxt5ITJy2K-RWuKpBR1zCYygDUBL7dZRIhRCo2rpSTutmeh7Jo27iP5rX2bmQ5fITMdqFDew7lZUOEXhL6G6m2s9WU2QquSmiN_jIeURXBwavKDaUNcn9-YtDpGBkMyvb_ThfCeh73QirOlwr-tIGIb4q_MTwyeqLsSYHyDE7Ty8nDgIBuyVRu4Gs4l-tHoeyfbOIraVFw")
+            .build();
+
+    public static final AysTokenRefreshRequest VALID_FOR_ADMIN = AysTokenRefreshRequest.builder()
             .refreshToken("eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiNzQ2YWQ4MS0wYjQwLTQ1ZjEtYTI5Zi1mNzBjNTZmNzU1OTMiLCJpc3MiOiJBWVMiLCJpYXQiOjE2OTQ4NTYwNjksImV4cCI6MTY5NDk0MjQ2OSwidXNlcklkIjoiOTI2MmYwZmMtOTNkYi00ZjdlLTgxYzYtYWFhZDg1YzJiMjA2In0.d2hsQZagjKpv8DbYYhwadq6PbHj1xYOnG8Hx3R4S_4DCKRRfh4Z37SiyMU4cllNc_VCFHz3WXLYzuOmfET-j1FQq2gbEHYv1MN2umvtyKeb6YXuqOfUsTPZP-c-TKRywsHUvM-TMPA4t6CV_rUr9CDYFJ-cARrxu6GJg7GrjXRYj2MpWsa_SeTrXfow26TBkrxYtlJLmLGalW4eculLutWcMKeK-93gPRCURQ-fYmWaOTuxanabJq2GtYKnGmweXo6uZxDc8Swf7zDIDIqYsuI87hwN642HVulQdYfDMYeaf6O1f-ga932REc8zaYV4b8DNI4Duhwm4ev_IVbsZojg")
             .build();
 
-    public static final AysTokenInvalidateRequest VALID_FOR_USER = AysTokenInvalidateRequest.builder()
+    public static final AysTokenRefreshRequest VALID_FOR_USER = AysTokenRefreshRequest.builder()
             .refreshToken("eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiNTFhODMwMC0xMjg4LTQxYzQtOGI4Zi03MGI3OTc3OTBlMDAiLCJpc3MiOiJBWVMiLCJpYXQiOjE2OTk4MTY3NTIsImV4cCI6MTY5OTkwMzE1MiwidXNlcklkIjoiYzRiNGU0ZGItNTY0MS00MWY3LTgyMjItYTc2ZGViMWMwNjVjIn0.aPPB30ihZqnZllGwjpzXbK_oH-BkY9T1xcuBqaKkmYMyoYPcMgiIwrIpdhduO3qmcSF7SuNydZPDy6jdVkfzt_A_Y1xwihcLO_S3_gmtav5ydDBEmS5y1HizbnIWibEjiLe0j3gQF3cBySs5WPUWIaKFDx-3tqrd_wUan3-FbSSevO9zzd38NULAJNqwlHq_X1xz8j65vkJvN7jxQ9r1-ks_vzFg5MCrl60I4HzclznMfEiOOsCD_BCRWyBf985U5eELScOyRvx_SAaQ7xY4C5nJu1hFRj4AhPiLWOLWxbxmE2rrbMM8KdkiDhWiO9Y3sdDv3QRFEvRGRlk-HyWFrQ")
             .build();
 

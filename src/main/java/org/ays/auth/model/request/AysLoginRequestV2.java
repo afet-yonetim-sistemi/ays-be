@@ -1,4 +1,4 @@
-package org.ays.auth.model.dto.request;
+package org.ays.auth.model.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
