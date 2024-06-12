@@ -1,9 +1,9 @@
 package org.ays.user.util.exception;
 
-import java.io.Serial;
-
-import org.ays.common.util.exception.AysInvalidStatusException;
+import org.ays.common.util.exception.AysBadRequestException;
 import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
+
+import java.io.Serial;
 
 /**
  * Exception indicating that an admin registration application is not completed to be rejected.
@@ -12,7 +12,7 @@ import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
  * Typically, this exception is thrown when a rejection operation is performed on an admin register application
  * entity to an incomplete application, where its status is not set to 'COMPLETE'.
  */
-public class AysAdminRegistrationApplicationInCompleteException extends AysInvalidStatusException {
+public class AysAdminRegistrationApplicationInCompleteException extends AysBadRequestException {
 
     /**
      * Unique identifier for serialization.
