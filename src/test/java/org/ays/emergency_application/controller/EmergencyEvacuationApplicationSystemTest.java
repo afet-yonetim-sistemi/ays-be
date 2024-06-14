@@ -293,16 +293,15 @@ class EmergencyEvacuationApplicationSystemTest extends AbstractSystemTest {
     }
 
     @Test
-    void givenNothing_whenUserUnauthorizedForEmergencyEvacuationApplication_thenReturnAccessDeniedException() throws Exception {
+    void givenValidApplicationId_whenUserUnauthorizedForEmergencyEvacuationApplication_thenReturnAccessDeniedException() throws Exception {
 
         // When
-        String mockAccessToken = superAdminTokenV2.getAccessToken();
         String mockApplicationId = AysRandomUtil.generateUUID();
 
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockApplicationId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, mockAccessToken);
+                .get(endpoint, superAdminTokenV2.getAccessToken());
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
