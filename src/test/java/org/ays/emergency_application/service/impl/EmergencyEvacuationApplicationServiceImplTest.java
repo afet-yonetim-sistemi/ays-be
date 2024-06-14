@@ -113,12 +113,13 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
     void givenEmergencyEvacuationApplicationId_whenGettingEmergencyEvacuationApplication_thenReturnEmergencyEvacuationApplication() {
 
         // Given
-        EmergencyEvacuationApplicationEntity mockEntity = new EmergencyEvacuationApplicationEntityBuilder()
-                .withValidFields()
-                .build();
-        String mockId = mockEntity.getId();
+        String mockId = AysRandomUtil.generateUUID();
 
         // When
+        EmergencyEvacuationApplicationEntity mockEntity = new EmergencyEvacuationApplicationEntityBuilder()
+                .withValidFields()
+                .withId(mockId)
+                .build();
         Mockito.when(emergencyEvacuationApplicationRepository.findById(mockId))
                 .thenReturn(Optional.of(mockEntity));
 
