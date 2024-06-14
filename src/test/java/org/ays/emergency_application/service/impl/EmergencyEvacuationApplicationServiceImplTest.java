@@ -124,11 +124,15 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
                 .thenReturn(Optional.of(mockEntity));
 
         // Then
-        emergencyEvacuationApplicationService.findById(mockId);
+        EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationService.findById(mockId);
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
                 .findById(Mockito.anyString());
+
+        // Assert
+        Assertions.assertNotNull(emergencyEvacuationApplication);
+        Assertions.assertEquals(mockId, emergencyEvacuationApplication.getId());
     }
 
     @Test
