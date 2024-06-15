@@ -7,16 +7,20 @@ import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.dto.response.AysPageResponse;
 import org.ays.common.model.dto.response.AysResponse;
 import org.ays.common.model.dto.response.AysResponseBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequestBuilder;
+import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationsResponse;
+import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationBuilder;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntityBuilder;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.ays.user.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
@@ -41,7 +45,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
 
     private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
     private final EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper emergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper = EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper.initialize();
-
+    private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
 
     private final String BASE_PATH = "/api/v1";
 
@@ -317,6 +321,66 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
                 .findAll(Mockito.any(EmergencyEvacuationApplicationListRequest.class));
+    }
+
+    @Test
+    void givenValidEmergencyEvacuationApplicationId_whenEmergencyEvacuationApplicationFound_thenReturnEmergencyEvacuationApplicationResponse() throws Exception {
+
+        // Given
+        String mockApplicationId = AysRandomUtil.generateUUID();
+
+        // When
+        EmergencyEvacuationApplication mockEmergencyEvacuationApplication = new EmergencyEvacuationApplicationBuilder()
+                .withValidFields()
+                .withId(mockApplicationId)
+                .build();
+
+        Mockito.when(emergencyEvacuationApplicationService.findById(mockApplicationId))
+                .thenReturn(mockEmergencyEvacuationApplication);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockApplicationId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminTokenV2.getAccessToken());
+
+        EmergencyEvacuationApplicationResponse mockEmergencyEvacuationApplicationResponse = emergencyEvacuationApplicationToApplicationResponseMapper
+                .map(mockEmergencyEvacuationApplication);
+        AysResponse<EmergencyEvacuationApplicationResponse> mockResponse = AysResponse
+                .successOf(mockEmergencyEvacuationApplicationResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.times(1))
+                .findById(mockApplicationId);
+    }
+
+    @Test
+    void givenEmergencyEvacuationApplicationId_whenUnauthorizedForGettingEmergencyEvacuationApplicationById_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockApplicationId = AysRandomUtil.generateUUID();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/".concat(mockApplicationId));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockUserToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
+                .findById(mockApplicationId);
     }
 
 

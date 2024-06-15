@@ -8,11 +8,16 @@ import org.ays.common.model.dto.response.AysResponse;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationsResponse;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +36,7 @@ class EmergencyEvacuationApplicationController {
 
 
     private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
+    private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
 
     /**
      * Handles POST requests for retrieving a paginated list of emergency evacuation applications.
@@ -50,6 +56,19 @@ class EmergencyEvacuationApplicationController {
                 .content(emergencyEvacuationApplicationToApplicationsResponseMapper.map(pageOfEmergencyEvacuationApplications.getContent()))
                 .build();
         return AysResponse.successOf(pageOfEmergencyEvacuationApplicationsResponse);
+    }
+
+    /**
+     * Handles GET requests for retrieving the details of an emergency evacuation application by its ID.
+     * @param id the ID of the emergency evacuation application to retrieve
+     * @return a response entity containing the details of the emergency evacuation application
+     */
+    @GetMapping("/emergency-evacuation-application/{id}")
+    @PreAuthorize("hasAuthority('application:evacuation:detail')")
+    public AysResponse<EmergencyEvacuationApplicationResponse> findById(@PathVariable @UUID String id) {
+        final EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationService.findById(id);
+        final EmergencyEvacuationApplicationResponse emergencyEvacuationApplicationResponse = emergencyEvacuationApplicationToApplicationResponseMapper.map(emergencyEvacuationApplication);
+        return AysResponse.successOf(emergencyEvacuationApplicationResponse);
     }
 
     /**

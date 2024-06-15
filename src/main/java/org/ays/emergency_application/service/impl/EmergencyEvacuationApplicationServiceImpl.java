@@ -10,6 +10,7 @@ import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplication
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToEntityMapper;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
+import org.ays.emergency_application.util.exception.AysEmergencyEvacuationApplicationNotExistException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,18 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
                 emergencyEvacuationApplicationEntities,
                 emergencyEvacuationApplications
         );
+    }
+
+    /**
+     * Retrieves an emergency evacuation application by its ID.
+     * @param id The ID of the emergency evacuation application.
+     * @return the emergency evacuation application corresponding to the given ID.
+     */
+    @Override
+    public EmergencyEvacuationApplication findById(String id) {
+        EmergencyEvacuationApplicationEntity entity = emergencyEvacuationApplicationRepository.findById(id)
+                .orElseThrow(() -> new AysEmergencyEvacuationApplicationNotExistException(id));
+        return entityToEmergencyEvacuationApplicationMapper.map(entity);
     }
 
     /**
