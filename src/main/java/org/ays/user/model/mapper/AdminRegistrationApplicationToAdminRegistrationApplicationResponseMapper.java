@@ -2,7 +2,7 @@ package org.ays.user.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.user.model.AdminRegistrationApplication;
-import org.ays.user.model.dto.response.AdminRegistrationApplicationResponse;
+import org.ays.user.model.response.AdminRegistrationApplicationResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

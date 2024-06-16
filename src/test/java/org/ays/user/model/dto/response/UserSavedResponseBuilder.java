@@ -1,6 +1,7 @@
 package org.ays.user.model.dto.response;
 
 import org.ays.common.model.TestDataBuilder;
+import org.ays.user.model.response.UserSavedResponse;
 
 public class UserSavedResponseBuilder extends TestDataBuilder<UserSavedResponse> {
 

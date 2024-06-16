@@ -2,7 +2,7 @@ package org.ays.user.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.user.model.User;
-import org.ays.user.model.dto.response.UserResponse;
+import org.ays.user.model.response.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

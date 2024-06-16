@@ -2,7 +2,7 @@ package org.ays.user.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.user.model.Permission;
-import org.ays.user.model.dto.response.PermissionsResponse;
+import org.ays.user.model.response.PermissionsResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

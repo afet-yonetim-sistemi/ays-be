@@ -3,6 +3,7 @@ package org.ays.user.model.dto.response;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.enums.PermissionCategory;
+import org.ays.user.model.response.PermissionsResponse;
 
 public class PermissionsResponseBuilder extends TestDataBuilder<PermissionsResponse> {
 
