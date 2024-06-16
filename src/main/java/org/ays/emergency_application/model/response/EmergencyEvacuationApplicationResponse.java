@@ -1,4 +1,4 @@
-package org.ays.emergency_application.model.dto.response;
+package org.ays.emergency_application.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
