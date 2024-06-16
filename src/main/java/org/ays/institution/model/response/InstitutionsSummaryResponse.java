@@ -1,4 +1,4 @@
-package org.ays.institution.model.dto.response;
+package org.ays.institution.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
