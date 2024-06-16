@@ -2,7 +2,6 @@ package org.ays.auth.model;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.enums.AysTokenClaims;
-import org.ays.auth.model.enums.AysUserType;
 import org.ays.common.model.enums.BeanScope;
 import org.ays.common.util.AysListUtil;
 import org.springframework.context.annotation.Scope;
@@ -38,16 +37,6 @@ public class AysIdentity {
      */
     public String getAccessToken() {
         return this.getJwt().getTokenValue();
-    }
-
-    /**
-     * Retrieves user type from the JWT token
-     *
-     * @return AysUserType as an admin user type
-     */
-    @Deprecated(since = "Authentication V2 Production'a alınınca burası silinecektir.", forRemoval = true)
-    public AysUserType getUserType() {
-        return AysUserType.valueOf(this.getJwt().getClaim(AysTokenClaims.USER_TYPE.getValue()));
     }
 
     /**

@@ -6,14 +6,13 @@ import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
 import org.ays.AbstractUnitTest;
-import org.ays.admin_user.model.entity.AdminUserEntity;
-import org.ays.admin_user.model.entity.AdminUserEntityBuilder;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
-import org.ays.auth.model.entity.UserEntity;
-import org.ays.auth.model.entity.UserEntityBuilder;
+import org.ays.auth.model.entity.UserEntityV2;
+import org.ays.auth.model.entity.UserEntityV2Builder;
+import org.ays.auth.model.entity.UserLoginAttemptEntity;
+import org.ays.auth.model.entity.UserLoginAttemptEntityBuilder;
 import org.ays.auth.model.enums.AysTokenClaims;
-import org.ays.auth.model.enums.AysUserType;
 import org.ays.auth.util.KeyConverter;
 import org.ays.auth.util.exception.TokenNotValidException;
 import org.ays.common.util.AysListUtil;
@@ -46,8 +45,13 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     @Test
     void givenValidAdminUserClaims_whenTokensGenerated_thenReturnAysToken() {
         // Given
-        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().build();
-        Claims mockAdminUserClaims = mockAdminUserEntity.getClaims();
+        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .build();
+        UserLoginAttemptEntity mockLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
+                .withUserId(mockUserEntity.getId())
+                .build();
+        Claims mockAdminUserClaims = mockUserEntity.getClaims(mockLoginAttemptEntity);
 
         // When
         Mockito.when(tokenConfiguration.getIssuer()).thenReturn(MOCK_ISSUER);
@@ -75,8 +79,13 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     @Test
     void givenValidUserClaims_whenTokensGenerated_thenReturnAysToken() {
         // Given
-        UserEntity mockUserEntity = new UserEntityBuilder().withValidFields().build();
-        Claims mockUserClaims = mockUserEntity.getClaims();
+        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .build();
+        UserLoginAttemptEntity mockLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
+                .withUserId(mockUserEntity.getId())
+                .build();
+        Claims mockUserClaims = mockUserEntity.getClaims(mockLoginAttemptEntity);
 
         // When
         Mockito.when(tokenConfiguration.getIssuer()).thenReturn(MOCK_ISSUER);
@@ -104,8 +113,13 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     @Test
     void givenValidAdminUserClaimsAndRefreshToken_whenAccessTokenGenerated_thenReturnAysToken() {
         // Given
-        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().build();
-        Claims mockAdminUserClaims = mockAdminUserEntity.getClaims();
+        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .build();
+        UserLoginAttemptEntity mockLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
+                .withUserId(mockUserEntity.getId())
+                .build();
+        Claims mockUserClaims = mockUserEntity.getClaims(mockLoginAttemptEntity);
 
         // When
         Mockito.when(tokenConfiguration.getIssuer()).thenReturn(MOCK_ISSUER);
@@ -114,7 +128,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         Mockito.when(tokenConfiguration.getPrivateKey()).thenReturn(MOCK_PRIVATE_KEY);
 
         // Then
-        AysToken aysToken = tokenService.generate(mockAdminUserClaims, mockAdminUserToken.getRefreshToken());
+        AysToken aysToken = tokenService.generate(mockUserClaims, mockAdminUserToken.getRefreshToken());
 
         Assertions.assertNotNull(aysToken);
         Assertions.assertNotNull(aysToken.getAccessToken());
@@ -133,8 +147,13 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     @Test
     void givenValidUserClaimsAndRefreshToken_whenAccessTokenGenerated_thenReturnAysToken() {
         // Given
-        UserEntity mockUserEntity = new UserEntityBuilder().withValidFields().build();
-        Claims mockUserClaims = mockUserEntity.getClaims();
+        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .build();
+        UserLoginAttemptEntity mockLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
+                .withUserId(mockUserEntity.getId())
+                .build();
+        Claims mockUserClaims = mockUserEntity.getClaims(mockLoginAttemptEntity);
 
         // When
         Mockito.when(tokenConfiguration.getIssuer()).thenReturn(MOCK_ISSUER);
@@ -215,8 +234,13 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     @Test
     void givenValidJwt_whenJwtParsed_thenReturnAdminUserClaims() {
         // Given
-        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().build();
-        Claims mockAdminUserClaims = mockAdminUserEntity.getClaims();
+        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .build();
+        UserLoginAttemptEntity mockLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
+                .withUserId(mockUserEntity.getId())
+                .build();
+        Claims mockUserClaims = mockUserEntity.getClaims(mockLoginAttemptEntity);
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
@@ -228,7 +252,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
                 .issuedAt(new Date(currentTimeMillis))
                 .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
                 .signWith(MOCK_PRIVATE_KEY)
-                .claims(mockAdminUserClaims)
+                .claims(mockUserClaims)
                 .compact();
 
         Claims mockPayload = Jwts.parser()
@@ -256,9 +280,13 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
 
     @Test
     void givenValidJwt_whenJwtParsed_thenReturnUserClaims() {
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder().withValidFields().build();
-        Claims mockUserClaims = mockUserEntity.getClaims();
+        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .build();
+        UserLoginAttemptEntity mockLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
+                .withUserId(mockUserEntity.getId())
+                .build();
+        Claims mockUserClaims = mockUserEntity.getClaims(mockLoginAttemptEntity);
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
@@ -296,71 +324,15 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
     }
 
     @Test
-    void givenValidToken_whenTokenParsedAndAdminUserAuthoritiesAdded_thenReturnAuthenticatedUsernamePasswordAuthenticationToken() {
+    void givenValidToken_whenTokenParsedAndAuthoritiesAdded_thenReturnAuthenticatedUsernamePasswordAuthenticationToken() {
         // Given
-        AdminUserEntity mockAdminUserEntity = new AdminUserEntityBuilder().build();
-        Claims mockAdminUserClaims = mockAdminUserEntity.getClaims();
-
-        long currentTimeMillis = System.currentTimeMillis();
-        String mockToken = Jwts.builder()
-                .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .and()
-                .id(AysRandomUtil.generateUUID())
-                .issuer(MOCK_ISSUER)
-                .issuedAt(new Date(currentTimeMillis))
-                .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
-                .signWith(MOCK_PRIVATE_KEY)
-                .claims(mockAdminUserClaims)
-                .compact();
-
-        Jws<Claims> mockClaims = Jwts.parser()
-                .verifyWith(MOCK_PUBLIC_KEY)
-                .build()
-                .parseSignedClaims(mockToken);
-
-        JwsHeader mockHeader = mockClaims.getHeader();
-        Claims mockPayload = mockClaims.getPayload();
-
-        Jwt mockJwt = new Jwt(
-                mockToken,
-                mockPayload.getIssuedAt().toInstant(),
-                mockPayload.getExpiration().toInstant(),
-                Map.of(
-                        AysTokenClaims.TYPE.getValue(), mockHeader.getType(),
-                        AysTokenClaims.ALGORITHM.getValue(), mockHeader.getAlgorithm()
-                ),
-                mockPayload
-        );
-
-        List<SimpleGrantedAuthority> mockAuthorities = new ArrayList<>();
-        mockAuthorities.add(new SimpleGrantedAuthority(AysUserType.ADMIN.name()));
-
-        UsernamePasswordAuthenticationToken mockAuthentication = UsernamePasswordAuthenticationToken
-                .authenticated(mockJwt, null, mockAuthorities);
-
-
-        // When
-        Mockito.when(tokenConfiguration.getPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
-
-        // Then
-        UsernamePasswordAuthenticationToken authentication = tokenService.getAuthentication(mockToken);
-
-        Assertions.assertEquals(mockAuthentication, authentication);
-
-        Mockito.verify(tokenConfiguration, Mockito.times(0)).getIssuer();
-        Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
-        Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
-        Mockito.verify(tokenConfiguration, Mockito.times(0)).getPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getPublicKey();
-        Mockito.verifyNoMoreInteractions(tokenConfiguration);
-    }
-
-    @Test
-    void givenValidToken_whenTokenParsedAndUserAuthoritiesAdded_thenReturnAuthenticatedUsernamePasswordAuthenticationToken() {
-        // Given
-        UserEntity mockUserEntity = new UserEntityBuilder().withValidFields().build();
-        Claims mockUserClaims = mockUserEntity.getClaims();
+        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
+                .withValidFields()
+                .build();
+        UserLoginAttemptEntity mockLoginAttemptEntity = new UserLoginAttemptEntityBuilder()
+                .withUserId(mockUserEntity.getId())
+                .build();
+        Claims mockUserClaims = mockUserEntity.getClaims(mockLoginAttemptEntity);
 
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
@@ -395,8 +367,7 @@ class AysTokenServiceImplTest extends AbstractUnitTest {
         );
 
         List<SimpleGrantedAuthority> mockAuthorities = new ArrayList<>();
-        mockAuthorities.add(new SimpleGrantedAuthority(AysUserType.USER.name()));
-        List<String> roles = AysListUtil.to(mockPayload.get(AysTokenClaims.ROLES.getValue()), String.class);
+        List<String> roles = AysListUtil.to(mockPayload.get(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
         roles.forEach(role -> mockAuthorities.add(new SimpleGrantedAuthority(role)));
 
         UsernamePasswordAuthenticationToken mockAuthentication = UsernamePasswordAuthenticationToken

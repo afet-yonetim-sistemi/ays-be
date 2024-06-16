@@ -4,12 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
-import org.ays.admin_user.model.entity.AdminUserEntityBuilder;
-import org.ays.admin_user.model.enums.AdminRole;
-import org.ays.admin_user.repository.AdminUserRepository;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
-import org.ays.auth.model.entity.UserEntityBuilder;
 import org.ays.auth.model.entity.UserEntityV2;
 import org.ays.auth.model.entity.UserLoginAttemptEntity;
 import org.ays.auth.model.enums.AysTokenClaims;
@@ -18,7 +14,6 @@ import org.ays.auth.repository.AysInvalidTokenRepository;
 import org.ays.auth.repository.PermissionRepository;
 import org.ays.auth.repository.RoleRepository;
 import org.ays.auth.repository.UserLoginAttemptRepository;
-import org.ays.auth.repository.UserRepository;
 import org.ays.auth.repository.UserRepositoryV2;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.repository.InstitutionRepository;
@@ -46,9 +41,6 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
     protected InstitutionRepository institutionRepository;
 
     @Autowired
-    protected UserRepository userRepository;
-
-    @Autowired
     protected UserRepositoryV2 userRepositoryV2;
 
     @Autowired
@@ -62,9 +54,6 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @Autowired
     protected AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
-
-    @Autowired
-    protected AdminUserRepository adminUserRepository;
 
     @Autowired
     protected AysInvalidTokenRepository invalidTokenRepository;
@@ -83,33 +72,6 @@ public abstract class AbstractSystemTest extends AbstractTestContainerConfigurat
 
     @BeforeEach
     protected void setUp() {
-        final Claims claimsOfSuperAdmin = new AdminUserEntityBuilder()
-                .withId(AysValidTestData.SuperAdminUser.ID)
-                .withUsername(AysValidTestData.SuperAdminUser.USERNAME)
-                .withRole(AdminRole.SUPER_ADMIN)
-                .withInstitutionId(null)
-                .build()
-                .getClaims();
-        this.superAdminToken = this.generate(claimsOfSuperAdmin);
-
-        final Claims claimsOfAdminUser = new AdminUserEntityBuilder()
-                .withId(AysValidTestData.AdminUser.ID)
-                .withUsername(AysValidTestData.AdminUser.USERNAME)
-                .withEmail(AysValidTestData.AdminUser.EMAIL)
-                .withInstitutionId(AysValidTestData.Institution.ID)
-                .build()
-                .getClaims();
-        this.adminUserToken = this.generate(claimsOfAdminUser);
-
-        final Claims claimsOfUser = new UserEntityBuilder()
-                .withId(AysValidTestData.User.ID)
-                .withUsername(AysValidTestData.User.USERNAME)
-                .withInstitutionId(AysValidTestData.Institution.ID)
-                .build()
-                .getClaims();
-        this.userToken = this.generate(claimsOfUser);
-
-
         final Optional<UserEntityV2> superAdminEntity = userRepositoryV2
                 .findById(AysValidTestData.SuperAdminUserV2.ID);
         final Optional<UserLoginAttemptEntity> superAdminLoginAttemptEntity = loginAttemptRepository

@@ -4,11 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
-import org.ays.admin_user.model.entity.AdminUserEntityBuilder;
-import org.ays.admin_user.model.enums.AdminRole;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
-import org.ays.auth.model.entity.UserEntityBuilder;
 import org.ays.auth.model.entity.UserEntityV2;
 import org.ays.auth.model.entity.UserLoginAttemptEntity;
 import org.ays.auth.model.enums.AysTokenClaims;
@@ -89,9 +86,6 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
                 .thenReturn(parameters);
 
         this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);
-        this.mockSuperAdminToken = this.generate(new AdminUserEntityBuilder().withValidFields().withRole(AdminRole.SUPER_ADMIN).withInstitutionId(null).build().getClaims());
-        this.mockAdminUserToken = this.generate(new AdminUserEntityBuilder().withRole(AdminRole.ADMIN).build().getClaims());
-        this.mockUserToken = this.generate(new UserEntityBuilder().build().getClaims());
 
         final Optional<UserEntityV2> superAdminEntity = userRepository
                 .findById(AysValidTestData.SuperAdminUserV2.ID);

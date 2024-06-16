@@ -15,7 +15,6 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.enums.AysTokenClaims;
-import org.ays.auth.model.enums.AysUserType;
 import org.ays.auth.service.AysTokenService;
 import org.ays.auth.util.exception.TokenNotValidException;
 import org.ays.common.util.AysListUtil;
@@ -207,19 +206,8 @@ class AysTokenServiceImpl implements AysTokenService {
         );
 
         final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        if (payload.get(AysTokenClaims.USER_TYPE.getValue()) != null) {
-            final AysUserType userType = AysUserType.valueOf(payload.get(AysTokenClaims.USER_TYPE.getValue()).toString());
-
-            authorities.add(new SimpleGrantedAuthority(userType.name()));
-
-            if (userType == AysUserType.USER) {
-                final List<String> roles = AysListUtil.to(payload.get(AysTokenClaims.ROLES.getValue()), String.class);
-                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-            }
-        } else {
-            final List<String> permissions = AysListUtil.to(payload.get(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
-            permissions.forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission)));
-        }
+        final List<String> permissions = AysListUtil.to(payload.get(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
+        permissions.forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission)));
 
         return UsernamePasswordAuthenticationToken.authenticated(jwt, null, authorities);
     }

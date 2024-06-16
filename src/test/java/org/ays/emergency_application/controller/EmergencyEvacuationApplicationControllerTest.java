@@ -1,7 +1,7 @@
 package org.ays.emergency_application.controller;
 
 import org.ays.AbstractRestControllerTest;
-import org.ays.auth.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
+import org.ays.auth.model.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
