@@ -1,4 +1,4 @@
-package org.ays.auth.service.impl.impl;
+package org.ays.auth.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.auth.model.AysIdentity;
@@ -10,7 +10,6 @@ import org.ays.auth.model.enums.UserSupportStatus;
 import org.ays.auth.model.mapper.UserEntityToUserMapper;
 import org.ays.auth.model.request.UserSupportStatusUpdateRequest;
 import org.ays.auth.repository.UserRepository;
-import org.ays.auth.service.impl.UserSelfServiceImpl;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;

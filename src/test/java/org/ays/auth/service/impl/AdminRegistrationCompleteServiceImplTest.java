@@ -1,4 +1,4 @@
-package org.ays.auth.service.impl.impl;
+package org.ays.auth.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.auth.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
@@ -17,7 +17,6 @@ import org.ays.auth.repository.PermissionRepository;
 import org.ays.auth.repository.RoleRepository;
 import org.ays.auth.repository.UserPasswordRepository;
 import org.ays.auth.repository.UserRepositoryV2;
-import org.ays.auth.service.impl.AdminRegistrationCompleteServiceImpl;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;

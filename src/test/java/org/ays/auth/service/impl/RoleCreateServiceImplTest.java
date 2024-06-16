@@ -1,4 +1,4 @@
-package org.ays.auth.service.impl.impl;
+package org.ays.auth.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.auth.model.AysIdentity;
@@ -9,7 +9,6 @@ import org.ays.auth.model.entity.RoleEntity;
 import org.ays.auth.model.request.RoleCreateRequest;
 import org.ays.auth.repository.PermissionRepository;
 import org.ays.auth.repository.RoleRepository;
-import org.ays.auth.service.impl.RoleCreateServiceImpl;
 import org.ays.auth.util.exception.AysPermissionNotExistException;
 import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;

@@ -1,4 +1,4 @@
-package org.ays.auth.service.impl.impl;
+package org.ays.auth.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.auth.model.AysIdentity;
@@ -7,7 +7,6 @@ import org.ays.auth.model.entity.PermissionEntity;
 import org.ays.auth.model.entity.PermissionEntityBuilder;
 import org.ays.auth.model.mapper.PermissionEntityToPermissionMapper;
 import org.ays.auth.repository.PermissionRepository;
-import org.ays.auth.service.impl.PermissionServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -1,4 +1,4 @@
-package org.ays.auth.service.impl.impl;
+package org.ays.auth.service.impl;
 
 import io.jsonwebtoken.Claims;
 import org.ays.AbstractUnitTest;
@@ -16,7 +16,6 @@ import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.repository.UserRepository;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
-import org.ays.auth.service.impl.UserAuthServiceImpl;
 import org.ays.auth.util.exception.PasswordNotValidException;
 import org.ays.auth.util.exception.TokenAlreadyInvalidatedException;
 import org.ays.auth.util.exception.TokenNotValidException;

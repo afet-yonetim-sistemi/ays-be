@@ -1,4 +1,4 @@
-package org.ays.auth.service.impl.impl;
+package org.ays.auth.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.auth.model.AysIdentity;
@@ -8,7 +8,6 @@ import org.ays.auth.model.entity.UserEntity;
 import org.ays.auth.model.entity.UserEntityBuilder;
 import org.ays.auth.model.request.UserSaveRequest;
 import org.ays.auth.repository.UserRepository;
-import org.ays.auth.service.impl.UserSaveServiceImpl;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;

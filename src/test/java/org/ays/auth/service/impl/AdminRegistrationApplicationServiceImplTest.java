@@ -1,4 +1,4 @@
-package org.ays.auth.service.impl.impl;
+package org.ays.auth.service.impl;
 
 import org.ays.AbstractUnitTest;
 import org.ays.auth.model.AdminRegistrationApplication;
@@ -17,7 +17,6 @@ import org.ays.auth.model.request.AdminRegistrationApplicationListRequest;
 import org.ays.auth.model.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.auth.repository.AdminRegistrationApplicationRepository;
 import org.ays.auth.repository.UserRepositoryV2;
-import org.ays.auth.service.impl.AdminRegistrationApplicationServiceImpl;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
