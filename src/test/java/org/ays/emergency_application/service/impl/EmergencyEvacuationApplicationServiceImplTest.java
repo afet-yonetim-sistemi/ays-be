@@ -3,6 +3,7 @@ package org.ays.emergency_application.service.impl;
 import org.ays.AbstractUnitTest;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
@@ -13,7 +14,9 @@ import org.ays.emergency_application.model.entity.EmergencyEvacuationApplication
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToEntityMapper;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
+import org.ays.emergency_application.util.exception.AysEmergencyEvacuationApplicationNotExistException;
 import org.ays.user.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.mockito.Mockito.times;
@@ -105,6 +109,52 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
 
+    @Test
+    void givenEmergencyEvacuationApplicationId_whenGettingEmergencyEvacuationApplication_thenReturnEmergencyEvacuationApplication() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        EmergencyEvacuationApplicationEntity mockEntity = new EmergencyEvacuationApplicationEntityBuilder()
+                .withValidFields()
+                .withId(mockId)
+                .build();
+        Mockito.when(emergencyEvacuationApplicationRepository.findById(mockId))
+                .thenReturn(Optional.of(mockEntity));
+
+        // Then
+        EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationService.findById(mockId);
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        // Assert
+        Assertions.assertNotNull(emergencyEvacuationApplication);
+        Assertions.assertEquals(mockId, emergencyEvacuationApplication.getId());
+    }
+
+    @Test
+    void givenEmergencyEvacuationApplicationId_whenEmergencyEvacuationApplicationNotFound_thenThrowAysEmergencyEvacuationApplicationNotExistException() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(emergencyEvacuationApplicationRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysEmergencyEvacuationApplicationNotExistException.class,
+                () -> emergencyEvacuationApplicationService.findById(mockId)
+        );
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
+                .findById(Mockito.anyString());
+    }
 
     @Test
     void givenValidEmergencyEvacuationRequest_ShouldCreateEmergencyEvacuationApplicationCorrectly() {

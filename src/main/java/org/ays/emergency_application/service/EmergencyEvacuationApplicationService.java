@@ -25,4 +25,11 @@ public interface EmergencyEvacuationApplicationService {
      */
     void create(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest);
 
+    /**
+     * Retrieves the details of a specific emergency evacuation application by its ID.
+     *
+     * @param id The ID of the emergency evacuation application.
+     * @return The emergency evacuation application with the specified ID, or null if not found.
+     */
+    EmergencyEvacuationApplication findById(String id);
 }
