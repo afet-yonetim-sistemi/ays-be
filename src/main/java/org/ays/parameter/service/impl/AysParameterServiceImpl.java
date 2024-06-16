@@ -39,7 +39,7 @@ class AysParameterServiceImpl implements AysParameterService {
      * @throws AysParameterNotExistException if the parameter with the given name does not exist
      */
     @Override
-    public AysParameter getParameter(final String name) {
+    public AysParameter findByName(final String name) {
         return parameterReadPort.findByName(name)
                 .orElseThrow(() -> new AysParameterNotExistException(name));
     }

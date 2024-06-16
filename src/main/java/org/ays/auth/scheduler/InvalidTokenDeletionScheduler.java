@@ -50,7 +50,7 @@ class InvalidTokenDeletionScheduler {
      * expiration day parameter. It then deletes all invalid tokens created before this threshold.
      *
      * @see AysInvalidTokenRepository#deleteAllByCreatedAtBefore(LocalDateTime)
-     * @see AysParameterService#getParameter(String)
+     * @see AysParameterService#findByName(String)
      * @see AysParameter
      * @see AysConfigurationParameter#AUTH_REFRESH_TOKEN_EXPIRE_DAY
      */
@@ -58,7 +58,7 @@ class InvalidTokenDeletionScheduler {
     @Scheduled(cron = "${ays.scheduler.invalid-tokens-deletion.cron}")
     public void deleteInvalidTokens() {
         final AysParameter refreshTokenExpireDayParameter = Optional
-                .ofNullable(parameterService.getParameter(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.name()))
+                .ofNullable(parameterService.findByName(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.name()))
                 .orElse(AysParameter.from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY));
 
         LocalDateTime expirationThreshold = LocalDateTime.now()

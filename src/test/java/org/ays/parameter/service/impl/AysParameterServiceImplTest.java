@@ -69,7 +69,7 @@ class AysParameterServiceImplTest extends AbstractUnitTest {
                 .thenReturn(Optional.of(mockParameter));
 
         // Then
-        AysParameter parameter = parameterService.getParameter(mockName);
+        AysParameter parameter = parameterService.findByName(mockName);
 
         Assertions.assertEquals(mockParameter.getName(), parameter.getName());
         Assertions.assertEquals(mockParameter.getDefinition(), parameter.getDefinition());
@@ -91,7 +91,7 @@ class AysParameterServiceImplTest extends AbstractUnitTest {
         // Then
         Assertions.assertThrows(
                 AysParameterNotExistException.class,
-                () -> parameterService.getParameter(mockName)
+                () -> parameterService.findByName(mockName)
         );
 
         // Verify

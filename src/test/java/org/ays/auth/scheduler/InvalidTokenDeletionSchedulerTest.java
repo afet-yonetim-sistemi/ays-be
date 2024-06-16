@@ -30,7 +30,7 @@ class InvalidTokenDeletionSchedulerTest extends AbstractUnitTest {
         // When
         AysParameter mockParameter = AysParameter
                 .from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY);
-        Mockito.when(parameterService.getParameter(Mockito.anyString()))
+        Mockito.when(parameterService.findByName(Mockito.anyString()))
                 .thenReturn(mockParameter);
 
         Mockito.doNothing()
@@ -42,7 +42,7 @@ class InvalidTokenDeletionSchedulerTest extends AbstractUnitTest {
 
         // Verify
         Mockito.verify(parameterService, Mockito.times(1))
-                .getParameter(Mockito.anyString());
+                .findByName(Mockito.anyString());
 
         Mockito.verify(invalidTokenRepository, Mockito.times(1))
                 .deleteAllByCreatedAtBefore(Mockito.any(LocalDateTime.class));

@@ -23,6 +23,6 @@ public interface AysParameterService {
      * @param name the name to search for
      * @return an AysParameter entity
      */
-    AysParameter getParameter(String name);
+    AysParameter findByName(String name);
 
 }
