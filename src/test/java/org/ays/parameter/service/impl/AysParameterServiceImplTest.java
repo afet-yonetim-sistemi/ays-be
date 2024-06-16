@@ -44,7 +44,7 @@ class AysParameterServiceImplTest extends AbstractUnitTest {
                 .thenReturn(mockParameters);
 
         // Then
-        Set<AysParameter> parameters = parameterService.getParameters(mockPrefixOfName);
+        Set<AysParameter> parameters = parameterService.findAll(mockPrefixOfName);
 
         Assertions.assertEquals(mockParameters, parameters);
 

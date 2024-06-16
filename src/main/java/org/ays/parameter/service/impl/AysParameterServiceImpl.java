@@ -26,7 +26,7 @@ class AysParameterServiceImpl implements AysParameterService {
      * @return a set of {@link AysParameter} entities with names starting with the given prefix
      */
     @Override
-    public Set<AysParameter> getParameters(final String prefixOfName) {
+    public Set<AysParameter> findAll(final String prefixOfName) {
         return parameterReadPort.findAll(prefixOfName);
     }
 

@@ -85,7 +85,7 @@ public abstract class AbstractRestControllerTest extends AbstractTestContainerCo
                         .definition("3")
                         .build()
         );
-        Mockito.when(parameterService.getParameters(Mockito.anyString()))
+        Mockito.when(parameterService.findAll(Mockito.anyString()))
                 .thenReturn(parameters);
 
         this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);

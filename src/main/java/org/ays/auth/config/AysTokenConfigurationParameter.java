@@ -51,7 +51,7 @@ public class AysTokenConfigurationParameter {
 
         log.info("AYS Token Configuration is initializing with AYS Parameters...");
 
-        final Set<AysParameter> configurationParameters = parameterService.getParameters("AUTH_");
+        final Set<AysParameter> configurationParameters = parameterService.findAll("AUTH_");
 
         this.issuer = AysConfigurationParameter.AYS.getDefaultValue();
 
