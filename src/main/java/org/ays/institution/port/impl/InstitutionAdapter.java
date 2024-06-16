@@ -39,4 +39,9 @@ class InstitutionAdapter implements InstitutionReadPort {
         return institutionEntityToInstitutionMapper.map(activeInstitutions);
     }
 
+    @Override
+    public boolean existsByIdAndIsStatusActive(final String id) {
+        return institutionRepository.existsByIdAndStatus(id, InstitutionStatus.ACTIVE);
+    }
+
 }

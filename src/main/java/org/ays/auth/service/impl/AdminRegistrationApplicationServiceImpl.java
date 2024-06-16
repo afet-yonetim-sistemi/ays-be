@@ -20,7 +20,7 @@ import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdEx
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
 import org.ays.common.model.AysPage;
-import org.ays.institution.repository.InstitutionRepository;
+import org.ays.institution.port.InstitutionReadPort;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,7 +40,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
 
     private final AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
     private final UserRepositoryV2 userRepository;
-    private final InstitutionRepository institutionRepository;
+    private final InstitutionReadPort institutionReadPort;
 
     private final AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper = AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.initialize();
     private final AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper = AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.initialize();
@@ -109,7 +109,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      */
     @Override
     public AdminRegistrationApplication create(AdminRegistrationApplicationCreateRequest request) {
-        boolean isInstitutionExists = institutionRepository.existsActiveById(request.getInstitutionId());
+        boolean isInstitutionExists = institutionReadPort.existsByIdAndIsStatusActive(request.getInstitutionId());
         if (!isInstitutionExists) {
             throw new AysInstitutionNotExistException(request.getInstitutionId());
         }

@@ -26,7 +26,7 @@ import org.ays.common.model.AysPageBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
-import org.ays.institution.repository.InstitutionRepository;
+import org.ays.institution.port.InstitutionReadPort;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -53,7 +53,8 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
     private UserRepositoryV2 userRepository;
 
     @Mock
-    private InstitutionRepository institutionRepository;
+    private InstitutionReadPort institutionReadPort;
+
 
     private final AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper = AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.initialize();
 
@@ -237,7 +238,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
         Mockito.when(adminRegistrationApplicationRepository.save(Mockito.any(AdminRegistrationApplicationEntity.class)))
                 .thenReturn(mockEntity);
 
-        Mockito.when(institutionRepository.existsActiveById(mockRequest.getInstitutionId()))
+        Mockito.when(institutionReadPort.existsByIdAndIsStatusActive(mockRequest.getInstitutionId()))
                 .thenReturn(true);
 
         // Then
@@ -247,8 +248,8 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
         Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .save(Mockito.any(AdminRegistrationApplicationEntity.class));
 
-        Mockito.verify(institutionRepository, Mockito.times(1))
-                .existsActiveById(Mockito.anyString());
+        Mockito.verify(institutionReadPort, Mockito.times(1))
+                .existsByIdAndIsStatusActive(Mockito.anyString());
     }
 
     @Test
@@ -261,7 +262,7 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
                 .build();
 
         // When
-        Mockito.when(institutionRepository.existsActiveById(mockRequest.getInstitutionId()))
+        Mockito.when(institutionReadPort.existsByIdAndIsStatusActive(mockRequest.getInstitutionId()))
                 .thenReturn(false);
 
         // Then
@@ -271,8 +272,8 @@ class AdminRegistrationApplicationServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(institutionRepository, Mockito.times(1))
-                .existsActiveById(Mockito.anyString());
+        Mockito.verify(institutionReadPort, Mockito.times(1))
+                .existsByIdAndIsStatusActive(Mockito.anyString());
     }
 
     @Test

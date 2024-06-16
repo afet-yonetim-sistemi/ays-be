@@ -19,4 +19,12 @@ public interface InstitutionReadPort {
      */
     List<Institution> findAllByStatusOrderByNameAsc(InstitutionStatus status);
 
+    /**
+     * Checks if an {@link Institution} with the specified ID exists and is active.
+     *
+     * @param id the ID of the {@link Institution} to check
+     * @return {@code true} if an {@link Institution} with the specified ID exists and is active, otherwise {@code false}
+     */
+    boolean existsByIdAndIsStatusActive(String id);
+
 }
