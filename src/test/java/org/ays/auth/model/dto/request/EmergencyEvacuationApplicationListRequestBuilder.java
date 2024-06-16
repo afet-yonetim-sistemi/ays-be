@@ -4,8 +4,8 @@ import org.ays.common.model.AysPaging;
 import org.ays.common.model.AysPagingBuilder;
 import org.ays.common.model.AysSorting;
 import org.ays.common.model.TestDataBuilder;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;

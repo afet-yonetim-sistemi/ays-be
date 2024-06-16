@@ -3,6 +3,7 @@ package org.ays.emergency_application.model.dto.request;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
 
 public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<EmergencyEvacuationApplicationRequest> {
 

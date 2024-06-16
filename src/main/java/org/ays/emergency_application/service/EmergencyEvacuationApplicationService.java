@@ -2,8 +2,8 @@ package org.ays.emergency_application.service;
 
 import org.ays.common.model.AysPage;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
 
 /**
  * Emergency evacuation application service to perform emergency evacuation related operations

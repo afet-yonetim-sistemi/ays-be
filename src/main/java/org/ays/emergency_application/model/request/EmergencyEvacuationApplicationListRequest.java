@@ -1,4 +1,4 @@
-package org.ays.emergency_application.model.dto.request;
+package org.ays.emergency_application.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
