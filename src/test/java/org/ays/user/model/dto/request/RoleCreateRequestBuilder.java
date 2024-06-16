@@ -1,6 +1,7 @@
 package org.ays.user.model.dto.request;
 
 import org.ays.common.model.TestDataBuilder;
+import org.ays.user.model.request.RoleCreateRequest;
 
 import java.util.Set;
 import java.util.UUID;

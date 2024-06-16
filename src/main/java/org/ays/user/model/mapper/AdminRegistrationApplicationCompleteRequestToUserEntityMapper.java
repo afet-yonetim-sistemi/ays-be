@@ -1,9 +1,9 @@
 package org.ays.user.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
-import org.ays.user.model.dto.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.enums.UserStatus;
+import org.ays.user.model.request.AdminRegistrationApplicationCompleteRequest;
 
 /**
  * {@link AdminRegistrationApplicationCompleteRequestToUserEntityMapper} is an interface that defines the mapping between an {@link AdminRegistrationApplicationCompleteRequest} and an {@link UserEntityV2}.

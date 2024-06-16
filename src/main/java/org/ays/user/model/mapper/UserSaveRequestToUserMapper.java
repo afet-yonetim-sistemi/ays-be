@@ -3,11 +3,11 @@ package org.ays.user.model.mapper;
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.user.model.User;
-import org.ays.user.model.dto.request.UserSaveRequest;
 import org.ays.user.model.entity.UserEntity;
 import org.ays.user.model.enums.UserRole;
 import org.ays.user.model.enums.UserStatus;
 import org.ays.user.model.enums.UserSupportStatus;
+import org.ays.user.model.request.UserSaveRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

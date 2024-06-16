@@ -2,8 +2,8 @@ package org.ays.user.service;
 
 import org.ays.common.model.AysPage;
 import org.ays.user.model.User;
-import org.ays.user.model.dto.request.UserListRequest;
-import org.ays.user.model.dto.request.UserUpdateRequest;
+import org.ays.user.model.request.UserListRequest;
+import org.ays.user.model.request.UserUpdateRequest;
 
 /**
  * User service to perform user related business operations.

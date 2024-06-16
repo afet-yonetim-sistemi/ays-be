@@ -1,7 +1,7 @@
 package org.ays.user.service;
 
 import org.ays.user.model.User;
-import org.ays.user.model.dto.request.UserSaveRequest;
+import org.ays.user.model.request.UserSaveRequest;
 
 /**
  * User Save Service to perform user related business operations.

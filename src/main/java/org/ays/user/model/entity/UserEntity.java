@@ -21,10 +21,10 @@ import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.model.enums.AysUserType;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
-import org.ays.user.model.dto.request.UserUpdateRequest;
 import org.ays.user.model.enums.UserRole;
 import org.ays.user.model.enums.UserStatus;
 import org.ays.user.model.enums.UserSupportStatus;
+import org.ays.user.model.request.UserUpdateRequest;
 
 import java.util.List;
 

@@ -1,20 +1,18 @@
 package org.ays.user.service.impl;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.AysPage;
 import org.ays.institution.repository.InstitutionRepository;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.ays.user.model.AdminRegistrationApplication;
-import org.ays.user.model.dto.request.AdminRegistrationApplicationCreateRequest;
-import org.ays.user.model.dto.request.AdminRegistrationApplicationListRequest;
-import org.ays.user.model.dto.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.user.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.user.model.entity.UserEntityV2;
 import org.ays.user.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.user.model.mapper.AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper;
 import org.ays.user.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
+import org.ays.user.model.request.AdminRegistrationApplicationCreateRequest;
+import org.ays.user.model.request.AdminRegistrationApplicationListRequest;
+import org.ays.user.model.request.AdminRegistrationApplicationRejectRequest;
 import org.ays.user.repository.AdminRegistrationApplicationRepository;
 import org.ays.user.repository.UserRepositoryV2;
 import org.ays.user.service.AdminRegistrationApplicationService;
@@ -28,6 +26,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * This class implements the {@link AdminRegistrationApplicationService} interface and provides verification operations for admin users.

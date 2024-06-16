@@ -1,7 +1,7 @@
 package org.ays.user.service;
 
 import org.ays.user.model.User;
-import org.ays.user.model.dto.request.UserSupportStatusUpdateRequest;
+import org.ays.user.model.request.UserSupportStatusUpdateRequest;
 
 /**
  * UserSelfService interface is responsible for managing a user's own operations

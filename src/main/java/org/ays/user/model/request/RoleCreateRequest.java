@@ -1,4 +1,4 @@
-package org.ays.user.model.dto.request;
+package org.ays.user.model.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

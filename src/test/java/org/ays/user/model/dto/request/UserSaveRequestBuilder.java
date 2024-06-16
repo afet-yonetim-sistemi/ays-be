@@ -3,6 +3,7 @@ package org.ays.user.model.dto.request;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.user.model.request.UserSaveRequest;
 
 public class UserSaveRequestBuilder extends TestDataBuilder<UserSaveRequest> {
 

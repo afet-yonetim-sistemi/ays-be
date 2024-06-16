@@ -1,6 +1,6 @@
 package org.ays.user.service;
 
-import org.ays.user.model.dto.request.RoleCreateRequest;
+import org.ays.user.model.request.RoleCreateRequest;
 
 /**
  * Service interface for creating roles.

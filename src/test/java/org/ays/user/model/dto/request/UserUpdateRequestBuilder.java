@@ -3,6 +3,7 @@ package org.ays.user.model.dto.request;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.user.model.enums.UserRole;
 import org.ays.user.model.enums.UserStatus;
+import org.ays.user.model.request.UserUpdateRequest;
 
 public class UserUpdateRequestBuilder extends TestDataBuilder<UserUpdateRequest> {
 

@@ -2,9 +2,9 @@ package org.ays.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
-import org.ays.user.model.dto.request.RoleCreateRequest;
 import org.ays.user.model.entity.PermissionEntity;
 import org.ays.user.model.entity.RoleEntity;
+import org.ays.user.model.request.RoleCreateRequest;
 import org.ays.user.repository.PermissionRepository;
 import org.ays.user.repository.RoleRepository;
 import org.ays.user.service.RoleCreateService;
