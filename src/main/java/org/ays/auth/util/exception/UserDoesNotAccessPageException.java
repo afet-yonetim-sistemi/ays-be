@@ -1,7 +1,7 @@
 package org.ays.auth.util.exception;
 
+import org.ays.auth.model.enums.SourcePage;
 import org.ays.common.util.exception.AysAuthException;
-import org.ays.user.model.enums.SourcePage;
 
 import java.io.Serial;
 

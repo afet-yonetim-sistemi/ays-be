@@ -1,7 +1,7 @@
 package org.ays.auth.model.request;
 
+import org.ays.auth.model.enums.SourcePage;
 import org.ays.common.model.TestDataBuilder;
-import org.ays.user.model.enums.SourcePage;
 import org.ays.util.AysValidTestData;
 
 public class AysLoginRequestV2Builder extends TestDataBuilder<AysLoginRequestV2> {

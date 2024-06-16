@@ -1,6 +1,7 @@
 package org.ays.emergency_application.service.impl;
 
 import org.ays.AbstractUnitTest;
+import org.ays.auth.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.util.AysRandomUtil;
@@ -15,7 +16,6 @@ import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplication
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToEntityMapper;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
 import org.ays.emergency_application.util.exception.AysEmergencyEvacuationApplicationNotExistException;
-import org.ays.user.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

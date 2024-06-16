@@ -1,6 +1,7 @@
 package org.ays.emergency_application.controller;
 
 import org.ays.AbstractSystemTest;
+import org.ays.auth.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
@@ -19,7 +20,6 @@ import org.ays.emergency_application.model.entity.EmergencyEvacuationApplication
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepositoryTest;
-import org.ays.user.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Assertions;

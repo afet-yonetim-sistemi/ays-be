@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.ays.auth.model.enums.SourcePage;
 import org.ays.common.util.validation.Email;
-import org.ays.user.model.enums.SourcePage;
 
 /**
  * Represents a login request of the Ays application.
