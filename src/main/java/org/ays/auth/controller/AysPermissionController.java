@@ -25,7 +25,9 @@ class AysPermissionController {
 
     private final AysPermissionService permissionService;
 
+
     private final AysPermissionToPermissionsResponseMapper permissionToPermissionsResponseMapper = AysPermissionToPermissionsResponseMapper.initialize();
+
 
     /**
      * Retrieves all permissions.

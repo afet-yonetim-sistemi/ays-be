@@ -21,7 +21,7 @@ import org.ays.emergency_application.model.request.EmergencyEvacuationApplicatio
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
-import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepositoryTest;
+import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Assertions;
@@ -42,10 +42,11 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
     private EmergencyEvacuationApplicationReadPort emergencyEvacuationApplicationReadPort;
 
     @Autowired
-    private EmergencyEvacuationApplicationRepositoryTest emergencyEvacuationApplicationRepository;
+    private EmergencyEvacuationApplicationRepository emergencyEvacuationApplicationRepository;
 
 
     private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
+
 
     private final String BASE_PATH = "/api/v1";
 
