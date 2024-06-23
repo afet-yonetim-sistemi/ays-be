@@ -1,0 +1,73 @@
+<mxfile host="Electron" modified="2024-06-23T13:13:39.752Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="dfYyoEluI1aXcbEZlqxr" version="21.7.5" type="device">
+  <diagram id="s0a64zRAVUHj5mGzW0cH" name="Page-1">
+    <mxGraphModel dx="2101" dy="908" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=open;endFill=0;fontSize=13;" parent="1" source="5-AeLMVp6fQkeemDbT-c-2" target="5-AeLMVp6fQkeemDbT-c-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-2" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px;&quot;&gt;&lt;b style=&quot;font-size: 13px;&quot;&gt;CONTROLLER LAYER&lt;/b&gt;&lt;/font&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="310" y="230" width="300" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=open;endFill=0;fontSize=13;" parent="1" source="5-AeLMVp6fQkeemDbT-c-4" target="5-AeLMVp6fQkeemDbT-c-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-4" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;&lt;b style=&quot;font-size: 13px&quot;&gt;Request Object&lt;br&gt;&lt;/b&gt;&lt;/font&gt;&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 10px&quot;&gt;e.g. UserSaveRequest&lt;/font&gt;&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/font&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="-30" y="230" width="250" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-5" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;&lt;b style=&quot;font-size: 13px&quot;&gt;Response&amp;nbsp;&lt;/b&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;&lt;b style=&quot;font-size: 13px&quot;&gt;Object&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 10px&quot;&gt;e.g. UserResponse&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/span&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="700" y="230" width="250" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=open;endFill=0;fontSize=13;" parent="1" source="5-AeLMVp6fQkeemDbT-c-7" target="5-AeLMVp6fQkeemDbT-c-10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-7" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px;&quot;&gt;SERVICE LAYER&lt;/font&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="310" y="340" width="300" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=open;endFill=0;fontSize=13;" parent="1" source="5-AeLMVp6fQkeemDbT-c-9" target="5-AeLMVp6fQkeemDbT-c-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-9" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;Request Object&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 10px ; font-weight: 400&quot;&gt;e.g. String,Long,RoleUpdateRequest&lt;/span&gt;&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/font&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="-30" y="340" width="250" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-10" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;Domain&amp;nbsp;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;Object&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 10px ; font-weight: 400&quot;&gt;e.g. String,Long,Role&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/span&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="700" y="340" width="250" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=open;endFill=0;fontSize=13;" parent="1" source="5-AeLMVp6fQkeemDbT-c-12" target="5-AeLMVp6fQkeemDbT-c-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-12" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px;&quot;&gt;PORT/ADAPTER LAYER&lt;/font&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="310" y="450" width="300" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=open;endFill=0;fontSize=13;" parent="1" source="5-AeLMVp6fQkeemDbT-c-14" target="5-AeLMVp6fQkeemDbT-c-12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-14" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;Domain Object&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 10px ; font-weight: 400&quot;&gt;e.g. String,Long,Institution&lt;/span&gt;&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/font&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="-30" y="450" width="250" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-15" value="&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;Domain&lt;/span&gt;&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;&amp;nbsp;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;Object&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 10px ; font-weight: 400&quot;&gt;e.g. String,Long,Institution&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/span&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="700" y="450" width="250" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5-AeLMVp6fQkeemDbT-c-16" value="AYS Architecture" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;fillColor=#ffe6cc;strokeColor=none;fontFamily=SF Mono;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="-30" y="110" width="990" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="zkVZLlxHFPqB-0-bLCTD-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=open;endFill=0;fontSize=13;" edge="1" parent="1" source="zkVZLlxHFPqB-0-bLCTD-2" target="zkVZLlxHFPqB-0-bLCTD-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zkVZLlxHFPqB-0-bLCTD-2" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px;&quot;&gt;REPOSITORY LAYER&lt;/font&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="310" y="560" width="300" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="zkVZLlxHFPqB-0-bLCTD-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=open;endFill=0;fontSize=13;" edge="1" parent="1" source="zkVZLlxHFPqB-0-bLCTD-4" target="zkVZLlxHFPqB-0-bLCTD-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zkVZLlxHFPqB-0-bLCTD-4" value="&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;Entity Object&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 10px ; font-weight: 400&quot;&gt;e.g. String,Long,InstitutionEntity&lt;/span&gt;&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/font&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="560" width="250" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="zkVZLlxHFPqB-0-bLCTD-5" value="&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;Entity&lt;/span&gt;&lt;font face=&quot;SF Mono&quot; style=&quot;font-size: 13px&quot;&gt;&amp;nbsp;&lt;/font&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;Object&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 10px ; font-weight: 400&quot;&gt;e.g. String,Long,InstitutionEntity&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;sf mono&amp;quot; ; font-size: 13px&quot;&gt;&lt;br style=&quot;font-size: 13px&quot;&gt;&lt;/span&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="700" y="560" width="250" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

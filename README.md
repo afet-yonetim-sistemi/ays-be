@@ -211,5 +211,10 @@ ZipException opening "bcprov-jdk18on-1.78.jar": zip END header not found
 
 # Project Infrastucture
 
-<img src="https://bit.ly/3MzggX8" width="7000" alt=""/>
-<img src="https://bit.ly/42NeBTQ" width="400" alt=""/>
+## 🏛️ Layer Architecture
+
+![](/documents/architecture/ays-architecture.png?raw=true)
+
+## 📦 Package Architecture
+
+![](/documents/architecture/package-architecture-example.png?raw=true)
