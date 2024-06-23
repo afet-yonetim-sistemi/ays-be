@@ -70,9 +70,9 @@ Issues are managed on GitHub Discussions, with plans to transition them to Jira.
 
 ### Pull Request Naming Conventions:
 
-- `#{jira-issue-number} | {header-for-summary-of-development}`
+- `{jira-issue-number} | {header-for-summary-of-development}`
 
-> Example : `#AYS-1 | Add feature to handle user authentication`
+> Example : `AYS-1 | Add feature to handle user authentication`
 
 Here are some additional standards to keep in mind:
 
