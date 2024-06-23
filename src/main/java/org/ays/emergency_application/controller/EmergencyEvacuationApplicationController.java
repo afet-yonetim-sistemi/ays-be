@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
  * The mapping path for this controller is "/api/v1/emergency-evacuation-application".
  */
 @RestController
-@RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
@@ -37,6 +37,7 @@ class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
     private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
+
 
     /**
      * Handles POST requests for retrieving a paginated list of emergency evacuation applications.
@@ -60,6 +61,7 @@ class EmergencyEvacuationApplicationController {
 
     /**
      * Handles GET requests for retrieving the details of an emergency evacuation application by its ID.
+     *
      * @param id the ID of the emergency evacuation application to retrieve
      * @return a response entity containing the details of the emergency evacuation application
      */

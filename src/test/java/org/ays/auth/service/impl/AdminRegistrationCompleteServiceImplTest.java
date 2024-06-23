@@ -1,25 +1,28 @@
 package org.ays.auth.service.impl;
 
-import org.ays.AbstractUnitTest;
-import org.ays.auth.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
-import org.ays.auth.model.entity.AdminRegistrationApplicationEntity;
-import org.ays.auth.model.entity.AdminRegistrationApplicationEntityBuilder;
-import org.ays.auth.model.entity.PermissionEntity;
-import org.ays.auth.model.entity.PermissionEntityBuilder;
-import org.ays.auth.model.entity.RoleEntity;
-import org.ays.auth.model.entity.RoleEntityBuilder;
-import org.ays.auth.model.entity.UserEntityV2;
-import org.ays.auth.model.entity.UserEntityV2Builder;
+import org.ays.AysUnitTest;
+import org.ays.auth.model.AdminRegistrationApplication;
+import org.ays.auth.model.AdminRegistrationApplicationBuilder;
+import org.ays.auth.model.AysPermission;
+import org.ays.auth.model.AysRole;
+import org.ays.auth.model.AysRoleBuilder;
+import org.ays.auth.model.AysUser;
+import org.ays.auth.model.PermissionBuilder;
+import org.ays.auth.model.UserV2Builder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequest;
-import org.ays.auth.repository.AdminRegistrationApplicationRepository;
-import org.ays.auth.repository.PermissionRepository;
-import org.ays.auth.repository.RoleRepository;
-import org.ays.auth.repository.UserPasswordRepository;
-import org.ays.auth.repository.UserRepositoryV2;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
+import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequestBuilder;
+import org.ays.auth.port.AdminRegistrationApplicationReadPort;
+import org.ays.auth.port.AdminRegistrationApplicationSavePort;
+import org.ays.auth.port.AysPermissionReadPort;
+import org.ays.auth.port.AysRoleReadPort;
+import org.ays.auth.port.AysRoleSavePort;
+import org.ays.auth.port.AysUserReadPort;
+import org.ays.auth.port.AysUserSavePort;
+import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
+import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.AysRandomUtil;
@@ -34,28 +37,36 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 import java.util.Set;
 
-class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
+class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
     @InjectMocks
     private AdminRegistrationCompleteServiceImpl adminUserRegisterService;
 
-    @Mock
-    private UserRepositoryV2 userRepository;
 
     @Mock
-    private UserPasswordRepository userPasswordRepository;
+    private AdminRegistrationApplicationReadPort adminRegistrationApplicationReadPort;
 
     @Mock
-    private RoleRepository roleRepository;
+    private AdminRegistrationApplicationSavePort adminRegistrationApplicationSavePort;
+
 
     @Mock
-    private PermissionRepository permissionRepository;
+    private AysUserSavePort userSavePort;
+
+    @Mock
+    private AysUserReadPort userReadPort;
+
+    @Mock
+    private AysRoleSavePort roleSavePort;
+
+    @Mock
+    private AysRoleReadPort roleReadPort;
+
+    @Mock
+    private AysPermissionReadPort permissionReadPort;
 
     @Mock
     private PasswordEncoder passwordEncoder;
-
-    @Mock
-    private AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
 
 
     @Test
@@ -64,97 +75,92 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
-        AysPhoneNumberRequest mockPhoneNumber = mockCompleteRequest.getPhoneNumber();
+        AysPhoneNumberRequest mockPhoneNumberRequest = mockCompleteRequest.getPhoneNumber();
 
         // When
-        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegistrationApplicationEntityBuilder()
-                .withValidFields()
+        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .withStatus(AdminRegistrationApplicationStatus.WAITING)
+                .withoutUser()
                 .build();
-        Mockito.when(adminRegistrationApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.of(mockAdminRegistrationApplicationEntity));
+        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockApplication));
 
-        Mockito.when(userRepository.existsByEmailAddress((Mockito.anyString())))
+        Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
 
-        Mockito.when(userRepository.existsByCountryCodeAndLineNumber(
-                        mockPhoneNumber.getCountryCode(),
-                        mockPhoneNumber.getLineNumber()
-                ))
+        AysPhoneNumber mockPhoneNumber = AysPhoneNumber.builder()
+                .countryCode(mockPhoneNumberRequest.getCountryCode())
+                .lineNumber(mockPhoneNumberRequest.getLineNumber())
+                .build();
+        Mockito.when(userReadPort.existsByPhoneNumber(mockPhoneNumber))
                 .thenReturn(false);
 
-        Mockito.when(roleRepository.findAllByInstitutionId(Mockito.anyString()))
+        Mockito.when(roleReadPort.findAllActivesByInstitutionId(Mockito.anyString()))
                 .thenReturn(Set.of());
 
-        Set<PermissionEntity> mockPermissionEntities = Set.of(
-                new PermissionEntityBuilder().withValidFields().build()
+        Set<AysPermission> mockPermissionEntities = Set.of(
+                new PermissionBuilder().withValidValues().build()
         );
-        Mockito.when(permissionRepository.findAllByIsSuperFalse())
+        Mockito.when(permissionReadPort.findAllByIsSuperFalse())
                 .thenReturn(mockPermissionEntities);
 
-        RoleEntity mockRoleEntity = new RoleEntityBuilder()
-                .withValidFields()
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
                 .build();
-        Mockito.when(roleRepository.save(Mockito.any(RoleEntity.class)))
-                .thenReturn(mockRoleEntity);
+        Mockito.when(roleSavePort.save(Mockito.any(AysRole.class)))
+                .thenReturn(mockRole);
 
-        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
-                .withValidFields()
+        AysUser mockUser = new UserV2Builder()
+                .withValidValues()
                 .build();
-        Mockito.when(userRepository.save(Mockito.any(UserEntityV2.class)))
-                .thenReturn(mockUserEntity);
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockUser);
 
         Mockito.when(passwordEncoder.encode(Mockito.anyString()))
                 .thenReturn("encodedPassword");
 
-        UserEntityV2.PasswordEntity mockUserPasswordEntity = new UserEntityV2Builder.PasswordEntityBuilder()
-                .withValidFields()
+        AdminRegistrationApplication mockCompletedApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .withId(mockApplicationId)
                 .build();
-        Mockito.when(userPasswordRepository.save(Mockito.any(UserEntityV2.PasswordEntity.class)))
-                .thenReturn(mockUserPasswordEntity);
-
-        AdminRegistrationApplicationEntity mockCompletedVerificationEntity = new AdminRegistrationApplicationEntityBuilder()
-                .withValidFields()
-                .build();
-        mockCompletedVerificationEntity.complete(mockUserEntity.getId());
-        Mockito.when(adminRegistrationApplicationRepository
-                        .save(Mockito.any(AdminRegistrationApplicationEntity.class)))
-                .thenReturn(mockCompletedVerificationEntity);
+        mockCompletedApplication.complete(mockUser);
+        Mockito.when(adminRegistrationApplicationSavePort
+                        .save(Mockito.any(AdminRegistrationApplication.class)))
+                .thenReturn(mockApplication);
 
         // Then
         adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest);
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.times(1))
+        Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.times(1))
-                .existsByCountryCodeAndLineNumber(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
 
-        Mockito.verify(roleRepository, Mockito.times(1))
-                .findAllByInstitutionId(Mockito.anyString());
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findAllActivesByInstitutionId(Mockito.anyString());
 
-        Mockito.verify(permissionRepository, Mockito.times(1))
+        Mockito.verify(permissionReadPort, Mockito.times(1))
                 .findAllByIsSuperFalse();
 
-        Mockito.verify(roleRepository, Mockito.times(1))
-                .save(Mockito.any(RoleEntity.class));
+        Mockito.verify(roleSavePort, Mockito.times(1))
+                .save(Mockito.any(AysRole.class));
 
-        Mockito.verify(userRepository, Mockito.times(1))
-                .save(Mockito.any(UserEntityV2.class));
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .encode(Mockito.any(String.class));
 
-        Mockito.verify(userPasswordRepository, Mockito.times(1))
-                .save(Mockito.any(UserEntityV2.PasswordEntity.class));
-
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
-                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
+        Mockito.verify(adminRegistrationApplicationSavePort, Mockito.times(1))
+                .save(Mockito.any(AdminRegistrationApplication.class));
     }
 
     @Test
@@ -163,161 +169,182 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
-        AysPhoneNumberRequest mockPhoneNumber = mockCompleteRequest.getPhoneNumber();
+        AysPhoneNumberRequest mockPhoneNumberRequest = mockCompleteRequest.getPhoneNumber();
 
         // When
-        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegistrationApplicationEntityBuilder()
-                .withValidFields()
+        AdminRegistrationApplication mockWaitingApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .withId(mockApplicationId)
+                .withoutUser()
                 .build();
-        Mockito.when(adminRegistrationApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.of(mockAdminRegistrationApplicationEntity));
+        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockWaitingApplication));
 
-        Mockito.when(userRepository.existsByEmailAddress((Mockito.anyString())))
+        Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
 
-        Mockito.when(userRepository.existsByCountryCodeAndLineNumber(
-                        mockPhoneNumber.getCountryCode(),
-                        mockPhoneNumber.getLineNumber()
-                ))
+        AysPhoneNumber mockPhoneNumber = AysPhoneNumber.builder()
+                .countryCode(mockPhoneNumberRequest.getCountryCode())
+                .lineNumber(mockPhoneNumberRequest.getLineNumber())
+                .build();
+        Mockito.when(userReadPort.existsByPhoneNumber(mockPhoneNumber))
                 .thenReturn(false);
 
-        RoleEntity mockRoleEntity = new RoleEntityBuilder()
-                .withValidFields()
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
                 .build();
-        Mockito.when(roleRepository.findAllByInstitutionId(Mockito.anyString()))
-                .thenReturn(Set.of(mockRoleEntity));
+        Mockito.when(roleReadPort.findAllActivesByInstitutionId(Mockito.anyString()))
+                .thenReturn(Set.of(mockRole));
 
-        UserEntityV2 mockUserEntity = new UserEntityV2Builder()
-                .withValidFields()
+        AysUser mockUser = new UserV2Builder()
+                .withValidValues()
                 .build();
-        Mockito.when(userRepository.save(Mockito.any(UserEntityV2.class)))
-                .thenReturn(mockUserEntity);
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockUser);
 
         Mockito.when(passwordEncoder.encode(Mockito.anyString()))
                 .thenReturn("encodedPassword");
 
-        UserEntityV2.PasswordEntity mockUserPasswordEntity = new UserEntityV2Builder.PasswordEntityBuilder()
-                .withValidFields()
+        AdminRegistrationApplication mockCompletedApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .withId(mockApplicationId)
                 .build();
-        Mockito.when(userPasswordRepository.save(Mockito.any(UserEntityV2.PasswordEntity.class)))
-                .thenReturn(mockUserPasswordEntity);
-
-        AdminRegistrationApplicationEntity mockCompletedVerificationEntity = new AdminRegistrationApplicationEntityBuilder()
-                .withValidFields()
-                .build();
-        mockCompletedVerificationEntity.complete(mockUserEntity.getId());
-        Mockito.when(adminRegistrationApplicationRepository
-                        .save(Mockito.any(AdminRegistrationApplicationEntity.class)))
-                .thenReturn(mockCompletedVerificationEntity);
+        mockCompletedApplication.complete(mockUser);
+        Mockito.when(adminRegistrationApplicationSavePort
+                        .save(Mockito.any(AdminRegistrationApplication.class)))
+                .thenReturn(mockCompletedApplication);
 
         // Then
         adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest);
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.times(1))
+        Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.times(1))
-                .existsByCountryCodeAndLineNumber(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
 
-        Mockito.verify(roleRepository, Mockito.times(1))
-                .findAllByInstitutionId(Mockito.anyString());
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findAllActivesByInstitutionId(Mockito.anyString());
 
-        Mockito.verify(permissionRepository, Mockito.never())
-                .findAll();
+        Mockito.verify(permissionReadPort, Mockito.never())
+                .findAllByIsSuperFalse();
 
-        Mockito.verify(roleRepository, Mockito.never())
-                .save(Mockito.any(RoleEntity.class));
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
 
-        Mockito.verify(userRepository, Mockito.times(1))
-                .save(Mockito.any(UserEntityV2.class));
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .encode(Mockito.any(String.class));
 
-        Mockito.verify(userPasswordRepository, Mockito.times(1))
-                .save(Mockito.any(UserEntityV2.PasswordEntity.class));
-
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
-                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
+        Mockito.verify(adminRegistrationApplicationSavePort, Mockito.times(1))
+                .save(Mockito.any(AdminRegistrationApplication.class));
     }
 
     @Test
-    void givenInvalidApplicationId_whenApplicationEntityNotFound_thenThrowAysAdminRegisterApplicationNotExistByIdAndStatusException() {
+    void givenInvalidApplicationId_whenApplicationNotFound_thenThrowAysAdminRegisterApplicationNotExistByIdAndStatusException() {
 
         // Given
         String mockApplicationId = "Invalid";
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields().build();
+                .withValidValues().build();
 
         // When
-        Mockito.when(adminRegistrationApplicationRepository.findById(Mockito.anyString()))
+        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
+                AysAdminRegistrationApplicationNotExistByIdException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
-                .findById(Mockito.anyString());
-    }
-
-    @Test
-    void givenUsedApplicationId_whenApplicationEntityStatusIsNotWaiting_thenThrowAysAdminRegisterApplicationNotExistByIdAndStatusException() {
-
-        // Given
-        String mockApplicationId = AysRandomUtil.generateUUID();
-        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
-                .build();
-
-        // When
-        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegistrationApplicationEntityBuilder()
-                .withValidFields()
-                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
-                .build();
-        Mockito.when(adminRegistrationApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.of(mockAdminRegistrationApplicationEntity));
-
-        // Then
-        Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException.class,
-                () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
-        );
-
-        // Verify
-
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.never())
+        Mockito.verify(userReadPort, Mockito.never())
                 .existsByEmailAddress(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.never())
-                .existsByCountryCodeAndLineNumber(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(userReadPort, Mockito.never())
+                .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
 
-        Mockito.verify(roleRepository, Mockito.never())
-                .save(Mockito.any(RoleEntity.class));
+        Mockito.verify(roleReadPort, Mockito.never())
+                .findAllActivesByInstitutionId(Mockito.anyString());
 
-        Mockito.verify(permissionRepository, Mockito.never())
-                .save(Mockito.any(PermissionEntity.class));
+        Mockito.verify(permissionReadPort, Mockito.never())
+                .findAllByIsSuperFalse();
 
-        Mockito.verify(userRepository, Mockito.never())
-                .save(Mockito.any(UserEntityV2.class));
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(passwordEncoder, Mockito.never())
                 .encode(Mockito.any(String.class));
 
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
+        Mockito.verify(adminRegistrationApplicationSavePort, Mockito.never())
+                .save(Mockito.any(AdminRegistrationApplication.class));
+    }
+
+    @Test
+    void givenUsedApplicationId_whenApplicationStatusIsNotWaiting_thenThrowAysAdminRegisterApplicationNotExistByIdAndStatusException() {
+
+        // Given
+        String mockApplicationId = AysRandomUtil.generateUUID();
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
+                .build();
+        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockApplication));
+
+        // Then
+        Assertions.assertThrows(
+                AysAdminRegistrationApplicationNotExistByIdException.class,
+                () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
+        );
+
+        // Verify
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(userReadPort, Mockito.never())
+                .existsByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(userReadPort, Mockito.never())
+                .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
+
+        Mockito.verify(roleReadPort, Mockito.never())
+                .findAllActivesByInstitutionId(Mockito.anyString());
+
+        Mockito.verify(permissionReadPort, Mockito.never())
+                .findAllByIsSuperFalse();
+
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(passwordEncoder, Mockito.never())
+                .encode(Mockito.any(String.class));
+
+        Mockito.verify(adminRegistrationApplicationSavePort, Mockito.never())
+                .save(Mockito.any(AdminRegistrationApplication.class));
     }
 
     @Test
@@ -326,17 +353,17 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
 
         // When
-        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegistrationApplicationEntityBuilder()
-                .withValidFields()
+        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
                 .build();
-        Mockito.when(adminRegistrationApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.ofNullable(mockAdminRegistrationApplicationEntity));
+        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.ofNullable(mockApplication));
 
-        Mockito.when(userRepository.existsByEmailAddress((Mockito.anyString())))
+        Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(true);
 
         // Then
@@ -346,29 +373,32 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.times(1))
+        Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.never())
-                .existsByCountryCodeAndLineNumber(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(userReadPort, Mockito.never())
+                .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
 
-        Mockito.verify(roleRepository, Mockito.never())
-                .save(Mockito.any(RoleEntity.class));
+        Mockito.verify(roleReadPort, Mockito.never())
+                .findAllActivesByInstitutionId(Mockito.anyString());
 
-        Mockito.verify(permissionRepository, Mockito.never())
-                .save(Mockito.any(PermissionEntity.class));
+        Mockito.verify(permissionReadPort, Mockito.never())
+                .findAllByIsSuperFalse();
 
-        Mockito.verify(userRepository, Mockito.never())
-                .save(Mockito.any(UserEntityV2.class));
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(passwordEncoder, Mockito.never())
                 .encode(Mockito.any(String.class));
 
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
+        Mockito.verify(adminRegistrationApplicationSavePort, Mockito.never())
+                .save(Mockito.any(AdminRegistrationApplication.class));
     }
 
     @Test
@@ -376,25 +406,28 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
 
         // Given
         String applicationId = AysRandomUtil.generateUUID();
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder().withValidFields().build();
+
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
+                .withValidValues()
+                .build();
+
         AdminRegistrationApplicationCompleteRequest mockAdminRegistrationApplicationCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withEmail(AysValidTestData.EMAIL)
-                .withPhoneNumber(mockPhoneNumber).build();
-
-        AdminRegistrationApplicationEntity mockAdminRegistrationApplicationEntity = new AdminRegistrationApplicationEntityBuilder()
-                .withValidFields()
+                .withPhoneNumber(mockPhoneNumberRequest)
                 .build();
-        // When
-        Mockito.when(adminRegistrationApplicationRepository.findById(Mockito.anyString()))
-                .thenReturn(Optional.ofNullable(mockAdminRegistrationApplicationEntity));
 
-        Mockito.when(userRepository.existsByEmailAddress((Mockito.anyString())))
+        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.ofNullable(mockApplication));
+
+        Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
 
-        Mockito.when(userRepository.existsByCountryCodeAndLineNumber(
-                        mockPhoneNumber.getCountryCode(),
-                        mockPhoneNumber.getLineNumber()
-                ))
+        Mockito.when(userReadPort.existsByPhoneNumber(Mockito.any(AysPhoneNumber.class)))
                 .thenReturn(true);
 
         // Then
@@ -404,29 +437,32 @@ class AdminRegistrationCompleteServiceImplTest extends AbstractUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.times(1))
+        Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
-        Mockito.verify(userRepository, Mockito.times(1))
-                .existsByCountryCodeAndLineNumber(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
 
-        Mockito.verify(roleRepository, Mockito.never())
-                .save(Mockito.any(RoleEntity.class));
+        Mockito.verify(roleReadPort, Mockito.never())
+                .findAllActivesByInstitutionId(Mockito.anyString());
 
-        Mockito.verify(permissionRepository, Mockito.never())
-                .save(Mockito.any(PermissionEntity.class));
+        Mockito.verify(permissionReadPort, Mockito.never())
+                .findAllByIsSuperFalse();
 
-        Mockito.verify(userRepository, Mockito.never())
-                .save(Mockito.any(UserEntityV2.class));
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(passwordEncoder, Mockito.never())
                 .encode(Mockito.any(String.class));
 
-        Mockito.verify(adminRegistrationApplicationRepository, Mockito.never())
-                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
+        Mockito.verify(adminRegistrationApplicationSavePort, Mockito.never())
+                .save(Mockito.any(AdminRegistrationApplication.class));
     }
 
 }

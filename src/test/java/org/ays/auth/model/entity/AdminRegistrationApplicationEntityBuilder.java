@@ -13,13 +13,13 @@ public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<A
         super(AdminRegistrationApplicationEntity.class);
     }
 
-    public AdminRegistrationApplicationEntityBuilder withValidFields() {
-        final UserEntityV2 userEntity = new UserEntityV2Builder()
-                .withValidFields()
+    public AdminRegistrationApplicationEntityBuilder withValidValues() {
+        final AysUserEntity userEntity = new UserEntityV2Builder()
+                .withValidValues()
                 .build();
 
         final InstitutionEntity institutionEntity = new InstitutionEntityBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
 
         return this
@@ -41,25 +41,25 @@ public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<A
     }
 
     public AdminRegistrationApplicationEntityBuilder withUserId(String userId) {
-        data.setUserId(userId);
+        //    data.setUserId(userId);
         data.setUser(null);
         return this;
     }
 
-    public AdminRegistrationApplicationEntityBuilder withUser(UserEntityV2 userEntity) {
-        data.setUserId(userEntity.getId());
+    public AdminRegistrationApplicationEntityBuilder withUser(AysUserEntity userEntity) {
+        //  data.setUserId(userEntity.getId());
         data.setUser(userEntity);
         return this;
     }
 
     public AdminRegistrationApplicationEntityBuilder withInstitutionId(String institutionId) {
-        data.setInstitutionId(institutionId);
+        //data.setInstitutionId(institutionId);
         data.setInstitution(null);
         return this;
     }
 
     public AdminRegistrationApplicationEntityBuilder withInstitution(InstitutionEntity institutionEntity) {
-        data.setInstitutionId(institutionEntity.getId());
+        // data.setInstitutionId(institutionEntity.getId());
         data.setInstitution(institutionEntity);
         return this;
     }

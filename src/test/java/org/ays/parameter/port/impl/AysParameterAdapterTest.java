@@ -1,6 +1,6 @@
 package org.ays.parameter.port.impl;
 
-import org.ays.AbstractUnitTest;
+import org.ays.AysUnitTest;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.model.entity.AysParameterEntity;
 import org.ays.parameter.model.entity.AysParameterEntityBuilder;
@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import java.util.Optional;
 import java.util.Set;
 
-class AysParameterAdapterTest extends AbstractUnitTest {
+class AysParameterAdapterTest extends AysUnitTest {
 
     @InjectMocks
     private AysParameterAdapter parameterAdapter;

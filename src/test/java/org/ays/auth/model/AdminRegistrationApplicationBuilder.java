@@ -5,7 +5,7 @@ import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
-import org.ays.institution.model.entity.InstitutionBuilder;
+import org.ays.institution.model.InstitutionBuilder;
 
 public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRegistrationApplication> {
 
@@ -13,14 +13,14 @@ public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRe
         super(AdminRegistrationApplication.class);
     }
 
-    public AdminRegistrationApplicationBuilder withValidFields() {
+    public AdminRegistrationApplicationBuilder withValidValues() {
 
         final Institution institution = new InstitutionBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
 
-        final UserV2 user = new UserV2Builder()
-                .withValidFields()
+        final AysUser user = new UserV2Builder()
+                .withValidValues()
                 .build();
 
         return this
@@ -33,6 +33,11 @@ public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRe
 
     public AdminRegistrationApplicationBuilder withId(String id) {
         data.setId(id);
+        return this;
+    }
+
+    public AdminRegistrationApplicationBuilder withoutId() {
+        data.setId(null);
         return this;
     }
 
@@ -51,8 +56,13 @@ public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRe
         return this;
     }
 
-    public AdminRegistrationApplicationBuilder withUser(UserV2 user) {
+    public AdminRegistrationApplicationBuilder withUser(AysUser user) {
         data.setUser(user);
+        return this;
+    }
+
+    public AdminRegistrationApplicationBuilder withoutUser() {
+        data.setUser(null);
         return this;
     }
 

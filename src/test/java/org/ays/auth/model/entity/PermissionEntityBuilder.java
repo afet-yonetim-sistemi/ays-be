@@ -4,13 +4,13 @@ import org.ays.auth.model.enums.PermissionCategory;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 
-public class PermissionEntityBuilder extends TestDataBuilder<PermissionEntity> {
+public class PermissionEntityBuilder extends TestDataBuilder<AysPermissionEntity> {
 
     public PermissionEntityBuilder() {
-        super(PermissionEntity.class);
+        super(AysPermissionEntity.class);
     }
 
-    public PermissionEntityBuilder withValidFields() {
+    public PermissionEntityBuilder withValidValues() {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withName("user:list")

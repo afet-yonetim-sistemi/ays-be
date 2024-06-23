@@ -1,20 +1,20 @@
 package org.ays.auth.model.request;
 
-import org.ays.auth.model.enums.SourcePage;
+import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.util.AysValidTestData;
 
-public class AysLoginRequestV2Builder extends TestDataBuilder<AysLoginRequestV2> {
+public class AysLoginRequestV2Builder extends TestDataBuilder<AysLoginRequest> {
 
     public AysLoginRequestV2Builder() {
-        super(AysLoginRequestV2.class);
+        super(AysLoginRequest.class);
     }
 
-    public AysLoginRequestV2Builder withValidFields() {
+    public AysLoginRequestV2Builder withValidValues() {
         return new AysLoginRequestV2Builder()
                 .withEmailAddress(AysValidTestData.EMAIL)
                 .withPassword(AysValidTestData.PASSWORD)
-                .withSourcePage(SourcePage.INSTITUTION);
+                .withSourcePage(AysSourcePage.INSTITUTION);
     }
 
     public AysLoginRequestV2Builder withEmailAddress(final String emailAddress) {
@@ -27,7 +27,7 @@ public class AysLoginRequestV2Builder extends TestDataBuilder<AysLoginRequestV2>
         return this;
     }
 
-    public AysLoginRequestV2Builder withSourcePage(final SourcePage sourcePage) {
+    public AysLoginRequestV2Builder withSourcePage(final AysSourcePage sourcePage) {
         data.setSourcePage(sourcePage);
         return this;
     }

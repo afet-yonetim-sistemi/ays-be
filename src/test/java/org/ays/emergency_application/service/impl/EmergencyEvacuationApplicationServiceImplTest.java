@@ -1,85 +1,85 @@
 package org.ays.emergency_application.service.impl;
 
-import org.ays.AbstractUnitTest;
-import org.ays.auth.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
+import org.ays.AysUnitTest;
+import org.ays.auth.model.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
+import org.ays.common.model.AysPageable;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
+import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
 import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequestBuilder;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntityBuilder;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
-import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper;
-import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToEntityMapper;
+import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToDomainMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
-import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
-import org.ays.emergency_application.util.exception.AysEmergencyEvacuationApplicationNotExistException;
+import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
+import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
+import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.mockito.Mockito.times;
-
-class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
+class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
 
     @InjectMocks
     private EmergencyEvacuationApplicationServiceImpl emergencyEvacuationApplicationService;
 
     @Mock
-    private EmergencyEvacuationApplicationRepository emergencyEvacuationApplicationRepository;
+    private EmergencyEvacuationApplicationReadPort emergencyEvacuationApplicationReadPort;
+
+    @Mock
+    private EmergencyEvacuationApplicationSavePort emergencyEvacuationApplicationSavePort;
 
 
-    private final EmergencyEvacuationApplicationRequestToEntityMapper emergencyEvacuationApplicationRequestToEntityMapper = EmergencyEvacuationApplicationRequestToEntityMapper.initialize();
-    private final EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper entityToEmergencyEvacuationApplicationMapper = EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper.initialize();
+    private final EmergencyEvacuationApplicationRequestToDomainMapper emergencyEvacuationApplicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
 
     @Test
     @SuppressWarnings("unchecked")
-    void givenEmergencyEvacuationApplicationListRequest_whenFilterNotGiven_thenReturnAysPageEmergencyEvacuationApplicationsResponse() {
+    void givenEmergencyEvacuationApplicationListRequest_whenFilterNotGiven_thenReturnApplicationsPage() {
 
         // Given
-        EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
+        EmergencyEvacuationApplicationListRequest mockApplicationListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
                 .withValidValues()
-                .withFilter(null)
                 .build();
 
-        List<EmergencyEvacuationApplicationEntity> mockEntities = List.of(
-                new EmergencyEvacuationApplicationEntityBuilder().withValidFields().withoutApplicant().build()
-        );
-        Page<EmergencyEvacuationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
-
-        List<EmergencyEvacuationApplication> mockList = entityToEmergencyEvacuationApplicationMapper.map(mockEntities);
-        AysPage<EmergencyEvacuationApplication> mockAysPage = AysPage.of(mockListRequest.getFilter(), mockPageEntities, mockList);
-
         // When
-        Mockito.when(emergencyEvacuationApplicationRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
-                .thenReturn(mockPageEntities);
+        AysPageable aysPageable = mockApplicationListRequest.getPageable();
+        EmergencyEvacuationApplicationFilter filter = mockApplicationListRequest.getFilter();
+
+        List<EmergencyEvacuationApplication> mockApplications = List.of(
+                new EmergencyEvacuationApplicationBuilder()
+                        .withValidValues()
+                        .withoutApplicant()
+                        .build()
+        );
+        AysPage<EmergencyEvacuationApplication> mockApplicationsPage = AysPageBuilder
+                .from(mockApplications, mockApplicationListRequest.getPageable(), mockApplicationListRequest.getFilter());
+
+        Mockito.when(emergencyEvacuationApplicationReadPort.findAll(aysPageable, filter))
+                .thenReturn(mockApplicationsPage);
 
         // Then
-        AysPage<EmergencyEvacuationApplication> aysPage = emergencyEvacuationApplicationService
-                .findAll(mockListRequest);
+        AysPage<EmergencyEvacuationApplication> applicationPage = emergencyEvacuationApplicationService
+                .findAll(mockApplicationListRequest);
 
-        AysPageBuilder.assertEquals(mockAysPage, aysPage);
+        AysPageBuilder.assertEquals(mockApplicationsPage, applicationPage);
 
         // Verify
-        Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
-                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+        Mockito.verify(emergencyEvacuationApplicationReadPort, Mockito.times(1))
+                .findAll(aysPageable, filter);
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    void givenEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationStatusIsAvailable_thenReturnAysPageEmergencyEvacuationApplicationsResponse() {
+    void givenEmergencyEvacuationApplicationListRequest_whenApplicationStatusIsAvailable_thenReturnApplicationsPage() {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -87,27 +87,34 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
                 .withStatuses(Set.of(EmergencyEvacuationApplicationStatus.PENDING))
                 .build();
 
-        List<EmergencyEvacuationApplicationEntity> mockEntities = List.of(
-                new EmergencyEvacuationApplicationEntityBuilder().withValidFields().withoutApplicant().withStatus(EmergencyEvacuationApplicationStatus.PENDING).build()
-        );
-        Page<EmergencyEvacuationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
-
-        List<EmergencyEvacuationApplication> mockList = entityToEmergencyEvacuationApplicationMapper.map(mockEntities);
-        AysPage<EmergencyEvacuationApplication> mockAysPage = AysPage.of(mockListRequest.getFilter(), mockPageEntities, mockList);
-
         // When
-        Mockito.when(emergencyEvacuationApplicationRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
-                .thenReturn(mockPageEntities);
+        AysPageable aysPageable = mockListRequest.getPageable();
+        EmergencyEvacuationApplicationFilter filter = mockListRequest.getFilter();
+
+        List<EmergencyEvacuationApplication> mockApplications = List.of(
+                new EmergencyEvacuationApplicationBuilder()
+                        .withValidValues()
+                        .withoutApplicant()
+                        .build()
+        );
+
+        AysPage<EmergencyEvacuationApplication> mockApplicationPage = AysPageBuilder
+                .from(mockApplications, mockListRequest.getPageable(), mockListRequest.getFilter());
+
+        Mockito.when(emergencyEvacuationApplicationReadPort.findAll(aysPageable, filter))
+                .thenReturn(mockApplicationPage);
 
         // Then
-        AysPage<EmergencyEvacuationApplication> aysPage = emergencyEvacuationApplicationService
+        AysPage<EmergencyEvacuationApplication> applicationPage = emergencyEvacuationApplicationService
                 .findAll(mockListRequest);
 
-        AysPageBuilder.assertEquals(mockAysPage, aysPage);
+        AysPageBuilder.assertEquals(mockApplicationPage, applicationPage);
 
-        Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
-                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationReadPort, Mockito.times(1))
+                .findAll(aysPageable, filter);
     }
+
 
     @Test
     void givenEmergencyEvacuationApplicationId_whenGettingEmergencyEvacuationApplication_thenReturnEmergencyEvacuationApplication() {
@@ -116,21 +123,20 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
         String mockId = AysRandomUtil.generateUUID();
 
         // When
-        EmergencyEvacuationApplicationEntity mockEntity = new EmergencyEvacuationApplicationEntityBuilder()
-                .withValidFields()
+        EmergencyEvacuationApplication mockApplication = new EmergencyEvacuationApplicationBuilder()
+                .withValidValues()
                 .withId(mockId)
                 .build();
-        Mockito.when(emergencyEvacuationApplicationRepository.findById(mockId))
-                .thenReturn(Optional.of(mockEntity));
+        Mockito.when(emergencyEvacuationApplicationReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockApplication));
 
         // Then
         EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationService.findById(mockId);
 
         // Verify
-        Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
+        Mockito.verify(emergencyEvacuationApplicationReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        // Assert
         Assertions.assertNotNull(emergencyEvacuationApplication);
         Assertions.assertEquals(mockId, emergencyEvacuationApplication.getId());
     }
@@ -142,41 +148,42 @@ class EmergencyEvacuationApplicationServiceImplTest extends AbstractUnitTest {
         String mockId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(emergencyEvacuationApplicationRepository.findById(mockId))
+        Mockito.when(emergencyEvacuationApplicationReadPort.findById(mockId))
                 .thenReturn(Optional.empty());
 
         // Then
         Assertions.assertThrows(
-                AysEmergencyEvacuationApplicationNotExistException.class,
+                EmergencyEvacuationApplicationNotExistException.class,
                 () -> emergencyEvacuationApplicationService.findById(mockId)
         );
 
         // Verify
-        Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
+        Mockito.verify(emergencyEvacuationApplicationReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
     }
 
     @Test
-    void givenValidEmergencyEvacuationRequest_ShouldCreateEmergencyEvacuationApplicationCorrectly() {
+    void givenValidEmergencyEvacuationRequest_whenRequestValid_thenCreateEmergencyEvacuationApplication() {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
 
         // When
-        EmergencyEvacuationApplicationEntity mockApplicationEntity = emergencyEvacuationApplicationRequestToEntityMapper
+        EmergencyEvacuationApplication mockApplication = emergencyEvacuationApplicationRequestToDomainMapper
                 .map(mockApplicationRequest);
-        mockApplicationEntity.pending();
-        Mockito
-                .when(emergencyEvacuationApplicationRepository.save(Mockito.any(EmergencyEvacuationApplicationEntity.class)))
-                .thenReturn(mockApplicationEntity);
+
+        mockApplication.pending();
+
+        Mockito.when(emergencyEvacuationApplicationSavePort.save(Mockito.any(EmergencyEvacuationApplication.class)))
+                .thenReturn(mockApplication);
 
         // When
         emergencyEvacuationApplicationService.create(mockApplicationRequest);
 
         // Then
-        Mockito.verify(emergencyEvacuationApplicationRepository, times(1))
-                .save(Mockito.any(EmergencyEvacuationApplicationEntity.class));
+        Mockito.verify(emergencyEvacuationApplicationSavePort, Mockito.times(1))
+                .save(Mockito.any(EmergencyEvacuationApplication.class));
     }
 
 }

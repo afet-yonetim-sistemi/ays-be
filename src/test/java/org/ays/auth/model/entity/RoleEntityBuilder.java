@@ -7,16 +7,16 @@ import org.ays.common.util.AysRandomUtil;
 
 import java.util.Set;
 
-public class RoleEntityBuilder extends TestDataBuilder<RoleEntity> {
+public class RoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
 
     public RoleEntityBuilder() {
-        super(RoleEntity.class);
+        super(AysRoleEntity.class);
     }
 
-    public RoleEntityBuilder withValidFields() {
-        Set<PermissionEntity> permissionEntities = Set.of(
-                new PermissionEntityBuilder().withValidFields().build(),
-                new PermissionEntityBuilder().withValidFields().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
+    public RoleEntityBuilder withValidValues() {
+        Set<AysPermissionEntity> permissionEntities = Set.of(
+                new PermissionEntityBuilder().withValidValues().build(),
+                new PermissionEntityBuilder().withValidValues().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
         );
         return this
                 .withId(AysRandomUtil.generateUUID())
@@ -40,7 +40,7 @@ public class RoleEntityBuilder extends TestDataBuilder<RoleEntity> {
         return this;
     }
 
-    public RoleEntityBuilder withPermissions(Set<PermissionEntity> permissionEntities) {
+    public RoleEntityBuilder withPermissions(Set<AysPermissionEntity> permissionEntities) {
         data.setPermissions(permissionEntities);
         return this;
     }

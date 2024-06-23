@@ -1,9 +1,9 @@
 package org.ays.institution.service.impl;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.ays.AbstractUnitTest;
+import org.ays.AysUnitTest;
 import org.ays.institution.model.Institution;
-import org.ays.institution.model.entity.InstitutionBuilder;
+import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.model.enums.InstitutionStatus;
 import org.ays.institution.port.InstitutionReadPort;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-class InstitutionServiceImplTest extends AbstractUnitTest {
+class InstitutionServiceImplTest extends AysUnitTest {
 
     @InjectMocks
     private InstitutionServiceImpl institutionService;
@@ -32,8 +32,8 @@ class InstitutionServiceImplTest extends AbstractUnitTest {
         InstitutionStatus status = InstitutionStatus.ACTIVE;
 
         List<Institution> mockActiveInstitutions = List.of(
-                new InstitutionBuilder().withValidFields().withStatus(status).build(),
-                new InstitutionBuilder().withValidFields().withStatus(status).build()
+                new InstitutionBuilder().withValidValues().withStatus(status).build(),
+                new InstitutionBuilder().withValidValues().withStatus(status).build()
         );
 
         Mockito.when(institutionReadPort.findAllByStatusOrderByNameAsc(status))

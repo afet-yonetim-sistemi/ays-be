@@ -2,48 +2,94 @@ package org.ays.common.model.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.ays.common.model.AysPaging;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.apache.commons.collections4.CollectionUtils;
+import org.ays.common.model.AysPageable;
+import org.ays.common.model.AysSort;
+
+import java.util.List;
+import java.util.Set;
 
 /**
- * An abstract base class for paging requests that extends the {@link AysSortingRequest} class.
- * It includes a {@link AysPaging} object to define pagination parameters, and provides a method to
- * convert these parameters to a Spring {@link Pageable} object.
+ * Represents a base class for paging requests, providing common functionality for handling pageable data.
+ * <p>
+ * This class contains a pageable attribute and provides methods to validate if the sort properties used in the pageable are accepted.
+ * Subclasses should implement {@link #isSortPropertyAccepted()} to provide specific validation logic.
+ * </p>
+ *
+ * <h3>Example Usage</h3>
+ *
+ * <pre>{@code
+ * public class Request extends AysPagingRequest {
+ *     @Override
+ *     public boolean isSortPropertyAccepted() {
+ *          final Set<String> acceptedFilterFields = Set.of("createdAt");
+ *          return this.isPropertyAccepted(acceptedFilterFields);
+ *     }
+ * }
+ * }</pre>
+ *
+ * @see AysPageable
+ * @see AysSort.AysOrder
  */
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-public abstract class AysPagingRequest extends AysSortingRequest {
+@NoArgsConstructor
+public abstract class AysPagingRequest {
 
     /**
-     * The pagination parameters for this request.
+     * The pageable object containing paging and sorting information.
+     * <p>
+     * Must not be null and is validated using {@link jakarta.validation.Valid}.
+     * </p>
      */
     @Valid
     @NotNull
-    protected AysPaging pagination;
+    protected AysPageable pageable;
 
     /**
-     * Converts the pagination parameters of this request to a Spring {@link Pageable} object.
+     * Checks if the sort properties in the pageable are accepted.
+     * <p>
+     * This method should be implemented by subclasses to provide specific validation logic for sort properties.
+     * </p>
      *
-     * @return The {@link Pageable} object corresponding to this request's pagination parameters.
+     * @return {@code true} if the sort properties are accepted; otherwise {@code false}
      */
-    public Pageable toPageable() {
+    public abstract boolean isSortPropertyAccepted();
 
-        if (super.isSortable()) {
-            return PageRequest.of(
-                    this.pagination.getPage() - 1,
-                    this.pagination.getPageSize(),
-                    super.toSort()
-            );
+    /**
+     * Validates if all properties used for sorting in the pageable object are within the accepted set of properties.
+     * <p>
+     * Checks if there are any orders with null direction or property. If so, it returns {@code true}.
+     * Otherwise, it ensures all properties in the pageable orders are in the accepted properties set.
+     * </p>
+     *
+     * @param acceptedProperties the set of accepted properties for sorting
+     * @return {@code true} if all properties are accepted or if pageable or its orders are null/empty; otherwise {@code false}
+     */
+    @SuppressWarnings("all")
+    public boolean isPropertyAccepted(final Set<String> acceptedProperties) {
+
+        if (this.pageable == null) {
+            return true;
         }
 
-        return PageRequest.of(
-                this.pagination.getPage() - 1,
-                this.pagination.getPageSize()
-        );
+        List<AysSort.AysOrder> orders = this.pageable.getOrders();
+        if (CollectionUtils.isEmpty(orders)) {
+            return true;
+        }
+
+        final boolean isAnyDirectionEmpty = orders.stream().anyMatch(order -> order.getDirection() == null);
+        final boolean isAnyPropertyEmpty = orders.stream().anyMatch(order -> order.getProperty() == null);
+        if (isAnyDirectionEmpty || isAnyPropertyEmpty) {
+            return true;
+        }
+
+        return orders.stream()
+                .map(AysSort.AysOrder::getProperty)
+                .allMatch(acceptedProperties::contains);
     }
+
 }

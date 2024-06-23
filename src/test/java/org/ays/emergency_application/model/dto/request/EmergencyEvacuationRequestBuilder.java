@@ -11,11 +11,11 @@ public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<Emergency
         super(EmergencyEvacuationApplicationRequest.class);
     }
 
-    public EmergencyEvacuationRequestBuilder withValidFields() {
+    public EmergencyEvacuationRequestBuilder withValidValues() {
         return this
                 .withSeatingCount(1)
-                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
-                .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidFields().build())
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
+                .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
                 .withAddress("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
     }
 

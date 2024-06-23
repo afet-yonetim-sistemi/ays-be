@@ -3,7 +3,7 @@ package org.ays.parameter.port.impl;
 import lombok.RequiredArgsConstructor;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.model.entity.AysParameterEntity;
-import org.ays.parameter.model.mapper.AysParameterEntityToAysParameterMapper;
+import org.ays.parameter.model.mapper.AysParameterEntityToDomainMapper;
 import org.ays.parameter.port.AysParameterReadPort;
 import org.ays.parameter.repository.AysParameterRepository;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,8 @@ class AysParameterAdapter implements AysParameterReadPort {
 
     private final AysParameterRepository parameterRepository;
 
-    private final AysParameterEntityToAysParameterMapper parameterEntityToParameterMapper = AysParameterEntityToAysParameterMapper.initialize();
+
+    private final AysParameterEntityToDomainMapper parameterEntityToParameterMapper = AysParameterEntityToDomainMapper.initialize();
 
 
     /**
@@ -40,6 +41,7 @@ class AysParameterAdapter implements AysParameterReadPort {
                 .map(parameterEntityToParameterMapper::map)
                 .collect(Collectors.toSet());
     }
+
 
     /**
      * Retrieves an {@link AysParameter} entity by its name.

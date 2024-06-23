@@ -2,6 +2,7 @@ package org.ays.common.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -9,12 +10,11 @@ import java.util.List;
 /**
  * A generic class representing a paginated response containing a list of content items of type R.
  * This class provides convenience methods for building a response from a Spring {@link Page} object.
- * It also includes information on the current page number, page size, total page count, total element count,
- * sorting parameters, and filtering parameters.
  *
  * @param <R> The type of content items in this paginated response.
  */
 @Getter
+@Setter
 @Builder
 public class AysPage<R> {
 
@@ -46,12 +46,12 @@ public class AysPage<R> {
     /**
      * The sorting parameters used for this paginated response.
      */
-    private List<AysSorting> sortedBy;
+    private List<AysSort.AysOrder> orderedBy;
 
     /**
      * The filtering parameters used for this paginated response.
      */
-    private AysFiltering filteredBy;
+    private AysFilter filteredBy;
 
     /**
      * Creates a new paginated response of type C from a Spring {@link Page} object.
@@ -73,7 +73,7 @@ public class AysPage<R> {
                 .totalElementCount(pageableEntities.getTotalElements());
 
         if (pageableEntities.getSort().isSorted()) {
-            responseBuilder.sortedBy(AysSorting.of(pageableEntities.getSort()));
+            responseBuilder.orderedBy(AysSort.of(pageableEntities.getSort()).getOrders());
         }
 
         return responseBuilder.build();
@@ -89,7 +89,7 @@ public class AysPage<R> {
      * @param <C>              The type of content items in the response.
      * @return The paginated response.
      */
-    public static <E, C> AysPage<C> of(final AysFiltering filter,
+    public static <E, C> AysPage<C> of(final AysFilter filter,
                                        final Page<E> pageableEntities,
                                        final List<C> content) {
 
@@ -102,7 +102,7 @@ public class AysPage<R> {
                 .filteredBy(filter);
 
         if (pageableEntities.getSort().isSorted()) {
-            responseBuilder.sortedBy(AysSorting.of(pageableEntities.getSort()));
+            responseBuilder.orderedBy(AysSort.of(pageableEntities.getSort()).getOrders());
         }
 
         return responseBuilder.build();

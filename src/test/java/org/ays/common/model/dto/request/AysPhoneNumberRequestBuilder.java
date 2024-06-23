@@ -10,7 +10,7 @@ public class AysPhoneNumberRequestBuilder extends TestDataBuilder<AysPhoneNumber
         super(AysPhoneNumberRequest.class);
     }
 
-    public AysPhoneNumberRequestBuilder withValidFields() {
+    public AysPhoneNumberRequestBuilder withValidValues() {
         return new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber("535" + AysRandomUtil.generateNumber(7));

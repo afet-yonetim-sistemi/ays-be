@@ -2,21 +2,18 @@ package org.ays.emergency_application.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageable;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
-import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper;
-import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToEntityMapper;
+import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToDomainMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
-import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
+import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
+import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
-import org.ays.emergency_application.util.exception.AysEmergencyEvacuationApplicationNotExistException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
+import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * This class implements the interface {@link EmergencyEvacuationApplicationService}
@@ -29,11 +26,11 @@ import java.util.List;
 @RequiredArgsConstructor
 class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationApplicationService {
 
-    private final EmergencyEvacuationApplicationRepository emergencyEvacuationApplicationRepository;
+    private final EmergencyEvacuationApplicationReadPort emergencyEvacuationApplicationReadPort;
+    private final EmergencyEvacuationApplicationSavePort emergencyEvacuationApplicationSavePort;
 
 
-    private final EmergencyEvacuationApplicationRequestToEntityMapper emergencyEvacuationApplicationRequestToEntityMapper = EmergencyEvacuationApplicationRequestToEntityMapper.initialize();
-    private final EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper entityToEmergencyEvacuationApplicationMapper = EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper.initialize();
+    private final EmergencyEvacuationApplicationRequestToDomainMapper emergencyEvacuationApplicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
 
     /**
      * Retrieves a page of emergency evacuation applications based on the provided request parameters.
@@ -42,35 +39,27 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      * @return A page of emergency evacuation applications. Each application includes details such as the ID, status, and other related information.
      */
     @Override
-    public AysPage<EmergencyEvacuationApplication> findAll(EmergencyEvacuationApplicationListRequest listRequest) {
+    public AysPage<EmergencyEvacuationApplication> findAll(final EmergencyEvacuationApplicationListRequest listRequest) {
 
-        final Specification<EmergencyEvacuationApplicationEntity> requestedSpecifications = listRequest
-                .toSpecification(EmergencyEvacuationApplicationEntity.class);
+        final AysPageable aysPageable = listRequest.getPageable();
+        final EmergencyEvacuationApplicationFilter filter = listRequest.getFilter();
 
-        final Page<EmergencyEvacuationApplicationEntity> emergencyEvacuationApplicationEntities = emergencyEvacuationApplicationRepository
-                .findAll(requestedSpecifications, listRequest.toPageable());
-
-        final List<EmergencyEvacuationApplication> emergencyEvacuationApplications = entityToEmergencyEvacuationApplicationMapper
-                .map(emergencyEvacuationApplicationEntities.getContent());
-
-        return AysPage.of(
-                listRequest.getFilter(),
-                emergencyEvacuationApplicationEntities,
-                emergencyEvacuationApplications
-        );
+        return emergencyEvacuationApplicationReadPort.findAll(aysPageable, filter);
     }
+
 
     /**
      * Retrieves an emergency evacuation application by its ID.
+     *
      * @param id The ID of the emergency evacuation application.
      * @return the emergency evacuation application corresponding to the given ID.
      */
     @Override
-    public EmergencyEvacuationApplication findById(String id) {
-        EmergencyEvacuationApplicationEntity entity = emergencyEvacuationApplicationRepository.findById(id)
-                .orElseThrow(() -> new AysEmergencyEvacuationApplicationNotExistException(id));
-        return entityToEmergencyEvacuationApplicationMapper.map(entity);
+    public EmergencyEvacuationApplication findById(final String id) {
+        return emergencyEvacuationApplicationReadPort.findById(id)
+                .orElseThrow(() -> new EmergencyEvacuationApplicationNotExistException(id));
     }
+
 
     /**
      * Create an emergency evacuation application to the database
@@ -79,12 +68,14 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      */
     @Override
     @Transactional
-    public void create(EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
-        EmergencyEvacuationApplicationEntity applicationEntity = emergencyEvacuationApplicationRequestToEntityMapper
-                .map(emergencyEvacuationApplicationRequest);
-        applicationEntity.pending();
+    public void create(final EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
 
-        emergencyEvacuationApplicationRepository.save(applicationEntity);
+        EmergencyEvacuationApplication application = emergencyEvacuationApplicationRequestToDomainMapper
+                .map(emergencyEvacuationApplicationRequest);
+
+        application.pending();
+
+        emergencyEvacuationApplicationSavePort.save(application);
     }
 
 }

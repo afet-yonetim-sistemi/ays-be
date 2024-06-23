@@ -4,13 +4,13 @@ import org.ays.auth.model.enums.PermissionCategory;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 
-public class PermissionBuilder extends TestDataBuilder<Permission> {
+public class PermissionBuilder extends TestDataBuilder<AysPermission> {
 
     public PermissionBuilder() {
-        super(Permission.class);
+        super(AysPermission.class);
     }
 
-    public PermissionBuilder withValidFields() {
+    public PermissionBuilder withValidValues() {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withCategory(PermissionCategory.SUPER_ADMIN);
@@ -21,8 +21,18 @@ public class PermissionBuilder extends TestDataBuilder<Permission> {
         return this;
     }
 
+    public PermissionBuilder withName(String name) {
+        data.setName(name);
+        return this;
+    }
+
     public PermissionBuilder withCategory(PermissionCategory category) {
         data.setCategory(category);
+        return this;
+    }
+
+    public PermissionBuilder withIsSuper(boolean isSuper) {
+        data.setSuper(isSuper);
         return this;
     }
 

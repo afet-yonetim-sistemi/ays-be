@@ -1,12 +1,12 @@
 package org.ays.institution.port.impl;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.ays.AbstractUnitTest;
+import org.ays.AysUnitTest;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.institution.model.enums.InstitutionStatus;
-import org.ays.institution.model.mapper.InstitutionEntityToInstitutionMapper;
+import org.ays.institution.model.mapper.InstitutionEntityToDomainMapper;
 import org.ays.institution.repository.InstitutionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import org.mockito.Mockito;
 import java.util.Collections;
 import java.util.List;
 
-class InstitutionAdapterTest extends AbstractUnitTest {
+class InstitutionAdapterTest extends AysUnitTest {
 
     @InjectMocks
     private InstitutionAdapter institutionAdapter;
@@ -26,7 +26,7 @@ class InstitutionAdapterTest extends AbstractUnitTest {
     private InstitutionRepository institutionRepository;
 
 
-    private final InstitutionEntityToInstitutionMapper institutionEntityToInstitutionMapper = InstitutionEntityToInstitutionMapper.initialize();
+    private final InstitutionEntityToDomainMapper institutionEntityToDomainMapper = InstitutionEntityToDomainMapper.initialize();
 
 
     @Test
@@ -36,14 +36,14 @@ class InstitutionAdapterTest extends AbstractUnitTest {
 
         // When
         List<InstitutionEntity> mockActiveInstitutionEntities = List.of(
-                new InstitutionEntityBuilder().withValidFields().withStatus(status).build(),
-                new InstitutionEntityBuilder().withValidFields().withStatus(status).build()
+                new InstitutionEntityBuilder().withValidValues().withStatus(status).build(),
+                new InstitutionEntityBuilder().withValidValues().withStatus(status).build()
         );
         Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(status))
                 .thenReturn(mockActiveInstitutionEntities);
 
         // Then
-        List<Institution> mockActiveInstitutions = institutionEntityToInstitutionMapper
+        List<Institution> mockActiveInstitutions = institutionEntityToDomainMapper
                 .map(mockActiveInstitutionEntities);
         List<Institution> activeInstitutions = institutionAdapter.findAllByStatusOrderByNameAsc(status);
 

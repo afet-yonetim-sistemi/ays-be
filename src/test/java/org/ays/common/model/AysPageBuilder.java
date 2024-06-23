@@ -2,10 +2,31 @@ package org.ays.common.model;
 
 import org.junit.jupiter.api.Assertions;
 
-public class AysPageBuilder extends TestDataBuilder<AysPage> {
+import java.util.List;
 
-    public AysPageBuilder() {
-        super(AysPage.class);
+public class AysPageBuilder {
+
+    public static <C> AysPage<C> from(List<C> content, AysPageable aysPageable) {
+        return AysPage.<C>builder()
+                .content(content)
+                .pageNumber(aysPageable.getPage())
+                .pageSize(aysPageable.getPageSize())
+                .totalPageCount(aysPageable.getPage())
+                .totalElementCount((long) aysPageable.getPageSize())
+                .orderedBy(aysPageable.getOrders())
+                .build();
+    }
+
+    public static <C> AysPage<C> from(List<C> content, AysPageable aysPageable, AysFilter filter) {
+        return AysPage.<C>builder()
+                .content(content)
+                .pageNumber(aysPageable.getPage())
+                .pageSize(aysPageable.getPageSize())
+                .totalPageCount(aysPageable.getPage())
+                .totalElementCount((long) aysPageable.getPageSize())
+                .orderedBy(aysPageable.getOrders())
+                .filteredBy(filter)
+                .build();
     }
 
     public static <C> void assertEquals(AysPage<C> mockAysPage, AysPage<C> aysPage) {
@@ -13,7 +34,7 @@ public class AysPageBuilder extends TestDataBuilder<AysPage> {
         Assertions.assertEquals(mockAysPage.getPageNumber(), aysPage.getPageNumber());
         Assertions.assertEquals(mockAysPage.getPageSize(), aysPage.getPageSize());
         Assertions.assertEquals(mockAysPage.getTotalPageCount(), aysPage.getTotalPageCount());
-        Assertions.assertEquals(mockAysPage.getSortedBy(), aysPage.getSortedBy());
+        Assertions.assertEquals(mockAysPage.getOrderedBy(), aysPage.getOrderedBy());
         Assertions.assertEquals(mockAysPage.getFilteredBy(), aysPage.getFilteredBy());
     }
 

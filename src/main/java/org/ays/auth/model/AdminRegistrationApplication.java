@@ -27,7 +27,79 @@ public class AdminRegistrationApplication extends BaseDomainModel {
     private String rejectReason;
     private AdminRegistrationApplicationStatus status;
 
-    private UserV2 user;
+    private AysUser user;
     private Institution institution;
+
+
+    /**
+     * Checks if the registration application status is 'WAITING'.
+     *
+     * @return true if the status is 'WAITING', false otherwise
+     */
+    public boolean isWaiting() {
+        return AdminRegistrationApplicationStatus.WAITING.equals(this.status);
+    }
+
+    /**
+     * Checks if the registration application status is 'COMPLETED'.
+     *
+     * @return true if the status is 'COMPLETED', false otherwise
+     */
+    public boolean isCompleted() {
+        return AdminRegistrationApplicationStatus.COMPLETED.equals(this.status);
+    }
+
+    /**
+     * Checks if the registration application status is 'REJECTED'.
+     *
+     * @return true if the status is 'REJECTED', false otherwise
+     */
+    public boolean isRejected() {
+        return AdminRegistrationApplicationStatus.REJECTED.equals(this.status);
+    }
+
+    /**
+     * Checks if the registration application status is 'APPROVED'.
+     *
+     * @return true if the status is 'APPROVED', false otherwise
+     */
+    public boolean isApproved() {
+        return AdminRegistrationApplicationStatus.APPROVED.equals(this.status);
+    }
+
+
+    /**
+     * Marks the registration application as waiting.
+     */
+    public void waiting() {
+        this.status = AdminRegistrationApplicationStatus.WAITING;
+    }
+
+    /**
+     * Marks the registration application as completed and sets the user.
+     *
+     * @param user the user to set
+     */
+    public void complete(final AysUser user) {
+        this.user = user;
+        this.status = AdminRegistrationApplicationStatus.COMPLETED;
+    }
+
+    /**
+     * Marks the registration application as verified.
+     */
+    public void approve() {
+        this.status = AdminRegistrationApplicationStatus.APPROVED;
+    }
+
+    /**
+     * Marks the registration application as rejected and sets the rejection reason.
+     *
+     * @param rejectReason the reason for rejection
+     */
+    public void reject(final String rejectReason) {
+        this.rejectReason = rejectReason;
+        this.status = AdminRegistrationApplicationStatus.REJECTED;
+    }
 
 }

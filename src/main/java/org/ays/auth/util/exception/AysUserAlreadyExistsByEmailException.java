@@ -6,7 +6,7 @@ import java.io.Serial;
 
 /**
  * Exception indicating that an user already exists with the specified email address.
- * This exception is a subclass of AysAlreadyException.
+ * This exception is a subclass of {@link AysAlreadyException}.
  */
 public final class AysUserAlreadyExistsByEmailException extends AysAlreadyException {
 

@@ -1,11 +1,11 @@
 package org.ays.institution.controller;
 
-import org.ays.AbstractRestControllerTest;
+import org.ays.AysRestControllerTest;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.institution.model.Institution;
-import org.ays.institution.model.entity.InstitutionBuilder;
+import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
 import org.ays.institution.model.response.InstitutionsSummaryResponse;
 import org.ays.institution.service.InstitutionService;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 
-class InstitutionControllerTest extends AbstractRestControllerTest {
+class InstitutionControllerTest extends AysRestControllerTest {
 
     @MockBean
     private InstitutionService institutionService;
@@ -34,8 +34,8 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
 
         // When
         List<Institution> mockActiveInstitutions = List.of(
-                new InstitutionBuilder().withValidFields().build(),
-                new InstitutionBuilder().withValidFields().build()
+                new InstitutionBuilder().withValidValues().build(),
+                new InstitutionBuilder().withValidValues().build()
         );
 
         Mockito.when(institutionService.getSummaryOfActiveInstitutions())
@@ -44,7 +44,7 @@ class InstitutionControllerTest extends AbstractRestControllerTest {
         // Then
         String endpoint = BASE_PATH.concat("/summary");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, mockSuperAdminTokenV2.getAccessToken());
+                .get(endpoint, mockSuperAdminToken.getAccessToken());
 
         List<InstitutionsSummaryResponse> mockActiveInstitutionsSummaryResponses = institutionToInstitutionsSummaryResponseMapper
                 .map(mockActiveInstitutions);

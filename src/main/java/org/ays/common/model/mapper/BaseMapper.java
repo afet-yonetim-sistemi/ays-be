@@ -4,35 +4,58 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A generic interface for mapping objects of type {@code S} to objects of type {@code T}.
- * This interface provides two methods: one for mapping a single object and another for mapping a collection of objects.
+ * Interface for mapping between source and target types.
  * <p>
- * Implementations of this interface should provide an implementation for the {@link #map(Object)} method that takes an
- * object of type {@code S} and returns an object of type {@code T}. The {@link #map(Collection)} method, which takes
- * a collection of objects of type {@code S}, should be implemented by calling the {@code map} method on each element
- * of the collection and returning a list of the resulting objects of type {@code T}.
- * <p>
- * The purpose of this interface is to provide a generic way of mapping objects from one type to another, allowing for
- * reuse of code and reduction of duplication.
+ * The {@code BaseMapper} interface provides a contract for converting objects of one type into another,
+ * as well as converting collections of such objects. This interface is useful for implementing data
+ * transformation layers between different representations, such as mapping between domain entities and
+ * DTOs (Data Transfer Objects).
+ * </p>
  *
- * @param <S> the type of the source object to be mapped
- * @param <T> the type of the target object to be mapped to
+ * <h3>Example Usage</h3>
+ * <pre>{@code
+ * public class UserToEntityMapper implements BaseMapper<User, UserEntity> {
+ *
+ *     static AdminRegistrationApplicationCompleteRequestToUserMapper initialize() {
+ *         return Mappers.getMapper(UserToEntityMapper.class);
+ *     }
+ *
+ * }
+ * }</pre>
+ *
+ * <p>
+ * Implementations of this interface should provide specific mapping logic for transforming a source type
+ * into a target type. The default method for mapping collections leverages the single object mapping method.
+ * </p>
+ *
+ * @param <S> the source type
+ * @param <T> the target type
  */
 public interface BaseMapper<S, T> {
 
     /**
-     * Maps the specified source object to an object of type {@code T}.
+     * Maps a single source object to a target object.
+     * <p>
+     * This method defines the logic for converting an instance of the source type {@code S}
+     * into an instance of the target type {@code T}. Implementations should handle the specific
+     * transformation required between the source and target.
+     * </p>
      *
-     * @param source the source object to be mapped
-     * @return the resulting object of type {@code T}
+     * @param source the source object to map
+     * @return the mapped target object
      */
     T map(S source);
 
     /**
-     * Maps the specified collection of source objects to a list of objects of type {@code T}.
+     * Maps a collection of source objects to a list of target objects.
+     * <p>
+     * This method provides a default implementation for converting a collection of source objects
+     * into a list of target objects using the single object mapping method {@link #map(Object)}.
+     * Implementations may override this method if a different collection mapping logic is needed.
+     * </p>
      *
-     * @param sources the collection of source objects to be mapped
-     * @return the list of resulting objects of type {@code T}
+     * @param sources the collection of source objects to map
+     * @return the list of mapped target objects
      */
     List<T> map(Collection<S> sources);
 

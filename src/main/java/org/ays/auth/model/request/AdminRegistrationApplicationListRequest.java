@@ -3,45 +3,27 @@ package org.ays.auth.model.request;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
-import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.common.model.AysFiltering;
-import org.ays.common.model.request.AysFilteringRequest;
+import org.ays.auth.model.AdminRegistrationApplicationFilter;
 import org.ays.common.model.request.AysPagingRequest;
-import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Set;
 
 /**
- * Represents a request object for fetching a list of admin registration applications with pagination,sorting
- * and filtering options. This class extends the {@link AysPagingRequest} class and adds additional validation rules for sorting.
+ * Represents a request object for listing admin registration applications with pagination and filtering.
+ * Extends {@link AysPagingRequest} to inherit pagination-related properties and methods.
  */
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-public class AdminRegistrationApplicationListRequest extends AysPagingRequest implements AysFilteringRequest {
+@AllArgsConstructor
+@NoArgsConstructor
+public class AdminRegistrationApplicationListRequest extends AysPagingRequest {
 
     @Valid
-    private Filter filter;
-
-    /**
-     * Represents a filtering configuration for admin registration applications based on the class fields.
-     */
-    @Getter
-    @Setter
-    public static class Filter implements AysFiltering {
-
-
-        /**
-         * List of admin registration application's statuses used for filtering.
-         */
-        private List<AdminRegistrationApplicationStatus> statuses;
-
-    }
+    private AdminRegistrationApplicationFilter filter;
 
     /**
      * Overrides the {@link AysPagingRequest#isSortPropertyAccepted()} method to validate sorting options
@@ -55,34 +37,6 @@ public class AdminRegistrationApplicationListRequest extends AysPagingRequest im
     public boolean isSortPropertyAccepted() {
         final Set<String> acceptedFilterFields = Set.of("createdAt");
         return this.isPropertyAccepted(acceptedFilterFields);
-    }
-
-    /**
-     * Converts the request into a JPA Specification that filters registration applications based on the specified
-     * statuses, if they are provided.
-     *
-     * @param clazz the class type of the specification.
-     * @return the generated JPA Specification based on the request filters.
-     */
-    @Override
-    public <C> Specification<C> toSpecification(Class<C> clazz) {
-
-        if (this.filter == null) {
-            return Specification.allOf();
-        }
-
-        Specification<C> specification = Specification.where(null);
-
-        if (!CollectionUtils.isEmpty(this.filter.statuses)) {
-            Specification<C> statusSpecification = this.filter.statuses.stream().map(status ->
-                            (Specification<C>) (root, query, criteriaBuilder) ->
-                                    criteriaBuilder.equal(root.get("status"), status))
-                    .reduce(Specification::or).orElse(null);
-
-            specification = specification.and(statusSpecification);
-        }
-
-        return specification;
     }
 
 }

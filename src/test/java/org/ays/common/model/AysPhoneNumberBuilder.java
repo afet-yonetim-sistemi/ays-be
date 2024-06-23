@@ -8,7 +8,7 @@ public class AysPhoneNumberBuilder extends TestDataBuilder<AysPhoneNumber> {
         super(AysPhoneNumber.class);
     }
 
-    public AysPhoneNumberBuilder withValidFields() {
+    public AysPhoneNumberBuilder withValidValues() {
         return new AysPhoneNumberBuilder()
                 .withCountryCode("90")
                 .withLineNumber("535" + AysRandomUtil.generateNumber(7));

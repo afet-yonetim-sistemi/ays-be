@@ -10,7 +10,7 @@ public class InstitutionEntityBuilder extends TestDataBuilder<InstitutionEntity>
         super(InstitutionEntity.class);
     }
 
-    public InstitutionEntityBuilder withValidFields() {
+    public InstitutionEntityBuilder withValidValues() {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withStatus(InstitutionStatus.ACTIVE);

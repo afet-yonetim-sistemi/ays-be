@@ -3,10 +3,10 @@ package org.ays.auth.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AdminRegistrationApplication;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToApplicationResponseMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToApplicationsResponseMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToCreateResponseMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToSummaryResponseMapper;
 import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.auth.model.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.auth.model.request.AdminRegistrationApplicationListRequest;
@@ -40,17 +40,17 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Validated
 @RestController
-@RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 class AdminRegistrationApplicationController {
 
     private final AdminRegistrationApplicationService adminRegistrationApplicationService;
     private final AdminRegistrationCompleteService adminRegistrationCompleteService;
 
-    private final AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper.initialize();
-    private final AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper.initialize();
-    private final AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper.initialize();
-    private final AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper.initialize();
+    private final AdminRegistrationApplicationToApplicationsResponseMapper adminRegistrationApplicationToApplicationsResponseMapper = AdminRegistrationApplicationToApplicationsResponseMapper.initialize();
+    private final AdminRegistrationApplicationToApplicationResponseMapper adminRegistrationApplicationToApplicationResponseMapper = AdminRegistrationApplicationToApplicationResponseMapper.initialize();
+    private final AdminRegistrationApplicationToSummaryResponseMapper adminRegistrationApplicationToSummaryResponseMapper = AdminRegistrationApplicationToSummaryResponseMapper.initialize();
+    private final AdminRegistrationApplicationToCreateResponseMapper adminRegistrationApplicationToCreateResponseMapper = AdminRegistrationApplicationToCreateResponseMapper.initialize();
 
     /**
      * Retrieves all admin registration applications based on the provided request parameters.
@@ -65,11 +65,12 @@ class AdminRegistrationApplicationController {
             @RequestBody @Valid AdminRegistrationApplicationListRequest request) {
 
         final AysPage<AdminRegistrationApplication> pageOfRegisterApplications = adminRegistrationApplicationService.findAll(request);
+
         final AysPageResponse<AdminRegistrationApplicationsResponse> pageResponseOfRegisterApplication = AysPageResponse
                 .<AdminRegistrationApplicationsResponse>builder()
                 .of(pageOfRegisterApplications)
                 .content(
-                        adminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper
+                        adminRegistrationApplicationToApplicationsResponseMapper
                                 .map(pageOfRegisterApplications.getContent())
                 )
                 .filteredBy(request.getFilter())
@@ -92,7 +93,7 @@ class AdminRegistrationApplicationController {
         final AdminRegistrationApplication registerApplication = adminRegistrationApplicationService.findById(id);
 
         return AysResponse.successOf(
-                adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper.map(registerApplication)
+                adminRegistrationApplicationToApplicationResponseMapper.map(registerApplication)
         );
     }
 
@@ -107,10 +108,10 @@ class AdminRegistrationApplicationController {
     public AysResponse<AdminRegistrationApplicationSummaryResponse> findSummaryById(@PathVariable @UUID String id) {
 
         final AdminRegistrationApplication registerApplication = adminRegistrationApplicationService
-                .findAllSummaryById(id);
+                .findSummaryById(id);
 
         return AysResponse.successOf(
-                adminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper.map(registerApplication)
+                adminRegistrationApplicationToSummaryResponseMapper.map(registerApplication)
         );
     }
 
@@ -126,11 +127,11 @@ class AdminRegistrationApplicationController {
     public AysResponse<AdminRegistrationApplicationCreateResponse> create(
             @RequestBody @Valid AdminRegistrationApplicationCreateRequest createRequest) {
 
-        AdminRegistrationApplication registerApplication = adminRegistrationApplicationService
+        AdminRegistrationApplication registrationApplication = adminRegistrationApplicationService
                 .create(createRequest);
         return AysResponse.successOf(
-                adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper
-                        .map(registerApplication)
+                adminRegistrationApplicationToCreateResponseMapper
+                        .map(registrationApplication)
         );
     }
 
@@ -153,16 +154,16 @@ class AdminRegistrationApplicationController {
      * Rejects an admin registration application.
      * Requires 'application:registration:conclude' authority.
      *
-     * @param id      The ID of the admin registration application to reject.
-     * @param request The request containing rejection details.
+     * @param id            The ID of the admin registration application to reject.
+     * @param rejectRequest The request containing rejection details.
      * @return A success response upon successful rejection.
      */
     @PostMapping("/admin-registration-application/{id}/reject")
     @PreAuthorize("hasAnyAuthority('application:registration:conclude')")
     public AysResponse<Void> reject(@PathVariable @UUID String id,
-                                    @RequestBody @Valid AdminRegistrationApplicationRejectRequest request) {
+                                    @RequestBody @Valid AdminRegistrationApplicationRejectRequest rejectRequest) {
 
-        adminRegistrationApplicationService.reject(id, request);
+        adminRegistrationApplicationService.reject(id, rejectRequest);
         return AysResponse.SUCCESS;
     }
 

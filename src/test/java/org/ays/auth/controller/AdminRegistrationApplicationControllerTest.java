@@ -1,24 +1,21 @@
 package org.ays.auth.controller;
 
-import org.ays.AbstractRestControllerTest;
+import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
-import org.ays.auth.model.dto.request.AdminRegistrationApplicationCompleteRequestBuilder;
-import org.ays.auth.model.dto.request.AdminRegistrationApplicationCreateRequestBuilder;
-import org.ays.auth.model.dto.request.AdminRegistrationApplicationListRequestBuilder;
-import org.ays.auth.model.dto.request.AdminRegistrationApplicationRejectRequestBuilder;
-import org.ays.auth.model.entity.AdminRegistrationApplicationEntity;
-import org.ays.auth.model.entity.AdminRegistrationApplicationEntityBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToApplicationResponseMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToApplicationsResponseMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToCreateResponseMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToSummaryResponseMapper;
 import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequest;
+import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequestBuilder;
 import org.ays.auth.model.request.AdminRegistrationApplicationCreateRequest;
+import org.ays.auth.model.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.auth.model.request.AdminRegistrationApplicationListRequest;
+import org.ays.auth.model.request.AdminRegistrationApplicationListRequestBuilder;
 import org.ays.auth.model.request.AdminRegistrationApplicationRejectRequest;
+import org.ays.auth.model.request.AdminRegistrationApplicationRejectRequestBuilder;
 import org.ays.auth.model.response.AdminRegistrationApplicationCreateResponse;
 import org.ays.auth.model.response.AdminRegistrationApplicationResponse;
 import org.ays.auth.model.response.AdminRegistrationApplicationSummaryResponse;
@@ -26,6 +23,7 @@ import org.ays.auth.model.response.AdminRegistrationApplicationsResponse;
 import org.ays.auth.service.AdminRegistrationApplicationService;
 import org.ays.auth.service.AdminRegistrationCompleteService;
 import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.model.response.AysErrorResponse;
@@ -35,7 +33,7 @@ import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.institution.model.Institution;
-import org.ays.institution.model.entity.InstitutionBuilder;
+import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
@@ -44,13 +42,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
 
-class AdminRegistrationApplicationControllerTest extends AbstractRestControllerTest {
+class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
     @MockBean
     private AdminRegistrationApplicationService adminRegistrationApplicationService;
@@ -58,11 +54,10 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
     @MockBean
     private AdminRegistrationCompleteService adminRegistrationCompleteService;
 
-    private final AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper = AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.initialize();
-    private final AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper.initialize();
-    private final AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationResponseMapper.initialize();
-    private final AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper.initialize();
-    private final AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper = AdminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper.initialize();
+    private final AdminRegistrationApplicationToApplicationsResponseMapper adminRegistrationApplicationToApplicationsResponseMapper = AdminRegistrationApplicationToApplicationsResponseMapper.initialize();
+    private final AdminRegistrationApplicationToApplicationResponseMapper adminRegistrationApplicationToApplicationResponseMapper = AdminRegistrationApplicationToApplicationResponseMapper.initialize();
+    private final AdminRegistrationApplicationToSummaryResponseMapper adminRegistrationApplicationToSummaryResponseMapper = AdminRegistrationApplicationToSummaryResponseMapper.initialize();
+    private final AdminRegistrationApplicationToCreateResponseMapper adminRegistrationApplicationToCreateResponseMapper = AdminRegistrationApplicationToCreateResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -73,26 +68,28 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
 
         // Given
         AdminRegistrationApplicationListRequest mockListRequest = new AdminRegistrationApplicationListRequestBuilder()
-                .withValidValues().build();
+                .withValidValues()
+                .build();
 
         // When
-        List<AdminRegistrationApplicationEntity> mockEntities = List.of(new AdminRegistrationApplicationEntityBuilder().withValidFields().build());
-        Page<AdminRegistrationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
-        List<AdminRegistrationApplication> mockList = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(mockEntities);
-        AysPage<AdminRegistrationApplication> mockAysPage = AysPage
-                .of(mockListRequest.getFilter(), mockPageEntities, mockList);
+        List<AdminRegistrationApplication> mockApplications = List.of(
+                new AdminRegistrationApplicationBuilder().withValidValues().build()
+        );
+
+        AysPage<AdminRegistrationApplication> mockApplicationPage = AysPageBuilder
+                .from(mockApplications, mockListRequest.getPageable());
 
         Mockito.when(adminRegistrationApplicationService.findAll(Mockito.any(AdminRegistrationApplicationListRequest.class)))
-                .thenReturn(mockAysPage);
+                .thenReturn(mockApplicationPage);
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
 
-        List<AdminRegistrationApplicationsResponse> mockApplicationsResponse = adminRegistrationApplicationToAdminRegistrationApplicationsResponseMapper.map(mockList);
+        List<AdminRegistrationApplicationsResponse> mockApplicationsResponse = adminRegistrationApplicationToApplicationsResponseMapper.map(mockApplications);
         AysPageResponse<AdminRegistrationApplicationsResponse> pageOfResponse = AysPageResponse.<AdminRegistrationApplicationsResponse>builder()
-                .of(mockAysPage)
+                .of(mockApplicationPage)
                 .content(mockApplicationsResponse)
                 .build();
         AysResponse<AysPageResponse<AdminRegistrationApplicationsResponse>> mockResponse = AysResponse
@@ -150,9 +147,9 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockApplicationId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, mockSuperAdminTokenV2.getAccessToken());
+                .get(endpoint, mockSuperAdminToken.getAccessToken());
 
-        AdminRegistrationApplicationResponse mockApplicationResponse = adminRegistrationApplicationToAdminRegistrationApplicationResponseMapper
+        AdminRegistrationApplicationResponse mockApplicationResponse = adminRegistrationApplicationToApplicationResponseMapper
                 .map(mockRegisterApplication);
         AysResponse<AdminRegistrationApplicationResponse> mockResponse = AysResponse
                 .successOf(mockApplicationResponse);
@@ -205,7 +202,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
 
         // Given
         AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withInstitutionId(AysValidTestData.Institution.ID)
                 .withReason(reason)
                 .build();
@@ -215,7 +212,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
                 .withId(mockRequest.getInstitutionId())
                 .build();
         AdminRegistrationApplication mockRegisterApplication = new AdminRegistrationApplicationBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withInstitution(mockInstitution)
                 .withReason(mockRequest.getReason())
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
@@ -227,9 +224,9 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminTokenV2.getAccessToken(), mockRequest);
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest);
 
-        AdminRegistrationApplicationCreateResponse mockApplicationCreateResponse = adminRegistrationApplicationToAdminRegistrationApplicationCreateResponseMapper
+        AdminRegistrationApplicationCreateResponse mockApplicationCreateResponse = adminRegistrationApplicationToCreateResponseMapper
                 .map(mockRegisterApplication);
         AysResponse<AdminRegistrationApplicationCreateResponse> mockResponse = AysResponse.successOf(mockApplicationCreateResponse);
 
@@ -258,7 +255,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
 
         // Given
         AdminRegistrationApplicationCreateRequest createRequest = new AdminRegistrationApplicationCreateRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withReason(invalidReason)
                 .build();
 
@@ -285,7 +282,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
 
         // Given
         AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withInstitutionId(AysValidTestData.Institution.ID)
                 .build();
 
@@ -317,7 +314,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
                 .build();
 
         // When
-        Mockito.when(adminRegistrationApplicationService.findAllSummaryById(mockId))
+        Mockito.when(adminRegistrationApplicationService.findSummaryById(mockId))
                 .thenReturn(mockAdminRegistrationApplication);
 
         // Then
@@ -325,7 +322,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
-        AdminRegistrationApplicationSummaryResponse mockSummaryResponse = adminRegistrationApplicationToAdminRegistrationApplicationSummaryResponseMapper
+        AdminRegistrationApplicationSummaryResponse mockSummaryResponse = adminRegistrationApplicationToSummaryResponseMapper
                 .map(mockAdminRegistrationApplication);
         AysResponse<AdminRegistrationApplicationSummaryResponse> mockResponse = AysResponse
                 .successOf(mockSummaryResponse);
@@ -343,7 +340,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields().build();
+                .withValidValues().build();
 
         // When
         Mockito.doNothing().when(adminRegistrationCompleteService).complete(Mockito.anyString(), Mockito.any());
@@ -375,7 +372,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withPhoneNumber(mockPhoneNumber).build();
 
         // Then
@@ -405,7 +402,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withPhoneNumber(mockPhoneNumber).build();
 
         // Then
@@ -436,7 +433,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withPhoneNumber(mockPhoneNumber).build();
 
         // Then
@@ -470,7 +467,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withFirstName(invalidName)
                 .withLastName(invalidName)
                 .build();
@@ -506,7 +503,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withEmail(invalidEmail)
                 .build();
 
@@ -541,7 +538,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withEmail(validEmail)
                 .build();
 
@@ -578,7 +575,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/approve"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminTokenV2.getAccessToken());
+                .post(endpoint, mockSuperAdminToken.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponse.SUCCESS;
 
@@ -623,7 +620,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
 
         // When
@@ -632,7 +629,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/reject");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminTokenV2.getAccessToken(), mockRequest);
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
@@ -654,7 +651,7 @@ class AdminRegistrationApplicationControllerTest extends AbstractRestControllerT
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
 
         // Then

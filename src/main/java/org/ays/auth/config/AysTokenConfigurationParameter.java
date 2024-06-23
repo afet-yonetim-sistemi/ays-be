@@ -3,7 +3,7 @@ package org.ays.auth.config;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.auth.model.enums.AysConfigurationParameter;
-import org.ays.auth.util.KeyConverter;
+import org.ays.auth.util.AysKeyConverter;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.service.AysParameterService;
 import org.springframework.context.annotation.Configuration;
@@ -68,12 +68,12 @@ public class AysTokenConfigurationParameter {
         final String encryptedPrivateKeyPem = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY, configurationParameters))
                 .orElse(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY.getDefaultValue());
-        this.privateKey = KeyConverter.convertPrivateKey(encryptedPrivateKeyPem);
+        this.privateKey = AysKeyConverter.convertPrivateKey(encryptedPrivateKeyPem);
 
         final String encryptedPublicKeyPem = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY, configurationParameters))
                 .orElse(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY.getDefaultValue());
-        this.publicKey = KeyConverter.convertPublicKey(encryptedPublicKeyPem);
+        this.publicKey = AysKeyConverter.convertPublicKey(encryptedPublicKeyPem);
 
         log.info("AYS Token Configuration is initialized!");
     }

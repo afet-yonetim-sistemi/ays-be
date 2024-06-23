@@ -1,21 +1,20 @@
 package org.ays.auth.model.enums;
 
 /**
- * Represents the status of an admin registration application.
- * <p>
+ * Enum representing the status of an administrative registration application.
  * Possible statuses include:
  * <ul>
- *   <li>WAITING - The application is pending review.</li>
- *   <li>COMPLETED - The application has been completed.</li>
- *   <li>VERIFIED - The application has been verified.</li>
- *   <li>REJECTED - The application has been rejected.</li>
+ *     <li>{@link #WAITING}: The application is waiting for review.</li>
+ *     <li>{@link #COMPLETED}: The application has been completed and is pending approval.</li>
+ *     <li>{@link #APPROVED}: The application has been approved.</li>
+ *     <li>{@link #REJECTED}: The application has been rejected.</li>
  * </ul>
  */
 public enum AdminRegistrationApplicationStatus {
 
     WAITING,
     COMPLETED,
-    VERIFIED,
+    APPROVED,
     REJECTED
 
 }

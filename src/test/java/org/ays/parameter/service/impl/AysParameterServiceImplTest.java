@@ -1,6 +1,6 @@
 package org.ays.parameter.service.impl;
 
-import org.ays.AbstractUnitTest;
+import org.ays.AysUnitTest;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.model.AysParameterBuilder;
 import org.ays.parameter.port.AysParameterReadPort;
@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import java.util.Optional;
 import java.util.Set;
 
-class AysParameterServiceImplTest extends AbstractUnitTest {
+class AysParameterServiceImplTest extends AysUnitTest {
 
     @InjectMocks
     private AysParameterServiceImpl parameterService;

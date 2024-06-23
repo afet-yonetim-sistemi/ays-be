@@ -5,7 +5,9 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.BaseDomainModel;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.institution.model.Institution;
 
 /**
  * Represents an emergency evacuation application.
@@ -18,7 +20,6 @@ import org.ays.emergency_application.model.entity.EmergencyEvacuationApplication
 public class EmergencyEvacuationApplication extends BaseDomainModel {
 
     private String id;
-    private String institutionId;
     private String referenceNumber;
     private String firstName;
     private String lastName;
@@ -36,5 +37,16 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
     private Boolean isInPerson;
     private Boolean hasObstaclePersonExist;
     private String notes;
+
+    private Institution institution;
+
+    /**
+     * Marks the emergency evacuation application as pending.
+     */
+    public void pending() {
+        this.referenceNumber = AysRandomUtil.generateNumber(10).toString();
+        this.status = EmergencyEvacuationApplicationStatus.PENDING;
+        this.isInPerson = this.applicantPhoneNumber == null;
+    }
 
 }

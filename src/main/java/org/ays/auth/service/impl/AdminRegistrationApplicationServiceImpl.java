@@ -2,32 +2,26 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AdminRegistrationApplication;
-import org.ays.auth.model.entity.AdminRegistrationApplicationEntity;
-import org.ays.auth.model.entity.UserEntityV2;
-import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper;
-import org.ays.auth.model.mapper.AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper;
+import org.ays.auth.model.AdminRegistrationApplicationFilter;
+import org.ays.auth.model.AysUser;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationCreateRequestToDomainMapper;
 import org.ays.auth.model.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.auth.model.request.AdminRegistrationApplicationListRequest;
 import org.ays.auth.model.request.AdminRegistrationApplicationRejectRequest;
-import org.ays.auth.repository.AdminRegistrationApplicationRepository;
-import org.ays.auth.repository.UserRepositoryV2;
+import org.ays.auth.port.AdminRegistrationApplicationReadPort;
+import org.ays.auth.port.AdminRegistrationApplicationSavePort;
+import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AdminRegistrationApplicationService;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationSummaryNotExistByIdException;
 import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageable;
 import org.ays.institution.port.InstitutionReadPort;
 import org.ays.institution.util.exception.AysInstitutionNotExistException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * This class implements the {@link AdminRegistrationApplicationService} interface and provides verification operations for admin users.
@@ -35,15 +29,18 @@ import java.util.List;
  * The class is also annotated with {@code @RequiredArgsConstructor} to automatically generate a constructor based on the declared final fields.
  */
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplicationService {
 
-    private final AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
-    private final UserRepositoryV2 userRepository;
+    private final AdminRegistrationApplicationReadPort adminRegistrationApplicationReadPort;
+    private final AdminRegistrationApplicationSavePort adminRegistrationApplicationSavePort;
+
+    private final AysUserSavePort userSavePort;
     private final InstitutionReadPort institutionReadPort;
 
-    private final AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper = AdminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.initialize();
-    private final AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper = AdminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper.initialize();
+
+    private final AdminRegistrationApplicationCreateRequestToDomainMapper adminRegistrationApplicationCreateRequestToEntityMapper = AdminRegistrationApplicationCreateRequestToDomainMapper.initialize();
 
 
     /**
@@ -53,20 +50,12 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      * @return a paginated list of admin registration applications
      */
     @Override
-    public AysPage<AdminRegistrationApplication> findAll(AdminRegistrationApplicationListRequest listRequest) {
-        final Specification<AdminRegistrationApplicationEntity> filters = listRequest
-                .toSpecification(AdminRegistrationApplicationEntity.class);
+    public AysPage<AdminRegistrationApplication> findAll(final AdminRegistrationApplicationListRequest listRequest) {
 
-        final Page<AdminRegistrationApplicationEntity> registerApplicationEntities = adminRegistrationApplicationRepository
-                .findAll(filters, listRequest.toPageable());
+        final AysPageable aysPageable = listRequest.getPageable();
+        final AdminRegistrationApplicationFilter filter = listRequest.getFilter();
 
-        final List<AdminRegistrationApplication> registerApplications = adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(registerApplicationEntities.getContent());
-
-        return AysPage.of(
-                listRequest.getFilter(),
-                registerApplicationEntities,
-                registerApplications
-        );
+        return adminRegistrationApplicationReadPort.findAll(aysPageable, filter);
     }
 
     /**
@@ -77,11 +66,8 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      */
     @Override
     public AdminRegistrationApplication findById(String id) {
-        final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationRepository
-                .findById(id)
+        return adminRegistrationApplicationReadPort.findById(id)
                 .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
-
-        return adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(registerApplicationEntity);
     }
 
     /**
@@ -92,13 +78,11 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      * @return An admin register application.
      */
     @Override
-    public AdminRegistrationApplication findAllSummaryById(String id) {
-        final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationRepository
-                .findById(id)
-                .filter(AdminRegistrationApplicationEntity::isWaiting)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationSummaryNotExistByIdException(id));
+    public AdminRegistrationApplication findSummaryById(String id) {
 
-        return adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(registerApplicationEntity);
+        return adminRegistrationApplicationReadPort.findById(id)
+                .filter(AdminRegistrationApplication::isWaiting)
+                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
     }
 
     /**
@@ -108,19 +92,20 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      * @return A response object containing the created register application.
      */
     @Override
+    @Transactional
     public AdminRegistrationApplication create(AdminRegistrationApplicationCreateRequest request) {
+
         boolean isInstitutionExists = institutionReadPort.existsByIdAndIsStatusActive(request.getInstitutionId());
         if (!isInstitutionExists) {
             throw new AysInstitutionNotExistException(request.getInstitutionId());
         }
 
-        AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationCreateRequestToAdminRegistrationApplicationEntityMapper
+        final AdminRegistrationApplication registrationApplication = adminRegistrationApplicationCreateRequestToEntityMapper
                 .map(request);
-        applicationEntity.waiting();
 
-        adminRegistrationApplicationRepository.save(applicationEntity);
+        registrationApplication.waiting();
 
-        return adminRegistrationApplicationEntityToAdminRegistrationApplicationMapper.map(applicationEntity);
+        return adminRegistrationApplicationSavePort.save(registrationApplication);
     }
 
     /**
@@ -131,54 +116,73 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
     @Override
     @Transactional
     public void approve(String id) {
-        final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationRepository
+        final AdminRegistrationApplication registrationApplication = adminRegistrationApplicationReadPort
                 .findById(id)
-                .map(entity -> {
-                    if (entity.isRejected() || entity.isVerified()) {
-                        throw new AysAdminRegistrationApplicationAlreadyApprovedException(id, entity.getStatus());
-                    } else if (entity.isWaiting()) {
-                        throw new AysAdminRegistrationApplicationInCompleteException(id, entity.getStatus());
-                    } else {
-                        return entity;
-                    }
-                })
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
-        final UserEntityV2 userEntity = registerApplicationEntity.getUser();
+                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
 
-        registerApplicationEntity.verify();
-        adminRegistrationApplicationRepository.save(registerApplicationEntity);
+        this.checkApplicationStatus(registrationApplication);
 
-        userEntity.activate();
-        userRepository.save(userEntity);
+        registrationApplication.approve();
+        adminRegistrationApplicationSavePort.save(registrationApplication);
+
+        final AysUser user = registrationApplication.getUser();
+        user.activate();
+        userSavePort.save(user);
     }
 
     /**
      * Rejects an admin register application by id.
      *
-     * @param id      The id of the register application.
-     * @param request The request object containing the rejection details.
+     * @param id            The id of the register application.
+     * @param rejectRequest The request object containing the rejection details.
      */
     @Override
     @Transactional
-    public void reject(String id, AdminRegistrationApplicationRejectRequest request) {
-        final AdminRegistrationApplicationEntity registerApplicationEntity = adminRegistrationApplicationRepository
+    public void reject(final String id, final AdminRegistrationApplicationRejectRequest rejectRequest) {
+        final AdminRegistrationApplication registrationApplication = adminRegistrationApplicationReadPort
                 .findById(id)
-                .map(entity -> {
-                    if (entity.isRejected() || entity.isVerified()) {
-                        throw new AysAdminRegistrationApplicationAlreadyRejectedException(id, entity.getStatus());
-                    } else if (entity.isWaiting()) {
-                        throw new AysAdminRegistrationApplicationInCompleteException(id, entity.getStatus());
-                    } else {
-                        return entity;
-                    }
-                })
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdOrStatusNotWaitingException(id, AdminRegistrationApplicationStatus.WAITING));
-        final UserEntityV2 userEntity = registerApplicationEntity.getUser();
+                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
 
-        registerApplicationEntity.reject(request.getRejectReason());
-        adminRegistrationApplicationRepository.save(registerApplicationEntity);
+        this.checkApplicationStatus(registrationApplication);
 
-        userEntity.passivate();
-        userRepository.save(userEntity);
+        registrationApplication.reject(rejectRequest.getRejectReason());
+        adminRegistrationApplicationSavePort.save(registrationApplication);
+
+        final AysUser user = registrationApplication.getUser();
+        user.passivate();
+        userSavePort.save(user);
     }
+
+    /**
+     * Checks the status of the provided {@link AdminRegistrationApplication} object and throws
+     * corresponding exceptions if the application status is waiting, approved, or rejected.
+     *
+     * @param registrationApplication The admin registration application to check.
+     * @throws AysAdminRegistrationApplicationInCompleteException      If the application status is waiting.
+     * @throws AysAdminRegistrationApplicationAlreadyApprovedException If the application status is approved.
+     * @throws AysAdminRegistrationApplicationAlreadyRejectedException If the application status is rejected.
+     */
+    private void checkApplicationStatus(final AdminRegistrationApplication registrationApplication) {
+
+        if (registrationApplication.isWaiting()) {
+            throw new AysAdminRegistrationApplicationInCompleteException(
+                    registrationApplication.getId(),
+                    registrationApplication.getStatus()
+            );
+        }
+
+        if (registrationApplication.isApproved()) {
+            throw new AysAdminRegistrationApplicationAlreadyApprovedException(
+                    registrationApplication.getId(),
+                    registrationApplication.getStatus()
+            );
+        }
+
+        if (registrationApplication.isRejected()) {
+            throw new AysAdminRegistrationApplicationAlreadyRejectedException(
+                    registrationApplication.getId()
+            );
+        }
+    }
+
 }

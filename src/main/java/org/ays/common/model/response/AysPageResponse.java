@@ -2,9 +2,9 @@ package org.ays.common.model.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.ays.common.model.AysFiltering;
+import org.ays.common.model.AysFilter;
 import org.ays.common.model.AysPage;
-import org.ays.common.model.AysSorting;
+import org.ays.common.model.AysSort;
 
 import java.util.List;
 
@@ -45,12 +45,12 @@ public class AysPageResponse<R> {
     /**
      * The list of sorting criteria applied to the results.
      */
-    private List<AysSorting> sortedBy;
+    private List<AysSort.AysOrder> orderedBy;
 
     /**
      * The filtering criteria applied to the results.
      */
-    private AysFiltering filteredBy;
+    private AysFilter filteredBy;
 
 
     /**
@@ -73,7 +73,7 @@ public class AysPageResponse<R> {
                     .pageSize(page.getPageSize())
                     .totalPageCount(page.getTotalPageCount())
                     .totalElementCount(page.getTotalElementCount())
-                    .sortedBy(page.getSortedBy())
+                    .orderedBy(page.getOrderedBy())
                     .filteredBy(page.getFilteredBy());
         }
     }

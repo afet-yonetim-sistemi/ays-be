@@ -19,6 +19,7 @@ class AysParameterServiceImpl implements AysParameterService {
 
     private final AysParameterReadPort parameterReadPort;
 
+
     /**
      * Retrieves a set of {@link AysParameter} entities that have names starting with the given prefix.
      *
@@ -30,12 +31,13 @@ class AysParameterServiceImpl implements AysParameterService {
         return parameterReadPort.findAll(prefixOfName);
     }
 
+
     /**
-     * Retrieves an {@link AysParameter} entity that has the given name.
+     * Retrieves an {@link AysParameter} that has the given name.
      * Throws {@link AysParameterNotExistException} if no parameter with the given name is found.
      *
      * @param name the name of the {@link AysParameter} to search for
-     * @return the {@link AysParameter} entity with the given name
+     * @return the {@link AysParameter} with the given name
      * @throws AysParameterNotExistException if the parameter with the given name does not exist
      */
     @Override

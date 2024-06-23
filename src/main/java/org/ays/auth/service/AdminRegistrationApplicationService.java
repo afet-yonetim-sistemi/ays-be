@@ -35,7 +35,7 @@ public interface AdminRegistrationApplicationService {
      * @param id The unique ID of the application.
      * @return A summary of the admin registration application with the specified ID.
      */
-    AdminRegistrationApplication findAllSummaryById(String id);
+    AdminRegistrationApplication findSummaryById(String id);
 
     /**
      * Creates a new admin registration application.

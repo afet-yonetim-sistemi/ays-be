@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum AysTokenClaims {
 
-    JWT_ID("jti"),
     TYPE("typ"),
-    SUBJECT("sub"),
-    ROLES("roles"),
     USER_ID("userId"),
     USERNAME("username"),
     USER_TYPE("userType"),

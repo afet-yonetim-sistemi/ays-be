@@ -1,6 +1,6 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.util.exception.AysAlreadyException;
 
 import java.io.Serial;
@@ -21,7 +21,7 @@ public final class AysUserAlreadyExistsByPhoneNumberException extends AysAlready
      *
      * @param phoneNumber The phone number that already exists in the system.
      */
-    public AysUserAlreadyExistsByPhoneNumberException(AysPhoneNumberRequest phoneNumber) {
+    public AysUserAlreadyExistsByPhoneNumberException(AysPhoneNumber phoneNumber) {
         super("user already exist! countryCode:" + phoneNumber.getCountryCode() + " , " + "lineNumber:" + phoneNumber.getLineNumber());
     }
 

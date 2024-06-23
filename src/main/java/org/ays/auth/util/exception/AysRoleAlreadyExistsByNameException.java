@@ -4,7 +4,6 @@ import org.ays.common.util.exception.AysAlreadyException;
 
 import java.io.Serial;
 
-
 /**
  * Exception to be thrown when a role with a given name already exists.
  */

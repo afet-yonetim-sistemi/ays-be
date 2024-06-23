@@ -21,7 +21,7 @@ public interface AysParameterService {
      * Retrieves an AysParameter that has the specified name.
      *
      * @param name the name to search for
-     * @return an AysParameter entity
+     * @return an AysParameter
      */
     AysParameter findByName(String name);
 

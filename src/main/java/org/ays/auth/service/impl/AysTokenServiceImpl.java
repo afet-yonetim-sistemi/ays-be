@@ -16,7 +16,7 @@ import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.service.AysTokenService;
-import org.ays.auth.util.exception.TokenNotValidException;
+import org.ays.auth.util.exception.AysTokenNotValidException;
 import org.ays.common.util.AysListUtil;
 import org.ays.common.util.AysRandomUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -122,7 +122,7 @@ class AysTokenServiceImpl implements AysTokenService {
     private JwtBuilder initializeTokenBuilder(long currentTimeMillis) {
         return Jwts.builder()
                 .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .type(OAuth2AccessToken.TokenType.BEARER.getValue())
                 .and()
                 .issuer(tokenConfiguration.getIssuer())
                 .issuedAt(new Date(currentTimeMillis))
@@ -133,10 +133,10 @@ class AysTokenServiceImpl implements AysTokenService {
     /**
      * Verifies and validates the given JWT (JSON Web Token).
      * This method parses the token using the public key from the {@link AysTokenConfigurationParameter},
-     * and throws a {@link TokenNotValidException} if the token is not valid due to being malformed, expired or having an invalid signature.
+     * and throws a {@link AysTokenNotValidException} if the token is not valid due to being malformed, expired or having an invalid signature.
      *
      * @param token The JWT (JSON Web Token) to be verified and validated.
-     * @throws TokenNotValidException If the token is not valid due to being malformed, expired or having an invalid signature.
+     * @throws AysTokenNotValidException If the token is not valid due to being malformed, expired or having an invalid signature.
      */
     @Override
     public void verifyAndValidate(String token) {
@@ -156,7 +156,7 @@ class AysTokenServiceImpl implements AysTokenService {
             }
 
         } catch (MalformedJwtException | ExpiredJwtException | SignatureException | RequiredTypeException exception) {
-            throw new TokenNotValidException(token, exception);
+            throw new AysTokenNotValidException(token, exception);
         }
     }
 

@@ -20,13 +20,15 @@ import java.util.List;
  * The mapping path for this controller is "/api/v1/institutions".
  */
 @RestController
-@RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 class InstitutionController {
 
     private final InstitutionService institutionService;
 
+
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
+
 
     /**
      * Retrieves a summary of all institutions.
