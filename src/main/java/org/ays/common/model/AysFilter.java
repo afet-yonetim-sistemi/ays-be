@@ -50,6 +50,7 @@ public interface AysFilter {
      *
      * @return A {@link Specification} object representing the query criteria defined by this filter.
      */
+    @SuppressWarnings({"java:S3740", "rawtypes"})
     Specification toSpecification();
 
 }

@@ -85,10 +85,11 @@ public class AysSort {
      * @return a {@link org.springframework.data.domain.Sort} representing the same sorting configuration
      */
     protected org.springframework.data.domain.Sort toSort() {
-        final List<Sort.Order> orders = this.orders.stream()
-                .map(order -> Sort.Order.by(order.getProperty()).with(order.getDirection().toDirection()))
-                .toList();
-        return org.springframework.data.domain.Sort.by(orders);
+        return org.springframework.data.domain.Sort.by(
+                this.orders.stream()
+                        .map(order -> Sort.Order.by(order.getProperty()).with(order.getDirection().toDirection()))
+                        .toList()
+        );
     }
 
 

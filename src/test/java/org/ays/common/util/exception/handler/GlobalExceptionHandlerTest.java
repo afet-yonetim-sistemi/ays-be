@@ -295,6 +295,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void givenInvalidJsonFormat_whenThrowHttpMessageNotReadableException_thenReturnAysErrorResponse() {
 
         // Given

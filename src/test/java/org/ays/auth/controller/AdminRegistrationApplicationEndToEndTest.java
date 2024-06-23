@@ -423,7 +423,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
         Set<AysPermission> userPermissionsFromDatabase = userRoleFromDatabase.get().getPermissions();
         userPermissionsFromDatabase.forEach(permissions -> Assertions.assertTrue(
-                userPermissionsFromDatabase.stream().anyMatch(
+                permissionsFromDatabase.stream().allMatch(
                         userPermission -> userPermission.getId().equals(permissions.getId())
                 )
         ));

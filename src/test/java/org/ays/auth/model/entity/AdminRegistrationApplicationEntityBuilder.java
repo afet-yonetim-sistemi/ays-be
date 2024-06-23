@@ -40,26 +40,12 @@ public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<A
         return this;
     }
 
-    public AdminRegistrationApplicationEntityBuilder withUserId(String userId) {
-        //    data.setUserId(userId);
-        data.setUser(null);
-        return this;
-    }
-
     public AdminRegistrationApplicationEntityBuilder withUser(AysUserEntity userEntity) {
-        //  data.setUserId(userEntity.getId());
         data.setUser(userEntity);
         return this;
     }
 
-    public AdminRegistrationApplicationEntityBuilder withInstitutionId(String institutionId) {
-        //data.setInstitutionId(institutionId);
-        data.setInstitution(null);
-        return this;
-    }
-
     public AdminRegistrationApplicationEntityBuilder withInstitution(InstitutionEntity institutionEntity) {
-        // data.setInstitutionId(institutionEntity.getId());
         data.setInstitution(institutionEntity);
         return this;
     }
