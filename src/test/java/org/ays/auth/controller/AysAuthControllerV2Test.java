@@ -4,7 +4,7 @@ import org.ays.AysRestControllerTest;
 import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
 import org.ays.auth.model.request.AysLoginRequest;
-import org.ays.auth.model.request.AysLoginRequestV2Builder;
+import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequestBuilder;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
@@ -49,7 +49,7 @@ class AysAuthControllerV2Test extends AysRestControllerTest {
     })
     void givenValidLoginRequestWithValidEmailAddress_whenTokensGeneratedSuccessfully_thenReturnTokenResponse(String mockEmailAddress) throws Exception {
         // Given
-        AysLoginRequest mockLoginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withEmailAddress(mockEmailAddress)
                 .withPassword(AysValidTestData.PASSWORD)
                 .withSourcePage(AysSourcePage.INSTITUTION)
@@ -94,7 +94,7 @@ class AysAuthControllerV2Test extends AysRestControllerTest {
     })
     void givenInvalidLoginRequestWithInvalidEmailAddress_whenEmailsAreNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given
-        AysLoginRequest mockLoginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withEmailAddress(mockEmailAddress)
                 .withPassword(AysValidTestData.PASSWORD)
                 .withSourcePage(AysSourcePage.INSTITUTION)

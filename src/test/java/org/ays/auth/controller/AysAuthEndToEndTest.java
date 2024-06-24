@@ -3,7 +3,7 @@ package org.ays.auth.controller;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.request.AysLoginRequest;
-import org.ays.auth.model.request.AysLoginRequestV2Builder;
+import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.response.AysTokenResponse;
@@ -26,7 +26,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
     @Test
     void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
-        AysLoginRequest loginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest loginRequest = new AysLoginRequestBuilder()
                 .withEmailAddress(AysValidTestData.SuperAdmin.EMAIL_ADDRESS)
                 .withPassword(AysValidTestData.PASSWORD)
                 .withSourcePage(AysSourcePage.INSTITUTION)

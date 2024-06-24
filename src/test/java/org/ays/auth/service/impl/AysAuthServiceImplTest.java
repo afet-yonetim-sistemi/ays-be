@@ -15,7 +15,7 @@ import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.enums.PermissionCategory;
 import org.ays.auth.model.enums.UserStatus;
 import org.ays.auth.model.request.AysLoginRequest;
-import org.ays.auth.model.request.AysLoginRequestV2Builder;
+import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
@@ -65,7 +65,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     void givenValidLoginRequest_whenUserAuthenticatedForInstitution_thenReturnAysToken() {
         // Given
         AysSourcePage mockSourcePage = AysSourcePage.INSTITUTION;
-        AysLoginRequest mockLoginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
                 .withSourcePage(mockSourcePage)
                 .build();
@@ -130,7 +130,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     void givenValidLoginRequest_whenUserAuthenticatedForLanding_thenReturnAysToken() {
         // Given
         AysSourcePage mockSourcePage = AysSourcePage.LANDING;
-        AysLoginRequest mockLoginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
                 .withSourcePage(mockSourcePage)
                 .build();
@@ -194,7 +194,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     @Test
     void givenInvalidLoginRequest_whenUserNotFound_thenThrowUsernameNotValidException() {
         // Given
-        AysLoginRequest mockLoginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -225,7 +225,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     @Test
     void givenInvalidLoginRequest_whenUserNotAuthenticated_thenThrowPasswordNotValidException() {
         // Given
-        AysLoginRequest mockLoginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -264,7 +264,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     @Test
     void givenValidLoginRequest_whenUserNotActive_thenThrowUserNotActiveException() {
         // Given
-        AysLoginRequest mockLoginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -304,7 +304,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     @Test
     void givenValidLoginRequest_whenUserDoesNotAccessToPage_thenThrowUserDoesNotAccessException() {
         // Given
-        AysLoginRequest mockLoginRequest = new AysLoginRequestV2Builder()
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
                 .withSourcePage(AysSourcePage.INSTITUTION)
                 .build();
