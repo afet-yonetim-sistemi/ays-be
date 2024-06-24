@@ -7,13 +7,13 @@ import org.ays.common.util.AysRandomUtil;
 
 import java.util.Set;
 
-public class RoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
+public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
 
-    public RoleEntityBuilder() {
+    public AysRoleEntityBuilder() {
         super(AysRoleEntity.class);
     }
 
-    public RoleEntityBuilder withValidValues() {
+    public AysRoleEntityBuilder withValidValues() {
         Set<AysPermissionEntity> permissionEntities = Set.of(
                 new AysPermissionEntityBuilder().withValidValues().build(),
                 new AysPermissionEntityBuilder().withValidValues().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
@@ -25,27 +25,27 @@ public class RoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
                 .withStatus(RoleStatus.ACTIVE);
     }
 
-    public RoleEntityBuilder withId(String id) {
+    public AysRoleEntityBuilder withId(String id) {
         data.setId(id);
         return this;
     }
 
-    public RoleEntityBuilder withName(String name) {
+    public AysRoleEntityBuilder withName(String name) {
         data.setName(name);
         return this;
     }
 
-    public RoleEntityBuilder withStatus(RoleStatus status) {
+    public AysRoleEntityBuilder withStatus(RoleStatus status) {
         data.setStatus(status);
         return this;
     }
 
-    public RoleEntityBuilder withPermissions(Set<AysPermissionEntity> permissionEntities) {
+    public AysRoleEntityBuilder withPermissions(Set<AysPermissionEntity> permissionEntities) {
         data.setPermissions(permissionEntities);
         return this;
     }
 
-    public RoleEntityBuilder withInstitutionId(String institutionId) {
+    public AysRoleEntityBuilder withInstitutionId(String institutionId) {
         data.setInstitutionId(institutionId);
         data.setInstitution(null);
         return this;

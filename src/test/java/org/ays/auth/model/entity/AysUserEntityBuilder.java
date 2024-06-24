@@ -32,7 +32,7 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
                 .build();
 
         Set<AysRoleEntity> roleEntities = Set.of(
-                new RoleEntityBuilder().withValidValues().build()
+                new AysRoleEntityBuilder().withValidValues().build()
         );
 
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidValues().build();
