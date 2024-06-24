@@ -11,12 +11,12 @@ public class EmergencyEvacuationApplicationEntityBuilder extends TestDataBuilder
         super(EmergencyEvacuationApplicationEntity.class);
     }
 
-    public EmergencyEvacuationApplicationEntityBuilder withValidFields() {
+    public EmergencyEvacuationApplicationEntityBuilder withValidValues() {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withInstitutionId(AysRandomUtil.generateUUID())
                 .withReferenceNumber(AysRandomUtil.generateNumber(10).toString())
-                .withPhoneNumber(new AysPhoneNumberBuilder().withValidFields().build());
+                .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build());
     }
 
     public EmergencyEvacuationApplicationEntityBuilder withId(String id) {

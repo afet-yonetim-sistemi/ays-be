@@ -1,54 +1,66 @@
 package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.auth.model.entity.AysInvalidTokenEntity;
-import org.ays.auth.repository.AysInvalidTokenRepository;
+import org.ays.auth.model.AysInvalidToken;
+import org.ays.auth.port.AysInvalidTokenReadPort;
+import org.ays.auth.port.AysInvalidTokenSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
-import org.ays.auth.util.exception.TokenAlreadyInvalidatedException;
+import org.ays.auth.util.exception.AysTokenAlreadyInvalidatedException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * AysInvalidTokenServiceImpl is an implementation of the AysInvalidTokenService interface that provides
- * functionality for managing and checking the validity of tokens.
+ * Implementation of {@link AysInvalidTokenService} interface for managing invalid tokens within the application.
+ * <p>
+ * This service class provides methods to invalidate tokens and check if a token has already been invalidated.
+ * It uses ports to read and save invalid tokens, ensuring that token management operations are handled efficiently.
+ * </p>
  */
 @Service
 @RequiredArgsConstructor
 class AysInvalidTokenServiceImpl implements AysInvalidTokenService {
 
-    private final AysInvalidTokenRepository invalidTokenRepository;
+    private final AysInvalidTokenReadPort invalidTokenReadPort;
+    private final AysInvalidTokenSavePort invalidTokenSavePort;
 
     /**
-     * Invalidates the specified token IDs by saving them as invalid tokens in the repository.
+     * Invalidates multiple tokens by saving them as invalid tokens in the system.
+     * <p>
+     * This method converts each token ID into an {@link AysInvalidToken} object and saves them using
+     * the {@link AysInvalidTokenSavePort}.
+     * </p>
      *
-     * @param tokenIds a set of token IDs to invalidate
+     * @param tokenIds the set of token IDs to invalidate
      */
     @Override
     public void invalidateTokens(final Set<String> tokenIds) {
-        final Set<AysInvalidTokenEntity> invalidTokenEntities = tokenIds.stream()
-                .map(tokenId -> AysInvalidTokenEntity.builder()
+        final Set<AysInvalidToken> invalidTokens = tokenIds.stream()
+                .map(tokenId -> AysInvalidToken.builder()
                         .tokenId(tokenId)
                         .build()
                 )
                 .collect(Collectors.toSet());
 
-        invalidTokenRepository.saveAll(invalidTokenEntities);
+        invalidTokenSavePort.saveAll(invalidTokens);
     }
 
     /**
-     * Checks the validity of a token by searching for it in the repository.
-     * If the token is found and marked as invalid, a TokenAlreadyInvalidatedException is thrown.
+     * Checks if a token has already been invalidated.
+     * <p>
+     * This method queries the {@link AysInvalidTokenReadPort} to determine if the specified token ID
+     * exists as an invalidated token. If it does, an {@link AysTokenAlreadyInvalidatedException} is thrown.
+     * </p>
      *
-     * @param tokenId the ID of the token to check for invalidity
-     * @throws TokenAlreadyInvalidatedException if the token is already marked as invalid
+     * @param tokenId the token ID to check for invalidity
+     * @throws AysTokenAlreadyInvalidatedException if the token has already been invalidated
      */
     @Override
     public void checkForInvalidityOfToken(final String tokenId) {
-        final boolean isTokenInvalid = invalidTokenRepository.findByTokenId(tokenId).isPresent();
+        final boolean isTokenInvalid = invalidTokenReadPort.findByTokenId(tokenId).isPresent();
         if (isTokenInvalid) {
-            throw new TokenAlreadyInvalidatedException(tokenId);
+            throw new AysTokenAlreadyInvalidatedException(tokenId);
         }
     }
 

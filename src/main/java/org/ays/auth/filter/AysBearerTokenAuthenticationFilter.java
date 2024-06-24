@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.auth.model.AysToken;
-import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +31,7 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
     private final AysTokenService tokenService;
     private final AysInvalidTokenService invalidTokenService;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     @NonNull HttpServletResponse httpServletResponse,
@@ -46,8 +46,7 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
             tokenService.verifyAndValidate(jwt);
 
-            final String tokenId = tokenService.getPayload(jwt)
-                    .get(AysTokenClaims.JWT_ID.getValue()).toString();
+            final String tokenId = tokenService.getPayload(jwt).getId();
             invalidTokenService.checkForInvalidityOfToken(tokenId);
 
             final var authentication = tokenService.getAuthentication(jwt);

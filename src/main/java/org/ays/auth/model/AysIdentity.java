@@ -1,8 +1,6 @@
 package org.ays.auth.model;
 
-import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.enums.AysTokenClaims;
-import org.ays.auth.model.enums.AysUserType;
 import org.ays.common.model.enums.BeanScope;
 import org.ays.common.util.AysListUtil;
 import org.springframework.context.annotation.Scope;
@@ -15,59 +13,63 @@ import java.util.List;
 
 /**
  * This class provides a representation of the identity of the authenticated user in the AYS service.
- * The class is designed to be request-scoped and proxy-target-class scoped, meaning that each HTTP request will have its own instance of this class.
+ * It manages information about the user's ID, roles, and associated institution based on JWT claims.
+ * <p>
+ * Designed to be request-scoped, each HTTP request will have its own instance of this class.
+ * This ensures that user-specific details are appropriately isolated per request.
+ * The proxy mode is set to {@link org.springframework.context.annotation.ScopedProxyMode#TARGET_CLASS}
+ * to allow for lazy initialization and dependency injection of request-scoped beans.
  */
 @Component
 @Scope(value = BeanScope.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@RequiredArgsConstructor
 public class AysIdentity {
 
     /**
-     * Returns the institution ID associated with the authenticated user's AYS identity.
-     *
-     * @return the institution ID as a string
-     */
-    public String getInstitutionId() {
-        return this.getJwt().getClaim(AysTokenClaims.INSTITUTION_ID.getValue());
-    }
-
-    /**
-     * Retrieves the access token value.
-     *
-     * @return the access token value
-     */
-    public String getAccessToken() {
-        return this.getJwt().getTokenValue();
-    }
-
-    /**
-     * Retrieves user type from the JWT token
-     *
-     * @return AysUserType as an admin user type
-     */
-    @Deprecated(since = "Authentication V2 Production'a alınınca burası silinecektir.", forRemoval = true)
-    public AysUserType getUserType() {
-        return AysUserType.valueOf(this.getJwt().getClaim(AysTokenClaims.USER_TYPE.getValue()));
-    }
-
-    /**
      * Returns the user ID associated with the authenticated user's AYS identity.
+     * The user ID is extracted from the JWT claims.
      *
-     * @return user Id value
+     * @return the user ID as a {@link String}
      */
     public String getUserId() {
         return this.getJwt().getClaim(AysTokenClaims.USER_ID.getValue());
     }
 
+    /**
+     * Checks if the authenticated user has a super admin role.
+     * This is determined by inspecting the user's permissions in the JWT claims.
+     *
+     * @return {@code true} if the user has the "super" permission, {@code false} otherwise
+     */
     public boolean isSuperAdmin() {
         final List<String> permissions = AysListUtil.to(this.getJwt().getClaim(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
         return permissions.stream().anyMatch(permission -> permission.equals("super"));
     }
 
     /**
-     * Retrieves the JWT token for the authenticated user from the security context.
+     * Returns the institution ID associated with the authenticated user's AYS identity.
+     * The institution ID is extracted from the JWT claims.
      *
-     * @return the JWT token as a Jwt object
+     * @return the institution ID as a {@link String}
+     */
+    public String getInstitutionId() {
+        return this.getJwt().getClaim(AysTokenClaims.INSTITUTION_ID.getValue());
+    }
+
+    /**
+     * Retrieves the access token value used for the current session.
+     * This method extracts the token value from the JWT object.
+     *
+     * @return the access token value as a {@link String}
+     */
+    public String getAccessToken() {
+        return this.getJwt().getTokenValue();
+    }
+
+    /**
+     * Retrieves the JWT token for the authenticated user from the security context.
+     * This method is used internally to access user-specific claims from the JWT.
+     *
+     * @return the JWT token as a {@link Jwt} object
      */
     private Jwt getJwt() {
         return ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal());

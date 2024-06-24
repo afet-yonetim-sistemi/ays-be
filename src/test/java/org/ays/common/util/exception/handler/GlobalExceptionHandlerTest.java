@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.ays.AbstractRestControllerTest;
+import org.ays.AysRestControllerTest;
+import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.util.exception.AysAuthException;
 import org.ays.common.util.exception.AysBadRequestException;
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.common.util.exception.AysProcessException;
-import org.ays.common.util.exception.model.AysErrorResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,7 +34,7 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 
 @Slf4j
-class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
+class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
@@ -295,6 +295,7 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void givenInvalidJsonFormat_whenThrowHttpMessageNotReadableException_thenReturnAysErrorResponse() {
 
         // Given

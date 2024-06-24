@@ -1,10 +1,8 @@
 package org.ays.auth.config;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.filter.AysBearerTokenAuthenticationFilter;
-import org.ays.auth.security.CustomAuthenticationEntryPoint;
+import org.ays.auth.security.AysAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,10 +23,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 /**
  * This class provides the security configuration for the application.
  * It is annotated with {@link Configuration}, {@link EnableWebSecurity} and {@link EnableGlobalAuthentication}.
- * The {@link SecurityFilterChain} is defined in the {@link #filterChain(HttpSecurity, AysBearerTokenAuthenticationFilter, CustomAuthenticationEntryPoint)} (HttpSecurity, AysBearerTokenAuthenticationFilter)}
+ * The {@link SecurityFilterChain} is defined in the {@link #filterChain(HttpSecurity, AysBearerTokenAuthenticationFilter, AysAuthenticationEntryPoint)} (HttpSecurity, AysBearerTokenAuthenticationFilter)}
  * method which sets up the security configuration for HTTP requests.
  * The {@link SessionAuthenticationStrategy} is defined in the {@link #sessionAuthenticationStrategy()} method which registers
  * the session authentication strategy with the session registry.
@@ -59,14 +59,14 @@ class SecurityConfiguration {
      *
      * @param httpSecurity                    the {@link HttpSecurity} instance to configure
      * @param bearerTokenAuthenticationFilter the {@link AysBearerTokenAuthenticationFilter} instance to authenticate bearer tokens
-     * @param customAuthenticationEntryPoint  the {@link CustomAuthenticationEntryPoint} instance to handle authentication errors
+     * @param customAuthenticationEntryPoint  the {@link AysAuthenticationEntryPoint} instance to handle authentication errors
      * @return the {@link SecurityFilterChain} instance
      * @throws Exception if there is an error setting up the filter chain
      */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                     AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
-                                    CustomAuthenticationEntryPoint customAuthenticationEntryPoint)
+                                    AysAuthenticationEntryPoint customAuthenticationEntryPoint)
             throws Exception {
 
         httpSecurity
@@ -76,7 +76,6 @@ class SecurityConfiguration {
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/authentication/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v2/authentication/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/admin-registration-application/*/summary").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/admin-registration-application/*/complete").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/emergency-evacuation-application").permitAll()

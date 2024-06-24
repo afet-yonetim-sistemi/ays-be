@@ -36,139 +36,6 @@
         <!-- DDL of AYS_INSTITUTION -->
         <!-- ====================== -->
 
-
-        <!-- ===================== -->
-        <!-- DDL of AYS_ADMIN_USER -->
-        <!-- ===================== -->
-        <createTable tableName="AYS_ADMIN_USER">
-            <column name="ID" type="VARCHAR(36)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="INSTITUTION_ID" type="VARCHAR(36)">
-                <constraints nullable="true"
-                             foreignKeyName="FK__AYS_ADMIN_USER__INSTITUTION_ID"
-                             referencedTableName="AYS_INSTITUTION"
-                             referencedColumnNames="ID"
-                />
-            </column>
-            <column name="USERNAME" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_ADMIN_USER__USERNAME"/>
-            </column>
-            <column name="PASSWORD" type="VARCHAR(512)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="EMAIL" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_ADMIN_USER__EMAIL"/>
-            </column>
-            <column name="FIRST_NAME" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="LAST_NAME" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="COUNTRY_CODE" type="VARCHAR(7)">
-                <constraints nullable="false" unique="true"
-                             uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
-            </column>
-            <column name="LINE_NUMBER" type="VARCHAR(13)">
-                <constraints nullable="false" unique="true"
-                             uniqueConstraintName="U__AYS_ADMIN_USER__COUNTRY_CODE__LINE_NUMBER"/>
-            </column>
-            <column name="ROLE" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="STATUS" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
-                <constraints nullable="false"/>
-            </column>
-            <column name="CREATED_AT" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-            <column name="UPDATED_USER" type="VARCHAR(255)"/>
-            <column name="UPDATED_AT" type="TIMESTAMP"/>
-        </createTable>
-
-        <sql>
-            ALTER TABLE `AYS_ADMIN_USER`
-                ADD CONSTRAINT `C__AYS_ADMIN_USER__STATUS` CHECK (`STATUS` IN ('NOT_VERIFIED', 'ACTIVE', 'PASSIVE', 'DELETED'));
-        </sql>
-        <!-- ===================== -->
-        <!-- DDL of AYS_ADMIN_USER -->
-        <!-- ===================== -->
-
-
-        <!-- =============== -->
-        <!-- DDL of AYS_USER -->
-        <!-- =============== -->
-        <createTable tableName="AYS_USER">
-            <column name="ID" type="VARCHAR(36)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="INSTITUTION_ID" type="VARCHAR(36)">
-                <constraints nullable="true"
-                             foreignKeyName="FK__AYS_USER__INSTITUTION_ID"
-                             referencedTableName="AYS_INSTITUTION"
-                             referencedColumnNames="ID"
-                />
-            </column>
-            <column name="USERNAME" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_USER__USERNAME"/>
-            </column>
-            <column name="PASSWORD" type="VARCHAR(512)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="FIRST_NAME" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="LAST_NAME" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="COUNTRY_CODE" type="VARCHAR(7)">
-                <constraints nullable="false" unique="true"
-                             uniqueConstraintName="U__AYS_USER__COUNTRY_CODE__LINE_NUMBER"/>
-            </column>
-            <column name="LINE_NUMBER" type="VARCHAR(13)">
-                <constraints nullable="false" unique="true"
-                             uniqueConstraintName="U__AYS_USER__COUNTRY_CODE__LINE_NUMBER"/>
-            </column>
-            <column name="ROLE" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="STATUS" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="SUPPORT_STATUS" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
-                <constraints nullable="false"/>
-            </column>
-            <column name="CREATED_AT" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-            <column name="UPDATED_USER" type="VARCHAR(255)"/>
-            <column name="UPDATED_AT" type="TIMESTAMP"/>
-        </createTable>
-
-        <sql>
-            ALTER TABLE `AYS_USER`
-                ADD CONSTRAINT `C__AYS_USER__STATUS` CHECK (`STATUS` IN ('ACTIVE', 'PASSIVE', 'DELETED'));
-
-            ALTER TABLE `AYS_USER`
-                ADD CONSTRAINT `C__AYS_USER__ROLE` CHECK (`ROLE` IN ('VOLUNTEER'));
-
-            ALTER TABLE `AYS_USER`
-                ADD CONSTRAINT `C__AYS_USER__SUPPORT_STATUS` CHECK (`SUPPORT_STATUS` IN
-                                                                    ('IDLE', 'READY', 'BUSY', 'MALFUNCTION', 'ACCIDENT',
-                                                                     'OFFLINE', 'ON_ROAD', 'RETURN'));
-        </sql>
-        <!-- =============== -->
-        <!-- DDL of AYS_USER -->
-        <!-- =============== -->
-
-
         <!-- ==================== -->
         <!-- DDL of AYS_PARAMETER -->
         <!-- ==================== -->
@@ -218,6 +85,380 @@
         <!-- ======================== -->
         <!-- DDL of AYS_INVALID_TOKEN -->
         <!-- ======================== -->
+
+
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+        <createTable tableName="AYS_EMERGENCY_EVACUATION_APPLICATION">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="INSTITUTION_ID" type="VARCHAR(36)">
+                <constraints nullable="true"
+                             foreignKeyName="FK__AYS_EMERGENCY_EVACUATION_APPLICATION__INSTITUTION_ID"
+                             referencedTableName="AYS_INSTITUTION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="REFERENCE_NUMBER" type="VARCHAR(10)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTRY_CODE" type="VARCHAR(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LINE_NUMBER" type="VARCHAR(13)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SOURCE_CITY" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SOURCE_DISTRICT" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ADDRESS" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SEATING_COUNT" type="INTEGER(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_CITY" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_DISTRICT" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="APPLICANT_FIRST_NAME" type="VARCHAR(100)"/>
+            <column name="APPLICANT_LAST_NAME" type="VARCHAR(100)"/>
+            <column name="APPLICANT_COUNTRY_CODE" type="VARCHAR(7)"/>
+            <column name="APPLICANT_LINE_NUMBER" type="VARCHAR(13)"/>
+            <column name="IS_IN_PERSON" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HAS_OBSTACLE_PERSON_EXIST" type="BOOLEAN"/>
+            <column name="NOTES" type="VARCHAR(1000)"/>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql>
+            ALTER TABLE `AYS_EMERGENCY_EVACUATION_APPLICATION`
+                ADD CONSTRAINT `C__AYS_EMERGENCY_EVACUATION_APPLICATION__STATUS` CHECK (`STATUS` IN
+                                                                                        ('PENDING',
+                                                                                         'IN_REVIEW',
+                                                                                         'IN_PROGRESS',
+                                                                                         'RECEIVED_FIRST_APPROVE',
+                                                                                         'RECEIVED_SECOND_APPROVE',
+                                                                                         'RECEIVED_THIRD_APPROVE',
+                                                                                         'COMPLETED',
+                                                                                         'CANCELLED'));
+        </sql>
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+
+
+        <!-- ===================== -->
+        <!-- DDL of AYS_PERMISSION -->
+        <!-- ===================== -->
+        <createTable tableName="AYS_PERMISSION">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_PERMISSION__NAME"/>
+            </column>
+            <column name="CATEGORY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_SUPER" type="BOOLEAN" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+        <!-- ===================== -->
+        <!-- DDL of AYS_PERMISSION -->
+        <!-- ===================== -->
+
+
+        <!-- =============== -->
+        <!-- DDL of AYS_ROLE -->
+        <!-- =============== -->
+        <createTable tableName="AYS_ROLE">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="INSTITUTION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_ROLE__INSTITUTION_ID"
+                             referencedTableName="AYS_INSTITUTION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql>
+            ALTER TABLE `AYS_ROLE`
+                ADD CONSTRAINT `C__AYS_ROLE__STATUS` CHECK (`STATUS` IN ('ACTIVE', 'PASSIVE', 'DELETED'));
+
+            ALTER TABLE `AYS_ROLE`
+                ADD CONSTRAINT `U__AYS_ROLE__INSTITUTION_ID__NAME` UNIQUE (`INSTITUTION_ID`, `NAME`);
+        </sql>
+        <!-- =============== -->
+        <!-- DDL of AYS_ROLE -->
+        <!-- =============== -->
+
+
+        <!-- =================================== -->
+        <!-- DDL of AYS_ROLE_PERMISSION_RELATION -->
+        <!-- =================================== -->
+        <createTable tableName="AYS_ROLE_PERMISSION_RELATION">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ROLE_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_ROLE_PERMISSION_RELATION__ROLE_ID"
+                             referencedTableName="AYS_ROLE"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="PERMISSION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_ROLE_PERMISSION_RELATION__PERMISSION_ID"
+                             referencedTableName="AYS_PERMISSION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+        </createTable>
+        <!-- =================================== -->
+        <!-- DDL of AYS_ROLE_PERMISSION_RELATION -->
+        <!-- =================================== -->
+
+
+        <!-- ================== -->
+        <!-- DDL of AYS_USER -->
+        <!-- ================== -->
+        <createTable tableName="AYS_USER">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="INSTITUTION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_USER__INSTITUTION_ID"
+                             referencedTableName="AYS_INSTITUTION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="EMAIL_ADDRESS" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="U__AYS_USER__EMAIL"/>
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTRY_CODE" type="VARCHAR(7)">
+                <constraints nullable="false" unique="true"
+                             uniqueConstraintName="U__AYS_USER__COUNTRY_CODE__LINE_NUMBER"/>
+            </column>
+            <column name="LINE_NUMBER" type="VARCHAR(13)">
+                <constraints nullable="false" unique="true"
+                             uniqueConstraintName="U__AYS_USER__COUNTRY_CODE__LINE_NUMBER"/>
+            </column>
+            <column name="CITY" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql>
+            ALTER TABLE `AYS_USER`
+                ADD CONSTRAINT `C__AYS_USER__STATUS` CHECK (`STATUS` IN ('NOT_VERIFIED', 'ACTIVE', 'PASSIVE', 'DELETED'));
+        </sql>
+        <!-- ================== -->
+        <!-- DDL of AYS_USER -->
+        <!-- ================== -->
+
+
+        <!-- ======================== -->
+        <!-- DDL of AYS_USER_PASSWORD -->
+        <!-- ======================== -->
+        <createTable tableName="AYS_USER_PASSWORD">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="USER_ID" type="VARCHAR(36)">
+                <constraints unique="true"
+                             nullable="false"
+                             foreignKeyName="FK__AYS_USER_PASSWORD__USER_ID"
+                             referencedTableName="AYS_USER"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="VALUE" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+        <!-- ======================== -->
+        <!-- DDL of AYS_USER_PASSWORD -->
+        <!-- ======================== -->
+
+
+        <!-- ============================= -->
+        <!-- DDL of AYS_USER_LOGIN_ATTEMPT -->
+        <!-- ============================= -->
+        <createTable tableName="AYS_USER_LOGIN_ATTEMPT">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="USER_ID" type="VARCHAR(36)">
+                <constraints foreignKeyName="FK__AYS_USER_LOGIN_ATTEMPT__USER_ID"
+                             referencedTableName="AYS_USER"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="LAST_LOGIN_AT" type="TIMESTAMP"/>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+        <!-- ============================= -->
+        <!-- DDL of AYS_USER_LOGIN_ATTEMPT -->
+        <!-- ============================= -->
+
+
+        <!-- ============================= -->
+        <!-- DDL of AYS_USER_ROLE_RELATION -->
+        <!-- ============================= -->
+        <createTable tableName="AYS_USER_ROLE_RELATION">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="USER_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_USER_ROLE_RELATION__USER_ID"
+                             referencedTableName="AYS_USER"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="ROLE_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_USER_ROLE_RELATION__ROLE_ID"
+                             referencedTableName="AYS_ROLE"
+                             referencedColumnNames="ID"
+                />
+            </column>
+        </createTable>
+        <!-- ============================= -->
+        <!-- DDL of AYS_USER_ROLE_RELATION -->
+        <!-- ============================= -->
+
+
+        <!-- ========================================= -->
+        <!-- DDL of AYS_ADMIN_REGISTRATION_APPLICATION -->
+        <!-- ========================================= -->
+        <createTable tableName="AYS_ADMIN_REGISTRATION_APPLICATION">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="INSTITUTION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_ADMIN_REGISTRATION_APPLICATION__INSTITUTION_ID"
+                             referencedTableName="AYS_INSTITUTION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="USER_ID" type="VARCHAR(36)">
+                <constraints foreignKeyName="FK__AYS_ADMIN_REGISTRATION_APPLICATION__USER_ID"
+                             referencedTableName="AYS_USER"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="REASON" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REJECT_REASON" type="VARCHAR(512)"/>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql>
+            ALTER TABLE `AYS_ADMIN_REGISTRATION_APPLICATION`
+                ADD CONSTRAINT `C__AYS_ADMIN_REGISTRATION_APPLICATION__STATUS` CHECK (`STATUS` IN ('WAITING', 'COMPLETED', 'APPROVED', 'REJECTED'));
+        </sql>
+        <!-- ========================================= -->
+        <!-- DDL of AYS_ADMIN_REGISTRATION_APPLICATION -->
+        <!-- ========================================= -->
     </changeSet>
 
 </databaseChangeLog>

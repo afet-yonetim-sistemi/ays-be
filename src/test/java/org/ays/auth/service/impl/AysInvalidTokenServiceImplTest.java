@@ -1,10 +1,11 @@
 package org.ays.auth.service.impl;
 
-import org.ays.AbstractUnitTest;
-import org.ays.auth.model.entity.AysInvalidTokenEntity;
-import org.ays.auth.model.entity.AysInvalidTokenEntityBuilder;
-import org.ays.auth.repository.AysInvalidTokenRepository;
-import org.ays.auth.util.exception.TokenAlreadyInvalidatedException;
+import org.ays.AysUnitTest;
+import org.ays.auth.model.AysInvalidToken;
+import org.ays.auth.model.AysInvalidTokenBuilder;
+import org.ays.auth.port.AysInvalidTokenReadPort;
+import org.ays.auth.port.AysInvalidTokenSavePort;
+import org.ays.auth.util.exception.AysTokenAlreadyInvalidatedException;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,57 +15,55 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-class AysInvalidTokenServiceImplTest extends AbstractUnitTest {
+class AysInvalidTokenServiceImplTest extends AysUnitTest {
 
     @InjectMocks
     private AysInvalidTokenServiceImpl invalidTokenService;
 
     @Mock
-    private AysInvalidTokenRepository invalidTokenRepository;
+    private AysInvalidTokenReadPort invalidTokenReadPort;
+
+    @Mock
+    private AysInvalidTokenSavePort invalidTokenSavePort;
+
 
     @Test
     void givenValidTokenIds_whenTokensInvalid_thenInvalidateTokens() {
         // Given
         Set<String> mockTokenIds = Set.of(AysRandomUtil.generateUUID(), AysRandomUtil.generateUUID());
-        Set<AysInvalidTokenEntity> mockInvalidTokenEntities = mockTokenIds.stream()
-                .map(tokenId -> AysInvalidTokenEntity.builder()
-                        .tokenId(tokenId)
-                        .build()
-                )
-                .collect(Collectors.toSet());
 
         // When
-        Mockito.when(invalidTokenRepository.saveAll(Mockito.anySet()))
-                .thenReturn(mockInvalidTokenEntities.stream().toList());
+        Mockito.doNothing()
+                .when(invalidTokenSavePort)
+                .saveAll(Mockito.anySet());
 
         // Then
         invalidTokenService.invalidateTokens(mockTokenIds);
 
         // Verify
-        Mockito.verify(invalidTokenRepository, Mockito.times(1))
+        Mockito.verify(invalidTokenSavePort, Mockito.times(1))
                 .saveAll(Mockito.anySet());
     }
 
     @Test
     void givenInvalidTokenId_whenTokenIdValidated_thenThrowTokenAlreadyInvalidatedException() {
         // Given
-        AysInvalidTokenEntity mockInvalidTokenEntity = new AysInvalidTokenEntityBuilder().withValidValues().build();
-        String mockTokenId = mockInvalidTokenEntity.getTokenId();
+        AysInvalidToken mockInvalidToken = new AysInvalidTokenBuilder().withValidValues().build();
+        String mockTokenId = mockInvalidToken.getTokenId();
 
         // When
-        Mockito.when(invalidTokenRepository.findByTokenId(mockTokenId))
-                .thenReturn(Optional.of(mockInvalidTokenEntity));
+        Mockito.when(invalidTokenReadPort.findByTokenId(mockTokenId))
+                .thenReturn(Optional.of(mockInvalidToken));
 
         // Then
         Assertions.assertThrows(
-                TokenAlreadyInvalidatedException.class,
+                AysTokenAlreadyInvalidatedException.class,
                 () -> invalidTokenService.checkForInvalidityOfToken(mockTokenId)
         );
 
         // Verify
-        Mockito.verify(invalidTokenRepository, Mockito.times(1))
+        Mockito.verify(invalidTokenReadPort, Mockito.times(1))
                 .findByTokenId(mockTokenId);
     }
 
@@ -74,14 +73,14 @@ class AysInvalidTokenServiceImplTest extends AbstractUnitTest {
         String mockTokenId = AysRandomUtil.generateUUID();
 
         // When
-        Mockito.when(invalidTokenRepository.findByTokenId(mockTokenId))
+        Mockito.when(invalidTokenReadPort.findByTokenId(mockTokenId))
                 .thenReturn(Optional.empty());
 
         // Then
         invalidTokenService.checkForInvalidityOfToken(mockTokenId);
 
         // Verify
-        Mockito.verify(invalidTokenRepository, Mockito.times(1))
+        Mockito.verify(invalidTokenReadPort, Mockito.times(1))
                 .findByTokenId(mockTokenId);
     }
 

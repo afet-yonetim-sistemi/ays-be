@@ -2,49 +2,48 @@ package org.ays.parameter.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.parameter.model.AysParameter;
-import org.ays.parameter.model.entity.AysParameterEntity;
-import org.ays.parameter.model.mapper.AysParameterEntityToAysParameterMapper;
-import org.ays.parameter.repository.AysParameterRepository;
+import org.ays.parameter.port.AysParameterReadPort;
 import org.ays.parameter.service.AysParameterService;
+import org.ays.parameter.util.exception.AysParameterNotExistException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * Service implementation for retrieving AysParameter entities.
+ * Service implementation for retrieving {@link AysParameter} entities.
+ * Provides methods to fetch {@link AysParameter} entities based on name or name prefix.
  */
 @Service
 @RequiredArgsConstructor
 class AysParameterServiceImpl implements AysParameterService {
 
-    private final AysParameterRepository parameterRepository;
-    private final AysParameterEntityToAysParameterMapper aysParameterEntityToAysParameterMapper = AysParameterEntityToAysParameterMapper.initialize();
+    private final AysParameterReadPort parameterReadPort;
+
 
     /**
-     * Retrieves a set of AysParameter entities that have a name starting with the given prefix.
+     * Retrieves a set of {@link AysParameter} entities that have names starting with the given prefix.
      *
-     * @param prefixOfName the prefix to search for
-     * @return a set of AysParameter entities
+     * @param prefixOfName the prefix of the names to search for
+     * @return a set of {@link AysParameter} entities with names starting with the given prefix
      */
     @Override
-    public Set<AysParameter> getParameters(final String prefixOfName) {
-        return parameterRepository.findByNameStartingWith(prefixOfName)
-                .stream()
-                .map(aysParameterEntityToAysParameterMapper::map)
-                .collect(Collectors.toSet());
+    public Set<AysParameter> findAll(final String prefixOfName) {
+        return parameterReadPort.findAll(prefixOfName);
     }
 
+
     /**
-     * Retrieves an AysParameter entity that has the given name.
+     * Retrieves an {@link AysParameter} that has the given name.
+     * Throws {@link AysParameterNotExistException} if no parameter with the given name is found.
      *
-     * @param name the name to search for
-     * @return an AysParameter entity
+     * @param name the name of the {@link AysParameter} to search for
+     * @return the {@link AysParameter} with the given name
+     * @throws AysParameterNotExistException if the parameter with the given name does not exist
      */
     @Override
-    public AysParameter getParameter(final String name) {
-        final AysParameterEntity parameterEntity = parameterRepository.findByName(name);
-        return aysParameterEntityToAysParameterMapper.map(parameterEntity);
+    public AysParameter findByName(final String name) {
+        return parameterReadPort.findByName(name)
+                .orElseThrow(() -> new AysParameterNotExistException(name));
     }
 
 }

@@ -1,29 +1,27 @@
 package org.ays.emergency_application.controller;
 
-import org.ays.AbstractRestControllerTest;
+import org.ays.AysRestControllerTest;
 import org.ays.common.model.AysPage;
-import org.ays.common.model.dto.request.AysPhoneNumberRequest;
-import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
-import org.ays.common.model.dto.response.AysPageResponse;
-import org.ays.common.model.dto.response.AysResponse;
-import org.ays.common.model.dto.response.AysResponseBuilder;
+import org.ays.common.model.AysPageBuilder;
+import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
+import org.ays.common.model.response.AysErrorResponse;
+import org.ays.common.model.response.AysPageResponse;
+import org.ays.common.model.response.AysResponse;
+import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.common.util.exception.model.AysErrorBuilder;
-import org.ays.common.util.exception.model.AysErrorResponse;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationRequestBuilder;
-import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
-import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationsResponse;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationBuilder;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntityBuilder;
-import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper;
+import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequestBuilder;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationRequestBuilder;
+import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
+import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
-import org.ays.user.model.dto.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -31,20 +29,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
 
-class EmergencyEvacuationApplicationControllerTest extends AbstractRestControllerTest {
+class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest {
 
     @MockBean
     private EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
 
 
     private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
-    private final EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper emergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper = EmergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper.initialize();
     private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
 
     private final String BASE_PATH = "/api/v1";
@@ -58,23 +53,26 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
                 .build();
 
         // When
-        List<EmergencyEvacuationApplicationEntity> mockEntities = List.of(new EmergencyEvacuationApplicationEntityBuilder().build());
-        Page<EmergencyEvacuationApplicationEntity> mockPageEntities = new PageImpl<>(mockEntities);
-        List<EmergencyEvacuationApplication> mockList = emergencyEvacuationApplicationEntityToEmergencyEvacuationApplicationMapper.map(mockEntities);
-        AysPage<EmergencyEvacuationApplication> mockAysPage = AysPage
-                .of(mockListRequest.getFilter(), mockPageEntities, mockList);
+        List<EmergencyEvacuationApplication> mockApplications = List.of(
+                new EmergencyEvacuationApplicationBuilder()
+                        .withValidValues()
+                        .withoutApplicant()
+                        .build()
+        );
+        AysPage<EmergencyEvacuationApplication> mockApplicationsPage = AysPageBuilder
+                .from(mockApplications, mockListRequest.getPageable());
 
         Mockito.when(emergencyEvacuationApplicationService.findAll(Mockito.any(EmergencyEvacuationApplicationListRequest.class)))
-                .thenReturn(mockAysPage);
+                .thenReturn(mockApplicationsPage);
 
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, mockAdminToken.getAccessToken(), mockListRequest);
 
-        List<EmergencyEvacuationApplicationsResponse> mockApplicationsResponse = emergencyEvacuationApplicationToApplicationsResponseMapper.map(mockList);
+        List<EmergencyEvacuationApplicationsResponse> mockApplicationsResponse = emergencyEvacuationApplicationToApplicationsResponseMapper.map(mockApplications);
         AysPageResponse<EmergencyEvacuationApplicationsResponse> pageOfResponse = AysPageResponse.<EmergencyEvacuationApplicationsResponse>builder()
-                .of(mockAysPage)
+                .of(mockApplicationsPage)
                 .content(mockApplicationsResponse)
                 .build();
         AysResponse<AysPageResponse<EmergencyEvacuationApplicationsResponse>> mockResponse = AysResponse
@@ -107,7 +105,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, mockAdminToken.getAccessToken(), mockListRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
@@ -143,7 +141,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, mockAdminToken.getAccessToken(), mockListRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
@@ -179,7 +177,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, mockAdminToken.getAccessToken(), mockListRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
@@ -211,7 +209,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, mockAdminToken.getAccessToken(), mockListRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
@@ -247,7 +245,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, mockAdminToken.getAccessToken(), mockListRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
@@ -283,7 +281,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminTokenV2.getAccessToken(), mockListRequest);
+                .post(endpoint, mockAdminToken.getAccessToken(), mockListRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
@@ -331,7 +329,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
 
         // When
         EmergencyEvacuationApplication mockEmergencyEvacuationApplication = new EmergencyEvacuationApplicationBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withId(mockApplicationId)
                 .build();
 
@@ -341,7 +339,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockApplicationId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, mockAdminTokenV2.getAccessToken());
+                .get(endpoint, mockAdminToken.getAccessToken());
 
         EmergencyEvacuationApplicationResponse mockEmergencyEvacuationApplicationResponse = emergencyEvacuationApplicationToApplicationResponseMapper
                 .map(mockEmergencyEvacuationApplication);
@@ -388,7 +386,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenValidEmergencyEvacuationApplicationRequest_whenApplicationSaved_thenReturnSuccessResponse() throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
 
         // When
@@ -417,7 +415,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenValidEmergencyEvacuationApplicationRequestWithoutApplicant_whenApplicationSaved_thenReturnSuccessResponse() throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withoutApplicant()
                 .build();
 
@@ -447,10 +445,10 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenPhoneNumbersAreSameOne_thenReturnValidationError() throws Exception {
         // Given
         AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .build();
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withPhoneNumber(mockPhoneNumberRequest)
                 .withApplicantPhoneNumber(mockPhoneNumberRequest)
                 .build();
@@ -486,7 +484,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenFirstNameIsNotValid_thenReturnValidationError(String firstName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withFirstName(firstName)
                 .build();
 
@@ -521,7 +519,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenLastNameIsNotValid_thenReturnValidationError(String lastName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withLastName(lastName)
                 .build();
 
@@ -549,7 +547,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withPhoneNumber(mockPhoneNumberRequest)
                 .build();
 
@@ -584,7 +582,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceCityIsNotValid_thenReturnValidationError(String sourceCity) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withSourceCity(sourceCity)
                 .build();
 
@@ -619,7 +617,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceDistrictIsNotValid_thenReturnValidationError(String sourceDistrict) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withSourceDistrict(sourceDistrict)
                 .build();
 
@@ -649,7 +647,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenAddressIsNotValid_thenReturnValidationError(String address) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withAddress(address)
                 .build();
 
@@ -675,7 +673,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenAddressIsNotValid_thenReturnValidationError(Integer seatingCount) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withSeatingCount(seatingCount)
                 .build();
 
@@ -710,7 +708,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenTargetCityIsNotValid_thenReturnValidationError(String targetCity) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withTargetCity(targetCity)
                 .build();
 
@@ -745,7 +743,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceTargetIsNotValid_thenReturnValidationError(String targetDistrict) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withTargetDistrict(targetDistrict)
                 .build();
 
@@ -779,7 +777,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantFirstNameIsNotValid_thenReturnValidationError(String applicantFirstName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withApplicantFirstName(applicantFirstName)
                 .build();
 
@@ -813,7 +811,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantLastNameIsNotValid_thenReturnValidationError(String applicantLastName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withApplicantLastName(applicantLastName)
                 .build();
 
@@ -841,7 +839,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withApplicantPhoneNumber(mockPhoneNumberRequest)
                 .build();
 
@@ -866,7 +864,7 @@ class EmergencyEvacuationApplicationControllerTest extends AbstractRestControlle
     void givenInvalidEmergencyEvacuationApplicationRequest_whenAllApplicantFieldsAreNotFilled_thenReturnValidationError() throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidFields()
+                .withValidValues()
                 .withApplicantPhoneNumber(null)
                 .build();
 

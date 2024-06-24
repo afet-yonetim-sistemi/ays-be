@@ -1,11 +1,11 @@
 package org.ays.institution.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.institution.model.Institution;
-import org.ays.institution.model.dto.response.InstitutionResponse;
-import org.ays.institution.model.dto.response.InstitutionsSummaryResponse;
 import org.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
+import org.ays.institution.model.response.InstitutionResponse;
+import org.ays.institution.model.response.InstitutionsSummaryResponse;
 import org.ays.institution.service.InstitutionService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +20,15 @@ import java.util.List;
  * The mapping path for this controller is "/api/v1/institutions".
  */
 @RestController
-@RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 class InstitutionController {
 
     private final InstitutionService institutionService;
 
+
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
+
 
     /**
      * Retrieves a summary of all institutions.

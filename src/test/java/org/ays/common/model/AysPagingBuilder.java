@@ -1,9 +1,9 @@
 package org.ays.common.model;
 
-public class AysPagingBuilder extends TestDataBuilder<AysPaging> {
+public class AysPagingBuilder extends TestDataBuilder<AysPageable> {
 
     public AysPagingBuilder() {
-        super(AysPaging.class);
+        super(AysPageable.class);
     }
 
     public AysPagingBuilder withValidValues() {

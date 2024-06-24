@@ -15,14 +15,14 @@ public interface AysParameterService {
      * @param prefixOfName the prefix of the name to search for
      * @return a set of AysParameter entities
      */
-    Set<AysParameter> getParameters(String prefixOfName);
+    Set<AysParameter> findAll(String prefixOfName);
 
     /**
      * Retrieves an AysParameter that has the specified name.
      *
      * @param name the name to search for
-     * @return an AysParameter entity
+     * @return an AysParameter
      */
-    AysParameter getParameter(String name);
+    AysParameter findByName(String name);
 
 }

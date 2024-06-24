@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ays.common.model.entity.BaseEntity;
-import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 
 /**
@@ -41,8 +40,7 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
     private String institutionId;
 
     @Column(name = "REFERENCE_NUMBER")
-    @Builder.Default
-    private String referenceNumber = AysRandomUtil.generateNumber(10).toString();
+    private String referenceNumber;
 
     @Column(name = "FIRST_NAME")
     private String firstName;
@@ -91,8 +89,7 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
     private String applicantLineNumber;
 
     @Column(name = "IS_IN_PERSON")
-    @Builder.Default
-    private Boolean isInPerson = Boolean.TRUE;
+    private Boolean isInPerson;
 
     @Column(name = "HAS_OBSTACLE_PERSON_EXIST")
     private Boolean hasObstaclePersonExist;
@@ -102,15 +99,7 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
 
 
     @OneToOne
-    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "INSTITUTION_ID", insertable = false, updatable = false)
     private InstitutionEntity institutionEntity;
-
-    /**
-     * Marks the emergency evacuation application as pending.
-     */
-    public void pending() {
-        this.status = EmergencyEvacuationApplicationStatus.PENDING;
-        this.isInPerson = this.applicantCountryCode == null && this.applicantLineNumber == null;
-    }
 
 }

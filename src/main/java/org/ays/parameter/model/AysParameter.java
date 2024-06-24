@@ -2,6 +2,7 @@ package org.ays.parameter.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.ays.auth.model.enums.AysConfigurationParameter;
 
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.Set;
  * A class representing a parameter used in the AYS application.
  */
 @Getter
+@Setter
 @Builder
 public class AysParameter {
 

@@ -3,21 +3,21 @@ package org.ays.emergency_application.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.AysPage;
-import org.ays.common.model.dto.response.AysPageResponse;
-import org.ays.common.model.dto.response.AysResponse;
+import org.ays.common.model.response.AysPageResponse;
+import org.ays.common.model.response.AysResponse;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationListRequest;
-import org.ays.emergency_application.model.dto.request.EmergencyEvacuationApplicationRequest;
-import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
-import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
+import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
  * The mapping path for this controller is "/api/v1/emergency-evacuation-application".
  */
 @RestController
-@RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
@@ -37,6 +37,7 @@ class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationToApplicationsResponseMapper emergencyEvacuationApplicationToApplicationsResponseMapper = EmergencyEvacuationApplicationToApplicationsResponseMapper.initialize();
     private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
+
 
     /**
      * Handles POST requests for retrieving a paginated list of emergency evacuation applications.
@@ -60,6 +61,7 @@ class EmergencyEvacuationApplicationController {
 
     /**
      * Handles GET requests for retrieving the details of an emergency evacuation application by its ID.
+     *
      * @param id the ID of the emergency evacuation application to retrieve
      * @return a response entity containing the details of the emergency evacuation application
      */

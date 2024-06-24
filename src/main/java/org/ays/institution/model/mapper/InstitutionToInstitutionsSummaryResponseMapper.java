@@ -2,7 +2,7 @@ package org.ays.institution.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.institution.model.Institution;
-import org.ays.institution.model.dto.response.InstitutionsSummaryResponse;
+import org.ays.institution.model.response.InstitutionsSummaryResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -2,7 +2,7 @@ package org.ays.emergency_application.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
-import org.ays.emergency_application.model.dto.response.EmergencyEvacuationApplicationResponse;
+import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

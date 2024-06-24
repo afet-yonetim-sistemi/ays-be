@@ -1,8 +1,10 @@
 package org.ays.parameter.repository;
 
+import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.model.entity.AysParameterEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -19,13 +21,12 @@ public interface AysParameterRepository extends JpaRepository<AysParameterEntity
      */
     Set<AysParameterEntity> findByNameStartingWith(String prefixOfName);
 
-
     /**
      * Finds an {@link AysParameterEntity} instances by name.
      *
      * @param name the name to search for
-     * @return an {@link AysParameterEntity} instances by name
+     * @return an {@link Optional} containing the {@link AysParameter} entity if found, otherwise empty
      */
-    AysParameterEntity findByName(String name);
+    Optional<AysParameterEntity> findByName(String name);
 
 }
