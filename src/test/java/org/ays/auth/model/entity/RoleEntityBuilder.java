@@ -15,8 +15,8 @@ public class RoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
 
     public RoleEntityBuilder withValidValues() {
         Set<AysPermissionEntity> permissionEntities = Set.of(
-                new PermissionEntityBuilder().withValidValues().build(),
-                new PermissionEntityBuilder().withValidValues().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
+                new AysPermissionEntityBuilder().withValidValues().build(),
+                new AysPermissionEntityBuilder().withValidValues().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
         );
         return this
                 .withId(AysRandomUtil.generateUUID())

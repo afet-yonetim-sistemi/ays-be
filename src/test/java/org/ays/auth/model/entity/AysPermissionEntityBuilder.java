@@ -4,35 +4,35 @@ import org.ays.auth.model.enums.PermissionCategory;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 
-public class PermissionEntityBuilder extends TestDataBuilder<AysPermissionEntity> {
+public class AysPermissionEntityBuilder extends TestDataBuilder<AysPermissionEntity> {
 
-    public PermissionEntityBuilder() {
+    public AysPermissionEntityBuilder() {
         super(AysPermissionEntity.class);
     }
 
-    public PermissionEntityBuilder withValidValues() {
+    public AysPermissionEntityBuilder withValidValues() {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withName("user:list")
                 .withCategory(PermissionCategory.USER_MANAGEMENT);
     }
 
-    public PermissionEntityBuilder withId(String id) {
+    public AysPermissionEntityBuilder withId(String id) {
         data.setId(id);
         return this;
     }
 
-    public PermissionEntityBuilder withName(String name) {
+    public AysPermissionEntityBuilder withName(String name) {
         data.setName(name);
         return this;
     }
 
-    public PermissionEntityBuilder withCategory(PermissionCategory category) {
+    public AysPermissionEntityBuilder withCategory(PermissionCategory category) {
         data.setCategory(category);
         return this;
     }
 
-    public PermissionEntityBuilder withIsSuper(boolean isSuper) {
+    public AysPermissionEntityBuilder withIsSuper(boolean isSuper) {
         data.setSuper(isSuper);
         return this;
     }
