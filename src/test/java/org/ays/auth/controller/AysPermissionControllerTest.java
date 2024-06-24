@@ -2,7 +2,7 @@ package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysPermission;
-import org.ays.auth.model.PermissionBuilder;
+import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.model.mapper.AysPermissionToPermissionsResponseMapper;
 import org.ays.auth.model.response.AysPermissionsResponse;
 import org.ays.auth.service.AysPermissionService;
@@ -33,8 +33,8 @@ class AysPermissionControllerTest extends AysRestControllerTest {
 
         // When
         Set<AysPermission> mockPermissions = Set.of(
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build()
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build()
         );
 
         Mockito.when(permissionService.findAll())

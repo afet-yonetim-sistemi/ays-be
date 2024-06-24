@@ -16,8 +16,8 @@ public class AysRoleBuilder extends TestDataBuilder<AysRole> {
 
     public AysRoleBuilder withValidValues() {
         Set<AysPermission> permissions = Set.of(
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
         );
         return this
                 .withId(AysRandomUtil.generateUUID())

@@ -4,13 +4,13 @@ import io.jsonwebtoken.Claims;
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
+import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.AysTokenBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
-import org.ays.auth.model.PermissionBuilder;
 import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.enums.PermissionCategory;
 import org.ays.auth.model.enums.UserStatus;
@@ -72,7 +72,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Set<AysPermission> mockPermissions = Set.of(
-                new PermissionBuilder()
+                new AysPermissionBuilder()
                         .withValidValues()
                         .withName(mockSourcePage.getPermission())
                         .build()
@@ -137,7 +137,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Set<AysPermission> mockPermissions = Set.of(
-                new PermissionBuilder()
+                new AysPermissionBuilder()
                         .withValidValues()
                         .withName(mockSourcePage.getPermission())
                         .build()
@@ -311,7 +311,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Set<AysPermission> mockPermissions = Set.of(
-                new PermissionBuilder()
+                new AysPermissionBuilder()
                         .withValidValues()
                         .withName("landing:page")
                         .withCategory(PermissionCategory.PAGE)

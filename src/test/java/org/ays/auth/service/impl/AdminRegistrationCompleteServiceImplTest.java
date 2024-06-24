@@ -4,11 +4,11 @@ import org.ays.AysUnitTest;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.AysPermission;
+import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
-import org.ays.auth.model.PermissionBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequestBuilder;
@@ -102,7 +102,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
                 .thenReturn(Set.of());
 
         Set<AysPermission> mockPermissionEntities = Set.of(
-                new PermissionBuilder().withValidValues().build()
+                new AysPermissionBuilder().withValidValues().build()
         );
         Mockito.when(permissionReadPort.findAllByIsSuperFalse())
                 .thenReturn(mockPermissionEntities);

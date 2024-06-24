@@ -3,7 +3,7 @@ package org.ays.auth.service.impl;
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
-import org.ays.auth.model.PermissionBuilder;
+import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,12 +33,12 @@ class AysPermissionServiceImplTest extends AysUnitTest {
                 .thenReturn(true);
 
         Set<AysPermission> mockPermissions = Set.of(
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build()
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build()
         );
         Mockito.when(permissionReadPort.findAll())
                 .thenReturn(mockPermissions);
@@ -64,12 +64,12 @@ class AysPermissionServiceImplTest extends AysUnitTest {
                 .thenReturn(false);
 
         Set<AysPermission> mockPermissions = Set.of(
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build(),
-                new PermissionBuilder().withValidValues().build()
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().build()
         );
         Mockito.when(permissionReadPort.findAllByIsSuperFalse())
                 .thenReturn(mockPermissions);

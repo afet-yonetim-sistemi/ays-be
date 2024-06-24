@@ -3,8 +3,8 @@ package org.ays.auth.service.impl;
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
+import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.PermissionBuilder;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.RoleCreateRequestBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
@@ -54,7 +54,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Set<AysPermission> mockPermissions = new HashSet<>();
         mockCreateRequest.getPermissionIds().forEach(permissionId -> {
-            AysPermission mockPermission = new PermissionBuilder()
+            AysPermission mockPermission = new AysPermissionBuilder()
                     .withValidValues()
                     .withId(permissionId)
                     .withIsSuper(true)
@@ -109,7 +109,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Set<AysPermission> mockPermissions = new HashSet<>();
         mockCreateRequest.getPermissionIds().forEach(permissionId -> {
-            AysPermission mockPermission = new PermissionBuilder()
+            AysPermission mockPermission = new AysPermissionBuilder()
                     .withValidValues()
                     .withId(permissionId)
                     .withIsSuper(false)
@@ -198,7 +198,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Set<AysPermission> mockPermissions = new HashSet<>();
         mockCreateRequest.getPermissionIds().forEach(permissionId -> {
-            AysPermission mockPermission = new PermissionBuilder()
+            AysPermission mockPermission = new AysPermissionBuilder()
                     .withValidValues()
                     .withId(permissionId)
                     .withIsSuper(true)
