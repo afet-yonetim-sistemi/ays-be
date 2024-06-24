@@ -26,7 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-class AysAuthControllerV2Test extends AysRestControllerTest {
+class AysAuthControllerTest extends AysRestControllerTest {
 
 
     @MockBean
