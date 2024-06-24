@@ -27,7 +27,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
     void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysLoginRequest loginRequest = new AysLoginRequestV2Builder()
-                .withEmailAddress(AysValidTestData.SuperAdminUserV2.EMAIL_ADDRESS)
+                .withEmailAddress(AysValidTestData.SuperAdmin.EMAIL_ADDRESS)
                 .withPassword(AysValidTestData.PASSWORD)
                 .withSourcePage(AysSourcePage.INSTITUTION)
                 .build();

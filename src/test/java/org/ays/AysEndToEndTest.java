@@ -43,15 +43,15 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
 
     @BeforeEach
     protected void setUp() {
-        final Optional<AysUser> superAdmin = userReadPort.findById(AysValidTestData.SuperAdminUserV2.ID);
+        final Optional<AysUser> superAdmin = userReadPort.findById(AysValidTestData.SuperAdmin.ID);
         final Claims claimsOfMockSuperAdminToken = superAdmin.get().getClaims();
         this.superAdminToken = this.generate(claimsOfMockSuperAdminToken);
 
-        final Optional<AysUser> admin = userReadPort.findById(AysValidTestData.AdminV2.ID);
+        final Optional<AysUser> admin = userReadPort.findById(AysValidTestData.Admin.ID);
         final Claims claimsOfMockAdminToken = admin.get().getClaims();
         this.adminToken = this.generate(claimsOfMockAdminToken);
 
-        final Optional<AysUser> user = userReadPort.findById(AysValidTestData.SuperAdminUserV2.ID);
+        final Optional<AysUser> user = userReadPort.findById(AysValidTestData.SuperAdmin.ID);
         final Claims claimsOfMockUserToken = user.get().getClaims();
         this.userToken = this.generate(claimsOfMockUserToken);
     }

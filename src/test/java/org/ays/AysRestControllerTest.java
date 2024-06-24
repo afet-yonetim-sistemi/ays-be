@@ -78,15 +78,15 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
 
         this.tokenConfiguration = new AysTokenConfigurationParameter(parameterService);
 
-        final Optional<AysUser> superAdmin = userReadPort.findById(AysValidTestData.SuperAdminUserV2.ID);
+        final Optional<AysUser> superAdmin = userReadPort.findById(AysValidTestData.SuperAdmin.ID);
         final Claims claimsOfMockSuperAdminToken = superAdmin.get().getClaims();
         this.mockSuperAdminToken = this.generate(claimsOfMockSuperAdminToken);
 
-        final Optional<AysUser> admin = userReadPort.findById(AysValidTestData.AdminV2.ID);
+        final Optional<AysUser> admin = userReadPort.findById(AysValidTestData.Admin.ID);
         final Claims claimsOfMockAdminToken = admin.get().getClaims();
         this.mockAdminToken = this.generate(claimsOfMockAdminToken);
 
-        final Optional<AysUser> user = userReadPort.findById(AysValidTestData.UserV2.ID);
+        final Optional<AysUser> user = userReadPort.findById(AysValidTestData.User.ID);
         final Claims claimsOfMockUserToken = user.get().getClaims();
         this.mockUserToken = this.generate(claimsOfMockUserToken);
     }
