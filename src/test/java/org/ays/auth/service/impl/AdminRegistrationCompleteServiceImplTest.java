@@ -23,8 +23,8 @@ import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdEx
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
-import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;

@@ -1,8 +1,8 @@
 package org.ays.emergency_application.model.request;
 
 import org.ays.common.model.TestDataBuilder;
-import org.ays.common.model.dto.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
 
 public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<EmergencyEvacuationApplicationRequest> {
 

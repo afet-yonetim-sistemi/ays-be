@@ -1,7 +1,6 @@
-package org.ays.common.model.dto.request;
+package org.ays.common.model.request;
 
 import org.ays.common.model.TestDataBuilder;
-import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.AysRandomUtil;
 
 public class AysPhoneNumberRequestBuilder extends TestDataBuilder<AysPhoneNumberRequest> {
