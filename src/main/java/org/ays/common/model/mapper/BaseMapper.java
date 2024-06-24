@@ -8,8 +8,7 @@ import java.util.List;
  * <p>
  * The {@code BaseMapper} interface provides a contract for converting objects of one type into another,
  * as well as converting collections of such objects. This interface is useful for implementing data
- * transformation layers between different representations, such as mapping between domain entities and
- * DTOs (Data Transfer Objects).
+ * transformation layers between different representations, such as mapping between two objects.
  * </p>
  *
  * <h3>Example Usage</h3>
