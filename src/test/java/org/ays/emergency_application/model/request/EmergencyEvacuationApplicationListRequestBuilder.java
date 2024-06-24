@@ -1,4 +1,4 @@
-package org.ays.auth.model.request;
+package org.ays.emergency_application.model.request;
 
 import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysPagingBuilder;
@@ -6,7 +6,6 @@ import org.ays.common.model.AysSort;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 
 import java.util.List;
 import java.util.Set;
