@@ -1,7 +1,6 @@
-package org.ays.emergency_application.model.dto.response;
+package org.ays.emergency_application.model.response;
 
 import org.ays.common.model.TestDataBuilder;
-import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 
 public class EmergencyEvacuationApplicationsResponseBuilder extends TestDataBuilder<EmergencyEvacuationApplicationsResponse> {
 
