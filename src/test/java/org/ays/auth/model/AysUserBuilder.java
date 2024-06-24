@@ -12,13 +12,13 @@ import org.ays.util.AysValidTestData;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class UserV2Builder extends TestDataBuilder<AysUser> {
+public class AysUserBuilder extends TestDataBuilder<AysUser> {
 
-    public UserV2Builder() {
+    public AysUserBuilder() {
         super(AysUser.class);
     }
 
-    public UserV2Builder withValidValues() {
+    public AysUserBuilder withValidValues() {
         final Institution institution = new InstitutionBuilder()
                 .withValidValues()
                 .build();
@@ -33,57 +33,57 @@ public class UserV2Builder extends TestDataBuilder<AysUser> {
                 .withLoginAttempt(null);
     }
 
-    public UserV2Builder withId(String id) {
+    public AysUserBuilder withId(String id) {
         data.setId(id);
         return this;
     }
 
-    public UserV2Builder withoutId() {
+    public AysUserBuilder withoutId() {
         data.setId(null);
         return this;
     }
 
-    public UserV2Builder withEmailAddress(String emailAddress) {
+    public AysUserBuilder withEmailAddress(String emailAddress) {
         data.setEmailAddress(data.getEmailAddress() + emailAddress);
         return this;
     }
 
-    public UserV2Builder withPhoneNumber(AysPhoneNumber phoneNumber) {
+    public AysUserBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }
 
-    public UserV2Builder withStatus(UserStatus status) {
+    public AysUserBuilder withStatus(UserStatus status) {
         data.setStatus(status);
         return this;
     }
 
-    public UserV2Builder withPassword(AysUser.Password password) {
+    public AysUserBuilder withPassword(AysUser.Password password) {
         data.setPassword(password);
         return this;
     }
 
-    public UserV2Builder withValidPassword() {
+    public AysUserBuilder withValidPassword() {
         data.setPassword(new PasswordBuilder().withValidValues().build());
         return this;
     }
 
-    public UserV2Builder withLoginAttempt(AysUser.LoginAttempt loginAttempt) {
+    public AysUserBuilder withLoginAttempt(AysUser.LoginAttempt loginAttempt) {
         data.setLoginAttempt(loginAttempt);
         return this;
     }
 
-    public UserV2Builder withValidLoginAttempt() {
+    public AysUserBuilder withValidLoginAttempt() {
         data.setLoginAttempt(new LoginAttemptBuilder().withValidValues().build());
         return this;
     }
 
-    public UserV2Builder withRoles(Set<AysRole> roles) {
+    public AysUserBuilder withRoles(Set<AysRole> roles) {
         data.setRoles(roles);
         return this;
     }
 
-    public UserV2Builder withInstitution(Institution institution) {
+    public AysUserBuilder withInstitution(Institution institution) {
         data.setInstitution(institution);
         return this;
     }

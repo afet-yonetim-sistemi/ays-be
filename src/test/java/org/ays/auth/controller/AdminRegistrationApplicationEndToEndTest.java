@@ -8,7 +8,7 @@ import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.UserV2Builder;
+import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.auth.model.enums.UserStatus;
 import org.ays.auth.model.mapper.AdminRegistrationApplicationToApplicationResponseMapper;
@@ -188,7 +188,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .build()
         );
         AysUser user = userSavePort.save(
-                new UserV2Builder()
+                new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
                         .withRoles(Set.of(role))
@@ -449,7 +449,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .build()
         );
         AysUser user = userSavePort.save(
-                new UserV2Builder()
+                new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
                         .withRoles(Set.of(role))
@@ -518,7 +518,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         );
 
         AysUser user = userSavePort.save(
-                new UserV2Builder()
+                new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
                         .withInstitution(institution)
@@ -612,7 +612,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         );
 
         AysUser user = userSavePort.save(
-                new UserV2Builder()
+                new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
                         .withRoles(Set.of(role))
@@ -669,7 +669,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .build()
         );
         AysUser user = userSavePort.save(
-                new UserV2Builder()
+                new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
                         .withRoles(Set.of(role))
@@ -735,7 +735,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         );
 
         AysUser user = userSavePort.save(
-                new UserV2Builder()
+                new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
                         .withRoles(Set.of(role))
@@ -836,7 +836,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         );
 
         AysUser user = userSavePort.save(
-                new UserV2Builder()
+                new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
                         .withInstitution(institution)

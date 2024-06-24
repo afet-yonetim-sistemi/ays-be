@@ -19,7 +19,7 @@ public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRe
                 .withValidValues()
                 .build();
 
-        final AysUser user = new UserV2Builder()
+        final AysUser user = new AysUserBuilder()
                 .withValidValues()
                 .build();
 

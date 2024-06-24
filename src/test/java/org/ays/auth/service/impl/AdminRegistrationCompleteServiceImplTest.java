@@ -7,8 +7,8 @@ import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.PermissionBuilder;
-import org.ays.auth.model.UserV2Builder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequestBuilder;
@@ -113,7 +113,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         Mockito.when(roleSavePort.save(Mockito.any(AysRole.class)))
                 .thenReturn(mockRole);
 
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .build();
         Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
@@ -198,7 +198,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findAllActivesByInstitutionId(Mockito.anyString()))
                 .thenReturn(Set.of(mockRole));
 
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .build();
         Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))

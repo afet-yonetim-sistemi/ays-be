@@ -5,7 +5,7 @@ import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.AdminRegistrationApplicationFilter;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.UserV2Builder;
+import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.auth.model.enums.UserStatus;
 import org.ays.auth.model.request.AdminRegistrationApplicationCreateRequest;
@@ -286,7 +286,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
@@ -443,7 +443,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();
@@ -509,7 +509,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withStatus(UserStatus.NOT_VERIFIED)
                 .build();

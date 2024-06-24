@@ -9,7 +9,7 @@ import org.ays.AysUnitTest;
 import org.ays.auth.config.AysTokenConfigurationParameter;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.UserV2Builder;
+import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.util.AysKeyConverter;
 import org.ays.auth.util.exception.AysTokenNotValidException;
@@ -43,7 +43,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
     @Test
     void givenValidUserClaims_whenTokensGenerated_thenReturnAysToken() {
         // Given
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .build();
         Claims mockUserClaims = mockUser.getClaims();
@@ -74,7 +74,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
     @Test
     void givenValidAdminUserClaimsAndRefreshToken_whenAccessTokenGenerated_thenReturnAysToken() {
         // Given
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .build();
         Claims mockUserClaims = mockUser.getClaims();
@@ -105,7 +105,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
     @Test
     void givenValidUserClaimsAndRefreshToken_whenAccessTokenGenerated_thenReturnAysToken() {
         // Given
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .build();
         Claims mockUserClaims = mockUser.getClaims();
@@ -189,7 +189,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
     @Test
     void givenValidJwt_whenJwtParsed_thenReturnAdminUserClaims() {
         // Given
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .build();
         Claims mockUserClaims = mockUser.getClaims();
@@ -234,7 +234,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
     void givenValidJwt_whenJwtParsed_thenReturnUserClaims() {
 
         // Given
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .build();
         Claims mockUserClaims = mockUser.getClaims();
@@ -277,7 +277,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
     @Test
     void givenValidToken_whenTokenParsedAndAuthoritiesAdded_thenReturnAuthenticatedUsernamePasswordAuthenticationToken() {
         // Given
-        AysUser mockUser = new UserV2Builder()
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .build();
         Claims mockUserClaims = mockUser.getClaims();
