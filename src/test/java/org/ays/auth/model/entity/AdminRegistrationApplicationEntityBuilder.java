@@ -14,7 +14,7 @@ public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<A
     }
 
     public AdminRegistrationApplicationEntityBuilder withValidValues() {
-        final AysUserEntity userEntity = new UserEntityV2Builder()
+        final AysUserEntity userEntity = new AysUserEntityBuilder()
                 .withValidValues()
                 .build();
 

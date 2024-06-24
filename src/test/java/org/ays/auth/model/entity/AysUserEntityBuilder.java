@@ -13,13 +13,13 @@ import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class UserEntityV2Builder extends TestDataBuilder<AysUserEntity> {
+public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
 
-    public UserEntityV2Builder() {
+    public AysUserEntityBuilder() {
         super(AysUserEntity.class);
     }
 
-    public UserEntityV2Builder withValidValues() {
+    public AysUserEntityBuilder withValidValues() {
         String id = AysRandomUtil.generateUUID();
 
         AysUserEntity.PasswordEntity passwordEntity = new PasswordEntityBuilder()
@@ -48,43 +48,43 @@ public class UserEntityV2Builder extends TestDataBuilder<AysUserEntity> {
                 .withInstitution(institutionEntity);
     }
 
-    public UserEntityV2Builder withId(String id) {
+    public AysUserEntityBuilder withId(String id) {
         data.setId(id);
         return this;
     }
 
-    public UserEntityV2Builder withEmailAddress(String emailAddress) {
+    public AysUserEntityBuilder withEmailAddress(String emailAddress) {
         data.setEmailAddress(emailAddress);
         return this;
     }
 
-    public UserEntityV2Builder withStatus(UserStatus status) {
+    public AysUserEntityBuilder withStatus(UserStatus status) {
         data.setStatus(status);
         return this;
     }
 
-    public UserEntityV2Builder withPhoneNumber(AysPhoneNumber phoneNumber) {
+    public AysUserEntityBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
         data.setCountryCode(phoneNumber.getCountryCode());
         data.setLineNumber(phoneNumber.getLineNumber());
         return this;
     }
 
-    public UserEntityV2Builder withPassword(AysUserEntity.PasswordEntity password) {
+    public AysUserEntityBuilder withPassword(AysUserEntity.PasswordEntity password) {
         data.setPassword(password);
         return this;
     }
 
-    public UserEntityV2Builder withLoginAttempt(AysUserEntity.LoginAttemptEntity loginAttempt) {
+    public AysUserEntityBuilder withLoginAttempt(AysUserEntity.LoginAttemptEntity loginAttempt) {
         data.setLoginAttempt(loginAttempt);
         return this;
     }
 
-    public UserEntityV2Builder withRoles(Set<AysRoleEntity> roles) {
+    public AysUserEntityBuilder withRoles(Set<AysRoleEntity> roles) {
         data.setRoles(roles);
         return this;
     }
 
-    public UserEntityV2Builder withInstitution(InstitutionEntity institution) {
+    public AysUserEntityBuilder withInstitution(InstitutionEntity institution) {
         data.setInstitution(institution);
         return this;
     }
