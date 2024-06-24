@@ -187,20 +187,48 @@ Page.
 
 ---
 
-### Common Maven errors
+## Common Maven Errors
 
-1. Can't download the package from the private repo:
+### 1. Can't download the package from the private repo:
 
-> [ERROR] Failed to execute goal on project ays-be: Could not resolve dependencies for project org.ays:ays-be:jar:1.1.0.MVP: Could not find artifact org.locationtech.jts:jts-core:jar:1.18.2 -> [Help 1]
+#### Error:
 
-> Solution: make sure to create your github user token with the correct scopes
+> [ERROR] Failed to execute goal on project ays-be: Could not resolve dependencies for project org.ays:ays-be:jar:
+> 1.1.0.MVP: Could not find artifact org.locationtech.jts:jts-core:jar:1.18.2 -> [Help 1]
 
-2. Can't build the project since it gets the following exception from bouncycasle:
-> [ERROR] error reading .../.m2/repository/org/bouncycastle/bcprov-jdk18on/1.78/bcprov-jdk18on-1.78.jar; zip file is empty
-[ERROR] .../ays-be/src/main/java/org/ays/auth/service/AysInvalidTokenService.java:[1,1] cannot access org.ays.auth.service
+#### Solution:
+
+> Make sure to create your github user token with the correct scopes
+
+### 2. Can't build the project since it gets the following exception from bouncycasle:
+
+#### Error:
+
+> [ERROR] error reading .../.m2/repository/org/bouncycastle/bcprov-jdk18on/1.78/bcprov-jdk18on-1.78.jar; zip file is
+> empty
+[ERROR] .../ays-be/src/main/java/org/ays/auth/service/AysInvalidTokenService.java:[1,1] cannot access
+> org.ays.auth.service
 > ZipException opening "bcprov-jdk18on-1.78.jar": zip END header not found
 
-> Solution: make sure to remove bouncy castle from your .m2 folder then run `mvn clean install` again to download the packages.
+#### Solution:
+
+> Make sure to remove bouncy castle from your .m2 folder then run `mvn clean install` again to download the packages.
+
+### 3. Can't download the package from the private repo:
+
+#### Error:
+
+> [ERROR] Failed to execute goal on project ays-be: Could not resolve dependencies for project org.ays:ays-be🫙1.1.0.MVP:
+> org.ays:ays-be-encryption-utility🫙1.0.2 was not found
+> in https://maven.pkg.github.com/afet-yonetim-sistemi/ays-be-encryption-utility during a previous attempt. This failure
+> was cached in the local repository and resolution is not reattempted until the update interval of github has elapsed
+> or
+> updates are forced -> [Help 1]
+
+#### Solution:
+
+> Use the following command to build the project: `mvn clean install -U -DskipTests`
+
 ---
 
 # Project Infrastucture
