@@ -2,7 +2,7 @@ package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.request.AysRoleCreateRequest;
-import org.ays.auth.model.request.RoleCreateRequestBuilder;
+import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.service.AysRoleCreateService;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysResponse;
@@ -30,7 +30,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @Test
     void givenValidRoleCreateRequest_whenRoleCreated_thenReturnSuccess() throws Exception {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -60,7 +60,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @Test
     void givenValidRoleCreateRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -91,7 +91,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     })
     void givenInvalidRoleCreateRequest_whenNameIsNotValid_thenReturnValidationError(String name) throws Exception {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .withName(name)
                 .build();
@@ -117,7 +117,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @Test
     void givenInvalidRoleCreateRequest_whenPermissionIdsAreNull_thenReturnValidationError() throws Exception {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .withPermissionIds(null)
                 .build();
@@ -143,7 +143,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @Test
     void givenInvalidRoleCreateRequest_whenPermissionIdsAreEmpty_thenReturnValidationError() throws Exception {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .withPermissionIds(Set.of())
                 .build();
@@ -173,7 +173,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     })
     void givenInvalidRoleCreateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String permissionId) throws Exception {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .withPermissionIds(Set.of(permissionId))
                 .build();

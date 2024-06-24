@@ -6,7 +6,7 @@ import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.request.AysRoleCreateRequest;
-import org.ays.auth.model.request.RoleCreateRequestBuilder;
+import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
@@ -44,7 +44,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
     @Test
     void givenRoleCreateRequest_whenFieldsValid_thenCreateSuperRole() {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -99,7 +99,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
     @Test
     void givenRoleCreateRequest_whenFieldsValid_thenCreateRole() {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -154,7 +154,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
     @Test
     void givenRoleCreateRequest_whenNameAlreadyExist_thenThrowAysRoleAlreadyExistsByNameException() {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -188,7 +188,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
     @Test
     void givenRoleCreateRequest_whenRequestHasSuperPermissionsAndUserIsNotSuperAdmin_thenThrowAysUserNotSuperAdminException() {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -241,7 +241,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
     @Test
     void givenRoleCreateRequest_whenPermissionsNotExists_thenThrowAysPermissionNotExistException() {
         // Given
-        AysRoleCreateRequest mockCreateRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
                 .build();
 

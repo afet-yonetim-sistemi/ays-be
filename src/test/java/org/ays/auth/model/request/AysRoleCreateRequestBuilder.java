@@ -5,23 +5,23 @@ import org.ays.common.model.TestDataBuilder;
 import java.util.Set;
 import java.util.UUID;
 
-public class RoleCreateRequestBuilder extends TestDataBuilder<AysRoleCreateRequest> {
+public class AysRoleCreateRequestBuilder extends TestDataBuilder<AysRoleCreateRequest> {
 
-    public RoleCreateRequestBuilder() {
+    public AysRoleCreateRequestBuilder() {
         super(AysRoleCreateRequest.class);
     }
 
-    public RoleCreateRequestBuilder withValidValues() {
+    public AysRoleCreateRequestBuilder withValidValues() {
         return this
                 .withPermissionIds(Set.of(UUID.randomUUID().toString()));
     }
 
-    public RoleCreateRequestBuilder withName(String name) {
+    public AysRoleCreateRequestBuilder withName(String name) {
         data.setName(name);
         return this;
     }
 
-    public RoleCreateRequestBuilder withPermissionIds(Set<String> permissionIds) {
+    public AysRoleCreateRequestBuilder withPermissionIds(Set<String> permissionIds) {
         data.setPermissionIds(permissionIds);
         return this;
     }

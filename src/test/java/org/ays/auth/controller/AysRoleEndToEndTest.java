@@ -5,7 +5,7 @@ import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.enums.RoleStatus;
 import org.ays.auth.model.request.AysRoleCreateRequest;
-import org.ays.auth.model.request.RoleCreateRequestBuilder;
+import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.common.model.response.AysResponse;
@@ -44,7 +44,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 .collect(Collectors.toSet());
 
         // Given
-        AysRoleCreateRequest createRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest createRequest = new AysRoleCreateRequestBuilder()
                 .withPermissionIds(permissionIds)
                 .build();
 
@@ -87,7 +87,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 .collect(Collectors.toSet());
 
         // Given
-        AysRoleCreateRequest createRequest = new RoleCreateRequestBuilder()
+        AysRoleCreateRequest createRequest = new AysRoleCreateRequestBuilder()
                 .withPermissionIds(permissionIds)
                 .build();
 
