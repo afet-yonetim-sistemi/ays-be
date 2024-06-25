@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysSort;
 
@@ -72,8 +73,14 @@ public abstract class AysPagingRequest {
     @SuppressWarnings("all")
     public boolean isPropertyAccepted(final Set<String> acceptedProperties) {
 
-        if (this.pageable == null) {
+        if (this.pageable == null || CollectionUtils.isEmpty(this.pageable.getOrders())) {
             return true;
+        }
+
+        for (AysSort.AysOrder order : this.pageable.getOrders()) {
+            if (StringUtils.isBlank(order.getProperty()) || order.getDirection() == null) {
+                return true;
+            }
         }
 
         List<AysSort.AysOrder> orders = this.pageable.getOrders();
