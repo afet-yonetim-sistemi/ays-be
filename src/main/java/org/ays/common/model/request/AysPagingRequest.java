@@ -17,7 +17,7 @@ import java.util.Set;
  * Represents a base class for paging requests, providing common functionality for handling pageable data.
  * <p>
  * This class contains a pageable attribute and provides methods to validate if the sort properties used in the pageable are accepted.
- * Subclasses should implement {@link #isSortPropertyAccepted()} to provide specific validation logic.
+ * Subclasses should implement {@link #isOrderPropertyAccepted()} to provide specific validation logic.
  * </p>
  *
  * <h3>Example Usage</h3>
@@ -58,7 +58,7 @@ public abstract class AysPagingRequest {
      *
      * @return {@code true} if the sort properties are accepted; otherwise {@code false}
      */
-    public abstract boolean isSortPropertyAccepted();
+    public abstract boolean isOrderPropertyAccepted();
 
     /**
      * Validates if all properties used for sorting in the pageable object are within the accepted set of properties.
