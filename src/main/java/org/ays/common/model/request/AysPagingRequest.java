@@ -83,7 +83,7 @@ public abstract class AysPagingRequest {
             }
         }
 
-        List<AysSort.AysOrder> orders = this.pageable.getOrders();
+        final List<AysSort.AysOrder> orders = this.pageable.getOrders();
         if (CollectionUtils.isEmpty(orders)) {
             return true;
         }
