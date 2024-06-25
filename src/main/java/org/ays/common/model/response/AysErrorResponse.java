@@ -151,7 +151,7 @@ public class AysErrorResponse {
                 sisSubErrorBuilder.field(StringUtils.substringAfterLast(codes.get(0), "."));
 
                 if (!"AssertTrue".equals(codes.get(codes.size() - 1))) {
-                    sisSubErrorBuilder.type(StringUtils.substringAfterLast(codes.get(codes.size() - 2), "."));
+                    sisSubErrorBuilder.type(StringUtils.substringAfterLast(codes.get(codes.size() - 2), ".").replace('$', '.'));
                 }
             }
             sisSubErrorBuilder.value(fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null);
@@ -209,7 +209,6 @@ public class AysErrorResponse {
                 ));
     }
 
-
     /**
      * A static method that creates an {@link AysErrorResponseBuilder} instance with the given {@link InvalidFormatException}
      *
@@ -225,10 +224,12 @@ public class AysErrorResponse {
                                 .field(
                                         Optional.of(exception.getPath())
                                                 .filter(path -> path.size() > 1)
-                                                .map(path -> path.get(path.size() - 2).getFieldName())
-                                                .orElseGet(() -> exception.getPath().get(0).getFieldName())
+                                                .map(path -> Optional.ofNullable(path.get(path.size() - 1).getFieldName())
+                                                        .orElse(path.get(path.size() - 2).getFieldName()))
+                                                .orElse(exception.getPath().get(0).getFieldName())
                                 )
-                                .type(StringUtils.substringAfterLast(exception.getTargetType().getTypeName(), "."))
+                                .value(exception.getValue())
+                                .type(StringUtils.substringAfterLast(exception.getTargetType().getName(), ".").replace('$', '.'))
                                 .build()
                 ));
     }
