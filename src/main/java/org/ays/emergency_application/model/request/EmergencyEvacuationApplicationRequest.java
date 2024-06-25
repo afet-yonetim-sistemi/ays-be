@@ -78,9 +78,9 @@ public class EmergencyEvacuationApplicationRequest {
             return true;
         }
 
-        return !StringUtils.isEmpty(this.applicantFirstName) && !StringUtils.isEmpty(this.applicantLastName)
+        return !StringUtils.isBlank(this.applicantFirstName) && !StringUtils.isBlank(this.applicantLastName)
                 &&
-                this.applicantPhoneNumber != null && !this.applicantPhoneNumber.isEmpty();
+                this.applicantPhoneNumber != null && !this.applicantPhoneNumber.isBlank();
     }
 
     @JsonIgnore

@@ -3,6 +3,7 @@ package org.ays.common.model.request;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.ays.common.util.AysJsonUtil;
 import org.ays.common.util.validation.PhoneNumber;
 
@@ -34,8 +35,8 @@ public class AysPhoneNumberRequest {
         return AysJsonUtil.toJson(this);
     }
 
-    public boolean isEmpty() {
-        return this.countryCode == null && this.lineNumber == null;
+    public boolean isBlank() {
+        return StringUtils.isBlank(this.countryCode) && StringUtils.isBlank(this.lineNumber);
     }
 
 }

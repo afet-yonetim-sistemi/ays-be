@@ -24,7 +24,7 @@ class NameValidator implements ConstraintValidator<Name, String> {
      * </p>
      * <p>
      */
-    private static final String NAME_REGEX = "^(?![^a-zA-ZÇçĞğİıÖöŞşÜü]).*[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]+$";
+    private static final String NAME_REGEX = "^(?![^a-zA-ZÇçĞğİıÖöŞşÜü])[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]*$";
     private static final Integer NAME_MIN_LENGTH = 2;
     private static final Integer NAME_MAX_LENGTH = 100;
 
@@ -45,6 +45,8 @@ class NameValidator implements ConstraintValidator<Name, String> {
      *     <li>Ahmet?*</li>
      *     <li>Mehmet!</li>
      *     <li>A</li>
+     *     <li>123</li>
+     *     <li>Mary*land</li>
      * </ul>
      *
      * @param value   object to validate

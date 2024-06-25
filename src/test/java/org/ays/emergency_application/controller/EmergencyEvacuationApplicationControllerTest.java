@@ -571,6 +571,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     @ParameterizedTest
     @ValueSource(strings = {
             "",
+            "Mary*land",
+            "Mary$land",
+            "CityName$",
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
@@ -606,6 +609,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     @ParameterizedTest
     @ValueSource(strings = {
             "",
+            "Mary*land",
+            "Mary$land",
+            "CityName$",
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
@@ -697,6 +703,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     @ParameterizedTest
     @ValueSource(strings = {
             "",
+            "Mary*land",
+            "Mary$land",
+            "CityName$",
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
@@ -732,6 +741,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     @ParameterizedTest
     @ValueSource(strings = {
             "",
+            "Mary*land",
+            "Mary$land",
+            "CityName$",
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
@@ -740,7 +752,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
     })
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceTargetIsNotValid_thenReturnValidationError(String targetDistrict) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenTargetDistrictIsNotValid_thenReturnValidationError(String targetDistrict) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
@@ -766,6 +778,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "    ",
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
@@ -800,6 +813,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "    ",
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
