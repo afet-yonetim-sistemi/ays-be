@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysSort;
 
@@ -16,7 +17,7 @@ import java.util.Set;
  * Represents a base class for paging requests, providing common functionality for handling pageable data.
  * <p>
  * This class contains a pageable attribute and provides methods to validate if the sort properties used in the pageable are accepted.
- * Subclasses should implement {@link #isSortPropertyAccepted()} to provide specific validation logic.
+ * Subclasses should implement {@link #isOrderPropertyAccepted()} to provide specific validation logic.
  * </p>
  *
  * <h3>Example Usage</h3>
@@ -57,7 +58,7 @@ public abstract class AysPagingRequest {
      *
      * @return {@code true} if the sort properties are accepted; otherwise {@code false}
      */
-    public abstract boolean isSortPropertyAccepted();
+    public abstract boolean isOrderPropertyAccepted();
 
     /**
      * Validates if all properties used for sorting in the pageable object are within the accepted set of properties.
@@ -72,11 +73,17 @@ public abstract class AysPagingRequest {
     @SuppressWarnings("all")
     public boolean isPropertyAccepted(final Set<String> acceptedProperties) {
 
-        if (this.pageable == null) {
+        if (this.pageable == null || CollectionUtils.isEmpty(this.pageable.getOrders())) {
             return true;
         }
 
-        List<AysSort.AysOrder> orders = this.pageable.getOrders();
+        for (AysSort.AysOrder order : this.pageable.getOrders()) {
+            if (StringUtils.isBlank(order.getProperty()) || order.getDirection() == null) {
+                return true;
+            }
+        }
+
+        final List<AysSort.AysOrder> orders = this.pageable.getOrders();
         if (CollectionUtils.isEmpty(orders)) {
             return true;
         }

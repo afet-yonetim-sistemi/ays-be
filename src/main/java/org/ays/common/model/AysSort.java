@@ -1,6 +1,7 @@
 package org.ays.common.model;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,7 +48,7 @@ public class AysSort {
     @NoArgsConstructor
     public static class AysOrder {
 
-        @NotNull
+        @NotBlank
         private String property;
 
         @NotNull

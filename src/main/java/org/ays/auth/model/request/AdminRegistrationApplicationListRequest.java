@@ -26,7 +26,7 @@ public class AdminRegistrationApplicationListRequest extends AysPagingRequest {
     private AdminRegistrationApplicationFilter filter;
 
     /**
-     * Overrides the {@link AysPagingRequest#isSortPropertyAccepted()} method to validate sorting options
+     * Overrides the {@link AysPagingRequest#isOrderPropertyAccepted()} method to validate sorting options
      * and ensures that no unsupported sorting property is used in the request.
      *
      * @return true if the sorting property is accepted, false otherwise.
@@ -34,7 +34,7 @@ public class AdminRegistrationApplicationListRequest extends AysPagingRequest {
     @JsonIgnore
     @AssertTrue
     @Override
-    public boolean isSortPropertyAccepted() {
+    public boolean isOrderPropertyAccepted() {
         final Set<String> acceptedFilterFields = Set.of("createdAt");
         return this.isPropertyAccepted(acceptedFilterFields);
     }
