@@ -3,15 +3,22 @@ package org.ays.auth.repository;
 import org.ays.auth.model.entity.AysRoleEntity;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 import java.util.Set;
 
 /**
- * Repository interface for managing {@link AysRoleEntity} instances.
- * Extends {@link JpaRepository} to provide CRUD operations for {@link AysRoleEntity} objects.
+ * Repository interface for managing {@link AysRoleEntity} entities.
+ * <p>
+ * This repository provides methods to perform CRUD operations and dynamic queries on
+ * {@link AysRoleEntity} objects, including finding roles by institution ID and status, and finding roles by name.
+ * </p>
+ *
+ * @see JpaRepository
+ * @see JpaSpecificationExecutor
  */
-public interface AysRoleRepository extends JpaRepository<AysRoleEntity, String> {
+public interface AysRoleRepository extends JpaRepository<AysRoleEntity, String>, JpaSpecificationExecutor<AysRoleEntity> {
 
     /**
      * Retrieves all active roles associated with a specific institution.
