@@ -73,8 +73,12 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
      */
     @Override
     public Set<AysRole> findAllActivesByInstitutionId(final String institutionId) {
-        Set<AysRoleEntity> roleEntities = roleRepository.findAllByInstitutionIdAndStatus(institutionId, AysRoleStatus.ACTIVE);
-        return new HashSet<>(roleEntityToDomainMapper.map(roleEntities));
+        final Set<AysRoleEntity> roleEntities = roleRepository.findAllByInstitutionIdAndStatus(institutionId, AysRoleStatus.ACTIVE);
+
+        return Optional.ofNullable(roleEntities)
+                .map(roleEntityToDomainMapper::map)
+                .map(HashSet::new)
+                .orElseGet(HashSet::new);
     }
 
 
