@@ -4,6 +4,7 @@ import org.ays.auth.model.enums.AysPermissionCategory;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.institution.model.entity.InstitutionEntity;
 
 import java.util.Set;
 
@@ -45,9 +46,8 @@ public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
         return this;
     }
 
-    public AysRoleEntityBuilder withInstitutionId(String institutionId) {
-        data.setInstitutionId(institutionId);
-        data.setInstitution(null);
+    public AysRoleEntityBuilder withInstitution(InstitutionEntity institution) {
+        data.setInstitution(institution);
         return this;
     }
 
