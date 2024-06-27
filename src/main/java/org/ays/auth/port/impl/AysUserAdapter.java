@@ -2,16 +2,23 @@ package org.ays.auth.port.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.mapper.AysUserEntityToDomainMapper;
 import org.ays.auth.model.mapper.AysUserToEntityMapper;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.repository.AysUserRepository;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysPhoneNumber;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -78,6 +85,24 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
                 phoneNumber.getCountryCode(),
                 phoneNumber.getLineNumber()
         );
+    }
+
+
+    //todo javadoc and cover with test
+
+
+    @Override
+    public AysPage<AysUser> findAllByInstitutionId(AysPageable aysPageable, AysUserFilter filter, String institutionId) {
+
+        final Pageable pageable = aysPageable.toPageable();
+
+        final Specification<AysUserEntity> specification = filter.toSpecification();
+
+        final Page<AysUserEntity> userEntitysPage = userRepository.findAllByInstitutionId(institutionId, specification, pageable);
+
+        final List<AysUser> users = userEntityToDomainMapper.map(userEntitysPage.getContent());
+
+        return AysPage.of(filter, userEntitysPage, users);
     }
 
     /**

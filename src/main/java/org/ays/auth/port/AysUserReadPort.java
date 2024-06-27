@@ -1,6 +1,9 @@
 package org.ays.auth.port;
 
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.AysUserFilter;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysPhoneNumber;
 
 import java.util.Optional;
@@ -26,6 +29,9 @@ public interface AysUserReadPort {
      */
     Optional<AysUser> findByEmailAddress(String emailAddress);
 
+    // todo javadoc
+    AysPage<AysUser> findAllByInstitutionId(AysPageable aysPageable, AysUserFilter filter, String institutionId);
+
     /**
      * Checks if a user with the given email address exists in the repository.
      *
@@ -41,5 +47,6 @@ public interface AysUserReadPort {
      * @return true if a user with the given phone number exists, otherwise false.
      */
     boolean existsByPhoneNumber(AysPhoneNumber phoneNumber);
+
 
 }
