@@ -42,6 +42,7 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
     private AysUserReadPort userReadPort;
 
     @BeforeEach
+    @SuppressWarnings("all")
     protected void setUp() {
         final Optional<AysUser> superAdmin = userReadPort.findById(AysValidTestData.SuperAdmin.ID);
         final Claims claimsOfMockSuperAdminToken = superAdmin.get().getClaims();
