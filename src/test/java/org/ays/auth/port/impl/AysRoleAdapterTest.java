@@ -4,6 +4,7 @@ import org.ays.AysUnitTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.entity.AysRoleEntity;
+import org.ays.auth.model.entity.AysRoleEntityBuilder;
 import org.ays.auth.model.mapper.AysRoleToEntityMapper;
 import org.ays.auth.repository.AysRoleRepository;
 import org.ays.common.util.AysRandomUtil;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import java.util.Optional;
 
 class AysRoleAdapterTest extends AysUnitTest {
 
@@ -23,6 +26,52 @@ class AysRoleAdapterTest extends AysUnitTest {
 
 
     private final AysRoleToEntityMapper roleToEntityMapper = AysRoleToEntityMapper.initialize();
+
+
+    @Test
+    void givenValidName_whenRoleNotFoundByName_thenReturnOptionalEmpty() {
+
+        // Given
+        String mockName = "Test Role";
+
+        // When
+        Mockito.when(roleRepository.findByName(mockName))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<AysRole> role = roleAdapter.findByName(mockName);
+
+        Assertions.assertFalse(role.isPresent());
+
+        // Verify
+        Mockito.verify(roleRepository, Mockito.times(1))
+                .findByName(mockName);
+    }
+
+    @Test
+    void givenValidName_whenRoleFoundByName_thenReturnOptionalRole() {
+
+        // Given
+        String mockName = "Test Role";
+
+        // When
+        AysRoleEntity mockRoleEntity = new AysRoleEntityBuilder()
+                .withValidValues()
+                .withName(mockName)
+                .build();
+        Mockito.when(roleRepository.findByName(mockName))
+                .thenReturn(Optional.of(mockRoleEntity));
+
+        // Then
+        Optional<AysRole> role = roleAdapter.findByName(mockName);
+
+        Assertions.assertTrue(role.isPresent());
+        Assertions.assertEquals(mockName, role.get().getName());
+
+        // Verify
+        Mockito.verify(roleRepository, Mockito.times(1))
+                .findByName(mockName);
+    }
 
 
     @Test
