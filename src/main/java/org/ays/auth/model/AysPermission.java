@@ -3,7 +3,7 @@ package org.ays.auth.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.ays.auth.model.enums.PermissionCategory;
+import org.ays.auth.model.enums.AysPermissionCategory;
 import org.ays.common.model.BaseDomainModel;
 
 /**
@@ -18,7 +18,7 @@ public class AysPermission extends BaseDomainModel {
 
     private String id;
     private String name;
-    private PermissionCategory category;
+    private AysPermissionCategory category;
     private boolean isSuper;
 
 }

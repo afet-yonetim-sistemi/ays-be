@@ -1,7 +1,7 @@
 package org.ays.auth.model;
 
+import org.ays.auth.model.enums.AysPermissionCategory;
 import org.ays.auth.model.enums.AysRoleStatus;
-import org.ays.auth.model.enums.PermissionCategory;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
@@ -17,7 +17,7 @@ public class AysRoleBuilder extends TestDataBuilder<AysRole> {
     public AysRoleBuilder withValidValues() {
         Set<AysPermission> permissions = Set.of(
                 new AysPermissionBuilder().withValidValues().build(),
-                new AysPermissionBuilder().withValidValues().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
+                new AysPermissionBuilder().withValidValues().withName("institution:page").withCategory(AysPermissionCategory.PAGE).build()
         );
         return this
                 .withId(AysRandomUtil.generateUUID())

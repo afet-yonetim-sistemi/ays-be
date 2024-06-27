@@ -1,10 +1,10 @@
 package org.ays.auth.model.enums;
 
 /**
- * The {@link PermissionCategory} enum represents different categories or types of permissions in the authentication system.
+ * The {@link AysPermissionCategory} enum represents different categories or types of permissions in the authentication system.
  * These categories are used to classify and manage permissions related to user management and role management.
  */
-public enum PermissionCategory {
+public enum AysPermissionCategory {
 
     PAGE,
     SUPER_ADMIN,
