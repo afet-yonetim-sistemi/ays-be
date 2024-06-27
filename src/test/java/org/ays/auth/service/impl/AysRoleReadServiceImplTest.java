@@ -54,7 +54,6 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findAll(Mockito.any(AysPageable.class), Mockito.any(AysRoleFilter.class)))
                 .thenReturn(mockRolesPage);
 
-
         Mockito.when(identity.getInstitutionId())
                 .thenReturn(AysRandomUtil.generateUUID());
 
@@ -71,5 +70,39 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
                 .getInstitutionId();
     }
 
+    @Test
+    void givenValidListRequest_whenRolesNotFound_thenReturnAysPageOfRoles() {
+
+        // Given
+        AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+
+        // When
+        AysPageable aysPageable = mockListRequest.getPageable();
+        AysRoleFilter filter = mockListRequest.getFilter();
+
+        List<AysRole> mockRoles = List.of();
+        AysPage<AysRole> mockRolesPage = AysPageBuilder.from(mockRoles, aysPageable);
+
+        Mockito.when(roleReadPort.findAll(Mockito.any(AysPageable.class), Mockito.any(AysRoleFilter.class)))
+                .thenReturn(mockRolesPage);
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(AysRandomUtil.generateUUID());
+
+        // Then
+        AysPage<AysRole> rolesPage = roleReadService.findAll(mockListRequest);
+
+        AysPageBuilder.assertEquals(mockRolesPage, rolesPage);
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findAll(aysPageable, filter);
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+    }
 
 }
