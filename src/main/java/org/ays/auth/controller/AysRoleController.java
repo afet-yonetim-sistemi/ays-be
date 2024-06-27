@@ -47,6 +47,27 @@ class AysRoleController {
 
 
     /**
+     * GET /roles/summary : Retrieve a summary of all roles.
+     * <p>
+     * This endpoint handles the retrieval of a summary of all roles.
+     * The user must have the 'user:create' or 'user:update' authority to access this endpoint.
+     * </p>
+     *
+     * @return an {@link AysResponse} containing a list of {@link AysRolesSummaryResponse} objects,
+     *         which represent the summary of roles.
+     */
+    @GetMapping("/roles/summary")
+    @PreAuthorize("hasAnyAuthority('user:create', 'user:update')")
+    public AysResponse<List<AysRolesSummaryResponse>> findAll() {
+
+        final Set<AysRole> roles = roleReadService.findAll();
+
+        final List<AysRolesSummaryResponse> permissionsResponses = roleToRolesSummaryResponseMapper
+                .map(roles);
+        return AysResponse.successOf(permissionsResponses);
+    }
+
+    /**
      * POST /roles : Retrieve all roles based on the provided filtering and pagination criteria.
      * <p>
      * This endpoint handles the retrieval of roles based on the filtering and pagination criteria
@@ -67,17 +88,6 @@ class AysRoleController {
                 .content(roleToRolesResponseMapper.map(pageOfRoles.getContent()))
                 .build();
         return AysResponse.successOf(pageOfRolesResponse);
-    }
-
-    @GetMapping("/roles/summary")
-    @PreAuthorize("hasAnyAuthority('user:create', 'user:update')")
-    public AysResponse<List<AysRolesSummaryResponse>> findAll() {
-
-        final Set<AysRole> roles = roleReadService.findAll();
-
-        final List<AysRolesSummaryResponse> permissionsResponses = roleToRolesSummaryResponseMapper
-                .map(roles);
-        return AysResponse.successOf(permissionsResponses);
     }
 
     /**
