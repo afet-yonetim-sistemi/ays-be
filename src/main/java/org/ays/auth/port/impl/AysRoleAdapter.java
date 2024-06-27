@@ -101,8 +101,8 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
     @Transactional
     public AysRole save(final AysRole role) {
         final AysRoleEntity roleEntity = roleToEntityMapper.map(role);
-        final AysRoleEntity roleEntityFromDatabase = roleRepository.save(roleEntity);
-        return roleEntityToDomainMapper.map(roleEntityFromDatabase);
+        roleRepository.save(roleEntity);
+        return roleEntityToDomainMapper.map(roleEntity);
     }
 
 }
