@@ -22,6 +22,13 @@ import java.util.Set;
 public interface AysRoleReadService {
 
     /**
+     * Retrieves all roles.
+     *
+     * @return A set of {@link AysRole} objects representing all roles in the system.
+     */
+    Set<AysRole> findAll();
+
+    /**
      * Retrieves a paginated list of roles based on the specified {@link AysRoleListRequest}.
      * <p>
      * This method handles the retrieval of roles from a data source according to the parameters
@@ -33,12 +40,5 @@ public interface AysRoleReadService {
      * @return a paginated list of roles matching the request criteria.
      */
     AysPage<AysRole> findAll(AysRoleListRequest listRequest);
-
-    /**
-     * Retrieves all roles.
-     *
-     * @return A set of {@link AysRole} objects representing all roles in the system.
-     */
-    Set<AysRole> findAll();
 
 }

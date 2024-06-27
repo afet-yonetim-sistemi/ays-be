@@ -34,6 +34,19 @@ class AysRoleReadServiceImpl implements AysRoleReadService {
 
 
     /**
+     * Retrieves all roles.
+     * <p>
+     * This method retrieves all roles from the data source and returns them as a set.
+     * </p>
+     *
+     * @return a set of {@link AysRole} objects representing all roles.
+     */
+    @Override
+    public Set<AysRole> findAll() {
+        return new HashSet<>(roleReadPort.findAll());
+    }
+
+    /**
      * Retrieves a paginated list of roles based on the provided request.
      * <p>
      * If no filter is provided in the request, a default filter is applied which scopes the results
@@ -63,11 +76,6 @@ class AysRoleReadServiceImpl implements AysRoleReadService {
                         });
 
         return roleReadPort.findAll(aysPageable, listRequest.getFilter());
-    }
-
-    @Override
-    public Set<AysRole> findAll() {
-        return new HashSet<>(roleReadPort.findAll());
     }
 
 }
