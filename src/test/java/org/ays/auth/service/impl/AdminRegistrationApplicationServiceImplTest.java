@@ -7,7 +7,7 @@ import org.ays.auth.model.AdminRegistrationApplicationFilter;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.auth.model.enums.UserStatus;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AdminRegistrationApplicationCreateRequest;
 import org.ays.auth.model.request.AdminRegistrationApplicationCreateRequestBuilder;
 import org.ays.auth.model.request.AdminRegistrationApplicationListRequest;
@@ -288,7 +288,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
         String mockId = AysRandomUtil.generateUUID();
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withStatus(UserStatus.NOT_VERIFIED)
+                .withStatus(AysUserStatus.NOT_VERIFIED)
                 .build();
         AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
                 .withValidValues()
@@ -445,7 +445,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
         String mockId = AysRandomUtil.generateUUID();
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withStatus(UserStatus.NOT_VERIFIED)
+                .withStatus(AysUserStatus.NOT_VERIFIED)
                 .build();
         AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
                 .withValidValues()
@@ -511,7 +511,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
         String mockId = AysRandomUtil.generateUUID();
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withStatus(UserStatus.NOT_VERIFIED)
+                .withStatus(AysUserStatus.NOT_VERIFIED)
                 .build();
         AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
                 .withValidValues()

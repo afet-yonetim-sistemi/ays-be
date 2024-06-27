@@ -1,6 +1,6 @@
 package org.ays.auth.model.entity;
 
-import org.ays.auth.model.enums.PermissionCategory;
+import org.ays.auth.model.enums.AysPermissionCategory;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 
@@ -14,7 +14,7 @@ public class AysPermissionEntityBuilder extends TestDataBuilder<AysPermissionEnt
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withName("user:list")
-                .withCategory(PermissionCategory.USER_MANAGEMENT);
+                .withCategory(AysPermissionCategory.USER_MANAGEMENT);
     }
 
     public AysPermissionEntityBuilder withId(String id) {
@@ -27,7 +27,7 @@ public class AysPermissionEntityBuilder extends TestDataBuilder<AysPermissionEnt
         return this;
     }
 
-    public AysPermissionEntityBuilder withCategory(PermissionCategory category) {
+    public AysPermissionEntityBuilder withCategory(AysPermissionCategory category) {
         data.setCategory(category);
         return this;
     }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.enums.RoleStatus;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
@@ -61,7 +61,7 @@ class AysRoleCreateServiceImpl implements AysRoleCreateService {
                 .name(createRequest.getName())
                 .institution(Institution.builder().id(identity.getInstitutionId()).build())
                 .permissions(permissions)
-                .status(RoleStatus.ACTIVE)
+                .status(AysRoleStatus.ACTIVE)
                 .build();
 
         roleSavePort.save(role);

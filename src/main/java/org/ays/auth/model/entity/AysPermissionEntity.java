@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.ays.auth.model.enums.PermissionCategory;
+import org.ays.auth.model.enums.AysPermissionCategory;
 import org.ays.common.model.entity.BaseEntity;
 
 /**
@@ -34,7 +34,7 @@ public class AysPermissionEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CATEGORY")
-    private PermissionCategory category;
+    private AysPermissionCategory category;
 
     @Column(name = "IS_SUPER")
     private boolean isSuper;

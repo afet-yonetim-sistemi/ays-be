@@ -40,7 +40,7 @@ class AysRoleController {
      */
     @PostMapping("/role")
     @PreAuthorize("hasAnyAuthority('role:create')")
-    public AysResponse<Void> createRole(@RequestBody @Valid AysRoleCreateRequest createRequest) {
+    public AysResponse<Void> create(@RequestBody @Valid AysRoleCreateRequest createRequest) {
         roleCreateService.create(createRequest);
         return AysResponse.SUCCESS;
     }

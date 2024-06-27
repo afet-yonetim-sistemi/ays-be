@@ -3,7 +3,7 @@ package org.ays.auth.controller;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.enums.RoleStatus;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
@@ -68,7 +68,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(role.get().getId());
         Assertions.assertNotNull(role.get().getInstitution());
         Assertions.assertEquals(createRequest.getName(), role.get().getName());
-        Assertions.assertEquals(RoleStatus.ACTIVE, role.get().getStatus());
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, role.get().getStatus());
         createRequest.getPermissionIds().forEach(permissionId -> {
             Assertions.assertTrue(
                     role.get().getPermissions().stream()
@@ -111,7 +111,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(role.get().getId());
         Assertions.assertNotNull(role.get().getInstitution());
         Assertions.assertEquals(createRequest.getName(), role.get().getName());
-        Assertions.assertEquals(RoleStatus.ACTIVE, role.get().getStatus());
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, role.get().getStatus());
         createRequest.getPermissionIds().forEach(permissionId -> {
             Assertions.assertTrue(
                     role.get().getPermissions().stream()

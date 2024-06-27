@@ -10,7 +10,7 @@ import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.auth.model.enums.UserStatus;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.mapper.AdminRegistrationApplicationToApplicationResponseMapper;
 import org.ays.auth.model.mapper.AdminRegistrationApplicationToCreateResponseMapper;
 import org.ays.auth.model.mapper.AdminRegistrationApplicationToSummaryResponseMapper;
@@ -193,7 +193,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withRoles(Set.of(role))
                         .withInstitution(institution)
-                        .withStatus(UserStatus.NOT_VERIFIED)
+                        .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
         AdminRegistrationApplication application = adminRegistrationApplicationSavePort.save(
@@ -414,7 +414,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(completeRequest.getEmailAddress(), userFromDatabase.get().getEmailAddress());
         Assertions.assertEquals(completeRequest.getPhoneNumber().getCountryCode(), userFromDatabase.get().getPhoneNumber().getCountryCode());
         Assertions.assertEquals(completeRequest.getPhoneNumber().getLineNumber(), userFromDatabase.get().getPhoneNumber().getLineNumber());
-        Assertions.assertEquals(UserStatus.NOT_VERIFIED, userFromDatabase.get().getStatus());
+        Assertions.assertEquals(AysUserStatus.NOT_VERIFIED, userFromDatabase.get().getStatus());
         Assertions.assertEquals(institution.getId(), userFromDatabase.get().getInstitution().getId());
 
         Optional<AysRole> userRoleFromDatabase = userFromDatabase.get().getRoles().stream()
@@ -454,7 +454,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withRoles(Set.of(role))
                         .withInstitution(institution)
-                        .withStatus(UserStatus.NOT_VERIFIED)
+                        .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
         AdminRegistrationApplication application = adminRegistrationApplicationSavePort.save(
@@ -494,7 +494,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         Optional<AysUser> userFromDatabase = userReadPort.findById(user.getId());
 
         Assertions.assertTrue(userFromDatabase.isPresent());
-        Assertions.assertEquals(UserStatus.ACTIVE, userFromDatabase.get().getStatus());
+        Assertions.assertEquals(AysUserStatus.ACTIVE, userFromDatabase.get().getStatus());
     }
 
     @Test
@@ -523,7 +523,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withInstitution(institution)
                         .withRoles(Set.of(role))
-                        .withStatus(UserStatus.NOT_VERIFIED)
+                        .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
 
@@ -617,7 +617,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withRoles(Set.of(role))
                         .withInstitution(institution)
-                        .withStatus(UserStatus.NOT_VERIFIED)
+                        .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
 
@@ -674,7 +674,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withRoles(Set.of(role))
                         .withInstitution(institution)
-                        .withStatus(UserStatus.NOT_VERIFIED)
+                        .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
         AdminRegistrationApplication application = adminRegistrationApplicationSavePort.save(
@@ -740,7 +740,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withRoles(Set.of(role))
                         .withInstitution(institution)
-                        .withStatus(UserStatus.NOT_VERIFIED)
+                        .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
 
@@ -841,7 +841,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withInstitution(institution)
                         .withRoles(Set.of(role))
-                        .withStatus(UserStatus.NOT_VERIFIED)
+                        .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
 

@@ -1,6 +1,6 @@
 package org.ays.auth.model.entity;
 
-import org.ays.auth.model.enums.UserStatus;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.model.TestDataBuilder;
@@ -44,7 +44,7 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
                 .withPassword(passwordEntity)
                 .withLoginAttempt(loginAttemptEntity)
                 .withRoles(roleEntities)
-                .withStatus(UserStatus.ACTIVE)
+                .withStatus(AysUserStatus.ACTIVE)
                 .withInstitution(institutionEntity);
     }
 
@@ -58,7 +58,7 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
         return this;
     }
 
-    public AysUserEntityBuilder withStatus(UserStatus status) {
+    public AysUserEntityBuilder withStatus(AysUserStatus status) {
         data.setStatus(status);
         return this;
     }

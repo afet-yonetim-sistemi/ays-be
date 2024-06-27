@@ -3,7 +3,7 @@ package org.ays.auth.port.impl;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.entity.AysRoleEntity;
-import org.ays.auth.model.enums.RoleStatus;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.mapper.AysRoleEntityToDomainMapper;
 import org.ays.auth.model.mapper.AysRoleToEntityMapper;
 import org.ays.auth.port.AysRoleReadPort;
@@ -41,7 +41,7 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
      */
     @Override
     public Set<AysRole> findAllActivesByInstitutionId(final String institutionId) {
-        Set<AysRoleEntity> roleEntities = roleRepository.findAllByInstitutionIdAndStatus(institutionId, RoleStatus.ACTIVE);
+        Set<AysRoleEntity> roleEntities = roleRepository.findAllByInstitutionIdAndStatus(institutionId, AysRoleStatus.ACTIVE);
         return new HashSet<>(roleEntityToDomainMapper.map(roleEntities));
     }
 

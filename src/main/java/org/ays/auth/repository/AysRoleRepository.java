@@ -1,7 +1,7 @@
 package org.ays.auth.repository;
 
 import org.ays.auth.model.entity.AysRoleEntity;
-import org.ays.auth.model.enums.RoleStatus;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -20,7 +20,7 @@ public interface AysRoleRepository extends JpaRepository<AysRoleEntity, String> 
      * @param status        the status of the roles to retrieve
      * @return a set of {@link AysRoleEntity} objects matching the institution ID and status
      */
-    Set<AysRoleEntity> findAllByInstitutionIdAndStatus(String institutionId, RoleStatus status);
+    Set<AysRoleEntity> findAllByInstitutionIdAndStatus(String institutionId, AysRoleStatus status);
 
     /**
      * Finds a {@link AysRoleEntity} by the given role name.

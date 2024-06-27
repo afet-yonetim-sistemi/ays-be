@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.ays.auth.model.enums.UserStatus;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
 
@@ -68,7 +68,7 @@ public class AysUserEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private UserStatus status;
+    private AysUserStatus status;
 
     @OneToOne(
             mappedBy = "user",

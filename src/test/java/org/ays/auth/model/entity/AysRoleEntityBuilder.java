@@ -1,7 +1,7 @@
 package org.ays.auth.model.entity;
 
-import org.ays.auth.model.enums.PermissionCategory;
-import org.ays.auth.model.enums.RoleStatus;
+import org.ays.auth.model.enums.AysPermissionCategory;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 
@@ -16,13 +16,13 @@ public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
     public AysRoleEntityBuilder withValidValues() {
         Set<AysPermissionEntity> permissionEntities = Set.of(
                 new AysPermissionEntityBuilder().withValidValues().build(),
-                new AysPermissionEntityBuilder().withValidValues().withName("institution:page").withCategory(PermissionCategory.PAGE).build()
+                new AysPermissionEntityBuilder().withValidValues().withName("institution:page").withCategory(AysPermissionCategory.PAGE).build()
         );
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withName("admin")
                 .withPermissions(permissionEntities)
-                .withStatus(RoleStatus.ACTIVE);
+                .withStatus(AysRoleStatus.ACTIVE);
     }
 
     public AysRoleEntityBuilder withId(String id) {
@@ -35,7 +35,7 @@ public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
         return this;
     }
 
-    public AysRoleEntityBuilder withStatus(RoleStatus status) {
+    public AysRoleEntityBuilder withStatus(AysRoleStatus status) {
         data.setStatus(status);
         return this;
     }
