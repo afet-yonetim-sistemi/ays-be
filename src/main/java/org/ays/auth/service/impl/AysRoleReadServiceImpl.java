@@ -12,7 +12,9 @@ import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service implementation for reading roles.
@@ -61,6 +63,11 @@ class AysRoleReadServiceImpl implements AysRoleReadService {
                         });
 
         return roleReadPort.findAll(aysPageable, listRequest.getFilter());
+    }
+
+    @Override
+    public Set<AysRole> findAll() {
+        return new HashSet<>(roleReadPort.findAll());
     }
 
 }
