@@ -19,6 +19,13 @@ import java.util.Set;
 public interface AysRoleReadPort {
 
     /**
+     * Retrieves all roles.
+     *
+     * @return A set containing all roles.
+     */
+    Set<AysRole> findAll();
+
+    /**
      * Retrieves a paginated list of roles based on the provided pageable and filter.
      *
      * @param aysPageable The pagination configuration.
