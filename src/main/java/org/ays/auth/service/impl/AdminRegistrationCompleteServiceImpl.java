@@ -7,7 +7,7 @@ import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.enums.RoleStatus;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.mapper.AdminRegistrationApplicationCompleteRequestToUserMapper;
 import org.ays.auth.model.request.AdminRegistrationApplicationCompleteRequest;
 import org.ays.auth.port.AdminRegistrationApplicationReadPort;
@@ -124,7 +124,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
                 .name("Admin")
                 .institution(institution)
                 .permissions(permissions)
-                .status(RoleStatus.ACTIVE)
+                .status(AysRoleStatus.ACTIVE)
                 .build();
         final AysRole savedRole = roleSavePort.save(role);
 

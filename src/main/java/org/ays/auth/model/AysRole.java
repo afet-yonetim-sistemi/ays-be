@@ -3,7 +3,7 @@ package org.ays.auth.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.ays.auth.model.enums.RoleStatus;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
 
@@ -21,7 +21,7 @@ public class AysRole extends BaseDomainModel {
 
     private String id;
     private String name;
-    private RoleStatus status;
+    private AysRoleStatus status;
 
     private Set<AysPermission> permissions;
 
@@ -31,37 +31,37 @@ public class AysRole extends BaseDomainModel {
     /**
      * Checks if the role's status is active.
      *
-     * @return {@code true} if the role's status is {@link RoleStatus#ACTIVE}, otherwise {@code false}.
+     * @return {@code true} if the role's status is {@link AysRoleStatus#ACTIVE}, otherwise {@code false}.
      */
     public boolean isActive() {
-        return RoleStatus.ACTIVE.equals(this.status);
+        return AysRoleStatus.ACTIVE.equals(this.status);
     }
 
     /**
      * Checks if the role's status is passive.
      *
-     * @return {@code true} if the role's status is {@link RoleStatus#PASSIVE}, otherwise {@code false}.
+     * @return {@code true} if the role's status is {@link AysRoleStatus#PASSIVE}, otherwise {@code false}.
      */
     public boolean isPassive() {
-        return RoleStatus.PASSIVE.equals(this.status);
+        return AysRoleStatus.PASSIVE.equals(this.status);
     }
 
     /**
      * Checks if the role's status is deleted.
      *
-     * @return {@code true} if the role's status is {@link RoleStatus#DELETED}, otherwise {@code false}.
+     * @return {@code true} if the role's status is {@link AysRoleStatus#DELETED}, otherwise {@code false}.
      */
     public boolean isDeleted() {
-        return RoleStatus.DELETED.equals(this.status);
+        return AysRoleStatus.DELETED.equals(this.status);
     }
 
 
     /**
-     * Sets the role's status to deleted ({@link RoleStatus#DELETED}), marking the role as inactive.
+     * Sets the role's status to deleted ({@link AysRoleStatus#DELETED}), marking the role as inactive.
      * This method effectively removes the role from active use within the system.
      */
     public void delete() {
-        this.status = RoleStatus.DELETED;
+        this.status = AysRoleStatus.DELETED;
     }
 
 }

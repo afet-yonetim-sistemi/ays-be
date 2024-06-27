@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.ays.auth.model.enums.RoleStatus;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
 
@@ -52,7 +52,7 @@ public class AysRoleEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
     @Builder.Default
-    private RoleStatus status = RoleStatus.ACTIVE;
+    private AysRoleStatus status = AysRoleStatus.ACTIVE;
 
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", insertable = false, updatable = false)
