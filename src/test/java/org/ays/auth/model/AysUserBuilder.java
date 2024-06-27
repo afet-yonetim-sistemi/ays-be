@@ -1,6 +1,6 @@
 package org.ays.auth.model;
 
-import org.ays.auth.model.enums.UserStatus;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.model.TestDataBuilder;
@@ -28,7 +28,7 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
                 .withInstitution(institution)
                 .withEmailAddress("@afetyonetimsistemi.org")
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
-                .withStatus(UserStatus.ACTIVE)
+                .withStatus(AysUserStatus.ACTIVE)
                 .withPassword(null)
                 .withLoginAttempt(null);
     }
@@ -53,7 +53,7 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
         return this;
     }
 
-    public AysUserBuilder withStatus(UserStatus status) {
+    public AysUserBuilder withStatus(AysUserStatus status) {
         data.setStatus(status);
         return this;
     }

@@ -13,7 +13,7 @@ import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysPermissionCategory;
 import org.ays.auth.model.enums.AysSourcePage;
-import org.ays.auth.model.enums.UserStatus;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.port.AysUserReadPort;
@@ -272,7 +272,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withEmailAddress(mockLoginRequest.getEmailAddress())
-                .withStatus(UserStatus.PASSIVE)
+                .withStatus(AysUserStatus.PASSIVE)
                 .withValidPassword()
                 .build();
         Mockito.when(userReadPort.findByEmailAddress(mockLoginRequest.getEmailAddress()))
@@ -591,7 +591,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withStatus(UserStatus.PASSIVE)
+                .withStatus(AysUserStatus.PASSIVE)
                 .build();
 
         Claims mockClaims = AysTokenBuilder.addValidTokenClaims(mockUser.getClaims());

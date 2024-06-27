@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.ays.auth.model.enums.AysTokenClaims;
-import org.ays.auth.model.enums.UserStatus;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
@@ -35,7 +35,7 @@ public class AysUser extends BaseDomainModel {
     private String lastName;
     private AysPhoneNumber phoneNumber;
     private String city;
-    private UserStatus status;
+    private AysUserStatus status;
 
     private Password password;
     private LoginAttempt loginAttempt;
@@ -46,59 +46,59 @@ public class AysUser extends BaseDomainModel {
     /**
      * Checks if the user's status is active.
      *
-     * @return {@code true} if the user's status is {@link UserStatus#ACTIVE}, otherwise {@code false}.
+     * @return {@code true} if the user's status is {@link AysUserStatus#ACTIVE}, otherwise {@code false}.
      */
     public boolean isActive() {
-        return UserStatus.ACTIVE.equals(this.status);
+        return AysUserStatus.ACTIVE.equals(this.status);
     }
 
     /**
      * Checks if the user's status is passive.
      *
-     * @return {@code true} if the user's status is {@link UserStatus#PASSIVE}, otherwise {@code false}.
+     * @return {@code true} if the user's status is {@link AysUserStatus#PASSIVE}, otherwise {@code false}.
      */
     public boolean isPassive() {
-        return UserStatus.PASSIVE.equals(this.status);
+        return AysUserStatus.PASSIVE.equals(this.status);
     }
 
 
     /**
      * Checks if the user's status is deleted.
      *
-     * @return {@code true} if the user's status is {@link UserStatus#DELETED}, otherwise {@code false}.
+     * @return {@code true} if the user's status is {@link AysUserStatus#DELETED}, otherwise {@code false}.
      */
     public boolean isDeleted() {
-        return UserStatus.DELETED.equals(this.status);
+        return AysUserStatus.DELETED.equals(this.status);
     }
 
 
     /**
-     * Sets the user's status to {@link UserStatus#ACTIVE}, marking the user as active.
+     * Sets the user's status to {@link AysUserStatus#ACTIVE}, marking the user as active.
      */
     public void activate() {
-        this.status = UserStatus.ACTIVE;
+        this.status = AysUserStatus.ACTIVE;
     }
 
     /**
-     * Sets the user's status to {@link UserStatus#PASSIVE}, marking the user as passive.
+     * Sets the user's status to {@link AysUserStatus#PASSIVE}, marking the user as passive.
      */
     public void passivate() {
-        this.status = UserStatus.PASSIVE;
+        this.status = AysUserStatus.PASSIVE;
     }
 
     /**
-     * Sets the user's status to {@link UserStatus#DELETED}, marking the user as deleted.
+     * Sets the user's status to {@link AysUserStatus#DELETED}, marking the user as deleted.
      */
     public void delete() {
-        this.status = UserStatus.DELETED;
+        this.status = AysUserStatus.DELETED;
     }
 
     /**
-     * Sets the user's status to {@link UserStatus#NOT_VERIFIED}, indicating the user's verification status.
+     * Sets the user's status to {@link AysUserStatus#NOT_VERIFIED}, indicating the user's verification status.
      * This method typically sets the status to indicate the user's account has not yet been verified.
      */
     public void notVerify() {
-        this.status = UserStatus.NOT_VERIFIED;
+        this.status = AysUserStatus.NOT_VERIFIED;
     }
 
 
