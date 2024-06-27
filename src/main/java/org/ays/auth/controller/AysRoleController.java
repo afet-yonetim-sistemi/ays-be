@@ -4,19 +4,21 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
+import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.response.AysRolesResponse;
+import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
 import org.ays.auth.service.AysRoleReadService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * REST controller for managing roles.
@@ -41,6 +43,7 @@ class AysRoleController {
 
 
     private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
+    private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
 
 
     /**
@@ -66,6 +69,16 @@ class AysRoleController {
         return AysResponse.successOf(pageOfRolesResponse);
     }
 
+    @GetMapping("/roles/summary")
+    @PreAuthorize("hasAnyAuthority('user:create', 'user:update')")
+    public AysResponse<List<AysRolesSummaryResponse>> findAll() {
+
+        final Set<AysRole> roles = roleReadService.findAll();
+
+        final List<AysRolesSummaryResponse> permissionsResponses = roleToRolesSummaryResponseMapper
+                .map(roles);
+        return AysResponse.successOf(permissionsResponses);
+    }
 
     /**
      * POST /role : Create a new role.
