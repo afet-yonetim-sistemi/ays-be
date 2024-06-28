@@ -2,6 +2,7 @@ package org.ays.institution.port.impl;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysUnitTest;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
@@ -55,6 +56,7 @@ class InstitutionAdapterTest extends AysUnitTest {
 
     }
 
+
     @Test
     void givenActiveInstitutionStatus_whenActiveInstitutionsNotExist_thenReturnEmptyList() {
         // Given
@@ -73,5 +75,45 @@ class InstitutionAdapterTest extends AysUnitTest {
                 .findAllByStatusOrderByNameAsc(status);
 
     }
+
+
+    @Test
+    void givenValidId_whenActiveInstitutinExist_thenReturnTrue() {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        InstitutionStatus mockStatus = InstitutionStatus.ACTIVE;
+        Mockito.when(institutionRepository.existsByIdAndStatus(mockId, mockStatus))
+                .thenReturn(true);
+
+        // Then
+        boolean isInstitutionExist = institutionAdapter.existsByIdAndIsStatusActive(mockId);
+
+        Assertions.assertTrue(isInstitutionExist);
+
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .existsByIdAndStatus(mockId, mockStatus);
+    }
+
+    @Test
+    void givenValidId_whenActiveInstitutionNotExist_thenReturnFalse() {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        InstitutionStatus mockStatus = InstitutionStatus.ACTIVE;
+        Mockito.when(institutionRepository.existsByIdAndStatus(mockId, mockStatus))
+                .thenReturn(false);
+
+        // Then
+        boolean isInstitutionExist = institutionAdapter.existsByIdAndIsStatusActive(mockId);
+
+        Assertions.assertFalse(isInstitutionExist);
+
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .existsByIdAndStatus(mockId, mockStatus);
+    }
+
 
 }
