@@ -29,7 +29,7 @@ class AysPermissionAdapterTest extends AysUnitTest {
 
 
     @Test
-    void whenFindAllPermissionEntities_thenReturnSetOfPermissions() {
+    void whenAllPermissionEntitiesFound_thenReturnSetOfPermissions() {
 
         // When
         List<AysPermissionEntity> mockPermissionEntities = List.of(
