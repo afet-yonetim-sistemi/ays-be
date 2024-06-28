@@ -77,7 +77,7 @@ class InstitutionAdapterTest extends AysUnitTest {
 
 
     @Test
-    void givenValidId_whenActiveInstitutinExist_thenReturnTrue() {
+    void givenValidId_whenActiveInstitutionExist_thenReturnTrue() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
