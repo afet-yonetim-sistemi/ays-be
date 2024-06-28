@@ -51,6 +51,10 @@ class AysPermissionAdapterTest extends AysUnitTest {
         Set<AysPermission> permissions = permissionAdapter.findAll();
 
         Assertions.assertEquals(mockPermissions, permissions);
+
+        // Verify
+        Mockito.verify(permissionRepository, Mockito.times(1))
+                .findAll();
     }
 
 
