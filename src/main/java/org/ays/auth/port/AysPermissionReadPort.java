@@ -29,6 +29,6 @@ public interface AysPermissionReadPort {
      * @param permissionIds The set of permission IDs to retrieve.
      * @return A set containing permissions with the specified IDs.
      */
-    Set<AysPermission> findAllByIdIn(Set<String> permissionIds);
+    Set<AysPermission> findAllByIds(Set<String> permissionIds);
 
 }

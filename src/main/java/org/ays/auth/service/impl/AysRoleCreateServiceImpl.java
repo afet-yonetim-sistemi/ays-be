@@ -89,7 +89,7 @@ class AysRoleCreateServiceImpl implements AysRoleCreateService {
      * @throws AysUserNotSuperAdminException  if the current user is not authorized to assign super permissions
      */
     private Set<AysPermission> checkExistingPermissionsAndGet(final Set<String> permissionIds) {
-        final Set<AysPermission> permissions = permissionReadPort.findAllByIdIn(permissionIds);
+        final Set<AysPermission> permissions = permissionReadPort.findAllByIds(permissionIds);
 
         if (permissions.size() != permissionIds.size()) {
 

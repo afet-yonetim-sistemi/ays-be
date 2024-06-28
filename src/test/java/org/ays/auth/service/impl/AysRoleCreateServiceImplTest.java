@@ -61,7 +61,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                     .build();
             mockPermissions.add(mockPermission);
         });
-        Mockito.when(permissionReadPort.findAllByIdIn(Mockito.anySet()))
+        Mockito.when(permissionReadPort.findAllByIds(Mockito.anySet()))
                 .thenReturn(mockPermissions);
 
         Mockito.when(identity.isSuperAdmin())
@@ -81,7 +81,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .findByName(Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.times(1))
-                .findAllByIdIn(Mockito.anySet());
+                .findAllByIds(Mockito.anySet());
 
         Mockito.verify(identity, Mockito.times(1))
                 .isSuperAdmin();
@@ -116,7 +116,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                     .build();
             mockPermissions.add(mockPermission);
         });
-        Mockito.when(permissionReadPort.findAllByIdIn(Mockito.anySet()))
+        Mockito.when(permissionReadPort.findAllByIds(Mockito.anySet()))
                 .thenReturn(mockPermissions);
 
         Mockito.when(identity.isSuperAdmin())
@@ -136,7 +136,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .findByName(Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.times(1))
-                .findAllByIdIn(Mockito.anySet());
+                .findAllByIds(Mockito.anySet());
 
         Mockito.verify(identity, Mockito.times(1))
                 .isSuperAdmin();
@@ -173,7 +173,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .findByName(Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.never())
-                .findAllByIdIn(Mockito.anySet());
+                .findAllByIds(Mockito.anySet());
 
         Mockito.verify(identity, Mockito.never())
                 .isSuperAdmin();
@@ -205,7 +205,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                     .build();
             mockPermissions.add(mockPermission);
         });
-        Mockito.when(permissionReadPort.findAllByIdIn(Mockito.anySet()))
+        Mockito.when(permissionReadPort.findAllByIds(Mockito.anySet()))
                 .thenReturn(mockPermissions);
 
         Mockito.when(identity.isSuperAdmin())
@@ -225,7 +225,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .findByName(Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.times(1))
-                .findAllByIdIn(Mockito.anySet());
+                .findAllByIds(Mockito.anySet());
 
         Mockito.verify(identity, Mockito.times(1))
                 .isSuperAdmin();
@@ -249,7 +249,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
-        Mockito.when(permissionReadPort.findAllByIdIn(Mockito.anySet()))
+        Mockito.when(permissionReadPort.findAllByIds(Mockito.anySet()))
                 .thenReturn(Set.of());
 
         // Then
@@ -263,7 +263,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .findByName(Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.times(1))
-                .findAllByIdIn(Mockito.anySet());
+                .findAllByIds(Mockito.anySet());
 
         Mockito.verify(identity, Mockito.never())
                 .isSuperAdmin();

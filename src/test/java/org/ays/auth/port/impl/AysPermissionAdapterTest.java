@@ -114,7 +114,7 @@ class AysPermissionAdapterTest extends AysUnitTest {
         );
 
         // Then
-        Set<AysPermission> permissions = permissionAdapter.findAllByIdIn(mockIds);
+        Set<AysPermission> permissions = permissionAdapter.findAllByIds(mockIds);
 
         Assertions.assertEquals(mockPermissions, permissions);
 
@@ -141,7 +141,7 @@ class AysPermissionAdapterTest extends AysUnitTest {
         );
 
         // Then
-        Set<AysPermission> permissions = permissionAdapter.findAllByIdIn(mockIds);
+        Set<AysPermission> permissions = permissionAdapter.findAllByIds(mockIds);
 
         Assertions.assertEquals(mockPermissions, permissions);
 
