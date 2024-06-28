@@ -81,7 +81,7 @@ class AysPermissionAdapterTest extends AysUnitTest {
         );
 
         // Then
-        Set<AysPermission> permissions = permissionAdapter.findAll();
+        Set<AysPermission> permissions = permissionAdapter.findAllByIsSuperFalse();
 
         Assertions.assertEquals(mockPermissions, permissions);
         permissions.forEach(permission -> Assertions.assertFalse(permission.isSuper()));
