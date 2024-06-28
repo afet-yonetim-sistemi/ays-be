@@ -53,4 +53,33 @@ class AysPermissionAdapterTest extends AysUnitTest {
         Assertions.assertEquals(mockPermissions, permissions);
     }
 
+
+    @Test
+    void whenAllPermissionEntitiesFoundByIsSuperFalse_thenReturnSetOfPermissions() {
+
+        // When
+        List<AysPermissionEntity> mockPermissionEntities = List.of(
+                new AysPermissionEntityBuilder()
+                        .withValidValues()
+                        .withIsSuper(false)
+                        .build(),
+                new AysPermissionEntityBuilder()
+                        .withValidValues()
+                        .withIsSuper(false)
+                        .build()
+        );
+        Mockito.when(permissionRepository.findAll())
+                .thenReturn(mockPermissionEntities);
+
+        Set<AysPermission> mockPermissions = new HashSet<>(
+                permissionEntityToDomainMapper.map(mockPermissionEntities)
+        );
+
+        // Then
+        Set<AysPermission> permissions = permissionAdapter.findAll();
+
+        Assertions.assertEquals(mockPermissions, permissions);
+        permissions.forEach(permission -> Assertions.assertFalse(permission.isSuper()));
+    }
+
 }
