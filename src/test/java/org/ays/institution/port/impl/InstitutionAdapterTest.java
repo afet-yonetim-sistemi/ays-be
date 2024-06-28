@@ -56,24 +56,23 @@ class InstitutionAdapterTest extends AysUnitTest {
                 .findAllByStatusOrderByNameAsc(mockStatus);
     }
 
-
     @Test
     void givenActiveInstitutionStatus_whenActiveInstitutionsNotExist_thenReturnEmptyList() {
         // Given
-        InstitutionStatus status = InstitutionStatus.ACTIVE;
+        InstitutionStatus mockStatus = InstitutionStatus.ACTIVE;
 
         // When
-        Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(status))
+        Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(mockStatus))
                 .thenReturn(Collections.emptyList());
 
         // Then
-        List<Institution> institutions = institutionAdapter.findAllByStatusOrderByNameAsc(status);
+        List<Institution> institutions = institutionAdapter.findAllByStatusOrderByNameAsc(mockStatus);
 
         Assertions.assertTrue(CollectionUtils.isEmpty(institutions));
 
+        // Verify
         Mockito.verify(institutionRepository, Mockito.times(1))
-                .findAllByStatusOrderByNameAsc(status);
-
+                .findAllByStatusOrderByNameAsc(mockStatus);
     }
 
 
