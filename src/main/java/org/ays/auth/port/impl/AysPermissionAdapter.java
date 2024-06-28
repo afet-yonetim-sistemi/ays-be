@@ -35,7 +35,7 @@ class AysPermissionAdapter implements AysPermissionReadPort {
      */
     @Override
     public Set<AysPermission> findAll() {
-        List<AysPermissionEntity> permissionEntities = permissionRepository.findAll();
+        final List<AysPermissionEntity> permissionEntities = permissionRepository.findAll();
         return new HashSet<>(permissionEntityToDomainMapper.map(permissionEntities));
     }
 
@@ -46,20 +46,23 @@ class AysPermissionAdapter implements AysPermissionReadPort {
      */
     @Override
     public Set<AysPermission> findAllByIsSuperFalse() {
-        Set<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIsSuperFalse();
+        final Set<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIsSuperFalse();
         return new HashSet<>(permissionEntityToDomainMapper.map(permissionEntities));
     }
 
     /**
      * Retrieves {@link AysPermission} with IDs present in the given set from the repository.
      *
-     * @param permissionIds The set of permission IDs to retrieve.
+     * @param ids The set of permission IDs to retrieve.
      * @return A set of {@link AysPermission} matching the provided IDs.
      */
     @Override
-    public Set<AysPermission> findAllByIdIn(final Set<String> permissionIds) {
-        Set<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(permissionIds);
-        return new HashSet<>(permissionEntityToDomainMapper.map(permissionEntities));
+    public Set<AysPermission> findAllByIdIn(final Set<String> ids) {
+        final List<AysPermissionEntity> permissionEntities = permissionRepository.findAllById(ids);
+        return Optional.of(permissionEntities)
+                .map(permissionEntityToDomainMapper::map)
+                .map(HashSet::new)
+                .orElseGet(HashSet::new);
     }
 
 }

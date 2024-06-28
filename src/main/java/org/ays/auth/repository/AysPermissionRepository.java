@@ -18,12 +18,4 @@ public interface AysPermissionRepository extends JpaRepository<AysPermissionEnti
      */
     Set<AysPermissionEntity> findAllByIsSuperFalse();
 
-    /**
-     * Retrieves all permissions with the specified IDs.
-     *
-     * @param ids the set of permission IDs to retrieve
-     * @return a set of {@link AysPermissionEntity} objects with the specified IDs
-     */
-    Set<AysPermissionEntity> findAllByIdIn(Set<String> ids);
-
 }
