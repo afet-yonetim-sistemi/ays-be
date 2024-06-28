@@ -1,10 +1,20 @@
 package org.ays.auth.port.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.auth.model.AysPermission;
+import org.ays.auth.model.entity.AysPermissionEntity;
+import org.ays.auth.model.entity.AysPermissionEntityBuilder;
 import org.ays.auth.model.mapper.AysPermissionEntityToDomainMapper;
 import org.ays.auth.repository.AysPermissionRepository;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 class AysPermissionAdapterTest extends AysUnitTest {
 
@@ -16,5 +26,31 @@ class AysPermissionAdapterTest extends AysUnitTest {
 
 
     private final AysPermissionEntityToDomainMapper permissionEntityToDomainMapper = AysPermissionEntityToDomainMapper.initialize();
+
+
+    @Test
+    void whenFindAllPermissionEntities_thenReturnSetOfPermissions() {
+
+        // When
+        List<AysPermissionEntity> mockPermissionEntities = List.of(
+                new AysPermissionEntityBuilder()
+                        .withValidValues()
+                        .build(),
+                new AysPermissionEntityBuilder()
+                        .withValidValues()
+                        .build()
+        );
+        Mockito.when(permissionRepository.findAll())
+                .thenReturn(mockPermissionEntities);
+
+        Set<AysPermission> mockPermissions = new HashSet<>(
+                permissionEntityToDomainMapper.map(mockPermissionEntities)
+        );
+
+        // Then
+        Set<AysPermission> permissions = permissionAdapter.findAll();
+
+        Assertions.assertEquals(mockPermissions, permissions);
+    }
 
 }
