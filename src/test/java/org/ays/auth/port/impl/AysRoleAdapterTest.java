@@ -4,11 +4,18 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
+import org.ays.auth.model.AysRoleFilter;
+import org.ays.auth.model.AysRoleFilterBuilder;
 import org.ays.auth.model.entity.AysRoleEntity;
 import org.ays.auth.model.entity.AysRoleEntityBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
+import org.ays.auth.model.mapper.AysRoleEntityToDomainMapper;
 import org.ays.auth.model.mapper.AysRoleToEntityMapper;
 import org.ays.auth.repository.AysRoleRepository;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageBuilder;
+import org.ays.common.model.AysPageable;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
@@ -17,7 +24,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,6 +43,80 @@ class AysRoleAdapterTest extends AysUnitTest {
 
 
     private final AysRoleToEntityMapper roleToEntityMapper = AysRoleToEntityMapper.initialize();
+    private final AysRoleEntityToDomainMapper roleEntityToDomainMapper = AysRoleEntityToDomainMapper.initialize();
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void givenValidAysPageableWithoutFilter_whenApplicationsFound_thenReturnApplicationsPage() {
+
+        // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+        AysRoleFilter mockFilter = new AysRoleFilterBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        List<AysRoleEntity> mockEntities = List.of(
+                new AysRoleEntityBuilder()
+                        .withValidValues()
+                        .build()
+        );
+        Page<AysRoleEntity> mockEntitiesPage = new PageImpl<>(mockEntities);
+        Mockito.when(roleRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockEntitiesPage);
+
+        List<AysRole> mockRoles = roleEntityToDomainMapper.map(mockEntities);
+        AysPage<AysRole> mockRolesPage = AysPageBuilder.from(mockRoles, mockAysPageable, mockFilter);
+
+        // Then
+        AysPage<AysRole> rolesPage = roleAdapter.findAll(mockAysPageable, mockFilter);
+
+        AysPageBuilder.assertEquals(mockRolesPage, rolesPage);
+
+        // Verify
+        Mockito.verify(roleRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void givenValidAysPageableAndFilter_whenRolesFound_thenReturnRolesPage() {
+
+        // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+        AysRoleFilter mockFilter = new AysRoleFilterBuilder()
+                .withStatuses(Set.of(AysRoleStatus.ACTIVE))
+                .build();
+
+        // When
+        List<AysRoleEntity> mockRoleEntities = List.of(
+                new AysRoleEntityBuilder()
+                        .withValidValues()
+                        .withStatus(AysRoleStatus.ACTIVE)
+                        .build()
+        );
+        Page<AysRoleEntity> mockRoleEntitiesPage = new PageImpl<>(mockRoleEntities);
+        Mockito.when(roleRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockRoleEntitiesPage);
+
+        List<AysRole> mockRoles = roleEntityToDomainMapper.map(mockRoleEntities);
+        AysPage<AysRole> mockRolesPage = AysPageBuilder.from(mockRoles, mockAysPageable, mockFilter);
+
+        // Then
+        AysPage<AysRole> rolesPage = roleAdapter.findAll(mockAysPageable, mockFilter);
+
+        AysPageBuilder.assertEquals(mockRolesPage, rolesPage);
+
+        // Verify
+        Mockito.verify(roleRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
 
 
     @Test
