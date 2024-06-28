@@ -13,6 +13,8 @@ import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysPageableBuilder;
+import org.ays.common.util.AysRandomUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 class AdminRegistrationApplicationAdapterTest extends AysUnitTest {
@@ -112,5 +115,52 @@ class AdminRegistrationApplicationAdapterTest extends AysUnitTest {
         Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
+
+
+    @Test
+    void givenValidId_whenApplicationFoundById_thenReturnOptionalApplication() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        AdminRegistrationApplicationEntity mockApplicationEntity = new AdminRegistrationApplicationEntityBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
+                .thenReturn(Optional.of(mockApplicationEntity));
+
+        // Then
+        Optional<AdminRegistrationApplication> application = adminRegistrationApplicationAdapter.findById(mockId);
+
+        Assertions.assertTrue(application.isPresent());
+        Assertions.assertEquals(mockId, application.get().getId());
+
+        // Verify
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
+                .findById(mockId);
+    }
+
+    @Test
+    void givenValidId_whenApplicationNotFoundById_thenReturnOptionalEmpty() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(adminRegistrationApplicationRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<AdminRegistrationApplication> application = adminRegistrationApplicationAdapter.findById(mockId);
+
+        Assertions.assertFalse(application.isPresent());
+
+        // Verify
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
+                .findById(mockId);
+    }
+
 
 }

@@ -78,7 +78,6 @@ class AdminRegistrationApplicationAdapter implements AdminRegistrationApplicatio
         final Optional<AdminRegistrationApplicationEntity> applicationEntity = adminRegistrationApplicationRepository
                 .findById(id);
         return applicationEntity.map(adminRegistrationApplicationEntityToDomainMapper::map);
-
     }
 
     /**
