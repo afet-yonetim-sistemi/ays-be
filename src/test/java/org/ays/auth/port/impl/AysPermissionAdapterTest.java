@@ -6,6 +6,7 @@ import org.ays.auth.model.entity.AysPermissionEntity;
 import org.ays.auth.model.entity.AysPermissionEntityBuilder;
 import org.ays.auth.model.mapper.AysPermissionEntityToDomainMapper;
 import org.ays.auth.repository.AysPermissionRepository;
+import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -88,6 +89,65 @@ class AysPermissionAdapterTest extends AysUnitTest {
         // Verify
         Mockito.verify(permissionRepository, Mockito.times(1))
                 .findAllByIsSuperFalse();
+    }
+
+
+    @Test
+    void givenValidIds_whenAllPermissionEntitiesFoundByIds_thenReturnSetOfPermissions() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        Set<String> mockIds = Set.of(mockId);
+
+        // When
+        List<AysPermissionEntity> mockPermissionEntities = List.of(
+                new AysPermissionEntityBuilder()
+                        .withValidValues()
+                        .withId(mockId)
+                        .build()
+        );
+        Mockito.when(permissionRepository.findAllById(mockIds))
+                .thenReturn(mockPermissionEntities);
+
+        Set<AysPermission> mockPermissions = new HashSet<>(
+                permissionEntityToDomainMapper.map(mockPermissionEntities)
+        );
+
+        // Then
+        Set<AysPermission> permissions = permissionAdapter.findAllByIdIn(mockIds);
+
+        Assertions.assertEquals(mockPermissions, permissions);
+
+        // Verify
+        Mockito.verify(permissionRepository, Mockito.times(1))
+                .findAllById(mockIds);
+    }
+
+
+    @Test
+    void givenValidIds_whenAllPermissionEntitiesNotFoundByIds_thenReturnEmptySet() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        Set<String> mockIds = Set.of(mockId);
+
+        // When
+        List<AysPermissionEntity> mockPermissionEntities = List.of();
+        Mockito.when(permissionRepository.findAllById(mockIds))
+                .thenReturn(mockPermissionEntities);
+
+        Set<AysPermission> mockPermissions = new HashSet<>(
+                permissionEntityToDomainMapper.map(mockPermissionEntities)
+        );
+
+        // Then
+        Set<AysPermission> permissions = permissionAdapter.findAllByIdIn(mockIds);
+
+        Assertions.assertEquals(mockPermissions, permissions);
+
+        // Verify
+        Mockito.verify(permissionRepository, Mockito.times(1))
+                .findAllById(mockIds);
     }
 
 }
