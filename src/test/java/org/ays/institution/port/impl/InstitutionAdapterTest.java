@@ -4,10 +4,12 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysUnitTest;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.institution.model.enums.InstitutionStatus;
 import org.ays.institution.model.mapper.InstitutionEntityToDomainMapper;
+import org.ays.institution.model.mapper.InstitutionToEntityMapper;
 import org.ays.institution.repository.InstitutionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,7 @@ class InstitutionAdapterTest extends AysUnitTest {
 
 
     private final InstitutionEntityToDomainMapper institutionEntityToDomainMapper = InstitutionEntityToDomainMapper.initialize();
+    private final InstitutionToEntityMapper institutionToEntityMapper = InstitutionToEntityMapper.initialize();
 
 
     @Test
@@ -112,6 +115,36 @@ class InstitutionAdapterTest extends AysUnitTest {
 
         Mockito.verify(institutionRepository, Mockito.times(1))
                 .existsByIdAndStatus(mockId, mockStatus);
+    }
+
+
+    @Test
+    void givenValidInstitution_whenInstitutionSaved_thenReturnInstitutionFromDatabase() {
+
+        // Given
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .withoutId()
+                .build();
+
+        // When
+        InstitutionEntity mockInstitutionEntity = institutionToEntityMapper.map(mockInstitution);
+        String mockId = AysRandomUtil.generateUUID();
+        mockInstitutionEntity.setId(mockId);
+        Mockito.when(institutionRepository.save(Mockito.any(InstitutionEntity.class)))
+                .thenReturn(mockInstitutionEntity);
+
+        mockInstitution.setId(mockId);
+
+        // Then
+        Institution institution = institutionAdapter.save(mockInstitution);
+
+        Assertions.assertNotNull(institution);
+        Assertions.assertEquals(mockInstitution.getId(), institution.getId());
+
+        // Verify
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .save(Mockito.any(InstitutionEntity.class));
     }
 
 
