@@ -2,12 +2,14 @@ package org.ays.auth.port.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AdminRegistrationApplication;
+import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.AdminRegistrationApplicationFilter;
 import org.ays.auth.model.AdminRegistrationApplicationFilterBuilder;
 import org.ays.auth.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.auth.model.entity.AdminRegistrationApplicationEntityBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.auth.model.mapper.AdminRegistrationApplicationEntityToDomainMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationToEntityMapper;
 import org.ays.auth.repository.AdminRegistrationApplicationRepository;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
@@ -38,6 +40,7 @@ class AdminRegistrationApplicationAdapterTest extends AysUnitTest {
 
 
     private final AdminRegistrationApplicationEntityToDomainMapper adminRegistrationApplicationEntityToDomainMapper = AdminRegistrationApplicationEntityToDomainMapper.initialize();
+    private final AdminRegistrationApplicationToEntityMapper adminRegistrationApplicationToEntityMapper = AdminRegistrationApplicationToEntityMapper.initialize();
 
     @Test
     @SuppressWarnings("unchecked")
@@ -160,6 +163,38 @@ class AdminRegistrationApplicationAdapterTest extends AysUnitTest {
         // Verify
         Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
                 .findById(mockId);
+    }
+
+
+    @Test
+    void givenValidApplication_whenApplicationSaved_thenReturnApplicationFromDatabase() {
+
+        // Given
+        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .withoutId()
+                .build();
+
+        // When
+        AdminRegistrationApplicationEntity mockApplicationEntity = adminRegistrationApplicationToEntityMapper
+                .map(mockApplication);
+        String mockId = AysRandomUtil.generateUUID();
+        mockApplicationEntity.setId(mockId);
+        Mockito.when(adminRegistrationApplicationRepository.save(Mockito.any(AdminRegistrationApplicationEntity.class)))
+                .thenReturn(mockApplicationEntity);
+
+        mockApplication.setId(mockId);
+
+        // Then
+        AdminRegistrationApplication application = adminRegistrationApplicationAdapter
+                .save(mockApplication);
+
+        Assertions.assertNotNull(application);
+        Assertions.assertEquals(mockApplication.getId(), application.getId());
+
+        // Verify
+        Mockito.verify(adminRegistrationApplicationRepository, Mockito.times(1))
+                .save(Mockito.any(AdminRegistrationApplicationEntity.class));
     }
 
 
