@@ -33,27 +33,27 @@ class InstitutionAdapterTest extends AysUnitTest {
     @Test
     void givenActiveInstitutionStatus_whenActiveInstitutionsExist_thenReturnInstitutions() {
         // Given
-        InstitutionStatus status = InstitutionStatus.ACTIVE;
+        InstitutionStatus mockStatus = InstitutionStatus.ACTIVE;
 
         // When
         List<InstitutionEntity> mockActiveInstitutionEntities = List.of(
-                new InstitutionEntityBuilder().withValidValues().withStatus(status).build(),
-                new InstitutionEntityBuilder().withValidValues().withStatus(status).build()
+                new InstitutionEntityBuilder().withValidValues().withStatus(mockStatus).build(),
+                new InstitutionEntityBuilder().withValidValues().withStatus(mockStatus).build()
         );
-        Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(status))
+        Mockito.when(institutionRepository.findAllByStatusOrderByNameAsc(mockStatus))
                 .thenReturn(mockActiveInstitutionEntities);
 
         // Then
         List<Institution> mockActiveInstitutions = institutionEntityToDomainMapper
                 .map(mockActiveInstitutionEntities);
-        List<Institution> activeInstitutions = institutionAdapter.findAllByStatusOrderByNameAsc(status);
+        List<Institution> activeInstitutions = institutionAdapter.findAllByStatusOrderByNameAsc(mockStatus);
 
         Assertions.assertNotNull(activeInstitutions);
         Assertions.assertEquals(activeInstitutions.size(), mockActiveInstitutions.size());
 
+        // Verify
         Mockito.verify(institutionRepository, Mockito.times(1))
-                .findAllByStatusOrderByNameAsc(status);
-
+                .findAllByStatusOrderByNameAsc(mockStatus);
     }
 
 
