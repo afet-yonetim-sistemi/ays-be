@@ -44,18 +44,8 @@ public class AysRoleListRequestBuilder extends TestDataBuilder<AysRoleListReques
         return this;
     }
 
-    public AysRoleListRequestBuilder withoutFilter() {
-        data.setFilter(null);
-        return this;
-    }
-
     private AysRoleListRequestBuilder initializeFilter() {
         data.setFilter(AysRoleFilter.builder().build());
-        return this;
-    }
-
-    public AysRoleListRequestBuilder withFilter(AysRoleFilter filter) {
-        data.setFilter(filter);
         return this;
     }
 
