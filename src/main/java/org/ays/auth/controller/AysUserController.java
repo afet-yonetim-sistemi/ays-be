@@ -3,7 +3,7 @@ package org.ays.auth.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.mapper.AysUserToAysUserListResponseMapper;
+import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.response.AysUserListResponse;
 import org.ays.auth.service.AysUserReadService;
@@ -21,22 +21,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 class AysUserController {
 
+    private final AysUserReadService userReadService;
 
-    private final AysUserReadService aysUserReadService;
 
-    private final AysUserToAysUserListResponseMapper aysUserListResponseMapper = AysUserToAysUserListResponseMapper.initialize();
+    private final AysUserToUsersResponseMapper userToUsersResponseMapper = AysUserToUsersResponseMapper.initialize();
 
     //todo javadoc and cover with test
 
     @PostMapping("/users")
     @PreAuthorize("hasAnyAuthority('user:list')")
-    public AysResponse<AysPageResponse<AysUserListResponse>> findAllByInstitutionId(@RequestBody @Valid AysUserListRequest request) {
+    public AysResponse<AysPageResponse<AysUserListResponse>> findAll(@RequestBody @Valid AysUserListRequest request) {
 
-        AysPage<AysUser> pageOfAysUsers = aysUserReadService.findAllByInstitutionId(request);
+        AysPage<AysUser> pageOfAysUsers = userReadService.findAll(request);
 
         final AysPageResponse<AysUserListResponse> pageOfUsersResponse = AysPageResponse.<AysUserListResponse>builder()
                 .of(pageOfAysUsers)
-                .content(aysUserListResponseMapper.map(pageOfAysUsers.getContent()))
+                .content(userToUsersResponseMapper.map(pageOfAysUsers.getContent()))
                 .build();
 
         return AysResponse.successOf(pageOfUsersResponse);
