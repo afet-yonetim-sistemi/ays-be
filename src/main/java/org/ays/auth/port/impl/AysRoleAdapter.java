@@ -12,9 +12,8 @@ import org.ays.auth.repository.AysRoleRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Adapter class implementing both {@link AysRoleReadPort} and {@link AysRoleSavePort} interfaces.
@@ -40,9 +39,9 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
      * @return A set of active {@link AysRole} entities found for the institution.
      */
     @Override
-    public Set<AysRole> findAllActivesByInstitutionId(final String institutionId) {
-        Set<AysRoleEntity> roleEntities = roleRepository.findAllByInstitutionIdAndStatus(institutionId, AysRoleStatus.ACTIVE);
-        return new HashSet<>(roleEntityToDomainMapper.map(roleEntities));
+    public List<AysRole> findAllActivesByInstitutionId(final String institutionId) {
+        List<AysRoleEntity> roleEntities = roleRepository.findAllByInstitutionIdAndStatus(institutionId, AysRoleStatus.ACTIVE);
+        return roleEntityToDomainMapper.map(roleEntities);
     }
 
     /**

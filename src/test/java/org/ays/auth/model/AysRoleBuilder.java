@@ -6,7 +6,7 @@ import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 
-import java.util.Set;
+import java.util.List;
 
 public class AysRoleBuilder extends TestDataBuilder<AysRole> {
 
@@ -15,7 +15,7 @@ public class AysRoleBuilder extends TestDataBuilder<AysRole> {
     }
 
     public AysRoleBuilder withValidValues() {
-        Set<AysPermission> permissions = Set.of(
+        List<AysPermission> permissions = List.of(
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().withName("institution:page").withCategory(AysPermissionCategory.PAGE).build()
         );
@@ -46,7 +46,7 @@ public class AysRoleBuilder extends TestDataBuilder<AysRole> {
         return this;
     }
 
-    public AysRoleBuilder withPermissions(Set<AysPermission> permissions) {
+    public AysRoleBuilder withPermissions(List<AysPermission> permissions) {
         data.setPermissions(permissions);
         return this;
     }

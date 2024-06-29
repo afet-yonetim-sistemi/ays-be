@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     void givenValidRoleCreateRequest_whenSuperRoleCreated_thenReturnSuccess() throws Exception {
 
         // Initialize
-        Set<AysPermission> permissions = permissionReadPort.findAll();
+        List<AysPermission> permissions = permissionReadPort.findAll();
         Set<String> permissionIds = permissions.stream()
                 .map(AysPermission::getId)
                 .collect(Collectors.toSet());
@@ -81,7 +82,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     void givenValidRoleCreateRequest_whenRoleCreated_thenReturnSuccess() throws Exception {
 
         // Initialize
-        Set<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
         Set<String> permissionIds = permissions.stream()
                 .map(AysPermission::getId)
                 .collect(Collectors.toSet());

@@ -24,7 +24,7 @@ import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Represents a user entity in the application, extending from {@link BaseEntity}.
@@ -94,7 +94,7 @@ public class AysUserEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
     )
-    private Set<AysRoleEntity> roles;
+    private List<AysRoleEntity> roles;
 
 
     /**

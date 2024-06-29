@@ -14,8 +14,7 @@ import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * Domain model representing a user entity for data transfer between the service layer and controller.
@@ -40,7 +39,7 @@ public class AysUser extends BaseDomainModel {
     private Password password;
     private LoginAttempt loginAttempt;
 
-    private Set<AysRole> roles;
+    private List<AysRole> roles;
     private Institution institution;
 
     /**
@@ -163,12 +162,12 @@ public class AysUser extends BaseDomainModel {
         return claimsBuilder.build();
     }
 
-    private Set<String> getPermissionNames() {
+    private List<String> getPermissionNames() {
         return this.roles.stream()
                 .map(AysRole::getPermissions)
-                .flatMap(Set::stream)
+                .flatMap(List::stream)
                 .map(AysPermission::getName)
-                .collect(Collectors.toSet());
+                .toList();
     }
 
 }

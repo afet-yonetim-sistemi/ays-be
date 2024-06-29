@@ -2,6 +2,7 @@ package org.ays.auth.port;
 
 import org.ays.auth.model.AysPermission;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,23 +13,23 @@ public interface AysPermissionReadPort {
     /**
      * Retrieves all permissions.
      *
-     * @return A set containing all permissions.
+     * @return A list containing all permissions.
      */
-    Set<AysPermission> findAll();
+    List<AysPermission> findAll();
 
     /**
      * Retrieves all permissions where the 'isSuper' flag is false.
      *
-     * @return A set containing permissions where 'isSuper' is false.
+     * @return A list containing permissions where 'isSuper' is false.
      */
-    Set<AysPermission> findAllByIsSuperFalse();
+    List<AysPermission> findAllByIsSuperFalse();
 
     /**
      * Retrieves all permissions by their IDs.
      *
      * @param permissionIds The set of permission IDs to retrieve.
-     * @return A set containing permissions with the specified IDs.
+     * @return A list containing permissions with the specified IDs.
      */
-    Set<AysPermission> findAllByIdIn(Set<String> permissionIds);
+    List<AysPermission> findAllByIdIn(Set<String> permissionIds);
 
 }

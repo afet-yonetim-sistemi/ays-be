@@ -17,8 +17,8 @@ import org.ays.institution.model.Institution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Service implementation for creating roles in the system.
@@ -55,7 +55,7 @@ class AysRoleCreateServiceImpl implements AysRoleCreateService {
 
         this.checkExistingRoleName(createRequest.getName());
 
-        final Set<AysPermission> permissions = this.checkExistingPermissionsAndGet(createRequest.getPermissionIds());
+        final List<AysPermission> permissions = this.checkExistingPermissionsAndGet(createRequest.getPermissionIds());
 
         final AysRole role = AysRole.builder()
                 .name(createRequest.getName())
@@ -88,15 +88,15 @@ class AysRoleCreateServiceImpl implements AysRoleCreateService {
      * @throws AysPermissionNotExistException if any of the permission IDs do not exist
      * @throws AysUserNotSuperAdminException  if the current user is not authorized to assign super permissions
      */
-    private Set<AysPermission> checkExistingPermissionsAndGet(final Set<String> permissionIds) {
-        final Set<AysPermission> permissions = permissionReadPort.findAllByIdIn(permissionIds);
+    private List<AysPermission> checkExistingPermissionsAndGet(final Set<String> permissionIds) {
+        final List<AysPermission> permissions = permissionReadPort.findAllByIdIn(permissionIds);
 
         if (permissions.size() != permissionIds.size()) {
 
-            final Set<String> notExistsPermissionIds = permissionIds.stream()
+            final List<String> notExistsPermissionIds = permissionIds.stream()
                     .filter(permissionId -> permissions.stream()
                             .noneMatch(permissionEntity -> permissionEntity.getId().equals(permissionId)))
-                    .collect(Collectors.toSet());
+                    .toList();
 
             throw new AysPermissionNotExistException(notExistsPermissionIds);
         }

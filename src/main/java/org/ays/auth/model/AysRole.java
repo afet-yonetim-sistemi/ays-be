@@ -7,7 +7,7 @@ import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Represents a role entity in the system.
@@ -23,7 +23,7 @@ public class AysRole extends BaseDomainModel {
     private String name;
     private AysRoleStatus status;
 
-    private Set<AysPermission> permissions;
+    private List<AysPermission> permissions;
 
     private Institution institution;
 

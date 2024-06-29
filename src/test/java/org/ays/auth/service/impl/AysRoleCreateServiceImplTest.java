@@ -20,9 +20,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 class AysRoleCreateServiceImplTest extends AysUnitTest {
 
@@ -52,7 +52,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
-        Set<AysPermission> mockPermissions = new HashSet<>();
+        List<AysPermission> mockPermissions = new ArrayList<>();
         mockCreateRequest.getPermissionIds().forEach(permissionId -> {
             AysPermission mockPermission = new AysPermissionBuilder()
                     .withValidValues()
@@ -107,7 +107,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
-        Set<AysPermission> mockPermissions = new HashSet<>();
+        List<AysPermission> mockPermissions = new ArrayList<>();
         mockCreateRequest.getPermissionIds().forEach(permissionId -> {
             AysPermission mockPermission = new AysPermissionBuilder()
                     .withValidValues()
@@ -196,7 +196,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
-        Set<AysPermission> mockPermissions = new HashSet<>();
+        List<AysPermission> mockPermissions = new ArrayList<>();
         mockCreateRequest.getPermissionIds().forEach(permissionId -> {
             AysPermission mockPermission = new AysPermissionBuilder()
                     .withValidValues()
@@ -250,7 +250,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .thenReturn(Optional.empty());
 
         Mockito.when(permissionReadPort.findAllByIdIn(Mockito.anySet()))
-                .thenReturn(Set.of());
+                .thenReturn(List.of());
 
         // Then
         Assertions.assertThrows(

@@ -2,7 +2,7 @@ package org.ays.auth.service;
 
 import org.ays.auth.model.AysPermission;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Service interface for managing permissions.
@@ -13,8 +13,8 @@ public interface AysPermissionService {
     /**
      * Retrieves all permissions.
      *
-     * @return A set of {@link AysPermission} objects representing all permissions in the system.
+     * @return A list of {@link AysPermission} objects representing all permissions in the system.
      */
-    Set<AysPermission> findAll();
+    List<AysPermission> findAll();
 
 }

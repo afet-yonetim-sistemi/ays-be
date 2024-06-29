@@ -5,7 +5,7 @@ import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 
-import java.util.Set;
+import java.util.List;
 
 public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
 
@@ -14,7 +14,7 @@ public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
     }
 
     public AysRoleEntityBuilder withValidValues() {
-        Set<AysPermissionEntity> permissionEntities = Set.of(
+        List<AysPermissionEntity> permissionEntities = List.of(
                 new AysPermissionEntityBuilder().withValidValues().build(),
                 new AysPermissionEntityBuilder().withValidValues().withName("institution:page").withCategory(AysPermissionCategory.PAGE).build()
         );
@@ -40,7 +40,7 @@ public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
         return this;
     }
 
-    public AysRoleEntityBuilder withPermissions(Set<AysPermissionEntity> permissionEntities) {
+    public AysRoleEntityBuilder withPermissions(List<AysPermissionEntity> permissionEntities) {
         data.setPermissions(permissionEntities);
         return this;
     }

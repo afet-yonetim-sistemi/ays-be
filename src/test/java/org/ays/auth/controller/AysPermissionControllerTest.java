@@ -15,7 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
-import java.util.Set;
 
 class AysPermissionControllerTest extends AysRestControllerTest {
 
@@ -32,7 +31,7 @@ class AysPermissionControllerTest extends AysRestControllerTest {
     void whenPermissionsFound_thenReturnPermissions() throws Exception {
 
         // When
-        Set<AysPermission> mockPermissions = Set.of(
+        List<AysPermission> mockPermissions = List.of(
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build()
         );

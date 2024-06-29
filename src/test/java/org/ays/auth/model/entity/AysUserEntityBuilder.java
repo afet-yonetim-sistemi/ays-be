@@ -11,7 +11,7 @@ import org.ays.util.AysValidTestData;
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
 
@@ -31,7 +31,7 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
                 .withValidValues()
                 .build();
 
-        Set<AysRoleEntity> roleEntities = Set.of(
+        List<AysRoleEntity> roleEntities = List.of(
                 new AysRoleEntityBuilder().withValidValues().build()
         );
 
@@ -79,7 +79,7 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
         return this;
     }
 
-    public AysUserEntityBuilder withRoles(Set<AysRoleEntity> roles) {
+    public AysUserEntityBuilder withRoles(List<AysRoleEntity> roles) {
         data.setRoles(roles);
         return this;
     }

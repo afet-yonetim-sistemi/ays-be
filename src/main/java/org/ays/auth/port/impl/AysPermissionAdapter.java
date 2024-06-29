@@ -9,7 +9,6 @@ import org.ays.auth.repository.AysPermissionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,9 +33,9 @@ class AysPermissionAdapter implements AysPermissionReadPort {
      * @return A set of all {@link AysPermission}.
      */
     @Override
-    public Set<AysPermission> findAll() {
+    public List<AysPermission> findAll() {
         List<AysPermissionEntity> permissionEntities = permissionRepository.findAll();
-        return new HashSet<>(permissionEntityToDomainMapper.map(permissionEntities));
+        return permissionEntityToDomainMapper.map(permissionEntities);
     }
 
     /**
@@ -45,9 +44,9 @@ class AysPermissionAdapter implements AysPermissionReadPort {
      * @return A set of {@link AysPermission} where {@code isSuper} is false.
      */
     @Override
-    public Set<AysPermission> findAllByIsSuperFalse() {
-        Set<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIsSuperFalse();
-        return new HashSet<>(permissionEntityToDomainMapper.map(permissionEntities));
+    public List<AysPermission> findAllByIsSuperFalse() {
+        List<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIsSuperFalse();
+        return permissionEntityToDomainMapper.map(permissionEntities);
     }
 
     /**
@@ -57,9 +56,9 @@ class AysPermissionAdapter implements AysPermissionReadPort {
      * @return A set of {@link AysPermission} matching the provided IDs.
      */
     @Override
-    public Set<AysPermission> findAllByIdIn(final Set<String> permissionIds) {
-        Set<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(permissionIds);
-        return new HashSet<>(permissionEntityToDomainMapper.map(permissionEntities));
+    public List<AysPermission> findAllByIdIn(final Set<String> permissionIds) {
+        List<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(permissionIds);
+        return permissionEntityToDomainMapper.map(permissionEntities);
     }
 
 }
