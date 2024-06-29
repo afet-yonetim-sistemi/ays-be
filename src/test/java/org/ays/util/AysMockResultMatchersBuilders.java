@@ -32,6 +32,14 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.response.".concat(path));
     }
 
+    public static JsonPathResultMatchers content() {
+        return MockMvcResultMatchers.jsonPath("$.response.content");
+    }
+
+    public static JsonPathResultMatchers contentSize() {
+        return MockMvcResultMatchers.jsonPath("$.response.content.size()");
+    }
+
     public static JsonPathResultMatchers firstContent(String path) {
         return MockMvcResultMatchers.jsonPath("$.response.content[0].".concat(path));
     }
