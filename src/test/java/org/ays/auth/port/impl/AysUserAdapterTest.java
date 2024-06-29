@@ -57,7 +57,7 @@ class AysUserAdapterTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenUserFoundById_thenReturnOptionalEmpty() {
+    void givenValidId_whenUserNotFoundById_thenReturnOptionalEmpty() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
