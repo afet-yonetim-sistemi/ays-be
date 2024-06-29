@@ -7,6 +7,8 @@ import org.ays.auth.model.entity.AysUserEntityBuilder;
 import org.ays.auth.model.mapper.AysUserEntityToDomainMapper;
 import org.ays.auth.model.mapper.AysUserToEntityMapper;
 import org.ays.auth.repository.AysUserRepository;
+import org.ays.common.model.AysPhoneNumber;
+import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -164,6 +166,51 @@ class AysUserAdapterTest extends AysUnitTest {
         Mockito.verify(userRepository, Mockito.times(1))
                 .existsByEmailAddress(mockEmailAddress);
     }
-    
+
+
+    @Test
+    void givenValidPhoneNumber_whenUserExistsByPhoneNumber_thenReturnTrue() {
+
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.when(userRepository.existsByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber()))
+                .thenReturn(true);
+
+        // Then
+        boolean isUserExists = userAdapter.existsByPhoneNumber(mockPhoneNumber);
+
+        Assertions.assertTrue(isUserExists);
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .existsByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber());
+    }
+
+    @Test
+    void givenValidPhoneNumber_whenUserNotExistsByPhoneNumber_thenReturnFalse() {
+
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.when(userRepository.existsByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber()))
+                .thenReturn(false);
+
+        // Then
+        boolean isUserExists = userAdapter.existsByPhoneNumber(mockPhoneNumber);
+
+        Assertions.assertFalse(isUserExists);
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .existsByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber());
+    }
+
 
 }
