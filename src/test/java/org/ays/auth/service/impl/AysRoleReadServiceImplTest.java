@@ -8,7 +8,6 @@ import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
 import org.ays.auth.port.AysRoleReadPort;
-import org.ays.auth.service.AysRoleReadService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
@@ -23,7 +22,7 @@ import java.util.List;
 class AysRoleReadServiceImplTest extends AysUnitTest {
 
     @InjectMocks
-    private AysRoleReadService roleReadService;
+    private AysRoleReadServiceImpl roleReadService;
 
     @Mock
     private AysRoleReadPort roleReadPort;
