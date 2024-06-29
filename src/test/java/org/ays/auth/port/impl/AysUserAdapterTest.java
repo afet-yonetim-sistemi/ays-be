@@ -108,7 +108,7 @@ class AysUserAdapterTest extends AysUnitTest {
     void givenValidEmailAddress_whenUserNotFoundByEmailAddress_thenReturnOptionalEmpty() {
 
         // Given
-        String mockEmailAddress = "test@@afetyonetimsistemi.org";
+        String mockEmailAddress = "test@afetyonetimsistemi.org";
 
         // When
         Mockito.when(userRepository.findByEmailAddress(mockEmailAddress))
@@ -124,5 +124,46 @@ class AysUserAdapterTest extends AysUnitTest {
                 .findByEmailAddress(mockEmailAddress);
     }
 
+
+    @Test
+    void givenValidEmailAddress_whenUserExistsByEmailAddress_thenReturnTrue() {
+
+        // Given
+        String mockEmailAddress = "test@afetyonetimsistemi.org";
+
+        // When
+        Mockito.when(userRepository.existsByEmailAddress(mockEmailAddress))
+                .thenReturn(true);
+
+        // Then
+        boolean isUserExists = userAdapter.existsByEmailAddress(mockEmailAddress);
+
+        Assertions.assertTrue(isUserExists);
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .existsByEmailAddress(mockEmailAddress);
+    }
+
+    @Test
+    void givenValidEmailAddress_whenUserNotExistsByEmailAddress_thenReturnFalse() {
+
+        // Given
+        String mockEmailAddress = "test@afetyonetimsistemi.org";
+
+        // When
+        Mockito.when(userRepository.existsByEmailAddress(mockEmailAddress))
+                .thenReturn(false);
+
+        // Then
+        boolean isUserExists = userAdapter.existsByEmailAddress(mockEmailAddress);
+
+        Assertions.assertFalse(isUserExists);
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .existsByEmailAddress(mockEmailAddress);
+    }
+    
 
 }
