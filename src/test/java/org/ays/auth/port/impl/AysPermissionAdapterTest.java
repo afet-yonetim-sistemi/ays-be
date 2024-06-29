@@ -88,7 +88,7 @@ class AysPermissionAdapterTest extends AysUnitTest {
 
 
     @Test
-    void givenValidIds_whenAllPermissionEntitiesFoundByIds_thenReturnSetOfPermissions() {
+    void givenValidIds_whenAllPermissionEntitiesFoundByIds_thenReturnListOfPermissions() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -116,9 +116,8 @@ class AysPermissionAdapterTest extends AysUnitTest {
                 .findAllById(mockIds);
     }
 
-
     @Test
-    void givenValidIds_whenAllPermissionEntitiesNotFoundByIds_thenReturnEmptySet() {
+    void givenValidIds_whenAllPermissionEntitiesNotFoundByIds_thenReturnEmptyList() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
