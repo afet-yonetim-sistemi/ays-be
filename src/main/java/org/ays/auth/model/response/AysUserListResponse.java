@@ -14,9 +14,9 @@ import java.util.UUID;
 public class AysUserListResponse {
 
     private UUID id;
+    private String emailAddress;
     private String firstName;
     private String lastName;
-    private String emailAddress;
     private AysPhoneNumber phoneNumber;
     private String city;
     private AysUserStatus status;
