@@ -38,56 +38,6 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
     private final AysUserEntityToDomainMapper userEntityToDomainMapper = AysUserEntityToDomainMapper.initialize();
 
 
-    /**
-     * Retrieves an {@link AysUser} by its ID.
-     *
-     * @param id The ID of the user to retrieve.
-     * @return An optional containing the {@link AysUser} if found, otherwise empty.
-     */
-    @Override
-    public Optional<AysUser> findById(final String id) {
-        Optional<AysUserEntity> userEntity = userRepository.findById(id);
-        return userEntity.map(userEntityToDomainMapper::map);
-    }
-
-    /**
-     * Retrieves an {@link AysUser} by its email address.
-     *
-     * @param emailAddress The email address of the user to retrieve.
-     * @return An optional containing the {@link AysUser} if found, otherwise empty.
-     */
-    @Override
-    public Optional<AysUser> findByEmailAddress(final String emailAddress) {
-        Optional<AysUserEntity> userEntity = userRepository.findByEmailAddress(emailAddress);
-        return userEntity.map(userEntityToDomainMapper::map);
-    }
-
-    /**
-     * Checks if a user with the given email address exists in the repository.
-     *
-     * @param emailAddress The email address to check for existence.
-     * @return true if a user with the given email address exists, otherwise false.
-     */
-    @Override
-    public boolean existsByEmailAddress(final String emailAddress) {
-        return userRepository.existsByEmailAddress(emailAddress);
-    }
-
-    /**
-     * Checks if a user with the given phone number exists in the repository.
-     *
-     * @param phoneNumber The phone number to check for existence.
-     * @return true if a user with the given phone number exists, otherwise false.
-     */
-    @Override
-    public boolean existsByPhoneNumber(final AysPhoneNumber phoneNumber) {
-        return userRepository.existsByCountryCodeAndLineNumber(
-                phoneNumber.getCountryCode(),
-                phoneNumber.getLineNumber()
-        );
-    }
-
-
     //todo javadoc and cover with test
 
 
@@ -104,6 +54,60 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
         return AysPage.of(filter, userEntitysPage, users);
     }
+
+
+    /**
+     * Retrieves an {@link AysUser} by its ID.
+     *
+     * @param id The ID of the user to retrieve.
+     * @return An optional containing the {@link AysUser} if found, otherwise empty.
+     */
+    @Override
+    public Optional<AysUser> findById(final String id) {
+        Optional<AysUserEntity> userEntity = userRepository.findById(id);
+        return userEntity.map(userEntityToDomainMapper::map);
+    }
+
+
+    /**
+     * Retrieves an {@link AysUser} by its email address.
+     *
+     * @param emailAddress The email address of the user to retrieve.
+     * @return An optional containing the {@link AysUser} if found, otherwise empty.
+     */
+    @Override
+    public Optional<AysUser> findByEmailAddress(final String emailAddress) {
+        Optional<AysUserEntity> userEntity = userRepository.findByEmailAddress(emailAddress);
+        return userEntity.map(userEntityToDomainMapper::map);
+    }
+
+
+    /**
+     * Checks if a user with the given email address exists in the repository.
+     *
+     * @param emailAddress The email address to check for existence.
+     * @return true if a user with the given email address exists, otherwise false.
+     */
+    @Override
+    public boolean existsByEmailAddress(final String emailAddress) {
+        return userRepository.existsByEmailAddress(emailAddress);
+    }
+
+
+    /**
+     * Checks if a user with the given phone number exists in the repository.
+     *
+     * @param phoneNumber The phone number to check for existence.
+     * @return true if a user with the given phone number exists, otherwise false.
+     */
+    @Override
+    public boolean existsByPhoneNumber(final AysPhoneNumber phoneNumber) {
+        return userRepository.existsByCountryCodeAndLineNumber(
+                phoneNumber.getCountryCode(),
+                phoneNumber.getLineNumber()
+        );
+    }
+
 
     /**
      * Saves an {@link AysUser} to the database.
