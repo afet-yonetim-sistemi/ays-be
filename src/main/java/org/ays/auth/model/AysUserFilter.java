@@ -22,13 +22,18 @@ public class AysUserFilter implements AysFilter {
 
     private String firstName;
     private String lastName;
-    private Set<AysUserStatus> statuses;
     private AysPhoneNumber phoneNumber;
+    private Set<AysUserStatus> statuses;
+    private String city;
+    private String institutionId;
 
     @Override
     public Specification<AysUserEntity> toSpecification() {
 
         Specification<AysUserEntity> specification = Specification.where(null);
+
+        specification = specification.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("institutionId"), this.institutionId));
 
         if (!CollectionUtils.isEmpty(this.statuses)) {
             Specification<AysUserEntity> statusSpecification = this.statuses.stream()
@@ -36,30 +41,34 @@ public class AysUserFilter implements AysFilter {
                             criteriaBuilder.equal(root.get("status"), status))
                     .reduce(Specification::or)
                     .orElse(null);
-
             specification = specification.and(statusSpecification);
         }
 
         if (StringUtils.hasText(this.firstName)) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(criteriaBuilder.lower(root.get("firstName")), "%" + this.lastName.toLowerCase() + "%"));
-
         }
+
         if (StringUtils.hasText(this.lastName)) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), "%" + this.lastName.toLowerCase() + "%"));
-
         }
-        if (StringUtils.hasText(this.phoneNumber.getCountryCode())) {
+
+        if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getCountryCode())) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(root.get("countryCode"), "%" + this.phoneNumber.getCountryCode() + "%"));
-
         }
-        if (StringUtils.hasText(this.phoneNumber.getLineNumber())) {
+
+        if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getLineNumber())) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(root.get("lineNumber"), "%" + this.phoneNumber.getLineNumber() + "%"));
-
         }
+
+        if (StringUtils.hasText(this.city)) {
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("city")), "%" + this.city.toLowerCase() + "%"));
+        }
+
         return specification;
 
     }
