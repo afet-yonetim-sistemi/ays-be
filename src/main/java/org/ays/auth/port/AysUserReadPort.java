@@ -30,7 +30,7 @@ public interface AysUserReadPort {
     Optional<AysUser> findByEmailAddress(String emailAddress);
 
     // todo javadoc
-    AysPage<AysUser> findAllByInstitutionId(AysPageable aysPageable, AysUserFilter filter, String institutionId);
+    AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter, String institutionId);
 
     /**
      * Checks if a user with the given email address exists in the repository.

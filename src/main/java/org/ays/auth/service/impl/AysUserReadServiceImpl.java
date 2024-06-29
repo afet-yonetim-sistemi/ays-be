@@ -22,7 +22,7 @@ public class AysUserReadServiceImpl implements AysUserReadService {
 
         final AysPageable aysPageable = listRequest.getPageable();
 
-        return aysUserReadPort.findAllByInstitutionId(aysPageable, listRequest.getFilter(), listRequest.getInstitutionId());
+        return aysUserReadPort.findAll(aysPageable, listRequest.getFilter(), listRequest.getInstitutionId());
     }
 
 

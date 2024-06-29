@@ -42,7 +42,7 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
 
     @Override
-    public AysPage<AysUser> findAllByInstitutionId(AysPageable aysPageable, AysUserFilter filter, String institutionId) {
+    public AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter, String institutionId) {
 
         final Pageable pageable = aysPageable.toPageable();
 
