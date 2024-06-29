@@ -34,8 +34,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
@@ -99,9 +99,9 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
                 .thenReturn(false);
 
         Mockito.when(roleReadPort.findAllActivesByInstitutionId(Mockito.anyString()))
-                .thenReturn(Set.of());
+                .thenReturn(List.of());
 
-        Set<AysPermission> mockPermissionEntities = Set.of(
+        List<AysPermission> mockPermissionEntities = List.of(
                 new AysPermissionBuilder().withValidValues().build()
         );
         Mockito.when(permissionReadPort.findAllByIsSuperFalse())
@@ -196,7 +196,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .build();
         Mockito.when(roleReadPort.findAllActivesByInstitutionId(Mockito.anyString()))
-                .thenReturn(Set.of(mockRole));
+                .thenReturn(List.of(mockRole));
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()

@@ -34,6 +34,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -71,13 +72,13 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        Set<AysPermission> mockPermissions = Set.of(
+        List<AysPermission> mockPermissions = List.of(
                 new AysPermissionBuilder()
                         .withValidValues()
                         .withName(mockSourcePage.getPermission())
                         .build()
         );
-        Set<AysRole> mockRoles = Set.of(
+        List<AysRole> mockRoles = List.of(
                 new AysRoleBuilder()
                         .withValidValues()
                         .withPermissions(mockPermissions)
@@ -136,13 +137,13 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        Set<AysPermission> mockPermissions = Set.of(
+        List<AysPermission> mockPermissions = List.of(
                 new AysPermissionBuilder()
                         .withValidValues()
                         .withName(mockSourcePage.getPermission())
                         .build()
         );
-        Set<AysRole> mockRoles = Set.of(
+        List<AysRole> mockRoles = List.of(
                 new AysRoleBuilder()
                         .withValidValues()
                         .withPermissions(mockPermissions)
@@ -310,14 +311,14 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        Set<AysPermission> mockPermissions = Set.of(
+        List<AysPermission> mockPermissions = List.of(
                 new AysPermissionBuilder()
                         .withValidValues()
                         .withName("landing:page")
                         .withCategory(AysPermissionCategory.PAGE)
                         .build()
         );
-        Set<AysRole> mockRoles = Set.of(
+        List<AysRole> mockRoles = List.of(
                 new AysRoleBuilder()
                         .withValidValues()
                         .withPermissions(mockPermissions)

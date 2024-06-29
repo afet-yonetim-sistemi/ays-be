@@ -7,7 +7,7 @@ import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.service.AysPermissionService;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Service implementation for managing permissions.
@@ -27,10 +27,10 @@ class AysPermissionServiceImpl implements AysPermissionService {
      * If the user is a super admin, all permissions are fetched.
      * Otherwise, only non-super permissions are retrieved.
      *
-     * @return A set of {@link AysPermission} objects based on the user's identity.
+     * @return A list of {@link AysPermission} objects based on the user's identity.
      */
     @Override
-    public Set<AysPermission> findAll() {
+    public List<AysPermission> findAll() {
 
         if (identity.isSuperAdmin()) {
             return permissionReadPort.findAll();

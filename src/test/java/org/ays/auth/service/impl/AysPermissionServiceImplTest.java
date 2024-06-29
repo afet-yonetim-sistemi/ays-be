@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.Set;
+import java.util.List;
 
 class AysPermissionServiceImplTest extends AysUnitTest {
 
@@ -32,7 +32,7 @@ class AysPermissionServiceImplTest extends AysUnitTest {
         Mockito.when(identity.isSuperAdmin())
                 .thenReturn(true);
 
-        Set<AysPermission> mockPermissions = Set.of(
+        List<AysPermission> mockPermissions = List.of(
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build(),
@@ -44,7 +44,7 @@ class AysPermissionServiceImplTest extends AysUnitTest {
                 .thenReturn(mockPermissions);
 
         // Then
-        Set<AysPermission> permissions = permissionService.findAll();
+        List<AysPermission> permissions = permissionService.findAll();
 
         Assertions.assertEquals(mockPermissions.size(), permissions.size());
 
@@ -63,7 +63,7 @@ class AysPermissionServiceImplTest extends AysUnitTest {
         Mockito.when(identity.isSuperAdmin())
                 .thenReturn(false);
 
-        Set<AysPermission> mockPermissions = Set.of(
+        List<AysPermission> mockPermissions = List.of(
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build(),
@@ -75,7 +75,7 @@ class AysPermissionServiceImplTest extends AysUnitTest {
                 .thenReturn(mockPermissions);
 
         // Then
-        Set<AysPermission> permissions = permissionService.findAll();
+        List<AysPermission> permissions = permissionService.findAll();
 
         Assertions.assertEquals(mockPermissions.size(), permissions.size());
 

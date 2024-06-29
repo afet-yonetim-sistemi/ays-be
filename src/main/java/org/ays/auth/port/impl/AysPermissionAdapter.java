@@ -9,9 +9,7 @@ import org.ays.auth.repository.AysPermissionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -32,38 +30,35 @@ class AysPermissionAdapter implements AysPermissionReadPort {
     /**
      * Retrieves all {@link AysPermission} from the repository.
      *
-     * @return A set of all {@link AysPermission}.
+     * @return A list of all {@link AysPermission}.
      */
     @Override
-    public Set<AysPermission> findAll() {
+    public List<AysPermission> findAll() {
         final List<AysPermissionEntity> permissionEntities = permissionRepository.findAll();
-        return new HashSet<>(permissionEntityToDomainMapper.map(permissionEntities));
+        return permissionEntityToDomainMapper.map(permissionEntities);
     }
 
     /**
      * Retrieves all {@link AysPermission} where {@code isSuper} flag is false from the repository.
      *
-     * @return A set of {@link AysPermission} where {@code isSuper} is false.
+     * @return A list of {@link AysPermission} where {@code isSuper} is false.
      */
     @Override
-    public Set<AysPermission> findAllByIsSuperFalse() {
-        final Set<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIsSuperFalse();
-        return new HashSet<>(permissionEntityToDomainMapper.map(permissionEntities));
+    public List<AysPermission> findAllByIsSuperFalse() {
+        List<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIsSuperFalse();
+        return permissionEntityToDomainMapper.map(permissionEntities);
     }
 
     /**
      * Retrieves {@link AysPermission} with IDs present in the given set from the repository.
      *
      * @param ids The set of permission IDs to retrieve.
-     * @return A set of {@link AysPermission} matching the provided IDs.
+     * @return A list of {@link AysPermission} matching the provided IDs.
      */
     @Override
-    public Set<AysPermission> findAllByIds(final Set<String> ids) {
-        final List<AysPermissionEntity> permissionEntities = permissionRepository.findAllById(ids);
-        return Optional.of(permissionEntities)
-                .map(permissionEntityToDomainMapper::map)
-                .map(HashSet::new)
-                .orElseGet(HashSet::new);
+    public List<AysPermission> findAllByIdIn(final Set<String> ids) {
+        List<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(permissionIds);
+        return permissionEntityToDomainMapper.map(permissionEntities);
     }
 
 }

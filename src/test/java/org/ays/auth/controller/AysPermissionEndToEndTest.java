@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
-import java.util.Set;
 
 class AysPermissionEndToEndTest extends AysEndToEndTest {
 
@@ -30,7 +29,7 @@ class AysPermissionEndToEndTest extends AysEndToEndTest {
     void whenPermissionsFoundIfUserIsSuperAdmin_thenReturnPermissionsWithSuperPermissions() throws Exception {
 
         // Initialize
-        Set<AysPermission> permissions = permissionReadPort.findAll();
+        List<AysPermission> permissions = permissionReadPort.findAll();
 
         // Then
         String endpoint = BASE_PATH.concat("/permissions");
@@ -54,7 +53,7 @@ class AysPermissionEndToEndTest extends AysEndToEndTest {
     void whenPermissionsFound_thenReturnPermissions() throws Exception {
 
         // Initialize
-        Set<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
 
         // Then
         String endpoint = BASE_PATH.concat("/permissions");

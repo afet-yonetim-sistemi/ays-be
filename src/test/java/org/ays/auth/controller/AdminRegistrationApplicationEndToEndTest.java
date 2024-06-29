@@ -52,7 +52,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
@@ -178,7 +177,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .build()
         );
-        Set<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
@@ -191,7 +190,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withRoles(Set.of(role))
+                        .withRoles(List.of(role))
                         .withInstitution(institution)
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
@@ -404,7 +403,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(AdminRegistrationApplicationStatus.COMPLETED, applicationFromDatabase.get().getStatus());
 
 
-        Set<AysPermission> permissionsFromDatabase = permissionReadPort.findAllByIsSuperFalse();
+        List<AysPermission> permissionsFromDatabase = permissionReadPort.findAllByIsSuperFalse();
         Optional<AysUser> userFromDatabase = userReadPort.findByEmailAddress(completeRequest.getEmailAddress());
 
         Assertions.assertTrue(userFromDatabase.isPresent());
@@ -421,7 +420,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 .findFirst();
         Assertions.assertTrue(userRoleFromDatabase.isPresent());
 
-        Set<AysPermission> userPermissionsFromDatabase = userRoleFromDatabase.get().getPermissions();
+        List<AysPermission> userPermissionsFromDatabase = userRoleFromDatabase.get().getPermissions();
         userPermissionsFromDatabase.forEach(permissions -> Assertions.assertTrue(
                 permissionsFromDatabase.stream().anyMatch(
                         userPermission -> userPermission.getId().equals(permissions.getId())
@@ -439,7 +438,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .build()
         );
-        Set<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
@@ -452,7 +451,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withRoles(Set.of(role))
+                        .withRoles(List.of(role))
                         .withInstitution(institution)
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
@@ -507,7 +506,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .build()
         );
 
-        Set<AysPermission> permissionEntities = permissionReadPort.findAll();
+        List<AysPermission> permissionEntities = permissionReadPort.findAll();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
@@ -522,7 +521,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withInstitution(institution)
-                        .withRoles(Set.of(role))
+                        .withRoles(List.of(role))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
@@ -601,7 +600,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .build()
         );
 
-        Set<AysPermission> permissions = permissionReadPort.findAll();
+        List<AysPermission> permissions = permissionReadPort.findAll();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
@@ -615,7 +614,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withRoles(Set.of(role))
+                        .withRoles(List.of(role))
                         .withInstitution(institution)
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
@@ -658,8 +657,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .build()
         );
-        Set<AysPermission> permissionEntities = permissionReadPort.findAll();
-        ;
+        List<AysPermission> permissionEntities = permissionReadPort.findAll();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
@@ -672,7 +670,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withRoles(Set.of(role))
+                        .withRoles(List.of(role))
                         .withInstitution(institution)
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
@@ -724,7 +722,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .build()
         );
 
-        Set<AysPermission> permissionEntities = permissionReadPort.findAll();
+        List<AysPermission> permissionEntities = permissionReadPort.findAll();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
@@ -738,7 +736,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withRoles(Set.of(role))
+                        .withRoles(List.of(role))
                         .withInstitution(institution)
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
@@ -825,7 +823,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .build()
         );
 
-        Set<AysPermission> permissionEntities = permissionReadPort.findAll();
+        List<AysPermission> permissionEntities = permissionReadPort.findAll();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
@@ -840,7 +838,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withInstitution(institution)
-                        .withRoles(Set.of(role))
+                        .withRoles(List.of(role))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );

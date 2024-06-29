@@ -3,7 +3,7 @@ package org.ays.auth.util.exception;
 import org.ays.common.util.exception.AysNotExistException;
 
 import java.io.Serial;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Exception to be thrown when a permission with a given ID does not exist.
@@ -21,7 +21,7 @@ public final class AysPermissionNotExistException extends AysNotExistException {
      *
      * @param ids the IDs of the permissions don't exist
      */
-    public AysPermissionNotExistException(Set<String> ids) {
+    public AysPermissionNotExistException(List<String> ids) {
         super("the following permissions were not found! permissionIds:" + ids);
     }
 

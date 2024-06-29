@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -110,7 +111,7 @@ class AysAuthServiceImpl implements AysAuthService {
 
         boolean hasUserPermission = user.getRoles().stream()
                 .map(AysRole::getPermissions)
-                .flatMap(Set::stream)
+                .flatMap(List::stream)
                 .anyMatch(permission -> permission.getName().equals(sourcePage.getPermission()));
 
         if (!hasUserPermission) {

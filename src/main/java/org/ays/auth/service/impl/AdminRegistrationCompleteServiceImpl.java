@@ -26,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Implementation of {@link AdminRegistrationCompleteService} that handles the completion of admin registration applications.
@@ -112,13 +112,13 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
     private void setAdminRole(final AysUser user,
                               final Institution institution) {
 
-        final Set<AysRole> rolesOfInstitution = roleReadPort.findAllActivesByInstitutionId(institution.getId());
+        final List<AysRole> rolesOfInstitution = roleReadPort.findAllActivesByInstitutionId(institution.getId());
         if (CollectionUtils.isNotEmpty(rolesOfInstitution)) {
             user.setRoles(rolesOfInstitution);
             return;
         }
 
-        final Set<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        final List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
 
         final AysRole role = AysRole.builder()
                 .name("Admin")
@@ -128,7 +128,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
                 .build();
         final AysRole savedRole = roleSavePort.save(role);
 
-        user.setRoles(Set.of(savedRole));
+        user.setRoles(List.of(savedRole));
 
         log.trace("Admin Role created successfully!");
     }
