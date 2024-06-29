@@ -56,8 +56,8 @@ class AysPermissionAdapter implements AysPermissionReadPort {
      * @return A list of {@link AysPermission} matching the provided IDs.
      */
     @Override
-    public List<AysPermission> findAllByIdIn(final Set<String> ids) {
-        List<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(permissionIds);
+    public List<AysPermission> findAllByIds(final Set<String> ids) {
+        List<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(ids);
         return permissionEntityToDomainMapper.map(permissionEntities);
     }
 

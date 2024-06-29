@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,12 +43,10 @@ class AysPermissionAdapterTest extends AysUnitTest {
         Mockito.when(permissionRepository.findAll())
                 .thenReturn(mockPermissionEntities);
 
-        Set<AysPermission> mockPermissions = new HashSet<>(
-                permissionEntityToDomainMapper.map(mockPermissionEntities)
-        );
+        List<AysPermission> mockPermissions = permissionEntityToDomainMapper.map(mockPermissionEntities);
 
         // Then
-        Set<AysPermission> permissions = permissionAdapter.findAll();
+        List<AysPermission> permissions = permissionAdapter.findAll();
 
         Assertions.assertEquals(mockPermissions, permissions);
 
@@ -63,7 +60,7 @@ class AysPermissionAdapterTest extends AysUnitTest {
     void whenAllPermissionEntitiesFoundByIsSuperFalse_thenReturnSetOfPermissions() {
 
         // When
-        Set<AysPermissionEntity> mockPermissionEntities = Set.of(
+        List<AysPermissionEntity> mockPermissionEntities = List.of(
                 new AysPermissionEntityBuilder()
                         .withValidValues()
                         .withIsSuper(false)
@@ -76,12 +73,10 @@ class AysPermissionAdapterTest extends AysUnitTest {
         Mockito.when(permissionRepository.findAllByIsSuperFalse())
                 .thenReturn(mockPermissionEntities);
 
-        Set<AysPermission> mockPermissions = new HashSet<>(
-                permissionEntityToDomainMapper.map(mockPermissionEntities)
-        );
+        List<AysPermission> mockPermissions = permissionEntityToDomainMapper.map(mockPermissionEntities);
 
         // Then
-        Set<AysPermission> permissions = permissionAdapter.findAllByIsSuperFalse();
+        List<AysPermission> permissions = permissionAdapter.findAllByIsSuperFalse();
 
         Assertions.assertEquals(mockPermissions, permissions);
         permissions.forEach(permission -> Assertions.assertFalse(permission.isSuper()));
@@ -109,12 +104,10 @@ class AysPermissionAdapterTest extends AysUnitTest {
         Mockito.when(permissionRepository.findAllById(mockIds))
                 .thenReturn(mockPermissionEntities);
 
-        Set<AysPermission> mockPermissions = new HashSet<>(
-                permissionEntityToDomainMapper.map(mockPermissionEntities)
-        );
+        List<AysPermission> mockPermissions = permissionEntityToDomainMapper.map(mockPermissionEntities);
 
         // Then
-        Set<AysPermission> permissions = permissionAdapter.findAllByIds(mockIds);
+        List<AysPermission> permissions = permissionAdapter.findAllByIds(mockIds);
 
         Assertions.assertEquals(mockPermissions, permissions);
 
@@ -136,12 +129,10 @@ class AysPermissionAdapterTest extends AysUnitTest {
         Mockito.when(permissionRepository.findAllById(mockIds))
                 .thenReturn(mockPermissionEntities);
 
-        Set<AysPermission> mockPermissions = new HashSet<>(
-                permissionEntityToDomainMapper.map(mockPermissionEntities)
-        );
+        List<AysPermission> mockPermissions = permissionEntityToDomainMapper.map(mockPermissionEntities);
 
         // Then
-        Set<AysPermission> permissions = permissionAdapter.findAllByIds(mockIds);
+        List<AysPermission> permissions = permissionAdapter.findAllByIds(mockIds);
 
         Assertions.assertEquals(mockPermissions, permissions);
 

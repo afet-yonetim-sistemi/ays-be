@@ -130,7 +130,7 @@ class AysRoleAdapterTest extends AysUnitTest {
                 .build();
 
         // When
-        Set<AysRoleEntity> mockRoleEntities = Set.of(
+        List<AysRoleEntity> mockRoleEntities = List.of(
                 new AysRoleEntityBuilder()
                         .withValidValues()
                         .withInstitution(mockInstitutionEntity)
@@ -146,7 +146,7 @@ class AysRoleAdapterTest extends AysUnitTest {
                 .thenReturn(mockRoleEntities);
 
         // Then
-        Set<AysRole> roles = roleAdapter.findAllActivesByInstitutionId(mockInstitutionId);
+        List<AysRole> roles = roleAdapter.findAllActivesByInstitutionId(mockInstitutionId);
 
         Assertions.assertTrue(CollectionUtils.isNotEmpty(roles));
 
@@ -167,7 +167,7 @@ class AysRoleAdapterTest extends AysUnitTest {
                 .thenReturn(null);
 
         // Then
-        Set<AysRole> roles = roleAdapter.findAllActivesByInstitutionId(mockInstitutionId);
+        List<AysRole> roles = roleAdapter.findAllActivesByInstitutionId(mockInstitutionId);
 
         Assertions.assertTrue(CollectionUtils.isEmpty(roles));
 
