@@ -1,10 +1,20 @@
 package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
+import org.ays.auth.model.AysRole;
+import org.ays.auth.model.AysRoleBuilder;
+import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
+import org.ays.auth.model.request.AysRoleListRequest;
+import org.ays.auth.model.request.AysRoleListRequestBuilder;
+import org.ays.auth.model.response.AysRolesResponse;
 import org.ays.auth.service.AysRoleCreateService;
+import org.ays.auth.service.AysRoleReadService;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
+import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.exception.model.AysErrorBuilder;
@@ -17,15 +27,126 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.List;
 import java.util.Set;
 
 class AysRoleControllerTest extends AysRestControllerTest {
 
     @MockBean
+    private AysRoleReadService roleReadService;
+
+    @MockBean
     private AysRoleCreateService roleCreateService;
 
 
+    private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
+
+
     private static final String BASE_PATH = "/api/v1";
+
+
+    @Test
+    void givenValidRoleListRequest_whenRolesFound_thenReturnAysPageResponseOfRolesResponse() throws Exception {
+
+        // Given
+        AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        List<AysRole> mockRoles = List.of(
+                new AysRoleBuilder().withValidValues().build()
+        );
+
+        AysPage<AysRole> mockRolePage = AysPageBuilder
+                .from(mockRoles, mockListRequest.getPageable());
+
+        Mockito.when(roleReadService.findAll(Mockito.any(AysRoleListRequest.class)))
+                .thenReturn(mockRolePage);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        List<AysRolesResponse> mockRolesResponse = roleToRolesResponseMapper.map(mockRoles);
+        AysPageResponse<AysRolesResponse> pageOfResponse = AysPageResponse.<AysRolesResponse>builder()
+                .of(mockRolePage)
+                .content(mockRolesResponse)
+                .build();
+        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponse
+                .successOf(pageOfResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.times(1))
+                .findAll(Mockito.any(AysRoleListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Test Role 1234",
+            "Role *^%$#",
+            " Test",
+            "? Role",
+            "J"
+    })
+    void givenRoleListRequest_whenNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
+
+        // Given
+        AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
+                .withValidValues()
+                .withName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.never())
+                .findAll(Mockito.any(AysRoleListRequest.class));
+    }
+
+    @Test
+    void givenValidRoleListRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.never())
+                .findAll(Mockito.any(AysRoleListRequest.class));
+    }
+
 
     @Test
     void givenValidRoleCreateRequest_whenRoleCreated_thenReturnSuccess() throws Exception {

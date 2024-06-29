@@ -8,7 +8,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.auth.model.entity.AysRoleEntity;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.AysFilter;
-import org.ays.common.util.validation.NoSpecialCharacters;
+import org.ays.common.util.validation.Name;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Set;
@@ -34,8 +34,8 @@ import java.util.Set;
 @Builder
 public class AysRoleFilter implements AysFilter {
 
+    @Name
     @Size(min = 2, max = 255)
-    @NoSpecialCharacters
     private String name;
     private Set<AysRoleStatus> statuses;
     private String institutionId;
