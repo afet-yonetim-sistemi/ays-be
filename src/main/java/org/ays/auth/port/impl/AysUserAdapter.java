@@ -42,13 +42,13 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
 
     @Override
-    public AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter, String institutionId) {
+    public AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter) {
 
         final Pageable pageable = aysPageable.toPageable();
 
         final Specification<AysUserEntity> specification = filter.toSpecification();
 
-        final Page<AysUserEntity> userEntitysPage = userRepository.findAllByInstitutionId(institutionId, specification, pageable);
+        final Page<AysUserEntity> userEntitysPage = userRepository.findAll(specification, pageable);
 
         final List<AysUser> users = userEntityToDomainMapper.map(userEntitysPage.getContent());
 
