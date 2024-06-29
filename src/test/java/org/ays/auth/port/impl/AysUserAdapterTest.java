@@ -2,6 +2,7 @@ package org.ays.auth.port.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.entity.AysUserEntityBuilder;
 import org.ays.auth.model.mapper.AysUserEntityToDomainMapper;
@@ -210,6 +211,101 @@ class AysUserAdapterTest extends AysUnitTest {
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .existsByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber());
+    }
+
+
+    @Test
+    void givenValidUserWithoutPasswordAndLoginAttempt_whenUserSaved_thenReturnSavedUser() {
+
+        // Given
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(null)
+                .build();
+
+        // When
+        String mockId = AysRandomUtil.generateUUID();
+
+        AysUserEntity mockUserEntity = userToEntityMapper.map(mockUser);
+        mockUserEntity.setId(mockId);
+        Mockito.when(userRepository.save(Mockito.any(AysUserEntity.class)))
+                .thenReturn(mockUserEntity);
+
+        mockUser.setId(mockId);
+
+        // Then
+        AysUser user = userAdapter.save(mockUser);
+
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals(mockUser.getId(), user.getId());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(Mockito.any(AysUserEntity.class));
+    }
+
+
+    @Test
+    void givenValidUserWithPassword_whenUserSaved_thenReturnSavedUser() {
+
+        // Given
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(null)
+                .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
+                .build();
+
+        // When
+        String mockId = AysRandomUtil.generateUUID();
+
+        AysUserEntity mockUserEntity = userToEntityMapper.map(mockUser);
+        mockUserEntity.setId(mockId);
+        Mockito.when(userRepository.save(Mockito.any(AysUserEntity.class)))
+                .thenReturn(mockUserEntity);
+
+        mockUser.setId(mockId);
+
+        // Then
+        AysUser user = userAdapter.save(mockUser);
+
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals(mockUser.getId(), user.getId());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(Mockito.any(AysUserEntity.class));
+    }
+
+
+    @Test
+    void givenValidUserWithLoginAttempt_whenUserSaved_thenReturnSavedUser() {
+
+        // Given
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(null)
+                .withLoginAttempt(new AysUserBuilder.LoginAttemptBuilder().withValidValues().build())
+                .build();
+
+        // When
+        String mockId = AysRandomUtil.generateUUID();
+
+        AysUserEntity mockUserEntity = userToEntityMapper.map(mockUser);
+        mockUserEntity.setId(mockId);
+        Mockito.when(userRepository.save(Mockito.any(AysUserEntity.class)))
+                .thenReturn(mockUserEntity);
+
+        mockUser.setId(mockId);
+
+        // Then
+        AysUser user = userAdapter.save(mockUser);
+
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals(mockUser.getId(), user.getId());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(Mockito.any(AysUserEntity.class));
     }
 
 

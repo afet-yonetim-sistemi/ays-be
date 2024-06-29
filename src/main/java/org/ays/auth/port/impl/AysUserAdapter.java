@@ -118,8 +118,8 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
     @Override
     @Transactional
     public AysUser save(final AysUser user) {
-        final AysUserEntity userEntity = userToEntityMapper.map(user);
 
+        final AysUserEntity userEntity = userToEntityMapper.map(user);
 
         if (user.getPassword() != null) {
             userEntity.getPassword().setUser(userEntity);
