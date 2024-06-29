@@ -76,4 +76,53 @@ class AysUserAdapterTest extends AysUnitTest {
                 .findById(mockId);
     }
 
+
+    @Test
+    void givenValidEmailAddress_whenUserFoundByEmailAddress_thenReturnOptionalUser() {
+
+        // Given
+        String mockEmailAddress = "test@afetyonetimsistemi.org";
+
+        // When
+        AysUserEntity mockUserEntity = new AysUserEntityBuilder()
+                .withValidValues()
+                .withEmailAddress(mockEmailAddress)
+                .build();
+        Mockito.when(userRepository.findByEmailAddress(mockEmailAddress))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByEmailAddress(mockEmailAddress);
+
+        Assertions.assertTrue(user.isPresent());
+        Assertions.assertEquals(mockUser, user.get());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByEmailAddress(mockEmailAddress);
+    }
+
+    @Test
+    void givenValidEmailAddress_whenUserNotFoundByEmailAddress_thenReturnOptionalEmpty() {
+
+        // Given
+        String mockEmailAddress = "test@@afetyonetimsistemi.org";
+
+        // When
+        Mockito.when(userRepository.findByEmailAddress(mockEmailAddress))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByEmailAddress(mockEmailAddress);
+
+        Assertions.assertFalse(user.isPresent());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByEmailAddress(mockEmailAddress);
+    }
+
+
 }
