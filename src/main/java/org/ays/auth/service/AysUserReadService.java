@@ -7,5 +7,5 @@ import org.ays.common.model.AysPage;
 public interface AysUserReadService {
 
     //todo javadoc
-    AysPage<AysUser> findAllByInstitutionId(AysUserListRequest listRequest);
+    AysPage<AysUser> findAll(AysUserListRequest listRequest);
 }
