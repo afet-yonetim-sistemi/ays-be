@@ -13,8 +13,22 @@ import org.springframework.util.StringUtils;
 
 import java.util.Set;
 
-// todo javadoc
-
+/**
+ * Filter criteria for querying users in the application.
+ * <p>
+ * The {@link AysUserFilter} class allows the construction of dynamic query specifications
+ * for users, based on the provided filter parameters. It implements the {@link AysFilter} interface,
+ * which requires the implementation of the {@link AysUserFilter#toSpecification()} method.
+ * </p>
+ * <p>
+ * This filter supports filtering by first name, last name, phone number, statuses, city, and institution ID.
+ * When converting to a {@link Specification}, it combines the criteria using logical AND operations.
+ * </p>
+ *
+ * @see AysUserEntity
+ * @see AysFilter
+ * @see org.springframework.data.jpa.domain.Specification
+ */
 @Getter
 @Setter
 @Builder
@@ -27,6 +41,17 @@ public class AysUserFilter implements AysFilter {
     private String city;
     private String institutionId;
 
+    /**
+     * Converts the current filter criteria into a {@link Specification} for querying users.
+     * <p>
+     * This method builds a {@link Specification} based on the filter properties. It uses
+     * the first name and last name for partial matching (case-insensitive), filters by the provided
+     * user statuses, phone number, city, and institution ID. If no specific filter properties are specified,
+     * those criteria are not included in the final specification.
+     * </p>
+     *
+     * @return a {@link Specification} object representing the query criteria based on the current filter.
+     */
     @Override
     public Specification<AysUserEntity> toSpecification() {
 

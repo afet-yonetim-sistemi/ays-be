@@ -14,16 +14,32 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ * Service implementation for reading users.
+ * <p>
+ * The {@code AysUserReadServiceImpl} class provides the logic for retrieving users based on the provided request
+ * and ensures that the users retrieved are scoped to the institution of the current user.
+ * </p>
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AysUserReadServiceImpl implements AysUserReadService {
 
-    //todo javadoc and cover with test
-
     private final AysUserReadPort userReadPort;
     private final AysIdentity identity;
 
+
+    /**
+     * Retrieves a paginated list of users based on the provided request.
+     * <p>
+     * If no filter is provided in the request, a default filter is applied which scopes the results
+     * to the institution associated with the current user.
+     * </p>
+     *
+     * @param listRequest the request containing pagination and filtering information.
+     * @return a paginated list of users.
+     */
     @Override
     public AysPage<AysUser> findAll(AysUserListRequest listRequest) {
 

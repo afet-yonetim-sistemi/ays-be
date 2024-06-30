@@ -29,7 +29,13 @@ public interface AysUserReadPort {
      */
     Optional<AysUser> findByEmailAddress(String emailAddress);
 
-    // todo javadoc
+    /**
+     * Finds all users with pagination and optional filtering.
+     *
+     * @param aysPageable the pagination configuration
+     * @param filter      the filter for users
+     * @return a paginated list of users
+     */
     AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter);
 
     /**

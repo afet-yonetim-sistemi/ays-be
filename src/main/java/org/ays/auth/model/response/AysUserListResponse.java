@@ -7,8 +7,13 @@ import org.ays.common.model.AysPhoneNumber;
 
 import java.util.UUID;
 
-// todo javadoc
-
+/**
+ * Data Transfer Object for user responses.
+ * <p>
+ * The {@link AysUserListResponse} class encapsulates the information that is sent back
+ * to the client as a response for user-related operations.
+ * </p>
+ */
 @Getter
 @Setter
 public class AysUserListResponse {

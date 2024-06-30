@@ -38,9 +38,17 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
     private final AysUserEntityToDomainMapper userEntityToDomainMapper = AysUserEntityToDomainMapper.initialize();
 
 
-    //todo javadoc and cover with test
-
-
+    /**
+     * Finds all users with pagination and optional filtering.
+     * <p>
+     * This method uses the provided {@link AysPageable} for pagination and {@link AysUserFilter} for filtering.
+     * It returns a paginated list of {@link AysUser} domain models.
+     * </p>
+     *
+     * @param aysPageable the pagination configuration
+     * @param filter      the filter for users
+     * @return a paginated list of users
+     */
     @Override
     public AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter) {
 

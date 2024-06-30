@@ -11,8 +11,17 @@ import org.ays.common.model.request.AysPagingRequest;
 
 import java.util.Set;
 
-// todo javadoc
-
+/**
+ * Data transfer object for handling user listing requests with pagination and filtering capabilities.
+ * <p>
+ * The {@code AysUserListRequest} class extends {@link AysPagingRequest} to provide additional
+ * functionalities for user listing requests, including validation of sorting properties and the
+ * inclusion of a {@link AysUserFilter} for filtering users based on specific criteria.
+ * </p>
+ *
+ * @see AysPagingRequest
+ * @see AysUserFilter
+ */
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,6 +31,15 @@ public class AysUserListRequest extends AysPagingRequest {
 
     private AysUserFilter filter;
 
+    /**
+     * Validates sorting properties to ensure no unsupported sorting property is used in the request.
+     * <p>
+     * This method overrides {@link AysPagingRequest#isOrderPropertyAccepted()} to enforce that only
+     * certain sorting properties, such as "firstName" and "createdAt", are accepted for sorting users.
+     * </p>
+     *
+     * @return {@code true} if the sorting property is accepted, {@code false} otherwise.
+     */
     @JsonIgnore
     @AssertTrue
     @Override
