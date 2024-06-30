@@ -1,9 +1,6 @@
 package org.ays.auth.repository;
 
 import org.ays.auth.model.entity.AysUserEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -21,10 +18,6 @@ public interface AysUserRepository extends JpaRepository<AysUserEntity, String>,
      * @return an optional containing the UserEntity with the given username, or an empty optional if not found
      */
     Optional<AysUserEntity> findByEmailAddress(String emailAddress);
-
-    //todo javadoc
-
-    Page<AysUserEntity> findAllByInstitutionId(String institutionId, Specification specification, Pageable pageable);
 
     /**
      * Checks if an {@link AysUserEntity} exists with the given email.
