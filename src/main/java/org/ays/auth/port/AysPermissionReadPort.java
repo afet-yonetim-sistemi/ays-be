@@ -30,6 +30,6 @@ public interface AysPermissionReadPort {
      * @param permissionIds The set of permission IDs to retrieve.
      * @return A list containing permissions with the specified IDs.
      */
-    List<AysPermission> findAllByIdIn(Set<String> permissionIds);
+    List<AysPermission> findAllByIds(Set<String> permissionIds);
 
 }

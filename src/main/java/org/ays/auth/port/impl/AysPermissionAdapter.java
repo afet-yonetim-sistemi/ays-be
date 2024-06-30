@@ -30,18 +30,18 @@ class AysPermissionAdapter implements AysPermissionReadPort {
     /**
      * Retrieves all {@link AysPermission} from the repository.
      *
-     * @return A set of all {@link AysPermission}.
+     * @return A list of all {@link AysPermission}.
      */
     @Override
     public List<AysPermission> findAll() {
-        List<AysPermissionEntity> permissionEntities = permissionRepository.findAll();
+        final List<AysPermissionEntity> permissionEntities = permissionRepository.findAll();
         return permissionEntityToDomainMapper.map(permissionEntities);
     }
 
     /**
      * Retrieves all {@link AysPermission} where {@code isSuper} flag is false from the repository.
      *
-     * @return A set of {@link AysPermission} where {@code isSuper} is false.
+     * @return A list of {@link AysPermission} where {@code isSuper} is false.
      */
     @Override
     public List<AysPermission> findAllByIsSuperFalse() {
@@ -52,12 +52,12 @@ class AysPermissionAdapter implements AysPermissionReadPort {
     /**
      * Retrieves {@link AysPermission} with IDs present in the given set from the repository.
      *
-     * @param permissionIds The set of permission IDs to retrieve.
-     * @return A set of {@link AysPermission} matching the provided IDs.
+     * @param ids The set of permission IDs to retrieve.
+     * @return A list of {@link AysPermission} matching the provided IDs.
      */
     @Override
-    public List<AysPermission> findAllByIdIn(final Set<String> permissionIds) {
-        List<AysPermissionEntity> permissionEntities = permissionRepository.findAllByIdIn(permissionIds);
+    public List<AysPermission> findAllByIds(final Set<String> ids) {
+        List<AysPermissionEntity> permissionEntities = permissionRepository.findAllById(ids);
         return permissionEntityToDomainMapper.map(permissionEntities);
     }
 
