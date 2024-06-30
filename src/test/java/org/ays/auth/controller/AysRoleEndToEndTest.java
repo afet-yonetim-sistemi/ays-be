@@ -4,8 +4,10 @@ import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.enums.AysRoleStatus;
+import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
+import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.common.model.response.AysResponse;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,7 +34,34 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     private AysRoleReadPort roleReadPort;
 
 
+    private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
+
+
     private static final String BASE_PATH = "/api/v1";
+
+    @Test
+    void whenRolesFound_thenReturnRoles() throws Exception {
+
+        // Initialize
+        Set<AysRole> roles = roleReadPort.findAll();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles/summary");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, adminToken.getAccessToken());
+
+        List<AysRolesSummaryResponse> rolesSummaryResponses = roleToRolesSummaryResponseMapper.map(roles);
+        AysResponse<List<AysRolesSummaryResponse>> response = AysResponse
+                .successOf(rolesSummaryResponses);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, response)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("size()")
+                        .value(response.getResponse().size()));
+    }
 
     @Test
     @Transactional
