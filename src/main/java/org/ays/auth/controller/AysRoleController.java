@@ -94,10 +94,14 @@ class AysRoleController {
 
 
     /**
-     * Handles GET requests for retrieving the details of a role by its ID.
+     * GET /role/{id} : Retrieve the details of a role by its ID.
+     * <p>
+     * This endpoint handles the retrieval of a role by its ID. The user must have the 'role:detail'
+     * authority to access this endpoint.
+     * </p>
      *
-     * @param id the ID of the role to retrieve
-     * @return a response entity containing the details of the role
+     * @param id The ID of the role to retrieve.
+     * @return An {@link AysResponse} containing the {@link AysRoleResponse} if the role is found.
      */
     @GetMapping("/role/{id}")
     @PreAuthorize("hasAuthority('role:detail')")
