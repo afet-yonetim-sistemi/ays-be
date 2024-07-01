@@ -32,7 +32,7 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.response.".concat(path));
     }
 
-    public static JsonPathResultMatchers responseArrayElement(String path) {
+    public static JsonPathResultMatchers responses(String path) {
         return MockMvcResultMatchers.jsonPath("$.response[*].".concat(path));
     }
 

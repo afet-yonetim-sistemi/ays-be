@@ -63,9 +63,9 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.responseArrayElement("id")
+                .andExpect(AysMockResultMatchersBuilders.responses("id")
                         .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.responseArrayElement("name")
+                .andExpect(AysMockResultMatchersBuilders.responses("name")
                         .isNotEmpty());
     }
 
