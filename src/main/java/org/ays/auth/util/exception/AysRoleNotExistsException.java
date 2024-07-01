@@ -1,13 +1,13 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.util.exception.AysAlreadyException;
+import org.ays.common.util.exception.AysNotExistException;
 
 import java.io.Serial;
 
 /**
  * Exception to be thrown when a role with a given id does not exist.
  */
-public final class AysRoleNotExistsException extends AysAlreadyException {
+public final class AysRoleNotExistsException extends AysNotExistException {
 
     /**
      * Unique identifier for serialization.
