@@ -76,6 +76,12 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
     }
 
 
+    /**
+     * Retrieves an {@link AysRole} by its ID.
+     *
+     * @param id The ID of the role to retrieve.
+     * @return An {@link Optional} containing the {@link AysRole} if found, otherwise empty.
+     */
     @Override
     public Optional<AysRole> findById(final String id) {
         final Optional<AysRoleEntity> applicationEntity = roleRepository
