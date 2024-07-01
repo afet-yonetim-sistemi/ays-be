@@ -4,11 +4,13 @@ import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
+import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
 import org.ays.auth.model.response.AysRolesResponse;
+import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
 import org.ays.auth.service.AysRoleReadService;
 import org.ays.common.model.AysPage;
@@ -40,9 +42,42 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
 
     private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
-
+    private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1";
+
+
+    @Test
+    void whenRolesFound_thenReturnRoles() throws Exception {
+
+        // When
+        Set<AysRole> mockRoles = Set.of(
+                new AysRoleBuilder().withValidValues().build(),
+                new AysRoleBuilder().withValidValues().build()
+        );
+
+        Mockito.when(roleReadService.findAll())
+                .thenReturn(mockRoles);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles/summary");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminToken.getAccessToken());
+
+        List<AysRolesSummaryResponse> mockRolesSummaryResponses = roleToRolesSummaryResponseMapper.map(mockRoles);
+        AysResponse<List<AysRolesSummaryResponse>> mockResponse = AysResponse
+                .successOf(mockRolesSummaryResponses);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.times(1))
+                .findAll();
+    }
 
 
     @Test
