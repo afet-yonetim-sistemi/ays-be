@@ -1,6 +1,9 @@
 package org.ays.auth.port;
 
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.AysUserFilter;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysPhoneNumber;
 
 import java.util.Optional;
@@ -27,6 +30,15 @@ public interface AysUserReadPort {
     Optional<AysUser> findByEmailAddress(String emailAddress);
 
     /**
+     * Finds all users with pagination and optional filtering.
+     *
+     * @param aysPageable the pagination configuration
+     * @param filter      the filter for users
+     * @return a paginated list of users
+     */
+    AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter);
+
+    /**
      * Checks if a user with the given email address exists in the repository.
      *
      * @param emailAddress The email address to check for existence.
@@ -41,5 +53,6 @@ public interface AysUserReadPort {
      * @return true if a user with the given phone number exists, otherwise false.
      */
     boolean existsByPhoneNumber(AysPhoneNumber phoneNumber);
+
 
 }

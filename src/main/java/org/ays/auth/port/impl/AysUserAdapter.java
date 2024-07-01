@@ -2,16 +2,23 @@ package org.ays.auth.port.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.mapper.AysUserEntityToDomainMapper;
 import org.ays.auth.model.mapper.AysUserToEntityMapper;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.repository.AysUserRepository;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysPhoneNumber;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,6 +39,32 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
 
     /**
+     * Finds all users with pagination and optional filtering.
+     * <p>
+     * This method uses the provided {@link AysPageable} for pagination and {@link AysUserFilter} for filtering.
+     * It returns a paginated list of {@link AysUser} domain models.
+     * </p>
+     *
+     * @param aysPageable the pagination configuration
+     * @param filter      the filter for users
+     * @return a paginated list of users
+     */
+    @Override
+    public AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter) {
+
+        final Pageable pageable = aysPageable.toPageable();
+
+        final Specification<AysUserEntity> specification = filter.toSpecification();
+
+        final Page<AysUserEntity> userEntitysPage = userRepository.findAll(specification, pageable);
+
+        final List<AysUser> users = userEntityToDomainMapper.map(userEntitysPage.getContent());
+
+        return AysPage.of(filter, userEntitysPage, users);
+    }
+
+
+    /**
      * Retrieves an {@link AysUser} by its ID.
      *
      * @param id The ID of the user to retrieve.
@@ -42,6 +75,7 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
         Optional<AysUserEntity> userEntity = userRepository.findById(id);
         return userEntity.map(userEntityToDomainMapper::map);
     }
+
 
     /**
      * Retrieves an {@link AysUser} by its email address.
@@ -55,6 +89,7 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
         return userEntity.map(userEntityToDomainMapper::map);
     }
 
+
     /**
      * Checks if a user with the given email address exists in the repository.
      *
@@ -65,6 +100,7 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
     public boolean existsByEmailAddress(final String emailAddress) {
         return userRepository.existsByEmailAddress(emailAddress);
     }
+
 
     /**
      * Checks if a user with the given phone number exists in the repository.
@@ -80,6 +116,7 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
         );
     }
 
+
     /**
      * Saves an {@link AysUser} to the database.
      *
@@ -89,8 +126,8 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
     @Override
     @Transactional
     public AysUser save(final AysUser user) {
-        final AysUserEntity userEntity = userToEntityMapper.map(user);
 
+        final AysUserEntity userEntity = userToEntityMapper.map(user);
 
         if (user.getPassword() != null) {
             userEntity.getPassword().setUser(userEntity);

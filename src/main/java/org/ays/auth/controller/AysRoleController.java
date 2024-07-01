@@ -19,14 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST controller for managing roles.
- * <p>
- * The {@link  AysRoleController} class provides endpoints for creating and listing roles.
- * It is annotated with {@code @RestController} and {@code @RequestMapping}
- * to define it as a REST controller and to map the base URL for the endpoints.
- * The {@code @RequiredArgsConstructor} annotation is used to generate a constructor
- * with required arguments, in this case, the {@link AysRoleReadService} and {@link AysRoleCreateService}.
- * </p>
+ * REST controller for managing users.
+ * This controller provides endpoints for listing users.
  *
  * @see AysRoleReadService
  * @see AysRoleCreateService
