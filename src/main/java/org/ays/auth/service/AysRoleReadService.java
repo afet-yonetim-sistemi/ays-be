@@ -4,6 +4,8 @@ import org.ays.auth.model.AysRole;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.common.model.AysPage;
 
+import java.util.Set;
+
 /**
  * Service interface for reading and retrieving roles in a paginated format.
  * <p>
@@ -18,6 +20,13 @@ import org.ays.common.model.AysPage;
  * @see AysPage
  */
 public interface AysRoleReadService {
+
+    /**
+     * Retrieves all roles.
+     *
+     * @return A set of {@link AysRole} objects representing all roles in the system.
+     */
+    Set<AysRole> findAll();
 
     /**
      * Retrieves a paginated list of roles based on the specified {@link AysRoleListRequest}.
