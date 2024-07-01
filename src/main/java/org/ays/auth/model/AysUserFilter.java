@@ -10,7 +10,6 @@ import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysFilter;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.util.validation.Name;
-import org.ays.common.util.validation.NoSpecialCharacters;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -49,7 +48,7 @@ public class AysUserFilter implements AysFilter {
 
     private Set<AysUserStatus> statuses;
 
-    @NoSpecialCharacters
+    @Name
     @Size(min = 2, max = 100)
     private String city;
 

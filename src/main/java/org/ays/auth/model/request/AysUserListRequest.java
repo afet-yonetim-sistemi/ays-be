@@ -1,6 +1,7 @@
 package org.ays.auth.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ import java.util.Set;
 public class AysUserListRequest extends AysPagingRequest {
 
 
+    @Valid
     private AysUserFilter filter;
 
     /**
