@@ -76,6 +76,14 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
     }
 
 
+    @Override
+    public Optional<AysRole> findById(final String id) {
+        final Optional<AysRoleEntity> applicationEntity = roleRepository
+                .findById(id);
+        return applicationEntity.map(roleEntityToDomainMapper::map);
+    }
+
+
     /**
      * Retrieves all active {@link AysRole} entities associated with a specific institution ID.
      *

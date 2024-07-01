@@ -35,6 +35,14 @@ public interface AysRoleReadPort {
     AysPage<AysRole> findAll(AysPageable aysPageable, AysRoleFilter filter);
 
     /**
+     * Retrieves a role by its unique identifier.
+     *
+     * @param id the unique identifier of the role.
+     * @return a role.
+     */
+    Optional<AysRole> findById(String id);
+
+    /**
      * Retrieves all active roles associated with a specific institution.
      *
      * @param institutionId The ID of the institution.
