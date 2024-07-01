@@ -4,11 +4,13 @@ import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.enums.AysRoleStatus;
+import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
 import org.ays.auth.model.response.AysRolesResponse;
+import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.common.model.response.AysPageResponse;
@@ -35,7 +37,37 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     private AysRoleReadPort roleReadPort;
 
 
+    private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
+
+
     private static final String BASE_PATH = "/api/v1";
+
+
+    @Test
+    void whenRolesFound_thenReturnSummaryOfRoles() throws Exception {
+
+        // Initialize
+        List<AysRole> roles = roleReadPort.findAll();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles/summary");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, adminToken.getAccessToken());
+
+        List<AysRolesSummaryResponse> rolesSummaryResponses = roleToRolesSummaryResponseMapper.map(roles);
+        AysResponse<List<AysRolesSummaryResponse>> response = AysResponse
+                .successOf(rolesSummaryResponses);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, response)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.responses("id")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.responses("name")
+                        .isNotEmpty());
+    }
 
 
     @Test

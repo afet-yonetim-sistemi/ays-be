@@ -12,12 +12,14 @@ import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
 import org.ays.common.util.AysRandomUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Set;
 
 class AysRoleReadServiceImplTest extends AysUnitTest {
 
@@ -29,6 +31,31 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
 
     @Mock
     private AysIdentity identity;
+
+
+    @Test
+    void whenRolesFound_thenReturnRoles() {
+
+        // When
+        List<AysRole> mockRoles = List.of(
+                new AysRoleBuilder().withValidValues().build(),
+                new AysRoleBuilder().withValidValues().build(),
+                new AysRoleBuilder().withValidValues().build(),
+                new AysRoleBuilder().withValidValues().build(),
+                new AysRoleBuilder().withValidValues().build()
+        );
+        Mockito.when(roleReadPort.findAll())
+                .thenReturn(mockRoles);
+
+        // Then
+        List<AysRole> roles = roleReadService.findAll();
+
+        Assertions.assertEquals(mockRoles.size(), roles.size());
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findAll();
+    }
 
 
     @Test
