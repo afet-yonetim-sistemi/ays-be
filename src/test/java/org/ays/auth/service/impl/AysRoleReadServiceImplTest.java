@@ -37,7 +37,7 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
     void whenRolesFound_thenReturnRoles() {
 
         // When
-        Set<AysRole> mockRoles = Set.of(
+        List<AysRole> mockRoles = List.of(
                 new AysRoleBuilder().withValidValues().build(),
                 new AysRoleBuilder().withValidValues().build(),
                 new AysRoleBuilder().withValidValues().build(),
@@ -48,7 +48,7 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
                 .thenReturn(mockRoles);
 
         // Then
-        Set<AysRole> roles = roleReadService.findAll();
+        List<AysRole> roles = roleReadService.findAll();
 
         Assertions.assertEquals(mockRoles.size(), roles.size());
 

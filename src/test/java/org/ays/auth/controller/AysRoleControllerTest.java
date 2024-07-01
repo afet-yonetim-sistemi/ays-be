@@ -49,10 +49,10 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
 
     @Test
-    void whenRolesFound_thenReturnRoles() throws Exception {
+    void whenRolesFound_thenReturnSummaryOfRoles() throws Exception {
 
         // When
-        Set<AysRole> mockRoles = Set.of(
+        List<AysRole> mockRoles = List.of(
                 new AysRoleBuilder().withValidValues().build(),
                 new AysRoleBuilder().withValidValues().build()
         );

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * REST controller for managing roles.
@@ -61,9 +60,9 @@ class AysRoleController {
      */
     @GetMapping("/roles/summary")
     @PreAuthorize("hasAnyAuthority('user:create', 'user:update')")
-    public AysResponse<List<AysRolesSummaryResponse>> findAll() {
+    public AysResponse<List<AysRolesSummaryResponse>> findAllSummary() {
 
-        final Set<AysRole> roles = roleReadService.findAll();
+        final List<AysRole> roles = roleReadService.findAll();
 
         final List<AysRolesSummaryResponse> permissionsResponses = roleToRolesSummaryResponseMapper
                 .map(roles);

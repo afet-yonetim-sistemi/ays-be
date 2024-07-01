@@ -18,10 +18,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Adapter class implementing both {@link AysRoleReadPort} and {@link AysRoleSavePort} interfaces.
@@ -43,12 +41,12 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
     /**
      * Retrieves all {@link AysRole} from the repository.
      *
-     * @return A set of all {@link AysRole}.
+     * @return A list of all {@link AysRole}.
      */
     @Override
-    public Set<AysRole> findAll() {
+    public List<AysRole> findAll() {
         List<AysRoleEntity> roleEntities = roleRepository.findAll();
-        return new HashSet<>(roleEntityToDomainMapper.map(roleEntities));
+        return roleEntityToDomainMapper.map(roleEntities);
     }
 
 

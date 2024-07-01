@@ -44,10 +44,10 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
 
 
     @Test
-    void whenRolesFound_thenReturnRoles() throws Exception {
+    void whenRolesFound_thenReturnSummaryOfRoles() throws Exception {
 
         // Initialize
-        Set<AysRole> roles = roleReadPort.findAll();
+        List<AysRole> roles = roleReadPort.findAll();
 
         // Then
         String endpoint = BASE_PATH.concat("/roles/summary");
@@ -63,8 +63,10 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.response("size()")
-                        .value(response.getResponse().size()));
+                .andExpect(AysMockResultMatchersBuilders.responseArrayElement("id")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.responseArrayElement("name")
+                        .isNotEmpty());
     }
 
 
