@@ -7,6 +7,7 @@ import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.service.AysRoleReadService;
+import org.ays.auth.util.exception.AysRoleNotExistsException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;
