@@ -31,4 +31,5 @@ public interface AysUserReadService {
      * @return a paginated list of users matching the request criteria.
      */
     AysPage<AysUser> findAll(AysUserListRequest listRequest);
+
 }

@@ -53,6 +53,7 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
     public AysPage<AysRole> findAll(final AysPageable aysPageable, final AysRoleFilter filter) {
 
         final Pageable pageable = aysPageable.toPageable();
+
         final Specification<AysRoleEntity> specification = filter.toSpecification();
 
         final Page<AysRoleEntity> roleEntitiesPage = roleRepository.findAll(specification, pageable);

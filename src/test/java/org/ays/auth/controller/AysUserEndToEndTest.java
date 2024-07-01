@@ -4,7 +4,7 @@ import org.ays.AysEndToEndTest;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
-import org.ays.auth.model.response.AysUserListResponse;
+import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.Set;
 
 class AysUserEndToEndTest extends AysEndToEndTest {
-
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -35,7 +34,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .post(endpoint, superAdminToken.getAccessToken(), listRequest);
 
 
-        AysResponse<AysPageResponse<AysUserListResponse>> mockResponse = AysResponseBuilder.success();
+        AysResponse<AysPageResponse<AysUsersResponse>> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -59,7 +58,11 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.firstContent("city")
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("status")
-                        .exists());
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("updatedAt")
+                        .isEmpty());
     }
 
     @Test
@@ -79,7 +82,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .post(endpoint, adminToken.getAccessToken(), listRequest);
 
 
-        AysResponse<AysPageResponse<AysUserListResponse>> mockResponse = AysResponseBuilder.success();
+        AysResponse<AysPageResponse<AysUsersResponse>> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -103,7 +106,11 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.firstContent("city")
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("status")
-                        .exists());
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("updatedAt")
+                        .isEmpty());
     }
 
 }

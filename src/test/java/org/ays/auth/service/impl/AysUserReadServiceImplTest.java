@@ -30,6 +30,7 @@ class AysUserReadServiceImplTest extends AysUnitTest {
     @Mock
     private AysIdentity identity;
 
+
     @Test
     void givenValidListRequest_whenUsersFound_thenReturnAysPageOfUsers() {
 

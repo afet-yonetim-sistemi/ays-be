@@ -29,7 +29,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class AysUserListRequest extends AysPagingRequest {
 
-
     @Valid
     private AysUserFilter filter;
 

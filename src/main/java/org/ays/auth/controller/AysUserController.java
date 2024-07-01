@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserListRequest;
-import org.ays.auth.model.response.AysUserListResponse;
+import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.response.AysPageResponse;
@@ -18,13 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller for managing users.
- * <p>
- * The {@link AysUserController} class provides endpoints for listing users.
- * It is annotated with {@code @RestController} and {@code @RequestMapping}
- * to define it as a REST controller and to map the base URL for the endpoints.
- * The {@code @RequiredArgsConstructor} annotation is used to generate a constructor
- * with required arguments, in this case, the {@link AysUserReadService}.
- * </p>
+ * This controller provides endpoints for listing users.
  *
  * @see AysUserReadService
  */
@@ -51,16 +45,15 @@ class AysUserController {
      */
     @PostMapping("/users")
     @PreAuthorize("hasAnyAuthority('user:list')")
-    public AysResponse<AysPageResponse<AysUserListResponse>> findAll(@RequestBody @Valid AysUserListRequest request) {
+    public AysResponse<AysPageResponse<AysUsersResponse>> findAll(@RequestBody @Valid AysUserListRequest request) {
 
-        AysPage<AysUser> pageOfAysUsers = userReadService.findAll(request);
+        AysPage<AysUser> pageOfUsers = userReadService.findAll(request);
 
-        final AysPageResponse<AysUserListResponse> pageOfUsersResponse = AysPageResponse.<AysUserListResponse>builder()
-                .of(pageOfAysUsers)
-                .content(userToUsersResponseMapper.map(pageOfAysUsers.getContent()))
+        final AysPageResponse<AysUsersResponse> pageOfUsersResponse = AysPageResponse.<AysUsersResponse>builder()
+                .of(pageOfUsers)
+                .content(userToUsersResponseMapper.map(pageOfUsers.getContent()))
                 .build();
 
         return AysResponse.successOf(pageOfUsersResponse);
     }
-
 }

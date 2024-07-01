@@ -5,25 +5,27 @@ import lombok.Setter;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPhoneNumber;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 /**
  * Data Transfer Object for user responses.
  * <p>
- * The {@link AysUserListResponse} class encapsulates the information that is sent back
+ * The {@link AysUsersResponse} class encapsulates the information that is sent back
  * to the client as a response for user-related operations.
  * </p>
  */
 @Getter
 @Setter
-public class AysUserListResponse {
+public class AysUsersResponse {
 
-    private UUID id;
-    private String emailAddress;
+    private String id;
     private String firstName;
     private String lastName;
+    private String emailAddress;
     private AysPhoneNumber phoneNumber;
     private String city;
     private AysUserStatus status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

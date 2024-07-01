@@ -24,9 +24,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AysUserReadServiceImpl implements AysUserReadService {
+class AysUserReadServiceImpl implements AysUserReadService {
 
     private final AysUserReadPort userReadPort;
+
     private final AysIdentity identity;
 
 

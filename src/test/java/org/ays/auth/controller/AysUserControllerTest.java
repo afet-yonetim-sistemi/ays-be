@@ -7,7 +7,7 @@ import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
-import org.ays.auth.model.response.AysUserListResponse;
+import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
@@ -61,12 +61,12 @@ class AysUserControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
 
-        List<AysUserListResponse> mockUsersResponse = userToUsersResponseMapper.map(mockUsers);
-        AysPageResponse<AysUserListResponse> pageOfResponse = AysPageResponse.<AysUserListResponse>builder()
+        List<AysUsersResponse> mockUsersResponse = userToUsersResponseMapper.map(mockUsers);
+        AysPageResponse<AysUsersResponse> pageOfResponse = AysPageResponse.<AysUsersResponse>builder()
                 .of(mockUserPage)
                 .content(mockUsersResponse)
                 .build();
-        AysResponse<AysPageResponse<AysUserListResponse>> mockResponse = AysResponse
+        AysResponse<AysPageResponse<AysUsersResponse>> mockResponse = AysResponse
                 .successOf(pageOfResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
@@ -176,6 +176,31 @@ class AysUserControllerTest extends AysRestControllerTest {
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+    @Test
+    void givenValidUserListRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
 
         // Verify
         Mockito.verify(userReadService, Mockito.never())

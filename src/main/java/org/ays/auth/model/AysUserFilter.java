@@ -23,7 +23,6 @@ import java.util.Set;
  * which requires the implementation of the {@link AysUserFilter#toSpecification()} method.
  * </p>
  * <p>
- * This filter supports filtering by first name, last name, phone number, statuses, city, and institution ID.
  * When converting to a {@link Specification}, it combines the criteria using logical AND operations.
  * </p>
  *
