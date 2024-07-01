@@ -7,6 +7,7 @@ import org.ays.common.model.AysPageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * {@link AysRoleReadPort} is an interface for reading role data from the underlying data source.
@@ -17,6 +18,13 @@ import java.util.Optional;
  * </p>
  */
 public interface AysRoleReadPort {
+
+    /**
+     * Retrieves all roles.
+     *
+     * @return A set containing all roles.
+     */
+    Set<AysRole> findAll();
 
     /**
      * Retrieves a paginated list of roles based on the provided pageable and filter.
