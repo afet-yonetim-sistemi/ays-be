@@ -1,5 +1,6 @@
 package org.ays.auth.model;
 
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,8 @@ import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysFilter;
 import org.ays.common.model.AysPhoneNumber;
+import org.ays.common.util.validation.Name;
+import org.ays.common.util.validation.NoSpecialCharacters;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -34,12 +37,24 @@ import java.util.Set;
 @Builder
 public class AysUserFilter implements AysFilter {
 
+    @Name
+    @Size(min = 2, max = 255)
     private String firstName;
+
+    @Name
+    @Size(min = 2, max = 255)
     private String lastName;
+
     private AysPhoneNumber phoneNumber;
+
     private Set<AysUserStatus> statuses;
+
+    @NoSpecialCharacters
+    @Size(min = 2, max = 100)
     private String city;
+
     private String institutionId;
+
 
     /**
      * Converts the current filter criteria into a {@link Specification} for querying users.
@@ -69,14 +84,12 @@ public class AysUserFilter implements AysFilter {
             specification = specification.and(statusSpecification);
         }
 
-        if (StringUtils.hasText(this.firstName)) {
-            specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(criteriaBuilder.lower(root.get("firstName")), "%" + this.lastName.toLowerCase() + "%"));
+        if (this.firstName != null) {
+            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("firstName")), "%" + this.firstName.toLowerCase() + "%"));
         }
 
-        if (StringUtils.hasText(this.lastName)) {
-            specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), "%" + this.lastName.toLowerCase() + "%"));
+        if (this.lastName != null) {
+            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), "%" + this.lastName.toLowerCase() + "%"));
         }
 
         if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getCountryCode())) {
@@ -89,9 +102,8 @@ public class AysUserFilter implements AysFilter {
                     criteriaBuilder.like(root.get("lineNumber"), "%" + this.phoneNumber.getLineNumber() + "%"));
         }
 
-        if (StringUtils.hasText(this.city)) {
-            specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(criteriaBuilder.lower(root.get("city")), "%" + this.city.toLowerCase() + "%"));
+        if (this.city != null) {
+            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("city")), "%" + this.city.toLowerCase() + "%"));
         }
 
         return specification;
