@@ -91,6 +91,8 @@ class AysUserAdapterTest extends AysUnitTest {
                 .withoutOrders()
                 .build();
         AysUserFilter mockFilter = new AysUserFilterBuilder()
+                .withCity("Mersin")
+                .withLastName("Ruiz")
                 .withStatuses(Set.of(AysUserStatus.ACTIVE))
                 .build();
 
