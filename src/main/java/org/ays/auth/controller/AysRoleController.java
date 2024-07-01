@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
+import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.response.AysRolesResponse;
+import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
 import org.ays.auth.service.AysRoleReadService;
 import org.ays.common.model.AysPage;
@@ -14,9 +16,13 @@ import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * REST controller for managing roles.
@@ -41,6 +47,28 @@ class AysRoleController {
 
 
     private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
+    private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
+
+    /**
+     * GET /roles/summary : Retrieve a summary of all roles.
+     * <p>
+     * This endpoint handles the retrieval of a summary of all roles.
+     * The user must have the 'user:create' or 'user:update' authority to access this endpoint.
+     * </p>
+     *
+     * @return an {@link AysResponse} containing a list of {@link AysRolesSummaryResponse} objects,
+     *         which represent the summary of roles.
+     */
+    @GetMapping("/roles/summary")
+    @PreAuthorize("hasAnyAuthority('user:create', 'user:update')")
+    public AysResponse<List<AysRolesSummaryResponse>> findAll() {
+
+        final Set<AysRole> roles = roleReadService.findAll();
+
+        final List<AysRolesSummaryResponse> permissionsResponses = roleToRolesSummaryResponseMapper
+                .map(roles);
+        return AysResponse.successOf(permissionsResponses);
+    }
 
 
     /**
