@@ -7,6 +7,7 @@ import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleListRequest;
+import org.ays.auth.model.response.AysRoleResponse;
 import org.ays.auth.model.response.AysRolesResponse;
 import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
@@ -14,9 +15,11 @@ import org.ays.auth.service.AysRoleReadService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -85,6 +88,21 @@ class AysRoleController {
                 .content(roleToRolesResponseMapper.map(pageOfRoles.getContent()))
                 .build();
         return AysResponse.successOf(pageOfRolesResponse);
+    }
+
+
+    /**
+     * Handles GET requests for retrieving the details of a role by its ID.
+     *
+     * @param id the ID of the role to retrieve
+     * @return a response entity containing the details of the role
+     */
+    @GetMapping("/role/{id}")
+    @PreAuthorize("hasAuthority('role:detail')")
+    public AysResponse<AysRoleResponse> findById(@PathVariable @UUID String id) {
+        final AysRole aysRole = roleReadService.findById(id);
+        final AysRoleResponse aysRoleResponse = roleToRoleResponseMapper.map(aysRole);
+        return AysResponse.successOf(aysRoleResponse);
     }
 
 
