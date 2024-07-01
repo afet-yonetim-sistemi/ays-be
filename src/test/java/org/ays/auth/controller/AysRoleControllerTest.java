@@ -44,6 +44,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
     private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
 
+
     private static final String BASE_PATH = "/api/v1";
 
 
