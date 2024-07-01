@@ -78,4 +78,21 @@ class AysRoleReadServiceImpl implements AysRoleReadService {
         return roleReadPort.findAll(aysPageable, listRequest.getFilter());
     }
 
+
+    /**
+     * Retrieves a role by its unique identifier.
+     * <p>
+     * If the role with the specified ID does not exist, an {@link AysRoleNotExistsException} is thrown.
+     * </p>
+     *
+     * @param id the unique identifier of the role.
+     * @return the role with the specified ID.
+     * @throws AysRoleNotExistsException if the role with the specified ID does not exist.
+     */
+    @Override
+    public AysRole findById(String id) {
+        return roleReadPort.findById(id)
+                .orElseThrow(() -> new AysRoleNotExistsException(id));
+    }
+
 }
