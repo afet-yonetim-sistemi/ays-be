@@ -24,10 +24,12 @@ public class EmergencyEvacuationApplicationRequest {
 
     @Name
     @NotBlank
+    @Size(min = 2, max = 100)
     private String firstName;
 
     @Name
     @NotBlank
+    @Size(min = 2, max = 100)
     private String lastName;
 
     @Valid
@@ -36,10 +38,12 @@ public class EmergencyEvacuationApplicationRequest {
 
     @Name
     @NotBlank
+    @Size(min = 2, max = 100)
     private String sourceCity;
 
     @Name
     @NotBlank
+    @Size(min = 2, max = 100)
     private String sourceDistrict;
 
     @NotBlank
@@ -52,17 +56,21 @@ public class EmergencyEvacuationApplicationRequest {
 
     @Name
     @NotBlank
+    @Size(min = 2, max = 100)
     private String targetCity;
 
     @Name
     @NotBlank
+    @Size(min = 2, max = 100)
     private String targetDistrict;
 
 
     @Name
+    @Size(min = 2, max = 100)
     private String applicantFirstName;
 
     @Name
+    @Size(min = 2, max = 100)
     private String applicantLastName;
 
     @Valid

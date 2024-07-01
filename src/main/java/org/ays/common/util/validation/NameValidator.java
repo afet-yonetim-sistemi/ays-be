@@ -22,11 +22,8 @@ class NameValidator implements ConstraintValidator<Name, String> {
      * </ul>
      *  It also avoids strings that start with special characters
      * </p>
-     * <p>
      */
     private static final String NAME_REGEX = "^(?![^a-zA-ZÇçĞğİıÖöŞşÜü])[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]*$";
-    private static final Integer NAME_MIN_LENGTH = 2;
-    private static final Integer NAME_MAX_LENGTH = 100;
 
     /**
      * Checks whether the given value is a valid name or not.
@@ -58,15 +55,6 @@ class NameValidator implements ConstraintValidator<Name, String> {
 
         if (!StringUtils.hasText(value)) {
             return true;
-        }
-
-        if (value.length() < NAME_MIN_LENGTH || value.length() > NAME_MAX_LENGTH) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                            String.format("name must be between %d and %d characters long", NAME_MIN_LENGTH, NAME_MAX_LENGTH)
-                    )
-                    .addConstraintViolation();
-            return false;
         }
 
         if (value.startsWith(" ") || value.endsWith(" ")) {
