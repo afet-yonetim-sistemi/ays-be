@@ -3,11 +3,18 @@ package org.ays.auth.port.impl;
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.entity.AysUserEntityBuilder;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.mapper.AysUserEntityToDomainMapper;
 import org.ays.auth.model.mapper.AysUserToEntityMapper;
+import org.ays.auth.model.response.AysUserFilterBuilder;
 import org.ays.auth.repository.AysUserRepository;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageBuilder;
+import org.ays.common.model.AysPageable;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.util.AysRandomUtil;
@@ -16,8 +23,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 class AysUserAdapterTest extends AysUnitTest {
 
@@ -31,6 +44,79 @@ class AysUserAdapterTest extends AysUnitTest {
     private final AysUserToEntityMapper userToEntityMapper = AysUserToEntityMapper.initialize();
     private final AysUserEntityToDomainMapper userEntityToDomainMapper = AysUserEntityToDomainMapper.initialize();
 
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void givenValidAysPageableWithoutFilter_whenApplicationsFound_thenReturnApplicationsPage() {
+
+        // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+        AysUserFilter mockFilter = new AysUserFilterBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        List<AysUserEntity> mockEntities = List.of(
+                new AysUserEntityBuilder()
+                        .withValidValues()
+                        .build()
+        );
+        Page<AysUserEntity> mockEntitiesPage = new PageImpl<>(mockEntities);
+        Mockito.when(userRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockEntitiesPage);
+
+        List<AysUser> mockUsers = userEntityToDomainMapper.map(mockEntities);
+        AysPage<AysUser> mockUsersPage = AysPageBuilder.from(mockUsers, mockAysPageable, mockFilter);
+
+        // Then
+        AysPage<AysUser> usersPage = userAdapter.findAll(mockAysPageable, mockFilter);
+
+        AysPageBuilder.assertEquals(mockUsersPage, usersPage);
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void givenValidAysPageableAndFilter_whenUsersFound_thenReturnUsersPage() {
+
+        // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+        AysUserFilter mockFilter = new AysUserFilterBuilder()
+                .withStatuses(Set.of(AysUserStatus.ACTIVE))
+                .build();
+
+        // When
+        List<AysUserEntity> mockUserEntities = List.of(
+                new AysUserEntityBuilder()
+                        .withValidValues()
+                        .withStatus(AysUserStatus.ACTIVE)
+                        .build()
+        );
+        Page<AysUserEntity> mockUserEntitiesPage = new PageImpl<>(mockUserEntities);
+        Mockito.when(userRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockUserEntitiesPage);
+
+        List<AysUser> mockUsers = userEntityToDomainMapper.map(mockUserEntities);
+        AysPage<AysUser> mockUsersPage = AysPageBuilder.from(mockUsers, mockAysPageable, mockFilter);
+
+        // Then
+        AysPage<AysUser> usersPage = userAdapter.findAll(mockAysPageable, mockFilter);
+
+        AysPageBuilder.assertEquals(mockUsersPage, usersPage);
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
 
     @Test
     void givenValidId_whenUserFoundById_thenReturnOptionalUser() {
