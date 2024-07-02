@@ -3,19 +3,26 @@ package org.ays.auth.controller;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
+import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
+import org.ays.auth.model.mapper.AysRoleToRoleResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
+import org.ays.auth.model.response.AysRoleResponse;
 import org.ays.auth.model.response.AysRolesResponse;
 import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
+import org.ays.auth.port.AysRoleSavePort;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
+import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Assertions;
@@ -31,14 +38,20 @@ import java.util.stream.Collectors;
 class AysRoleEndToEndTest extends AysEndToEndTest {
 
     @Autowired
+    private InstitutionSavePort institutionSavePort;
+
+    @Autowired
     private AysPermissionReadPort permissionReadPort;
 
     @Autowired
     private AysRoleReadPort roleReadPort;
 
+    @Autowired
+    private AysRoleSavePort roleSavePort;
+
 
     private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
-
+    private final AysRoleToRoleResponseMapper roleToRoleResponseMapper = AysRoleToRoleResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -146,6 +159,62 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("updatedAt")
                         .isEmpty());
+    }
+
+
+    @Test
+    void givenValidRoleId_whenRoleExists_thenReturnAysRoleResponse() throws Exception {
+
+        // Initialize
+        Institution institution = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withInstitution(institution)
+                        .withPermissions(permissions)
+                        .build()
+        );
+
+        // Given
+        String applicationId = role.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(applicationId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, adminToken.getAccessToken());
+
+        AysRoleResponse mockRoleResponse = roleToRoleResponseMapper
+                .map(role);
+
+        AysResponse<AysRoleResponse> mockResponse = AysResponse
+                .successOf(mockRoleResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("createdUser")
+                        .value(role.getCreatedUser()))
+                .andExpect(AysMockResultMatchersBuilders.response("createdAt")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("id")
+                        .value(role.getId()))
+                .andExpect(AysMockResultMatchersBuilders.response("name")
+                        .value(role.getName()))
+                .andExpect(AysMockResultMatchersBuilders.response("status")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("permissions[*].id")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response("permissions[*].name")
+                        .isNotEmpty());
     }
 
 
