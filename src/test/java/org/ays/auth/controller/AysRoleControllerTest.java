@@ -3,12 +3,14 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
+import org.ays.auth.model.mapper.AysRoleToRoleResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
+import org.ays.auth.model.response.AysRoleResponse;
 import org.ays.auth.model.response.AysRolesResponse;
 import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
@@ -19,6 +21,7 @@ import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
@@ -43,6 +46,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
     private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
     private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
+    private final AysRoleToRoleResponseMapper roleToRoleResponseMapper = AysRoleToRoleResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -181,6 +185,67 @@ class AysRoleControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(roleReadService, Mockito.never())
                 .findAll(Mockito.any(AysRoleListRequest.class));
+    }
+
+
+    @Test
+    void givenValidRoleId_whenRoleFound_thenReturnAysRoleResponse() throws Exception {
+
+        // Given
+        String mockRoleId = AysRandomUtil.generateUUID();
+
+        // When
+        AysRole mockAysRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockRoleId)
+                .build();
+
+        Mockito.when(roleReadService.findById(mockRoleId))
+                .thenReturn(mockAysRole);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockRoleId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminToken.getAccessToken());
+
+        AysRoleResponse mockAysRoleResponse = roleToRoleResponseMapper
+                .map(mockAysRole);
+        AysResponse<AysRoleResponse> mockResponse = AysResponse
+                .successOf(mockAysRoleResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.times(1))
+                .findById(mockRoleId);
+    }
+
+    @Test
+    void givenRoleId_whenUnauthorizedForGettingRoleById_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockRoleId = AysRandomUtil.generateUUID();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(mockRoleId));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockUserToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.never())
+                .findById(mockRoleId);
     }
 
 
