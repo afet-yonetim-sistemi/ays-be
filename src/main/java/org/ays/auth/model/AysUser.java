@@ -108,6 +108,7 @@ public class AysUser extends BaseDomainModel {
     @Getter
     @Setter
     @SuperBuilder
+    @EqualsAndHashCode(callSuper = true)
     public static class Password extends BaseDomainModel {
 
         private Long id;
@@ -124,6 +125,7 @@ public class AysUser extends BaseDomainModel {
     @Getter
     @Setter
     @SuperBuilder
+    @EqualsAndHashCode(callSuper = true)
     public static class LoginAttempt extends BaseDomainModel {
 
         private String id;
