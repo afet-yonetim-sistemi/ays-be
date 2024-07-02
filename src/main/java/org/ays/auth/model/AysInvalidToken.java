@@ -1,5 +1,6 @@
 package org.ays.auth.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -13,6 +14,7 @@ import org.ays.common.model.BaseDomainModel;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class AysInvalidToken extends BaseDomainModel {
 
     private Long id;

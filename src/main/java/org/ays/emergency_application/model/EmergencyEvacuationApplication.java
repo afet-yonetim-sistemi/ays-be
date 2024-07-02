@@ -1,5 +1,6 @@
 package org.ays.emergency_application.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -17,6 +18,7 @@ import org.ays.institution.model.Institution;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class EmergencyEvacuationApplication extends BaseDomainModel {
 
     private String id;

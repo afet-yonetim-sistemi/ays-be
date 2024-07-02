@@ -112,8 +112,8 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
@@ -148,8 +148,8 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
@@ -184,8 +184,8 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
@@ -216,8 +216,8 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
@@ -252,8 +252,8 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
@@ -288,8 +288,8 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
