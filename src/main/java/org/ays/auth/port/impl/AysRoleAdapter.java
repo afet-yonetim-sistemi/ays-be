@@ -84,9 +84,9 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
      */
     @Override
     public Optional<AysRole> findById(final String id) {
-        final Optional<AysRoleEntity> applicationEntity = roleRepository
+        final Optional<AysRoleEntity> roleEntity = roleRepository
                 .findById(id);
-        return applicationEntity.map(roleEntityToDomainMapper::map);
+        return roleEntity.map(roleEntityToDomainMapper::map);
     }
 
 
