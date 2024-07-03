@@ -3,7 +3,7 @@ package org.ays.auth.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.mapper.AysRoleToRoleResponseMapper;
+import org.ays.auth.model.mapper.AysRoleToResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
@@ -45,7 +45,7 @@ class AysRoleController {
 
     private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
     private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
-    private final AysRoleToRoleResponseMapper roleToRoleResponseMapper = AysRoleToRoleResponseMapper.initialize();
+    private final AysRoleToResponseMapper roleToResponseMapper = AysRoleToResponseMapper.initialize();
 
     /**
      * GET /roles/summary : Retrieve a summary of all roles.
@@ -106,9 +106,9 @@ class AysRoleController {
     @GetMapping("/role/{id}")
     @PreAuthorize("hasAuthority('role:detail')")
     public AysResponse<AysRoleResponse> findById(@PathVariable @UUID String id) {
-        final AysRole aysRole = roleReadService.findById(id);
-        final AysRoleResponse aysRoleResponse = roleToRoleResponseMapper.map(aysRole);
-        return AysResponse.successOf(aysRoleResponse);
+        final AysRole role = roleReadService.findById(id);
+        final AysRoleResponse roleResponse = roleToResponseMapper.map(role);
+        return AysResponse.successOf(roleResponse);
     }
 
 
