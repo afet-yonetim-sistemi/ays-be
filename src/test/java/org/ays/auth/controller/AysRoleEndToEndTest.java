@@ -51,7 +51,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
 
 
     private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
-    private final AysRoleToResponseMapper roleToRoleResponseMapper = AysRoleToResponseMapper.initialize();
+    private final AysRoleToResponseMapper roleToResponseMapper = AysRoleToResponseMapper.initialize();
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -190,7 +190,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, adminToken.getAccessToken());
 
-        AysRoleResponse mockRoleResponse = roleToRoleResponseMapper
+        AysRoleResponse mockRoleResponse = roleToResponseMapper
                 .map(role);
 
         AysResponse<AysRoleResponse> mockResponse = AysResponse
