@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 class AysRoleReadServiceImplTest extends AysUnitTest {
 
@@ -130,6 +130,28 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
+    }
+
+
+    @Test
+    void givenRoleId_whenGettingRole_thenReturnAysRole() {
+
+        // Given
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .build();
+        String mockId = mockRole.getId();
+
+        // When
+        Mockito.when(roleReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockRole));
+
+        // Then
+        roleReadService.findById(mockId);
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
     }
 
 }
