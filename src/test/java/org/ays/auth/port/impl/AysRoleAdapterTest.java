@@ -161,10 +161,10 @@ class AysRoleAdapterTest extends AysUnitTest {
                 .thenReturn(Optional.of(mockRoleEntity));
 
         // Then
-        Optional<AysRole> application = roleAdapter.findById(mockId);
+        Optional<AysRole> role = roleAdapter.findById(mockId);
 
-        Assertions.assertTrue(application.isPresent());
-        Assertions.assertEquals(mockId, application.get().getId());
+        Assertions.assertTrue(role.isPresent());
+        Assertions.assertEquals(mockId, role.get().getId());
 
         // Verify
         Mockito.verify(roleRepository, Mockito.times(1))
