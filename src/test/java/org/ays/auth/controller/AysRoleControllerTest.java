@@ -195,23 +195,23 @@ class AysRoleControllerTest extends AysRestControllerTest {
         String mockRoleId = AysRandomUtil.generateUUID();
 
         // When
-        AysRole mockAysRole = new AysRoleBuilder()
+        AysRole mockRole = new AysRoleBuilder()
                 .withValidValues()
                 .withId(mockRoleId)
                 .build();
 
         Mockito.when(roleReadService.findById(mockRoleId))
-                .thenReturn(mockAysRole);
+                .thenReturn(mockRole);
 
         // Then
         String endpoint = BASE_PATH.concat("/role/").concat(mockRoleId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockAdminToken.getAccessToken());
 
-        AysRoleResponse mockAysRoleResponse = roleToRoleResponseMapper
-                .map(mockAysRole);
+        AysRoleResponse mockRoleResponse = roleToRoleResponseMapper
+                .map(mockRole);
         AysResponse<AysRoleResponse> mockResponse = AysResponse
-                .successOf(mockAysRoleResponse);
+                .successOf(mockRoleResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

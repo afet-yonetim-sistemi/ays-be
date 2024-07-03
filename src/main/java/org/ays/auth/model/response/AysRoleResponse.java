@@ -15,7 +15,7 @@ public class AysRoleResponse {
     private String id;
     private String name;
     private AysRoleStatus status;
-    private List<PermissionDetail> permissions;
+    private List<Permission > permissions;
     private String createdUser;
     private LocalDateTime createdAt;
     private String updatedUser;
@@ -23,7 +23,7 @@ public class AysRoleResponse {
 
     @Getter
     @Setter
-    public static class PermissionDetail {
+    public static class Permission  {
         private String id;
         private String name;
         private AysPermissionCategory category;
