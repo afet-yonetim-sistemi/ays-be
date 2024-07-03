@@ -171,6 +171,25 @@ class AysRoleAdapterTest extends AysUnitTest {
                 .findById(mockId);
     }
 
+    @Test
+    void givenValidId_whenRoleNotFound_thenReturnOptionalEmpty() {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(roleRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<AysRole> role = roleAdapter.findById(mockId);
+
+        Assertions.assertFalse(role.isPresent());
+
+        // Verify
+        Mockito.verify(roleRepository, Mockito.times(1))
+                .findById(Mockito.anyString());
+    }
+
 
     @Test
     void givenValidInstitutionId_whenActiveRolesFoundByInstitutionId_thenReturnRoles() {
