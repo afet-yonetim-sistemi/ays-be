@@ -23,7 +23,7 @@ public class AysRoleResponse {
 
     @Getter
     @Setter
-    public static class Permission  {
+    public static class Permission {
         private String id;
         private String name;
         private AysPermissionCategory category;
