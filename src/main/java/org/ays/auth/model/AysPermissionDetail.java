@@ -4,12 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.ays.auth.model.enums.AysPermissionCategory;
-import org.ays.common.model.BaseDomainModel;
 
 /**
- * Represents a permission entity in the system.
- * This class extends {@link BaseDomainModel} to inherit common properties such as ID and auditing fields.
- * It encapsulates information about a specific permission granted within the system.
+ * Represents a permission detail.
+ * It encapsulates information detail about a specific permission granted within the system.
  */
 @Getter
 @Setter
