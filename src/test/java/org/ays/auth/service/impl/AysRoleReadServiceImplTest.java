@@ -8,6 +8,7 @@ import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
 import org.ays.auth.port.AysRoleReadPort;
+import org.ays.auth.util.exception.AysRoleNotExistException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
@@ -134,7 +135,7 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void givenRoleId_whenGettingRole_thenReturnAysRole() {
+    void givenRoleId_whenRoleFound_thenReturnAysRole() {
 
         // Given
         AysRole mockRole = new AysRoleBuilder()
@@ -147,7 +148,31 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
                 .thenReturn(Optional.of(mockRole));
 
         // Then
-        roleReadService.findById(mockId);
+        AysRole result = roleReadService.findById(mockId);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(mockRole, result);
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+    }
+
+    @Test
+    void givenRoleId_whenRoleNotFound_thenThrowAysRoleNotExistException() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(roleReadPort.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleNotExistException.class,
+                () -> roleReadService.findById(mockId)
+        );
 
         // Verify
         Mockito.verify(roleReadPort, Mockito.times(1))
