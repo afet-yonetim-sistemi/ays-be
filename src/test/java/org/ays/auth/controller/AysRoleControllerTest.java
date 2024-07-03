@@ -3,7 +3,7 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
-import org.ays.auth.model.mapper.AysRoleToRoleResponseMapper;
+import org.ays.auth.model.mapper.AysRoleToResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
@@ -46,7 +46,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
     private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
     private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
-    private final AysRoleToRoleResponseMapper roleToRoleResponseMapper = AysRoleToRoleResponseMapper.initialize();
+    private final AysRoleToResponseMapper roleToRoleResponseMapper = AysRoleToResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1";
