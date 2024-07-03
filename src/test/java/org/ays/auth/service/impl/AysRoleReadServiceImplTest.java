@@ -19,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.List;
-import java.util.Set;
 
 class AysRoleReadServiceImplTest extends AysUnitTest {
 
