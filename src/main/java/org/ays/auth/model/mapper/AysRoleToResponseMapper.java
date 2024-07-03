@@ -1,11 +1,9 @@
 package org.ays.auth.model.mapper;
 
-import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.response.AysRoleResponse;
 import org.ays.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -17,15 +15,6 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface AysRoleToResponseMapper extends BaseMapper<AysRole, AysRoleResponse> {
-
-    @Override
-    @Mapping(target = "permissions", source = "permissions")
-    AysRoleResponse map(AysRole role);
-
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "category", source = "category")
-    AysRoleResponse.PermissionDetail map(AysPermission permission);
 
     /**
      * Initializes the mapper.
