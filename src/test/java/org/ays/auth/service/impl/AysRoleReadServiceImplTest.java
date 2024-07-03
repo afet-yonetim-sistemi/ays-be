@@ -135,7 +135,7 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidRoleId_whenRoleFound_thenReturnAysRole() {
+    void givenValidRoleId_whenRoleFoundById_thenReturnRole() {
 
         // Given
         AysRole mockRole = new AysRoleBuilder()
@@ -159,7 +159,7 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidRoleId_whenRoleNotFound_thenThrowAysRoleNotExistException() {
+    void givenValidRoleId_whenRoleNotFoundById_thenThrowAysRoleNotExistException() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
