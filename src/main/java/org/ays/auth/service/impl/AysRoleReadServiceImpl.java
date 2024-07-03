@@ -7,7 +7,7 @@ import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.service.AysRoleReadService;
-import org.ays.auth.util.exception.AysRoleNotExistsException;
+import org.ays.auth.util.exception.AysRoleNotExistException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;
@@ -83,17 +83,17 @@ class AysRoleReadServiceImpl implements AysRoleReadService {
     /**
      * Retrieves a role by its unique identifier.
      * <p>
-     * If the role with the specified ID does not exist, an {@link AysRoleNotExistsException} is thrown.
+     * If the role with the specified ID does not exist, an {@link AysRoleNotExistException} is thrown.
      * </p>
      *
      * @param id the unique identifier of the role.
      * @return the role with the specified ID.
-     * @throws AysRoleNotExistsException if the role with the specified ID does not exist.
+     * @throws AysRoleNotExistException if the role with the specified ID does not exist.
      */
     @Override
     public AysRole findById(String id) {
         return roleReadPort.findById(id)
-                .orElseThrow(() -> new AysRoleNotExistsException(id));
+                .orElseThrow(() -> new AysRoleNotExistException(id));
     }
 
 }
