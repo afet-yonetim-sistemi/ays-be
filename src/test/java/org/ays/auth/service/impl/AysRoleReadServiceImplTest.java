@@ -8,6 +8,7 @@ import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
 import org.ays.auth.port.AysRoleReadPort;
+import org.ays.auth.util.exception.AysRoleNotExistException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
@@ -19,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Optional;
 
 class AysRoleReadServiceImplTest extends AysUnitTest {
 
@@ -129,6 +131,52 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
+    }
+
+
+    @Test
+    void givenValidRoleId_whenRoleFoundById_thenReturnRole() {
+
+        // Given
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .build();
+        String mockId = mockRole.getId();
+
+        // When
+        Mockito.when(roleReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockRole));
+
+        // Then
+        AysRole result = roleReadService.findById(mockId);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(mockRole, result);
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidRoleId_whenRoleNotFoundById_thenThrowAysRoleNotExistException() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(roleReadPort.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleNotExistException.class,
+                () -> roleReadService.findById(mockId)
+        );
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
     }
 
 }

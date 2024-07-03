@@ -41,4 +41,12 @@ public interface AysRoleReadService {
      */
     AysPage<AysRole> findAll(AysRoleListRequest listRequest);
 
+    /**
+     * Retrieves the details of a specific role by its ID.
+     *
+     * @param id The ID of the role.
+     * @return The role with the specified ID, or null if not found.
+     */
+    AysRole findById(String id);
+
 }
