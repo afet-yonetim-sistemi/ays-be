@@ -84,7 +84,7 @@ class AysRoleCreateServiceImpl implements AysRoleCreateService {
      * Verifies if all permission IDs exist and validates super admin restrictions.
      *
      * @param permissionIds the set of permission IDs to check
-     * @return the set of permissions corresponding to the provided IDs
+     * @return the list of permissions corresponding to the provided IDs
      * @throws AysPermissionNotExistException if any of the permission IDs do not exist
      * @throws AysUserNotSuperAdminException  if the current user is not authorized to assign super permissions
      */
