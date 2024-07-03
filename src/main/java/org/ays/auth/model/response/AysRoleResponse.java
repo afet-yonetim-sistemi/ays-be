@@ -15,7 +15,7 @@ public class AysRoleResponse {
     private String id;
     private String name;
     private AysRoleStatus status;
-    private List<Permission > permissions;
+    private List<Permission> permissions;
     private String createdUser;
     private LocalDateTime createdAt;
     private String updatedUser;
