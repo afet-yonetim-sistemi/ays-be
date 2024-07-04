@@ -41,6 +41,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
     @Mock
     private AysIdentity identity;
 
+
     @Test
     void givenRoleCreateRequest_whenFieldsValid_thenCreateSuperRole() {
         // Given
@@ -86,11 +87,11 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.verify(identity, Mockito.times(1))
                 .isSuperAdmin();
 
-        Mockito.verify(identity, Mockito.times(1))
-                .getInstitutionId();
-
         Mockito.verify(identity, Mockito.never())
                 .getUserId();
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.times(1))
                 .save(Mockito.any(AysRole.class));
@@ -141,11 +142,11 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.verify(identity, Mockito.times(1))
                 .isSuperAdmin();
 
-        Mockito.verify(identity, Mockito.times(1))
-                .getInstitutionId();
-
         Mockito.verify(identity, Mockito.never())
                 .getUserId();
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.times(1))
                 .save(Mockito.any(AysRole.class));
@@ -180,6 +181,9 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.never())
                 .getUserId();
+
+        Mockito.verify(identity, Mockito.never())
+                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));
@@ -233,6 +237,9 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.verify(identity, Mockito.times(1))
                 .getUserId();
 
+        Mockito.verify(identity, Mockito.never())
+                .getInstitutionId();
+
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));
     }
@@ -270,6 +277,9 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.never())
                 .getUserId();
+
+        Mockito.verify(identity, Mockito.never())
+                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));
