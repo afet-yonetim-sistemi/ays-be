@@ -512,7 +512,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "A",
             "493268349068342"
     })
-    void givenInvalidIdAndValidRoleUpdateRequest_whenNameIsNotValid_thenReturnValidationError(String invalidId) throws Exception {
+    void givenInvalidIdAndValidRoleUpdateRequest_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
 
         // Given
         AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
