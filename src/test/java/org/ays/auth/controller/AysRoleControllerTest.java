@@ -254,6 +254,31 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .findById(mockRoleId);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenInvalidId_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(invalidId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
 
     @Test
     void givenValidRoleCreateRequest_whenRoleCreated_thenReturnSuccess() throws Exception {
@@ -284,7 +309,6 @@ class AysRoleControllerTest extends AysRestControllerTest {
         Mockito.verify(roleCreateService, Mockito.times(1))
                 .create(Mockito.any(AysRoleCreateRequest.class));
     }
-
 
     @Test
     void givenValidRoleCreateRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
