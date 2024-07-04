@@ -390,10 +390,10 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse.",
     })
-    void givenEmergencyEvacuationApplicationId_whenIdIsNotValid_thenReturnValidationError(String id) throws Exception {
+    void givenId_whenIdDoesNotValid_thenReturnValidationError(String invalidId) throws Exception {
 
         // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/".concat(id));
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/".concat(invalidId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockAdminToken.getAccessToken());
 
@@ -407,7 +407,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
-                .findById(id);
+                .findById(invalidId);
     }
 
 
