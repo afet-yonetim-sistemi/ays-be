@@ -3,6 +3,7 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.mapper.AysRoleToResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesResponseMapper;
 import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
@@ -18,6 +19,8 @@ import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
 import org.ays.auth.service.AysRoleReadService;
 import org.ays.auth.service.AysRoleUpdateService;
+import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
+import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
@@ -449,7 +452,6 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysRoleCreateRequest.class));
     }
 
-
     @Test
     void givenValidIdAndRoleUpdateRequest_whenRoleUpdated_thenReturnSuccess() throws Exception {
         // Given
@@ -658,6 +660,122 @@ class AysRoleControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(roleUpdateService, Mockito.never())
                 .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
+    @Test
+    void givenValidIdAndRoleStatus_whenRoleDelete_thenReturnSuccess() throws Exception {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.doNothing()
+                .when(roleUpdateService)
+                .delete(Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.times(1))
+                .delete(mockId);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenInvalidDeleteId_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(invalidId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .delete(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidIdAndInvalidRoleStatus_whenRoleDelete_thenReturn() throws Exception {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withStatus(AysRoleStatus.DELETED)
+                .build();
+
+        Mockito.doThrow(new AysRoleAlreadyDeletedException(mockId))
+                .when(roleUpdateService)
+                .delete(mockRole.getId());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.times(1))
+                .delete(mockRole.getId());
+    }
+
+    @Test
+    void givenValidId_whenUserAssignedToRole_thenReturnConflict() throws Exception {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.doThrow(new AysRoleAssignedToUserException(mockId))
+                .when(roleUpdateService)
+                .delete(mockId);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.times(1))
+                .delete(mockId);
     }
 
 }
