@@ -662,7 +662,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
 
     @Test
-    void givenValidRoleId_whenRoleActivated_thenReturnSuccess() throws Exception {
+    void givenValidId_whenRoleActivated_thenReturnSuccess() throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
