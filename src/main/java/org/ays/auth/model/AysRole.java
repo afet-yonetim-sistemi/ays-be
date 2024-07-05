@@ -48,6 +48,10 @@ public class AysRole extends BaseDomainModel {
         return AysRoleStatus.PASSIVE.equals(this.status);
     }
 
+    /**
+     * Activates the role by setting its status to {@link AysRoleStatus#ACTIVE}.
+     * This method should be called when the role needs to be marked as active in the system.
+     */
     public void activate(){
         this.setStatus(AysRoleStatus.ACTIVE);
     }
