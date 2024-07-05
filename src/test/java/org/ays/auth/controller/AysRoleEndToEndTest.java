@@ -30,6 +30,8 @@ import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -409,6 +411,60 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "ACTIVE",
+            "PASSIVE",
+            "DELETED"
+    })
+    void givenId_whenRoleActivated_thenReturnSuccess(String status) throws Exception {
+
+        AysRoleStatus roleStatus = AysRoleStatus.valueOf(status);
+
+        // Initialize
+        Institution institution = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        List<AysPermission> permissions = permissionReadPort.findAll();
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withStatus(roleStatus)
+                        .withInstitution(institution)
+                        .withPermissions(permissions)
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(id).concat("/activate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, superAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertNotNull(roleFromDatabase.get().getId());
+        Assertions.assertNotNull(roleFromDatabase.get().getStatus());
+        Assertions.assertEquals(roleFromDatabase.get().getId(), id);
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
     }
 
 }
