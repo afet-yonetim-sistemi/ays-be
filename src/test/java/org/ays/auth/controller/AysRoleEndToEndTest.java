@@ -411,4 +411,43 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         ));
     }
 
+    @Test
+    void givenValidIdAndRoleStatus_whenRoleDelete_thenReturnSuccess() throws Exception {
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAll();
+
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName("Admin Role 1")
+                        .withPermissions(permissions)
+                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, adminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertNotNull(roleFromDatabase.get().getId());
+        Assertions.assertEquals(AysRoleStatus.DELETED, roleFromDatabase.get().getStatus());
+    }
+
 }
