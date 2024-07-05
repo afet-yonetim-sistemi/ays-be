@@ -16,4 +16,11 @@ public interface AysRoleUpdateService {
      */
     void update(String id, AysRoleUpdateRequest updateRequest);
 
+    /**
+     * Service interface for activating roles.
+     * Implementations of this interface should provide functionality to activate an existing role
+     * based on the provided id.
+     */
+    void activate(String id);
+
 }

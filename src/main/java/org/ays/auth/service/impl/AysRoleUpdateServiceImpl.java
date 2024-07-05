@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.request.AysRoleUpdateRequest;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
@@ -61,6 +62,26 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         role.setPermissions(permissions);
 
         roleSavePort.save(role);
+    }
+
+    /**
+     * Activates an existing role.
+     * <p>
+     * This method sets the status of the role identified by its ID to active. If the role does not exist,
+     * an exception is thrown.
+     * </p>
+     *
+     * @param id The ID of the role to activate.
+     * @throws AysRoleNotExistByIdException if a role with the given ID does not exist.
+     */
+    @Override
+    public void activate(String id) {
+        final AysRole role = roleReadPort.findById(id)
+                .orElseThrow(() -> new AysRoleNotExistByIdException(id));
+
+        role.setStatus(AysRoleStatus.ACTIVE);
+        roleSavePort.save(role);
+
     }
 
     /**
