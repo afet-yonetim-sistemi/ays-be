@@ -461,8 +461,6 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
 
         Assertions.assertTrue(roleFromDatabase.isPresent());
-        Assertions.assertNotNull(roleFromDatabase.get().getId());
-        Assertions.assertNotNull(roleFromDatabase.get().getStatus());
         Assertions.assertEquals(roleFromDatabase.get().getId(), id);
         Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
     }
