@@ -11,6 +11,8 @@ import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
+import org.ays.auth.model.request.AysRoleUpdateRequest;
+import org.ays.auth.model.request.AysRoleUpdateRequestBuilder;
 import org.ays.auth.model.response.AysRoleResponse;
 import org.ays.auth.model.response.AysRolesResponse;
 import org.ays.auth.model.response.AysRolesSummaryResponse;
@@ -25,6 +27,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
+import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +44,18 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     private InstitutionSavePort institutionSavePort;
 
     @Autowired
-    private AysPermissionReadPort permissionReadPort;
+    private AysRoleSavePort roleSavePort;
 
     @Autowired
     private AysRoleReadPort roleReadPort;
 
     @Autowired
-    private AysRoleSavePort roleSavePort;
+    private AysPermissionReadPort permissionReadPort;
 
 
     private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
     private final AysRoleToResponseMapper roleToResponseMapper = AysRoleToResponseMapper.initialize();
+
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -253,12 +257,10 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(role.get().getInstitution());
         Assertions.assertEquals(createRequest.getName(), role.get().getName());
         Assertions.assertEquals(AysRoleStatus.ACTIVE, role.get().getStatus());
-        createRequest.getPermissionIds().forEach(permissionId -> {
-            Assertions.assertTrue(
-                    role.get().getPermissions().stream()
-                            .anyMatch(permission -> permission.getId().equals(permissionId))
-            );
-        });
+        createRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+                role.get().getPermissions().stream()
+                        .anyMatch(permission -> permission.getId().equals(permissionId))
+        ));
     }
 
     @Test
@@ -296,12 +298,117 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(role.get().getInstitution());
         Assertions.assertEquals(createRequest.getName(), role.get().getName());
         Assertions.assertEquals(AysRoleStatus.ACTIVE, role.get().getStatus());
-        createRequest.getPermissionIds().forEach(permissionId -> {
-            Assertions.assertTrue(
-                    role.get().getPermissions().stream()
-                            .anyMatch(permission -> permission.getId().equals(permissionId))
-            );
-        });
+        createRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+                role.get().getPermissions().stream()
+                        .anyMatch(permission -> permission.getId().equals(permissionId))
+        ));
+    }
+
+
+    @Test
+    void givenValidIdAndRoleUpdateRequest_whenSuperRoleUpdated_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAll();
+        Set<String> permissionIds = permissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName("Admin Role 1")
+                        .withPermissions(permissions)
+                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+        AysRoleUpdateRequest updateRequest = new AysRoleUpdateRequestBuilder()
+                .withPermissionIds(permissionIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, superAdminToken.getAccessToken(), updateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertNotNull(roleFromDatabase.get().getId());
+        Assertions.assertNotNull(roleFromDatabase.get().getInstitution());
+        Assertions.assertEquals(updateRequest.getName(), roleFromDatabase.get().getName());
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
+        updateRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+                roleFromDatabase.get().getPermissions().stream()
+                        .anyMatch(permission -> permission.getId().equals(permissionId))
+        ));
+    }
+
+    @Test
+    void givenValidRoleUpdateRequest_whenRoleUpdated_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        Set<String> permissionIds = permissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
+
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName("Admin Role 2")
+                        .withPermissions(permissions)
+                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+        AysRoleUpdateRequest updateRequest = new AysRoleUpdateRequestBuilder()
+                .withName("Updated Role")
+                .withPermissionIds(permissionIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertNotNull(roleFromDatabase.get().getId());
+        Assertions.assertNotNull(roleFromDatabase.get().getInstitution());
+        Assertions.assertEquals(updateRequest.getName(), roleFromDatabase.get().getName());
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
+        updateRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+                roleFromDatabase.get().getPermissions().stream()
+                        .anyMatch(permission -> permission.getId().equals(permissionId))
+        ));
     }
 
 }

@@ -4,16 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.enums.AysRoleStatus;
-import org.ays.auth.model.request.AysRoleCreateRequest;
+import org.ays.auth.model.request.AysRoleUpdateRequest;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
-import org.ays.auth.service.AysRoleCreateService;
+import org.ays.auth.service.AysRoleUpdateService;
 import org.ays.auth.util.exception.AysPermissionNotExistException;
 import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
+import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;
-import org.ays.institution.model.Institution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,16 +20,14 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Service implementation for creating roles in the system.
- * <p>
- * This service handles the creation of roles based on the provided create request. It verifies the uniqueness
- * of the role name, checks the existence of permissions, and saves the new role with the associated permissions.
- * </p>
+ * Service implementation for updating roles.
+ * This service handles the updating of existing roles based on the provided update request,
+ * ensuring permissions and role name uniqueness are validated before saving.
  */
 @Service
 @Transactional
 @RequiredArgsConstructor
-class AysRoleCreateServiceImpl implements AysRoleCreateService {
+class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
 
     private final AysRoleReadPort roleReadPort;
     private final AysRoleSavePort roleSavePort;
@@ -38,45 +35,47 @@ class AysRoleCreateServiceImpl implements AysRoleCreateService {
 
     private final AysIdentity identity;
 
+
     /**
-     * Creates a new role based on the provided create request.
-     * <p>
-     * This method validates the uniqueness of the role name, checks the existence of permissions,
-     * and saves the new role with the associated permissions.
-     * </p>
+     * Updates an existing role identified by its ID.
+     * Performs checks to ensure the role name is unique and validates the existence of provided permissions.
      *
-     * @param createRequest the request object containing the role name and permission IDs
-     * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists
-     * @throws AysPermissionNotExistException      if any of the specified permission IDs do not exist
-     * @throws AysUserNotSuperAdminException       if the current user is not authorized to assign super permissions
+     * @param id            The ID of the role to update.
+     * @param updateRequest The request object containing updated data for the role.
+     * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists, excluding the current role ID.
+     * @throws AysPermissionNotExistException      if any of the permission IDs provided do not exist.
+     * @throws AysUserNotSuperAdminException       if the current user does not have super admin privileges required for assigning super permissions.
      */
     @Override
-    public void create(final AysRoleCreateRequest createRequest) {
+    public void update(final String id,
+                       final AysRoleUpdateRequest updateRequest) {
 
-        this.checkExistingRoleName(createRequest.getName());
+        final AysRole role = roleReadPort.findById(id)
+                .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
-        final List<AysPermission> permissions = this.checkExistingPermissionsAndGet(createRequest.getPermissionIds());
+        this.checkExistingRoleNameByWithoutId(id, updateRequest.getName());
 
-        final AysRole role = AysRole.builder()
-                .name(createRequest.getName())
-                .institution(Institution.builder().id(identity.getInstitutionId()).build())
-                .permissions(permissions)
-                .status(AysRoleStatus.ACTIVE)
-                .build();
+        final List<AysPermission> permissions = this.checkExistingPermissionsAndGet(updateRequest.getPermissionIds());
+
+        role.setName(updateRequest.getName());
+        role.setPermissions(permissions);
 
         roleSavePort.save(role);
     }
 
     /**
-     * Checks if a role with the specified name already exists.
+     * Checks the existence of another role with the same name, excluding the current role ID.
      *
-     * @param name the name of the role to check
-     * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists
+     * @param id   The ID of the role being updated.
+     * @param name The name to check for uniqueness.
+     * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists, excluding the current role ID.
      */
-    private void checkExistingRoleName(final String name) {
-        roleReadPort.findByName(name).ifPresent(role -> {
-            throw new AysRoleAlreadyExistsByNameException(name);
-        });
+    private void checkExistingRoleNameByWithoutId(final String id, final String name) {
+        roleReadPort.findByName(name)
+                .filter(role -> !id.equals(role.getId()))
+                .ifPresent(role -> {
+                    throw new AysRoleAlreadyExistsByNameException(name);
+                });
     }
 
     /**

@@ -10,17 +10,9 @@ import org.hibernate.validator.constraints.UUID;
 
 import java.util.Set;
 
-/**
- * Represents a request object for creating a new role.
- * It includes validation annotations to ensure the integrity of the data.
- *
- * <p>
- * This class is typically used as a request object in RESTful APIs for handling requests to create new roles.
- * </p>
- */
 @Getter
 @Setter
-public class AysRoleCreateRequest {
+public class AysRoleUpdateRequest {
 
     @NotBlank
     @Size(min = 2, max = 255)

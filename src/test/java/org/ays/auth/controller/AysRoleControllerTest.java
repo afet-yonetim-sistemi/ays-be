@@ -10,11 +10,14 @@ import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
+import org.ays.auth.model.request.AysRoleUpdateRequest;
+import org.ays.auth.model.request.AysRoleUpdateRequestBuilder;
 import org.ays.auth.model.response.AysRoleResponse;
 import org.ays.auth.model.response.AysRolesResponse;
 import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
 import org.ays.auth.service.AysRoleReadService;
+import org.ays.auth.service.AysRoleUpdateService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
@@ -42,6 +45,9 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
     @MockBean
     private AysRoleCreateService roleCreateService;
+
+    @MockBean
+    private AysRoleUpdateService roleUpdateService;
 
 
     private final AysRoleToRolesResponseMapper roleToRolesResponseMapper = AysRoleToRolesResponseMapper.initialize();
@@ -248,6 +254,31 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .findById(mockRoleId);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenInvalidId_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(invalidId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
 
     @Test
     void givenValidRoleCreateRequest_whenRoleCreated_thenReturnSuccess() throws Exception {
@@ -416,6 +447,217 @@ class AysRoleControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(roleCreateService, Mockito.never())
                 .create(Mockito.any(AysRoleCreateRequest.class));
+    }
+
+
+    @Test
+    void givenValidIdAndRoleUpdateRequest_whenRoleUpdated_thenReturnSuccess() throws Exception {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(roleUpdateService)
+                .update(Mockito.any(), Mockito.any(AysRoleUpdateRequest.class));
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.times(1))
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
+    @Test
+    void givenValidIdAndRoleUpdateRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenInvalidIdAndValidRoleUpdateRequest_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Given
+        AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(invalidId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            "A",
+            "% fsdh     ",
+            "493268349068342",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
+    })
+    void givenValidIdAndInvalidRoleUpdateRequest_whenNameIsNotValid_thenReturnValidationError(String name) throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
+                .withValidValues()
+                .withName(name)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
+    @Test
+    void givenValidIdAndInvalidRoleUpdateRequest_whenPermissionIdsAreNull_thenReturnValidationError() throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
+                .withValidValues()
+                .withPermissionIds(null)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
+    @Test
+    void givenValidIdAndInvalidRoleUpdateRequest_whenPermissionIdsAreEmpty_thenReturnValidationError() throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
+                .withValidValues()
+                .withPermissionIds(Set.of())
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            "55aed4c4facb4b66bdb5-309eaaef4453"
+    })
+    void givenValidIdAndInvalidRoleUpdateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String permissionId) throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
+                .withValidValues()
+                .withPermissionIds(Set.of(permissionId))
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
     }
 
 }

@@ -203,7 +203,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         // Given
         AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidValues()
-                .withInstitutionId(AysValidTestData.Institution.ID)
+                .withInstitutionId(AysValidTestData.SuperAdmin.INSTITUTION_ID)
                 .withReason(reason)
                 .build();
 
@@ -283,7 +283,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         // Given
         AdminRegistrationApplicationCreateRequest mockRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidValues()
-                .withInstitutionId(AysValidTestData.Institution.ID)
+                .withInstitutionId(AysValidTestData.SuperAdmin.INSTITUTION_ID)
                 .build();
 
         // Then

@@ -27,8 +27,4 @@ public class AysValidTestData {
         public static final String EMAIL_ADDRESS = "diego.ruiz@afetyonetimsistemi.org";
     }
 
-    public static class Institution {
-        public static final String ID = "77ece256-bf0e-4bbe-801d-173083f8bdcf";
-    }
-
 }

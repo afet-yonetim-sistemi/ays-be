@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
@@ -31,7 +32,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
