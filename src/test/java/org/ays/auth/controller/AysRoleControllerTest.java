@@ -695,7 +695,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "A",
             "493268349068342"
     })
-    void givenInvalidRoleId_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+    void givenId_whenIdIsNotValid_thenReturnValidationError(String invalidId) throws Exception {
 
         // Then
         String endpoint = BASE_PATH.concat("/role/".concat(invalidId).concat("/activate"));
@@ -712,7 +712,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(roleUpdateService, Mockito.never())
-                .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+                .activate(Mockito.anyString());
     }
 
 }
