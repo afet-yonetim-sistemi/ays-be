@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -155,6 +156,23 @@ class AysRoleController {
                                     @RequestBody @Valid final AysRoleUpdateRequest updateRequest) {
 
         roleUpdateService.update(id, updateRequest);
+        return AysResponse.SUCCESS;
+    }
+
+    /**
+     * PATCH /role/{id}/activate : Activate an existing role.
+     * <p>
+     * This endpoint handles the activation of a role based on its ID. The user must have the
+     * 'role:update' authority to access this endpoint.
+     * </p>
+     *
+     * @param id The ID of the role to activate.
+     * @return An {@link AysResponse} indicating the success of the operation.
+     */
+    @PatchMapping("/role/{id}/activate")
+    @PreAuthorize("hasAnyAuthority('role:update')")
+    public AysResponse<Void> activate(@PathVariable @UUID final String id) {
+        roleUpdateService.activate(id);
         return AysResponse.SUCCESS;
     }
 
