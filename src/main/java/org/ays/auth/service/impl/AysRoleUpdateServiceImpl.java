@@ -4,13 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.request.AysRoleUpdateRequest;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.service.AysRoleUpdateService;
 import org.ays.auth.util.exception.AysPermissionNotExistException;
+import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
 import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
+import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.springframework.stereotype.Service;
@@ -60,6 +63,32 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         role.setName(updateRequest.getName());
         role.setPermissions(permissions);
 
+        roleSavePort.save(role);
+    }
+
+    /**
+     * Deletes an existing role identified by its ID.
+     *
+     * @param id The ID of the role to delete.
+     * @throws AysRoleNotExistByIdException   if no role exists with the provided ID.
+     * @throws AysRoleAssignedToUserException if users are assigned to the role.
+     * @throws AysRoleAlreadyDeletedException if the role is already marked as deleted.
+     */
+    @Override
+    public void delete(final String id) {
+
+        final AysRole role = roleReadPort.findById(id)
+                .orElseThrow(() -> new AysRoleNotExistByIdException(id));
+
+        if (roleReadPort.isUserAssignedToRole(id)) {
+            throw new AysRoleAssignedToUserException(id);
+        }
+
+        if (role.getStatus() == AysRoleStatus.DELETED) {
+            throw new AysRoleAlreadyDeletedException(id);
+        }
+
+        role.delete();
         roleSavePort.save(role);
     }
 
