@@ -413,15 +413,8 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         ));
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "ACTIVE",
-            "PASSIVE",
-            "DELETED"
-    })
-    void givenId_whenRoleActivated_thenReturnSuccess(String status) throws Exception {
-
-        AysRoleStatus roleStatus = AysRoleStatus.valueOf(status);
+    @Test
+    void givenId_whenRoleActivated_thenReturnSuccess() throws Exception {
 
         // Initialize
         Institution institution = institutionSavePort.save(
@@ -435,7 +428,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 new AysRoleBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withStatus(roleStatus)
+                        .withStatus(AysRoleStatus.PASSIVE)
                         .withInstitution(institution)
                         .withPermissions(permissions)
                         .build()
