@@ -66,6 +66,13 @@ public class AysMockMvcRequestBuilders {
                 .contentType(MediaType.APPLICATION_JSON);
     }
 
+    // New PATCH method
+    public MockHttpServletRequestBuilder patch(String endpoint, String token) {
+        return MockMvcRequestBuilders.patch(endpoint)
+                .header(HttpHeaders.AUTHORIZATION, getTokenWithBearerPrefix(token))
+                .contentType(MediaType.APPLICATION_JSON);
+    }
+
     private String getTokenWithBearerPrefix(String token) {
         return "Bearer " + token;
     }
