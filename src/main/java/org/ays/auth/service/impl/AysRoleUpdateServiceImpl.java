@@ -10,10 +10,7 @@ import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.service.AysRoleUpdateService;
-import org.ays.auth.util.exception.AysPermissionNotExistException;
-import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
-import org.ays.auth.util.exception.AysRoleNotExistByIdException;
-import org.ays.auth.util.exception.AysUserNotSuperAdminException;
+import org.ays.auth.util.exception.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +61,7 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         roleSavePort.save(role);
     }
 
+
     /**
      * Activates an existing role.
      * <p>
@@ -79,7 +77,11 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         final AysRole role = roleReadPort.findById(id)
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
-        role.setStatus(AysRoleStatus.ACTIVE);
+        if(role.getStatus() != AysRoleStatus.PASSIVE) {
+            throw new AysInvalidRoleStatusException(AysRoleStatus.PASSIVE.toString());
+        }
+
+        role.activate();
         roleSavePort.save(role);
 
     }

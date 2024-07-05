@@ -48,6 +48,10 @@ public class AysRole extends BaseDomainModel {
         return AysRoleStatus.PASSIVE.equals(this.status);
     }
 
+    public void activate(){
+        this.setStatus(AysRoleStatus.ACTIVE);
+    }
+
     /**
      * Checks if the role's status is deleted.
      *
