@@ -58,4 +58,12 @@ public interface AysRoleReadPort {
      */
     Optional<AysRole> findByName(String name);
 
+    /**
+     * Checks if any users are assigned to a role identified by its ID.
+     *
+     * @param id The ID of the role to check.
+     * @return true if users are assigned to the role, false otherwise.
+     */
+    boolean isUserAssignedToRole(String id);
+
 }
