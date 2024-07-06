@@ -364,6 +364,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
                 .save(Mockito.any(AysRole.class));
     }
 
+
     @Test
     void givenValidId_whenRoleFound_thenDeleteRole() {
         // Given
@@ -394,7 +395,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenRoleStatusAlreadyDeleted_thenThrowAysRoleAlreadyDeletedException() {
+    void givenValidId_whenRoleAlreadyDeleted_thenThrowAysRoleAlreadyDeletedException() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -422,7 +423,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidDeleteId_whenRoleNotFound_thenThrowAysRoleNotExistByIdException() {
+    void givenValidId_whenRoleDoesNotFound_thenThrowAysRoleNotExistByIdException() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -445,7 +446,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenUserAssignedToRole_thenThrowAysRoleAssignedToUserException() {
+    void givenValidId_whenRoleUsing_thenThrowAysRoleAssignedToUserException() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -458,7 +459,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockRole));
 
-        Mockito.when(roleReadPort.isUserAssignedToRole(Mockito.anyString()))
+        Mockito.when(roleReadPort.isRoleUsing(Mockito.anyString()))
                 .thenReturn(true);
 
         // Then
@@ -472,7 +473,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
                 .findById(Mockito.anyString());
 
         Mockito.verify(roleReadPort, Mockito.times(1))
-                .isUserAssignedToRole(Mockito.anyString());
+                .isRoleUsing(Mockito.anyString());
 
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));

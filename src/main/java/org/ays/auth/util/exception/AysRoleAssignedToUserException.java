@@ -16,7 +16,7 @@ public class AysRoleAssignedToUserException extends AysAlreadyException {
     private static final long serialVersionUID = 7298457193066796371L;
 
     /**
-     * Constructs a new AysAlreadyException with the specified detail message.
+     * Constructs a new {@link AysRoleAssignedToUserException} with the specified detail message.
      *
      * @param id the detail message.
      */

@@ -123,8 +123,8 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
      * @return true if users are assigned to the role, false otherwise.
      */
     @Override
-    public boolean isUserAssignedToRole(String id) {
-        return roleRepository.existsUsersAssignedToRole(id);
+    public boolean isRoleUsing(String id) {
+        return roleRepository.isRoleAssignedToUser(id);
     }
 
 

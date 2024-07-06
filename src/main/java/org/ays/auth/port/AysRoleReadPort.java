@@ -64,6 +64,6 @@ public interface AysRoleReadPort {
      * @param id The ID of the role to check.
      * @return true if users are assigned to the role, false otherwise.
      */
-    boolean isUserAssignedToRole(String id);
+    boolean isRoleUsing(String id);
 
 }

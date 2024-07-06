@@ -16,11 +16,12 @@ public final class AysRoleAlreadyDeletedException extends AysAlreadyException {
     private static final long serialVersionUID = -7631303999314005771L;
 
     /**
-     * Constructs a new AysAlreadyException with the specified detail message.
+     * Constructs a new {@link AysRoleAlreadyDeletedException} with the specified detail message.
      *
      * @param id the id of the deleted user
      */
     public AysRoleAlreadyDeletedException(String id) {
         super("role is already deleted! id:" + id);
     }
+
 }

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.request.AysRoleUpdateRequest;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
@@ -80,11 +79,11 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         final AysRole role = roleReadPort.findById(id)
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
-        if (roleReadPort.isUserAssignedToRole(id)) {
+        if (roleReadPort.isRoleUsing(id)) {
             throw new AysRoleAssignedToUserException(id);
         }
 
-        if (role.getStatus() == AysRoleStatus.DELETED) {
+        if (role.isDeleted()) {
             throw new AysRoleAlreadyDeletedException(id);
         }
 

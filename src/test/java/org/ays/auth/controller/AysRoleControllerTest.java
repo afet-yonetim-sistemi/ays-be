@@ -662,8 +662,9 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
     }
 
+
     @Test
-    void givenValidIdAndRoleStatus_whenRoleDelete_thenReturnSuccess() throws Exception {
+    void givenValidId_whenRoleDeleted_thenReturnSuccess() throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -678,7 +679,6 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .delete(endpoint, mockAdminToken.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
-
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -696,7 +696,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "A",
             "493268349068342"
     })
-    void givenInvalidDeleteId_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+    void givenId_whenIdDoesNotValid_thenReturnValidationError(String invalidId) throws Exception {
 
         // Then
         String endpoint = BASE_PATH.concat("/role/").concat(invalidId);
@@ -717,7 +717,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenValidIdAndInvalidRoleStatus_whenRoleDelete_thenReturn() throws Exception {
+    void givenValidId_whenRoleAlreadyDeleted_thenReturnConflict() throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -751,7 +751,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenValidId_whenUserAssignedToRole_thenReturnConflict() throws Exception {
+    void givenValidId_whenRoleUsing_thenReturnConflict() throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
