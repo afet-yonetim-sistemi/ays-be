@@ -1,5 +1,6 @@
 package org.ays.auth.util.exception;
 
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.util.exception.AysNotExistException;
 
 import java.io.Serial;
@@ -18,10 +19,10 @@ public final class AysInvalidRoleStatusException extends AysNotExistException {
     /**
      * Constructs a new {@link AysInvalidRoleStatusException} with the specified role name.
      *
-     * @param id the name of the role that that does not exist.
+     * @param status the name of the role that that does not exist.
      */
-    public AysInvalidRoleStatusException(String status) {
-        super("role status is not " + status.toLowerCase() + "!");
+    public AysInvalidRoleStatusException(AysRoleStatus status) {
+        super("role status is not " + status.toString().toLowerCase() + "!");
     }
 
 }

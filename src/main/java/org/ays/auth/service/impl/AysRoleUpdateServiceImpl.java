@@ -78,13 +78,14 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
         if(role.getStatus() != AysRoleStatus.PASSIVE) {
-            throw new AysInvalidRoleStatusException(AysRoleStatus.PASSIVE.toString());
+            throw new AysInvalidRoleStatusException(AysRoleStatus.PASSIVE);
         }
 
         role.activate();
         roleSavePort.save(role);
 
     }
+
 
     /**
      * Checks the existence of another role with the same name, excluding the current role ID.
