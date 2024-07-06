@@ -19,7 +19,7 @@ public final class AysInvalidRoleStatusException extends AysNotExistException {
     /**
      * Constructs a new {@link AysInvalidRoleStatusException} with the specified role status.
      *
-     * @param status the invalid status of the role..
+     * @param status the invalid status of the role.
      */
     public AysInvalidRoleStatusException(AysRoleStatus status) {
         super("role status is not " + status.toString().toLowerCase() + "!");
