@@ -72,11 +72,13 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
      * Activates an existing role.
      * <p>
      * This method sets the status of the role identified by its ID to active. If the role does not exist,
+     * an exception is thrown. Additionally, if the role's status is not {@link AysRoleStatus#PASSIVE},
      * an exception is thrown.
      * </p>
      *
      * @param id The ID of the role to activate.
      * @throws AysRoleNotExistByIdException if a role with the given ID does not exist.
+     * @throws AysInvalidRoleStatusException if the role's current status is not {@link AysRoleStatus#PASSIVE}.
      */
     @Override
     public void activate(String id) {
@@ -89,7 +91,6 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
 
         role.activate();
         roleSavePort.save(role);
-
     }
 
 

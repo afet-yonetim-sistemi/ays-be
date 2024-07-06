@@ -6,7 +6,7 @@ import org.ays.common.util.exception.AysNotExistException;
 import java.io.Serial;
 
 /**
- * Exception to be thrown when a role with a given id does not exist.
+ * Exception to be thrown when a role's status is invalid for the requested operation.
  */
 public final class AysInvalidRoleStatusException extends AysNotExistException {
 
@@ -17,9 +17,9 @@ public final class AysInvalidRoleStatusException extends AysNotExistException {
     private static final long serialVersionUID = -933312733826008379L;
 
     /**
-     * Constructs a new {@link AysInvalidRoleStatusException} with the specified role name.
+     * Constructs a new {@link AysInvalidRoleStatusException} with the specified role status.
      *
-     * @param status the name of the role that that does not exist.
+     * @param status the invalid status of the role..
      */
     public AysInvalidRoleStatusException(AysRoleStatus status) {
         super("role status is not " + status.toString().toLowerCase() + "!");

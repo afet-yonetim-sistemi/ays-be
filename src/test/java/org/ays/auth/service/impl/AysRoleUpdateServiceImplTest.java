@@ -419,7 +419,6 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockRole));
 
-
         // Then
         Assertions.assertThrows(
                 AysInvalidRoleStatusException.class,
