@@ -12,6 +12,12 @@ import org.ays.auth.model.request.AysRoleUpdateRequestBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
+import org.ays.auth.util.exception.AysPermissionNotExistException;
+import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
+import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
+import org.ays.auth.util.exception.AysRoleAssignedToUserException;
+import org.ays.auth.util.exception.AysRoleNotExistByIdException;
+import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.ays.auth.util.exception.*;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
@@ -447,6 +453,121 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         // Verify
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
+
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+    }
+
+
+    @Test
+    void givenValidId_whenRoleFound_thenDeleteRole() {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+
+        Mockito.when(roleReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockRole));
+
+        Mockito.when(roleSavePort.save(Mockito.any(AysRole.class)))
+                .thenReturn(Mockito.mock(AysRole.class));
+
+        // Then
+        roleUpdateService.delete(mockId);
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(roleSavePort, Mockito.times(1))
+                .save(Mockito.any(AysRole.class));
+
+    }
+
+    @Test
+    void givenValidId_whenRoleAlreadyDeleted_thenThrowAysRoleAlreadyDeletedException() {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withStatus(AysRoleStatus.DELETED)
+                .build();
+
+        Mockito.when(roleReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockRole));
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleAlreadyDeletedException.class,
+                () -> roleUpdateService.delete(mockId)
+        );
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+    }
+
+    @Test
+    void givenValidId_whenRoleDoesNotFound_thenThrowAysRoleNotExistByIdException() {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.when(roleReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleNotExistByIdException.class,
+                () -> roleUpdateService.delete(mockId)
+        );
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+    }
+
+    @Test
+    void givenValidId_whenRoleUsing_thenThrowAysRoleAssignedToUserException() {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+
+        Mockito.when(roleReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockRole));
+
+        Mockito.when(roleReadPort.isRoleUsing(Mockito.anyString()))
+                .thenReturn(true);
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleAssignedToUserException.class,
+                () -> roleUpdateService.delete(mockId)
+        );
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .isRoleUsing(Mockito.anyString());
 
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));

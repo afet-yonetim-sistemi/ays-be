@@ -117,6 +117,18 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
 
 
     /**
+     * Checks if any users are assigned to a role identified by its ID.
+     *
+     * @param id The ID of the role to check.
+     * @return true if users are assigned to the role, false otherwise.
+     */
+    @Override
+    public boolean isRoleUsing(String id) {
+        return roleRepository.isRoleAssignedToUser(id);
+    }
+
+
+    /**
      * Saves an {@link AysRole} to the database.
      *
      * @param role The {@link AysRole} to save.
