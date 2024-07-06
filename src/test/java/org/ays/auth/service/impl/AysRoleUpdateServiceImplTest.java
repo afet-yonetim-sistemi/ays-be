@@ -18,7 +18,7 @@ import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
 import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;
-import org.ays.auth.util.exception.*;
+import org.ays.auth.util.exception.AysInvalidRoleStatusException;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
