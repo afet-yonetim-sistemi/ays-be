@@ -4,6 +4,7 @@ import org.ays.auth.model.entity.AysRoleEntity;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,5 +37,14 @@ public interface AysRoleRepository extends JpaRepository<AysRoleEntity, String>,
      * @return an {@link Optional} containing the {@link AysRoleEntity} if found, or empty if not found
      */
     Optional<AysRoleEntity> findByName(String name);
+
+    /**
+     * Checks if any users are assigned to the role identified by the given role ID.
+     *
+     * @param id The ID of the role to check for assigned users.
+     * @return true if there are users assigned to the role, false otherwise.
+     */
+    @Query("SELECT COUNT(user) > 0 FROM AysUserEntity user JOIN user.roles role WHERE role.id = :id")
+    boolean isRoleAssignedToUser(String id);
 
 }

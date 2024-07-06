@@ -16,4 +16,11 @@ public interface AysRoleUpdateService {
      */
     void update(String id, AysRoleUpdateRequest updateRequest);
 
+    /**
+     * Deletes a role by its unique identifier.
+     *
+     * @param id The unique identifier of the role to be deleted.
+     */
+    void delete(String id);
+
 }

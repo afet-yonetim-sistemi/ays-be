@@ -21,6 +21,7 @@ import org.ays.common.model.response.AysResponse;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -155,6 +156,24 @@ class AysRoleController {
                                     @RequestBody @Valid final AysRoleUpdateRequest updateRequest) {
 
         roleUpdateService.update(id, updateRequest);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * Delete an existing role by its ID.
+     * <p>
+     * This method is mapped to handle HTTP DELETE requests to "/role/{id}". It requires
+     * the user to have the 'role:delete' authority to access.
+     * </p>
+     *
+     * @param id The ID of the role to delete.
+     * @return An {@link AysResponse} indicating the success of the operation.
+     */
+    @DeleteMapping("/role/{id}")
+    @PreAuthorize("hasAnyAuthority('role:delete')")
+    public AysResponse<Void> delete(@PathVariable @UUID final String id) {
+        roleUpdateService.delete(id);
         return AysResponse.SUCCESS;
     }
 
