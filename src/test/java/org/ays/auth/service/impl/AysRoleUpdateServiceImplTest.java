@@ -16,6 +16,8 @@ import org.ays.auth.util.exception.*;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -360,7 +362,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenRoleIsNotPassive_thenActivateRole() {
+    void givenValidId_whenRoleIsPassive_thenActivateRole() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -389,8 +391,15 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
 
     }
 
-    @Test
-    void givenValidId_whenRoleIsPassive_thenThrowAysInvalidRoleStatusException() {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "ACTIVE",
+            "DELETED"
+    })
+    void givenValidId_whenRoleIsNotPassive_thenThrowAysInvalidRoleStatusException(String roleStatus) {
+        // Initialize
+        AysRoleStatus status = AysRoleStatus.valueOf(roleStatus);
+
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -398,7 +407,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         AysRole mockRole = new AysRoleBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withStatus(AysRoleStatus.ACTIVE)
+                .withStatus(status)
                 .build();
 
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
