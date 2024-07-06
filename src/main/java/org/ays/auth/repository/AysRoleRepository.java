@@ -44,7 +44,7 @@ public interface AysRoleRepository extends JpaRepository<AysRoleEntity, String>,
      * @param id The ID of the role to check for assigned users.
      * @return true if there are users assigned to the role, false otherwise.
      */
-    @Query("SELECT COUNT(user) > 0 FROM AysUserEntity user JOIN user.roles role WHERE role.id = :roleId")
+    @Query("SELECT COUNT(user) > 0 FROM AysUserEntity user JOIN user.roles role WHERE role.id = :id")
     boolean isRoleAssignedToUser(String id);
 
 }
