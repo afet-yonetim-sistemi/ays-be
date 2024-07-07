@@ -85,7 +85,7 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         final AysRole role = roleReadPort.findById(id)
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
-        if(role.getStatus() != AysRoleStatus.PASSIVE) {
+        if (!role.isPassive()) {
             throw new AysInvalidRoleStatusException(AysRoleStatus.PASSIVE);
         }
 
