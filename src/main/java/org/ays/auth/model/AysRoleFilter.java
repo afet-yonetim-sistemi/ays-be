@@ -61,7 +61,7 @@ public class AysRoleFilter implements AysFilter {
 
         if (this.name != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("name"), "%" + this.name + "%"));
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("name")), "%" + this.name.toUpperCase() + "%"));
         }
 
         if (!CollectionUtils.isEmpty(this.statuses)) {

@@ -86,12 +86,12 @@ public class AysUserFilter implements AysFilter {
 
         if (this.firstName != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("firstName"), "%" + this.firstName + "%"));
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("firstName")), "%" + this.firstName.toUpperCase() + "%"));
         }
 
         if (this.lastName != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("lastName"), "%" + this.lastName + "%"));
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("lastName")), "%" + this.lastName.toUpperCase() + "%"));
         }
 
         if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getCountryCode())) {
@@ -106,7 +106,7 @@ public class AysUserFilter implements AysFilter {
 
         if (this.city != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("city"), "%" + this.city + "%"));
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("city")), "%" + this.city.toUpperCase() + "%"));
         }
 
         return specification;

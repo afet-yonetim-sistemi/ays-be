@@ -53,7 +53,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withFirstName("Öykü")
                         .withLastName("İzgi")
-                        .withCity("İzmir")
+                        .withCity("Iğdır")
                         .withStatus(AysUserStatus.ACTIVE)
                         .withRoles(List.of(role))
                         .withInstitution(new InstitutionBuilder().withId(AysValidTestData.SuperAdmin.INSTITUTION_ID).build())
@@ -65,7 +65,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .withValidValues()
                 .withFirstName("öykü")
                 .withLastName("İzgi")
-                .withCity("izmir")
+                .withCity("ığdır")
                 .withStatuses(Set.of(AysUserStatus.ACTIVE))
                 .build();
 
