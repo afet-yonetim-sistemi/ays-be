@@ -56,14 +56,21 @@ public class AysRoleFilter implements AysFilter {
 
         Specification<AysRoleEntity> specification = Specification.where(null);
 
-        specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("institutionId"), this.institutionId));
+        specification = specification.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("institutionId"), this.institutionId));
 
         if (this.name != null) {
-            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + this.name.toLowerCase() + "%"));
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(root.get("name"), "%" + this.name + "%"));
         }
 
         if (!CollectionUtils.isEmpty(this.statuses)) {
-            Specification<AysRoleEntity> statusSpecification = this.statuses.stream().map(status -> (Specification<AysRoleEntity>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), status)).reduce(Specification::or).orElse(null);
+
+            Specification<AysRoleEntity> statusSpecification = this.statuses.stream()
+                    .map(status -> (Specification<AysRoleEntity>) (root, query, criteriaBuilder) ->
+                            criteriaBuilder.equal(root.get("status"), status))
+                    .reduce(Specification::or)
+                    .orElse(null);
 
             specification = specification.and(statusSpecification);
         }
