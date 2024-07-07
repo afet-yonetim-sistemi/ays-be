@@ -24,6 +24,13 @@ public interface AysRoleUpdateService {
     void activate(String id);
 
     /**
+     * Service interface for passivating roles.
+     * Implementations of this interface should provide functionality to passivate an existing role
+     * based on the provided id.
+     */
+    void passivate(String id);
+
+    /**
      * Deletes a role by its unique identifier.
      *
      * @param id The unique identifier of the role to be deleted.
