@@ -1,21 +1,18 @@
 package org.ays.auth.controller;
 
 import org.ays.AysEndToEndTest;
-import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUserBuilder;
-import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.auth.model.response.AysUsersResponse;
-import org.ays.auth.port.AysPermissionReadPort;
-import org.ays.auth.port.AysRoleSavePort;
+import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
@@ -33,10 +30,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
     private AysUserSavePort userSavePort;
 
     @Autowired
-    private AysRoleSavePort roleSavePort;
-
-    @Autowired
-    private AysPermissionReadPort permissionReadPort;
+    private AysRoleReadPort roleReadPort;
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -46,17 +40,13 @@ class AysUserEndToEndTest extends AysEndToEndTest {
     void givenValidUserListRequest_whenUsersFoundForSuperAdmin_thenReturnAysPageResponseOfUsersResponse() throws Exception {
 
         // Initialize
-        List<AysPermission> permissions = permissionReadPort.findAll();
-        AysRole role = roleSavePort.save(
-                new AysRoleBuilder()
-                        .withValidValues()
-                        .withoutId()
-                        .withName("Öğretici")
-                        .withStatus(AysRoleStatus.ACTIVE)
-                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.SuperAdmin.INSTITUTION_ID).build())
-                        .withPermissions(permissions)
-                        .build()
-        );
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.SuperAdmin.INSTITUTION_ID)
+                .build();
+        AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
+                .stream()
+                .findFirst()
+                .orElseThrow();
         userSavePort.save(
                 new AysUserBuilder()
                         .withValidValues()
