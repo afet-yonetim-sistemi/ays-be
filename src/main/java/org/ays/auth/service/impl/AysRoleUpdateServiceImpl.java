@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
+import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.request.AysRoleUpdateRequest;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
@@ -15,6 +16,7 @@ import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
 import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;
+import org.ays.auth.util.exception.AysInvalidRoleStatusException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +67,33 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         roleSavePort.save(role);
     }
 
+
+    /**
+     * Activates an existing role.
+     * <p>
+     * This method sets the status of the role identified by its ID to active. If the role does not exist,
+     * an exception is thrown. Additionally, if the role's status is not {@link AysRoleStatus#PASSIVE},
+     * an exception is thrown.
+     * </p>
+     *
+     * @param id The ID of the role to activate.
+     * @throws AysRoleNotExistByIdException if a role with the given ID does not exist.
+     * @throws AysInvalidRoleStatusException if the role's current status is not {@link AysRoleStatus#PASSIVE}.
+     */
+    @Override
+    public void activate(String id) {
+        final AysRole role = roleReadPort.findById(id)
+                .orElseThrow(() -> new AysRoleNotExistByIdException(id));
+
+        if (!role.isPassive()) {
+            throw new AysInvalidRoleStatusException(AysRoleStatus.PASSIVE);
+        }
+
+        role.activate();
+        roleSavePort.save(role);
+    }
+
+
     /**
      * Deletes an existing role identified by its ID.
      *
@@ -90,6 +119,7 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         role.delete();
         roleSavePort.save(role);
     }
+
 
     /**
      * Checks the existence of another role with the same name, excluding the current role ID.

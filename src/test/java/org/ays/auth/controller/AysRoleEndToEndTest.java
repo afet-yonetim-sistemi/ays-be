@@ -411,6 +411,51 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         ));
     }
 
+    @Test
+    void givenId_whenRoleActivated_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        Institution institution = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        List<AysPermission> permissions = permissionReadPort.findAll();
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withStatus(AysRoleStatus.PASSIVE)
+                        .withInstitution(institution)
+                        .withPermissions(permissions)
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(id).concat("/activate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, superAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertEquals(roleFromDatabase.get().getId(), id);
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
+    }
+
 
     @Test
     void givenValidId_whenRoleAlreadyDeleted_thenReturnSuccess() throws Exception {

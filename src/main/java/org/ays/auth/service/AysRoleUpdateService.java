@@ -17,6 +17,13 @@ public interface AysRoleUpdateService {
     void update(String id, AysRoleUpdateRequest updateRequest);
 
     /**
+     * Service interface for activating roles.
+     * Implementations of this interface should provide functionality to activate an existing role
+     * based on the provided id.
+     */
+    void activate(String id);
+
+    /**
      * Deletes a role by its unique identifier.
      *
      * @param id The unique identifier of the role to be deleted.

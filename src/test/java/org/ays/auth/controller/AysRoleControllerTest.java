@@ -452,6 +452,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysRoleCreateRequest.class));
     }
 
+
     @Test
     void givenValidIdAndRoleUpdateRequest_whenRoleUpdated_thenReturnSuccess() throws Exception {
         // Given
@@ -660,6 +661,61 @@ class AysRoleControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(roleUpdateService, Mockito.never())
                 .update(Mockito.anyString(), Mockito.any(AysRoleUpdateRequest.class));
+    }
+
+
+    @Test
+    void givenValidId_whenRoleActivated_thenReturnSuccess() throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.doNothing()
+                .when(roleUpdateService)
+                .activate(Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(mockId).concat("/activate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockSuperAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.times(1))
+                .activate(Mockito.anyString());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenId_whenIdIsNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(invalidId).concat("/activate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockSuperAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .activate(Mockito.anyString());
     }
 
 
