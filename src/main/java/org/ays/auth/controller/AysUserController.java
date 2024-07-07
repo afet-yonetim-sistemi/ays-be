@@ -77,7 +77,7 @@ class AysUserController {
 
     @GetMapping("/user/{id}")
     @PreAuthorize("hasAuthority('user:detail')")
-    public AysResponse<AysUserResponse> findById(@PathVariable @UUID String id) {
+    public AysResponse<AysUserResponse> findById(@PathVariable @UUID final String id) {
         final AysUser user = userReadService.findById(id);
         final AysUserResponse userResponse = userToResponseMapper.map(user);
         return AysResponse.successOf(userResponse);
