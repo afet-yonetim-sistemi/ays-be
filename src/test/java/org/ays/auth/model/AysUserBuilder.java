@@ -43,6 +43,16 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
         return this;
     }
 
+    public AysUserBuilder withFirstName(String firstName) {
+        data.setFirstName(firstName);
+        return this;
+    }
+
+    public AysUserBuilder withLastName(String lastName) {
+        data.setLastName(lastName);
+        return this;
+    }
+
     public AysUserBuilder withEmailAddress(String emailAddress) {
         data.setEmailAddress(data.getEmailAddress() + emailAddress);
         return this;
@@ -50,6 +60,11 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
 
     public AysUserBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
         data.setPhoneNumber(phoneNumber);
+        return this;
+    }
+
+    public AysUserBuilder withCity(String city) {
+        data.setCity(city);
         return this;
     }
 
