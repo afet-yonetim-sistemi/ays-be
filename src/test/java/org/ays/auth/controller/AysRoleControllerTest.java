@@ -720,6 +720,61 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
 
     @Test
+    void givenValidId_whenRolePassivated_thenReturnSuccess() throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+
+        // When
+        Mockito.doNothing()
+                .when(roleUpdateService)
+                .passivate(Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(mockId).concat("/passivate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockSuperAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.times(1))
+                .passivate(Mockito.anyString());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenId_whenIdIsNotValidForPassivation_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(invalidId).concat("/passivate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockSuperAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
+                .passivate(Mockito.anyString());
+    }
+
+
+    @Test
     void givenValidId_whenRoleDeleted_thenReturnSuccess() throws Exception {
         // Given
         String mockId = AysRandomUtil.generateUUID();

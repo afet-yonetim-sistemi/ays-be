@@ -57,6 +57,14 @@ public class AysRole extends BaseDomainModel {
     }
 
     /**
+     * Passivates the role by setting its status to {@link AysRoleStatus#PASSIVE}.
+     * This method should be called when the role needs to be marked passive in the system.
+     */
+    public void passivate() {
+        this.setStatus(AysRoleStatus.PASSIVE);
+    }
+
+    /**
      * Checks if the role's status is deleted.
      *
      * @return {@code true} if the role's status is {@link AysRoleStatus#DELETED}, otherwise {@code false}.
