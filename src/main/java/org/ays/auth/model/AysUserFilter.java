@@ -74,20 +74,24 @@ public class AysUserFilter implements AysFilter {
                 criteriaBuilder.equal(root.get("institutionId"), this.institutionId));
 
         if (!CollectionUtils.isEmpty(this.statuses)) {
+
             Specification<AysUserEntity> statusSpecification = this.statuses.stream()
                     .map(status -> (Specification<AysUserEntity>) (root, query, criteriaBuilder) ->
                             criteriaBuilder.equal(root.get("status"), status))
                     .reduce(Specification::or)
                     .orElse(null);
+
             specification = specification.and(statusSpecification);
         }
 
         if (this.firstName != null) {
-            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("firstName")), "%" + this.firstName.toLowerCase() + "%"));
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("firstName")), "%" + this.firstName.toUpperCase() + "%"));
         }
 
         if (this.lastName != null) {
-            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), "%" + this.lastName.toLowerCase() + "%"));
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("lastName")), "%" + this.lastName.toUpperCase() + "%"));
         }
 
         if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getCountryCode())) {
@@ -101,7 +105,8 @@ public class AysUserFilter implements AysFilter {
         }
 
         if (this.city != null) {
-            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("city")), "%" + this.city.toLowerCase() + "%"));
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("city")), "%" + this.city.toUpperCase() + "%"));
         }
 
         return specification;

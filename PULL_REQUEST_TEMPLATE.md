@@ -4,9 +4,9 @@ Before submitting your pull request, ensure the following:
 
 - [ ] **Title and Branch Naming Conventions:**
     - The pull request title follows the
-      standard: [Pull Request Naming Conventions](CONTRIBUTING.md#pull-request-naming-conventions).
+      standard: [Pull Request Naming Conventions](https://github.com/afet-yonetim-sistemi/ays-be/blob/main/CONTRIBUTING.md#pull-request-naming-conventions).
     - The branch name follows one of the conventions outlined in
-      the [Branch Naming Conventions](CONTRIBUTING.md#branch-naming-conventions).
+      the [Branch Naming Conventions](https://github.com/afet-yonetim-sistemi/ays-be/blob/main/CONTRIBUTING.md#branch-naming-conventions).
 
 - [ ] **Local Testing:**
     - I have tested my changes locally on Postman, and they are working as expected.

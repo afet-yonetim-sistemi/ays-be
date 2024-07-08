@@ -30,6 +30,8 @@ import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -87,13 +89,17 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     }
 
 
-    @Test
-    void givenValidRoleListRequest_whenRolesFoundForSuperAdmin_thenReturnAysPageResponseOfRolesResponse() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "AYS Yetkilisi",
+            "Öğretici"
+    })
+    void givenValidRoleListRequest_whenRolesFoundForSuperAdmin_thenReturnAysPageResponseOfRolesResponse(String name) throws Exception {
 
         // Given
         AysRoleListRequest listRequest = new AysRoleListRequestBuilder()
                 .withValidValues()
-                .withName("AYS Yetkilisi")
+                .withName(name)
                 .withStatuses(Set.of(AysRoleStatus.ACTIVE))
                 .build();
 
@@ -157,6 +163,60 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("name")
                         .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("status")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("updatedAt")
+                        .isEmpty());
+    }
+
+    @Test
+    void givenValidRoleListRequest_whenRoleFoundWithName_thenReturnAysPageResponseOfRolesResponse() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAll();
+        roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName("Öğretici")
+                        .withStatus(AysRoleStatus.ACTIVE)
+                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.SuperAdmin.INSTITUTION_ID).build())
+                        .withPermissions(permissions)
+                        .build()
+        );
+
+        // Given
+        AysRoleListRequest listRequest = new AysRoleListRequestBuilder()
+                .withValidValues()
+                .withName("Öğretici")
+                .withStatuses(Set.of(AysRoleStatus.ACTIVE))
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminToken.getAccessToken(), listRequest);
+
+
+        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponseBuilder.success();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.content()
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.contentSize()
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("id")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("name")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("name")
+                        .value(listRequest.getFilter().getName()))
                 .andExpect(AysMockResultMatchersBuilders.firstContent("status")
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
@@ -454,6 +514,52 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(roleFromDatabase.isPresent());
         Assertions.assertEquals(roleFromDatabase.get().getId(), id);
         Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
+    }
+
+
+    @Test
+    void givenId_whenRolePassivated_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        Institution institution = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        List<AysPermission> permissions = permissionReadPort.findAll();
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withStatus(AysRoleStatus.ACTIVE)
+                        .withInstitution(institution)
+                        .withPermissions(permissions)
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(id).concat("/passivate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, superAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertEquals(roleFromDatabase.get().getId(), id);
+        Assertions.assertEquals(AysRoleStatus.PASSIVE, roleFromDatabase.get().getStatus());
     }
 
 

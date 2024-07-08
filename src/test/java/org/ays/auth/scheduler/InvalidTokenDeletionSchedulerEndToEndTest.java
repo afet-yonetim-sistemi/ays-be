@@ -64,10 +64,12 @@ class InvalidTokenDeletionSchedulerEndToEndTest extends AysEndToEndTest {
         Set<AysInvalidToken> mockInvalidTokens = Set.of(
                 new AysInvalidTokenBuilder()
                         .withValidValues()
+                        .withCreatedUser("AYS")
                         .withCreatedAt(LocalDateTime.now().minusDays(refreshTokenExpireDay + 1))
                         .build(),
                 new AysInvalidTokenBuilder()
                         .withValidValues()
+                        .withCreatedUser("AYS")
                         .withCreatedAt(LocalDateTime.now().minusDays(refreshTokenExpireDay + 1))
                         .build()
         );

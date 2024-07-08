@@ -91,7 +91,8 @@ class AysRoleController {
      */
     @PostMapping("/roles")
     @PreAuthorize("hasAnyAuthority('role:list')")
-    public AysResponse<AysPageResponse<AysRolesResponse>> findAll(@RequestBody @Valid final AysRoleListRequest listRequest) {
+    public AysResponse<AysPageResponse<AysRolesResponse>> findAll(
+            @RequestBody @Valid final AysRoleListRequest listRequest) {
 
         final AysPage<AysRole> pageOfRoles = roleReadService.findAll(listRequest);
 
@@ -160,6 +161,7 @@ class AysRoleController {
         return AysResponse.SUCCESS;
     }
 
+
     /**
      * PATCH /role/{id}/activate : Activate an existing role.
      * <p>
@@ -174,6 +176,24 @@ class AysRoleController {
     @PreAuthorize("hasAnyAuthority('role:update')")
     public AysResponse<Void> activate(@PathVariable @UUID final String id) {
         roleUpdateService.activate(id);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * PATCH /role/{id}/passivate : Passivate an existing role.
+     * <p>
+     * This endpoint handles the passivation of a role based on its ID. The user must have the
+     * 'role:update' authority to access this endpoint.
+     * </p>
+     *
+     * @param id The ID of the role to passivate.
+     * @return An {@link AysResponse} indicating the success of the operation.
+     */
+    @PatchMapping("/role/{id}/passivate")
+    @PreAuthorize("hasAnyAuthority('role:update')")
+    public AysResponse<Void> passivate(@PathVariable @UUID final String id) {
+        roleUpdateService.passivate(id);
         return AysResponse.SUCCESS;
     }
 
