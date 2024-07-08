@@ -91,7 +91,8 @@ class AysRoleController {
      */
     @PostMapping("/roles")
     @PreAuthorize("hasAnyAuthority('role:list')")
-    public AysResponse<AysPageResponse<AysRolesResponse>> findAll(@RequestBody @Valid final AysRoleListRequest listRequest) {
+    public AysResponse<AysPageResponse<AysRolesResponse>> findAll(
+            @RequestBody @Valid final AysRoleListRequest listRequest) {
 
         final AysPage<AysRole> pageOfRoles = roleReadService.findAll(listRequest);
 

@@ -1,11 +1,7 @@
 package org.ays.common.model;
 
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.jeasy.random.FieldPredicates;
 import org.jeasy.random.randomizers.range.IntegerRangeRandomizer;
 import org.jeasy.random.randomizers.range.LongRangeRandomizer;
 import org.jeasy.random.randomizers.text.StringRandomizer;
@@ -23,40 +19,35 @@ public abstract class TestDataBuilder<T> {
     protected T data;
     protected Class<T> clazz;
 
-
     private static final PositiveIntegerRandomizer POSITIVE_INTEGER_RANDOMIZER = new PositiveIntegerRandomizer();
     private static final LongRangeRandomizer LONG_RANGE_RANDOMIZER = new LongRangeRandomizer(1L, Long.MAX_VALUE);
     private static final CharacterRandomizer CHARACTER_RANDOMIZER = new CharacterRandomizer();
 
-
     public TestDataBuilder(Class<T> clazz) {
-        this(clazz, false);
+        this.clazz = clazz;
+        this.generator = new EasyRandom(this.getExclusionParameters());
+        this.data = generator.nextObject(clazz);
     }
 
-    public TestDataBuilder(Class<T> clazz, boolean excludeRelations) {
-        this.clazz = clazz;
-        this.generator = new EasyRandom(this.getExclusionParameters(excludeRelations));
-        this.data = generator.nextObject(clazz);
+    private EasyRandomParameters getExclusionParameters() {
+        EasyRandomParameters parameters = new EasyRandomParameters();
+        parameters.randomize(Integer.class, POSITIVE_INTEGER_RANDOMIZER);
+        parameters.randomize(String.class, CHARACTER_RANDOMIZER);
+        parameters.randomize(Long.class, LONG_RANGE_RANDOMIZER);
+
+        parameters.excludeField(
+                named("createdUser")
+                        .or(named("createdAt"))
+                        .or(named("updatedUser"))
+                        .or(named("updatedAt"))
+        );
+        return parameters;
     }
 
     public T build() {
         return data;
     }
 
-    private EasyRandomParameters getExclusionParameters(boolean excludeRelations) {
-        EasyRandomParameters parameters = new EasyRandomParameters();
-        parameters.randomize(Integer.class, POSITIVE_INTEGER_RANDOMIZER);
-        parameters.randomize(String.class, CHARACTER_RANDOMIZER);
-        parameters.randomize(Long.class, LONG_RANGE_RANDOMIZER);
-
-        if (!excludeRelations) return parameters;
-
-        parameters.excludeField(
-                FieldPredicates.isAnnotatedWith(ManyToOne.class, OneToMany.class, OneToOne.class)
-                        .or(named("id"))
-        );
-        return parameters;
-    }
 }
 
 class PositiveIntegerRandomizer extends IntegerRangeRandomizer {

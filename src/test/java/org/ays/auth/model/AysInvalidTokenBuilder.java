@@ -28,6 +28,11 @@ public class AysInvalidTokenBuilder extends TestDataBuilder<AysInvalidToken> {
         return this;
     }
 
+    public AysInvalidTokenBuilder withCreatedUser(String createdUser) {
+        data.setCreatedUser(createdUser);
+        return this;
+    }
+
     public AysInvalidTokenBuilder withCreatedAt(LocalDateTime createdAt) {
         data.setCreatedAt(createdAt);
         return this;
