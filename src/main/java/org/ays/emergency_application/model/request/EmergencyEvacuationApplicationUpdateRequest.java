@@ -20,7 +20,7 @@ public class EmergencyEvacuationApplicationUpdateRequest {
     private Integer seatingCount;
 
     @NotNull
-    private Boolean hasObstaclePersonExist; //Engel durumu olan biri var mı?
+    private Boolean hasObstaclePersonExist;
 
     @NotNull
     private EmergencyEvacuationApplicationStatus status;
