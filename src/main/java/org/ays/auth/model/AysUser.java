@@ -60,7 +60,6 @@ public class AysUser extends BaseDomainModel {
         return AysUserStatus.PASSIVE.equals(this.status);
     }
 
-
     /**
      * Checks if the user's status is deleted.
      *
@@ -70,6 +69,16 @@ public class AysUser extends BaseDomainModel {
         return AysUserStatus.DELETED.equals(this.status);
     }
 
+    /**
+     * Checks if the user's status is valid for general operations.
+     * A status is considered valid if it is either {@link AysUserStatus#ACTIVE} or {@link AysUserStatus#PASSIVE}.
+     *
+     * @return {@code true} if the user's status is either {@link AysUserStatus#ACTIVE} or {@link AysUserStatus#PASSIVE},
+     * otherwise {@code false}.
+     */
+    public boolean isStatusValid() {
+        return this.isActive() || this.isPassive();
+    }
 
     /**
      * Sets the user's status to {@link AysUserStatus#ACTIVE}, marking the user as active.
