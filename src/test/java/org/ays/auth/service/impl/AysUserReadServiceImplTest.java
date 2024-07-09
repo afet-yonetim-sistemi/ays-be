@@ -110,7 +110,7 @@ class AysUserReadServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidUserId_whenUserFoundById_thenReturnUser() {
+    void givenValidId_whenUserFoundById_thenReturnUser() {
 
         // Given
         AysUser mockUser = new AysUserBuilder()
@@ -134,7 +134,7 @@ class AysUserReadServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenUserNotFoundById_thenThrowAysUserNotExistByIdException() {
+    void givenValidId_whenUserNotFoundById_thenThrowAysUserNotExistByIdException() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
