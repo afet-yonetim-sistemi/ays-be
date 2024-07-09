@@ -85,4 +85,5 @@ class AysUserController {
         userUpdateService.update(id, updateRequest);
         return AysResponse.SUCCESS;
     }
+
 }
