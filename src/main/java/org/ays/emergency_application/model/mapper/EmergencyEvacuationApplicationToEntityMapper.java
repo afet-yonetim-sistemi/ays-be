@@ -23,6 +23,7 @@ public interface EmergencyEvacuationApplicationToEntityMapper extends BaseMapper
     @Mapping(target = "lineNumber", source = "phoneNumber.lineNumber")
     @Mapping(target = "applicantCountryCode", source = "applicantPhoneNumber.countryCode")
     @Mapping(target = "applicantLineNumber", source = "applicantPhoneNumber.lineNumber")
+    @Mapping(target = "institutionId", source = "institution.id")
     EmergencyEvacuationApplicationEntity map(EmergencyEvacuationApplication application);
 
     /**
