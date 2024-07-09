@@ -11,10 +11,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
 
@@ -25,7 +25,7 @@ import org.ays.institution.model.entity.InstitutionEntity;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "AYS_EMERGENCY_EVACUATION_APPLICATION")
@@ -100,6 +100,6 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", insertable = false, updatable = false)
-    private InstitutionEntity institutionEntity;
+    private InstitutionEntity institution;
 
 }
