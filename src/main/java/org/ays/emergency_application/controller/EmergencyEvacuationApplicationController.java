@@ -10,6 +10,7 @@ import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplication
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
@@ -19,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -88,5 +90,19 @@ class EmergencyEvacuationApplicationController {
         emergencyEvacuationApplicationService.create(emergencyEvacuationApplicationRequest);
         return AysResponse.SUCCESS;
     }
+
+    // TODO : Javadoc
+    // TODO : Write tests
+    @PutMapping("emergency-evacuation-application/{id}")
+    @PreAuthorize("hasAuthority('application:evacuation:update')")
+    public AysResponse<Void> update(
+            @PathVariable @UUID final String id,
+            @RequestBody @Valid final EmergencyEvacuationApplicationUpdateRequest updateRequest
+    ) {
+        emergencyEvacuationApplicationService.update(id, updateRequest);
+
+        return AysResponse.SUCCESS;
+    }
+
 
 }
