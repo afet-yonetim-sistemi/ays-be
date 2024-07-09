@@ -7,7 +7,7 @@ import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.service.AysUserReadService;
-import org.ays.auth.util.exception.AysUserNotExistException;
+import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;
@@ -69,17 +69,17 @@ class AysUserReadServiceImpl implements AysUserReadService {
     /**
      * Retrieves a user by its unique identifier.
      * <p>
-     * If the user with the specified ID does not exist, an {@link AysUserNotExistException} is thrown.
+     * If the user with the specified ID does not exist, an {@link AysUserNotExistByIdException} is thrown.
      * </p>
      *
      * @param id the unique identifier of the user.
      * @return the user with the specified ID.
-     * @throws AysUserNotExistException if the user with the specified ID does not exist.
+     * @throws AysUserNotExistByIdException if the user with the specified ID does not exist.
      */
     @Override
     public AysUser findById(String id) {
         return userReadPort.findById(id)
-                .orElseThrow(() -> new AysUserNotExistException(id));
+                .orElseThrow(() -> new AysUserNotExistByIdException(id));
     }
 
 }

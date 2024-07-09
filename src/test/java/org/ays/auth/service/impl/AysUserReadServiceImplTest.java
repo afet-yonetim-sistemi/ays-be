@@ -8,7 +8,7 @@ import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.auth.port.AysUserReadPort;
-import org.ays.auth.util.exception.AysUserNotExistException;
+import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
@@ -134,7 +134,7 @@ class AysUserReadServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenUserNotFoundById_thenThrowAysUserNotExistException() {
+    void givenValidUserId_whenUserNotFoundById_thenThrowAysUserNotExistByIdException() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -145,7 +145,7 @@ class AysUserReadServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserNotExistException.class,
+                AysUserNotExistByIdException.class,
                 () -> userReadService.findById(mockId)
         );
 
