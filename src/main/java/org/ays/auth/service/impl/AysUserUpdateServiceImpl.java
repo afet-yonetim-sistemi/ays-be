@@ -11,10 +11,14 @@ import org.ays.auth.service.AysUserUpdateService;
 import org.ays.auth.util.exception.AysRolesNotExistException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.auth.util.exception.AysInvalidUserStatusException;
+import org.ays.auth.util.exception.AysPhoneNumberAlreadyInUseException;
+import org.ays.auth.util.exception.AysEmailAlreadyInUseException;
+import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -48,7 +52,18 @@ public class AysUserUpdateServiceImpl implements AysUserUpdateService {
 
         if (!user.isStatusValid()) {
             throw new AysInvalidUserStatusException(id);
+        }
 
+        final AysPhoneNumber phoneNumber = updateRequest.getPhoneNumber();
+        final String concatenatedPhoneNumber = phoneNumber.getCountryCode() + phoneNumber.getLineNumber();
+        final Optional<AysUser> existingUserWithPhoneNumber = userReadPort.findByPhoneNumber(concatenatedPhoneNumber);
+        if (existingUserWithPhoneNumber.isPresent() && !existingUserWithPhoneNumber.get().getId().equals(id)) {
+            throw new AysPhoneNumberAlreadyInUseException(concatenatedPhoneNumber);
+        }
+
+        final Optional<AysUser> existingUserWithEmail = userReadPort.findByEmailAddress(updateRequest.getEmailAddress());
+        if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(id)) {
+            throw new AysEmailAlreadyInUseException(updateRequest.getEmailAddress());
         }
 
         final List<AysRole> roles = this.checkExistingRolesAndGet(updateRequest.getRoleIds());
