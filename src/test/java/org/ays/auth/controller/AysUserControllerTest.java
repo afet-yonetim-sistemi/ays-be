@@ -4,9 +4,11 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
+import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.common.model.AysPage;
@@ -14,6 +16,7 @@ import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
@@ -33,6 +36,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
 
     private final AysUserToUsersResponseMapper userToUsersResponseMapper = AysUserToUsersResponseMapper.initialize();
+    private final AysUserToResponseMapper userToResponseMapper = AysUserToResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1";
@@ -205,6 +209,92 @@ class AysUserControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(userReadService, Mockito.never())
                 .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+
+    @Test
+    void givenValidUserId_whenUserFound_thenReturnAysUserResponse() throws Exception {
+
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockUserId)
+                .build();
+
+        Mockito.when(userReadService.findById(mockUserId))
+                .thenReturn(mockUser);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockUserId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminToken.getAccessToken());
+
+        AysUserResponse mockUserResponse = userToResponseMapper
+                .map(mockUser);
+        AysResponse<AysUserResponse> mockResponse = AysResponse
+                .successOf(mockUserResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.times(1))
+                .findById(mockUserId);
+    }
+
+    @Test
+    void givenUserId_whenUnauthorizedForGettingUserById_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockUserId = AysRandomUtil.generateUUID();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockUserToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findById(mockUserId);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenInvalidId_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(invalidId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findById(Mockito.anyString());
     }
 
 }
