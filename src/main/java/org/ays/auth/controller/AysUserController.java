@@ -11,7 +11,6 @@ import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
-import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -82,7 +80,6 @@ class AysUserController {
      * @param id The ID of the user to retrieve.
      * @return An {@link AysResponse} containing the {@link AysUserResponse} if the user is found.
      */
-
     @GetMapping("/user/{id}")
     @PreAuthorize("hasAuthority('user:detail')")
     public AysResponse<AysUserResponse> findById(@PathVariable @UUID final String id) {
