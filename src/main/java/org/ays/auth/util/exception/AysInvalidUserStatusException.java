@@ -13,7 +13,7 @@ public final class AysInvalidUserStatusException extends AysNotExistException {
      * Unique identifier for serialization.
      */
     @Serial
-    private static final long serialVersionUID = 8511628526768842769L;
+    private static final long serialVersionUID = 2989379366947338524L;
 
     /**
      * Constructs a new {@link AysInvalidUserStatusException} with the specified user id.
@@ -21,7 +21,7 @@ public final class AysInvalidUserStatusException extends AysNotExistException {
      * @param id the id of the user with the invalid status.
      */
     public AysInvalidUserStatusException(String id) {
-        super("User with ID " + id + " has an invalid status: user is not active or passive.");
+        super("user with ID " + id + " has an invalid status: user is not active or passive!");
     }
 
 }
