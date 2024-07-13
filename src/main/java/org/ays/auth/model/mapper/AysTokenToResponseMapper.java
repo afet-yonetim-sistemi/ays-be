@@ -7,22 +7,22 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
- * {@link AysTokenToAysTokenResponseMapper} is an interface that defines the mapping between a {@link AysToken} and an {@link AysTokenResponse}.
+ * {@link AysTokenToResponseMapper} is an interface that defines the mapping between a {@link AysToken} and an {@link AysTokenResponse}.
  * This interface uses the MapStruct annotation @Mapper to generate an implementation of this interface at compile-time.
  * <p>The class provides a static method {@code initialize()} that returns an instance of the generated mapper implementation.
  * <p>The interface extends the MapStruct interface {@link BaseMapper}, which defines basic mapping methods.
  * The interface adds no additional mapping methods, but simply defines the types to be used in the mapping process.
  */
 @Mapper
-public interface AysTokenToAysTokenResponseMapper extends BaseMapper<AysToken, AysTokenResponse> {
+public interface AysTokenToResponseMapper extends BaseMapper<AysToken, AysTokenResponse> {
 
     /**
      * Initializes the mapper.
      *
      * @return the initialized mapper object.
      */
-    static AysTokenToAysTokenResponseMapper initialize() {
-        return Mappers.getMapper(AysTokenToAysTokenResponseMapper.class);
+    static AysTokenToResponseMapper initialize() {
+        return Mappers.getMapper(AysTokenToResponseMapper.class);
     }
 
 }

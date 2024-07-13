@@ -3,7 +3,7 @@ package org.ays.auth.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysToken;
-import org.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
+import org.ays.auth.model.mapper.AysTokenToResponseMapper;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
@@ -26,7 +26,7 @@ class AysAuthController {
     private final AysAuthService userAuthService;
 
 
-    private final AysTokenToAysTokenResponseMapper tokenToTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
+    private final AysTokenToResponseMapper tokenToTokenResponseMapper = AysTokenToResponseMapper.initialize();
 
 
     /**

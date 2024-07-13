@@ -2,7 +2,7 @@ package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.enums.AysSourcePage;
-import org.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
+import org.ays.auth.model.mapper.AysTokenToResponseMapper;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
@@ -33,7 +33,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
     private AysAuthService userAuthService;
 
 
-    private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
+    private final AysTokenToResponseMapper tokenToResponseMapper = AysTokenToResponseMapper.initialize();
 
 
     private static final String BASE_PATH = "/api/v1/authentication";
@@ -64,7 +64,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockLoginRequest);
 
-        AysTokenResponse mockTokenResponse = aysTokenToAysTokenResponseMapper.map(mockUserToken);
+        AysTokenResponse mockTokenResponse = tokenToResponseMapper.map(mockUserToken);
         AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder.successOf(mockTokenResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
@@ -132,7 +132,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockTokenRefreshRequest);
 
-        AysTokenResponse mockTokenResponse = aysTokenToAysTokenResponseMapper.map(mockUserToken);
+        AysTokenResponse mockTokenResponse = tokenToResponseMapper.map(mockUserToken);
         AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder.successOf(mockTokenResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
