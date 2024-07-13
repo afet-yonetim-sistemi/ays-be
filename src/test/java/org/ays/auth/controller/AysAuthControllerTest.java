@@ -30,7 +30,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
 
     @MockBean
-    private AysAuthService userAuthService;
+    private AysAuthService authService;
 
 
     private final AysTokenToResponseMapper tokenToResponseMapper = AysTokenToResponseMapper.initialize();
@@ -56,7 +56,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
                 .build();
 
         // When
-        Mockito.when(userAuthService.authenticate(Mockito.any()))
+        Mockito.when(authService.authenticate(Mockito.any()))
                 .thenReturn(mockUserToken);
 
         // Then
@@ -80,7 +80,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
                         .value(mockResponse.getResponse().getRefreshToken()));
 
         // Verify
-        Mockito.verify(userAuthService, Mockito.times(1))
+        Mockito.verify(authService, Mockito.times(1))
                 .authenticate(Mockito.any());
     }
 
@@ -114,7 +114,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(userAuthService, Mockito.never())
+        Mockito.verify(authService, Mockito.never())
                 .authenticate(Mockito.any());
     }
 
@@ -124,7 +124,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         AysTokenRefreshRequest mockTokenRefreshRequest = AysTokenRefreshRequestBuilder.VALID_FOR_USER;
 
         // When
-        Mockito.when(userAuthService.refreshAccessToken(Mockito.anyString()))
+        Mockito.when(authService.refreshAccessToken(Mockito.anyString()))
                 .thenReturn(mockUserToken);
 
         // Then
@@ -148,7 +148,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
                         .value(mockResponse.getResponse().getRefreshToken()));
 
         // Verify
-        Mockito.verify(userAuthService, Mockito.times(1))
+        Mockito.verify(authService, Mockito.times(1))
                 .refreshAccessToken(Mockito.anyString());
     }
 
@@ -159,7 +159,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
         // When
         Mockito.doNothing()
-                .when(userAuthService)
+                .when(authService)
                 .invalidateTokens(Mockito.any());
 
         // Then
@@ -176,7 +176,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(userAuthService, Mockito.times(1))
+        Mockito.verify(authService, Mockito.times(1))
                 .invalidateTokens(Mockito.any());
     }
 
