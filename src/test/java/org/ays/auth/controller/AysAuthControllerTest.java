@@ -3,6 +3,8 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.mapper.AysTokenToResponseMapper;
+import org.ays.auth.model.request.AysForgotPasswordRequest;
+import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
@@ -11,6 +13,7 @@ import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequestBuilder;
 import org.ays.auth.model.response.AysTokenResponse;
 import org.ays.auth.service.AysAuthService;
+import org.ays.auth.service.AysUserPasswordService;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
@@ -31,6 +34,9 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
     @MockBean
     private AysAuthService authService;
+
+    @MockBean
+    private AysUserPasswordService userPasswordService;
 
 
     private final AysTokenToResponseMapper tokenToResponseMapper = AysTokenToResponseMapper.initialize();
@@ -178,6 +184,37 @@ class AysAuthControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(authService, Mockito.times(1))
                 .invalidateTokens(Mockito.any());
+    }
+
+
+    @Test
+    void givenValidForgotPasswordRequest_whenSendPasswordCreateMail_thenReturnSuccessResponse() throws Exception {
+        // Given
+        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(userPasswordService)
+                .forgotPassword(Mockito.any(AysForgotPasswordRequest.class));
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/forgot");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockForgotPasswordRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userPasswordService, Mockito.times(1))
+                .forgotPassword(Mockito.any(AysForgotPasswordRequest.class));
     }
 
 }
