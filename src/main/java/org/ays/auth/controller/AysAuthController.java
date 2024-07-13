@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class AysAuthController {
 
-    private final AysAuthService userAuthService;
+    private final AysAuthService authService;
 
 
     private final AysTokenToResponseMapper tokenToTokenResponseMapper = AysTokenToResponseMapper.initialize();
@@ -37,7 +37,7 @@ class AysAuthController {
      */
     @PostMapping("/token")
     public AysResponse<AysTokenResponse> landingAuthenticate(@RequestBody @Valid AysLoginRequest loginRequest) {
-        final AysToken token = userAuthService.authenticate(loginRequest);
+        final AysToken token = authService.authenticate(loginRequest);
         final AysTokenResponse tokenResponse = tokenToTokenResponseMapper.map(token);
         return AysResponse.successOf(tokenResponse);
     }
@@ -50,7 +50,7 @@ class AysAuthController {
      */
     @PostMapping("/token/refresh")
     public AysResponse<AysTokenResponse> refreshToken(@RequestBody @Valid AysTokenRefreshRequest refreshRequest) {
-        final AysToken token = userAuthService.refreshAccessToken(refreshRequest.getRefreshToken());
+        final AysToken token = authService.refreshAccessToken(refreshRequest.getRefreshToken());
         final AysTokenResponse tokenResponse = tokenToTokenResponseMapper.map(token);
         return AysResponse.successOf(tokenResponse);
     }
@@ -64,7 +64,7 @@ class AysAuthController {
      */
     @PostMapping("/token/invalidate")
     public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
-        userAuthService.invalidateTokens(invalidateRequest.getRefreshToken());
+        authService.invalidateTokens(invalidateRequest.getRefreshToken());
         return AysResponse.SUCCESS;
     }
 
