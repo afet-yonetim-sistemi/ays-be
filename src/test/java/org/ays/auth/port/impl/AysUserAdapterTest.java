@@ -215,6 +215,59 @@ class AysUserAdapterTest extends AysUnitTest {
                 .findByEmailAddress(mockEmailAddress);
     }
 
+    @Test
+    void givenValidPhoneNumber_whenUserFoundByPhoneNumber_thenReturnOptionalUser() {
+
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("90")
+                .withLineNumber("1234567890")
+                .build();
+
+        // When
+        AysUserEntity mockUserEntity = new AysUserEntityBuilder()
+                .withValidValues()
+                .withPhoneNumber(mockPhoneNumber)
+                .build();
+        Mockito.when(userRepository.findByPhoneNumber(mockPhoneNumber.toString()))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByPhoneNumber(mockPhoneNumber.toString());
+
+        Assertions.assertTrue(user.isPresent());
+        Assertions.assertEquals(mockUser, user.get());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByPhoneNumber(mockPhoneNumber.toString());
+    }
+
+    @Test
+    void givenValidPhoneNumber_whenUserNotFoundByPhoneNumber_thenReturnOptionalEmpty() {
+
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode("90")
+                .withLineNumber("1234567890")
+                .build();
+
+        // When
+        Mockito.when(userRepository.findByPhoneNumber(mockPhoneNumber.toString()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByPhoneNumber(mockPhoneNumber.toString());
+
+        Assertions.assertFalse(user.isPresent());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByPhoneNumber(mockPhoneNumber.toString());
+    }
+
 
     @Test
     void givenValidEmailAddress_whenUserExistsByEmailAddress_thenReturnTrue() {
