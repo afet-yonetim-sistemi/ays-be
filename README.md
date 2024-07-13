@@ -204,11 +204,11 @@ Page.
 
 #### Error:
 
-> [ERROR] error reading .../.m2/repository/org/bouncycastle/bcprov-jdk18on/1.78/bcprov-jdk18on-1.78.jar; zip file is
-> empty
-[ERROR] .../ays-be/src/main/java/org/ays/auth/service/AysInvalidTokenService.java:[1,1] cannot access
-> org.ays.auth.service
-> ZipException opening "bcprov-jdk18on-1.78.jar": zip END header not found
+```log
+[ERROR] error reading .../.m2/repository/org/bouncycastle/bcprov-jdk18on/1.78/bcprov-jdk18on-1.78.jar; zip file is empty
+[ERROR] .../ays-be/src/main/java/org/ays/auth/service/AysInvalidTokenService.java:[1,1] cannot access org.ays.auth.service
+ZipException opening "bcprov-jdk18on-1.78.jar": zip END header not found
+```
 
 #### Solution:
 
@@ -218,16 +218,55 @@ Page.
 
 #### Error:
 
-> [ERROR] Failed to execute goal on project ays-be: Could not resolve dependencies for project org.ays:ays-be🫙1.1.0.MVP:
-> org.ays:ays-be-encryption-utility🫙1.0.2 was not found
-> in https://maven.pkg.github.com/afet-yonetim-sistemi/ays-be-encryption-utility during a previous attempt. This failure
-> was cached in the local repository and resolution is not reattempted until the update interval of github has elapsed
-> or
-> updates are forced -> [Help 1]
+```log
+[ERROR] Failed to execute goal on project ays-be: Could not resolve dependencies for project org.ays:ays-be🫙1.1.0.MVP:
+org.ays:ays-be-encryption-utility🫙1.0.2 was not found
+in https://maven.pkg.github.com/afet-yonetim-sistemi/ays-be-encryption-utility during a previous attempt. This failure
+was cached in the local repository and resolution is not reattempted until the update interval of github has elapsed
+or updates are forced -> [Help 1]
+```
 
 #### Solution:
 
 > Use the following command to build the project: `mvn clean install -U -DskipTests`
+
+### 4. Email Configuration Errors:
+
+#### 4.1 Running the project with the following error:
+
+```log
+2024-07-13T12:13:21.244+03:00 WARN 5171 --- [on(2)-127.0.0.1] o.s.b.actuate.mail.MailHealthIndicator   : Mail health
+check failed
+
+jakarta.mail.AuthenticationFailedException: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-427a5e9a809sm13702135e9.28 - gsmtp
+at org.eclipse.angus.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTransport.java:954) ~[jakarta.mail-2.0.3.jar:na]
+     at org.eclipse.angus.mail.smtp.SMTPTransport.authenticate(SMTPTransport.java:865) ~[jakarta.mail-2.0.3.jar:na]
+     at org.eclipse.angus.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:769) ~[jakarta.mail-2.0.3.jar:na]
+```
+
+#### 4.2 Error while sending an email from the application:
+
+```log
+ 2024-07-13T12:13:23.028+03:00 ERROR 5171 --- [onPool-worker-1] o.a.c.service.impl.AysMailServiceImpl    : Received
+ error while sending mail to [iletisim@afetyonetimsistemi.org] with EXAMPLE template
+
+ org.springframework.mail.MailAuthenticationException: Authentication failed
+ at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:402) ~[spring-context-support-6.1.10.jar:6.1.10]
+     at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:350) ~[spring-context-support-6.1.10.jar:6.1.10]
+```
+
+#### Solution:
+
+> If you don’t need to send an email, you can ignore these warnings.
+>
+> ---
+>
+> If you need to send an email from the application;
+>
+> Please review the documentation and use the Override configuration properties feature to override the default mail
+> parameters with your own mail information. You can refer to this link for more
+> details: https://www.jetbrains.com/help/idea/run-debug-configuration-spring-boot.html
 
 ---
 

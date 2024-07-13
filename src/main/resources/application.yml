@@ -5,6 +5,8 @@ logging:
   level:
     web: ${AYS_LOG_LEVEL:debug}
     sql: ${AYS_LOG_LEVEL:debug}
+    org:
+      ays: ${AYS_LOG_LEVEL:trace}
 
 spring:
   datasource:
@@ -20,6 +22,17 @@ spring:
       maximum-pool-size: 5
       connection-timeout: 180000
       max-lifetime: 170000
+  mail:
+    host: ${AYS_SMTP_HOST:smtp.gmail.com}
+    port: ${AYS_SMTP_PORT:587}
+    username: ${AYS_SMTP_USERNAME:ays@gmail.com}
+    password: ${AYS_SMTP_PASSWORD:ayspass}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   liquibase:
     enabled: true
     changeLog: "classpath:db/changelog/db.changelog-master.yaml"
