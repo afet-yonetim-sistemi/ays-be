@@ -26,7 +26,7 @@ class AysAuthController {
     private final AysAuthService userAuthService;
 
 
-    private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
+    private final AysTokenToAysTokenResponseMapper tokenToTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
 
 
     /**
@@ -38,7 +38,7 @@ class AysAuthController {
     @PostMapping("/token")
     public AysResponse<AysTokenResponse> landingAuthenticate(@RequestBody @Valid AysLoginRequest loginRequest) {
         final AysToken token = userAuthService.authenticate(loginRequest);
-        final AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(token);
+        final AysTokenResponse tokenResponse = tokenToTokenResponseMapper.map(token);
         return AysResponse.successOf(tokenResponse);
     }
 
@@ -51,7 +51,7 @@ class AysAuthController {
     @PostMapping("/token/refresh")
     public AysResponse<AysTokenResponse> refreshToken(@RequestBody @Valid AysTokenRefreshRequest refreshRequest) {
         final AysToken token = userAuthService.refreshAccessToken(refreshRequest.getRefreshToken());
-        final AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(token);
+        final AysTokenResponse tokenResponse = tokenToTokenResponseMapper.map(token);
         return AysResponse.successOf(tokenResponse);
     }
 
