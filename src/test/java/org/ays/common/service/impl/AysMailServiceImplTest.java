@@ -8,7 +8,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.awaitility.Awaitility;
 import org.ays.AysUnitTest;
 import org.ays.common.model.AysMail;
-import org.ays.common.model.enums.AysMailTemplate;
+import org.ays.common.model.AysMailBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 class AysMailServiceImplTest extends AysUnitTest {
@@ -51,12 +49,10 @@ class AysMailServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidMail_whenMailSendingSuccessfully_thenLogTraceAboutMailSentSuccessfully() throws Exception {
+    void givenValidMail_whenMailSendingSuccessfully_thenLogTraceAboutMailSentSuccessfully() {
         // Given
-        AysMail mockMail = AysMail.builder()
-                .to(List.of("test@afetyonetimsistemi.org"))
-                .template(AysMailTemplate.EXAMPLE)
-                .parameters(Map.of("firstName", "World"))
+        AysMail mockMail = new AysMailBuilder()
+                .withValidValues()
                 .build();
 
         // When
@@ -87,12 +83,10 @@ class AysMailServiceImplTest extends AysUnitTest {
 
     @Test
     @SuppressWarnings({"java:S2925"})
-    void givenValidMail_whenMailNotSentIn5Seconds_thenLogWarnAboutMailNotSentIn5Seconds() throws Exception {
+    void givenValidMail_whenMailNotSentIn5Seconds_thenLogWarnAboutMailNotSentIn5Seconds() {
         // Given
-        AysMail mockMail = AysMail.builder()
-                .to(List.of("test@afetyonetimsistemi.org"))
-                .template(AysMailTemplate.EXAMPLE)
-                .parameters(Map.of("firstName", "World"))
+        AysMail mockMail = new AysMailBuilder()
+                .withValidValues()
                 .build();
 
         // When
@@ -125,12 +119,10 @@ class AysMailServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidMail_whenReceivedErrorWhileMailSending_thenLogErrorAboutReceivedErrorWhileMailSending() throws Exception {
+    void givenValidMail_whenReceivedErrorWhileMailSending_thenLogErrorAboutReceivedErrorWhileMailSending() {
         // Given
-        AysMail mockMail = AysMail.builder()
-                .to(List.of("test@afetyonetimsistemi.org"))
-                .template(AysMailTemplate.EXAMPLE)
-                .parameters(Map.of("firstName", "World"))
+        AysMail mockMail = new AysMailBuilder()
+                .withValidValues()
                 .build();
 
         // When
