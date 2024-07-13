@@ -8,10 +8,15 @@ import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
+import org.ays.auth.model.request.AysUserUpdateRequest;
+import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.port.AysRoleReadPort;
+import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
+import org.ays.common.model.AysPhoneNumber;
+import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
@@ -21,17 +26,23 @@ import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 class AysUserEndToEndTest extends AysEndToEndTest {
 
     @Autowired
     private AysUserSavePort userSavePort;
+
+    @Autowired
+    private AysUserReadPort userReadPort;
 
     @Autowired
     private AysRoleReadPort roleReadPort;
@@ -228,6 +239,78 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .value(user.getCreatedUser()))
                 .andExpect(AysMockResultMatchersBuilders.response("createdAt")
                         .isNotEmpty());
+    }
+
+
+    @Test
+    void givenValidUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        Institution institution = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        List<AysRole> roles = roleReadPort.findAll();
+
+        Set<String> roleIds = roles.stream()
+                .map(AysRole::getId)
+                .collect(Collectors.toSet());
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withRoles(roles)
+                        .withInstitution(institution)
+                        .build()
+        );
+
+        // Given
+        String id = user.getId();
+
+        AysPhoneNumber newPhoneNumber = new AysPhoneNumberBuilder()
+                .withValidValues()
+                .build();
+
+        AysUserUpdateRequest updateRequest = new AysUserUpdateRequestBuilder()
+                .withFirstName("newFirst")
+                .withLastName("newSecond")
+                .withEmailAddress("new@gmail.com")
+                .withPhoneNumber(newPhoneNumber)
+                .withCity("newCity")
+                .withRoleIds(roleIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysUser> userFromDatabase = userReadPort.findById(id);
+
+        Assertions.assertTrue(userFromDatabase.isPresent());
+        Assertions.assertNotNull(userFromDatabase.get().getId());
+        Assertions.assertNotNull(userFromDatabase.get().getInstitution());
+        Assertions.assertEquals(updateRequest.getFirstName(), userFromDatabase.get().getFirstName());
+        Assertions.assertEquals(updateRequest.getLastName(), userFromDatabase.get().getLastName());
+        Assertions.assertEquals(updateRequest.getEmailAddress(), userFromDatabase.get().getEmailAddress());
+        Assertions.assertEquals(updateRequest.getPhoneNumber(), userFromDatabase.get().getPhoneNumber());
+        Assertions.assertEquals(updateRequest.getCity(), userFromDatabase.get().getCity());
+        updateRequest.getRoleIds().forEach(roleId -> Assertions.assertTrue(
+                userFromDatabase.get().getRoles().stream()
+                        .anyMatch(role -> role.getId().equals(roleId))
+        ));
     }
 
 }
