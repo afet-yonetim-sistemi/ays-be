@@ -1,0 +1,18 @@
+<configuration>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %green(%-5level) --- [%thread] %cyan(%logger{600}) : %msg%n%rEx
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="org.ays" level="TRACE"/>
+
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

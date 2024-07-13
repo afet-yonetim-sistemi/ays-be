@@ -1,0 +1,5 @@
+ays:
+  scheduler:
+    invalid-tokens-deletion:
+      cron: 0/1 * * ? * *
+      enable: true
