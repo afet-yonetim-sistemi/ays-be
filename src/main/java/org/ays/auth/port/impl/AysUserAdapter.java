@@ -91,6 +91,18 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
 
     /**
+     * Checks if a user with the given email address exists in the repository.
+     *
+     * @param emailAddress The email address to check for existence.
+     * @return true if a user with the given email address exists, otherwise false.
+     */
+    @Override
+    public boolean existsByEmailAddress(final String emailAddress) {
+        return userRepository.existsByEmailAddress(emailAddress);
+    }
+
+
+    /**
      * Finds a user by their phone number, which is a concatenation of country code and line number.
      *
      * @param phoneNumber the concatenated phone number (country code + line number) of the user to be found
@@ -100,18 +112,6 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
     public Optional<AysUser> findByPhoneNumber(String phoneNumber) {
         Optional<AysUserEntity> userEntity = userRepository.findByPhoneNumber(phoneNumber);
         return userEntity.map(userEntityToDomainMapper::map);
-    }
-
-
-    /**
-     * Checks if a user with the given email address exists in the repository.
-     *
-     * @param emailAddress The email address to check for existence.
-     * @return true if a user with the given email address exists, otherwise false.
-     */
-    @Override
-    public boolean existsByEmailAddress(final String emailAddress) {
-        return userRepository.existsByEmailAddress(emailAddress);
     }
 
 
