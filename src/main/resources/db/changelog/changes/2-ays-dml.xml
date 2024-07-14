@@ -34,6 +34,12 @@
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
+        <insert tableName="AYS_PARAMETER">
+            <column name="NAME" value="FE_URL"/>
+            <column name="DEFINITION" value="http://localhost:3000"/>
+            <column name="CREATED_USER" value="AYS"/>
+            <column name="CREATED_AT" valueDate="now()"/>
+        </insert>
         <!-- ==================== -->
         <!-- DML of AYS_PARAMETER -->
         <!-- ==================== -->
