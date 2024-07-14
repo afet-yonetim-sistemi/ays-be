@@ -249,7 +249,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenInvalidApplicationId_whenApplicationNotFound_thenThrowAysAdminRegisterApplicationNotExistByIdAndStatusException() {
+    void givenInvalidApplicationId_whenApplicationNotFound_thenThrowAysAdminRegistrationApplicationNotExistByIdException() {
 
         // Given
         String mockApplicationId = "Invalid";
@@ -296,7 +296,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenUsedApplicationId_whenApplicationStatusIsNotWaiting_thenThrowAysAdminRegisterApplicationNotExistByIdAndStatusException() {
+    void givenUsedApplicationId_whenApplicationStatusIsNotWaiting_thenThrowAysAdminRegistrationApplicationNotExistByIdException() {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
@@ -348,7 +348,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenExistingEmailFromAdminRegisterRequest_whenAdminExist_thenThrowAysAdminAlreadyExistsByEmailException() {
+    void givenExistingEmailFromAdminRegisterRequest_whenAdminExist_thenThrowAysUserAlreadyExistsByEmailException() {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
@@ -402,7 +402,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenExistingPhoneNumberFromAdminRegisterRequest_whenAdminExist_thenThrowAysAdminAlreadyExistsByPhoneNumberException() {
+    void givenExistingPhoneNumberFromAdminRegisterRequest_whenAdminExist_thenThrowAysUserAlreadyExistsByPhoneNumberException() {
 
         // Given
         String applicationId = AysRandomUtil.generateUUID();
