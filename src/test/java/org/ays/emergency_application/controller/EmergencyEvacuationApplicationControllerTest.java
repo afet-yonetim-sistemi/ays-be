@@ -935,7 +935,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
 
     @Test
-    void givenValidIdAndUpdateRequest_whenApplicationUpdated_thenReturnSuccessResponse() throws Exception {
+    void givenValidIdAndValidUpdateRequest_whenApplicationUpdated_thenReturnSuccessResponse() throws Exception {
         // Given
         String mockId = "dbb3287a-563d-4d85-a978-bcd699294daa";
         EmergencyEvacuationApplicationUpdateRequest mockUpdateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
