@@ -15,13 +15,11 @@ import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequestBuilder;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
-import org.ays.emergency_application.model.request.EmergencyEvacuationRequestBuilder;
+import org.ays.emergency_application.model.request.*;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
+import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -30,6 +28,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
@@ -927,5 +926,64 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
                 .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
     }
+    @Test
+    void givenValidUpdateRequest_whenApplicationExists_thenUpdateApplication() throws Exception {
+        // Given
+        String applicationId = "dbb3287a-563d-4d85-a978-bcd699294daa";
+        EmergencyEvacuationApplicationUpdateRequest updateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
+                .withValidValues()
+                .build();
 
+        Mockito.doNothing().when(emergencyEvacuationApplicationService).update(applicationId, updateRequest);
+
+        // When
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(applicationId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), updateRequest);
+
+        // Then
+        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.times(1))
+                .update(applicationId, updateRequest);
+    }
+
+    @Test
+    void givenValidUpdateRequest_whenApplicationDoesNotExist_thenReturnNotFound() throws Exception {
+        // Given
+        String applicationId = "nonExistingId";
+        EmergencyEvacuationApplicationUpdateRequest updateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        Mockito.doThrow(new EmergencyEvacuationApplicationNotExistException("Application not found")).when(emergencyEvacuationApplicationService)
+                .update(applicationId, updateRequest);
+
+        // When
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(applicationId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), updateRequest);
+
+        // Then
+        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
+                .header("Not Found")
+                .message("Application not found")
+                .build();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status().isNotFound())
+                .andExpect(AysMockResultMatchersBuilders.time().isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.isSuccess().value(false))
+                .andExpect(AysMockResultMatchersBuilders.header().value("Not Found"))
+                .andExpect(AysMockResultMatchersBuilders.response().isNotEmpty());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.times(1))
+                .update(applicationId, updateRequest);
+    }
 }
