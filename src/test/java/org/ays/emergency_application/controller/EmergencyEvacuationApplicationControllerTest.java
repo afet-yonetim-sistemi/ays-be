@@ -966,6 +966,40 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     }
 
     @ParameterizedTest
+    @ValueSource(strings = {
+            "Invalid with special characters: #$%",
+            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
+            "t",
+            "                                      a",
+            "151201485621548562154851458614125461254125412",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse.",
+    })
+    void givenIdAndValidUpdateRequest_whenIdDoesNotValid_thenReturnValidationError(String mockId) throws Exception {
+
+        // Given
+        EmergencyEvacuationApplicationUpdateRequest mockUpdateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/".concat(mockId));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .exists());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
+                .findById(Mockito.anyString());
+    }
+
+    @ParameterizedTest
     @NullSource
     @ValueSource(ints = {
             -1,
