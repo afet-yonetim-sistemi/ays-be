@@ -60,7 +60,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidForgotPasswordRequest_whenEmailDoesExist_thenThrowAysEmailAddressNotValidException() {
+    void givenValidForgotPasswordRequest_whenEmailDoesNotExist_thenThrowAysEmailAddressNotValidException() {
         // Given
         AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withValidValues()
