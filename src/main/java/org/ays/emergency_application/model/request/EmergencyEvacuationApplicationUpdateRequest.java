@@ -5,6 +5,7 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 import org.ays.common.util.validation.EnumValidation;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 import org.hibernate.validator.constraints.Range;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 // TODO : Javadoc
 @Getter
+@Setter
 public class EmergencyEvacuationApplicationUpdateRequest {
 
     @NotNull
@@ -42,5 +44,4 @@ public class EmergencyEvacuationApplicationUpdateRequest {
                         EmergencyEvacuationApplicationStatus.COMPLETED,
                         EmergencyEvacuationApplicationStatus.CANCELLED));
     }
-
 }
