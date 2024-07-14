@@ -42,14 +42,14 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
     @Mock
     private EmergencyEvacuationApplicationSavePort emergencyEvacuationApplicationSavePort;
 
-
-    private final EmergencyEvacuationApplicationRequestToDomainMapper emergencyEvacuationApplicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
-
     @Mock
     private AysIdentity identity;
 
+
+    private final EmergencyEvacuationApplicationRequestToDomainMapper emergencyEvacuationApplicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
+
+
     @Test
-    @SuppressWarnings("unchecked")
     void givenEmergencyEvacuationApplicationListRequest_whenFilterNotGiven_thenReturnApplicationsPage() {
 
         // Given
@@ -85,7 +85,6 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void givenEmergencyEvacuationApplicationListRequest_whenApplicationStatusIsAvailable_thenReturnApplicationsPage() {
 
         // Given
@@ -185,10 +184,10 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
         Mockito.when(emergencyEvacuationApplicationSavePort.save(Mockito.any(EmergencyEvacuationApplication.class)))
                 .thenReturn(mockApplication);
 
-        // When
+        // Then
         emergencyEvacuationApplicationService.create(mockApplicationRequest);
 
-        // Then
+        // Verify
         Mockito.verify(emergencyEvacuationApplicationSavePort, Mockito.times(1))
                 .save(Mockito.any(EmergencyEvacuationApplication.class));
     }
