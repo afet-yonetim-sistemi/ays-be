@@ -86,7 +86,13 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
         emergencyEvacuationApplicationSavePort.save(application);
     }
 
-    // TODO : Javadoc
+    /**
+     * Updates an existing Emergency Evacuation Application with the provided details
+     *
+     * @param id the unique identifier of the Emergency Evacuation Application to be updated
+     * @param updateRequest the request object containing the details to update the Emergency Evacuation Application
+     * @throws EmergencyEvacuationApplicationNotExistException if the application with the specified ID does not exist
+     */
     @Override
     @Transactional
     public void update(final String id,
