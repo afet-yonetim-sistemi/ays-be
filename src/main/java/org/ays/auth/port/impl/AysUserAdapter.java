@@ -137,8 +137,8 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
             userEntity.getLoginAttempt().setUser(userEntity);
         }
 
-        userRepository.save(userEntity);
-        return userEntityToDomainMapper.map(userEntity);
+        AysUserEntity savedUserEntity = userRepository.save(userEntity);
+        return userEntityToDomainMapper.map(savedUserEntity);
     }
 
 }
