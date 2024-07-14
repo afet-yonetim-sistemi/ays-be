@@ -92,7 +92,19 @@ class EmergencyEvacuationApplicationController {
     }
 
 
-    // TODO : Javadoc
+    /**
+     * Updates an existing Emergency Evacuation Application.
+     * This method accepts a PUT request
+     * <p>
+     * This endpoint updates the Emergency Evacuation Application with the specified ID using the provided update request.
+     * The request body and path variable validated before processing.
+     * The user must have the authority 'application:evacuation:update' to access this endpoint.
+     * </p>
+     *
+     * @param id the unique identifier of the Emergency Evacuation Application to be updated
+     * @param updateRequest the request object containing the details to update the Emergency Evacuation Application
+     * @return a response indicating the success of the update operation
+     */
     @PutMapping("/emergency-evacuation-application/{id}")
     @PreAuthorize("hasAuthority('application:evacuation:update')")
     public AysResponse<Void> update(@PathVariable @UUID final String id,
