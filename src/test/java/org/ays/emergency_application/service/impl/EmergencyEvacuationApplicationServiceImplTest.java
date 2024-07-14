@@ -11,10 +11,16 @@ import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToDomainMapper;
-import org.ays.emergency_application.model.request.*;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequestBuilder;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequestBuilder;
+import org.ays.emergency_application.model.request.EmergencyEvacuationRequestBuilder;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
 import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
+import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -40,7 +46,7 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
     private final EmergencyEvacuationApplicationRequestToDomainMapper emergencyEvacuationApplicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
 
     @Mock
-    private AysIdentity aysIdentity;
+    private AysIdentity identity;
 
     @Test
     @SuppressWarnings("unchecked")
@@ -187,65 +193,95 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
                 .save(Mockito.any(EmergencyEvacuationApplication.class));
     }
 
+
     @Test
-    void givenUpdateRequest_whenApplicationExists_thenUpdateApplication() {
+    void givenValidIdAndUpdateRequest_whenApplicationExists_thenUpdateApplication() {
         // Given
-        String applicationId = "dbb3287a-563d-4d85-a978-bcd699294daa";
-        EmergencyEvacuationApplication existingApplication = new EmergencyEvacuationApplicationBuilder()
+        String mockId = "dbb3287a-563d-4d85-a978-bcd699294daa";
+
+        EmergencyEvacuationApplicationUpdateRequest mockUpdateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
                 .withValidValues()
-                .withoutApplicant()
                 .build();
-
-        EmergencyEvacuationApplicationUpdateRequest updateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
-                .withSeatingCount(10)
-                .withHasObstaclePersonExist(false)
-                .withStatus(EmergencyEvacuationApplicationStatus.IN_PROGRESS)
-                .withNotes("Updated notes")
-                .build();
-
-        Mockito.when(emergencyEvacuationApplicationReadPort.findById(applicationId))
-                .thenReturn(Optional.of(existingApplication));
-        Mockito.when(aysIdentity.getInstitutionId()).thenReturn("mockInstitutionId");
 
         // When
-        emergencyEvacuationApplicationService.update(applicationId, updateRequest);
+        EmergencyEvacuationApplication mockApplication = new EmergencyEvacuationApplicationBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withoutApplicant()
+                .withoutInstitution()
+                .withSeatingCount(5)
+                .withoutHasObstaclePersonExist()
+                .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                .withoutNotes()
+                .build();
+        Mockito.when(emergencyEvacuationApplicationReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockApplication));
+
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+
+        EmergencyEvacuationApplication mockUpdatedApplication = new EmergencyEvacuationApplicationBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withoutApplicant()
+                .withInstitution(new InstitutionBuilder().withValidValues().withId(mockInstitutionId).build())
+                .withSeatingCount(mockUpdateRequest.getSeatingCount())
+                .withHasObstaclePersonExist(mockUpdateRequest.getHasObstaclePersonExist())
+                .withStatus(mockUpdateRequest.getStatus())
+                .withNotes(mockUpdateRequest.getNotes())
+                .build();
+        Mockito.when(emergencyEvacuationApplicationSavePort.save(Mockito.any(EmergencyEvacuationApplication.class)))
+                .thenReturn(mockUpdatedApplication);
 
         // Then
-        Mockito.verify(emergencyEvacuationApplicationReadPort, Mockito.times(1))
-                .findById(applicationId);
-        Mockito.verify(emergencyEvacuationApplicationSavePort, Mockito.times(1))
-                .save(existingApplication);
+        emergencyEvacuationApplicationService.update(mockId, mockUpdateRequest);
 
-        Assertions.assertEquals("mockInstitutionId", existingApplication.getInstitution().getId());
-        Assertions.assertEquals(updateRequest.getSeatingCount(), existingApplication.getSeatingCount());
-        Assertions.assertEquals(updateRequest.getHasObstaclePersonExist(), existingApplication.getHasObstaclePersonExist());
-        Assertions.assertEquals(updateRequest.getStatus(), existingApplication.getStatus());
-        Assertions.assertEquals(updateRequest.getNotes(), existingApplication.getNotes());
+        Assertions.assertEquals(mockInstitutionId, mockUpdatedApplication.getInstitution().getId());
+        Assertions.assertEquals(mockUpdateRequest.getSeatingCount(), mockUpdatedApplication.getSeatingCount());
+        Assertions.assertEquals(mockUpdateRequest.getHasObstaclePersonExist(), mockUpdatedApplication.getHasObstaclePersonExist());
+        Assertions.assertEquals(mockUpdateRequest.getStatus(), mockUpdatedApplication.getStatus());
+        Assertions.assertEquals(mockUpdateRequest.getNotes(), mockUpdatedApplication.getNotes());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationReadPort, Mockito.times(1))
+                .findById(mockId);
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(emergencyEvacuationApplicationSavePort, Mockito.times(1))
+                .save(Mockito.any(EmergencyEvacuationApplication.class));
     }
 
     @Test
-    void givenUpdateRequest_whenApplicationDoesNotExist_thenThrowException(){
+    void givenValidIdAndUpdateRequest_whenApplicationDoesNotExist_thenThrowEmergencyEvacuationApplicationNotExistException() {
         // Given
-        String applicationId = AysRandomUtil.generateUUID();
-        EmergencyEvacuationApplicationUpdateRequest updateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
+        String mockId = "3019dc69-cf68-4618-8612-3124dc069ff0";
+
+        EmergencyEvacuationApplicationUpdateRequest mockUpdateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
                 .withValidValues()
                 .build();
 
-        // Mock repository behavior
-        Mockito.when(emergencyEvacuationApplicationReadPort.findById(applicationId))
+        // When
+        Mockito.when(emergencyEvacuationApplicationReadPort.findById(mockId))
                 .thenReturn(Optional.empty());
 
-        // When/Then
+        // Then
         Assertions.assertThrows(
                 EmergencyEvacuationApplicationNotExistException.class,
-                () -> emergencyEvacuationApplicationService.update(applicationId, updateRequest)
+                () -> emergencyEvacuationApplicationService.update(mockId, mockUpdateRequest)
         );
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationReadPort, Mockito.times(1))
-                .findById(applicationId);
+                .findById(mockId);
+
+        Mockito.verify(identity, Mockito.never())
+                .getInstitutionId();
 
         Mockito.verify(emergencyEvacuationApplicationSavePort, Mockito.never())
                 .save(Mockito.any(EmergencyEvacuationApplication.class));
     }
+
 }

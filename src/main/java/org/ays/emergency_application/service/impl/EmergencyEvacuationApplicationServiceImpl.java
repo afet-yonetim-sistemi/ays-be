@@ -87,7 +87,6 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     }
 
     // TODO : Javadoc
-    // TODO : Write tests
     @Override
     @Transactional
     public void update(final String id,
