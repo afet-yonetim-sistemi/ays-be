@@ -942,16 +942,16 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .withValidValues()
                 .build();
 
+        // When
         Mockito.doNothing()
                 .when(emergencyEvacuationApplicationService)
                 .update(Mockito.anyString(), Mockito.any(EmergencyEvacuationApplicationUpdateRequest.class));
 
-        // When
+        // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        // Then
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
@@ -980,16 +980,11 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .withSeatingCount(mockSeatingCount)
                 .build();
 
-        Mockito.doNothing()
-                .when(emergencyEvacuationApplicationService)
-                .update(Mockito.anyString(), Mockito.any(EmergencyEvacuationApplicationUpdateRequest.class));
-
-        // When
+        // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        // Then
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
@@ -1013,16 +1008,11 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .withHasObstaclePersonExist(mockHasObstaclePersonExist)
                 .build();
 
-        Mockito.doNothing()
-                .when(emergencyEvacuationApplicationService)
-                .update(Mockito.anyString(), Mockito.any(EmergencyEvacuationApplicationUpdateRequest.class));
-
-        // When
+        // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        // Then
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
@@ -1046,16 +1036,11 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .withStatus(mockStatus)
                 .build();
 
-        Mockito.doNothing()
-                .when(emergencyEvacuationApplicationService)
-                .update(Mockito.anyString(), Mockito.any(EmergencyEvacuationApplicationUpdateRequest.class));
-
-        // When
+        // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        // Then
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
@@ -1084,16 +1069,11 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .withNotes(mockNotes)
                 .build();
 
-        Mockito.doNothing()
-                .when(emergencyEvacuationApplicationService)
-                .update(Mockito.anyString(), Mockito.any(EmergencyEvacuationApplicationUpdateRequest.class));
-
-        // When
+        // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        // Then
         AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
