@@ -91,18 +91,15 @@ class EmergencyEvacuationApplicationController {
         return AysResponse.SUCCESS;
     }
 
-    // TODO : Javadoc
-    // TODO : Write tests
-    @PutMapping("emergency-evacuation-application/{id}")
-    @PreAuthorize("hasAuthority('application:evacuation:update')")
-    public AysResponse<Void> update(
-            @PathVariable @UUID final String id,
-            @RequestBody @Valid final EmergencyEvacuationApplicationUpdateRequest updateRequest
-    ) {
-        emergencyEvacuationApplicationService.update(id, updateRequest);
 
+    // TODO : Javadoc
+    @PutMapping("/emergency-evacuation-application/{id}")
+    @PreAuthorize("hasAuthority('application:evacuation:update')")
+    public AysResponse<Void> update(@PathVariable @UUID final String id,
+                                    @RequestBody @Valid final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
+
+        emergencyEvacuationApplicationService.update(id, updateRequest);
         return AysResponse.SUCCESS;
     }
-
 
 }
