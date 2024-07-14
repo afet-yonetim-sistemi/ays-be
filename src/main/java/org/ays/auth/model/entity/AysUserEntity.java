@@ -113,8 +113,8 @@ public class AysUserEntity extends BaseEntity {
 
         @Id
         @Column(name = "ID")
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+        @GeneratedValue(strategy = GenerationType.UUID)
+        private String id;
 
         @Column(name = "VALUE")
         private String value;

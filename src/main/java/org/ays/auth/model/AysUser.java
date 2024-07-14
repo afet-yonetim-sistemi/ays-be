@@ -111,7 +111,7 @@ public class AysUser extends BaseDomainModel {
     @EqualsAndHashCode(callSuper = true)
     public static class Password extends BaseDomainModel {
 
-        private Long id;
+        private String id;
         private String value;
 
     }

@@ -357,6 +357,7 @@
         <!-- DML of AYS_USER_PASSWORD -->
         <!-- ======================== -->
         <insert tableName="AYS_USER_PASSWORD">
+            <column name="ID" value="41cc85c1-2500-4bd0-8682-a48ab63c0b1b"/>
             <column name="USER_ID" value="f882cb9c-9341-473b-a040-3fbd05c09ac6"/>
             <column name="VALUE" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="CREATED_USER" value="AYS"/>
@@ -364,12 +365,14 @@
         </insert>
 
         <insert tableName="AYS_USER_PASSWORD">
+            <column name="ID" value="7e5cafbd-f9d2-4e4d-8254-35dc45c5ff03"/>
             <column name="USER_ID" value="9ebcd692-fc0b-4f76-9948-3dd246d73758"/>
             <column name="VALUE" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
         <insert tableName="AYS_USER_PASSWORD">
+            <column name="ID" value="be7e26fd-dd85-4e14-8004-72dd1b87b206"/>
             <column name="USER_ID" value="cf1587fd-f800-42f2-ac6e-bd7b1c4d993d"/>
             <column name="VALUE" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="CREATED_USER" value="AYS"/>
@@ -377,12 +380,14 @@
         </insert>
 
         <insert tableName="AYS_USER_PASSWORD">
+            <column name="ID" value="631a1af5-edb4-46c1-b59e-e70a93cbd4b2"/>
             <column name="USER_ID" value="5160acee-a1ba-46c0-a555-12637b2ac7fc"/>
             <column name="VALUE" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="CREATED_USER" value="AYS"/>
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
         <insert tableName="AYS_USER_PASSWORD">
+            <column name="ID" value="9b4196fc-5f83-4b9e-a0d1-a53daea4e8f6"/>
             <column name="USER_ID" value="1be3ff7c-8f72-4f25-bbba-6db030f61629"/>
             <column name="VALUE" value="$2a$10$16pFBczPxydfiRS4whgKfOCxq58L.bB6.i2abkZKR4fpNleQ4SmDy"/>
             <column name="CREATED_USER" value="AYS"/>
