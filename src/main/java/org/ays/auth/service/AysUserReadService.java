@@ -32,4 +32,12 @@ public interface AysUserReadService {
      */
     AysPage<AysUser> findAll(AysUserListRequest listRequest);
 
+    /**
+     * Retrieves the details of a specific user by its ID.
+     *
+     * @param id The ID of the user.
+     * @return The user with the specified ID, or null if not found.
+     */
+    AysUser findById(String id);
+
 }
