@@ -1107,4 +1107,30 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .update(Mockito.anyString(), Mockito.any(EmergencyEvacuationApplicationUpdateRequest.class));
     }
 
+    @Test
+    void givenValidIdAndUpdateRequest_whenUnauthorizedForUpdating_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        String mockId = "dbb3287a-563d-4d85-a978-bcd699294daa";
+        EmergencyEvacuationApplicationUpdateRequest mockUpdateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(EmergencyEvacuationApplicationUpdateRequest.class));
+    }
+
 }
