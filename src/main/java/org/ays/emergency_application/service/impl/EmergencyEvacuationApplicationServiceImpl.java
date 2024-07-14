@@ -40,7 +40,6 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
             EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
 
 
-
     /**
      * Retrieves a page of emergency evacuation applications based on the provided request parameters.
      *
@@ -91,17 +90,18 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     // TODO : Write tests
     @Override
     @Transactional
-    public void update(
-            final String id,
-            final EmergencyEvacuationApplicationUpdateRequest updateRequest
-    ) {
-        final EmergencyEvacuationApplication emergencyEvacuationApplication =
-                emergencyEvacuationApplicationReadPort.findById(id)
-                        .orElseThrow(() -> new EmergencyEvacuationApplicationNotExistException(id));
+    public void update(final String id,
+                       final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
 
-        final String institutionId = identity.getInstitutionId();
+        final EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationReadPort
+                .findById(id)
+                .orElseThrow(() -> new EmergencyEvacuationApplicationNotExistException(id));
 
-        emergencyEvacuationApplication.setInstitution(Institution.builder().id(institutionId).build());
+        emergencyEvacuationApplication.setInstitution(
+                Institution.builder()
+                        .id(identity.getInstitutionId())
+                        .build()
+        );
         emergencyEvacuationApplication.setSeatingCount(updateRequest.getSeatingCount());
         emergencyEvacuationApplication.setHasObstaclePersonExist(updateRequest.getHasObstaclePersonExist());
         emergencyEvacuationApplication.setStatus(updateRequest.getStatus());
