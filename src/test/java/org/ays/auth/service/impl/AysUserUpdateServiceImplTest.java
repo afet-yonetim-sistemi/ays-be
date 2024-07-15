@@ -112,6 +112,7 @@ public class AysUserUpdateServiceImplTest {
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenUserNotFound_thenThrowAysUserNotExistByIdException() {
+
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
@@ -138,6 +139,7 @@ public class AysUserUpdateServiceImplTest {
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenUserStatusIsInvalid_thenThrowAysUserIsNotActiveOrPassiveException() {
+
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
@@ -145,7 +147,7 @@ public class AysUserUpdateServiceImplTest {
                 .build();
 
         AysUser mockUser = Mockito.mock(AysUser.class);
-        Mockito.when(mockUser.isStatusValid()).thenReturn(false);
+        Mockito.when(mockUser.isActive() || mockUser.isPassive()).thenReturn(false);
 
         // When
         Mockito.when(userReadPort.findById(mockId))
@@ -167,6 +169,7 @@ public class AysUserUpdateServiceImplTest {
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenPhoneNumberAlreadyInUse_thenThrowAysUserAlreadyExistsByPhoneNumberException() {
+
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
@@ -174,7 +177,7 @@ public class AysUserUpdateServiceImplTest {
                 .build();
 
         AysUser mockUser = Mockito.mock(AysUser.class);
-        Mockito.when(mockUser.isStatusValid()).thenReturn(true);
+        Mockito.when(mockUser.isActive() || mockUser.isPassive()).thenReturn(true);
 
         AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
                 .withCountryCode(mockUpdateRequest.getPhoneNumber().getCountryCode())
@@ -202,21 +205,23 @@ public class AysUserUpdateServiceImplTest {
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenEmailAlreadyInUse_thenThrowAysUserAlreadyExistsByEmailException() {
+
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
+                .withEmailAddress("test@mail.com")
                 .build();
 
         AysUser mockUser = Mockito.mock(AysUser.class);
-        Mockito.when(mockUser.isStatusValid()).thenReturn(true);
+        Mockito.when(mockUser.isActive() || mockUser.isPassive()).thenReturn(true);
 
         AysUser existingUserWithEmail = Mockito.mock(AysUser.class);
         Mockito.when(existingUserWithEmail.getId()).thenReturn("anotherUserId");
 
         // When
         Mockito.when(userReadPort.findById(mockId)).thenReturn(Optional.of(mockUser));
-        Mockito.when(userReadPort.findByEmailAddress(mockUpdateRequest.getEmailAddress())).thenReturn(Optional.of(existingUserWithEmail));
+        Mockito.when(userReadPort.findByEmailAddress("anothertest@gmail.com")).thenReturn(Optional.of(existingUserWithEmail));
 
         // Then
         Assertions.assertThrows(
@@ -232,6 +237,7 @@ public class AysUserUpdateServiceImplTest {
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenRoleIdsDoNotExist_thenThrowAysRolesNotExistException() {
+
         // Given
         String mockId = AysRandomUtil.generateUUID();
         Set<String> invalidRoleIds = Set.of("invalidRoleId1", "invalidRoleId2");
@@ -241,7 +247,7 @@ public class AysUserUpdateServiceImplTest {
                 .build();
 
         AysUser mockUser = Mockito.mock(AysUser.class);
-        Mockito.when(mockUser.isStatusValid()).thenReturn(true);
+        Mockito.when(mockUser.isActive() || mockUser.isPassive()).thenReturn(true);
 
         // When
         Mockito.when(userReadPort.findById(mockId)).thenReturn(Optional.of(mockUser));
