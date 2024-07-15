@@ -2,6 +2,7 @@ package org.ays.emergency_application.model.mapper;
 
 import org.ays.common.model.mapper.BaseMapper;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -25,5 +26,5 @@ public interface EmergencyEvacuationApplicationUpdateRequestToDomainMapper exten
     static EmergencyEvacuationApplicationUpdateRequestToDomainMapper initialize() {
         return Mappers.getMapper(EmergencyEvacuationApplicationUpdateRequestToDomainMapper.class);
     }
-
+    EmergencyEvacuationApplication map(EmergencyEvacuationApplicationRequest request);
 }
