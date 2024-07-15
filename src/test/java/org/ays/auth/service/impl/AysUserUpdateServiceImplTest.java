@@ -4,6 +4,7 @@ import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
 import org.ays.auth.port.AysRoleReadPort;
@@ -52,10 +53,6 @@ public class AysUserUpdateServiceImplTest {
                 .map(AysRole::getId)
                 .collect(Collectors.toSet());
 
-        AysPhoneNumber newPhoneNumber = new AysPhoneNumberBuilder()
-                .withValidValues()
-                .build();
-
         // Given
         String mockId = AysRandomUtil.generateUUID();
 
@@ -63,7 +60,7 @@ public class AysUserUpdateServiceImplTest {
                 .withFirstName("newFirst")
                 .withLastName("newSecond")
                 .withEmailAddress("new@gmail.com")
-                .withPhoneNumber(newPhoneNumber)
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
                 .withCity("newCity")
                 .withRoleIds(roleIds)
                 .build();
@@ -105,7 +102,8 @@ public class AysUserUpdateServiceImplTest {
                 updatedUser.getFirstName().equals("newFirst") &&
                         updatedUser.getLastName().equals("newSecond") &&
                         updatedUser.getEmailAddress().equals("new@gmail.com") &&
-                        updatedUser.getPhoneNumber().equals(mockUpdateRequest.getPhoneNumber()) &&
+                        updatedUser.getPhoneNumber().getCountryCode().equals(mockUpdateRequest.getPhoneNumber().getCountryCode()) &&
+                        updatedUser.getPhoneNumber().getLineNumber().equals(mockUpdateRequest.getPhoneNumber().getLineNumber()) &&
                         updatedUser.getCity().equals("newCity") &&
                         updatedUser.getRoles().equals(roles)
         ));
@@ -139,7 +137,7 @@ public class AysUserUpdateServiceImplTest {
     }
 
     @Test
-    void givenValidIdAndUserUpdateRequest_whenUserStatusIsInvalid_thenThrowAysInvalidUserStatusException() {
+    void givenValidIdAndUserUpdateRequest_whenUserStatusIsInvalid_thenThrowAysUserIsNotActiveOrPassiveException() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
@@ -155,7 +153,7 @@ public class AysUserUpdateServiceImplTest {
 
         // Then
         Assertions.assertThrows(
-                AysInvalidUserStatusException.class,
+                AysUserIsNotActiveOrPassiveException.class,
                 () -> userUpdateService.update(mockId, mockUpdateRequest)
         );
 
@@ -168,7 +166,7 @@ public class AysUserUpdateServiceImplTest {
     }
 
     @Test
-    void givenValidIdAndUserUpdateRequest_whenPhoneNumberAlreadyInUse_thenThrowAysPhoneNumberAlreadyInUseException() {
+    void givenValidIdAndUserUpdateRequest_whenPhoneNumberAlreadyInUse_thenThrowAysUserAlreadyExistsByPhoneNumberException() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
@@ -178,25 +176,27 @@ public class AysUserUpdateServiceImplTest {
         AysUser mockUser = Mockito.mock(AysUser.class);
         Mockito.when(mockUser.isStatusValid()).thenReturn(true);
 
-        AysPhoneNumber mockPhoneNumber = mockUpdateRequest.getPhoneNumber();
-        String concatenatedPhoneNumber = mockPhoneNumber.getCountryCode() + mockPhoneNumber.getLineNumber();
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withCountryCode(mockUpdateRequest.getPhoneNumber().getCountryCode())
+                .withLineNumber(mockUpdateRequest.getPhoneNumber().getLineNumber())
+                .build();
 
         AysUser existingUserWithPhoneNumber = Mockito.mock(AysUser.class);
         Mockito.when(existingUserWithPhoneNumber.getId()).thenReturn("anotherUserId");
 
         // When
         Mockito.when(userReadPort.findById(mockId)).thenReturn(Optional.of(mockUser));
-        Mockito.when(userReadPort.findByPhoneNumber(concatenatedPhoneNumber)).thenReturn(Optional.of(existingUserWithPhoneNumber));
+        Mockito.when(userReadPort.findByPhoneNumber(mockPhoneNumber)).thenReturn(Optional.of(existingUserWithPhoneNumber));
 
         // Then
         Assertions.assertThrows(
-                AysPhoneNumberAlreadyInUseException.class,
+                AysUserAlreadyExistsByPhoneNumberException.class,
                 () -> userUpdateService.update(mockId, mockUpdateRequest)
         );
 
         // Verify
         Mockito.verify(userReadPort, Mockito.times(1)).findById(mockId);
-        Mockito.verify(userReadPort, Mockito.times(1)).findByPhoneNumber(concatenatedPhoneNumber);
+        Mockito.verify(userReadPort, Mockito.times(1)).findByPhoneNumber(mockPhoneNumber);
         Mockito.verify(userSavePort, Mockito.never()).save(Mockito.any(AysUser.class));
     }
 

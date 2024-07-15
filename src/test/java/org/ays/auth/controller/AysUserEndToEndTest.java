@@ -10,13 +10,12 @@ import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
+import org.ays.auth.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
-import org.ays.common.model.AysPhoneNumber;
-import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
@@ -270,15 +269,11 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         // Given
         String id = user.getId();
 
-        AysPhoneNumber newPhoneNumber = new AysPhoneNumberBuilder()
-                .withValidValues()
-                .build();
-
         AysUserUpdateRequest updateRequest = new AysUserUpdateRequestBuilder()
                 .withFirstName("newFirst")
                 .withLastName("newSecond")
                 .withEmailAddress("new@gmail.com")
-                .withPhoneNumber(newPhoneNumber)
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
                 .withCity("newCity")
                 .withRoleIds(roleIds)
                 .build();
@@ -305,7 +300,8 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(updateRequest.getFirstName(), userFromDatabase.get().getFirstName());
         Assertions.assertEquals(updateRequest.getLastName(), userFromDatabase.get().getLastName());
         Assertions.assertEquals(updateRequest.getEmailAddress(), userFromDatabase.get().getEmailAddress());
-        Assertions.assertEquals(updateRequest.getPhoneNumber(), userFromDatabase.get().getPhoneNumber());
+        Assertions.assertEquals(updateRequest.getPhoneNumber().getCountryCode(), userFromDatabase.get().getPhoneNumber().getCountryCode());
+        Assertions.assertEquals(updateRequest.getPhoneNumber().getLineNumber(), userFromDatabase.get().getPhoneNumber().getLineNumber());
         Assertions.assertEquals(updateRequest.getCity(), userFromDatabase.get().getCity());
         updateRequest.getRoleIds().forEach(roleId -> Assertions.assertTrue(
                 userFromDatabase.get().getRoles().stream()

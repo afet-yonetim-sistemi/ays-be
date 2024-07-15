@@ -1,7 +1,7 @@
 package org.ays.auth.model.request;
 
-import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.TestDataBuilder;
+import org.ays.common.model.request.AysPhoneNumberRequest;
 
 import java.util.Set;
 import java.util.UUID;
@@ -37,7 +37,7 @@ public class AysUserUpdateRequestBuilder extends TestDataBuilder<AysUserUpdateRe
         return this;
     }
 
-    public AysUserUpdateRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
+    public AysUserUpdateRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }

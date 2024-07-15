@@ -220,8 +220,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         // Given
         AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
-                .withCountryCode("90")
-                .withLineNumber("1234567890")
+                .withValidValues()
                 .build();
 
         // When
@@ -229,20 +228,20 @@ class AysUserAdapterTest extends AysUnitTest {
                 .withValidValues()
                 .withPhoneNumber(mockPhoneNumber)
                 .build();
-        Mockito.when(userRepository.findByPhoneNumber(mockPhoneNumber.toString()))
+        Mockito.when(userRepository.findByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber()))
                 .thenReturn(Optional.of(mockUserEntity));
 
         AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
 
         // Then
-        Optional<AysUser> user = userAdapter.findByPhoneNumber(mockPhoneNumber.toString());
+        Optional<AysUser> user = userAdapter.findByPhoneNumber(mockPhoneNumber);
 
         Assertions.assertTrue(user.isPresent());
         Assertions.assertEquals(mockUser, user.get());
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
-                .findByPhoneNumber(mockPhoneNumber.toString());
+                .findByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber());
     }
 
     @Test
@@ -250,22 +249,21 @@ class AysUserAdapterTest extends AysUnitTest {
 
         // Given
         AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
-                .withCountryCode("90")
-                .withLineNumber("1234567890")
+                .withValidValues()
                 .build();
 
         // When
-        Mockito.when(userRepository.findByPhoneNumber(mockPhoneNumber.toString()))
+        Mockito.when(userRepository.findByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber()))
                 .thenReturn(Optional.empty());
 
         // Then
-        Optional<AysUser> user = userAdapter.findByPhoneNumber(mockPhoneNumber.toString());
+        Optional<AysUser> user = userAdapter.findByPhoneNumber(mockPhoneNumber);
 
         Assertions.assertFalse(user.isPresent());
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
-                .findByPhoneNumber(mockPhoneNumber.toString());
+                .findByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber());
     }
 
 

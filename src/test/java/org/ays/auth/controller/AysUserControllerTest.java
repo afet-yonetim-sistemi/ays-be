@@ -9,6 +9,7 @@ import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequest;
+import org.ays.auth.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
@@ -313,6 +314,7 @@ class AysUserControllerTest extends AysRestControllerTest {
         String mockEmailAddress = "test@email.com";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
                 .withEmailAddress(mockEmailAddress)
                 .build();
 
@@ -347,6 +349,7 @@ class AysUserControllerTest extends AysRestControllerTest {
         String mockEmailAddress = "test@email.com";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
                 .withEmailAddress(mockEmailAddress)
                 .build();
 
