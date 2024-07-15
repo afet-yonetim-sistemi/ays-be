@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @ExtendWith(MockitoExtension.class)
-public class AysUserUpdateServiceImplTest {
+class AysUserUpdateServiceImplTest {
 
     @InjectMocks
     private AysUserUpdateServiceImpl userUpdateService;
