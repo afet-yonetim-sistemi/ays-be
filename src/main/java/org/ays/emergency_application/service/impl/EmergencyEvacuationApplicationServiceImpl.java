@@ -7,7 +7,7 @@ import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
-import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToDomainMapper;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationUpdateRequestToDomainMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
@@ -36,8 +36,8 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     private final EmergencyEvacuationApplicationSavePort emergencyEvacuationApplicationSavePort;
     private final AysIdentity identity;
 
-    private final EmergencyEvacuationApplicationRequestToDomainMapper emergencyEvacuationApplicationRequestToDomainMapper =
-            EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
+    private final EmergencyEvacuationApplicationUpdateRequestToDomainMapper applicationUpdateRequestToDomainMapper =
+            EmergencyEvacuationApplicationUpdateRequestToDomainMapper.initialize();
 
 
     /**
@@ -78,7 +78,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     @Transactional
     public void create(final EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
 
-        EmergencyEvacuationApplication application = emergencyEvacuationApplicationRequestToDomainMapper
+        EmergencyEvacuationApplication application = applicationUpdateRequestToDomainMapper
                 .map(emergencyEvacuationApplicationRequest);
 
         application.pending();
