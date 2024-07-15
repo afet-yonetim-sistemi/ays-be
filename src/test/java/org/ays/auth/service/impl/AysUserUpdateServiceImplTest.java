@@ -201,7 +201,7 @@ public class AysUserUpdateServiceImplTest {
     }
 
     @Test
-    void givenValidIdAndUserUpdateRequest_whenEmailAlreadyInUse_thenThrowAysEmailAlreadyInUseException() {
+    void givenValidIdAndUserUpdateRequest_whenEmailAlreadyInUse_thenThrowAysUserAlreadyExistsByEmailException() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
@@ -220,7 +220,7 @@ public class AysUserUpdateServiceImplTest {
 
         // Then
         Assertions.assertThrows(
-                AysEmailAlreadyInUseException.class,
+                AysUserAlreadyExistsByEmailException.class,
                 () -> userUpdateService.update(mockId, mockUpdateRequest)
         );
 
