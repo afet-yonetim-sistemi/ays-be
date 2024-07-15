@@ -35,7 +35,7 @@ public interface AysUserReadPort {
      * @param phoneNumber the concatenated phone number (country code + line number) of the user to be found
      * @return an optional containing the AysUser with the given phone number, or an empty optional if not found
      */
-    Optional<AysUser> findByPhoneNumber(String phoneNumber);
+    Optional<AysUser> findByPhoneNumber(AysPhoneNumber phoneNumber);
 
     /**
      * Finds all users with pagination and optional filtering.

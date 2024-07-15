@@ -13,4 +13,5 @@ public interface AysUserUpdateService {
      * Updates the user with the specified ID based on the provided update request.
      */
     void update(String id, AysUserUpdateRequest updateRequest);
+
 }

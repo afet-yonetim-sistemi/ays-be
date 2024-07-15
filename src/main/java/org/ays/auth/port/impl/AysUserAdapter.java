@@ -109,8 +109,11 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
      * @return an optional containing the {@link AysUser} with the given phone number, or an empty optional if not found
      */
     @Override
-    public Optional<AysUser> findByPhoneNumber(String phoneNumber) {
-        Optional<AysUserEntity> userEntity = userRepository.findByPhoneNumber(phoneNumber);
+    public Optional<AysUser> findByPhoneNumber(AysPhoneNumber phoneNumber) {
+        Optional<AysUserEntity> userEntity = userRepository.findByCountryCodeAndLineNumber(
+                phoneNumber.getCountryCode(),
+                phoneNumber.getLineNumber()
+        );
         return userEntity.map(userEntityToDomainMapper::map);
     }
 

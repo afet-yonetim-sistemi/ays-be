@@ -3,8 +3,6 @@ package org.ays.auth.repository;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -22,13 +20,13 @@ public interface AysUserRepository extends JpaRepository<AysUserEntity, String>,
     Optional<AysUserEntity> findByEmailAddress(String emailAddress);
 
     /**
-     * Finds a user by their phone number, which is a concatenation of country code and line number.
+     * Finds a user by their phone number.
      *
-     * @param phoneNumber the concatenated phone number (country code + line number) of the user to be found
+     * @param countryCode the country code of the user to check
+     * @param lineNumber  the phone number of the user to check
      * @return an optional containing the UserEntity with the given phone number, or an empty optional if not found
      */
-    @Query("SELECT u FROM AysUserEntity u WHERE CONCAT(u.countryCode, u.lineNumber) = :phoneNumber")
-    Optional<AysUserEntity> findByPhoneNumber(@Param("phoneNumber") String phoneNumber);
+    Optional<AysUserEntity> findByCountryCodeAndLineNumber(String countryCode, String lineNumber);
 
     /**
      * Checks if an {@link AysUserEntity} exists with the given email.

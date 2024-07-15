@@ -7,7 +7,7 @@ import java.io.Serial;
 /**
  * Exception to be thrown when a user has an invalid status.
  */
-public final class AysInvalidUserStatusException extends AysNotExistException {
+public final class AysUserIsNotActiveOrPassiveException extends AysNotExistException {
 
     /**
      * Unique identifier for serialization.
@@ -16,12 +16,12 @@ public final class AysInvalidUserStatusException extends AysNotExistException {
     private static final long serialVersionUID = 2989379366947338524L;
 
     /**
-     * Constructs a new {@link AysInvalidUserStatusException} with the specified user id.
+     * Constructs a new {@link AysUserIsNotActiveOrPassiveException} with the specified user id.
      *
      * @param id the id of the user with the invalid status.
      */
-    public AysInvalidUserStatusException(String id) {
-        super("user with ID " + id + " has an invalid status: user is not active or passive!");
+    public AysUserIsNotActiveOrPassiveException(String id) {
+        super("user status is not active or passive! id:" + id);
     }
 
 }

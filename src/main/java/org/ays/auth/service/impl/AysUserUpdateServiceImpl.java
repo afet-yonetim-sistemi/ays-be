@@ -9,16 +9,15 @@ import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.auth.util.exception.AysRolesNotExistException;
+import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
-import org.ays.auth.util.exception.AysInvalidUserStatusException;
-import org.ays.auth.util.exception.AysPhoneNumberAlreadyInUseException;
 import org.ays.auth.util.exception.AysEmailAlreadyInUseException;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -28,7 +27,7 @@ import java.util.Set;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AysUserUpdateServiceImpl implements AysUserUpdateService {
+class AysUserUpdateServiceImpl implements AysUserUpdateService {
 
     private final AysUserReadPort userReadPort;
     private final AysUserSavePort userSavePort;
@@ -38,10 +37,10 @@ public class AysUserUpdateServiceImpl implements AysUserUpdateService {
     /**
      * Updates an existing user with the given ID based on the provided update request.
      *
-     * @param id            The unique identifier of the user to be updated.
+     * @param id The unique identifier of the user to be updated.
      * @param updateRequest The request object containing the updated user information.
      * @throws AysUserNotExistByIdException  if a user with the given ID does not exist.
-     * @throws AysInvalidUserStatusException if the user's status is not valid for an update.
+     * @throws AysUserIsNotActiveOrPassiveException if the user's status is not valid for an update.
      */
     @Override
     public void update(final String id,
@@ -50,20 +49,21 @@ public class AysUserUpdateServiceImpl implements AysUserUpdateService {
         final AysUser user = userReadPort.findById(id)
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
-        if (!user.isStatusValid()) {
-            throw new AysInvalidUserStatusException(id);
+        if (!(user.isActive() || user.isPassive())) {
+            throw new AysUserIsNotActiveOrPassiveException(id);
         }
 
-        final AysPhoneNumber phoneNumber = updateRequest.getPhoneNumber();
-        final String concatenatedPhoneNumber = phoneNumber.getCountryCode() + phoneNumber.getLineNumber();
-        final Optional<AysUser> existingUserWithPhoneNumber = userReadPort.findByPhoneNumber(concatenatedPhoneNumber);
-        if (existingUserWithPhoneNumber.isPresent() && !existingUserWithPhoneNumber.get().getId().equals(id)) {
-            throw new AysPhoneNumberAlreadyInUseException(concatenatedPhoneNumber);
+        final AysPhoneNumber phoneNumber = AysPhoneNumber.builder()
+                .countryCode(updateRequest.getPhoneNumber().getCountryCode())
+                .lineNumber(updateRequest.getPhoneNumber().getLineNumber())
+                .build();
+
+        if (user.getPhoneNumber() != phoneNumber) {
+            this.validatePhoneNumber(id, phoneNumber);
         }
 
-        final Optional<AysUser> existingUserWithEmail = userReadPort.findByEmailAddress(updateRequest.getEmailAddress());
-        if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(id)) {
-            throw new AysEmailAlreadyInUseException(updateRequest.getEmailAddress());
+        if (!user.getEmailAddress().equals(updateRequest.getEmailAddress())) {
+            this.validateEmailAddress(id, updateRequest.getEmailAddress());
         }
 
         final List<AysRole> roles = this.checkExistingRolesAndGet(updateRequest.getRoleIds());
@@ -72,10 +72,44 @@ public class AysUserUpdateServiceImpl implements AysUserUpdateService {
         user.setLastName(updateRequest.getLastName());
         user.setEmailAddress(updateRequest.getEmailAddress());
         user.setCity(updateRequest.getCity());
-        user.setPhoneNumber(updateRequest.getPhoneNumber());
+        user.setPhoneNumber(phoneNumber);
         user.setRoles(roles);
 
         userSavePort.save(user);
+    }
+
+
+    /**
+     * Validates the uniqueness of the provided phone number.
+     * Checks if there is any existing user with the same phone number.
+     *
+     * @param id          The unique identifier of the user being updated.
+     * @param phoneNumber The phone number to be validated.
+     * @throws AysUserAlreadyExistsByPhoneNumberException if the phone number is already associated with another user.
+     */
+    private void validatePhoneNumber(String id, AysPhoneNumber phoneNumber) {
+        userReadPort.findByPhoneNumber(phoneNumber)
+                .filter(existingUser -> !existingUser.getId().equals(id))
+                .ifPresent(existingUser -> {
+                    throw new AysUserAlreadyExistsByPhoneNumberException(phoneNumber);
+                });
+    }
+
+
+    /**
+     * Validates the uniqueness of the provided email address.
+     * Checks if there is any existing user with the same email address.
+     *
+     * @param id           The unique identifier of the user being updated.
+     * @param emailAddress The email address to be validated.
+     * @throws AysEmailAlreadyInUseException if the email address is already associated with another user.
+     */
+    private void validateEmailAddress(String id, String emailAddress) {
+        userReadPort.findByEmailAddress(emailAddress)
+                .filter(existingUser -> !existingUser.getId().equals(id))
+                .ifPresent(existingUser -> {
+                    throw new AysEmailAlreadyInUseException(emailAddress);
+                });
     }
 
 
@@ -89,17 +123,16 @@ public class AysUserUpdateServiceImpl implements AysUserUpdateService {
     private List<AysRole> checkExistingRolesAndGet(final Set<String> roleIds) {
         final List<AysRole> roles = roleReadPort.findAllByIds(roleIds);
 
-        if (roles.size() != roleIds.size()) {
-
-            final List<String> notExistsRoleIds = roleIds.stream()
-                    .filter(roleId -> roles.stream()
-                            .noneMatch(roleEntity -> roleEntity.getId().equals(roleId)))
-                    .toList();
-
-            throw new AysRolesNotExistException(notExistsRoleIds);
+        if (roles.size() == roleIds.size()) {
+            return roles;
         }
 
-        return roles;
+        final List<String> notExistsRoleIds = roleIds.stream()
+                .filter(roleId -> roles.stream()
+                        .noneMatch(roleEntity -> roleEntity.getId().equals(roleId)))
+                .toList();
+
+        throw new AysRolesNotExistException(notExistsRoleIds);
     }
 
 }

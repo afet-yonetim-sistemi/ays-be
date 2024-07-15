@@ -54,10 +54,10 @@ public interface AysRoleReadPort {
     /**
      * Retrieves all {@link AysRole} entities for the given set of role IDs.
      *
-     * @param roleIds A set of role IDs for which the roles are to be retrieved.
+     * @param ids A set of role IDs for which the roles are to be retrieved.
      * @return A list of {@link AysRole} entities for the provided IDs.
      */
-    List<AysRole> findAllByIds(Set<String> roleIds);
+    List<AysRole> findAllByIds(Set<String> ids);
 
     /**
      * Retrieves a role by its name.

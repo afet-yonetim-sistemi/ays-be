@@ -22,7 +22,7 @@ public final class AysRolesNotExistException extends AysNotExistException {
      * @param ids the IDs of the roles that do not exist.
      */
     public AysRolesNotExistException(List<String> ids) {
-        super("the following roles are not found! roleIds:" + ids);
+        super("the following roles are not found! ids:" + ids);
     }
 
 }
