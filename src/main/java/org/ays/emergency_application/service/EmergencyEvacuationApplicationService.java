@@ -4,6 +4,7 @@ import org.ays.common.model.AysPage;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
 
 /**
  * Emergency evacuation application service to perform emergency evacuation related operations
@@ -32,4 +33,10 @@ public interface EmergencyEvacuationApplicationService {
      * @return The emergency evacuation application with the specified ID, or null if not found.
      */
     EmergencyEvacuationApplication findById(String id);
+
+    // TODO : Add javadoc
+    void update(
+            String id,
+            EmergencyEvacuationApplicationUpdateRequest updateRequest
+    );
 }

@@ -17,6 +17,8 @@ import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplication
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequestBuilder;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequestBuilder;
 import org.ays.emergency_application.model.request.EmergencyEvacuationRequestBuilder;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
@@ -28,6 +30,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.Optional;
@@ -422,6 +425,58 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
+    }
+
+
+    @Test
+    void givenValidIdAndValidUpdateRequest_whenApplicationUpdated_thenReturnSuccessResponse() throws Exception {
+
+        // Initialize
+        emergencyEvacuationApplicationRepository.deleteAll();
+        EmergencyEvacuationApplication application = emergencyEvacuationApplicationSavePort.save(
+                new EmergencyEvacuationApplicationBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withoutInstitution()
+                        .withoutApplicant()
+                        .withSeatingCount(5)
+                        .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                        .withoutHasObstaclePersonExist()
+                        .withoutNotes()
+                        .build()
+        );
+
+        // Given
+        String id = application.getId();
+        EmergencyEvacuationApplicationUpdateRequest updateRequest = new EmergencyEvacuationApplicationUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(MockMvcResultMatchers.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<EmergencyEvacuationApplication> applicationFromDatabase = emergencyEvacuationApplicationReadPort
+                .findById(id);
+
+        Assertions.assertTrue(applicationFromDatabase.isPresent());
+        Assertions.assertNotNull(applicationFromDatabase.get().getInstitution());
+        Assertions.assertEquals(applicationFromDatabase.get().getSeatingCount(), updateRequest.getSeatingCount());
+        Assertions.assertEquals(applicationFromDatabase.get().getHasObstaclePersonExist(), updateRequest.getHasObstaclePersonExist());
+        Assertions.assertEquals(applicationFromDatabase.get().getStatus(), updateRequest.getStatus());
+        Assertions.assertEquals(applicationFromDatabase.get().getNotes(), updateRequest.getNotes());
+        Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedUser());
+        Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedAt());
     }
 
 }

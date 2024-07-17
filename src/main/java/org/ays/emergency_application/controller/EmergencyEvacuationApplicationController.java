@@ -10,6 +10,7 @@ import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplication
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
@@ -19,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,6 +88,29 @@ class EmergencyEvacuationApplicationController {
     @PostMapping("/emergency-evacuation-application")
     public AysResponse<Void> create(@RequestBody @Valid EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
         emergencyEvacuationApplicationService.create(emergencyEvacuationApplicationRequest);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * Updates an existing Emergency Evacuation Application.
+     * This method accepts a PUT request
+     * <p>
+     * This endpoint updates the Emergency Evacuation Application with the specified ID using the provided update request.
+     * The request body and path variable validated before processing.
+     * The user must have the authority 'application:evacuation:update' to access this endpoint.
+     * </p>
+     *
+     * @param id the unique identifier of the Emergency Evacuation Application to be updated
+     * @param updateRequest the request object containing the details to update the Emergency Evacuation Application
+     * @return a response indicating the success of the update operation
+     */
+    @PutMapping("/emergency-evacuation-application/{id}")
+    @PreAuthorize("hasAuthority('application:evacuation:update')")
+    public AysResponse<Void> update(@PathVariable @UUID final String id,
+                                    @RequestBody @Valid final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
+
+        emergencyEvacuationApplicationService.update(id, updateRequest);
         return AysResponse.SUCCESS;
     }
 
