@@ -46,7 +46,7 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
     private AysIdentity identity;
 
 
-    private final EmergencyEvacuationApplicationRequestToDomainMapper emergencyEvacuationApplicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
+    private final EmergencyEvacuationApplicationRequestToDomainMapper applicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
 
 
     @Test
@@ -176,7 +176,7 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        EmergencyEvacuationApplication mockApplication = emergencyEvacuationApplicationRequestToDomainMapper
+        EmergencyEvacuationApplication mockApplication = applicationRequestToDomainMapper
                 .map(mockApplicationRequest);
 
         mockApplication.pending();

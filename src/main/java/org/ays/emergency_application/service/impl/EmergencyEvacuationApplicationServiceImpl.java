@@ -7,7 +7,7 @@ import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
-import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationUpdateRequestToDomainMapper;
+import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToDomainMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
@@ -36,8 +36,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     private final EmergencyEvacuationApplicationSavePort emergencyEvacuationApplicationSavePort;
     private final AysIdentity identity;
 
-    private final EmergencyEvacuationApplicationUpdateRequestToDomainMapper applicationUpdateRequestToDomainMapper =
-            EmergencyEvacuationApplicationUpdateRequestToDomainMapper.initialize();
+    private final EmergencyEvacuationApplicationRequestToDomainMapper applicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
 
 
     /**
@@ -78,7 +77,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     @Transactional
     public void create(final EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
 
-        EmergencyEvacuationApplication application = applicationUpdateRequestToDomainMapper
+        EmergencyEvacuationApplication application = applicationRequestToDomainMapper
                 .map(emergencyEvacuationApplicationRequest);
 
         application.pending();
@@ -86,10 +85,11 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
         emergencyEvacuationApplicationSavePort.save(application);
     }
 
+
     /**
      * Updates an existing Emergency Evacuation Application with the provided details
      *
-     * @param id the unique identifier of the Emergency Evacuation Application to be updated
+     * @param id            the unique identifier of the Emergency Evacuation Application to be updated
      * @param updateRequest the request object containing the details to update the Emergency Evacuation Application
      * @throws EmergencyEvacuationApplicationNotExistException if the application with the specified ID does not exist
      */
