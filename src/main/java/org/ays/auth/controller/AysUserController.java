@@ -96,7 +96,7 @@ class AysUserController {
      * the user to have the 'user:update' authority to access.
      * </p>
      *
-     * @param id            The ID of the user to update.
+     * @param id The ID of the user to update.
      * @param updateRequest The request object containing updated data for the user.
      * @return An {@link AysResponse} indicating the success of the operation.
      */
