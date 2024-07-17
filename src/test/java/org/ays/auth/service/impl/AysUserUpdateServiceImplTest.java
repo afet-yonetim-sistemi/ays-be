@@ -1,5 +1,6 @@
 package org.ays.auth.service.impl;
 
+import org.ays.AysUnitTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
@@ -16,11 +17,9 @@ import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@ExtendWith(MockitoExtension.class)
-class AysUserUpdateServiceImplTest {
+class AysUserUpdateServiceImplTest extends AysUnitTest {
 
     @InjectMocks
     private AysUserUpdateServiceImpl userUpdateService;
@@ -138,7 +136,7 @@ class AysUserUpdateServiceImplTest {
     }
 
     @Test
-    void givenValidIdAndUserUpdateRequest_whenUserStatusIsInvalid_thenThrowAysUserIsNotActiveOrPassiveException() {
+    void givenValidIdAndUserUpdateRequest_whenUserStatusIsNotActiveOrPassive_thenThrowAysUserIsNotActiveOrPassiveException() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -208,9 +206,11 @@ class AysUserUpdateServiceImplTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
+        String mockEmailAddress = "emailaddress@gmail.com";
+
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withEmailAddress("test@mail.com")
+                .withEmailAddress(mockEmailAddress)
                 .build();
 
         AysUser mockUser = Mockito.mock(AysUser.class);
@@ -221,7 +221,7 @@ class AysUserUpdateServiceImplTest {
 
         // When
         Mockito.when(userReadPort.findById(mockId)).thenReturn(Optional.of(mockUser));
-        Mockito.when(userReadPort.findByEmailAddress("anothertest@gmail.com")).thenReturn(Optional.of(existingUserWithEmail));
+        Mockito.when(userReadPort.findByEmailAddress(mockEmailAddress)).thenReturn(Optional.of(existingUserWithEmail));
 
         // Then
         Assertions.assertThrows(
@@ -236,22 +236,23 @@ class AysUserUpdateServiceImplTest {
     }
 
     @Test
-    void givenValidIdAndUserUpdateRequest_whenRoleIdsDoNotExist_thenThrowAysRolesNotExistException() {
-
+    void givenValidIdAndUserUpdateRequest_whenRolesNotExist_thenThrowAysRolesNotExistException() {
         // Given
         String mockId = AysRandomUtil.generateUUID();
-        Set<String> invalidRoleIds = Set.of("invalidRoleId1", "invalidRoleId2");
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withRoleIds(invalidRoleIds)
                 .build();
 
-        AysUser mockUser = Mockito.mock(AysUser.class);
-        Mockito.when(mockUser.isActive() || mockUser.isPassive()).thenReturn(true);
-
         // When
-        Mockito.when(userReadPort.findById(mockId)).thenReturn(Optional.of(mockUser));
-        Mockito.when(roleReadPort.findAllByIds(invalidRoleIds)).thenReturn(new ArrayList<>());
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(roleReadPort.findAllByIds(Mockito.anySet()))
+                .thenReturn(List.of());
 
         // Then
         Assertions.assertThrows(
@@ -260,9 +261,14 @@ class AysUserUpdateServiceImplTest {
         );
 
         // Verify
-        Mockito.verify(userReadPort, Mockito.times(1)).findById(mockId);
-        Mockito.verify(roleReadPort, Mockito.times(1)).findAllByIds(invalidRoleIds);
-        Mockito.verify(userSavePort, Mockito.never()).save(Mockito.any(AysUser.class));
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findAllByIds(Mockito.anySet());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
     }
 
 }

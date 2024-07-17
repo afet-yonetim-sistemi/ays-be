@@ -47,9 +47,4 @@ public class AysUserUpdateRequestBuilder extends TestDataBuilder<AysUserUpdateRe
         return this;
     }
 
-    public AysUserUpdateRequestBuilder withStatus(String emailAddress) {
-        data.setEmailAddress(emailAddress);
-        return this;
-    }
-
 }

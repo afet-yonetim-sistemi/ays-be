@@ -62,7 +62,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
             this.validatePhoneNumber(id, phoneNumber);
         }
 
-        if (!user.getEmailAddress().equals(updateRequest.getEmailAddress())) {
+        if (!(user.getEmailAddress().equals(updateRequest.getEmailAddress()))) {
             this.validateEmailAddress(id, updateRequest.getEmailAddress());
         }
 
