@@ -2,6 +2,8 @@ package org.ays.auth.controller;
 
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.enums.AysSourcePage;
+import org.ays.auth.model.request.AysForgotPasswordRequest;
+import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
@@ -93,6 +95,28 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         String endpoint = BASE_PATH.concat("/token/invalidate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), tokenInvalidateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+
+    @Test
+    void givenValidForgotPasswordRequest_whenSendPasswordCreateMail_thenReturnSuccessResponse() throws Exception {
+        // Given
+        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/forgot");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockForgotPasswordRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 

@@ -1,0 +1,170 @@
+package org.ays.auth.service.impl;
+
+import org.ays.AysUnitTest;
+import org.ays.auth.model.AysUser;
+import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.request.AysForgotPasswordRequest;
+import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
+import org.ays.auth.port.AysUserReadPort;
+import org.ays.auth.port.AysUserSavePort;
+import org.ays.auth.util.exception.AysEmailAddressNotValidException;
+import org.ays.common.model.AysMail;
+import org.ays.common.service.AysMailService;
+import org.ays.parameter.model.AysParameter;
+import org.ays.parameter.model.AysParameterBuilder;
+import org.ays.parameter.port.AysParameterReadPort;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import java.util.Optional;
+
+class AysUserPasswordServiceImplTest extends AysUnitTest {
+
+    @InjectMocks
+    private AysUserPasswordServiceImpl userPasswordService;
+
+    @Mock
+    private AysUserReadPort userReadPort;
+
+    @Mock
+    private AysUserSavePort userSavePort;
+
+    @Mock
+    private AysParameterReadPort parameterReadPort;
+
+    @Mock
+    private AysMailService mailService;
+
+
+    @Test
+    void givenValidForgotPasswordRequest_whenUserExistWithPassword_thenSendPasswordCreateEmail() {
+        // Given
+        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
+                .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
+                .build();
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        AysParameter mockParameter = new AysParameterBuilder()
+                .withName("FE_URL")
+                .withDefinition("http://localhost:3000")
+                .build();
+        Mockito.when(parameterReadPort.findByName(Mockito.anyString()))
+                .thenReturn(Optional.of(mockParameter));
+
+        Mockito.doNothing()
+                .when(mailService)
+                .send(Mockito.any(AysMail.class));
+
+        // Then
+        userPasswordService.forgotPassword(mockForgotPasswordRequest);
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(parameterReadPort, Mockito.times(1))
+                .findByName(Mockito.anyString());
+
+        Mockito.verify(mailService, Mockito.times(1))
+                .send(Mockito.any(AysMail.class));
+    }
+
+    @Test
+    void givenValidForgotPasswordRequest_whenUserExistWithoutPassword_thenCreateTempPasswordAndSendPasswordCreateEmail() {
+        // Given
+        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
+                .build();
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        AysUser mockSavedUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockUser.getId())
+                .withEmailAddress(mockUser.getEmailAddress())
+                .withPhoneNumber(mockUser.getPhoneNumber())
+                .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
+                .build();
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockSavedUser);
+
+        AysParameter mockParameter = new AysParameterBuilder()
+                .withName("FE_URL")
+                .withDefinition("http://localhost:3000")
+                .build();
+        Mockito.when(parameterReadPort.findByName(Mockito.anyString()))
+                .thenReturn(Optional.of(mockParameter));
+
+        Mockito.doNothing()
+                .when(mailService)
+                .send(Mockito.any(AysMail.class));
+
+        // Then
+        userPasswordService.forgotPassword(mockForgotPasswordRequest);
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(parameterReadPort, Mockito.times(1))
+                .findByName(Mockito.anyString());
+
+        Mockito.verify(mailService, Mockito.times(1))
+                .send(Mockito.any(AysMail.class));
+    }
+
+    @Test
+    void givenValidForgotPasswordRequest_whenEmailDoesNotExist_thenThrowAysEmailAddressNotValidException() {
+        // Given
+        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
+                .thenThrow(new AysEmailAddressNotValidException(mockForgotPasswordRequest.getEmailAddress()));
+
+        // Then
+        Assertions.assertThrows(
+                AysEmailAddressNotValidException.class,
+                () -> userPasswordService.forgotPassword(mockForgotPasswordRequest)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(parameterReadPort, Mockito.never())
+                .findByName(Mockito.anyString());
+
+        Mockito.verify(mailService, Mockito.never())
+                .send(Mockito.any(AysMail.class));
+    }
+
+}
