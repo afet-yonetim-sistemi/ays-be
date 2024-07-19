@@ -309,6 +309,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
+
         // Given
         String mockId = AysRandomUtil.generateUUID();
         String mockEmailAddress = "test@email.com";
