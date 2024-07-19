@@ -33,6 +33,7 @@ import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -544,17 +545,21 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @ValueSource(strings = {
             "",
             "A",
+            " Role",
+            "Role ",
+            "123Role",
+            ".Role",
             "% fsdh     ",
             "493268349068342",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
     })
-    void givenValidIdAndInvalidRoleUpdateRequest_whenNameIsNotValid_thenReturnValidationError(String name) throws Exception {
+    void givenValidIdAndInvalidRoleUpdateRequest_whenNameIsNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
                 .withValidValues()
-                .withName(name)
+                .withName(invalidName)
                 .build();
 
         // Then
@@ -632,6 +637,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     }
 
     @ParameterizedTest
+    @NullSource
     @ValueSource(strings = {
             "",
             "55aed4c4facb4b66bdb5-309eaaef4453"
