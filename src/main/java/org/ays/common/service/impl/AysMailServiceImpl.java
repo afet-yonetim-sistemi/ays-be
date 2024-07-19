@@ -2,6 +2,7 @@ package org.ays.common.service.impl;
 
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +66,8 @@ class AysMailServiceImpl implements AysMailService {
 
         String htmlContentWithParameters = this.addParameters(htmlContent, mail.getParameters());
         mimeMessage.setText(htmlContentWithParameters, "UTF-8", "html");
+
+        mimeMessage.setFrom(new InternetAddress("info@afetyonetimsistemi.org", "Afet Yönetim Sistemi"));
 
         for (String to : mail.getTo()) {
             mimeMessage.addRecipients(Message.RecipientType.TO, to);

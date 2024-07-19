@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum AysMailTemplate {
 
     @Deprecated(forRemoval = true, since = "This value will be removed, when new values are added to the enum.")
-    EXAMPLE("example.html");
+    EXAMPLE("create-password.html"),
+    CREATE_PASSWORD("create-password.html");
 
     private final String file;
 

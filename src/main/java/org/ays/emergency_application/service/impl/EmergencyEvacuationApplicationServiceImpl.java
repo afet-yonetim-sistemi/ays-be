@@ -1,6 +1,8 @@
 package org.ays.emergency_application.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.ays.auth.model.AysIdentity;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
@@ -8,12 +10,16 @@ import org.ays.emergency_application.model.filter.EmergencyEvacuationApplication
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToDomainMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
+import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
+import org.ays.institution.model.Institution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * This class implements the interface {@link EmergencyEvacuationApplicationService}
@@ -28,9 +34,10 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
 
     private final EmergencyEvacuationApplicationReadPort emergencyEvacuationApplicationReadPort;
     private final EmergencyEvacuationApplicationSavePort emergencyEvacuationApplicationSavePort;
+    private final AysIdentity identity;
 
+    private final EmergencyEvacuationApplicationRequestToDomainMapper applicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
 
-    private final EmergencyEvacuationApplicationRequestToDomainMapper emergencyEvacuationApplicationRequestToDomainMapper = EmergencyEvacuationApplicationRequestToDomainMapper.initialize();
 
     /**
      * Retrieves a page of emergency evacuation applications based on the provided request parameters.
@@ -70,12 +77,45 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     @Transactional
     public void create(final EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
 
-        EmergencyEvacuationApplication application = emergencyEvacuationApplicationRequestToDomainMapper
+        EmergencyEvacuationApplication application = applicationRequestToDomainMapper
                 .map(emergencyEvacuationApplicationRequest);
 
         application.pending();
 
         emergencyEvacuationApplicationSavePort.save(application);
+    }
+
+
+    /**
+     * Updates an existing Emergency Evacuation Application with the provided details
+     *
+     * @param id            the unique identifier of the Emergency Evacuation Application to be updated
+     * @param updateRequest the request object containing the details to update the Emergency Evacuation Application
+     * @throws EmergencyEvacuationApplicationNotExistException if the application with the specified ID does not exist
+     */
+    @Override
+    @Transactional
+    public void update(final String id,
+                       final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
+
+        final EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationReadPort
+                .findById(id)
+                .orElseThrow(() -> new EmergencyEvacuationApplicationNotExistException(id));
+
+        emergencyEvacuationApplication.setInstitution(
+                Institution.builder()
+                        .id(identity.getInstitutionId())
+                        .build()
+        );
+        emergencyEvacuationApplication.setSeatingCount(updateRequest.getSeatingCount());
+        emergencyEvacuationApplication.setHasObstaclePersonExist(updateRequest.getHasObstaclePersonExist());
+        emergencyEvacuationApplication.setStatus(updateRequest.getStatus());
+
+        Optional.ofNullable(updateRequest.getNotes())
+                .filter(StringUtils::isNotBlank)
+                .ifPresent(emergencyEvacuationApplication::setNotes);
+
+        emergencyEvacuationApplicationSavePort.save(emergencyEvacuationApplication);
     }
 
 }

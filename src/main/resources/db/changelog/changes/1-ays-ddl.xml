@@ -332,7 +332,7 @@
         <!-- DDL of AYS_USER_PASSWORD -->
         <!-- ======================== -->
         <createTable tableName="AYS_USER_PASSWORD">
-            <column name="ID" type="BIGINT" autoIncrement="true">
+            <column name="ID" type="VARCHAR(36)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="USER_ID" type="VARCHAR(36)">

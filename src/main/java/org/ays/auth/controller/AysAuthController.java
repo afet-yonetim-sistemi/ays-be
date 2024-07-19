@@ -3,12 +3,14 @@ package org.ays.auth.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysToken;
-import org.ays.auth.model.mapper.AysTokenToAysTokenResponseMapper;
+import org.ays.auth.model.mapper.AysTokenToResponseMapper;
+import org.ays.auth.model.request.AysForgotPasswordRequest;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.response.AysTokenResponse;
 import org.ays.auth.service.AysAuthService;
+import org.ays.auth.service.AysUserPasswordService;
 import org.ays.common.model.response.AysResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class AysAuthController {
 
-    private final AysAuthService userAuthService;
+    private final AysAuthService authService;
+    private final AysUserPasswordService userPasswordService;
 
 
-    private final AysTokenToAysTokenResponseMapper aysTokenToAysTokenResponseMapper = AysTokenToAysTokenResponseMapper.initialize();
+    private final AysTokenToResponseMapper tokenToTokenResponseMapper = AysTokenToResponseMapper.initialize();
 
 
     /**
@@ -37,10 +40,11 @@ class AysAuthController {
      */
     @PostMapping("/token")
     public AysResponse<AysTokenResponse> landingAuthenticate(@RequestBody @Valid AysLoginRequest loginRequest) {
-        final AysToken token = userAuthService.authenticate(loginRequest);
-        final AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(token);
+        final AysToken token = authService.authenticate(loginRequest);
+        final AysTokenResponse tokenResponse = tokenToTokenResponseMapper.map(token);
         return AysResponse.successOf(tokenResponse);
     }
+
 
     /**
      * This endpoint allows user to refresh token.
@@ -50,10 +54,11 @@ class AysAuthController {
      */
     @PostMapping("/token/refresh")
     public AysResponse<AysTokenResponse> refreshToken(@RequestBody @Valid AysTokenRefreshRequest refreshRequest) {
-        final AysToken token = userAuthService.refreshAccessToken(refreshRequest.getRefreshToken());
-        final AysTokenResponse tokenResponse = aysTokenToAysTokenResponseMapper.map(token);
+        final AysToken token = authService.refreshAccessToken(refreshRequest.getRefreshToken());
+        final AysTokenResponse tokenResponse = tokenToTokenResponseMapper.map(token);
         return AysResponse.successOf(tokenResponse);
     }
+
 
     /**
      * Endpoint for invalidating a token. Only users with the 'USER' authority are allowed to access this endpoint.
@@ -64,7 +69,20 @@ class AysAuthController {
      */
     @PostMapping("/token/invalidate")
     public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
-        userAuthService.invalidateTokens(invalidateRequest.getRefreshToken());
+        authService.invalidateTokens(invalidateRequest.getRefreshToken());
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * This endpoint allows a user to request a password create.
+     *
+     * @param forgotPasswordRequest An AysForgotPasswordRequest object containing the user's email address.
+     * @return An AysResponse indicating the success of the password create request.
+     */
+    @PostMapping("/password/forgot")
+    public AysResponse<Void> forgotPassword(@RequestBody @Valid AysForgotPasswordRequest forgotPasswordRequest) {
+        userPasswordService.forgotPassword(forgotPasswordRequest);
         return AysResponse.SUCCESS;
     }
 
