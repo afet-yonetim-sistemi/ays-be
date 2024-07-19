@@ -346,11 +346,11 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "493268349068342",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
     })
-    void givenInvalidRoleCreateRequest_whenNameIsNotValid_thenReturnValidationError(String name) throws Exception {
+    void givenInvalidRoleCreateRequest_whenNameIsNotValid_thenReturnValidationError(String invalidName) throws Exception {
         // Given
         AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
-                .withName(name)
+                .withName(invalidName)
                 .build();
 
         // Then
@@ -428,11 +428,11 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "",
             "55aed4c4facb4b66bdb5-309eaaef4453"
     })
-    void givenInvalidRoleCreateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String permissionId) throws Exception {
+    void givenInvalidRoleCreateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String invalidPermissionId) throws Exception {
         // Given
         AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
-                .withPermissionIds(Set.of(permissionId))
+                .withPermissionIds(Set.of(invalidPermissionId))
                 .build();
 
         // Then
@@ -642,13 +642,13 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "",
             "55aed4c4facb4b66bdb5-309eaaef4453"
     })
-    void givenValidIdAndInvalidRoleUpdateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String permissionId) throws Exception {
+    void givenValidIdAndInvalidRoleUpdateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String invalidPermissionId) throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
                 .withValidValues()
-                .withPermissionIds(Set.of(permissionId))
+                .withPermissionIds(Set.of(invalidPermissionId))
                 .build();
 
         // Then
