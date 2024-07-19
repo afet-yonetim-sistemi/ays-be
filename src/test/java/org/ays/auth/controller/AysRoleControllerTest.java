@@ -39,6 +39,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -646,9 +647,12 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
+
+        Set<String> mockPermissionIds = new HashSet<>();
+        mockPermissionIds.add(invalidPermissionId);
         AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
                 .withValidValues()
-                .withPermissionIds(Set.of(invalidPermissionId))
+                .withPermissionIds(mockPermissionIds)
                 .build();
 
         // Then
