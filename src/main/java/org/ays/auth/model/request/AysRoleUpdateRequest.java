@@ -10,6 +10,10 @@ import org.hibernate.validator.constraints.UUID;
 
 import java.util.Set;
 
+/**
+ * Request object for updating a role.
+ * This class is used to encapsulate the data needed to update a role, including the role name and permission IDs.
+ */
 @Getter
 @Setter
 public class AysRoleUpdateRequest {
