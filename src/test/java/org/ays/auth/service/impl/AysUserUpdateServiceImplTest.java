@@ -5,13 +5,18 @@ import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
-import org.ays.auth.util.exception.*;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailException;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
+import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
+import org.ays.auth.util.exception.AysUserNotExistByIdException;
+import org.ays.auth.util.exception.AysRolesNotExistException;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.util.AysRandomUtil;
@@ -144,10 +149,12 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .build();
 
-        AysUser mockUser = Mockito.mock(AysUser.class);
-        Mockito.when(mockUser.isActive() || mockUser.isPassive()).thenReturn(false);
-
         // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withStatus(AysUserStatus.DELETED)
+                .build();
+
         Mockito.when(userReadPort.findById(mockId))
                 .thenReturn(Optional.of(mockUser));
 
@@ -174,18 +181,21 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .build();
 
-        AysUser mockUser = Mockito.mock(AysUser.class);
-        Mockito.when(mockUser.isActive() || mockUser.isPassive()).thenReturn(true);
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withStatus(AysUserStatus.ACTIVE)
+                .build();
 
         AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
                 .withCountryCode(mockUpdateRequest.getPhoneNumber().getCountryCode())
                 .withLineNumber(mockUpdateRequest.getPhoneNumber().getLineNumber())
                 .build();
 
-        AysUser existingUserWithPhoneNumber = Mockito.mock(AysUser.class);
-        Mockito.when(existingUserWithPhoneNumber.getId()).thenReturn("anotherUserId");
+        AysUser existingUserWithPhoneNumber = new AysUserBuilder()
+                .withValidValues()
+                .build();
 
-        // When
         Mockito.when(userReadPort.findById(mockId)).thenReturn(Optional.of(mockUser));
         Mockito.when(userReadPort.findByPhoneNumber(mockPhoneNumber)).thenReturn(Optional.of(existingUserWithPhoneNumber));
 
@@ -213,13 +223,16 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withEmailAddress(mockEmailAddress)
                 .build();
 
-        AysUser mockUser = Mockito.mock(AysUser.class);
-        Mockito.when(mockUser.isActive() || mockUser.isPassive()).thenReturn(true);
-
-        AysUser existingUserWithEmail = Mockito.mock(AysUser.class);
-        Mockito.when(existingUserWithEmail.getId()).thenReturn("anotherUserId");
-
         // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withStatus(AysUserStatus.ACTIVE)
+                .build();
+
+        AysUser existingUserWithEmail = new AysUserBuilder()
+                .withValidValues()
+                .build();
+
         Mockito.when(userReadPort.findById(mockId)).thenReturn(Optional.of(mockUser));
         Mockito.when(userReadPort.findByEmailAddress(mockEmailAddress)).thenReturn(Optional.of(existingUserWithEmail));
 
@@ -237,6 +250,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenRolesNotExist_thenThrowAysRolesNotExistException() {
+
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
