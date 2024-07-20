@@ -10,13 +10,13 @@ import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.service.AysRoleUpdateService;
+import org.ays.auth.util.exception.AysInvalidRoleStatusException;
 import org.ays.auth.util.exception.AysPermissionNotExistException;
 import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
 import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
 import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;
-import org.ays.auth.util.exception.AysInvalidRoleStatusException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,19 +42,24 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
 
     /**
      * Updates an existing role identified by its ID.
-     * Performs checks to ensure the role name is unique and validates the existence of provided permissions.
+     * <p>
+     * This method performs checks to ensure the role name is unique and validates the existence of provided permissions.
+     * It also verifies that the role belongs to the same institution as the current user's institution.
+     * </p>
      *
      * @param id            The ID of the role to update.
      * @param updateRequest The request object containing updated data for the role.
      * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists, excluding the current role ID.
      * @throws AysPermissionNotExistException      if any of the permission IDs provided do not exist.
      * @throws AysUserNotSuperAdminException       if the current user does not have super admin privileges required for assigning super permissions.
+     * @throws AysRoleNotExistByIdException        if the role with the given ID does not exist or does not belong to the current user's institution.
      */
     @Override
     public void update(final String id,
                        final AysRoleUpdateRequest updateRequest) {
 
         final AysRole role = roleReadPort.findById(id)
+                .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
         this.checkExistingRoleNameByWithoutId(id, updateRequest.getName());
@@ -77,7 +82,7 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
      * </p>
      *
      * @param id The ID of the role to activate.
-     * @throws AysRoleNotExistByIdException if a role with the given ID does not exist.
+     * @throws AysRoleNotExistByIdException  if a role with the given ID does not exist.
      * @throws AysInvalidRoleStatusException if the role's current status is not {@link AysRoleStatus#PASSIVE}.
      */
     @Override

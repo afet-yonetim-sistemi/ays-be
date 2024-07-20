@@ -5,6 +5,7 @@ import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
 
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class AysRoleBuilder extends TestDataBuilder<AysRole> {
                 .withId(AysRandomUtil.generateUUID())
                 .withName("admin")
                 .withPermissions(permissions)
-                .withStatus(AysRoleStatus.ACTIVE);
+                .withStatus(AysRoleStatus.ACTIVE)
+                .withInstitution(new InstitutionBuilder().withValidValues().build());
     }
 
     public AysRoleBuilder withId(String id) {
