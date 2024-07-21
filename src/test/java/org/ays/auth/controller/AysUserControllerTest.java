@@ -8,28 +8,38 @@ import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
+import org.ays.auth.model.request.AysUserUpdateRequest;
+import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserReadService;
+import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
+import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class AysUserControllerTest extends AysRestControllerTest {
+
+    @MockBean
+    private AysUserUpdateService userUpdateService;
 
     @MockBean
     private AysUserReadService userReadService;
@@ -295,6 +305,187 @@ class AysUserControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(userReadService, Mockito.never())
                 .findById(Mockito.anyString());
+    }
+
+
+    @Test
+    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
+
+        // Given
+        String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(userUpdateService)
+                .update(Mockito.any(), Mockito.any(AysUserUpdateRequest.class));
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.times(1))
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @Test
+    void givenValidIdAndUserUpdateRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockId = "0deb5f16-479f-4625-9354-7db29c861e85";
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenInvalidIdAndValidUserUpdateRequest_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Given
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(invalidId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @Test
+    void givenValidIdAndInvalidUserUpdateRequest_whenRoleIdsAreNull_thenReturnValidationError() throws Exception {
+
+        // Given
+        String mockId = "3b5a65ba-c90e-41ad-97ec-56c7dd4fe708";
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withRoleIds(null)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @Test
+    void givenValidIdAndInvalidUserUpdateRequest_whenRoleIdsAreEmpty_thenReturnValidationError() throws Exception {
+
+        // Given
+        String mockId = "daaa28f9-f7b3-4f43-a10f-a5fe2b0eb2fa";
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withRoleIds(Set.of())
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {
+            "",
+            "55aed4c4facb4b66bdb5-309eaaef4453"
+    })
+    void givenValidIdAndInvalidUserUpdateRequest_whenRoleIdIsNotValid_thenReturnValidationError(String invalidRoleId) throws Exception {
+
+        // Given
+        String mockId = "b8758dce-ad8e-438d-b31c-b440b352068a";
+
+        Set<String> mockRoleIds = new HashSet<>();
+        mockRoleIds.add(invalidRoleId);
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withRoleIds(mockRoleIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
     }
 
 }

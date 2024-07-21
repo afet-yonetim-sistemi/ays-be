@@ -215,6 +215,57 @@ class AysUserAdapterTest extends AysUnitTest {
                 .findByEmailAddress(mockEmailAddress);
     }
 
+    @Test
+    void givenValidPhoneNumber_whenUserFoundByPhoneNumber_thenReturnOptionalUser() {
+
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AysUserEntity mockUserEntity = new AysUserEntityBuilder()
+                .withValidValues()
+                .withPhoneNumber(mockPhoneNumber)
+                .build();
+        Mockito.when(userRepository.findByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber()))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByPhoneNumber(mockPhoneNumber);
+
+        Assertions.assertTrue(user.isPresent());
+        Assertions.assertEquals(mockUser, user.get());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber());
+    }
+
+    @Test
+    void givenValidPhoneNumber_whenUserNotFoundByPhoneNumber_thenReturnOptionalEmpty() {
+
+        // Given
+        AysPhoneNumber mockPhoneNumber = new AysPhoneNumberBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.when(userRepository.findByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByPhoneNumber(mockPhoneNumber);
+
+        Assertions.assertFalse(user.isPresent());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByCountryCodeAndLineNumber(mockPhoneNumber.getCountryCode(), mockPhoneNumber.getLineNumber());
+    }
+
 
     @Test
     void givenValidEmailAddress_whenUserExistsByEmailAddress_thenReturnTrue() {

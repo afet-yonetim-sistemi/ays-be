@@ -1,5 +1,6 @@
 package org.ays.auth.model;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
@@ -26,7 +27,7 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withInstitution(institution)
-                .withEmailAddress("@afetyonetimsistemi.org")
+                .withEmailAddress(RandomStringUtils.randomAlphabetic(8).concat("@afetyonetimsistemi.org"))
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
                 .withStatus(AysUserStatus.ACTIVE)
                 .withPassword(null)
@@ -54,7 +55,7 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
     }
 
     public AysUserBuilder withEmailAddress(String emailAddress) {
-        data.setEmailAddress(data.getEmailAddress() + emailAddress);
+        data.setEmailAddress(emailAddress);
         return this;
     }
 
@@ -85,11 +86,6 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
 
     public AysUserBuilder withLoginAttempt(AysUser.LoginAttempt loginAttempt) {
         data.setLoginAttempt(loginAttempt);
-        return this;
-    }
-
-    public AysUserBuilder withValidLoginAttempt() {
-        data.setLoginAttempt(new LoginAttemptBuilder().withValidValues().build());
         return this;
     }
 

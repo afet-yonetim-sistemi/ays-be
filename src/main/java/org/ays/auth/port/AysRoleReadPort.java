@@ -7,6 +7,7 @@ import org.ays.common.model.AysPageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * {@link AysRoleReadPort} is an interface for reading role data from the underlying data source.
@@ -49,6 +50,14 @@ public interface AysRoleReadPort {
      * @return A list of active roles belonging to the institution.
      */
     List<AysRole> findAllActivesByInstitutionId(String institutionId);
+
+    /**
+     * Retrieves all {@link AysRole} entities for the given set of role IDs.
+     *
+     * @param ids A set of role IDs for which the roles are to be retrieved.
+     * @return A list of {@link AysRole} entities for the provided IDs.
+     */
+    List<AysRole> findAllByIds(Set<String> ids);
 
     /**
      * Retrieves a role by its name.

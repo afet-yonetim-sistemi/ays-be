@@ -20,6 +20,15 @@ public interface AysUserRepository extends JpaRepository<AysUserEntity, String>,
     Optional<AysUserEntity> findByEmailAddress(String emailAddress);
 
     /**
+     * Finds a user by their phone number.
+     *
+     * @param countryCode the country code of the user to check
+     * @param lineNumber  the phone number of the user to check
+     * @return an optional containing the UserEntity with the given phone number, or an empty optional if not found
+     */
+    Optional<AysUserEntity> findByCountryCodeAndLineNumber(String countryCode, String lineNumber);
+
+    /**
      * Checks if an {@link AysUserEntity} exists with the given email.
      *
      * @param emailAddress the email address of the user to check
