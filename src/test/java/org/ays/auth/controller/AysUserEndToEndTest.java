@@ -10,7 +10,6 @@ import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
-import org.ays.auth.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.port.AysRoleReadPort;
@@ -270,10 +269,10 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         String id = user.getId();
 
         AysUserUpdateRequest updateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
                 .withFirstName("newFirst")
                 .withLastName("newSecond")
                 .withEmailAddress("new@gmail.com")
-                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
                 .withCity("newCity")
                 .withRoleIds(roleIds)
                 .build();

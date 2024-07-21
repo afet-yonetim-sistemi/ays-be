@@ -2,6 +2,7 @@ package org.ays.auth.model.request;
 
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
 
 import java.util.Set;
 
