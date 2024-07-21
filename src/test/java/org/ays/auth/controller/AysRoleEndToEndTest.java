@@ -380,7 +380,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withName("Admin Role 1")
                         .withPermissions(permissions)
-                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.SuperAdmin.INSTITUTION_ID).build())
                         .build()
         );
 

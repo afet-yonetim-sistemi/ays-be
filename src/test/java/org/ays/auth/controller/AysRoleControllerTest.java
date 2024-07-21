@@ -33,11 +33,13 @@ import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -345,11 +347,11 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "493268349068342",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
     })
-    void givenInvalidRoleCreateRequest_whenNameIsNotValid_thenReturnValidationError(String name) throws Exception {
+    void givenInvalidRoleCreateRequest_whenNameIsNotValid_thenReturnValidationError(String invalidName) throws Exception {
         // Given
         AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
-                .withName(name)
+                .withName(invalidName)
                 .build();
 
         // Then
@@ -427,11 +429,11 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "",
             "55aed4c4facb4b66bdb5-309eaaef4453"
     })
-    void givenInvalidRoleCreateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String permissionId) throws Exception {
+    void givenInvalidRoleCreateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String invalidPermissionId) throws Exception {
         // Given
         AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
-                .withPermissionIds(Set.of(permissionId))
+                .withPermissionIds(Set.of(invalidPermissionId))
                 .build();
 
         // Then
@@ -544,17 +546,21 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @ValueSource(strings = {
             "",
             "A",
+            " Role",
+            "Role ",
+            "123Role",
+            ".Role",
             "% fsdh     ",
             "493268349068342",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
     })
-    void givenValidIdAndInvalidRoleUpdateRequest_whenNameIsNotValid_thenReturnValidationError(String name) throws Exception {
+    void givenValidIdAndInvalidRoleUpdateRequest_whenNameIsNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
         AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
                 .withValidValues()
-                .withName(name)
+                .withName(invalidName)
                 .build();
 
         // Then
@@ -632,17 +638,21 @@ class AysRoleControllerTest extends AysRestControllerTest {
     }
 
     @ParameterizedTest
+    @NullSource
     @ValueSource(strings = {
             "",
             "55aed4c4facb4b66bdb5-309eaaef4453"
     })
-    void givenValidIdAndInvalidRoleUpdateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String permissionId) throws Exception {
+    void givenValidIdAndInvalidRoleUpdateRequest_whenPermissionIdIsNotValid_thenReturnValidationError(String invalidPermissionId) throws Exception {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
+
+        Set<String> mockPermissionIds = new HashSet<>();
+        mockPermissionIds.add(invalidPermissionId);
         AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
                 .withValidValues()
-                .withPermissionIds(Set.of(permissionId))
+                .withPermissionIds(mockPermissionIds)
                 .build();
 
         // Then
