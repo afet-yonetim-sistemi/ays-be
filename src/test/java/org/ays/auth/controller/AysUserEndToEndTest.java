@@ -241,20 +241,14 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
 
     @Test
-    void givenValidUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
+    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
 
         // Initialize
-        Institution institution = institutionSavePort.save(
-                new InstitutionBuilder()
-                        .withValidValues()
-                        .withoutId()
-                        .build()
-        );
-        List<AysRole> roles = roleReadPort.findAll();
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
 
-        Set<String> roleIds = roles.stream()
-                .map(AysRole::getId)
-                .collect(Collectors.toSet());
+        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
 
         AysUser user = userSavePort.save(
                 new AysUserBuilder()
@@ -268,12 +262,16 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         // Given
         String id = user.getId();
 
+        Set<String> roleIds = roles.stream()
+                .map(AysRole::getId)
+                .limit(1)
+                .collect(Collectors.toSet());
         AysUserUpdateRequest updateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withFirstName("newFirst")
-                .withLastName("newSecond")
-                .withEmailAddress("new@gmail.com")
-                .withCity("newCity")
+                .withFirstName("John")
+                .withLastName("Doe")
+                .withEmailAddress("john.doe@afetyonetimsistemi.org")
+                .withCity("Ankara")
                 .withRoleIds(roleIds)
                 .build();
 
@@ -302,10 +300,12 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(updateRequest.getPhoneNumber().getCountryCode(), userFromDatabase.get().getPhoneNumber().getCountryCode());
         Assertions.assertEquals(updateRequest.getPhoneNumber().getLineNumber(), userFromDatabase.get().getPhoneNumber().getLineNumber());
         Assertions.assertEquals(updateRequest.getCity(), userFromDatabase.get().getCity());
-        updateRequest.getRoleIds().forEach(roleId -> Assertions.assertTrue(
-                userFromDatabase.get().getRoles().stream()
-                        .anyMatch(role -> role.getId().equals(roleId))
-        ));
+        updateRequest.getRoleIds()
+                .forEach(roleId ->
+                        Assertions.assertTrue(
+                                userFromDatabase.get().getRoles().stream().anyMatch(role -> role.getId().equals(roleId))
+                        )
+                );
     }
 
 }
