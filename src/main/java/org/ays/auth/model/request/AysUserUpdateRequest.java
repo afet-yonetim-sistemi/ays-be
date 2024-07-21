@@ -33,16 +33,16 @@ public class AysUserUpdateRequest {
     @Size(min = 2, max = 255)
     private String emailAddress;
 
+    @Valid
+    @NotNull
+    private AysPhoneNumberRequest phoneNumber;
+
     @Name
     @NotBlank
     @Size(min = 2, max = 100)
     private String city;
 
-    @Valid
-    @NotNull
-    private AysPhoneNumberRequest phoneNumber;
-
     @NotEmpty
-    private Set<@UUID String> roleIds;
+    private Set<@NotBlank @UUID String> roleIds;
 
 }
