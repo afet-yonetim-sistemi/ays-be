@@ -20,7 +20,6 @@ import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
-import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
@@ -45,9 +44,6 @@ class AysUserEndToEndTest extends AysEndToEndTest {
     @Autowired
     private AysRoleReadPort roleReadPort;
 
-    @Autowired
-    private InstitutionSavePort institutionSavePort;
-
 
     private final AysUserToResponseMapper userToResponseMapper = AysUserToResponseMapper.initialize();
 
@@ -62,10 +58,12 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Institution institution = new InstitutionBuilder()
                 .withId(AysValidTestData.SuperAdmin.INSTITUTION_ID)
                 .build();
+
         AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
                 .stream()
                 .findFirst()
                 .orElseThrow();
+
         userSavePort.save(
                 new AysUserBuilder()
                         .withValidValues()
@@ -75,7 +73,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withCity("Iğdır")
                         .withStatus(AysUserStatus.ACTIVE)
                         .withRoles(List.of(role))
-                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.SuperAdmin.INSTITUTION_ID).build())
+                        .withInstitution(institution)
                         .build()
         );
 
@@ -175,21 +173,23 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
 
     @Test
-    void givenValidUserId_whenUserExists_thenReturnAysUserResponse() throws Exception {
+    void givenValidUserId_whenUserExists_thenReturnUserResponse() throws Exception {
 
         // Initialize
-        Institution institution = institutionSavePort.save(
-                new InstitutionBuilder()
-                        .withValidValues()
-                        .withoutId()
-                        .build()
-        );
-        List<AysRole> roles = roleReadPort.findAll();
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
+                .stream()
+                .findFirst()
+                .orElseThrow();
+
         AysUser user = userSavePort.save(
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withRoles(roles)
+                        .withRoles(List.of(role))
                         .withInstitution(institution)
                         .build()
         );
