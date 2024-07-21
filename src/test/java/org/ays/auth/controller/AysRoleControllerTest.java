@@ -342,6 +342,9 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "",
+            "  Kurum yöneticisi",
+            "!Kurum",
+            "12Kurum",
             "A",
             "% fsdh     ",
             "493268349068342",
