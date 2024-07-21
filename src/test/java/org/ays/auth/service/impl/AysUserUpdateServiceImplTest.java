@@ -92,6 +92,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
             AysRole mockRole = new AysRoleBuilder()
                     .withValidValues()
                     .withId(roleId)
+                    .withInstitution(mockInstitution)
                     .build();
             mockRoles.add(mockRole);
         });
@@ -108,7 +109,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(identity, Mockito.times(1))
+        Mockito.verify(identity, Mockito.times(mockRoles.size() + 1))
                 .getInstitutionId();
 
         Mockito.verify(userReadPort, Mockito.times(1))

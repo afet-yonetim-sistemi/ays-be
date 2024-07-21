@@ -135,7 +135,10 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
             return;
         }
 
-        final List<AysRole> roles = roleReadPort.findAllByIds(roleIds);
+        final List<AysRole> roles = roleReadPort.findAllByIds(roleIds).stream()
+                .filter(AysRole::isActive)
+                .filter(role -> identity.getInstitutionId().equals(role.getInstitution().getId()))
+                .toList();
 
         if (roles.size() == roleIds.size()) {
             user.setRoles(roles);
