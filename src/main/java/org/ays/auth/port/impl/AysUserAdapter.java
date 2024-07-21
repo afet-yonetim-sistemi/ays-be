@@ -103,6 +103,22 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
 
     /**
+     * Finds a user by their phone number, which is a concatenation of country code and line number.
+     *
+     * @param phoneNumber the concatenated phone number (country code + line number) of the user to be found
+     * @return an optional containing the {@link AysUser} with the given phone number, or an empty optional if not found
+     */
+    @Override
+    public Optional<AysUser> findByPhoneNumber(AysPhoneNumber phoneNumber) {
+        Optional<AysUserEntity> userEntity = userRepository.findByCountryCodeAndLineNumber(
+                phoneNumber.getCountryCode(),
+                phoneNumber.getLineNumber()
+        );
+        return userEntity.map(userEntityToDomainMapper::map);
+    }
+
+
+    /**
      * Checks if a user with the given phone number exists in the repository.
      *
      * @param phoneNumber The phone number to check for existence.

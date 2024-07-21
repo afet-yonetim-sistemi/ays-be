@@ -12,13 +12,13 @@ import org.ays.auth.model.request.AysRoleUpdateRequestBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
+import org.ays.auth.util.exception.AysInvalidRoleStatusException;
 import org.ays.auth.util.exception.AysPermissionNotExistException;
 import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
 import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
 import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;
-import org.ays.auth.util.exception.AysInvalidRoleStatusException;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,6 +31,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 class AysRoleUpdateServiceImplTest extends AysUnitTest {
 
@@ -49,6 +50,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
     @Mock
     private AysIdentity identity;
 
+
     @Test
     void givenIdAndRoleUpdateRequest_whenValuesValid_thenUpdateRoleWithSuperPermissions() {
         // Given
@@ -64,6 +66,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
                 .build();
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockRole));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockRole.getInstitution().getId());
 
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
@@ -92,6 +97,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         // Verify
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findByName(Mockito.anyString());
@@ -125,6 +133,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockRole));
 
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockRole.getInstitution().getId());
+
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
@@ -143,9 +154,6 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         Mockito.when(identity.isSuperAdmin())
                 .thenReturn(false);
 
-        Mockito.when(identity.getInstitutionId())
-                .thenReturn(AysRandomUtil.generateUUID());
-
         Mockito.when(roleSavePort.save(Mockito.any(AysRole.class)))
                 .thenReturn(Mockito.mock(AysRole.class));
 
@@ -155,6 +163,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         // Verify
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findByName(Mockito.anyString());
@@ -194,6 +205,57 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
+        Mockito.verify(identity, Mockito.never())
+                .getInstitutionId();
+
+        Mockito.verify(roleReadPort, Mockito.never())
+                .findByName(Mockito.anyString());
+
+        Mockito.verify(permissionReadPort, Mockito.never())
+                .findAllByIds(Mockito.anySet());
+
+        Mockito.verify(identity, Mockito.never())
+                .isSuperAdmin();
+
+        Mockito.verify(identity, Mockito.never())
+                .getUserId();
+
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+    }
+
+    @Test
+    void givenValidIdAndRoleUpdateRequest_whenRoleNotMatchedWithInstitution_thenThrowAysRoleNotExistByIdException() {
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+        Mockito.when(roleReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockRole));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(UUID.randomUUID().toString());
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleNotExistByIdException.class,
+                () -> roleUpdateService.update(mockId, mockUpdateRequest)
+        );
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(roleReadPort, Mockito.never())
                 .findByName(Mockito.anyString());
 
@@ -226,6 +288,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockRole));
 
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockRole.getInstitution().getId());
+
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.of(Mockito.mock(AysRole.class)));
 
@@ -238,6 +303,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         // Verify
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findByName(Mockito.anyString());
@@ -271,6 +339,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockRole));
 
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockRole.getInstitution().getId());
+
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
@@ -301,6 +372,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         // Verify
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findByName(Mockito.anyString());
@@ -335,6 +409,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockRole));
 
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockRole.getInstitution().getId());
+
         Mockito.when(roleReadPort.findByName(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
@@ -350,6 +427,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         // Verify
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findByName(Mockito.anyString());

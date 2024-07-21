@@ -250,6 +250,60 @@ class AysRoleAdapterTest extends AysUnitTest {
 
 
     @Test
+    void givenValidIds_whenAllRoleEntitiesFoundByIds_thenReturnListOfRoles() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        Set<String> mockIds = Set.of(mockId);
+
+        // When
+        List<AysRoleEntity> mockRoleEntities = List.of(
+                new AysRoleEntityBuilder()
+                        .withValidValues()
+                        .withId(mockId)
+                        .build()
+        );
+        Mockito.when(roleRepository.findAllById(mockIds))
+                .thenReturn(mockRoleEntities);
+
+        List<AysRole> mockRoles = roleEntityToDomainMapper.map(mockRoleEntities);
+
+        // Then
+        List<AysRole> roles = roleAdapter.findAllByIds(mockIds);
+
+        Assertions.assertEquals(mockRoles, roles);
+
+        // Verify
+        Mockito.verify(roleRepository, Mockito.times(1))
+                .findAllById(mockIds);
+    }
+
+    @Test
+    void givenValidIds_whenAllRoleEntitiesNotFoundByIds_thenReturnEmptyList() {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        Set<String> mockIds = Set.of(mockId);
+
+        // When
+        List<AysRoleEntity> mockRoleEntities = List.of();
+        Mockito.when(roleRepository.findAllById(mockIds))
+                .thenReturn(mockRoleEntities);
+
+        List<AysRole> mockRoles = roleEntityToDomainMapper.map(mockRoleEntities);
+
+        // Then
+        List<AysRole> roles = roleAdapter.findAllByIds(mockIds);
+
+        Assertions.assertEquals(mockRoles, roles);
+
+        // Verify
+        Mockito.verify(roleRepository, Mockito.times(1))
+                .findAllById(mockIds);
+    }
+
+
+    @Test
     void givenValidName_whenRoleNotFoundByName_thenReturnOptionalEmpty() {
 
         // Given

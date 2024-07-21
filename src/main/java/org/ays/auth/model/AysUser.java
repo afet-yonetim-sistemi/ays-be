@@ -60,7 +60,6 @@ public class AysUser extends BaseDomainModel {
         return AysUserStatus.PASSIVE.equals(this.status);
     }
 
-
     /**
      * Checks if the user's status is deleted.
      *
@@ -69,7 +68,6 @@ public class AysUser extends BaseDomainModel {
     public boolean isDeleted() {
         return AysUserStatus.DELETED.equals(this.status);
     }
-
 
     /**
      * Sets the user's status to {@link AysUserStatus#ACTIVE}, marking the user as active.

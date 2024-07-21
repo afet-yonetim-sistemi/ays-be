@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Adapter class implementing both {@link AysRoleReadPort} and {@link AysRoleSavePort} interfaces.
@@ -99,6 +100,19 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
     @Override
     public List<AysRole> findAllActivesByInstitutionId(final String institutionId) {
         List<AysRoleEntity> roleEntities = roleRepository.findAllByInstitutionIdAndStatus(institutionId, AysRoleStatus.ACTIVE);
+        return roleEntityToDomainMapper.map(roleEntities);
+    }
+
+
+    /**
+     * Retrieves all {@link AysRole} entities by their IDs.
+     *
+     * @param ids A set of role IDs to retrieve.
+     * @return A list of {@link AysRole} entities corresponding to the provided IDs.
+     */
+    @Override
+    public List<AysRole> findAllByIds(Set<String> ids) {
+        List<AysRoleEntity> roleEntities = roleRepository.findAllById(ids);
         return roleEntityToDomainMapper.map(roleEntities);
     }
 

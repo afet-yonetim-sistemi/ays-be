@@ -6,9 +6,11 @@ import org.ays.auth.model.AysUser;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserListRequest;
+import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserReadService;
+import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
@@ -16,6 +18,7 @@ import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 class AysUserController {
 
     private final AysUserReadService userReadService;
+    private final AysUserUpdateService userUpdateService;
 
 
     private final AysUserToUsersResponseMapper userToUsersResponseMapper = AysUserToUsersResponseMapper.initialize();
@@ -76,13 +80,33 @@ class AysUserController {
      * @param id The ID of the user to retrieve.
      * @return An {@link AysResponse} containing the {@link AysUserResponse} if the user is found.
      */
-
     @GetMapping("/user/{id}")
     @PreAuthorize("hasAuthority('user:detail')")
     public AysResponse<AysUserResponse> findById(@PathVariable @UUID final String id) {
         final AysUser user = userReadService.findById(id);
         final AysUserResponse userResponse = userToResponseMapper.map(user);
         return AysResponse.successOf(userResponse);
+    }
+
+
+    /**
+     * Update an existing user based on the provided request data.
+     * <p>
+     * This method is mapped to handle HTTP PUT requests to "/user/{id}". It requires
+     * the user to have the 'user:update' authority to access.
+     * </p>
+     *
+     * @param id The ID of the user to update.
+     * @param updateRequest The request object containing updated data for the user.
+     * @return An {@link AysResponse} indicating the success of the operation.
+     */
+    @PutMapping("/user/{id}")
+    @PreAuthorize("hasAnyAuthority('user:update')")
+    public AysResponse<Void> update(@PathVariable @UUID final String id,
+                                    @RequestBody @Valid final AysUserUpdateRequest updateRequest) {
+
+        userUpdateService.update(id, updateRequest);
+        return AysResponse.SUCCESS;
     }
 
 }
