@@ -4,7 +4,6 @@ import org.ays.common.model.TestDataBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 
 import java.util.Set;
-import java.util.UUID;
 
 public class AysUserUpdateRequestBuilder extends TestDataBuilder<AysUserUpdateRequest> {
 
@@ -14,7 +13,9 @@ public class AysUserUpdateRequestBuilder extends TestDataBuilder<AysUserUpdateRe
 
     public AysUserUpdateRequestBuilder withValidValues() {
         return this
-                .withRoleIds(Set.of(UUID.randomUUID().toString()));
+                .withEmailAddress("test@afetyonetimsistemi.org")
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
+                .withRoleIds(Set.of("67190ae9-e152-4b75-bf74-33b29b7828dc"));
     }
 
     public AysUserUpdateRequestBuilder withRoleIds(Set<String> roleIds) {

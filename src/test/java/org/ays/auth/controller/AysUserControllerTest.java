@@ -6,7 +6,6 @@ import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
-import org.ays.auth.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequest;
@@ -313,12 +312,9 @@ class AysUserControllerTest extends AysRestControllerTest {
     void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
-        String mockEmailAddress = "test@email.com";
+        String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
-                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // When
@@ -348,12 +344,9 @@ class AysUserControllerTest extends AysRestControllerTest {
     void givenValidIdAndUserUpdateRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
-        String mockEmailAddress = "test@email.com";
+        String mockId = "0deb5f16-479f-4625-9354-7db29c861e85";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
-                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // Then
@@ -381,10 +374,8 @@ class AysUserControllerTest extends AysRestControllerTest {
     void givenInvalidIdAndValidUserUpdateRequest_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
 
         // Given
-        String mockEmailAddress = "test@email.com";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // Then
@@ -409,11 +400,9 @@ class AysUserControllerTest extends AysRestControllerTest {
     void givenValidIdAndInvalidUserUpdateRequest_whenRoleIdsAreNull_thenReturnValidationError() throws Exception {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
-        String mockEmailAddress = "test@email.com";
+        String mockId = "3b5a65ba-c90e-41ad-97ec-56c7dd4fe708";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withEmailAddress(mockEmailAddress)
                 .withRoleIds(null)
                 .build();
 
@@ -439,11 +428,9 @@ class AysUserControllerTest extends AysRestControllerTest {
     void givenValidIdAndInvalidUserUpdateRequest_whenRoleIdsAreEmpty_thenReturnValidationError() throws Exception {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
-        String mockEmailAddress = "test@email.com";
+        String mockId = "daaa28f9-f7b3-4f43-a10f-a5fe2b0eb2fa";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withEmailAddress(mockEmailAddress)
                 .withRoleIds(Set.of())
                 .build();
 
