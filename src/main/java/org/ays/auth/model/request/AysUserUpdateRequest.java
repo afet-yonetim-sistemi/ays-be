@@ -14,6 +14,12 @@ import org.hibernate.validator.constraints.UUID;
 
 import java.util.Set;
 
+/**
+ * Request object for updating a user's details.
+ * <p>
+ * This class encapsulates the data required to update an existing user's details.
+ * Each field is validated to ensure it meets the necessary requirements.
+ */
 @Getter
 @Setter
 public class AysUserUpdateRequest {
