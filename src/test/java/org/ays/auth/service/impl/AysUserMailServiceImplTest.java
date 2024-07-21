@@ -32,6 +32,7 @@ class AysUserMailServiceImplTest extends AysUnitTest {
         // Given
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
+                .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
                 .build();
 
         // When
