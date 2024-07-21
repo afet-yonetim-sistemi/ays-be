@@ -6,10 +6,10 @@ import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
+import org.ays.auth.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequest;
-import org.ays.auth.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
@@ -27,11 +27,13 @@ import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -464,19 +466,21 @@ class AysUserControllerTest extends AysRestControllerTest {
     }
 
     @ParameterizedTest
+    @NullSource
     @ValueSource(strings = {
             "",
             "55aed4c4facb4b66bdb5-309eaaef4453"
     })
-    void givenValidIdAndInvalidUserUpdateRequest_whenRoleIdIsNotValid_thenReturnValidationError(String roleId) throws Exception {
+    void givenValidIdAndInvalidUserUpdateRequest_whenRoleIdIsNotValid_thenReturnValidationError(String invalidRoleId) throws Exception {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
-        String mockEmailAddress = "test@email.com";
+        String mockId = "b8758dce-ad8e-438d-b31c-b440b352068a";
+
+        Set<String> mockRoleIds = new HashSet<>();
+        mockRoleIds.add(invalidRoleId);
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withEmailAddress(mockEmailAddress)
-                .withRoleIds(Set.of(roleId))
+                .withRoleIds(mockRoleIds)
                 .build();
 
         // Then
