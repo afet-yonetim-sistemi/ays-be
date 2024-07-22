@@ -39,6 +39,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -342,6 +343,9 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "",
+            "  Kurum yöneticisi",
+            "!Kurum",
+            "12Kurum",
             "A",
             "% fsdh     ",
             "493268349068342",
@@ -425,6 +429,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     }
 
     @ParameterizedTest
+    @NullSource
     @ValueSource(strings = {
             "",
             "55aed4c4facb4b66bdb5-309eaaef4453"
@@ -433,7 +438,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         // Given
         AysRoleCreateRequest mockCreateRequest = new AysRoleCreateRequestBuilder()
                 .withValidValues()
-                .withPermissionIds(Set.of(invalidPermissionId))
+                .withPermissionIds(Collections.singleton(invalidPermissionId))
                 .build();
 
         // Then
