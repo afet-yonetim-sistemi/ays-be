@@ -13,7 +13,7 @@ import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.util.exception.AysRolesNotExistException;
-import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailException;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
@@ -435,7 +435,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserAlreadyExistsByEmailException.class,
+                AysUserAlreadyExistsByEmailAddressException.class,
                 () -> userUpdateService.update(mockId, mockUpdateRequest)
         );
 

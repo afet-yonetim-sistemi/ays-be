@@ -20,7 +20,7 @@ import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
-import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailException;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.request.AysPhoneNumberRequest;
@@ -368,7 +368,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserAlreadyExistsByEmailException.class,
+                AysUserAlreadyExistsByEmailAddressException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 

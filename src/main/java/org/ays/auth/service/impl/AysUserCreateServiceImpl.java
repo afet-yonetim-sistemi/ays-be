@@ -12,7 +12,7 @@ import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserCreateService;
 import org.ays.auth.service.AysUserMailService;
 import org.ays.auth.util.exception.AysRolesNotExistException;
-import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailException;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.institution.model.Institution;
@@ -58,7 +58,7 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
      * </p>
      *
      * @param createRequest The request object containing data for the new user.
-     * @throws AysUserAlreadyExistsByEmailException       if the email address is already associated with another user.
+     * @throws AysUserAlreadyExistsByEmailAddressException       if the email address is already associated with another user.
      * @throws AysUserAlreadyExistsByPhoneNumberException if the phone number is already associated with another user.
      * @throws AysRolesNotExistException                  if any of the provided role IDs do not exist.
      */
@@ -105,12 +105,12 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
      * Checks if there is any existing user with the same email address.
      *
      * @param emailAddress The email address to be validated.
-     * @throws AysUserAlreadyExistsByEmailException if the email address is already associated with another user.
+     * @throws AysUserAlreadyExistsByEmailAddressException if the email address is already associated with another user.
      */
     private void validateEmailAddress(String emailAddress) {
         userReadPort.findByEmailAddress(emailAddress)
                 .ifPresent(existingUser -> {
-                    throw new AysUserAlreadyExistsByEmailException(emailAddress);
+                    throw new AysUserAlreadyExistsByEmailAddressException(emailAddress);
                 });
     }
 
