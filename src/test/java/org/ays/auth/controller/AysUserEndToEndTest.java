@@ -306,6 +306,8 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                                 userFromDatabase.get().getRoles().stream().anyMatch(role -> role.getId().equals(roleId))
                         )
                 );
+        Assertions.assertNotNull(userFromDatabase.get().getUpdatedUser());
+        Assertions.assertNotNull(userFromDatabase.get().getUpdatedAt());
     }
 
 }
