@@ -8,11 +8,13 @@ import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
 import org.ays.auth.port.AysRoleReadPort;
-import org.ays.auth.util.exception.AysRoleNotExistException;
+import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -138,8 +140,15 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
     void givenValidRoleId_whenRoleFoundById_thenReturnRole() {
 
         // Given
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
         AysRole mockRole = new AysRoleBuilder()
                 .withValidValues()
+                .withInstitution(mockInstitution)
                 .build();
         String mockId = mockRole.getId();
 
@@ -170,7 +179,34 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysRoleNotExistException.class,
+                AysRoleNotExistByIdException.class,
+                () -> roleReadService.findById(mockId)
+        );
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidRoleId_whenRoleNotFoundForUser_thenThrowAysRoleNotExistException() {
+
+        // Given
+        String mockId = "7a801611-735f-42b1-833a-0e9a9e5ed9d2";
+
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+        Mockito.when(roleReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockRole));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("c009f6f9-1005-490b-9210-db64b6f61c37");
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleNotExistByIdException.class,
                 () -> roleReadService.findById(mockId)
         );
 

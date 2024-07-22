@@ -227,15 +227,12 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
 
 
     @Test
-    void givenValidRoleId_whenRoleExists_thenReturnAysRoleResponse() throws Exception {
+    void givenValidRoleId_whenRoleExists_thenReturnRoleResponse() throws Exception {
 
         // Initialize
-        Institution institution = institutionSavePort.save(
-                new InstitutionBuilder()
-                        .withValidValues()
-                        .withoutId()
-                        .build()
-        );
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
         List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
@@ -247,10 +244,10 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         );
 
         // Given
-        String applicationId = role.getId();
+        String roleId = role.getId();
 
         // Then
-        String endpoint = BASE_PATH.concat("/role/").concat(applicationId);
+        String endpoint = BASE_PATH.concat("/role/").concat(roleId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, adminToken.getAccessToken());
 
