@@ -288,7 +288,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
                 .checkPasswordChangingValidity(Mockito.anyString());
 
         // Then
-        String endpoint = BASE_PATH.concat("/password/").concat(mockId);
+        String endpoint = BASE_PATH.concat("/password/").concat(mockId).concat("/validity");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
@@ -313,7 +313,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
     void givenId_whenIdDoesNotValid_thenReturnValidationError(String invalidId) throws Exception {
 
         // Then
-        String endpoint = BASE_PATH.concat("/password/").concat(invalidId);
+        String endpoint = BASE_PATH.concat("/password/").concat(invalidId).concat("/validity");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
