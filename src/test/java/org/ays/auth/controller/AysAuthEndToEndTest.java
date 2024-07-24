@@ -22,8 +22,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 class AysAuthEndToEndTest extends AysEndToEndTest {
 
-
     private static final String BASE_PATH = "/api/v1/authentication";
+
 
     @Test
     void givenValidUserLoginRequest_whenTokensGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
@@ -117,6 +117,26 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         String endpoint = BASE_PATH.concat("/password/forgot");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockForgotPasswordRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+    }
+
+
+    @Test
+    void givenValidId_whenCheckPasswordIdSuccessfully_thenReturnSuccessResponse() throws Exception {
+        // Given
+        String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
