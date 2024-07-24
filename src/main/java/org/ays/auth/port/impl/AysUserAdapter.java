@@ -119,6 +119,19 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
 
     /**
+     * Finds a user by their password ID.
+     *
+     * @param passwordId the ID of the password to search for.
+     * @return an Optional containing the found user, or empty if no user was found with the given password ID.
+     */
+    @Override
+    public Optional<AysUser> findByPasswordId(final String passwordId) {
+        Optional<AysUserEntity> userEntity = userRepository.findByPasswordId(passwordId);
+        return userEntity.map(userEntityToDomainMapper::map);
+    }
+
+
+    /**
      * Checks if a user with the given phone number exists in the repository.
      *
      * @param phoneNumber The phone number to check for existence.

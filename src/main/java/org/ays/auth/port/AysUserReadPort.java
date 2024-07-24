@@ -47,6 +47,14 @@ public interface AysUserReadPort {
     Optional<AysUser> findByPhoneNumber(AysPhoneNumber phoneNumber);
 
     /**
+     * Finds a user by their password ID.
+     *
+     * @param passwordId the ID of the password to search for.
+     * @return an Optional containing the found user, or empty if no user was found with the given password ID.
+     */
+    Optional<AysUser> findByPasswordId(String passwordId);
+
+    /**
      * Checks if a user with the given email address exists in the repository.
      *
      * @param emailAddress The email address to check for existence.
