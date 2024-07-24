@@ -13,12 +13,14 @@ import org.ays.common.service.AysMailService;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.model.AysParameterBuilder;
 import org.ays.parameter.port.AysParameterReadPort;
+import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 class AysUserPasswordServiceImplTest extends AysUnitTest {
@@ -165,6 +167,114 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
 
         Mockito.verify(mailService, Mockito.never())
                 .send(Mockito.any(AysMail.class));
+    }
+
+
+    @Test
+    void givenValidId_whenPasswordExistAndValueHasUUIDFormatAndUpdatedInTwoHours_thenDoNothing() {
+        // Given
+        String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
+
+        // When
+        AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withValue("9fccaabc-2d00-4128-923e-d415b319a57f")
+                .withUpdatedAt(LocalDateTime.now().minusMinutes(5))
+                .build();
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withPassword(mockPassword)
+                .build();
+        Mockito.when(userReadPort.findByPasswordId(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        userPasswordService.checkPassword(mockId);
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByPasswordId(Mockito.anyString());
+    }
+
+    @Test
+    void givenId_whenPasswordDoesExist_thenThrowUserPasswordDoesNotExistException() {
+        // Given
+        String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
+
+        // When
+        Mockito.when(userReadPort.findByPasswordId(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysUserPasswordDoesNotExistException.class,
+                () -> userPasswordService.checkPassword(mockId)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByPasswordId(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidId_whenPasswordExistAndValueHasNotUUIDFormatAndUpdatedInTwoHours_thenThrowUserPasswordCannotChangedException() {
+        // Given
+        String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
+
+        // When
+        AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withValue(AysValidTestData.PASSWORD_ENCRYPTED)
+                .withUpdatedAt(LocalDateTime.now().minusMinutes(5))
+                .build();
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withPassword(mockPassword)
+                .build();
+        Mockito.when(userReadPort.findByPasswordId(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserPasswordCannotChangedException.class,
+                () -> userPasswordService.checkPassword(mockId)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByPasswordId(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidId_whenPasswordExistAndValueHasUUIDFormatAndUpdatedInThreeHours_thenThrowUserPasswordCannotChangedException() {
+        // Given
+        String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
+
+        // When
+        AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withValue("608a15a8-5e82-4fd8-ac74-308068393e53")
+                .withUpdatedAt(LocalDateTime.now().minusHours(3))
+                .build();
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withPassword(mockPassword)
+                .build();
+        Mockito.when(userReadPort.findByPasswordId(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserPasswordCannotChangedException.class,
+                () -> userPasswordService.checkPassword(mockId)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByPasswordId(Mockito.anyString());
     }
 
 }
