@@ -8,6 +8,8 @@ import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.util.exception.AysEmailAddressNotValidException;
+import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
+import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
 import org.ays.common.model.AysMail;
 import org.ays.common.service.AysMailService;
 import org.ays.parameter.model.AysParameter;
