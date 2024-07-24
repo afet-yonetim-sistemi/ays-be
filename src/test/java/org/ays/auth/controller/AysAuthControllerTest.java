@@ -285,7 +285,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         // When
         Mockito.doNothing()
                 .when(userPasswordService)
-                .checkPassword(Mockito.anyString());
+                .checkPasswordChangingValidity(Mockito.anyString());
 
         // Then
         String endpoint = BASE_PATH.concat("/password/").concat(mockId);
@@ -302,7 +302,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(userPasswordService, Mockito.times(1))
-                .checkPassword(Mockito.anyString());
+                .checkPasswordChangingValidity(Mockito.anyString());
     }
 
     @ParameterizedTest
@@ -327,7 +327,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(userPasswordService, Mockito.never())
-                .checkPassword(Mockito.anyString());
+                .checkPasswordChangingValidity(Mockito.anyString());
     }
 
 }

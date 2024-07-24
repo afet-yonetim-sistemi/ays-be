@@ -21,6 +21,6 @@ public interface AysUserPasswordService {
      *
      * @param passwordId the ID of the password reset token to be checked.
      */
-    void checkPassword(String passwordId);
+    void checkPasswordChangingValidity(String passwordId);
 
 }

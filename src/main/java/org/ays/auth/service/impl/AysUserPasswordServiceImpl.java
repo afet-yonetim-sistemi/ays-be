@@ -78,7 +78,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * @throws AysUserPasswordCannotChangedException if the password value is not in UUID format or if the password update time exceeds the allowed limit.
      */
     @Override
-    public void checkPassword(final String passwordId) {
+    public void checkPasswordChangingValidity(final String passwordId) {
 
         final AysUser.Password password = userReadPort.findByPasswordId(passwordId)
                 .orElseThrow(() -> new AysUserPasswordDoesNotExistException(passwordId))

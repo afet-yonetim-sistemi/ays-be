@@ -192,7 +192,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
                 .thenReturn(Optional.of(mockUser));
 
         // Then
-        userPasswordService.checkPassword(mockId);
+        userPasswordService.checkPasswordChangingValidity(mockId);
 
         // Verify
         Mockito.verify(userReadPort, Mockito.times(1))
@@ -211,7 +211,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         // Then
         Assertions.assertThrows(
                 AysUserPasswordDoesNotExistException.class,
-                () -> userPasswordService.checkPassword(mockId)
+                () -> userPasswordService.checkPasswordChangingValidity(mockId)
         );
 
         // Verify
@@ -241,7 +241,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         // Then
         Assertions.assertThrows(
                 AysUserPasswordCannotChangedException.class,
-                () -> userPasswordService.checkPassword(mockId)
+                () -> userPasswordService.checkPasswordChangingValidity(mockId)
         );
 
         // Verify
@@ -271,7 +271,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         // Then
         Assertions.assertThrows(
                 AysUserPasswordCannotChangedException.class,
-                () -> userPasswordService.checkPassword(mockId)
+                () -> userPasswordService.checkPasswordChangingValidity(mockId)
         );
 
         // Verify

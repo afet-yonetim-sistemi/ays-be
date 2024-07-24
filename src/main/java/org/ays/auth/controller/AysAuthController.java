@@ -104,7 +104,7 @@ class AysAuthController {
      */
     @GetMapping("/password/{id}/validity")
     public AysResponse<Void> checkPasswordChangingValidity(@PathVariable @UUID String id) {
-        userPasswordService.checkPassword(id);
+        userPasswordService.checkPasswordChangingValidity(id);
         return AysResponse.SUCCESS;
     }
 
