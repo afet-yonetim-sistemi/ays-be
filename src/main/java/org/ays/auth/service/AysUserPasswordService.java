@@ -16,4 +16,11 @@ public interface AysUserPasswordService {
      */
     void forgotPassword(AysForgotPasswordRequest forgotPasswordRequest);
 
+    /**
+     * Checks the existence and validity of a password reset token by its ID.
+     *
+     * @param passwordId the ID of the password reset token to be checked.
+     */
+    void checkPassword(String passwordId);
+
 }

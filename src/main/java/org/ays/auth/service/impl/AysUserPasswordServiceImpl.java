@@ -8,17 +8,22 @@ import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserPasswordService;
 import org.ays.auth.util.exception.AysEmailAddressNotValidException;
+import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
+import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
 import org.ays.common.model.AysMail;
 import org.ays.common.model.enums.AysMailTemplate;
 import org.ays.common.service.AysMailService;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.common.util.AysUUID;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.port.AysParameterReadPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Service implementation for handling user password operations such as forgotten password.
@@ -61,6 +66,39 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
 
         this.sendPasswordCreateEmail(savedUser);
     }
+
+
+    /**
+     * Validates the provided password ID to ensure it is valid for password reset.
+     * This method checks if the password ID exists, if the password value is in UUID format,
+     * and if the password was updated within the last 2 hours.
+     *
+     * @param passwordId the ID of the password to be checked.
+     * @throws AysUserPasswordDoesNotExistException  if the password ID does not exist.
+     * @throws AysUserPasswordCannotChangedException if the password value is not in UUID format or if the password update time exceeds the allowed limit.
+     */
+    @Override
+    public void checkPassword(final String passwordId) {
+
+        final AysUser.Password password = userReadPort.findByPasswordId(passwordId)
+                .orElseThrow(() -> new AysUserPasswordDoesNotExistException(passwordId))
+                .getPassword();
+
+        boolean isUUID = AysUUID.isValid(password.getValue());
+        if (!isUUID) {
+            throw new AysUserPasswordCannotChangedException(passwordId);
+        }
+
+        LocalDateTime passwordChangedAt = Optional
+                .ofNullable(password.getUpdatedAt())
+                .orElse(password.getCreatedAt());
+        boolean isExpired = LocalDateTime.now().minusHours(2).isBefore(passwordChangedAt);
+        if (!isExpired) {
+            throw new AysUserPasswordCannotChangedException(passwordId);
+        }
+
+    }
+
 
     /**
      * Sends an email to the user with instructions to create a new password.
