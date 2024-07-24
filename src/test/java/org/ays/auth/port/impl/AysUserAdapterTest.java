@@ -448,4 +448,65 @@ class AysUserAdapterTest extends AysUnitTest {
     }
 
 
+    @Test
+    void givenValidPasswordId_whenUserFound_thenReturnOptionalUser() {
+
+        // Given
+        String mockPasswordId = "4424834a-58d9-4496-bb71-fbf6dfa3c843";
+
+        // When
+        AysUserEntity.PasswordEntity mockPasswordEntity = new AysUserEntityBuilder.PasswordEntityBuilder()
+                .withValidValues()
+                .withId(mockPasswordId)
+                .build();
+        AysUserEntity mockUserEntity = new AysUserEntityBuilder()
+                .withValidValues()
+                .withPassword(mockPasswordEntity)
+                .build();
+        Mockito.when(userRepository.findByPasswordId(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByPasswordId(mockUser);
+
+        Assertions.assertTrue(user.isPresent());
+        Assertions.assertEquals(mockPasswordId, user.get().getId());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(Mockito.any(AysUserEntity.class));
+    }
+
+    @Test
+    void givenValidPasswordId_whenUserNotFound_thenReturnOptionalEmpty() {
+
+        // Given
+        String mockPasswordId = "4424834a-58d9-4496-bb71-fbf6dfa3c843";
+
+        // When
+        AysUserEntity.PasswordEntity mockPasswordEntity = new AysUserEntityBuilder.PasswordEntityBuilder()
+                .withValidValues()
+                .build();
+        AysUserEntity mockUserEntity = new AysUserEntityBuilder()
+                .withValidValues()
+                .withPassword(mockPasswordEntity)
+                .build();
+        Mockito.when(userRepository.findByPasswordId(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByPasswordId(mockUser);
+
+        Assertions.assertTrue(user.isPresent());
+        Assertions.assertEquals(mockPasswordId, user.get().getId());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .save(Mockito.any(AysUserEntity.class));
+    }
+
 }
