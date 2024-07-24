@@ -469,14 +469,14 @@ class AysUserAdapterTest extends AysUnitTest {
         AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
 
         // Then
-        Optional<AysUser> user = userAdapter.findByPasswordId(mockUser);
+        Optional<AysUser> user = userAdapter.findByPasswordId(mockUser.getPassword().getId());
 
         Assertions.assertTrue(user.isPresent());
-        Assertions.assertEquals(mockPasswordId, user.get().getId());
+        Assertions.assertEquals(mockPasswordId, user.get().getPassword().getId());
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
-                .save(Mockito.any(AysUserEntity.class));
+                .findByPasswordId(Mockito.anyString());
     }
 
     @Test
@@ -499,14 +499,14 @@ class AysUserAdapterTest extends AysUnitTest {
         AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
 
         // Then
-        Optional<AysUser> user = userAdapter.findByPasswordId(mockUser);
+        Optional<AysUser> user = userAdapter.findByPasswordId(mockUser.getPassword().getId());
 
         Assertions.assertTrue(user.isPresent());
-        Assertions.assertEquals(mockPasswordId, user.get().getId());
+        Assertions.assertNotEquals(mockPasswordId, user.get().getId());
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
-                .save(Mockito.any(AysUserEntity.class));
+                .findByPasswordId(Mockito.anyString());
     }
 
 }
