@@ -111,8 +111,18 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
                     .withValue(AysValidTestData.PASSWORD_ENCRYPTED);
         }
 
-        public PasswordBuilder withValue(String password) {
-            data.setValue(password);
+        public PasswordBuilder withId(String id) {
+            data.setId(id);
+            return this;
+        }
+
+        public PasswordBuilder withValue(String value) {
+            data.setValue(value);
+            return this;
+        }
+
+        public PasswordBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            data.setUpdatedAt(updatedAt);
             return this;
         }
 
