@@ -177,7 +177,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         String mockId = user.getPassword().getId();
 
         // Then
-        String endpoint = BASE_PATH.concat("/password/").concat(mockId);
+        String endpoint = BASE_PATH.concat("/password/").concat(mockId).concat("/validity");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
