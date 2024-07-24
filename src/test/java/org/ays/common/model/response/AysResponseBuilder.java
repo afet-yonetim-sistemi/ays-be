@@ -24,7 +24,6 @@ public class AysResponseBuilder {
                 .build();
     }
 
-    //successList
     public static <T> AysResponse<List<T>> successList() {
         return AysResponse.<List<T>>builder()
                 .isSuccess(true)
