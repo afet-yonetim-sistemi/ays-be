@@ -12,10 +12,16 @@ public class AysMailBuilder extends TestDataBuilder<AysMail> {
     }
 
     public AysMailBuilder withValidValues() {
+
+        final Map<String, Object> parameters = Map.of(
+                "userFullName", "Afet Yönetim Sistemi",
+                "url", "http://localhost:3000/create-password/".concat("35c2d3f7-a56f-42bd-a744-51b5e11fed28")
+        );
+
         return new AysMailBuilder()
                 .withTo(List.of("test@afetyonetimsistemi.org"))
-                .withTemplate(AysMailTemplate.EXAMPLE)
-                .withParameters(Map.of("firstName", "World"));
+                .withTemplate(AysMailTemplate.CREATE_PASSWORD)
+                .withParameters(parameters);
     }
 
     public AysMailBuilder withTo(List<String> to) {

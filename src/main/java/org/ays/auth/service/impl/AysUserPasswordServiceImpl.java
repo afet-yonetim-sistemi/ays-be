@@ -2,27 +2,23 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.enums.AysConfigurationParameter;
 import org.ays.auth.model.request.AysForgotPasswordRequest;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
+import org.ays.auth.service.AysUserMailService;
 import org.ays.auth.service.AysUserPasswordService;
 import org.ays.auth.util.exception.AysEmailAddressNotValidException;
-import org.ays.common.model.AysMail;
-import org.ays.common.model.enums.AysMailTemplate;
-import org.ays.common.service.AysMailService;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.parameter.model.AysParameter;
-import org.ays.parameter.port.AysParameterReadPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-
 /**
- * Service implementation for handling user password operations such as forgotten password.
- * This service handles the retrieval of user information and sending emails for password creation.
+ * Service implementation for managing user password operations.
+ * <p>
+ * This class provides the business logic for handling user password-related operations,
+ * such as sending password reset emails and updating user passwords in the system.
+ * It interacts with various ports for reading and saving user data and sending emails.
+ * </p>
  */
 @Service
 @Transactional
@@ -31,15 +27,19 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
 
     private final AysUserReadPort userReadPort;
     private final AysUserSavePort userSavePort;
-    private final AysMailService mailService;
-    private final AysParameterReadPort parameterReadPort;
+    private final AysUserMailService userMailService;
+
 
     /**
-     * Handles the forgot password request by sending an email to the user
-     * with instructions to create a new password.
+     * Handles the forgot password process for a user.
+     * <p>
+     * This method is triggered when a user requests to reset their password. It checks if the user's email
+     * address is valid and then sends a password reset email. If the user does not have an existing password,
+     * a new temporary password is generated and saved.
+     * </p>
      *
-     * @param forgotPasswordRequest the request containing the user's email address.
-     * @throws AysEmailAddressNotValidException if the email address is not associated with any user.
+     * @param forgotPasswordRequest The request object containing the user's email address.
+     * @throws AysEmailAddressNotValidException if the email address provided does not exist in the system.
      */
     @Override
     public void forgotPassword(final AysForgotPasswordRequest forgotPasswordRequest) {
@@ -49,7 +49,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
                 .orElseThrow(() -> new AysEmailAddressNotValidException(emailAddress));
 
         if (user.getPassword() != null) {
-            this.sendPasswordCreateEmail(user);
+            userMailService.sendPasswordCreateEmail(user);
             return;
         }
 
@@ -59,40 +59,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
         user.setPassword(password);
         AysUser savedUser = userSavePort.save(user);
 
-        this.sendPasswordCreateEmail(savedUser);
-    }
-
-    /**
-     * Sends an email to the user with instructions to create a new password.
-     *
-     * @param user the user to whom the email should be sent.
-     */
-    private void sendPasswordCreateEmail(final AysUser user) {
-
-        final Map<String, Object> parameters = Map.of(
-                "userFullName", user.getFirstName() + " " + user.getLastName(),
-                "url", this.findFeUrl().concat("/create-password/").concat(user.getPassword().getId())
-        );
-
-        final AysMail mail = AysMail.builder()
-                .to(List.of(user.getEmailAddress()))
-                .template(AysMailTemplate.CREATE_PASSWORD)
-                .parameters(parameters)
-                .build();
-
-        mailService.send(mail);
-    }
-
-    /**
-     * Retrieves the Front-End URL from the configuration parameters.
-     *
-     * @return the Front-End URL.
-     */
-    private String findFeUrl() {
-        return parameterReadPort
-                .findByName(AysConfigurationParameter.FE_URL.name())
-                .orElse(AysParameter.from(AysConfigurationParameter.FE_URL))
-                .getDefinition();
+        userMailService.sendPasswordCreateEmail(savedUser);
     }
 
 }
