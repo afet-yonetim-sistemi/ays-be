@@ -2,6 +2,8 @@ package org.ays.common.model.response;
 
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
+
 @UtilityClass
 public class AysResponseBuilder {
 
@@ -18,6 +20,13 @@ public class AysResponseBuilder {
 
     public static <T> AysResponse<AysPageResponse<T>> success() {
         return AysResponse.<AysPageResponse<T>>builder()
+                .isSuccess(true)
+                .build();
+    }
+
+    //successList
+    public static <T> AysResponse<List<T>> successList() {
+        return AysResponse.<List<T>>builder()
                 .isSuccess(true)
                 .build();
     }

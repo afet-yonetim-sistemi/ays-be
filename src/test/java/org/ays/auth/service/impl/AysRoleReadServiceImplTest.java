@@ -40,14 +40,23 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
     void whenRolesFound_thenReturnRoles() {
 
         // When
+        String mockInstitutionId = "71fd97a8-d762-4123-8682-44bb776bebce";
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+
+        Institution institution = new InstitutionBuilder()
+                .withId(mockInstitutionId)
+                .build();
+
         List<AysRole> mockRoles = List.of(
-                new AysRoleBuilder().withValidValues().build(),
-                new AysRoleBuilder().withValidValues().build(),
-                new AysRoleBuilder().withValidValues().build(),
-                new AysRoleBuilder().withValidValues().build(),
-                new AysRoleBuilder().withValidValues().build()
+                new AysRoleBuilder().withValidValues().withInstitution(institution).build(),
+                new AysRoleBuilder().withValidValues().withInstitution(institution).build(),
+                new AysRoleBuilder().withValidValues().withInstitution(institution).build(),
+                new AysRoleBuilder().withValidValues().withInstitution(institution).build(),
+                new AysRoleBuilder().withValidValues().withInstitution(institution).build()
         );
-        Mockito.when(roleReadPort.findAll())
+        Mockito.when(roleReadPort.findAllActivesByInstitutionId(Mockito.anyString()))
                 .thenReturn(mockRoles);
 
         // Then
@@ -57,7 +66,7 @@ class AysRoleReadServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(roleReadPort, Mockito.times(1))
-                .findAll();
+                .findAllActivesByInstitutionId(Mockito.anyString());
     }
 
 

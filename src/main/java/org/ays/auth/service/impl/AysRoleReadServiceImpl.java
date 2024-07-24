@@ -43,7 +43,7 @@ class AysRoleReadServiceImpl implements AysRoleReadService {
      */
     @Override
     public List<AysRole> findAll() {
-        return roleReadPort.findAll();
+        return roleReadPort.findAllActivesByInstitutionId(identity.getInstitutionId());
     }
 
 
