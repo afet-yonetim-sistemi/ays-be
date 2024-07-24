@@ -30,4 +30,4 @@ persons to whom the Software is furnished to do so, subject to the following con
 5. Redistributions of any form whatsoever must also include a copy of this license document in the distribution.
 
 If you have any questions or concerns regarding the licensing of this software, please contact the project team
-at <iletisim@afetyonetimsistemi.com>.
+at <iletisim@afetyonetimsistemi.org>.

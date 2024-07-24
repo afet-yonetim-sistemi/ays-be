@@ -41,7 +41,7 @@ Here are some security considerations when using this project:
 If you need to contact us regarding any security-related matters or have any questions about the security of this
 project, you can reach out to us at:
 
-- Email: [iletisim@afetyonetimsistemi.com](mailto:iletisim@afetyonetimsistemi.com)
+- Email: [iletisim@afetyonetimsistemi.org](mailto:iletisim@afetyonetimsistemi.org)
 
 We kindly request that you refrain from spam, social engineering, or any other malicious activities. We appreciate your
 cooperation in keeping our community safe and secure.
