@@ -72,6 +72,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withFirstName("Öykü")
                         .withLastName("İzgi")
+                        .withEmailAddress("oyku.izgi@afetyonetimsistemi.org")
                         .withCity("Iğdır")
                         .withStatus(AysUserStatus.ACTIVE)
                         .withRoles(List.of(role))
@@ -84,6 +85,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .withValidValues()
                 .withFirstName("öykü")
                 .withLastName("İzgi")
+                .withEmailAddress("oyku.izgi")
                 .withCity("ığdır")
                 .withStatuses(Set.of(AysUserStatus.ACTIVE))
                 .build();
