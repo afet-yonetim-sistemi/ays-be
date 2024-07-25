@@ -43,6 +43,9 @@ public class AysUserFilter implements AysFilter {
     @Size(min = 2, max = 255)
     private String lastName;
 
+    @Size(min = 2, max = 255)
+    private String emailAddress;
+
     private AysPhoneNumber phoneNumber;
 
     private Set<AysUserStatus> statuses;
@@ -92,6 +95,11 @@ public class AysUserFilter implements AysFilter {
         if (this.lastName != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(criteriaBuilder.upper(root.get("lastName")), "%" + this.lastName.toUpperCase() + "%"));
+        }
+
+        if (this.lastName != null) {
+            specification = specification.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("emailAddress")), "%" + this.lastName.toUpperCase() + "%"));
         }
 
         if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getCountryCode())) {
