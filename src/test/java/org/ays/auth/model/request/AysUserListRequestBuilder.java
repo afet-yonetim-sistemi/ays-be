@@ -60,8 +60,13 @@ public class AysUserListRequestBuilder extends TestDataBuilder<AysUserListReques
         return this;
     }
 
-    public AysUserListRequestBuilder withCity(String city) {
-        data.getFilter().setCity(city);
+    public AysUserListRequestBuilder withEmailAddress(String emailAddress) {
+        data.getFilter().setEmailAddress(emailAddress);
+        return this;
+    }
+
+    public AysUserListRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
+        data.getFilter().setPhoneNumber(phoneNumber);
         return this;
     }
 
@@ -70,8 +75,8 @@ public class AysUserListRequestBuilder extends TestDataBuilder<AysUserListReques
         return this;
     }
 
-    public AysUserListRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
-        data.getFilter().setPhoneNumber(phoneNumber);
+    public AysUserListRequestBuilder withCity(String city) {
+        data.getFilter().setCity(city);
         return this;
     }
 
