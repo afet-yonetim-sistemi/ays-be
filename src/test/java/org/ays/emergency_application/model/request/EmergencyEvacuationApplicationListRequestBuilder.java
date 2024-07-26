@@ -45,7 +45,7 @@ public class EmergencyEvacuationApplicationListRequestBuilder extends TestDataBu
     }
 
     private EmergencyEvacuationApplicationListRequestBuilder initializeFilter() {
-        data.setFilter(new EmergencyEvacuationApplicationFilter());
+        data.setFilter(EmergencyEvacuationApplicationFilter.builder().build());
         return this;
     }
 
