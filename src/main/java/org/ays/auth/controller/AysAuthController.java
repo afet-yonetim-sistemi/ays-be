@@ -12,6 +12,10 @@ import org.ays.auth.model.response.AysTokenResponse;
 import org.ays.auth.service.AysAuthService;
 import org.ays.auth.service.AysUserPasswordService;
 import org.ays.common.model.response.AysResponse;
+import org.hibernate.validator.constraints.UUID;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Auth controller to perform authentication api operations.
  */
+@Validated
 @RestController
 @RequestMapping("/api/v1/authentication")
 @RequiredArgsConstructor
@@ -83,6 +88,23 @@ class AysAuthController {
     @PostMapping("/password/forgot")
     public AysResponse<Void> forgotPassword(@RequestBody @Valid AysForgotPasswordRequest forgotPasswordRequest) {
         userPasswordService.forgotPassword(forgotPasswordRequest);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * Endpoint for checking the existence and validity of a password reset token.
+     * <p>
+     * This endpoint handles the verification of a password reset token by its ID.
+     * It delegates the check to the user password service.
+     * </p>
+     *
+     * @param id The ID of the password reset token to be checked.
+     * @return AysResponse with a success message and no data.
+     */
+    @GetMapping("/password/{id}/validity")
+    public AysResponse<Void> checkPasswordChangingValidity(@PathVariable @UUID String id) {
+        userPasswordService.checkPasswordChangingValidity(id);
         return AysResponse.SUCCESS;
     }
 

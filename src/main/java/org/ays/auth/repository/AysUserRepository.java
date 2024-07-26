@@ -29,6 +29,14 @@ public interface AysUserRepository extends JpaRepository<AysUserEntity, String>,
     Optional<AysUserEntity> findByCountryCodeAndLineNumber(String countryCode, String lineNumber);
 
     /**
+     * Finds a user entity by the password ID.
+     *
+     * @param passwordId the ID of the password to search for.
+     * @return an Optional containing the found user entity, or empty if no user entity was found with the given password ID.
+     */
+    Optional<AysUserEntity> findByPasswordId(String passwordId);
+
+    /**
      * Checks if an {@link AysUserEntity} exists with the given email.
      *
      * @param emailAddress the email address of the user to check

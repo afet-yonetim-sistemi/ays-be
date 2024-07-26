@@ -99,8 +99,13 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
                     .withValue(AysValidTestData.PASSWORD_ENCRYPTED);
         }
 
-        public PasswordEntityBuilder withValue(String password) {
-            data.setValue(password);
+        public PasswordEntityBuilder withId(String id) {
+            data.setId(id);
+            return this;
+        }
+
+        public PasswordEntityBuilder withValue(String value) {
+            data.setValue(value);
             return this;
         }
 

@@ -76,6 +76,7 @@ class SecurityConfiguration {
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/authentication/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/authentication/password/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/admin-registration-application/*/summary").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/admin-registration-application/*/complete").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/emergency-evacuation-application").permitAll()
