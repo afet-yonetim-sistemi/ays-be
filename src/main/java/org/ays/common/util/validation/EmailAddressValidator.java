@@ -5,11 +5,11 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
 /**
- * A custom validator implementation for the {@link Email} annotation.
+ * A custom validator implementation for the {@link EmailAddress} annotation.
  * Validates whether the provided email invalid domain
  * specified regular expression.
  */
-class EmailValidator implements ConstraintValidator<Email, String> {
+class EmailAddressValidator implements ConstraintValidator<EmailAddress, String> {
 
     private static final String EMAIL_REGEX =
             "^[a-zA-Z0-9çğıöşü._%+-]+[a-zA-Z0-9çğıöşü]+@[a-zA-Z0-9]+[.-]?[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$";
