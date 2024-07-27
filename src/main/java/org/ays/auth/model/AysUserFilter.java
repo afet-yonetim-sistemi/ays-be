@@ -99,7 +99,7 @@ public class AysUserFilter implements AysFilter {
 
         if (this.lastName != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(criteriaBuilder.upper(root.get("emailAddress")), "%" + this.lastName.toUpperCase() + "%"));
+                    criteriaBuilder.like(criteriaBuilder.upper(root.get("emailAddress")), "%" + this.emailAddress.toUpperCase() + "%"));
         }
 
         if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getCountryCode())) {
