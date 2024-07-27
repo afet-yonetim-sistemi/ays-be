@@ -97,7 +97,7 @@ public class AysUserFilter implements AysFilter {
                     criteriaBuilder.like(criteriaBuilder.upper(root.get("lastName")), "%" + this.lastName.toUpperCase() + "%"));
         }
 
-        if (this.lastName != null) {
+        if (this.emailAddress != null) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(criteriaBuilder.upper(root.get("emailAddress")), "%" + this.emailAddress.toUpperCase() + "%"));
         }
