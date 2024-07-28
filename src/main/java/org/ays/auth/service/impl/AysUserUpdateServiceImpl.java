@@ -11,6 +11,11 @@ import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.auth.util.exception.*;
+import org.ays.auth.util.exception.AysRolesNotExistException;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
+import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
+import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,7 +126,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      *
      * @param user         The user being updated.
      * @param emailAddress The email address to be validated.
-     * @throws AysUserAlreadyExistsByEmailException if the email address is already associated with another user.
+     * @throws AysUserAlreadyExistsByEmailAddressException if the email address is already associated with another user.
      */
     private void validateEmailAddress(AysUser user, String emailAddress) {
 
@@ -132,7 +137,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         userReadPort.findByEmailAddress(emailAddress)
                 .filter(existingUser -> !existingUser.getId().equals(user.getId()))
                 .ifPresent(existingUser -> {
-                    throw new AysUserAlreadyExistsByEmailException(emailAddress);
+                    throw new AysUserAlreadyExistsByEmailAddressException(emailAddress);
                 });
     }
 

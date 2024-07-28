@@ -7,12 +7,15 @@ import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
+import org.ays.auth.model.request.AysUserCreateRequest;
+import org.ays.auth.model.request.AysUserCreateRequestBuilder;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
+import org.ays.auth.service.AysUserCreateService;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.auth.util.exception.AysUserIsNotPassiveException;
@@ -35,6 +38,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,10 +46,13 @@ import java.util.Set;
 class AysUserControllerTest extends AysRestControllerTest {
 
     @MockBean
-    private AysUserUpdateService userUpdateService;
+    private AysUserReadService userReadService;
 
     @MockBean
-    private AysUserReadService userReadService;
+    private AysUserCreateService userCreateService;
+
+    @MockBean
+    private AysUserUpdateService userUpdateService;
 
 
     private final AysUserToUsersResponseMapper userToUsersResponseMapper = AysUserToUsersResponseMapper.initialize();
@@ -308,6 +315,149 @@ class AysUserControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(userReadService, Mockito.never())
                 .findById(Mockito.anyString());
+    }
+
+
+    @Test
+    void givenUserCreateRequest_whenUserCreated_thenReturnSuccess() throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(userCreateService)
+                .create(Mockito.any(AysUserCreateRequest.class));
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.times(1))
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
+    @Test
+    void givenValidUserCreateRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
+    @Test
+    void givenUserCreateRequest_whenRoleIdsAreNull_thenReturnValidationError() throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withRoleIds(null)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
+    @Test
+    void givenUserCreateRequest_whenRoleIdsAreEmpty_thenReturnValidationError() throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withRoleIds(Set.of())
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {
+            "",
+            "55aed4c4facb4b66bdb5-309eaaef4453"
+    })
+    void givenUserCreateRequest_whenRoleIdIsNotValid_thenReturnValidationError(String invalidRoleId) throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withRoleIds(Collections.singleton(invalidRoleId))
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
     }
 
 

@@ -1,11 +1,11 @@
 package org.ays.common.model;
 
+import org.ays.common.util.AysRandomUtil;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.jeasy.random.randomizers.range.IntegerRangeRandomizer;
 import org.jeasy.random.randomizers.range.LongRangeRandomizer;
 import org.jeasy.random.randomizers.text.StringRandomizer;
-import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
 import static org.jeasy.random.FieldPredicates.named;
 
@@ -63,12 +63,14 @@ class PositiveIntegerRandomizer extends IntegerRangeRandomizer {
     protected Integer getDefaultMinValue() {
         return MIN;
     }
+
 }
 
 class CharacterRandomizer extends StringRandomizer {
 
     @Override
     public String getRandomValue() {
-        return RandomStringUtils.randomAlphabetic(10);
+        return AysRandomUtil.generateText(10);
     }
+
 }

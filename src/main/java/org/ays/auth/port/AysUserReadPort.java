@@ -14,6 +14,15 @@ import java.util.Optional;
 public interface AysUserReadPort {
 
     /**
+     * Finds all users with pagination and optional filtering.
+     *
+     * @param aysPageable the pagination configuration
+     * @param filter      the filter for users
+     * @return a paginated list of users
+     */
+    AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter);
+
+    /**
      * Retrieves a {@link AysUser} by its ID.
      *
      * @param id The ID of the user to retrieve.
@@ -38,13 +47,12 @@ public interface AysUserReadPort {
     Optional<AysUser> findByPhoneNumber(AysPhoneNumber phoneNumber);
 
     /**
-     * Finds all users with pagination and optional filtering.
+     * Finds a user by their password ID.
      *
-     * @param aysPageable the pagination configuration
-     * @param filter      the filter for users
-     * @return a paginated list of users
+     * @param passwordId the ID of the password to search for.
+     * @return an Optional containing the found user, or empty if no user was found with the given password ID.
      */
-    AysPage<AysUser> findAll(AysPageable aysPageable, AysUserFilter filter);
+    Optional<AysUser> findByPasswordId(String passwordId);
 
     /**
      * Checks if a user with the given email address exists in the repository.

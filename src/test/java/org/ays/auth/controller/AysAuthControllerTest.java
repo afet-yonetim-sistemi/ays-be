@@ -276,4 +276,58 @@ class AysAuthControllerTest extends AysRestControllerTest {
                 .forgotPassword(Mockito.any(AysForgotPasswordRequest.class));
     }
 
+
+    @Test
+    void givenValidId_whenCheckPasswordIdSuccessfully_thenReturnSuccessResponse() throws Exception {
+        // Given
+        String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
+
+        // When
+        Mockito.doNothing()
+                .when(userPasswordService)
+                .checkPasswordChangingValidity(Mockito.anyString());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/").concat(mockId).concat("/validity");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userPasswordService, Mockito.times(1))
+                .checkPasswordChangingValidity(Mockito.anyString());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenId_whenIdDoesNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/").concat(invalidId).concat("/validity");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userPasswordService, Mockito.never())
+                .checkPasswordChangingValidity(Mockito.anyString());
+    }
+
 }
