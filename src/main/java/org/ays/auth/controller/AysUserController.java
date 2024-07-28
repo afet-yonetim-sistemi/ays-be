@@ -119,6 +119,7 @@ class AysUserController {
     public AysResponse<Void> activate(@PathVariable @UUID final String id){
         userUpdateService.activate(id);
         return AysResponse.SUCCESS;
+
     }
 
 }
