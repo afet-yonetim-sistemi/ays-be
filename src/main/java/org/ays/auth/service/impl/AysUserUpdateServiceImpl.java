@@ -13,9 +13,9 @@ import org.ays.auth.service.AysUserUpdateService;
 import org.ays.auth.util.exception.AysRolesNotExistException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
+import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
 import org.ays.auth.util.exception.AysUserIsNotPassiveException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
-import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,6 +90,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
     public void activate(String id) {
 
         final AysUser user = userReadPort.findById(id)
+                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
         if (!user.isPassive()) {
