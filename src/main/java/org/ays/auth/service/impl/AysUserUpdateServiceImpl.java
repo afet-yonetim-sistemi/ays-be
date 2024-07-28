@@ -14,8 +14,8 @@ import org.ays.auth.util.exception.AysRolesNotExistException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
-import org.ays.auth.util.exception.AysUserIsNotPassiveException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
+import org.ays.auth.util.exception.AysUserNotPassiveException;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,7 +84,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      *
      * @param id The unique identifier of the user to be activated.
      * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
-     * @throws AysUserIsNotPassiveException if the user is not in a passive state and cannot be activated.
+     * @throws AysUserNotPassiveException if the user is not in a passive state and cannot be activated.
      */
     @Override
     public void activate(String id) {
@@ -94,8 +94,9 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
         if (!user.isPassive()) {
-            throw new AysUserIsNotPassiveException(AysUserStatus.PASSIVE);
+            throw new AysUserNotPassiveException(AysUserStatus.PASSIVE);
         }
+
         user.activate();
         userSavePort.save(user);
     }

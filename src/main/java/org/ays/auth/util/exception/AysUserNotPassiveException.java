@@ -6,10 +6,10 @@ import org.ays.common.util.exception.AysNotExistException;
 import java.io.Serial;
 
 /**
- * Exception thrown when a user is not in a passive state.
+ Exception thrown when a user does not in a passive state.
  * This exception extends {@link AysNotExistException}.
  */
-public final class AysUserIsNotPassiveException extends AysNotExistException {
+public final class AysUserNotPassiveException extends AysNotExistException {
 
     /**
      * Unique serial version ID.
@@ -22,7 +22,7 @@ public final class AysUserIsNotPassiveException extends AysNotExistException {
      *
      * @param status the detail message.
      */
-    public AysUserIsNotPassiveException(AysUserStatus status) {
+    public AysUserNotPassiveException(AysUserStatus status) {
         super("user status is not with " + status.toString().toLowerCase() + "!");
     }
 }

@@ -2,10 +2,8 @@ package org.ays.auth.controller;
 
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
-import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.request.AysUserCreateRequest;
@@ -30,7 +28,6 @@ import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -378,6 +375,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
     @Test
     void givenValidId_whenActivateUser_thenReturnSuccess() throws Exception {
+
         // Given
         Institution institution = new InstitutionBuilder()
                 .withId(AysValidTestData.Admin.INSTITUTION_ID)
@@ -395,16 +393,18 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .build()
         );
 
-        //Then
+        // Then
         String endpoint = BASE_PATH.concat("/user/").concat(user.getId()).concat("/activate");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                AysMockMvcRequestBuilders.patch(endpoint, adminToken.getAccessToken());
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, adminToken.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
 
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findById(user.getId());
@@ -412,7 +412,6 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.ACTIVE, userFromDatabase.get().getStatus());
-
     }
 
 }

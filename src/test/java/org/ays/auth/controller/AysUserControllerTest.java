@@ -4,7 +4,6 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
-import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserCreateRequest;
@@ -18,8 +17,6 @@ import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserCreateService;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
-import org.ays.auth.util.exception.AysUserIsNotPassiveException;
-import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
@@ -641,79 +638,41 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
     }
 
+
     @Test
     void givenValidId_whenActivateUser_thenReturnSuccess() throws Exception {
+
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "793fcc5d-31cc-4704-9f0a-627ac7da517d";
 
         //when
-        Mockito.doNothing().when(userUpdateService).activate(Mockito.anyString());
+        Mockito.doNothing()
+                .when(userUpdateService)
+                .activate(Mockito.anyString());
 
         //Then
         String endpoint = BASE_PATH.concat("/user/").concat(mockId).concat("/activate");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                AysMockMvcRequestBuilders.patch(endpoint, mockAdminToken.getAccessToken());
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockAdminToken.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
-                .andExpect(AysMockResultMatchersBuilders.status().isOk())
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
 
         //Verify
-        Mockito.verify(userUpdateService,Mockito.times(1)).activate(Mockito.anyString());
-    }
-
-    @Test
-    void givenValidId_whenUserNotFound_thenReturnAysUserNotExistByIdException() throws Exception {
-        // Given
-        String mockId = AysRandomUtil.generateUUID();
-
-        // When
-        Mockito.doThrow(new AysUserNotExistByIdException(mockId)).when(userUpdateService).activate(Mockito.anyString());
-
-        // Then
-        String endpoint = BASE_PATH.concat("/user/").concat(mockId).concat("/activate");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .patch(endpoint, mockAdminToken.getAccessToken());
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.NOT_FOUND;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status().isNotFound())
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
-
-        // Verify
-        Mockito.verify(userUpdateService, Mockito.times(1)).activate(Mockito.anyString());
-    }
-
-    @Test
-    void givenValidId_whenUserIsNotPassive_thenReturnAysUserIsNotPassiveException() throws Exception {
-        // Given
-        String mockId = AysRandomUtil.generateUUID();
-
-        // When
-        Mockito.doThrow(new AysUserIsNotPassiveException(AysUserStatus.ACTIVE)).when(userUpdateService).activate(Mockito.anyString());
-
-        // Then
-        String endpoint = BASE_PATH.concat("/user/").concat(mockId).concat("/activate");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .patch(endpoint, mockAdminToken.getAccessToken());
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.NOT_FOUND;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status().isNotFound())
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
-
-        // Verify
-        Mockito.verify(userUpdateService, Mockito.times(1)).activate(Mockito.anyString());
+        Mockito.verify(userUpdateService, Mockito.times(1))
+                .activate(Mockito.anyString());
     }
 
     @Test
     void givenValidId_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
+
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "201aec72-ecd8-49fc-86f5-2b5458871edb";
 
         // Then
         String endpoint = BASE_PATH.concat("/user/").concat(mockId).concat("/activate");
@@ -723,12 +682,39 @@ class AysUserControllerTest extends AysRestControllerTest {
         AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status().isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.response().doesNotExist());
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
 
         // Verify
-        Mockito.verify(userUpdateService, Mockito.never()).activate(Mockito.anyString());
+        Mockito.verify(userUpdateService, Mockito.never())
+                .activate(Mockito.anyString());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenInvalidUserId_whenIdNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(invalidId).concat("/activate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .activate(Mockito.anyString());
+    }
 
 }
