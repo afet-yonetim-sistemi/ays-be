@@ -127,8 +127,8 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
             return this;
         }
 
-        public PasswordBuilder withUpdatedAt(LocalDateTime updatedAt) {
-            data.setUpdatedAt(updatedAt);
+        public PasswordBuilder withForgotAt(LocalDateTime forgotAt) {
+            data.setForgotAt(forgotAt);
             return this;
         }
 
