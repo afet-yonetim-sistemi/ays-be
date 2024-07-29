@@ -645,12 +645,12 @@ class AysUserControllerTest extends AysRestControllerTest {
         // Given
         String mockId = "793fcc5d-31cc-4704-9f0a-627ac7da517d";
 
-        //when
+        // When
         Mockito.doNothing()
                 .when(userUpdateService)
                 .activate(Mockito.anyString());
 
-        //Then
+        // Then
         String endpoint = BASE_PATH.concat("/user/").concat(mockId).concat("/activate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, mockAdminToken.getAccessToken());
@@ -663,7 +663,7 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
-        //Verify
+        // Verify
         Mockito.verify(userUpdateService, Mockito.times(1))
                 .activate(Mockito.anyString());
     }

@@ -583,6 +583,9 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(userSavePort, Mockito.never())
                 .save(Mockito.any(AysUser.class));
     }
@@ -633,7 +636,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         // Given
         String mockId = "a785c6a2-229f-4a73-8e3a-3ff49bd16a07";
 
-        //When
+        // When
         Institution mockInstitution = new InstitutionBuilder()
                 .withValidValues()
                 .build();

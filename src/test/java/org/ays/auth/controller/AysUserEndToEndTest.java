@@ -376,7 +376,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
     @Test
     void givenValidId_whenActivateUser_thenReturnSuccess() throws Exception {
 
-        // Given
+        // Initialize
         Institution institution = new InstitutionBuilder()
                 .withId(AysValidTestData.Admin.INSTITUTION_ID)
                 .build();
@@ -393,8 +393,11 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .build()
         );
 
+        // Given
+        String id = user.getId();
+
         // Then
-        String endpoint = BASE_PATH.concat("/user/").concat(user.getId()).concat("/activate");
+        String endpoint = BASE_PATH.concat("/user/").concat(id).concat("/activate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, adminToken.getAccessToken());
 
