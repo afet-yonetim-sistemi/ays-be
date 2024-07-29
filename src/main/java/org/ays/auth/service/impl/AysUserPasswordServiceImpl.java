@@ -11,7 +11,6 @@ import org.ays.auth.util.exception.AysEmailAddressNotValidException;
 import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.common.util.AysUUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,15 +36,16 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
 
 
     /**
-     * Handles the forgot password process for a user.
+     * Handles the forgot password request by sending an email to the user
+     * with instructions to create a new password.
      * <p>
-     * This method is triggered when a user requests to reset their password. It checks if the user's email
-     * address is valid and then sends a password reset email. If the user does not have an existing password,
-     * a new temporary password is generated and saved.
-     * </p>
+     * This method checks if a user exists with the provided email address.
+     * If the user exists and has no password set, a new temp password is generated.
+     * If the user already has a password, the forgot password timestamp is updated.
+     * In both cases, an email is sent to the user with instructions to create a new password.
      *
-     * @param forgotPasswordRequest The request object containing the user's email address.
-     * @throws AysEmailAddressNotValidException if the email address provided does not exist in the system.
+     * @param forgotPasswordRequest The request containing the user's email address.
+     * @throws AysEmailAddressNotValidException if no user is found with the provided email address.
      */
     @Override
     public void forgotPassword(final AysForgotPasswordRequest forgotPasswordRequest) {
@@ -54,29 +54,31 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
         final AysUser user = userReadPort.findByEmailAddress(emailAddress)
                 .orElseThrow(() -> new AysEmailAddressNotValidException(emailAddress));
 
-        if (user.getPassword() != null) {
-            userMailService.sendPasswordCreateEmail(user);
-            return;
+        if (user.getPassword() == null) {
+            final AysUser.Password password = AysUser.Password.builder()
+                    .value(AysRandomUtil.generateUUID())
+                    .forgotAt(LocalDateTime.now())
+                    .build();
+            user.setPassword(password);
+        } else {
+            user.getPassword().setForgotAt(LocalDateTime.now());
         }
 
-        final AysUser.Password password = AysUser.Password.builder()
-                .value(AysRandomUtil.generateUUID())
-                .build();
-        user.setPassword(password);
-        AysUser savedUser = userSavePort.save(user);
-
+        final AysUser savedUser = userSavePort.save(user);
         userMailService.sendPasswordCreateEmail(savedUser);
     }
 
 
     /**
-     * Validates the provided password ID to ensure it is valid for password reset.
-     * This method checks if the password ID exists, if the password value is in UUID format,
-     * and if the password was updated within the last 2 hours.
+     * Checks the validity of changing the user's password.
+     * <p>
+     * This method verifies if the password change request is valid by checking the
+     * existence and expiry of the password change request associated with the given password ID.
+     * It throws an exception if the password cannot be changed due to invalid conditions.
      *
-     * @param passwordId the ID of the password to be checked.
-     * @throws AysUserPasswordDoesNotExistException  if the password ID does not exist.
-     * @throws AysUserPasswordCannotChangedException if the password value is not in UUID format or if the password update time exceeds the allowed limit.
+     * @param passwordId The ID of the password to check for change validity.
+     * @throws AysUserPasswordDoesNotExistException  if no password is found for the given ID.
+     * @throws AysUserPasswordCannotChangedException if the password cannot be changed due to invalid conditions.
      */
     @Override
     public void checkPasswordChangingValidity(final String passwordId) {
@@ -85,17 +87,31 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
                 .orElseThrow(() -> new AysUserPasswordDoesNotExistException(passwordId))
                 .getPassword();
 
-        boolean isUUID = AysUUID.isValid(password.getValue());
-        if (!isUUID) {
-            throw new AysUserPasswordCannotChangedException(passwordId);
+        this.checkChangingValidity(password);
+    }
+
+
+    /**
+     * Checks the validity of changing the password.
+     * <p>
+     * This method verifies if the password change request is valid by checking if the password change request
+     * was initiated within the allowable time frame. It throws an exception if the password cannot be changed.
+     *
+     * @param password The AysUser.Password object representing the user's password.
+     * @throws AysUserPasswordCannotChangedException if the password cannot be changed due to invalid conditions.
+     */
+    private void checkChangingValidity(final AysUser.Password password) {
+
+        Optional<LocalDateTime> forgotAt = Optional
+                .ofNullable(password.getForgotAt());
+
+        if (forgotAt.isEmpty()) {
+            throw new AysUserPasswordCannotChangedException(password.getId());
         }
 
-        LocalDateTime passwordChangedAt = Optional
-                .ofNullable(password.getUpdatedAt())
-                .orElse(password.getCreatedAt());
-        boolean isExpired = LocalDateTime.now().minusHours(2).isBefore(passwordChangedAt);
+        boolean isExpired = LocalDateTime.now().minusHours(2).isBefore(forgotAt.get());
         if (!isExpired) {
-            throw new AysUserPasswordCannotChangedException(passwordId);
+            throw new AysUserPasswordCannotChangedException(password.getId());
         }
 
     }
