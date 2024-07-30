@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.ays.auth.model.AysIdentity;
 import org.ays.common.model.AysPage;
-import org.ays.common.model.AysPageable;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToDomainMapper;
@@ -15,7 +14,6 @@ import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
-import org.ays.institution.model.Institution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +26,8 @@ import java.util.Optional;
  * The {@code @Transactional} annotation ensures that all the methods in this class are executed within a transactional context.
  */
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationApplicationService {
 
     private final EmergencyEvacuationApplicationReadPort emergencyEvacuationApplicationReadPort;
@@ -48,10 +46,18 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     @Override
     public AysPage<EmergencyEvacuationApplication> findAll(final EmergencyEvacuationApplicationListRequest listRequest) {
 
-        final AysPageable aysPageable = listRequest.getPageable();
-        final EmergencyEvacuationApplicationFilter filter = listRequest.getFilter();
+        Optional.ofNullable(listRequest.getFilter())
+                .ifPresentOrElse(filter -> filter.setInstitutionId(identity.getInstitutionId()),
+                        () -> {
+                            EmergencyEvacuationApplicationFilter filter = EmergencyEvacuationApplicationFilter.builder()
+                                    .institutionId(identity.getInstitutionId())
+                                    .build();
 
-        return emergencyEvacuationApplicationReadPort.findAll(aysPageable, filter);
+                            listRequest.setFilter(filter);
+                        });
+
+        return emergencyEvacuationApplicationReadPort
+                .findAll(listRequest.getPageable(), listRequest.getFilter());
     }
 
 
@@ -64,6 +70,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     @Override
     public EmergencyEvacuationApplication findById(final String id) {
         return emergencyEvacuationApplicationReadPort.findById(id)
+                .filter(application -> application.hasNotInstitution() || application.isInstitutionOwner(identity.getInstitutionId()))
                 .orElseThrow(() -> new EmergencyEvacuationApplicationNotExistException(id));
     }
 
@@ -100,13 +107,13 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
 
         final EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationReadPort
                 .findById(id)
+                .filter(application -> application.hasNotInstitution() || application.isInstitutionOwner(identity.getInstitutionId()))
                 .orElseThrow(() -> new EmergencyEvacuationApplicationNotExistException(id));
 
-        emergencyEvacuationApplication.setInstitution(
-                Institution.builder()
-                        .id(identity.getInstitutionId())
-                        .build()
-        );
+        if (emergencyEvacuationApplication.hasNotInstitution()) {
+            emergencyEvacuationApplication.setInstitutionId(identity.getInstitutionId());
+        }
+
         emergencyEvacuationApplication.setSeatingCount(updateRequest.getSeatingCount());
         emergencyEvacuationApplication.setHasObstaclePersonExist(updateRequest.getHasObstaclePersonExist());
         emergencyEvacuationApplication.setStatus(updateRequest.getStatus());

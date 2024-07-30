@@ -42,13 +42,47 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
 
     private Institution institution;
 
+
+    /**
+     * Checks if the application does not have an associated institution.
+     *
+     * @return true if the institution is null, false otherwise.
+     */
+    public boolean hasNotInstitution() {
+        return this.institution == null;
+    }
+
+    /**
+     * Checks if the application is associated with the specified institution ID.
+     *
+     * @param institutionId the ID of the institution to check against.
+     * @return true if the institution ID matches, false otherwise.
+     */
+    public boolean isInstitutionOwner(final String institutionId) {
+        return this.institution.getId().equals(institutionId);
+    }
+
+
     /**
      * Marks the emergency evacuation application as pending.
+     * Generates a reference number and updates the status to pending.
+     * Sets isInPerson based on whether the applicant's phone number is provided.
      */
     public void pending() {
         this.referenceNumber = AysRandomUtil.generateNumber(10).toString();
         this.status = EmergencyEvacuationApplicationStatus.PENDING;
         this.isInPerson = this.applicantPhoneNumber == null;
+    }
+
+    /**
+     * Sets the institution ID for the application.
+     *
+     * @param institutionId the ID of the institution to associate with the application.
+     */
+    public void setInstitutionId(final String institutionId) {
+        this.institution = Institution.builder()
+                .id(institutionId)
+                .build();
     }
 
 }
