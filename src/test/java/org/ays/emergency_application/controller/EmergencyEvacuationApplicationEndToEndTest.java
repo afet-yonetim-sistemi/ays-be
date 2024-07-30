@@ -70,7 +70,12 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                         new EmergencyEvacuationApplicationBuilder()
                                 .withValidValues()
                                 .withoutId()
-                                .withInstitution(new InstitutionBuilder().withValidValues().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                                .withInstitution(
+                                        new InstitutionBuilder()
+                                                .withValidValues()
+                                                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                                                .build()
+                                )
                                 .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
                                 .withoutApplicant()
                                 .build()
