@@ -4,6 +4,7 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserCreateRequest;
@@ -17,6 +18,7 @@ import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserCreateService;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
+import org.ays.auth.util.exception.AysUserAlreadyDeletedException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
@@ -715,6 +717,96 @@ class AysUserControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(userUpdateService, Mockito.never())
                 .activate(Mockito.anyString());
+    }
+
+
+    @Test
+    void givenValidId_whenUserDeleted_thenReturnSuccess() throws Exception {
+
+        // Given
+        String mockId = "2e574ecf-929c-4923-8aea-d061d29934da";
+
+        // When
+        Mockito.doNothing()
+                .when(userUpdateService)
+                .delete(Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.times(1))
+                .delete(mockId);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenId_whenIdDoesNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(invalidId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .delete(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidId_whenUserAlreadyDeleted_thenReturnConflict() throws Exception {
+
+        // Given
+        String mockId = "dcdcab9f-f177-4e18-8720-ded804c4defd";
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withStatus(AysUserStatus.DELETED)
+                .build();
+
+        Mockito.doThrow(new AysUserAlreadyDeletedException(mockId))
+                .when(userUpdateService)
+                .delete(mockUser.getId());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.times(1))
+                .delete(mockUser.getId());
     }
 
 }

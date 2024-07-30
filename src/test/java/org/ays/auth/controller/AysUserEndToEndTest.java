@@ -417,4 +417,56 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(AysUserStatus.ACTIVE, userFromDatabase.get().getStatus());
     }
 
+
+    @Test
+    void givenValidId_whenUserDeleted_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
+                .stream()
+                .findFirst()
+                .orElseThrow();
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withFirstName("Violet")
+                        .withLastName("Ync")
+                        .withEmailAddress("violet.ync@afetyonetimsistemi.org")
+                        .withCity("Ankara")
+                        .withStatus(AysUserStatus.ACTIVE)
+                        .withRoles(List.of(role))
+                        .withInstitution(institution)
+                        .build()
+        );
+
+        // Given
+        String id = user.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, adminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysUser> userFromDatabase = userReadPort.findById(id);
+
+        Assertions.assertTrue(userFromDatabase.isPresent());
+        Assertions.assertNotNull(userFromDatabase.get().getId());
+        Assertions.assertEquals(AysUserStatus.DELETED, userFromDatabase.get().getStatus());
+    }
+
 }

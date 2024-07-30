@@ -13,6 +13,7 @@ import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.util.exception.AysRolesNotExistException;
+import org.ays.auth.util.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
@@ -674,4 +675,146 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         Mockito.verify(userSavePort, Mockito.never())
                 .save(mockUser);
     }
+
+
+    @Test
+    void givenValidId_whenUserFound_thenDeleteUser() {
+
+        // Given
+        String mockId = "90c509b5-c6fc-4161-a856-bb6f54d066d2";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withInstitution(mockInstitution)
+                .build();
+
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(Mockito.mock(AysUser.class));
+
+        // Then
+        userUpdateService.delete(mockId);
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidId_whenUserAlreadyDeleted_thenThrowAysUserAlreadyDeletedException() {
+
+        // Given
+        String mockId = "3dac5c4c-adaa-4b2d-88ad-9cb65b1e86e8";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withInstitution(mockInstitution)
+                .withStatus(AysUserStatus.DELETED)
+                .build();
+
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        // Then
+        Assertions.assertThrows(
+                AysUserAlreadyDeletedException.class,
+                () -> userUpdateService.delete(mockId)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidId_whenUserDoesNotFound_thenThrowAysUserNotExistByIdException() {
+
+        // Given
+        String mockId = "df6d0bc7-4fe7-496e-b8db-581c35cee402";
+
+        // When
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userUpdateService.delete(mockId)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidId_whenUserNotMatchedWithInstitution_thenThrowAysUserNotExistByIdException() {
+
+        // Given
+        String mockId = "cb3306e0-a36f-4af8-b0ae-b318bf0749fe";
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("0c916a8d-3d8b-48ad-a4b6-dfbe796058d3");
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userUpdateService.delete(mockId)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+    }
+
 }
