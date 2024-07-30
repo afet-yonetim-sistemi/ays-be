@@ -20,6 +20,7 @@ import org.ays.auth.port.AysUserSavePort;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
@@ -370,6 +371,50 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 );
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedAt());
+    }
+
+    @Test
+    void givenValidId_whenActivateUser_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder()
+                        .withId(AysRandomUtil.generateUUID())
+                        .withValidValues()
+                        .withRoles(roles)
+                        .withInstitution(institution)
+                        .withStatus(AysUserStatus.PASSIVE)
+                        .build()
+        );
+
+        // Given
+        String id = user.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(id).concat("/activate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, adminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysUser> userFromDatabase = userReadPort.findById(user.getId());
+
+        Assertions.assertTrue(userFromDatabase.isPresent());
+        Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
+        Assertions.assertEquals(AysUserStatus.ACTIVE, userFromDatabase.get().getStatus());
     }
 
 }

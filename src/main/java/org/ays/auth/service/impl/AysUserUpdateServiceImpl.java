@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
@@ -14,6 +15,7 @@ import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
+import org.ays.auth.util.exception.AysUserNotPassiveException;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +74,30 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         user.setCity(updateRequest.getCity());
         user.setPhoneNumber(phoneNumber);
 
+        userSavePort.save(user);
+    }
+
+
+    /**
+     * Activates a user by ID if the user is currently passive.
+     * This method retrieves the user by the provided ID and activates the user
+     *
+     * @param id The unique identifier of the user to be activated.
+     * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
+     * @throws AysUserNotPassiveException if the user is not in a passive state and cannot be activated.
+     */
+    @Override
+    public void activate(String id) {
+
+        final AysUser user = userReadPort.findById(id)
+                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
+                .orElseThrow(() -> new AysUserNotExistByIdException(id));
+
+        if (!user.isPassive()) {
+            throw new AysUserNotPassiveException(AysUserStatus.PASSIVE);
+        }
+
+        user.activate();
         userSavePort.save(user);
     }
 

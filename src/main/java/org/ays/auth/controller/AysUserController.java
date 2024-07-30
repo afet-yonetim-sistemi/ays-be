@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -128,6 +129,24 @@ class AysUserController {
                                     @RequestBody @Valid final AysUserUpdateRequest updateRequest) {
 
         userUpdateService.update(id, updateRequest);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * PATCH /user/{id}/activate : Activates a user account with the given ID.
+     * <p>
+     * This endpoint is protected and requires the caller to have the authority
+     * 'user:update'. The user ID must be a valid UUID.
+     * </p>
+     *
+     * @param id The UUID of the user to be activated.
+     * @return An {@link AysResponse} indicating the success of the operation.
+     */
+    @PatchMapping("user/{id}/activate")
+    @PreAuthorize("hasAnyAuthority('user:update')")
+    public AysResponse<Void> activate(@PathVariable @UUID final String id) {
+        userUpdateService.activate(id);
         return AysResponse.SUCCESS;
     }
 
