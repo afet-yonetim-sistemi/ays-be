@@ -772,7 +772,6 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
 
         // Given
         String mockId = "32657ecb-5172-401d-8b29-a8e4454e8243";
-        String mockRandomInstitutionId = "3b9dcab2-028f-4bb8-9c9b-23130d9579ae";
 
         // When
         AysRole mockRole = new AysRoleBuilder()
@@ -783,7 +782,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
                 .thenReturn(Optional.of(mockRole));
 
         Mockito.when(identity.getInstitutionId())
-                .thenReturn(mockRandomInstitutionId);
+                .thenReturn("3b9dcab2-028f-4bb8-9c9b-23130d9579ae");
 
         // Then
         Assertions.assertThrows(
