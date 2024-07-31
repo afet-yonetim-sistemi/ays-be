@@ -778,6 +778,9 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
+        Mockito.verify(identity, Mockito.never())
+                .getInstitutionId();
+
         Mockito.verify(userSavePort, Mockito.never())
                 .save(Mockito.any(AysUser.class));
     }

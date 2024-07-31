@@ -4,7 +4,6 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
-import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserCreateRequest;
@@ -18,7 +17,6 @@ import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserCreateService;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
-import org.ays.auth.util.exception.AysUserAlreadyDeletedException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
@@ -775,38 +773,27 @@ class AysUserControllerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenValidId_whenUserAlreadyDeleted_thenReturnConflict() throws Exception {
+    void givenUserDelete_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
 
         // Given
-        String mockId = "dcdcab9f-f177-4e18-8720-ded804c4defd";
-
-        // When
-        AysUser mockUser = new AysUserBuilder()
-                .withValidValues()
-                .withId(mockId)
-                .withStatus(AysUserStatus.DELETED)
-                .build();
-
-        Mockito.doThrow(new AysUserAlreadyDeletedException(mockId))
-                .when(userUpdateService)
-                .delete(mockUser.getId());
+        String mockId = "45082f52-011b-41d1-b4bd-6eba4e1f1ea8";
 
         // Then
         String endpoint = BASE_PATH.concat("/user/").concat(mockId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .delete(endpoint, mockAdminToken.getAccessToken());
+                .delete(endpoint, mockUserToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
-                        .isConflict())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(userUpdateService, Mockito.times(1))
-                .delete(mockUser.getId());
+        Mockito.verify(userUpdateService, Mockito.never())
+                .delete(Mockito.anyString());
     }
 
 }
