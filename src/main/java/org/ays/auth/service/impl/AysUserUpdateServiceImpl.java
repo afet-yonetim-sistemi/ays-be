@@ -4,16 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.auth.util.exception.AysRolesNotExistException;
-import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailException;
+import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
+import org.ays.auth.util.exception.AysUserNotPassiveException;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +79,30 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
 
 
     /**
+     * Activates a user by ID if the user is currently passive.
+     * This method retrieves the user by the provided ID and activates the user
+     *
+     * @param id The unique identifier of the user to be activated.
+     * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
+     * @throws AysUserNotPassiveException if the user is not in a passive state and cannot be activated.
+     */
+    @Override
+    public void activate(String id) {
+
+        final AysUser user = userReadPort.findById(id)
+                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
+                .orElseThrow(() -> new AysUserNotExistByIdException(id));
+
+        if (!user.isPassive()) {
+            throw new AysUserNotPassiveException(AysUserStatus.PASSIVE);
+        }
+
+        user.activate();
+        userSavePort.save(user);
+    }
+
+
+    /**
      * Validates the uniqueness of the provided phone number.
      * Checks if there is any existing user with the same phone number.
      *
@@ -104,7 +130,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      *
      * @param user         The user being updated.
      * @param emailAddress The email address to be validated.
-     * @throws AysUserAlreadyExistsByEmailException if the email address is already associated with another user.
+     * @throws AysUserAlreadyExistsByEmailAddressException if the email address is already associated with another user.
      */
     private void validateEmailAddress(AysUser user, String emailAddress) {
 
@@ -115,7 +141,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         userReadPort.findByEmailAddress(emailAddress)
                 .filter(existingUser -> !existingUser.getId().equals(user.getId()))
                 .ifPresent(existingUser -> {
-                    throw new AysUserAlreadyExistsByEmailException(emailAddress);
+                    throw new AysUserAlreadyExistsByEmailAddressException(emailAddress);
                 });
     }
 

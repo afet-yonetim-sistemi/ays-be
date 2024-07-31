@@ -8,7 +8,6 @@ import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.util.AysValidTestData;
-import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +39,7 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
         return this
                 .withId(id)
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
-                .withEmailAddress(RandomStringUtils.randomAlphabetic(8).concat("@afetyonetimsistemi.org"))
+                .withEmailAddress(AysRandomUtil.generateText(8).concat("@afetyonetimsistemi.org"))
                 .withPassword(passwordEntity)
                 .withLoginAttempt(loginAttemptEntity)
                 .withRoles(roleEntities)
@@ -100,8 +99,13 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
                     .withValue(AysValidTestData.PASSWORD_ENCRYPTED);
         }
 
-        public PasswordEntityBuilder withValue(String password) {
-            data.setValue(password);
+        public PasswordEntityBuilder withId(String id) {
+            data.setId(id);
+            return this;
+        }
+
+        public PasswordEntityBuilder withValue(String value) {
+            data.setValue(value);
             return this;
         }
 

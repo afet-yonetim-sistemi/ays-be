@@ -1,6 +1,7 @@
 package org.ays.emergency_application.model.filter;
 
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 public class EmergencyEvacuationApplicationFilter implements AysFilter {
 
     @Size(min = 1, max = 10)
@@ -43,6 +45,8 @@ public class EmergencyEvacuationApplicationFilter implements AysFilter {
 
     private Boolean isInPerson;
 
+    private String institutionId;
+
 
     /**
      * Converts this request's filter configuration into a {@link Specification} for querying.
@@ -55,6 +59,12 @@ public class EmergencyEvacuationApplicationFilter implements AysFilter {
     public Specification<EmergencyEvacuationApplicationEntity> toSpecification() {
 
         Specification<EmergencyEvacuationApplicationEntity> specification = Specification.where(null);
+
+        specification = specification.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("institutionId"), this.institutionId));
+
+        specification = specification.or((root, query, criteriaBuilder) ->
+                criteriaBuilder.isNull(root.get("institutionId")));
 
         if (this.referenceNumber != null) {
             specification = specification.and((root, query, criteriaBuilder) ->

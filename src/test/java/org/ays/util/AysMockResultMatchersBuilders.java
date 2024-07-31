@@ -48,6 +48,10 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.response.content");
     }
 
+    public static JsonPathResultMatchers contents(String path) {
+        return MockMvcResultMatchers.jsonPath("$.response.content[*].".concat(path));
+    }
+
     public static JsonPathResultMatchers contentSize() {
         return MockMvcResultMatchers.jsonPath("$.response.content.size()");
     }

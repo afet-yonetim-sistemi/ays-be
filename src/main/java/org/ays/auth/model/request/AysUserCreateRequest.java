@@ -15,14 +15,16 @@ import org.hibernate.validator.constraints.UUID;
 import java.util.Set;
 
 /**
- * Request object for updating a user's details.
+ * Represents a request for creating a new user in the system.
+ * This class contains all the necessary details required to create a user, including their personal information,
+ * contact details, and roles. The fields are validated to ensure they meet the required constraints.
  * <p>
- * This class encapsulates the data required to update an existing user's details.
- * Each field is validated to ensure it meets the necessary requirements.
+ * This class uses various annotations for validation to ensure the data integrity and consistency.
+ * </p>
  */
 @Getter
 @Setter
-public class AysUserUpdateRequest {
+public class AysUserCreateRequest {
 
     @Name
     @NotBlank

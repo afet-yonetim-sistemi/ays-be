@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
+import org.ays.auth.model.request.AysUserCreateRequest;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
+import org.ays.auth.service.AysUserCreateService;
 import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPage;
@@ -17,10 +19,11 @@ import org.ays.common.model.response.AysResponse;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 class AysUserController {
 
     private final AysUserReadService userReadService;
+    private final AysUserCreateService userCreateService;
     private final AysUserUpdateService userUpdateService;
 
 
@@ -90,13 +94,32 @@ class AysUserController {
 
 
     /**
+     * Endpoint for creating a new user.
+     * <p>
+     * This endpoint is secured and only accessible to users with the 'user:create' authority.
+     * It handles the creation of a new user by delegating the request to the user creation service.
+     * The request body is validated to ensure all required fields are present and valid.
+     * </p>
+     *
+     * @param createRequest The request object containing data for the new user.
+     * @return AysResponse with a success message and no data.
+     */
+    @PostMapping("/user")
+    @PreAuthorize("hasAnyAuthority('user:create')")
+    public AysResponse<Void> create(@RequestBody @Valid final AysUserCreateRequest createRequest) {
+        userCreateService.create(createRequest);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
      * Update an existing user based on the provided request data.
      * <p>
      * This method is mapped to handle HTTP PUT requests to "/user/{id}". It requires
      * the user to have the 'user:update' authority to access.
      * </p>
      *
-     * @param id The ID of the user to update.
+     * @param id            The ID of the user to update.
      * @param updateRequest The request object containing updated data for the user.
      * @return An {@link AysResponse} indicating the success of the operation.
      */
@@ -106,6 +129,24 @@ class AysUserController {
                                     @RequestBody @Valid final AysUserUpdateRequest updateRequest) {
 
         userUpdateService.update(id, updateRequest);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * PATCH /user/{id}/activate : Activates a user account with the given ID.
+     * <p>
+     * This endpoint is protected and requires the caller to have the authority
+     * 'user:update'. The user ID must be a valid UUID.
+     * </p>
+     *
+     * @param id The UUID of the user to be activated.
+     * @return An {@link AysResponse} indicating the success of the operation.
+     */
+    @PatchMapping("user/{id}/activate")
+    @PreAuthorize("hasAnyAuthority('user:update')")
+    public AysResponse<Void> activate(@PathVariable @UUID final String id) {
+        userUpdateService.activate(id);
         return AysResponse.SUCCESS;
     }
 

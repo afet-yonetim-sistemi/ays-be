@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.auth.model.enums.AysSourcePage;
-import org.ays.common.util.validation.Email;
+import org.ays.common.util.validation.EmailAddress;
 
 /**
  * Represents a login request of the Ays application.
@@ -20,7 +20,7 @@ import org.ays.common.util.validation.Email;
 @Setter
 public class AysLoginRequest {
 
-    @Email
+    @EmailAddress
     @NotBlank
     private String emailAddress;
 

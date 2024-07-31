@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.model.request.AysPhoneNumberRequest;
-import org.ays.common.util.validation.Email;
+import org.ays.common.util.validation.EmailAddress;
 import org.ays.common.util.validation.Name;
 
 /**
@@ -36,7 +36,7 @@ public class AdminRegistrationApplicationCompleteRequest {
     @Size(min = 2, max = 100)
     private String city;
 
-    @Email
+    @EmailAddress
     @NotBlank
     @Size(min = 2, max = 255)
     private String emailAddress;

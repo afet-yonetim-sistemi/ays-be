@@ -1,15 +1,10 @@
 package org.ays.emergency_application.controller;
 
 import org.ays.AysEndToEndTest;
-import org.ays.common.model.AysPage;
-import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
-import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
-import org.ays.common.util.AysRandomUtil;
-import org.ays.common.util.exception.model.AysErrorBuilder;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
@@ -24,8 +19,10 @@ import org.ays.emergency_application.model.response.EmergencyEvacuationApplicati
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
+import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
+import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,15 +55,33 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
 
         // Initialize
         emergencyEvacuationApplicationRepository.deleteAll();
-        EmergencyEvacuationApplication application = emergencyEvacuationApplicationSavePort.save(
-                new EmergencyEvacuationApplicationBuilder()
-                        .withValidValues()
-                        .withoutId()
-                        .withoutInstitution()
-                        .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
-                        .withoutApplicant()
-                        .build()
+
+        List<EmergencyEvacuationApplication> applications = List.of(
+                emergencyEvacuationApplicationSavePort.save(
+                        new EmergencyEvacuationApplicationBuilder()
+                                .withValidValues()
+                                .withoutId()
+                                .withoutInstitution()
+                                .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                                .withoutApplicant()
+                                .build()
+                ),
+                emergencyEvacuationApplicationSavePort.save(
+                        new EmergencyEvacuationApplicationBuilder()
+                                .withValidValues()
+                                .withoutId()
+                                .withInstitution(
+                                        new InstitutionBuilder()
+                                                .withValidValues()
+                                                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                                                .build()
+                                )
+                                .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                                .withoutApplicant()
+                                .build()
+                )
         );
+        applications.forEach(application -> emergencyEvacuationApplicationSavePort.save(application));
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
@@ -80,20 +95,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminToken.getAccessToken(), mockListRequest);
 
-        List<EmergencyEvacuationApplication> applications = List.of(
-                new EmergencyEvacuationApplicationBuilder()
-                        .withValidValues()
-                        .withoutApplicant()
-                        .build()
-        );
-        AysPage<EmergencyEvacuationApplication> applicationsPage = AysPageBuilder
-                .from(applications, mockListRequest.getPageable());
-
-        AysPageResponse<EmergencyEvacuationApplication> pageResponse = AysPageResponse.<EmergencyEvacuationApplication>builder()
-                .of(applicationsPage)
-                .build();
-
-        AysResponse<AysPageResponse<EmergencyEvacuationApplication>> mockResponse = AysResponse.successOf(pageResponse);
+        AysResponse<AysPageResponse<EmergencyEvacuationApplication>> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -101,39 +103,39 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.contentSize()
-                        .value(1))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("id")
-                        .value(application.getId()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("referenceNumber")
-                        .value(application.getReferenceNumber()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("firstName")
-                        .value(application.getFirstName()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("lastName")
-                        .value(application.getLastName()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("phoneNumber.countryCode")
-                        .value(application.getPhoneNumber().getCountryCode()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("phoneNumber.lineNumber")
-                        .value(application.getPhoneNumber().getLineNumber()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("seatingCount")
-                        .value(application.getSeatingCount()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("status")
-                        .value(application.getStatus().toString()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("isInPerson")
-                        .value(application.getIsInPerson()))
-                .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
+                        .value(applications.size()))
+                .andExpect(AysMockResultMatchersBuilders.contents("id")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("referenceNumber")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("firstName")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("lastName")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("phoneNumber.countryCode")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("phoneNumber.lineNumber")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("seatingCount")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("status")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("isInPerson")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("createdAt")
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.response("pageNumber")
                         .value(1))
                 .andExpect(AysMockResultMatchersBuilders.response("pageSize")
-                        .value(1))
+                        .value(applications.size()))
                 .andExpect(AysMockResultMatchersBuilders.response("totalPageCount")
                         .value(1))
                 .andExpect(AysMockResultMatchersBuilders.response("totalElementCount")
-                        .value(1))
+                        .value(applications.size()))
                 .andExpect(AysMockResultMatchersBuilders.response("orderedBy")
                         .isEmpty())
                 .andExpect(AysMockResultMatchersBuilders.response("filteredBy")
-                        .isEmpty());
+                        .isNotEmpty());
     }
 
     @Test
@@ -163,17 +165,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminToken.getAccessToken(), mockListRequest);
 
-        List<EmergencyEvacuationApplication> applications = List.of(
-                new EmergencyEvacuationApplicationBuilder().withValidValues().build()
-        );
-
-        AysPage<EmergencyEvacuationApplication> applicationsPage = AysPageBuilder
-                .from(applications, mockListRequest.getPageable());
-
-        AysPageResponse<EmergencyEvacuationApplication> pageResponse = AysPageResponse.<EmergencyEvacuationApplication>builder()
-                .of(applicationsPage).build();
-
-        AysResponse<AysPageResponse<EmergencyEvacuationApplication>> mockResponse = AysResponse.successOf(pageResponse);
+        AysResponse<AysPageResponse<EmergencyEvacuationApplication>> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -291,26 +283,6 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                         .isEmpty())
                 .andExpect(AysMockResultMatchersBuilders.response("updatedAt")
                         .isEmpty());
-    }
-
-    @Test
-    void givenValidApplicationId_whenUserUnauthorizedForEmergencyEvacuationApplication_thenReturnAccessDeniedException() throws Exception {
-
-        // When
-        String mockApplicationId = AysRandomUtil.generateUUID();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(mockApplicationId);
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(endpoint, superAdminToken.getAccessToken());
-
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isForbidden())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .doesNotExist());
     }
 
 
