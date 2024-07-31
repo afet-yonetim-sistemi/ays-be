@@ -6,7 +6,6 @@ import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.auth.model.mapper.AysRoleToResponseMapper;
-import org.ays.auth.model.mapper.AysRoleToRolesSummaryResponseMapper;
 import org.ays.auth.model.request.AysRoleCreateRequest;
 import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.model.request.AysRoleListRequest;
@@ -33,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
@@ -55,7 +55,6 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     private AysPermissionReadPort permissionReadPort;
 
 
-    private final AysRoleToRolesSummaryResponseMapper roleToRolesSummaryResponseMapper = AysRoleToRolesSummaryResponseMapper.initialize();
     private final AysRoleToResponseMapper roleToResponseMapper = AysRoleToResponseMapper.initialize();
 
 
@@ -65,19 +64,14 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     @Test
     void whenRolesFound_thenReturnSummaryOfRoles() throws Exception {
 
-        // Initialize
-        List<AysRole> roles = roleReadPort.findAll();
-
         // Then
         String endpoint = BASE_PATH.concat("/roles/summary");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, adminToken.getAccessToken());
 
-        List<AysRolesSummaryResponse> rolesSummaryResponses = roleToRolesSummaryResponseMapper.map(roles);
-        AysResponse<List<AysRolesSummaryResponse>> response = AysResponse
-                .successOf(rolesSummaryResponses);
+        AysResponse<List<AysRolesSummaryResponse>> response = AysResponseBuilder.successList();
 
-        aysMockMvc.perform(mockHttpServletRequestBuilder, response)
+        ResultActions resultActions = aysMockMvc.perform(mockHttpServletRequestBuilder, response)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
@@ -86,6 +80,23 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.responses("name")
                         .isNotEmpty());
+
+        // Verify
+        List<AysRole> roles = roleReadPort
+                .findAllActivesByInstitutionId(AysValidTestData.Admin.INSTITUTION_ID);
+
+        resultActions.andExpect(AysMockResultMatchersBuilders.responseSize()
+                .value(roles.size()));
+
+        for (AysRole role : roles) {
+            int index = roles.indexOf(role);
+            resultActions
+                    .andExpect(AysMockResultMatchersBuilders.response(index, "id")
+                            .value(role.getId()))
+                    .andExpect(AysMockResultMatchersBuilders.response(index, "name")
+                            .value(role.getName()));
+        }
+
     }
 
 
