@@ -20,6 +20,8 @@ import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -541,13 +543,21 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidId_whenRoleIsActive_thenPassivateRole() {
+
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "6f3db9cd-2e08-45a6-bcda-707bef233b4e";
 
         // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
         AysRole mockRole = new AysRoleBuilder()
                 .withValidValues()
                 .withId(mockId)
+                .withInstitution(mockInstitution)
                 .withStatus(AysRoleStatus.ACTIVE)
                 .build();
 
@@ -561,6 +571,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         roleUpdateService.passivate(mockId);
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
@@ -575,16 +588,24 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
             "DELETED"
     })
     void givenValidId_whenRoleIsNotActive_thenThrowAysInvalidRoleStatusException(String roleStatus) {
+
         // Initialize
         AysRoleStatus status = AysRoleStatus.valueOf(roleStatus);
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "f35b6751-613e-47c2-b48f-12cf57207648";
 
         // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
         AysRole mockRole = new AysRoleBuilder()
                 .withValidValues()
                 .withId(mockId)
+                .withInstitution(mockInstitution)
                 .withStatus(status)
                 .build();
 
@@ -598,6 +619,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         );
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
@@ -608,8 +632,9 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidId_whenRoleNotFoundForPassivation_thenThrowAysRoleNotExistByIdException() {
+
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "d0dc24fc-a2d2-4e31-b482-489f64b0cbf6";
 
         // When
         Mockito.when(roleReadPort.findById(Mockito.anyString()))
@@ -627,6 +652,54 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));
+
+        Mockito.verify(identity, Mockito.never())
+                .getInstitutionId();
+    }
+
+    @Test
+    void givenValidId_whenInstitutionIdDoesNotMatch_thenThrowAysRoleNotExistByIdException() {
+
+        // Given
+        String mockId = "666e4d1b-58ac-486e-b373-189b4f354e36";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        Institution differentInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withInstitution(differentInstitution)
+                .withStatus(AysRoleStatus.ACTIVE)
+                .build();
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        Mockito.when(roleReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockRole));
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleNotExistByIdException.class,
+                () -> roleUpdateService.passivate(mockId)
+        );
+
+        // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(mockId);
+
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(mockRole);
     }
 
 
