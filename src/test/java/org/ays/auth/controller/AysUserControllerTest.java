@@ -103,6 +103,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "Lorem ipsum dolor sit amet consectetur adipiscing elit Integer nec odio Praesent libero Sed cursus ante dapibus diam Sed nisi Nulla quis sem at nibh",
             "Test user 1234",
             "User *^%$#",
             " Test",
@@ -137,6 +138,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "Lorem ipsum dolor sit amet consectetur adipiscing elit Integer nec odio Praesent libero Sed cursus ante dapibus diam Sed nisi Nulla quis sem at nibh",
             "Test user 1234",
             "User *^%$#",
             " Test",
