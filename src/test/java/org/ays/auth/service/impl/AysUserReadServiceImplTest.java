@@ -138,6 +138,9 @@ class AysUserReadServiceImplTest extends AysUnitTest {
         Assertions.assertEquals(mockUser, result);
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
     }
