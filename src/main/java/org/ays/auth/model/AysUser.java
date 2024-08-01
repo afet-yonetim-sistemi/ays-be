@@ -111,6 +111,7 @@ public class AysUser extends BaseDomainModel {
 
         private String id;
         private String value;
+        private LocalDateTime forgotAt;
 
     }
 

@@ -123,6 +123,9 @@ public class AysUserEntity extends BaseEntity {
         @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
         private AysUserEntity user;
 
+        @Column(name = "FORGOT_AT")
+        private LocalDateTime forgotAt;
+
     }
 
 

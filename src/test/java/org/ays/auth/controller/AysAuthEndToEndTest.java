@@ -14,6 +14,7 @@ import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.response.AysTokenResponse;
 import org.ays.auth.model.response.AysTokenResponseBuilder;
 import org.ays.auth.port.AysRoleReadPort;
+import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
@@ -22,18 +23,23 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 class AysAuthEndToEndTest extends AysEndToEndTest {
 
     @Autowired
     private AysUserSavePort userSavePort;
+
+    @Autowired
+    private AysUserReadPort userReadPort;
 
     @Autowired
     private AysRoleReadPort roleReadPort;
@@ -142,6 +148,14 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+
+        // Verify
+        AysUser user = userReadPort.findByEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
+                .orElseThrow();
+
+        Assertions.assertNotNull(user.getPassword());
+        Assertions.assertNotNull(user.getPassword().getForgotAt());
+        Assertions.assertTrue(user.getPassword().getForgotAt().isAfter(LocalDateTime.now().minusMinutes(1)));
     }
 
 
@@ -160,7 +174,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
         AysUser.Password password = new AysUserBuilder.PasswordBuilder()
                 .withoutId()
-                .withValue("ba9c1156-05d6-410e-a3af-fe6a36935430")
+                .withForgotAt(LocalDateTime.now().minusMinutes(15))
                 .build();
 
         AysUser user = userSavePort.save(

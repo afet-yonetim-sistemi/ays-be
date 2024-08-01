@@ -25,4 +25,11 @@ public interface AysUserUpdateService {
      */
     void activate(String id);
 
+    /**
+     * Deletes a user by its unique identifier.
+     *
+     * @param id The unique identifier of the user to be deleted.
+     */
+    void delete(String id);
+
 }
