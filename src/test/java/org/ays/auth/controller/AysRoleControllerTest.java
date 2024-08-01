@@ -683,12 +683,12 @@ class AysRoleControllerTest extends AysRestControllerTest {
     void givenValidId_whenRoleActivated_thenReturnSuccess() throws Exception {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "3ce7dace-e006-459c-b3c0-693bf2a36e26";
 
         // When
         Mockito.doNothing()
                 .when(roleUpdateService)
-                .activate(Mockito.any());
+                .activate(Mockito.anyString());
 
         // Then
         String endpoint = BASE_PATH.concat("/role/".concat(mockId).concat("/activate"));
@@ -705,6 +705,30 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(roleUpdateService, Mockito.times(1))
+                .activate(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidId_whenUserUnauthorizedForActivation_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockId = "8c19bb92-5f11-4752-a93f-11c440d1725b";
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(mockId).concat("/activate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockUserToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.never())
                 .activate(Mockito.anyString());
     }
 
