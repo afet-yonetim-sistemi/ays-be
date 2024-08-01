@@ -19,6 +19,7 @@ import org.ays.common.model.response.AysResponse;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -147,6 +148,24 @@ class AysUserController {
     @PreAuthorize("hasAnyAuthority('user:update')")
     public AysResponse<Void> activate(@PathVariable @UUID final String id) {
         userUpdateService.activate(id);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * DELETE /user/{id} : Deletes a user account with the given ID.
+     * <p>
+     * This endpoint is protected and requires the caller to have the authority
+     * 'user:delete'. The user ID must be a valid UUID.
+     * </p>
+     *
+     * @param id The UUID of the user to be deleted.
+     * @return An {@link AysResponse} indicating the success of the operation.
+     */
+    @DeleteMapping("/user/{id}")
+    @PreAuthorize("hasAnyAuthority('user:delete')")
+    public AysResponse<Void> delete(@PathVariable @UUID final String id) {
+        userUpdateService.delete(id);
         return AysResponse.SUCCESS;
     }
 
