@@ -103,6 +103,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "Lorem ipsum dolor sit amet consectetur adipiscing elit Integer nec odio Praesent libero Sed cursus ante dapibus diam Sed nisi Nulla quis sem at nibh",
             "Test user 1234",
             "User *^%$#",
             " Test",
@@ -137,6 +138,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "Lorem ipsum dolor sit amet consectetur adipiscing elit Integer nec odio Praesent libero Sed cursus ante dapibus diam Sed nisi Nulla quis sem at nibh",
             "Test user 1234",
             "User *^%$#",
             " Test",
@@ -715,6 +717,85 @@ class AysUserControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(userUpdateService, Mockito.never())
                 .activate(Mockito.anyString());
+    }
+
+
+    @Test
+    void givenValidId_whenUserDeleted_thenReturnSuccess() throws Exception {
+
+        // Given
+        String mockId = "2e574ecf-929c-4923-8aea-d061d29934da";
+
+        // When
+        Mockito.doNothing()
+                .when(userUpdateService)
+                .delete(Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.times(1))
+                .delete(mockId);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenId_whenIdDoesNotValid_thenReturnValidationError(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(invalidId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .delete(Mockito.anyString());
+    }
+
+    @Test
+    void givenUserDelete_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockId = "45082f52-011b-41d1-b4bd-6eba4e1f1ea8";
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .delete(endpoint, mockUserToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .delete(Mockito.anyString());
     }
 
 }

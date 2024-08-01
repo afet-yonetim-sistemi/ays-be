@@ -564,7 +564,8 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
 
 
     @Test
-    void givenValidId_whenRoleAlreadyDeleted_thenReturnSuccess() throws Exception {
+    void givenValidId_whenRoleDeleted_thenReturnSuccess() throws Exception {
+
         // Initialize
         List<AysPermission> permissions = permissionReadPort.findAll();
 

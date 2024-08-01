@@ -346,6 +346,7 @@
             <column name="VALUE" type="VARCHAR(60)">
                 <constraints nullable="false"/>
             </column>
+            <column name="FORGOT_AT" type="TIMESTAMP"/>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
                 <constraints nullable="false"/>
             </column>

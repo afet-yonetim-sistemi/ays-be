@@ -11,6 +11,7 @@ import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.auth.util.exception.AysRolesNotExistException;
+import org.ays.auth.util.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
@@ -98,6 +99,35 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         }
 
         user.activate();
+        userSavePort.save(user);
+    }
+
+
+    /**
+     * Deletes a user account by its ID.
+     * <p>
+     * This method retrieves a user by the given ID and ensures the user's institution ID
+     * matches the identity's institution ID. If the user is already marked as deleted,
+     * an {@link AysUserAlreadyDeletedException} is thrown. Otherwise, the user's status
+     * is set to deleted and the changes are saved.
+     * </p>
+     *
+     * @param id The ID of the user to delete.
+     * @throws AysUserNotExistByIdException   If no user with the given ID exists or if the user does not belong to the caller's institution.
+     * @throws AysUserAlreadyDeletedException If the user is already marked as deleted.
+     */
+    @Override
+    public void delete(final String id) {
+
+        final AysUser user = userReadPort.findById(id)
+                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
+                .orElseThrow(() -> new AysUserNotExistByIdException(id));
+
+        if (user.isDeleted()) {
+            throw new AysUserAlreadyDeletedException(id);
+        }
+
+        user.delete();
         userSavePort.save(user);
     }
 

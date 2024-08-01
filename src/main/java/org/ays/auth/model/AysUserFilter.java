@@ -36,11 +36,11 @@ import java.util.Set;
 public class AysUserFilter implements AysFilter {
 
     @Name
-    @Size(min = 2, max = 255)
+    @Size(min = 2, max = 100)
     private String firstName;
 
     @Name
-    @Size(min = 2, max = 255)
+    @Size(min = 2, max = 100)
     private String lastName;
 
     @Size(min = 2, max = 255)

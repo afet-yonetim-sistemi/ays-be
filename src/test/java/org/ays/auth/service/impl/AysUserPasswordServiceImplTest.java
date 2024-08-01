@@ -11,7 +11,6 @@ import org.ays.auth.service.AysUserMailService;
 import org.ays.auth.util.exception.AysEmailAddressNotValidException;
 import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
-import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -37,7 +36,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidForgotPasswordRequest_whenUserExistWithPassword_thenSendPasswordCreateEmail() {
+    void givenValidForgotPasswordRequest_whenUserExistWithPassword_thenSetPasswordForgotAtAndSendPasswordCreateEmail() {
         // Given
         AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withValidValues()
@@ -52,6 +51,17 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
 
+        AysUser mockSavedUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockUser.getId())
+                .withEmailAddress(mockUser.getEmailAddress())
+                .withPhoneNumber(mockUser.getPhoneNumber())
+                .withPassword(mockUser.getPassword())
+                .build();
+        mockSavedUser.getPassword().setForgotAt(LocalDateTime.now());
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockSavedUser);
+
         Mockito.doNothing()
                 .when(userMailService)
                 .sendPasswordCreateEmail(Mockito.any(AysUser.class));
@@ -63,7 +73,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findByEmailAddress(Mockito.anyString());
 
-        Mockito.verify(userSavePort, Mockito.never())
+        Mockito.verify(userSavePort, Mockito.times(1))
                 .save(Mockito.any(AysUser.class));
 
         Mockito.verify(userMailService, Mockito.times(1))
@@ -143,7 +153,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidId_whenPasswordExistAndValueHasUUIDFormatAndUpdatedInTwoHours_thenDoNothing() {
+    void givenValidId_whenPasswordExistAndForgotInTwoHours_thenDoNothing() {
         // Given
         String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
 
@@ -151,8 +161,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withValue("9fccaabc-2d00-4128-923e-d415b319a57f")
-                .withUpdatedAt(LocalDateTime.now().minusMinutes(5))
+                .withForgotAt(LocalDateTime.now().minusMinutes(5))
                 .build();
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
@@ -190,7 +199,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenPasswordExistAndValueHasNotUUIDFormatAndUpdatedInTwoHours_thenThrowUserPasswordCannotChangedException() {
+    void givenValidId_whenPasswordExistAndForgotAtDoesNotExist_thenThrowUserPasswordCannotChangedException() {
         // Given
         String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
 
@@ -198,8 +207,8 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withValue(AysValidTestData.PASSWORD_ENCRYPTED)
-                .withUpdatedAt(LocalDateTime.now().minusMinutes(5))
+                .withValue("608a15a8-5e82-4fd8-ac74-308068393e53")
+                .withForgotAt(null)
                 .build();
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
@@ -220,7 +229,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenPasswordExistAndValueHasUUIDFormatAndUpdatedInThreeHours_thenThrowUserPasswordCannotChangedException() {
+    void givenValidId_whenPasswordExistAndForgotInThreeHours_thenThrowUserPasswordCannotChangedException() {
         // Given
         String mockId = "40fb7a46-40bd-46cb-b44f-1f47162133b1";
 
@@ -229,7 +238,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .withId(mockId)
                 .withValue("608a15a8-5e82-4fd8-ac74-308068393e53")
-                .withUpdatedAt(LocalDateTime.now().minusHours(3))
+                .withForgotAt(LocalDateTime.now().minusHours(3))
                 .build();
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
