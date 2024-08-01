@@ -44,7 +44,7 @@ class AysAuthController {
      * @return An AysResponse containing an AysTokenResponse object and the HTTP status code (200 OK).
      */
     @PostMapping("/token")
-    public AysResponse<AysTokenResponse> landingAuthenticate(@RequestBody @Valid AysLoginRequest loginRequest) {
+    public AysResponse<AysTokenResponse> authenticate(@RequestBody @Valid AysLoginRequest loginRequest) {
         final AysToken token = authService.authenticate(loginRequest);
         final AysTokenResponse tokenResponse = tokenToTokenResponseMapper.map(token);
         return AysResponse.successOf(tokenResponse);
