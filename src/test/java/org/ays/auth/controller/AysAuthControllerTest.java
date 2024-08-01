@@ -3,10 +3,10 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.mapper.AysTokenToResponseMapper;
-import org.ays.auth.model.request.AysForgotPasswordRequest;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
+import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequestBuilder;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
@@ -190,14 +190,14 @@ class AysAuthControllerTest extends AysRestControllerTest {
     @Test
     void givenValidForgotPasswordRequest_whenSendPasswordCreateMail_thenReturnSuccessResponse() throws Exception {
         // Given
-        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
                 .build();
 
         // When
         Mockito.doNothing()
                 .when(userPasswordService)
-                .forgotPassword(Mockito.any(AysForgotPasswordRequest.class));
+                .forgotPassword(Mockito.any(AysPasswordForgotRequest.class));
 
         // Then
         String endpoint = BASE_PATH.concat("/password/forgot");
@@ -214,7 +214,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(userPasswordService, Mockito.times(1))
-                .forgotPassword(Mockito.any(AysForgotPasswordRequest.class));
+                .forgotPassword(Mockito.any(AysPasswordForgotRequest.class));
     }
 
     @ParameterizedTest
@@ -228,7 +228,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
     void givenForgotPasswordRequestWithInvalidEmailAddress_whenEmailDoesNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
         // Given
-        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withEmailAddress(mockEmailAddress)
                 .build();
 
@@ -247,14 +247,14 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(userPasswordService, Mockito.never())
-                .forgotPassword(Mockito.any(AysForgotPasswordRequest.class));
+                .forgotPassword(Mockito.any(AysPasswordForgotRequest.class));
     }
 
     @Test
     void givenForgotPasswordRequestWithoutEmailAddress_whenEmailIsNull_thenReturnValidationError() throws Exception {
 
         // Given
-        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withEmailAddress(null)
                 .build();
 
@@ -273,7 +273,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(userPasswordService, Mockito.never())
-                .forgotPassword(Mockito.any(AysForgotPasswordRequest.class));
+                .forgotPassword(Mockito.any(AysPasswordForgotRequest.class));
     }
 
 

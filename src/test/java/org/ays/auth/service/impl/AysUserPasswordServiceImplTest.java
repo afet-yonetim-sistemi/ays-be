@@ -3,8 +3,8 @@ package org.ays.auth.service.impl;
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
-import org.ays.auth.model.request.AysForgotPasswordRequest;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
+import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserMailService;
@@ -38,7 +38,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     @Test
     void givenValidForgotPasswordRequest_whenUserExistWithPassword_thenSetPasswordForgotAtAndSendPasswordCreateEmail() {
         // Given
-        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -83,7 +83,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     @Test
     void givenValidForgotPasswordRequest_whenUserExistWithoutPassword_thenCreateTempPasswordAndSendPasswordCreateEmail() {
         // Given
-        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withValidValues()
                 .build();
 
@@ -126,7 +126,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     @Test
     void givenValidForgotPasswordRequest_whenEmailDoesNotExist_thenThrowAysEmailAddressNotValidException() {
         // Given
-        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withValidValues()
                 .build();
 

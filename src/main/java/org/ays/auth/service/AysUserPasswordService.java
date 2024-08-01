@@ -1,6 +1,6 @@
 package org.ays.auth.service;
 
-import org.ays.auth.model.request.AysForgotPasswordRequest;
+import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.util.exception.AysEmailAddressNotValidException;
 import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
@@ -23,7 +23,7 @@ public interface AysUserPasswordService {
      * @param forgotPasswordRequest the request containing the user's email address.
      * @throws AysEmailAddressNotValidException if no user is found with the provided email address.
      */
-    void forgotPassword(AysForgotPasswordRequest forgotPasswordRequest);
+    void forgotPassword(AysPasswordForgotRequest forgotPasswordRequest);
 
     /**
      * Checks the validity of changing the user's password.

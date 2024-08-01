@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.mapper.AysTokenToResponseMapper;
-import org.ays.auth.model.request.AysForgotPasswordRequest;
 import org.ays.auth.model.request.AysLoginRequest;
+import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.response.AysTokenResponse;
@@ -86,7 +86,7 @@ class AysAuthController {
      * @return An AysResponse indicating the success of the password create request.
      */
     @PostMapping("/password/forgot")
-    public AysResponse<Void> forgotPassword(@RequestBody @Valid AysForgotPasswordRequest forgotPasswordRequest) {
+    public AysResponse<Void> forgotPassword(@RequestBody @Valid AysPasswordForgotRequest forgotPasswordRequest) {
         userPasswordService.forgotPassword(forgotPasswordRequest);
         return AysResponse.SUCCESS;
     }

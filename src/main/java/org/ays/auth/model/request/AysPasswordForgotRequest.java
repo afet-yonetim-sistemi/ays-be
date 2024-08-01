@@ -8,7 +8,7 @@ import org.ays.common.util.validation.EmailAddress;
 
 @Getter
 @Setter
-public class AysForgotPasswordRequest {
+public class AysPasswordForgotRequest {
 
     @EmailAddress
     @NotBlank

@@ -2,7 +2,7 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.request.AysForgotPasswordRequest;
+import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserMailService;
@@ -48,7 +48,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * @throws AysEmailAddressNotValidException if no user is found with the provided email address.
      */
     @Override
-    public void forgotPassword(final AysForgotPasswordRequest forgotPasswordRequest) {
+    public void forgotPassword(final AysPasswordForgotRequest forgotPasswordRequest) {
 
         final String emailAddress = forgotPasswordRequest.getEmailAddress();
         final AysUser user = userReadPort.findByEmailAddress(emailAddress)

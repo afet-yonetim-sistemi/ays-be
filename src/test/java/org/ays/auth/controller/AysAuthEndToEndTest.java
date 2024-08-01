@@ -5,10 +5,10 @@ import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysSourcePage;
-import org.ays.auth.model.request.AysForgotPasswordRequest;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
+import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.response.AysTokenResponse;
@@ -132,7 +132,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
     @Test
     void givenValidForgotPasswordRequest_whenSendPasswordCreateMail_thenReturnSuccessResponse() throws Exception {
         // Given
-        AysForgotPasswordRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
                 .build();
 
