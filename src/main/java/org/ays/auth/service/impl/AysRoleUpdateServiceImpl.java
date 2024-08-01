@@ -127,6 +127,7 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
 
     /**
      * Deletes an existing role identified by its ID.
+     * It also verifies that the role belongs to the same institution as the current user's institution.
      *
      * @param id The ID of the role to delete.
      * @throws AysRoleNotExistByIdException   if no role exists with the provided ID.
@@ -137,6 +138,7 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
     public void delete(final String id) {
 
         final AysRole role = roleReadPort.findById(id)
+                .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
         if (roleReadPort.isRoleUsing(id)) {
