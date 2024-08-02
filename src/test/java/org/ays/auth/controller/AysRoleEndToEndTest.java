@@ -249,6 +249,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 new AysRoleBuilder()
                         .withValidValues()
                         .withoutId()
+                        .withName("öğreticiRolü")
                         .withInstitution(institution)
                         .withPermissions(permissions)
                         .build()
@@ -529,20 +530,19 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     void givenId_whenRolePassivated_thenReturnSuccess() throws Exception {
 
         // Initialize
-        Institution institution = institutionSavePort.save(
-                new InstitutionBuilder()
-                        .withValidValues()
-                        .withoutId()
-                        .build()
-        );
-        List<AysPermission> permissions = permissionReadPort.findAll();
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withStatus(AysRoleStatus.ACTIVE)
+                        .withName("rastgeleBirRol")
                         .withInstitution(institution)
                         .withPermissions(permissions)
+                        .withStatus(AysRoleStatus.ACTIVE)
                         .build()
         );
 
@@ -552,7 +552,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/role/".concat(id).concat("/passivate"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .patch(endpoint, superAdminToken.getAccessToken());
+                .patch(endpoint, adminToken.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
@@ -581,7 +581,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 new AysRoleBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withName("Admin Role 1")
+                        .withName("eğitmenRolü")
                         .withPermissions(permissions)
                         .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
                         .build()
