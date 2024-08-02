@@ -153,9 +153,15 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         AysUser user = userReadPort.findByEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
                 .orElseThrow();
 
-        Assertions.assertNotNull(user.getPassword());
-        Assertions.assertNotNull(user.getPassword().getForgotAt());
-        Assertions.assertTrue(user.getPassword().getForgotAt().isAfter(LocalDateTime.now().minusMinutes(1)));
+        AysUser.Password password = user.getPassword();
+        Assertions.assertNotNull(password);
+        Assertions.assertNotNull(password.getValue());
+        Assertions.assertNotNull(password.getForgotAt());
+        Assertions.assertTrue(password.getForgotAt().isAfter(LocalDateTime.now().minusMinutes(1)));
+        Assertions.assertNotNull(password.getCreatedUser());
+        Assertions.assertNotNull(password.getCreatedAt());
+        Assertions.assertNull(password.getUpdatedUser());
+        Assertions.assertNull(password.getUpdatedAt());
     }
 
 
