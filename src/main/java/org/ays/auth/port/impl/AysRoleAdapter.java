@@ -40,18 +40,6 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
 
 
     /**
-     * Retrieves all {@link AysRole} from the repository.
-     *
-     * @return A list of all {@link AysRole}.
-     */
-    @Override
-    public List<AysRole> findAll() {
-        List<AysRoleEntity> roleEntities = roleRepository.findAll();
-        return roleEntityToDomainMapper.map(roleEntities);
-    }
-
-
-    /**
      * Finds all roles with pagination and optional filtering.
      * <p>
      * This method uses the provided {@link AysPageable} for pagination and {@link AysRoleFilter} for filtering.

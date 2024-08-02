@@ -45,32 +45,6 @@ class AysRoleAdapterTest extends AysUnitTest {
     private final AysRoleToEntityMapper roleToEntityMapper = AysRoleToEntityMapper.initialize();
     private final AysRoleEntityToDomainMapper roleEntityToDomainMapper = AysRoleEntityToDomainMapper.initialize();
 
-    @Test
-    void whenRolesFound_thenReturnSummaryOfRoles() {
-
-        // When
-        List<AysRoleEntity> mockRoleEntities = List.of(
-                new AysRoleEntityBuilder()
-                        .withValidValues()
-                        .build(),
-                new AysRoleEntityBuilder()
-                        .withValidValues()
-                        .build()
-        );
-        Mockito.when(roleRepository.findAll())
-                .thenReturn(mockRoleEntities);
-
-        List<AysRole> mockRoles = roleEntityToDomainMapper.map(mockRoleEntities);
-
-        // Then
-        List<AysRole> roles = roleAdapter.findAll();
-
-        Assertions.assertEquals(mockRoles, roles);
-
-        // Verify
-        Mockito.verify(roleRepository, Mockito.times(1))
-                .findAll();
-    }
 
     @Test
     @SuppressWarnings("unchecked")

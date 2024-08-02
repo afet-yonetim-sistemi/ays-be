@@ -13,6 +13,8 @@ import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -113,8 +115,15 @@ class AysUserReadServiceImplTest extends AysUnitTest {
     void givenValidId_whenUserFoundById_thenReturnUser() {
 
         // Given
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
+                .withInstitution(mockInstitution)
                 .build();
         String mockId = mockUser.getId();
 
@@ -129,6 +138,9 @@ class AysUserReadServiceImplTest extends AysUnitTest {
         Assertions.assertEquals(mockUser, result);
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
     }
@@ -152,6 +164,29 @@ class AysUserReadServiceImplTest extends AysUnitTest {
         // Verify
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidId_whenUserNotFoundForUser_thenThrowUserNotExistException() {
+
+        // Given
+        String mockId = "71520700-d5fb-4c7d-8b14-9088136a9cd5";
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+        Mockito.when(userReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("394d98c1-a1d0-4c1c-8b39-28b913a0abbf");
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userReadService.findById(mockId)
+        );
     }
 
 }
