@@ -57,15 +57,11 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
         final AysUser user = userReadPort.findByEmailAddress(emailAddress)
                 .orElseThrow(() -> new AysEmailAddressNotValidException(emailAddress));
 
-        if (user.getPassword() == null) {
-            final AysUser.Password password = AysUser.Password.builder()
-                    .value(AysRandomUtil.generateUUID())
-                    .forgotAt(LocalDateTime.now())
-                    .build();
-            user.setPassword(password);
-        } else {
-            user.getPassword().setForgotAt(LocalDateTime.now());
-        }
+        final AysUser.Password password = AysUser.Password.builder()
+                .value(AysRandomUtil.generateUUID())
+                .forgotAt(LocalDateTime.now())
+                .build();
+        user.setPassword(password);
 
         final AysUser savedUser = userSavePort.save(user);
         userMailService.sendPasswordCreateEmail(savedUser);
