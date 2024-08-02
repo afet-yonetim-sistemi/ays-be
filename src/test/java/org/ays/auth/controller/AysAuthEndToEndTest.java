@@ -172,7 +172,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .doesNotExist());
 
         // Verify
-        AysUser userFromDatabase = userReadPort.findByEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
+        AysUser userFromDatabase = userReadPort.findById(user.getId())
                 .orElseThrow();
 
         AysUser.Password passwordFromDatabase = userFromDatabase.getPassword();
