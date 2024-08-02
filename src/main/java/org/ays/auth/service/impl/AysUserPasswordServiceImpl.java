@@ -2,6 +2,7 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.request.AysPasswordCreateRequest;
 import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
@@ -11,6 +12,7 @@ import org.ays.auth.util.exception.AysEmailAddressNotValidException;
 import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
 import org.ays.common.util.AysRandomUtil;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
     private final AysUserReadPort userReadPort;
     private final AysUserSavePort userSavePort;
     private final AysUserMailService userMailService;
+    private final PasswordEncoder passwordEncoder;
 
 
     /**
@@ -92,10 +95,44 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
 
 
     /**
+     * Creates a new password for a user identified by the given password ID.
+     * <p>
+     * This method updates the user's password with the new password provided in the request.
+     * It first verifies if the password change request is valid based on the time elapsed since
+     * the password change request was initiated. If the request is valid, it updates the password
+     * and saves the changes.
+     *
+     * @param passwordId    The unique identifier of the user whose password is being updated.
+     * @param createRequest The request object containing the new password details.
+     * @throws AysUserPasswordDoesNotExistException  if no user is found with the provided password ID.
+     * @throws AysUserPasswordCannotChangedException if the password change request is invalid due to
+     *                                               the elapsed time or other conditions that prevent the password from being changed.
+     */
+    @Override
+    public void createPassword(final String passwordId,
+                               final AysPasswordCreateRequest createRequest) {
+
+        final AysUser user = userReadPort.findByPasswordId(passwordId)
+                .orElseThrow(() -> new AysUserPasswordDoesNotExistException(passwordId));
+
+        this.checkChangingValidity(user.getPassword());
+
+        AysUser.Password password = AysUser.Password.builder()
+                .value(passwordEncoder.encode(createRequest.getPassword()))
+                .build();
+        user.setPassword(password);
+
+        userSavePort.save(user);
+    }
+
+
+    /**
      * Checks the validity of changing the password.
      * <p>
-     * This method verifies if the password change request is valid by checking if the password change request
-     * was initiated within the allowable time frame. It throws an exception if the password cannot be changed.
+     * This method verifies if the password change request is valid based on the time elapsed since the
+     * password change request was initiated or the password was created. It distinguishes between
+     * a newly created password and an existing one to determine if the change request is within
+     * the allowable time frame. It throws an exception if the password cannot be changed.
      *
      * @param password The AysUser.Password object representing the user's password.
      * @throws AysUserPasswordCannotChangedException if the password cannot be changed due to invalid conditions.
@@ -105,15 +142,38 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
         Optional<LocalDateTime> forgotAt = Optional
                 .ofNullable(password.getForgotAt());
 
+        boolean isFirstCreation = forgotAt.isEmpty() && password.getUpdatedAt() == null;
+        if (isFirstCreation) {
+            this.checkExpiration(password.getId(), password.getCreatedAt());
+            return;
+        }
+
         if (forgotAt.isEmpty()) {
             throw new AysUserPasswordCannotChangedException(password.getId());
         }
 
-        boolean isExpired = LocalDateTime.now().minusHours(2).isBefore(forgotAt.get());
-        if (!isExpired) {
-            throw new AysUserPasswordCannotChangedException(password.getId());
-        }
+        this.checkExpiration(password.getId(), forgotAt.get());
+    }
 
+    /**
+     * Checks if the password change request has expired.
+     * <p>
+     * This method determines if the time elapsed since the provided timestamp exceeds the allowable time frame
+     * for changing the password. It throws an exception if the password change request is deemed expired.
+     *
+     * @param id   The unique identifier of the password being validated.
+     * @param date The timestamp used to check if the password change request has expired.
+     * @throws AysUserPasswordCannotChangedException if the time elapsed since the timestamp exceeds the allowable time frame.
+     */
+    private void checkExpiration(final String id,
+                                 final LocalDateTime date) {
+
+        boolean isExpired = LocalDateTime.now()
+                .minusHours(2)
+                .isBefore(date);
+        if (!isExpired) {
+            throw new AysUserPasswordCannotChangedException(id);
+        }
     }
 
 }
