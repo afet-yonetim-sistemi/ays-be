@@ -109,7 +109,8 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
         public PasswordBuilder withValidValues() {
             return this
                     .withId("31c479b8-625f-49b2-8fbc-c0a085a79883")
-                    .withValue(AysValidTestData.PASSWORD_ENCRYPTED);
+                    .withValue(AysValidTestData.PASSWORD_ENCRYPTED)
+                    .withoutForgotAt();
         }
 
         public PasswordBuilder withId(String id) {
@@ -129,6 +130,21 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
 
         public PasswordBuilder withForgotAt(LocalDateTime forgotAt) {
             data.setForgotAt(forgotAt);
+            return this;
+        }
+
+        public PasswordBuilder withoutForgotAt() {
+            data.setForgotAt(null);
+            return this;
+        }
+
+        public PasswordBuilder withCreatedAt(LocalDateTime createdAt) {
+            data.setCreatedAt(createdAt);
+            return this;
+        }
+
+        public PasswordBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            data.setUpdatedAt(updatedAt);
             return this;
         }
 
