@@ -529,20 +529,18 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     void givenId_whenRolePassivated_thenReturnSuccess() throws Exception {
 
         // Initialize
-        Institution institution = institutionSavePort.save(
-                new InstitutionBuilder()
-                        .withValidValues()
-                        .withoutId()
-                        .build()
-        );
-        List<AysPermission> permissions = permissionReadPort.findAll();
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withStatus(AysRoleStatus.ACTIVE)
                         .withInstitution(institution)
                         .withPermissions(permissions)
+                        .withStatus(AysRoleStatus.ACTIVE)
                         .build()
         );
 
@@ -552,7 +550,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/role/".concat(id).concat("/passivate"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .patch(endpoint, superAdminToken.getAccessToken());
+                .patch(endpoint, adminToken.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 
