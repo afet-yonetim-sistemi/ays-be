@@ -132,10 +132,30 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
 
     @Test
-    void givenValidForgotPasswordRequest_whenSendPasswordCreateMail_thenReturnSuccessResponse() throws Exception {
+    void givenValidForgotPasswordRequest_whenNewPasswordCreatedAndPasswordCreateMailSent_thenReturnSuccessResponse() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
+                .stream()
+                .findFirst()
+                .orElseThrow();
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withRoles(List.of(role))
+                        .withInstitution(institution)
+                        .build()
+        );
+
         // Given
         AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
-                .withEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
+                .withEmailAddress(user.getEmailAddress())
                 .build();
 
         // Then
@@ -152,18 +172,18 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .doesNotExist());
 
         // Verify
-        AysUser user = userReadPort.findByEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
+        AysUser userFromDatabase = userReadPort.findByEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
                 .orElseThrow();
 
-        AysUser.Password password = user.getPassword();
-        Assertions.assertNotNull(password);
-        Assertions.assertNotNull(password.getValue());
-        Assertions.assertNotNull(password.getForgotAt());
-        Assertions.assertTrue(password.getForgotAt().isAfter(LocalDateTime.now().minusMinutes(1)));
-        Assertions.assertNotNull(password.getCreatedUser());
-        Assertions.assertNotNull(password.getCreatedAt());
-        Assertions.assertNull(password.getUpdatedUser());
-        Assertions.assertNull(password.getUpdatedAt());
+        AysUser.Password passwordFromDatabase = userFromDatabase.getPassword();
+        Assertions.assertNotNull(passwordFromDatabase);
+        Assertions.assertNotNull(passwordFromDatabase.getValue());
+        Assertions.assertNotNull(passwordFromDatabase.getForgotAt());
+        Assertions.assertTrue(passwordFromDatabase.getForgotAt().isAfter(LocalDateTime.now().minusMinutes(1)));
+        Assertions.assertNotNull(passwordFromDatabase.getCreatedUser());
+        Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
+        Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
+        Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
     }
 
 
