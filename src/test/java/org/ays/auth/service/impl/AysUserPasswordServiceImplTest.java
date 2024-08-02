@@ -57,14 +57,18 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
 
+        AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
+                .withValidValues()
+                .withValue("16b6a38b-a84d-4545-b05b-68758f998cb4")
+                .withForgotAt(LocalDateTime.now())
+                .build();
         AysUser mockSavedUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockUser.getId())
                 .withEmailAddress(mockUser.getEmailAddress())
                 .withPhoneNumber(mockUser.getPhoneNumber())
-                .withPassword(mockUser.getPassword())
+                .withPassword(mockPassword)
                 .build();
-        mockSavedUser.getPassword().setForgotAt(LocalDateTime.now());
         Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
                 .thenReturn(mockSavedUser);
 
@@ -101,12 +105,17 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
 
+        AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
+                .withValidValues()
+                .withValue("b78a9229-9ca6-4a2b-9c14-aac160473d13")
+                .withForgotAt(LocalDateTime.now())
+                .build();
         AysUser mockSavedUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockUser.getId())
                 .withEmailAddress(mockUser.getEmailAddress())
                 .withPhoneNumber(mockUser.getPhoneNumber())
-                .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
+                .withPassword(mockPassword)
                 .build();
         Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
                 .thenReturn(mockSavedUser);
