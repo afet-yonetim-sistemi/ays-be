@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.mapper.AysTokenToResponseMapper;
 import org.ays.auth.model.request.AysLoginRequest;
+import org.ays.auth.model.request.AysPasswordCreateRequest;
 import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
@@ -105,6 +106,26 @@ class AysAuthController {
     @GetMapping("/password/{id}/validity")
     public AysResponse<Void> checkPasswordChangingValidity(@PathVariable @UUID String id) {
         userPasswordService.checkPasswordChangingValidity(id);
+        return AysResponse.SUCCESS;
+    }
+
+
+    /**
+     * Handles the request to create a new password for a user.
+     * <p>
+     * This endpoint processes a request to set a new password for a user identified
+     * by the provided password ID. It validates the request and updates the user's
+     * password if the request meets the required criteria.
+     *
+     * @param id            The unique identifier of the user for whom the password is being created.
+     * @param createRequest The request body containing the new password details.
+     * @return A response indicating the success of the operation.
+     */
+    @PostMapping("/password/{id}")
+    public AysResponse<Void> forgotPassword(@PathVariable @UUID String id,
+                                            @RequestBody @Valid AysPasswordCreateRequest createRequest) {
+
+        userPasswordService.createPassword(id, createRequest);
         return AysResponse.SUCCESS;
     }
 
