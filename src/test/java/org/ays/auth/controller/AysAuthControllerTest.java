@@ -6,6 +6,8 @@ import org.ays.auth.model.mapper.AysTokenToResponseMapper;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
+import org.ays.auth.model.request.AysPasswordCreateRequest;
+import org.ays.auth.model.request.AysPasswordCreateRequestBuilder;
 import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenInvalidateRequestBuilder;
@@ -328,6 +330,66 @@ class AysAuthControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(userPasswordService, Mockito.never())
                 .checkPasswordChangingValidity(Mockito.anyString());
+    }
+
+
+    @Test
+    void givenValidPasswordCreateRequest_whenPasswordCreated_thenReturnSuccessResponse() throws Exception {
+        // Given
+        String mockId = "1fa43c75-7a7a-4041-8cef-03be8429dd30";
+        AysPasswordCreateRequest mockPasswordCreateRequest = new AysPasswordCreateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(userPasswordService)
+                .createPassword(Mockito.anyString(), Mockito.any(AysPasswordCreateRequest.class));
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockPasswordCreateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userPasswordService, Mockito.times(1))
+                .createPassword(Mockito.anyString(), Mockito.any(AysPasswordCreateRequest.class));
+    }
+
+    @Test
+    void givenPasswordCreateRequest_whenPasswordsNotEqual_thenReturnValidationError() throws Exception {
+
+        // Given
+        String mockId = "1fa43c75-7a7a-4041-8cef-03be8429dd30";
+        AysPasswordCreateRequest mockPasswordCreateRequest = new AysPasswordCreateRequestBuilder()
+                .withPassword("password")
+                .withPasswordRepeat("password1")
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockPasswordCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userPasswordService, Mockito.never())
+                .createPassword(Mockito.anyString(), Mockito.any(AysPasswordCreateRequest.class));
     }
 
 }
