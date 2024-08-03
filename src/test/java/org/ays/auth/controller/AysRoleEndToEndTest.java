@@ -23,7 +23,6 @@ import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
-import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
@@ -41,9 +40,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 class AysRoleEndToEndTest extends AysEndToEndTest {
-
-    @Autowired
-    private InstitutionSavePort institutionSavePort;
 
     @Autowired
     private AysRoleSavePort roleSavePort;
@@ -484,17 +480,16 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     void givenId_whenRoleActivated_thenReturnSuccess() throws Exception {
 
         // Initialize
-        Institution institution = institutionSavePort.save(
-                new InstitutionBuilder()
-                        .withValidValues()
-                        .withoutId()
-                        .build()
-        );
-        List<AysPermission> permissions = permissionReadPort.findAll();
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
                         .withoutId()
+                        .withName("buBirRol")
                         .withStatus(AysRoleStatus.PASSIVE)
                         .withInstitution(institution)
                         .withPermissions(permissions)
@@ -507,7 +502,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/role/".concat(id).concat("/activate"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .patch(endpoint, superAdminToken.getAccessToken());
+                .patch(endpoint, adminToken.getAccessToken());
 
         AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
 

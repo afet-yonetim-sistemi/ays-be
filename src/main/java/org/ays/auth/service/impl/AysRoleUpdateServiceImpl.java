@@ -88,6 +88,7 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
     @Override
     public void activate(String id) {
         final AysRole role = roleReadPort.findById(id)
+                .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
         if (!role.isPassive()) {
