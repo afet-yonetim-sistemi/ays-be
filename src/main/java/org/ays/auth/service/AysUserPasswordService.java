@@ -1,6 +1,7 @@
 package org.ays.auth.service;
 
-import org.ays.auth.model.request.AysForgotPasswordRequest;
+import org.ays.auth.model.request.AysPasswordCreateRequest;
+import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.util.exception.AysEmailAddressNotValidException;
 import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
@@ -23,7 +24,7 @@ public interface AysUserPasswordService {
      * @param forgotPasswordRequest the request containing the user's email address.
      * @throws AysEmailAddressNotValidException if no user is found with the provided email address.
      */
-    void forgotPassword(AysForgotPasswordRequest forgotPasswordRequest);
+    void forgotPassword(AysPasswordForgotRequest forgotPasswordRequest);
 
     /**
      * Checks the validity of changing the user's password.
@@ -37,5 +38,16 @@ public interface AysUserPasswordService {
      * @throws AysUserPasswordCannotChangedException if the password cannot be changed due to invalid conditions.
      */
     void checkPasswordChangingValidity(String passwordId);
+
+    /**
+     * Creates a new password for the user.
+     * <p>
+     * This method updates the user's password with the new one provided in the request.
+     * It validates the password change request before updating the password.
+     *
+     * @param passwordId    The unique identifier of the password to be created.
+     * @param createRequest The request containing the new password details.
+     */
+    void createPassword(String passwordId, AysPasswordCreateRequest createRequest);
 
 }

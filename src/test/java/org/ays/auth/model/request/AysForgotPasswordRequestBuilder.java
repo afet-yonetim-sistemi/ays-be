@@ -2,10 +2,10 @@ package org.ays.auth.model.request;
 
 import org.ays.common.model.TestDataBuilder;
 
-public class AysForgotPasswordRequestBuilder extends TestDataBuilder<AysForgotPasswordRequest> {
+public class AysForgotPasswordRequestBuilder extends TestDataBuilder<AysPasswordForgotRequest> {
 
     public AysForgotPasswordRequestBuilder() {
-        super(AysForgotPasswordRequest.class);
+        super(AysPasswordForgotRequest.class);
     }
 
     public AysForgotPasswordRequestBuilder withValidValues() {
