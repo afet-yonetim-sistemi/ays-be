@@ -132,7 +132,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
 
     @Test
-    void givenValidForgotPasswordRequest_whenNewPasswordCreatedAndPasswordCreateMailSent_thenReturnSuccessResponse() throws Exception {
+    void givenValidForgotPasswordRequest_whenUserHasNotPasswordAndPasswordCreatedWithLatestValueAndPasswordCreateMailSent_thenReturnSuccessResponse() throws Exception {
 
         // Initialize
         Institution institution = new InstitutionBuilder()
