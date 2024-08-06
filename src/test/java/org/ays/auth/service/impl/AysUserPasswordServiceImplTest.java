@@ -13,6 +13,7 @@ import org.ays.auth.service.AysUserMailService;
 import org.ays.auth.util.exception.AysEmailAddressNotValidException;
 import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
+import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -49,17 +50,20 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
+        AysUser.Password password = new AysUserBuilder.PasswordBuilder()
+                .withValidValues()
+                .build();
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
-                .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
+                .withPassword(password)
                 .build();
         Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
 
         AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
                 .withValidValues()
-                .withValue("16b6a38b-a84d-4545-b05b-68758f998cb4")
+                .withValue(password.getValue())
                 .withForgotAt(LocalDateTime.now())
                 .build();
         AysUser mockSavedUser = new AysUserBuilder()
@@ -107,7 +111,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
 
         AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
                 .withValidValues()
-                .withValue("b78a9229-9ca6-4a2b-9c14-aac160473d13")
+                .withValue(AysRandomUtil.generateText(15))
                 .withForgotAt(LocalDateTime.now())
                 .build();
         AysUser mockSavedUser = new AysUserBuilder()

@@ -39,16 +39,14 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
 
 
     /**
-     * Handles the forgot password request by sending an email to the user
-     * with instructions to create a new password.
+     * Handles the forgot password request by sending an email to the user with instructions to create a new password.
      * <p>
-     * This method checks if a user exists with the provided email address.
-     * If the user exists and has no password set, a new temp password is generated.
-     * If the user already has a password, the forgot password timestamp is updated.
-     * In both cases, an email is sent to the user with instructions to create a new password.
+     * This method checks if the user exists based on the provided email address. If the user is found,
+     * it sets or updates the user's password with a temporary value and the current time as the forgotten password timestamp.
+     * An email is then sent to the user with instructions to create a new password.
      *
-     * @param forgotPasswordRequest The request containing the user's email address.
-     * @throws AysEmailAddressNotValidException if no user is found with the provided email address.
+     * @param forgotPasswordRequest the request containing the user's email address.
+     * @throws AysEmailAddressNotValidException if the email address does not correspond to any existing user.
      */
     @Override
     public void forgotPassword(final AysPasswordForgotRequest forgotPasswordRequest) {
@@ -57,11 +55,16 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
         final AysUser user = userReadPort.findByEmailAddress(emailAddress)
                 .orElseThrow(() -> new AysEmailAddressNotValidException(emailAddress));
 
-        final AysUser.Password password = AysUser.Password.builder()
-                .value(AysRandomUtil.generateUUID())
-                .forgotAt(LocalDateTime.now())
-                .build();
-        user.setPassword(password);
+        final var passwordBuilder = AysUser.Password.builder()
+                .forgotAt(LocalDateTime.now());
+
+        if (user.getPassword() != null) {
+            passwordBuilder.value(user.getPassword().getValue());
+        } else {
+            passwordBuilder.value(AysRandomUtil.generateText(15));
+        }
+
+        user.setPassword(passwordBuilder.build());
 
         final AysUser savedUser = userSavePort.save(user);
         userMailService.sendPasswordCreateEmail(savedUser);

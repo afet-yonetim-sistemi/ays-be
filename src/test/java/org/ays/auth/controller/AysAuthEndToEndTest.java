@@ -132,7 +132,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
 
     @Test
-    void givenValidForgotPasswordRequest_whenNewPasswordCreatedAndPasswordCreateMailSent_thenReturnSuccessResponse() throws Exception {
+    void givenValidForgotPasswordRequest_whenUserHasNotPasswordAndPasswordCreatedWithLatestValueAndPasswordCreateMailSent_thenReturnSuccessResponse() throws Exception {
 
         // Initialize
         Institution institution = new InstitutionBuilder()
@@ -178,6 +178,68 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         AysUser.Password passwordFromDatabase = userFromDatabase.getPassword();
         Assertions.assertNotNull(passwordFromDatabase);
         Assertions.assertNotNull(passwordFromDatabase.getValue());
+        Assertions.assertNotNull(passwordFromDatabase.getForgotAt());
+        Assertions.assertTrue(passwordFromDatabase.getForgotAt().isAfter(LocalDateTime.now().minusMinutes(1)));
+        Assertions.assertNotNull(passwordFromDatabase.getCreatedUser());
+        Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
+        Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
+        Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
+    }
+
+    @Test
+    void givenValidForgotPasswordRequest_whenUserHasPasswordAndPasswordCreatedWithLatestValueAndPasswordCreateMailSent_thenReturnSuccessResponse() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
+                .stream()
+                .findFirst()
+                .orElseThrow();
+
+        AysUser.Password password = new AysUserBuilder.PasswordBuilder()
+                .withValidValues()
+                .withoutId()
+                .build();
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withRoles(List.of(role))
+                        .withInstitution(institution)
+                        .withPassword(password)
+                        .build()
+        );
+
+        // Given
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withEmailAddress(user.getEmailAddress())
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/forgot");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockForgotPasswordRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        AysUser userFromDatabase = userReadPort.findById(user.getId())
+                .orElseThrow();
+
+        AysUser.Password passwordFromDatabase = userFromDatabase.getPassword();
+        Assertions.assertNotNull(passwordFromDatabase);
+        Assertions.assertNotNull(passwordFromDatabase.getValue());
+        Assertions.assertEquals(password.getValue(), passwordFromDatabase.getValue());
         Assertions.assertNotNull(passwordFromDatabase.getForgotAt());
         Assertions.assertTrue(passwordFromDatabase.getForgotAt().isAfter(LocalDateTime.now().minusMinutes(1)));
         Assertions.assertNotNull(passwordFromDatabase.getCreatedUser());
