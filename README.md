@@ -284,8 +284,7 @@ at org.eclipse.angus.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTran
 > Application parameters can be overridden specifically. 
 > If the **_AYS_LIQUIBASE_ENABLE_DROP_FIRST_** parameter in application.yml is defined here and given as true, the database is cleaned and recreated in the local environment. 
 > If this is not desired to be done every time the application is run, the parameter can only be disabled without deleting it.
-
-🔗 https://www.jetbrains.com/help/idea/run-debug-configuration-spring-boot.html#spring-boot
+> details: https://www.jetbrains.com/help/idea/run-debug-configuration-spring-boot.html#spring-boot
 ---
 
 # Project Infrastucture
