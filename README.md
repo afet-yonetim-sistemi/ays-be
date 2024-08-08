@@ -187,7 +187,7 @@ Page.
 
 ---
 
-## Common Maven Errors
+## Common Errors
 
 ### 1. Can't download the package from the private repo:
 
@@ -268,6 +268,23 @@ at org.eclipse.angus.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTran
 > parameters with your own mail information. You can refer to this link for more
 > details: https://www.jetbrains.com/help/idea/run-debug-configuration-spring-boot.html
 
+### 5. Validation Failed Exception:
+
+#### Error:
+```log
+[ERROR] Validation Failed:
+    2 changesets check sum
+        db/changelog/changes/1-ays-ddl.xml::1-ays-ddl::ays was: 9:bc046153f5677aace14604c2c58c3442 but is now: 9:34f914e2fbb9a593ea3c725551f758ad
+        db/changelog/changes/2-ays-dml.xml::2-ays-dml::ays was: 9:125d52ec3abeced458eb69767a39c443 but is now: 9:6e22314bcbe8286ee0eea2f049e16e26
+```
+
+#### Solution:
+> This problem is caused by the checksum values in the database not matching.
+> The Override configuration properties section opens. 
+> Application parameters can be overridden specifically. 
+> If the **_AYS_LIQUIBASE_ENABLE_DROP_FIRST_** parameter in application.yml is defined here and given as true, the database is cleaned and recreated in the local environment. 
+> If this is not desired to be done every time the application is run, the parameter can only be disabled without deleting it.
+> details: https://www.jetbrains.com/help/idea/run-debug-configuration-spring-boot.html#spring-boot
 ---
 
 # Project Infrastucture
