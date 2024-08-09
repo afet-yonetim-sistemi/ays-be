@@ -22,7 +22,6 @@ public class AdminRegistrationApplicationsResponse {
     private String reason;
     private AdminRegistrationApplicationStatus status;
     private Institution institution;
-    private User user;
     private String createdUser;
     private LocalDateTime createdAt;
 
@@ -35,16 +34,4 @@ public class AdminRegistrationApplicationsResponse {
         private String id;
         private String name;
     }
-
-    /**
-     * Nested static class representing the user details.
-     */
-    @Getter
-    @Setter
-    public static class User {
-        private String id;
-        private String firstName;
-        private String lastName;
-    }
-
 }

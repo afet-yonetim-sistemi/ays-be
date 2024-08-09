@@ -113,18 +113,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), listRequest);
 
-        List<AdminRegistrationApplication> adminRegistrationApplications = List.of(
-                new AdminRegistrationApplicationBuilder().withValidValues().withStatus(AdminRegistrationApplicationStatus.WAITING).build()
-        );
-
-        AysPageable aysPageable = listRequest.getPageable();
-        AdminRegistrationApplicationFilter filter = listRequest.getFilter();
-        AysPage<AdminRegistrationApplication> adminRegistrationApplicationPage = AysPageBuilder
-                .from(adminRegistrationApplications, aysPageable, filter);
-
-        AysPageResponse<AdminRegistrationApplication> pageResponse = AysPageResponse.<AdminRegistrationApplication>builder()
-                .of(adminRegistrationApplicationPage).build();
-        AysResponse<AysPageResponse<AdminRegistrationApplication>> mockResponse = AysResponse.successOf(pageResponse);
+        AysResponse<AysPageResponse<AdminRegistrationApplication>> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -144,23 +133,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.firstContent("institution.name")
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("user")
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.firstContent("user.id")
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.firstContent("user.firstName")
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.firstContent("user.lastName")
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.firstContent("user.city")
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.firstContent("user.emailAddress")
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.firstContent("user.phoneNumber")
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.firstContent("user.phoneNumber.countryCode")
-                        .doesNotExist())
-                .andExpect(AysMockResultMatchersBuilders.firstContent("user.phoneNumber.lineNumber")
-                        .doesNotExist())
+                        .doesNotHaveJsonPath())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("createdUser")
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
