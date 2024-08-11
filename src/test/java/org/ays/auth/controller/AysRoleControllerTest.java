@@ -866,8 +866,6 @@ class AysRoleControllerTest extends AysRestControllerTest {
     }
 
 
-
-
     @Test
     void givenValidId_whenRoleDeleted_thenReturnSuccess() throws Exception {
         // Given
