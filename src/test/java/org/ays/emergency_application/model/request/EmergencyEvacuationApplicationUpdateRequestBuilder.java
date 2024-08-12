@@ -13,7 +13,7 @@ public class EmergencyEvacuationApplicationUpdateRequestBuilder extends TestData
         return this
                 .withSeatingCount(1)
                 .withHasObstaclePersonExist(true)
-                .withStatus(EmergencyEvacuationApplicationStatus.IN_PROGRESS)
+                .withStatus(EmergencyEvacuationApplicationStatus.IN_REVIEW)
                 .withNotes("This is a valid note for the application update.");
     }
 
