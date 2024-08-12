@@ -12,12 +12,15 @@ spring:
   datasource:
     username: ${AYS_DB_USERNAME:ays}
     password: ${AYS_DB_PASSWORD:ayspass}
-    url: jdbc:mysql://${AYS_DB_IP:localhost}:${AYS_DB_PORT:3307}/ays
     driver-class-name: com.mysql.cj.jdbc.Driver
+    writer:
+      url: jdbc:mysql://${AYS_DB_WRITER_INSTANCE_IP:localhost}:${AYS_DB_WRITER_INSTANCE_PORT:3307}/ays
+    reader:
+      url: jdbc:mysql://${AYS_DB_READER_INSTANCE_IP:localhost}:${AYS_DB_READER_INSTANCE_PORT:3307}/ays
     hikari:
       username: ${spring.datasource.username}
       password: ${spring.datasource.password}
-      jdbc-url: ${spring.datasource.url}
+      jdbc-url: ${spring.datasource.writer.url}
       driver-class-name: ${spring.datasource.driver-class-name}
       maximum-pool-size: 5
       connection-timeout: 180000
