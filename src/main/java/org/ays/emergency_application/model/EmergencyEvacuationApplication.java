@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.institution.model.Institution;
 
 /**

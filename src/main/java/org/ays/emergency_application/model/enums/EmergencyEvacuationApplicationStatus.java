@@ -1,4 +1,4 @@
-package org.ays.emergency_application.model.entity;
+package org.ays.emergency_application.model.enums;
 
 /**
  * Enumeration keeping emergency evacuation status.

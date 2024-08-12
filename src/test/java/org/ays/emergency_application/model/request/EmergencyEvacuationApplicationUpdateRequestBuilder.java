@@ -1,7 +1,7 @@
 package org.ays.emergency_application.model.request;
 
 import org.ays.common.model.TestDataBuilder;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 
 public class EmergencyEvacuationApplicationUpdateRequestBuilder extends TestDataBuilder<EmergencyEvacuationApplicationUpdateRequest> {
 
