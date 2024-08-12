@@ -6,10 +6,11 @@ import org.testcontainers.containers.MySQLContainer;
 
 abstract class AysTestContainerConfiguration {
 
-    private static final MySQLContainer<?> MYSQL_CONTAINER = new MySQLContainer<>("mysql:8.0.33")
+    private static final MySQLContainer<?> MYSQL_CONTAINER = new MySQLContainer<>("mysql:8.4.0")
             .withUsername("ays")
             .withPassword("ayspass")
-            .withDatabaseName("test");
+            .withDatabaseName("test")
+            .withCommand("--max-connections=1000");
 
     static {
         MYSQL_CONTAINER.start();
@@ -19,7 +20,8 @@ abstract class AysTestContainerConfiguration {
     static void overrideProps(DynamicPropertyRegistry dynamicPropertyRegistry) {
         dynamicPropertyRegistry.add("spring.datasource.username", MYSQL_CONTAINER::getUsername);
         dynamicPropertyRegistry.add("spring.datasource.password", MYSQL_CONTAINER::getPassword);
-        dynamicPropertyRegistry.add("spring.datasource.url", MYSQL_CONTAINER::getJdbcUrl);
+        dynamicPropertyRegistry.add("spring.datasource.writer.url", MYSQL_CONTAINER::getJdbcUrl);
+        dynamicPropertyRegistry.add("spring.datasource.reader.url", MYSQL_CONTAINER::getJdbcUrl);
     }
 
 }
