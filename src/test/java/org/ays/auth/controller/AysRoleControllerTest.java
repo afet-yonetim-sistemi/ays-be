@@ -836,6 +836,35 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .passivate(Mockito.anyString());
     }
 
+    @Test
+    void givenValidIdForPassivation_whenRoleUsing_thenReturnConflict() throws Exception {
+
+        // Given
+        String mockId = "13e8ff0e-8d85-4f4f-8e45-efb04d1d8bf8";
+
+        // When
+        Mockito.doThrow(new AysRoleAssignedToUserException(mockId))
+                .when(roleUpdateService)
+                .passivate(mockId);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(mockId).concat("/passivate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockSuperAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.times(1))
+                .passivate(mockId);
+    }
+
 
     @Test
     void givenValidId_whenRoleDeleted_thenReturnSuccess() throws Exception {

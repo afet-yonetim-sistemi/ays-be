@@ -727,6 +727,47 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
                 .save(mockRole);
     }
 
+    @Test
+    void givenValidIdForPassivation_whenRoleUsing_thenThrowRoleAssignedToUserException() {
+
+        // Given
+        String mockId = "731f4ba4-c34b-41c3-b488-d9a0c69904a3";
+
+        // When
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+
+        Mockito.when(roleReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockRole));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockRole.getInstitution().getId());
+
+        Mockito.when(roleReadPort.isRoleUsing(Mockito.anyString()))
+                .thenReturn(true);
+
+        // Then
+        Assertions.assertThrows(
+                AysRoleAssignedToUserException.class,
+                () -> roleUpdateService.passivate(mockId)
+        );
+
+        // Verify
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .isRoleUsing(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(roleSavePort, Mockito.never())
+                .save(Mockito.any(AysRole.class));
+    }
+
 
     @Test
     void givenValidId_whenRoleFound_thenDeleteRole() {

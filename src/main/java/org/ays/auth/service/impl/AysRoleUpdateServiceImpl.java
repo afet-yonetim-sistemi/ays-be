@@ -103,13 +103,14 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
     /**
      * Passivates an existing role.
      * <p>
-     * This method sets the status of the role identified by its ID to passivate. If the role does not exist,
-     * an exception is thrown. Additionally, if the role's status is not {@link AysRoleStatus#ACTIVE},
-     * an exception is thrown.
+     * This method sets the status of the role identified by its ID to passivate.
+     * It also verifies that the role belongs to the same institution as the current user's institution
+     * and no user is assigned to the role.
      * </p>
      *
      * @param id The ID of the role to passivate.
      * @throws AysRoleNotExistByIdException  if a role with the given ID does not exist.
+     * @throws AysRoleAssignedToUserException if any user is assigned to the role.
      * @throws AysInvalidRoleStatusException if the role's current status is not {@link AysRoleStatus#ACTIVE}.
      */
     @Override
@@ -117,6 +118,10 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         final AysRole role = roleReadPort.findById(id)
                 .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
+
+        if (roleReadPort.isRoleUsing(id)) {
+            throw new AysRoleAssignedToUserException(id);
+        }
 
         if (!role.isActive()) {
             throw new AysInvalidRoleStatusException(AysRoleStatus.ACTIVE);
