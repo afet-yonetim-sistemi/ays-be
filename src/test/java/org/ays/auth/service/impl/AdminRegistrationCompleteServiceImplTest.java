@@ -80,14 +80,6 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         AysPhoneNumberRequest mockPhoneNumberRequest = mockCompleteRequest.getPhoneNumber();
 
         // When
-        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
-                .withValidValues()
-                .withStatus(AdminRegistrationApplicationStatus.WAITING)
-                .withoutUser()
-                .build();
-        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
-                .thenReturn(Optional.of(mockApplication));
-
         Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
 
@@ -97,6 +89,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
                 .build();
         Mockito.when(userReadPort.existsByPhoneNumber(mockPhoneNumber))
                 .thenReturn(false);
+
+        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .withStatus(AdminRegistrationApplicationStatus.WAITING)
+                .withoutUser()
+                .build();
+        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockApplication));
 
         Mockito.when(roleReadPort.findAllActivesByInstitutionId(Mockito.anyString()))
                 .thenReturn(List.of());
@@ -135,14 +135,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest);
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
-                .findById(Mockito.anyString());
-
         Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
         Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
+
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findAllActivesByInstitutionId(Mockito.anyString());
@@ -174,14 +174,6 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         AysPhoneNumberRequest mockPhoneNumberRequest = mockCompleteRequest.getPhoneNumber();
 
         // When
-        AdminRegistrationApplication mockWaitingApplication = new AdminRegistrationApplicationBuilder()
-                .withValidValues()
-                .withId(mockApplicationId)
-                .withoutUser()
-                .build();
-        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
-                .thenReturn(Optional.of(mockWaitingApplication));
-
         Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
 
@@ -191,6 +183,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
                 .build();
         Mockito.when(userReadPort.existsByPhoneNumber(mockPhoneNumber))
                 .thenReturn(false);
+
+        AdminRegistrationApplication mockWaitingApplication = new AdminRegistrationApplicationBuilder()
+                .withValidValues()
+                .withId(mockApplicationId)
+                .withoutUser()
+                .build();
+        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockWaitingApplication));
 
         AysRole mockRole = new AysRoleBuilder()
                 .withValidValues()
@@ -220,14 +220,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest);
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
-                .findById(Mockito.anyString());
-
         Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
         Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
+
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findAllActivesByInstitutionId(Mockito.anyString());
@@ -255,8 +255,19 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         String mockApplicationId = "Invalid";
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues().build();
+        AysPhoneNumberRequest mockPhoneNumberRequest = mockCompleteRequest.getPhoneNumber();
 
         // When
+        Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
+                .thenReturn(false);
+
+        AysPhoneNumber mockPhoneNumber = AysPhoneNumber.builder()
+                .countryCode(mockPhoneNumberRequest.getCountryCode())
+                .lineNumber(mockPhoneNumberRequest.getLineNumber())
+                .build();
+        Mockito.when(userReadPort.existsByPhoneNumber(mockPhoneNumber))
+                .thenReturn(false);
+
         Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
@@ -267,14 +278,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
-                .findById(Mockito.anyString());
-
-        Mockito.verify(userReadPort, Mockito.never())
+        Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
-        Mockito.verify(userReadPort, Mockito.never())
+        Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
+
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
 
         Mockito.verify(roleReadPort, Mockito.never())
                 .findAllActivesByInstitutionId(Mockito.anyString());
@@ -303,8 +314,19 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
                 .build();
+        AysPhoneNumberRequest mockPhoneNumberRequest = mockCompleteRequest.getPhoneNumber();
 
         // When
+        Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
+                .thenReturn(false);
+
+        AysPhoneNumber mockPhoneNumber = AysPhoneNumber.builder()
+                .countryCode(mockPhoneNumberRequest.getCountryCode())
+                .lineNumber(mockPhoneNumberRequest.getLineNumber())
+                .build();
+        Mockito.when(userReadPort.existsByPhoneNumber(mockPhoneNumber))
+                .thenReturn(false);
+
         AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
                 .withValidValues()
                 .withStatus(AdminRegistrationApplicationStatus.COMPLETED)
@@ -319,14 +341,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
-                .findById(Mockito.anyString());
-
-        Mockito.verify(userReadPort, Mockito.never())
+        Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
-        Mockito.verify(userReadPort, Mockito.never())
+        Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
+
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
 
         Mockito.verify(roleReadPort, Mockito.never())
                 .findAllActivesByInstitutionId(Mockito.anyString());
@@ -357,12 +379,6 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
-                .withValidValues()
-                .build();
-        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
-                .thenReturn(Optional.ofNullable(mockApplication));
-
         Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(true);
 
@@ -373,14 +389,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
-                .findById(Mockito.anyString());
-
         Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
         Mockito.verify(userReadPort, Mockito.never())
                 .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
+
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.never())
+                .findById(Mockito.anyString());
 
         Mockito.verify(roleReadPort, Mockito.never())
                 .findAllActivesByInstitutionId(Mockito.anyString());
@@ -416,14 +432,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
                 .withPhoneNumber(mockPhoneNumberRequest)
                 .build();
 
-        AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
-                .withValidValues()
-                .build();
-
         // When
-        Mockito.when(adminRegistrationApplicationReadPort.findById(Mockito.anyString()))
-                .thenReturn(Optional.ofNullable(mockApplication));
-
         Mockito.when(userReadPort.existsByEmailAddress((Mockito.anyString())))
                 .thenReturn(false);
 
@@ -437,14 +446,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
         );
 
         // Verify
-        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.times(1))
-                .findById(Mockito.anyString());
-
         Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByEmailAddress(Mockito.anyString());
 
         Mockito.verify(userReadPort, Mockito.times(1))
                 .existsByPhoneNumber(Mockito.any(AysPhoneNumber.class));
+
+        Mockito.verify(adminRegistrationApplicationReadPort, Mockito.never())
+                .findById(Mockito.anyString());
 
         Mockito.verify(roleReadPort, Mockito.never())
                 .findAllActivesByInstitutionId(Mockito.anyString());
