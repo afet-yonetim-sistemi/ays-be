@@ -17,7 +17,6 @@ import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.institution.model.Institution;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -34,7 +33,6 @@ import java.util.UUID;
  * </p>
  */
 @Service
-@Transactional
 @RequiredArgsConstructor
 class AysUserCreateServiceImpl implements AysUserCreateService {
 
@@ -58,9 +56,9 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
      * </p>
      *
      * @param createRequest The request object containing data for the new user.
-     * @throws AysUserAlreadyExistsByEmailAddressException       if the email address is already associated with another user.
-     * @throws AysUserAlreadyExistsByPhoneNumberException if the phone number is already associated with another user.
-     * @throws AysRolesNotExistException                  if any of the provided role IDs do not exist.
+     * @throws AysUserAlreadyExistsByEmailAddressException if the email address is already associated with another user.
+     * @throws AysUserAlreadyExistsByPhoneNumberException  if the phone number is already associated with another user.
+     * @throws AysRolesNotExistException                   if any of the provided role IDs do not exist.
      */
     @Override
     public void create(final AysUserCreateRequest createRequest) {

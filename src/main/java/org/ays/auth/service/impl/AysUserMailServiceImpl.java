@@ -10,7 +10,6 @@ import org.ays.common.service.AysMailService;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.port.AysParameterReadPort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,6 @@ import java.util.Map;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class AysUserMailServiceImpl implements AysUserMailService {
 
     private final AysMailService mailService;
