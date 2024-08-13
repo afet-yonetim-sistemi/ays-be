@@ -1,7 +1,7 @@
 package org.ays.emergency_application.model.request;
 
 import org.ays.common.model.TestDataBuilder;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 
 public class EmergencyEvacuationApplicationUpdateRequestBuilder extends TestDataBuilder<EmergencyEvacuationApplicationUpdateRequest> {
 
@@ -13,7 +13,7 @@ public class EmergencyEvacuationApplicationUpdateRequestBuilder extends TestData
         return this
                 .withSeatingCount(1)
                 .withHasObstaclePersonExist(true)
-                .withStatus(EmergencyEvacuationApplicationStatus.IN_PROGRESS)
+                .withStatus(EmergencyEvacuationApplicationStatus.IN_REVIEW)
                 .withNotes("This is a valid note for the application update.");
     }
 

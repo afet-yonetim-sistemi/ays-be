@@ -4,6 +4,7 @@ import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 
 public class EmergencyEvacuationApplicationEntityBuilder extends TestDataBuilder<EmergencyEvacuationApplicationEntity> {
 

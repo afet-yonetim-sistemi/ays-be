@@ -8,7 +8,7 @@ import org.ays.common.model.AysPageable;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationRequestToDomainMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;

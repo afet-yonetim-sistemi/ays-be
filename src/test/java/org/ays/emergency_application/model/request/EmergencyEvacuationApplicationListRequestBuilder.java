@@ -4,7 +4,7 @@ import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysPagingBuilder;
 import org.ays.common.model.AysSort;
 import org.ays.common.model.TestDataBuilder;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
 
 import java.util.List;
