@@ -26,6 +26,7 @@ import org.ays.auth.util.exception.AysTokenAlreadyInvalidatedException;
 import org.ays.auth.util.exception.AysTokenNotValidException;
 import org.ays.auth.util.exception.AysUserDoesNotAccessPageException;
 import org.ays.auth.util.exception.AysUserIdNotValidException;
+import org.ays.auth.util.exception.AysUserNotActiveException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -17,6 +17,7 @@ import org.ays.auth.util.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
+import org.ays.auth.util.exception.AysUserNotActiveException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotPassiveException;
 import org.ays.common.model.AysPhoneNumber;
@@ -818,6 +819,159 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(userSavePort, Mockito.never())
                 .save(Mockito.any(AysUser.class));
+    }
+
+
+    @Test
+    void givenValidId_whenUserIsActive_thenPassivateUser() {
+
+        // Given
+        String mockId = "21a0ab5a-c0e9-4789-9704-a6b5c02e2325";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withInstitution(mockInstitution)
+                .withStatus(AysUserStatus.ACTIVE)
+                .build();
+
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(Mockito.mock(AysUser.class));
+
+        // Then
+        userUpdateService.passivate(mockId);
+
+        // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidUserId_whenUserNotFound_thenThrowAysUserNotExistByIdException(){
+
+        // Given
+        String mockId = "9f1eb072-7830-4c43-9a32-d77b62ccddd3";
+
+        // When
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userUpdateService.passivate(mockId)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.never())
+                .getInstitutionId();
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidId_whenUserIsNotActive_thenThrowAysUserNotActiveException(){
+
+        // Given
+        String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withInstitution(mockInstitution)
+                .withStatus(AysUserStatus.PASSIVE) // Not active
+                .build();
+
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotActiveException.class,
+                () -> userUpdateService.passivate(mockId)
+        );
+
+        // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidUserId_whenInstitutionIdDoesNotMatch_thenThrowAysUserNotExistByIdException() {
+
+        // Given
+        String mockId = "a785c6a2-229f-4a73-8e3a-3ff49bd16a07";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        Institution differentInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withInstitution(differentInstitution)
+                .withStatus(AysUserStatus.ACTIVE)
+                .build();
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        Mockito.when(userReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userUpdateService.passivate(mockId)
+        );
+
+        // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(mockId);
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(mockUser);
     }
 
 }

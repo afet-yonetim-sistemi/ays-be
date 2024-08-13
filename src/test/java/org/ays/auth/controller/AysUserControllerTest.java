@@ -798,4 +798,29 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .delete(Mockito.anyString());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "A",
+            "493268349068342"
+    })
+    void givenInvalidUserId_whenIdNotValid_thenReturnValidationErrorForPassivate(String invalidId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(invalidId).concat("/passivate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .passivate(Mockito.anyString());
+    }
+
 }
