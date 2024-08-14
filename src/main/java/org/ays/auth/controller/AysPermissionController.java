@@ -38,7 +38,7 @@ class AysPermissionController {
      * @return {@link AysResponse} containing a list of {@link AysPermissionsResponse}.
      */
     @GetMapping("/permissions")
-    @PreAuthorize("hasAnyAuthority('role:create', 'role:update')")
+    @PreAuthorize("hasAnyAuthority('role:detail','role:create', 'role:update')")
     public AysResponse<List<AysPermissionsResponse>> findAll() {
 
         final List<AysPermission> permissions = permissionService.findAll();
