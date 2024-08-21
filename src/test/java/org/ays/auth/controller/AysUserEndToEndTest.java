@@ -487,7 +487,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withRoles(roles)
                         .withInstitution(institution)
-                        .withStatus(AysUserStatus.ACTIVE)  // Kullanıcı başlangıçta aktif
+                        .withStatus(AysUserStatus.ACTIVE)
                         .build()
         );
 

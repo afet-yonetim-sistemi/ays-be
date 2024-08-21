@@ -938,25 +938,21 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         // When
         Institution mockInstitution = new InstitutionBuilder()
                 .withValidValues()
-                .build();
-
-        Institution differentInstitution = new InstitutionBuilder()
-                .withValidValues()
+                .withId("a9d5fdcf-9aea-41e4-9e00-fa607e9b6ab5")
                 .build();
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(differentInstitution)
+                .withInstitution(mockInstitution)
                 .withStatus(AysUserStatus.ACTIVE)
                 .build();
-
-        Mockito.when(identity.getInstitutionId())
-                .thenReturn(mockInstitution.getId());
 
         Mockito.when(userReadPort.findById(mockId))
                 .thenReturn(Optional.of(mockUser));
 
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("85d51431-cc3d-465c-8c6c-1ecab336cc02");
         // Then
         Assertions.assertThrows(
                 AysUserNotExistByIdException.class,

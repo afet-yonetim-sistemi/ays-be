@@ -144,7 +144,7 @@ class AysUserController {
      * @param id The UUID of the user to be activated.
      * @return An {@link AysResponse} indicating the success of the operation.
      */
-    @PatchMapping("user/{id}/activate")
+    @PatchMapping("/user/{id}/activate")
     @PreAuthorize("hasAnyAuthority('user:update')")
     public AysResponse<Void> activate(@PathVariable @UUID final String id) {
         userUpdateService.activate(id);
@@ -162,7 +162,7 @@ class AysUserController {
      * @param id The UUID of the user to be passivated.
      * @return An {@link AysResponse} indicating the success of the operation.
      */
-    @PatchMapping("user/{id}/passivate")
+    @PatchMapping("/user/{id}/passivate")
     @PreAuthorize("hasAnyAuthority('user:update')")
     public AysResponse<Void> passivate(@PathVariable @UUID final String id) {
         userUpdateService.passivate(id);

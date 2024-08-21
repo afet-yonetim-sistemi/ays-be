@@ -798,6 +798,36 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .delete(Mockito.anyString());
     }
 
+
+    @Test
+    void givenValidId_whenPassivateUser_thenReturnSuccess() throws Exception {
+
+        // Given
+        String mockId = "894dcc5d-31cc-4704-9f0a-627ac7da517d";
+
+        // When
+        Mockito.doNothing()
+                .when(userUpdateService)
+                .passivate(Mockito.anyString());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId).concat("/passivate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockAdminToken.getAccessToken());
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.times(1))
+                .passivate(Mockito.anyString());
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "A",
@@ -823,4 +853,27 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .passivate(Mockito.anyString());
     }
 
+    @Test
+    void givenValidUserId_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
+
+        // Given
+        String mockId = "333aec72-ecd8-49fc-86f5-2b5458871edb";
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId).concat("/passivate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockUserToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .passivate(Mockito.anyString());
+    }
 }
