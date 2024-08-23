@@ -21,41 +21,52 @@ you maintain a collaborative and inclusive environment for everyone involved.
 
 Thank you for considering contributing to our project! To make the process smooth, please follow these steps:
 
-1. **Fork the Repository:**
-   - Visit our [GitHub repository](https://github.com/afet-yonetim-sistemi/ays-be) and fork it to your GitHub account.
+1. **Join Our Discord Server:**
+    - Join our [Discord server](https://discord.com/invite/NkAkYajkKa) to engage with the community and project
+      maintainers.
+    - Navigate to the 'Environment Informations' section and find the GitHub thread. Leave a message in the thread to
+      express your interest in contributing.
 
-2. **Create a New Branch:**
-   - Create a branch for your contribution by referring to
-     the [Naming Conventions of Branches](#branch-naming-conventions) for guidance.
-   - Ensure your feature branch is associated with the corresponding GitHub issue from the 'Development' section in
-     each issue page.
+2. **Review Jira Issues:**
+    - Access
+      our [Jira Issues](https://afetyonetimsistemi.atlassian.net/jira/software/c/projects/AYS/issues/AYS-408?filter=allissues&jql=project%20%3D%20%22AYS%22%20AND%20status%20%3D%20Ready%20AND%20assignee%20%3D%20empty%20ORDER%20BY%20created%20DESC)
+      to view the issues and development tasks.
+    - Identify relevant issues or features you would like to work on.
 
-3. **Make Changes:**
+3. **Cloning the Project:**
+    - Once added to the GitHub organization, clone the repository from the organization’s GitHub page.
+    - Clone the repository using the command: `git clone https://github.com/afet-yonetim-sistemi/ays-be`
+
+4. **Create a New Branch:**
+    - Create a branch for your contribution based on the `main` branch.
+    - Refer to the [Naming Conventions of Branches](#branch-naming-conventions) for guidance on branch naming.
+    - Ensure your feature branch is associated with the relevant Jira issue and GitHub issue if applicable.
+
+5. **Make Changes:**
    - Implement your changes in the branch you created.
    - Thoroughly test your changes to ensure they work as expected.
 
-4. **Commit Changes:**
-   - Commit your changes with clear and concise messages. Refer to the [Commit Messages](#commit-messages) section for
-     guidance.
+6. **Commit Changes:**
+    - Commit your changes with clear and concise messages. Refer to the [Commit Messages](#commit-messages) section for
+      guidance.
 
-5. **Push Changes:**
-   - Push your changes to your forked repository.
+7. **Push Changes:**
+    - Push your changes to the `main` branch of your cloned repository.
 
-6. **Open a Pull Request (PR):**
-   - Open a PR against the `main` branch of the original repository by referring to
-     the [Pull Request Naming Conventions](#pull-request-naming-conventions) for guidance.
+8. **Open a Pull Request (PR):**
+    - Open a PR against the `main` branch of the original repository.
    - Provide a detailed description of your changes in the PR.
-   - Link relevant issues or discussions in the PR description.
+    - Link relevant Jira issues and GitHub issues in the PR description.
    - Follow the pull request naming conventions outlined below.
-   - PR title should contain the issue/feature/bug number.
+    - PR title should contain the Jira issue number and a brief description of the change.
 
-7. **Review and Feedback:**
+9. **Review and Feedback:**
    - Once your PR is submitted, project maintainers will review it and provide feedback.
    - Be responsive to feedback and make necessary changes.
 
 ## Development Standards
 
-Our project adheres to the [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) for
+Our project adheres to the [GitHub Flow](https://docs.github.com/en/get-started/quickstart/github-flow) for
 collaboration.
 Issues are managed on GitHub Discussions, with plans to transition them to Jira.
 
@@ -121,31 +132,64 @@ code style guidelines mentioned in the repository.
 Writing clear and descriptive commit messages is essential for the maintainability of the project. Follow these
 guidelines when writing commit messages:
 
-- Limit the subject line to 50 characters.
-- Begin the subject line with a verb in the present tense (e.g., "Fix," "Add," "Update").
-- Use the imperative mood (e.g., "Fix bug" instead of "Fixed bug").
-- Provide additional details in the commit message body if necessary. Explain why the change was made and any relevant
-  information for reviewers.
+- **Be Clear and Concise:**
+    - Ensure the subject line clearly summarizes the change. While it’s useful to start with a verb (e.g., "Fix," "
+      Add," "Update"), the main goal is to make sure the message is clear and easily understandable.
 
-Example:
+- **Provide Additional Details:**
+    - Include additional details in the commit message body if necessary.
+    - Explain the reason for the change and provide context to help reviewers understand the impact and purpose of the
+      change.
 
-```
-Add feature to handle user authentication
+- **Squash and Merge:**
+    - We use the Squash and Merge strategy for integrating pull requests. This method combines all commits in a pull
+      request into a single commit before merging.
+    - As a result, the pull request title becomes the final commit message. Ensure the title is descriptive and
+      accurately reflects the overall change.
+    - Example pull request title: `Enhance Error Handling in Payment Processing`
 
-- Implemented a new module for user authentication
-- Updated existing login page UI
-- Added new API endpoint for user registration
-```
+- **Example Commit Message:**
+  ```
+  Add new endpoint to handle user authentication
+
+  - AYS-0 : Add new POST endpoint to handle user login
+  - Include validation for user credentials
+  - AYS-0 | Authentication Flow Has Been Refactored
+  ```
+
+By following these guidelines, you contribute to a clear and understandable project history, facilitating easier code
+reviews and collaboration.
 
 ## Testing
 
-If you are contributing code changes, it is important to include appropriate tests to ensure the stability and
+If you are contributing code changes, it is crucial to include appropriate tests to ensure the stability and
 functionality of the project. Follow these guidelines when writing tests:
 
-- Write tests that cover the new code you have added or modified.
-- Ensure your tests are easy to understand and maintain.
-- Run the existing test suite before submitting your changes to make sure they haven't introduced any regressions.
-- Provide instructions on how to run the tests if they require additional setup or specific commands.
+- **Unit Tests:**
+    - Write unit tests to cover the new code you have added or modified.
+    - Ensure that each unit test is focused on a single aspect of the code to make it easy to understand and maintain.
+
+- **Integration Tests:**
+    - Include integration tests to verify that different parts of the system work together as expected.
+    - Make sure your integration tests cover scenarios where multiple components interact.
+
+- **Manual Tests:**
+    - Use Postman to write and execute manual tests for API endpoints and ensure they perform as intended.
+    - Document any manual test cases in a way that they can be easily replicated.
+
+- **Test-Driven Development (TDD):**
+    - When applicable, adopt the TDD approach. Write your tests before implementing the new code to ensure your changes
+      meet the required functionality from the start.
+
+- **Run Existing Test Suite:**
+    - Run the existing test suite before submitting your changes to ensure they haven't introduced any regressions.
+    - Address any failing tests that might be impacted by your changes.
+
+- **Instructions for Running Tests:**
+    - Provide clear instructions on how to run the tests, including any additional setup or specific commands needed.
+
+By following these guidelines, you help maintain the quality and stability of the project while making it easier for
+others to contribute and collaborate.
 
 ## Documentation
 
