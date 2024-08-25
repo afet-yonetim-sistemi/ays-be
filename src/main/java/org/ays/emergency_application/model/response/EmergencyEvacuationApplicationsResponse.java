@@ -16,6 +16,9 @@ public class EmergencyEvacuationApplicationsResponse {
     private String firstName;
     private String lastName;
     private AysPhoneNumber phoneNumber;
+    private String applicantFirstName;
+    private String applicantLastName;
+    private AysPhoneNumber applicantPhoneNumber;
     private Integer seatingCount;
     private EmergencyEvacuationApplicationStatus status;
     private Boolean isInPerson;
