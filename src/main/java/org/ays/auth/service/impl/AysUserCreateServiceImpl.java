@@ -15,13 +15,13 @@ import org.ays.auth.util.exception.AysRolesNotExistException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Service implementation for creating new users in the system.
@@ -58,9 +58,9 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
      * </p>
      *
      * @param createRequest The request object containing data for the new user.
-     * @throws AysUserAlreadyExistsByEmailAddressException       if the email address is already associated with another user.
-     * @throws AysUserAlreadyExistsByPhoneNumberException if the phone number is already associated with another user.
-     * @throws AysRolesNotExistException                  if any of the provided role IDs do not exist.
+     * @throws AysUserAlreadyExistsByEmailAddressException if the email address is already associated with another user.
+     * @throws AysUserAlreadyExistsByPhoneNumberException  if the phone number is already associated with another user.
+     * @throws AysRolesNotExistException                   if any of the provided role IDs do not exist.
      */
     @Override
     public void create(final AysUserCreateRequest createRequest) {
@@ -78,10 +78,18 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
         this.validateRolesAndSet(user, createRequest.getRoleIds());
 
         user.activate();
-        user.setInstitution(Institution.builder().id(identity.getInstitutionId()).build());
-        user.setPassword(AysUser.Password.builder().value(UUID.randomUUID().toString()).build());
+        user.setInstitution(
+                Institution.builder()
+                        .id(identity.getInstitutionId())
+                        .build()
+        );
+        user.setPassword(
+                AysUser.Password.builder()
+                        .value(AysRandomUtil.generateText(15))
+                        .build()
+        );
 
-        AysUser savedUser = userSavePort.save(user);
+        final AysUser savedUser = userSavePort.save(user);
 
         userMailService.sendPasswordCreateEmail(savedUser);
     }
