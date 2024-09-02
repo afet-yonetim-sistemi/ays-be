@@ -6,15 +6,18 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.ays.common.util.validation.Password;
 
 @Getter
 @Setter
 public class AysPasswordCreateRequest {
 
     @NotBlank
+    @Password
     private String password;
 
     @NotBlank
+    @Password
     private String passwordRepeat;
 
 

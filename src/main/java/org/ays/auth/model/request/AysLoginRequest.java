@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.common.util.validation.EmailAddress;
+import org.ays.common.util.validation.Password;
 
 /**
  * Represents a login request of the Ays application.
@@ -25,6 +26,7 @@ public class AysLoginRequest {
     private String emailAddress;
 
     @NotBlank
+    @Password
     private String password;
 
     @NotNull
