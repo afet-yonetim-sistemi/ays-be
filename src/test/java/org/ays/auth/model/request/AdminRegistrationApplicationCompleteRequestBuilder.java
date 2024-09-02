@@ -17,8 +17,13 @@ public class AdminRegistrationApplicationCompleteRequestBuilder extends TestData
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build());
     }
 
-    public AdminRegistrationApplicationCompleteRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
-        data.setPhoneNumber(phoneNumber);
+    public AdminRegistrationApplicationCompleteRequestBuilder withFirstName(String firstName) {
+        data.setFirstName(firstName);
+        return this;
+    }
+
+    public AdminRegistrationApplicationCompleteRequestBuilder withLastName(String lastName) {
+        data.setLastName(lastName);
         return this;
     }
 
@@ -27,13 +32,8 @@ public class AdminRegistrationApplicationCompleteRequestBuilder extends TestData
         return this;
     }
 
-    public AdminRegistrationApplicationCompleteRequestBuilder withFirstName(String firstName) {
-        data.setFirstName(firstName);
-        return this;
-    }
-
-    public AdminRegistrationApplicationCompleteRequestBuilder withLastName(String lastName) {
-        data.setLastName(lastName);
+    public AdminRegistrationApplicationCompleteRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
+        data.setPhoneNumber(phoneNumber);
         return this;
     }
 
