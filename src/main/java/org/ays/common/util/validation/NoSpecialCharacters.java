@@ -9,11 +9,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to validate reason using {@link SpecialCharacterValidator}.
+ * Annotation to validate reason using {@link NoSpecialCharacterValidator}.
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = SpecialCharacterValidator.class)
+@Constraint(validatedBy = NoSpecialCharacterValidator.class)
 public @interface NoSpecialCharacters {
 
     /**

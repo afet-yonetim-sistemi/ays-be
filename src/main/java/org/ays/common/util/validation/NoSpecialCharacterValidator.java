@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
  * Validates whether the provided reason invalid domain
  * specified regular expression.
  */
-class SpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacters, String> {
+class NoSpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacters, String> {
 
     /**
      * Regular expression pattern to match valid text with special characters, including Turkish characters.
