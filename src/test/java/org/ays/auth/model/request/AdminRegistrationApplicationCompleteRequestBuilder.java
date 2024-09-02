@@ -37,4 +37,9 @@ public class AdminRegistrationApplicationCompleteRequestBuilder extends TestData
         return this;
     }
 
+    public AdminRegistrationApplicationCompleteRequestBuilder withPassword(String password) {
+        data.setPassword(password);
+        return this;
+    }
+
 }
