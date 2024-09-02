@@ -504,7 +504,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withEmail(invalidEmail)
+                .withEmailAddress(invalidEmail)
                 .build();
 
         // Then
@@ -539,7 +539,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         String mockId = AysRandomUtil.generateUUID();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withEmail(validEmail)
+                .withEmailAddress(validEmail)
                 .build();
 
         // When
