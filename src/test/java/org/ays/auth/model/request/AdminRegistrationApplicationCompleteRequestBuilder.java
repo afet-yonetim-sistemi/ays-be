@@ -13,7 +13,7 @@ public class AdminRegistrationApplicationCompleteRequestBuilder extends TestData
 
     public AdminRegistrationApplicationCompleteRequestBuilder withValidValues() {
         return this
-                .withEmailAddress(AysValidTestData.EMAIL)
+                .withEmailAddress(AysValidTestData.EMAIL_ADDRESS)
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build());
     }
 

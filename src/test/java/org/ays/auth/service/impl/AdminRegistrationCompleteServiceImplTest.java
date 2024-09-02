@@ -412,7 +412,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
                 .build();
 
         AdminRegistrationApplicationCompleteRequest mockAdminRegistrationApplicationCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withEmailAddress(AysValidTestData.EMAIL)
+                .withEmailAddress(AysValidTestData.EMAIL_ADDRESS)
                 .withPhoneNumber(mockPhoneNumberRequest)
                 .build();
 
