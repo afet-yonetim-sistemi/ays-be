@@ -563,6 +563,38 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .complete(Mockito.anyString(), Mockito.any());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "g",
+            "gfh2j"
+    })
+    void givenInvalidAdminRegisterApplicationCompleteRequestWithInvalidPassword_whenPasswordDoesNotValid_thenReturnValidationError(String mockPassword) throws Exception {
+
+        // Given
+        String mockId = AysRandomUtil.generateUUID();
+        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues()
+                .withPassword(mockPassword)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(adminRegistrationCompleteService, Mockito.never())
+                .complete(Mockito.anyString(), Mockito.any());
+    }
+
     @Test
     void givenValidAdminRegisterApplicationId_whenApproveAdminRegisterApplication_thenReturnNothing() throws Exception {
         // Given
