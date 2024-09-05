@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AysValidTestData {
 
-    public static final String EMAIL = "test@afetyonetimsistemi.org";
+    public static final String EMAIL_ADDRESS = "test@afetyonetimsistemi.org";
     public static final String PASSWORD = "A123y456S.";
     public static final String PASSWORD_ENCRYPTED = "$2a$10$H/lKEaKsusQztOaJmYTAi.4MAmjvnxWOh0DY.XrgwHy5D2gENVIky";
 

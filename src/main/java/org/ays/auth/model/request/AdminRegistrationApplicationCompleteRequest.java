@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.validation.EmailAddress;
 import org.ays.common.util.validation.Name;
+import org.ays.common.util.validation.Password;
 
 /**
  * Represents a complete registration request for an admin user.
@@ -42,6 +43,7 @@ public class AdminRegistrationApplicationCompleteRequest {
     private String emailAddress;
 
     @NotBlank
+    @Password
     private String password;
 
     @Valid

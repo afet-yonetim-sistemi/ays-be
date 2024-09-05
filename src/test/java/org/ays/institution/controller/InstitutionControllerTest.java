@@ -3,7 +3,7 @@ package org.ays.institution.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysResponse;
-import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.response.AysErrorResponseBuilder;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
@@ -69,7 +69,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(BASE_PATH.concat("/summary"), mockUserToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

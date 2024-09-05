@@ -9,19 +9,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to validate reason using {@link NoSpecialCharacterValidator}.
+ * Annotation to validate password using {@link PasswordValidator}.
  */
-@Target({ElementType.FIELD})
+@Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = NoSpecialCharacterValidator.class)
-public @interface NoSpecialCharacters {
+@Constraint(validatedBy = PasswordValidator.class)
+public @interface Password {
 
     /**
-     * Returns the error message when reason is not valid.
+     * Returns the error message when password does not valid.
      *
      * @return the error message
      */
-    String message() default "cannot contain special characters";
+    String message() default "must be valid";
 
     /**
      * Returns the validation groups to which this constraint belongs.
@@ -36,4 +36,5 @@ public @interface NoSpecialCharacters {
      * @return the payload
      */
     Class<? extends Payload>[] payload() default {};
+
 }

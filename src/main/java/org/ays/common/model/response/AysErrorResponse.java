@@ -143,21 +143,21 @@ public class AysErrorResponse {
         final List<SubError> subErrorErrors = new ArrayList<>();
 
         fieldErrors.forEach(fieldError -> {
-            final SubError.SubErrorBuilder sisSubErrorBuilder = SubError.builder();
+            final SubError.SubErrorBuilder subErrorBuilder = SubError.builder();
 
             List<String> codes = List.of(Objects.requireNonNull(fieldError.getCodes()));
             if (!codes.isEmpty()) {
 
-                sisSubErrorBuilder.field(StringUtils.substringAfterLast(codes.get(0), "."));
+                subErrorBuilder.field(StringUtils.substringAfterLast(codes.get(0), "."));
 
                 if (!"AssertTrue".equals(codes.get(codes.size() - 1))) {
-                    sisSubErrorBuilder.type(StringUtils.substringAfterLast(codes.get(codes.size() - 2), ".").replace('$', '.'));
+                    subErrorBuilder.type(StringUtils.substringAfterLast(codes.get(codes.size() - 2), ".").replace('$', '.'));
                 }
             }
-            sisSubErrorBuilder.value(fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null);
-            sisSubErrorBuilder.message(fieldError.getDefaultMessage());
+            subErrorBuilder.value(fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null);
+            subErrorBuilder.message(fieldError.getDefaultMessage());
 
-            subErrorErrors.add(sisSubErrorBuilder.build());
+            subErrorErrors.add(subErrorBuilder.build());
         });
 
         return AysErrorResponse.builder().subErrors(subErrorErrors);
