@@ -64,13 +64,8 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
      */
     @Override
     public void complete(final String id, final AdminRegistrationApplicationCompleteRequest completeRequest) {
+
         log.trace("Admin Register Flow call starting for email of {}", completeRequest.getEmailAddress());
-
-        final AdminRegistrationApplication application = adminRegistrationApplicationReadPort
-                .findById(id)
-                .filter(AdminRegistrationApplication::isWaiting)
-                .orElseThrow(() -> new AdminRegistrationApplicationNotExistException(id));
-
 
         final AysUser user = adminRegistrationApplicationCompleteRequestToUserMapper.map(completeRequest);
 
@@ -84,6 +79,11 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
 
         log.trace("Admin Registration Request checked successfully!");
 
+
+        final AdminRegistrationApplication application = adminRegistrationApplicationReadPort
+                .findById(id)
+                .filter(AdminRegistrationApplication::isWaiting)
+                .orElseThrow(() -> new AdminRegistrationApplicationNotExistException(id));
 
         user.setInstitution(application.getInstitution());
         user.notVerify();
