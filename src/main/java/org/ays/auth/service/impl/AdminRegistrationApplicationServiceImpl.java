@@ -12,6 +12,7 @@ import org.ays.auth.port.AdminRegistrationApplicationReadPort;
 import org.ays.auth.port.AdminRegistrationApplicationSavePort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AdminRegistrationApplicationService;
+import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteException;
@@ -82,7 +83,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
 
         return adminRegistrationApplicationReadPort.findById(id)
                 .filter(AdminRegistrationApplication::isWaiting)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
+                .orElseThrow(() -> new AdminRegistrationApplicationNotExistException(id));
     }
 
     /**
