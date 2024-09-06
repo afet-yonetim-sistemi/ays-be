@@ -12,11 +12,11 @@ import org.ays.auth.port.AdminRegistrationApplicationReadPort;
 import org.ays.auth.port.AdminRegistrationApplicationSavePort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AdminRegistrationApplicationService;
+import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistByIdException;
 import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.ays.institution.port.InstitutionReadPort;
@@ -68,7 +68,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
     @Override
     public AdminRegistrationApplication findById(String id) {
         return adminRegistrationApplicationReadPort.findById(id)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
+                .orElseThrow(() -> new AdminRegistrationApplicationNotExistByIdException(id));
     }
 
     /**
@@ -119,7 +119,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
     public void approve(String id) {
         final AdminRegistrationApplication registrationApplication = adminRegistrationApplicationReadPort
                 .findById(id)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
+                .orElseThrow(() -> new AdminRegistrationApplicationNotExistByIdException(id));
 
         this.checkApplicationStatus(registrationApplication);
 
@@ -142,7 +142,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
     public void reject(final String id, final AdminRegistrationApplicationRejectRequest rejectRequest) {
         final AdminRegistrationApplication registrationApplication = adminRegistrationApplicationReadPort
                 .findById(id)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
+                .orElseThrow(() -> new AdminRegistrationApplicationNotExistByIdException(id));
 
         this.checkApplicationStatus(registrationApplication);
 
