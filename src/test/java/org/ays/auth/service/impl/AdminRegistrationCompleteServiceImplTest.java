@@ -19,7 +19,7 @@ import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
+import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
@@ -249,7 +249,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenInvalidApplicationId_whenApplicationNotFound_thenThrowAysAdminRegistrationApplicationNotExistByIdException() {
+    void givenInvalidApplicationId_whenApplicationNotFound_thenThrowAdminRegistrationApplicationNotExistException() {
 
         // Given
         String mockApplicationId = "Invalid";
@@ -262,7 +262,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdException.class,
+                AdminRegistrationApplicationNotExistException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 
@@ -296,7 +296,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenUsedApplicationId_whenApplicationStatusIsNotWaiting_thenThrowAysAdminRegistrationApplicationNotExistByIdException() {
+    void givenUsedApplicationId_whenApplicationStatusIsNotWaiting_thenThrowAdminRegistrationApplicationNotExistException() {
 
         // Given
         String mockApplicationId = AysRandomUtil.generateUUID();
@@ -314,7 +314,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdException.class,
+                AdminRegistrationApplicationNotExistException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 

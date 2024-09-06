@@ -17,6 +17,7 @@ import org.ays.auth.model.request.AdminRegistrationApplicationRejectRequestBuild
 import org.ays.auth.port.AdminRegistrationApplicationReadPort;
 import org.ays.auth.port.AdminRegistrationApplicationSavePort;
 import org.ays.auth.port.AysUserSavePort;
+import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
 import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteException;
@@ -202,7 +203,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidAdminUserRegisterApplicationId_whenThereIsNoAdminUserRegisterApplicationWithWaitingStatus_thenThrowAysAdminUserRegisterApplicationSummaryNotExistByIdException() {
+    void givenValidAdminUserRegisterApplicationId_whenThereIsNoAdminUserRegisterApplicationWithWaitingStatus_thenThrowAdminRegistrationApplicationNotExistException() {
 
         // Given
         String mockId = AysRandomUtil.generateUUID();
@@ -213,7 +214,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdException.class,
+                AdminRegistrationApplicationNotExistException.class,
                 () -> adminUserRegisterApplicationService.findSummaryById(mockId)
         );
 
