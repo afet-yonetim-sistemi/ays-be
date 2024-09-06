@@ -25,7 +25,6 @@ import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteExce
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
-import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.port.InstitutionReadPort;
@@ -154,7 +153,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationNotFound_thenThrowAysAdminUserRegisterApplicationNotExistByIdException() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "608484c9-4fec-46da-9515-3341817e4843";
 
         // When
         Mockito.when(adminRegistrationApplicationReadPort.findById(mockId))
@@ -175,7 +174,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationFoundWithWaitingStatus_thenReturnAdminUserRegisterApplication() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "43af258d-d177-4227-9246-aef772609095";
         AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
                 .withValidValues()
                 .withId(mockId)
@@ -206,7 +205,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenValidAdminUserRegisterApplicationId_whenThereIsNoAdminUserRegisterApplicationWithWaitingStatus_thenThrowAdminRegistrationApplicationNotExistException() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "9f863805-ee46-44f8-9354-4cd49e21bfea";
 
         // When
         Mockito.when(adminRegistrationApplicationReadPort.findById(mockId))
@@ -286,7 +285,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationApproved_thenReturnNothing() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "6957a570-2ffe-4409-b4c5-5597f7ecfc15";
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withStatus(AysUserStatus.NOT_VERIFIED)
@@ -322,7 +321,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationNotFound_thenThrowAdminRegistrationApplicationNotExistByIdException() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "ba88600d-c38f-4a37-99be-2e4f26f00fc9";
 
         // When
         Mockito.when(adminRegistrationApplicationReadPort.findById(mockId))
@@ -350,7 +349,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationWaiting_thenThrowAysAdminRegistrationApplicationInCompleteException() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "c77ed397-16b1-4310-9644-eb2a51be2e86";
         AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
                 .withValidValues()
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
@@ -381,7 +380,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationApproved_thenThrowAysAdminRegistrationApplicationAlreadyApprovedException() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "85d61489-8c78-4d03-a8ea-98154fc6ceb0";
         AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
                 .withValidValues()
                 .withStatus(AdminRegistrationApplicationStatus.APPROVED)
@@ -412,7 +411,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenValidAdminUserRegisterApplicationId_whenAdminUserRegisterApplicationRejected_thenThrowAysAdminRegistrationApplicationAlreadyRejectedException() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "773ba2c1-760f-4e4b-a1cb-0f5994291e73";
         AdminRegistrationApplication mockApplication = new AdminRegistrationApplicationBuilder()
                 .withValidValues()
                 .withStatus(AdminRegistrationApplicationStatus.REJECTED)
@@ -443,7 +442,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenAdminUserRegisterApplicationIdAndAdminUserRegisterApplicationRejectRequest_whenRejectingAdminUserRegisterApplication_thenReturnNothing() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "6eae8d93-aa8a-4520-b20b-600840ef893d";
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withStatus(AysUserStatus.NOT_VERIFIED)
@@ -479,7 +478,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenAdminUserRegisterApplicationIdAndAdminUserRegisterApplicationRejectRequest_whenAdminUserRegisterApplicationNotFound_thenThrowAysAdminUserRegisterApplicationNotExistByIdAndStatusException() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "cd52e3f0-b57b-453a-bd35-57c55d32fd0e";
         AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
                 .withValidValues()
                 .build();
@@ -509,7 +508,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
     void givenAdminUserRegisterApplicationIdAndAdminUserRegisterApplicationRejectRequest_whenAdminUserRegisterApplicationIsNotCompleted_thenThrowAysAdminUserRegisterApplicationNotExistByIdAndStatusException() {
 
         // Given
-        String mockId = AysRandomUtil.generateUUID();
+        String mockId = "cf8f8e6b-4255-4407-94d2-cdf612888e20";
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withStatus(AysUserStatus.NOT_VERIFIED)
