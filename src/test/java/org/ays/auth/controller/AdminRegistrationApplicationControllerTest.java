@@ -22,6 +22,7 @@ import org.ays.auth.model.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.auth.model.response.AdminRegistrationApplicationsResponse;
 import org.ays.auth.service.AdminRegistrationApplicationService;
 import org.ays.auth.service.AdminRegistrationCompleteService;
+import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
@@ -304,6 +305,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AdminRegistrationApplicationCreateRequest.class));
     }
 
+
     @Test
     void givenValidAdminRegisterApplicationId_whenAdminApplicationFound_thenReturnAdminApplicationSummaryResponse() throws Exception {
 
@@ -335,6 +337,31 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
     }
 
     @Test
+    void givenIdAndAdminRegisterApplication_whenAdminApplicationNotFound_thenReturnUnauthorizedError() throws Exception {
+
+        // Given
+        String mockId = "181e8310-6dfd-444c-aa38-056ce8401345";
+
+        // When
+        Mockito.when(adminRegistrationApplicationService.findSummaryById(mockId))
+                .thenThrow(new AdminRegistrationApplicationNotExistException(mockId));
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/summary"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.UNAUTHORIZED;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotHaveJsonPath());
+    }
+
+
+    @Test
     void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse() throws Exception {
 
         // Given
@@ -357,6 +384,38 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminRegistrationCompleteService, Mockito.times(1))
+                .complete(Mockito.anyString(), Mockito.any());
+    }
+
+
+    @Test
+    void givenIdAndAdminRegisterRequest_whenAdminApplicationNotFound_thenReturnUnauthorizedError() throws Exception {
+
+        // Given
+        String mockId = "181e8310-6dfd-444c-aa38-056ce8401345";
+        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues().build();
+
+        // When
+        Mockito.doThrow(new AdminRegistrationApplicationNotExistException(mockId))
+                .when(adminRegistrationCompleteService)
+                .complete(Mockito.anyString(), Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.UNAUTHORIZED;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotHaveJsonPath());
 
         // Verify
         Mockito.verify(adminRegistrationCompleteService, Mockito.times(1))
