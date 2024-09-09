@@ -18,9 +18,12 @@ import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
+import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.common.util.AysRandomUtil;
+import org.ays.common.util.exception.model.response.AysErrorResponseBuilder;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
@@ -369,6 +372,40 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         ));
     }
 
+    @Test
+    void givenRoleCreateRequest_whenRequestHasSuperPermissionsAndUserIsNotSuperAdmin_thenReturnBadRequestError() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAll();
+        Set<String> permissionIds = permissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
+        // Given
+        AysRoleCreateRequest createRequest = new AysRoleCreateRequestBuilder()
+                .withName(AysRandomUtil.generateText(10))
+                .withPermissionIds(permissionIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, adminToken.getAccessToken(), createRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotHaveJsonPath());
+
+        // Verify
+        Optional<AysRole> role = roleReadPort.findByName(createRequest.getName());
+
+        Assertions.assertFalse(role.isPresent());
+    }
+
 
     @Test
     void givenValidIdAndRoleUpdateRequest_whenSuperRoleUpdated_thenReturnSuccess() throws Exception {
@@ -475,6 +512,54 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
     }
+
+    @Test
+    void givenValidIdAndRoleUpdateRequest_whenRequestHasSuperPermissionsAndUserIsNotSuperAdmin_thenReturnBadRequestError() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAll();
+        Set<String> permissionIds = permissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName(AysRandomUtil.generateText(10))
+                        .withPermissions(permissions)
+                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+        AysRoleUpdateRequest updateRequest = new AysRoleUpdateRequestBuilder()
+                .withPermissionIds(permissionIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotHaveJsonPath());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertNotEquals(updateRequest.getName(), roleFromDatabase.get().getName());
+        Assertions.assertNull(roleFromDatabase.get().getUpdatedUser());
+        Assertions.assertNull(roleFromDatabase.get().getUpdatedAt());
+    }
+
 
     @Test
     void givenId_whenRoleActivated_thenReturnSuccess() throws Exception {
