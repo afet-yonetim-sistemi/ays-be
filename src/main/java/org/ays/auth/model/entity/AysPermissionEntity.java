@@ -37,6 +37,6 @@ public class AysPermissionEntity extends BaseEntity {
     private AysPermissionCategory category;
 
     @Column(name = "IS_SUPER")
-    private boolean isSuper;
+    private Boolean isSuper;
 
 }

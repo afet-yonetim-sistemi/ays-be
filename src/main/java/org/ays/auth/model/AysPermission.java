@@ -21,6 +21,10 @@ public class AysPermission extends BaseDomainModel {
     private String id;
     private String name;
     private AysPermissionCategory category;
-    private boolean isSuper;
+    private Boolean isSuper;
+
+    public boolean isSuper() {
+        return isSuper;
+    }
 
 }
