@@ -2,7 +2,6 @@ package org.ays.auth.model.entity;
 
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.TestDataBuilder;
-import org.ays.common.util.AysRandomTestUtil;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
@@ -27,7 +26,7 @@ public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<A
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .withUser(userEntity)
                 .withInstitution(institutionEntity)
-                .withReason(AysRandomTestUtil.generateString(41));
+                .withReason(AysRandomUtil.generateText(41));
     }
 
     public AdminRegistrationApplicationEntityBuilder withId(String id) {
