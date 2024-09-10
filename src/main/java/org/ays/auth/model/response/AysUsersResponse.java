@@ -1,5 +1,6 @@
 package org.ays.auth.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.auth.model.enums.AysUserStatus;
@@ -26,6 +27,7 @@ public class AysUsersResponse {
     private String city;
     private AysUserStatus status;
     private LocalDateTime createdAt;
+    @JsonIgnore
     private LocalDateTime updatedAt;
 
 }
