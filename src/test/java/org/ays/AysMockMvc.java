@@ -43,7 +43,7 @@ public class AysMockMvc {
                 .andExpect(AysMockResultMatchersBuilders.header()
                         .value(mockErrorResponse.getHeader()))
                 .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
+                        .doesNotHaveJsonPath());
     }
 
 }

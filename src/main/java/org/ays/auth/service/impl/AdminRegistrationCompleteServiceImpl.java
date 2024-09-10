@@ -18,7 +18,7 @@ import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AdminRegistrationCompleteService;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
+import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.institution.model.Institution;
@@ -58,19 +58,14 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
      * @param id              The unique identifier of the admin registration application.
      * @param completeRequest The request containing necessary information to complete the registration.
      *                        This includes user details such as email, phone number, and password.
-     * @throws AysAdminRegistrationApplicationNotExistByIdException if the registration application does not exist or is not in a waiting state.
-     * @throws AysUserAlreadyExistsByEmailAddressException                 if a user with the given email already exists.
-     * @throws AysUserAlreadyExistsByPhoneNumberException           if a user with the given phone number already exists.
+     * @throws AdminRegistrationApplicationNotExistException if the registration application does not exist or is not in a waiting state.
+     * @throws AysUserAlreadyExistsByEmailAddressException   if a user with the given email already exists.
+     * @throws AysUserAlreadyExistsByPhoneNumberException    if a user with the given phone number already exists.
      */
     @Override
     public void complete(final String id, final AdminRegistrationApplicationCompleteRequest completeRequest) {
+
         log.trace("Admin Register Flow call starting for email of {}", completeRequest.getEmailAddress());
-
-        final AdminRegistrationApplication application = adminRegistrationApplicationReadPort
-                .findById(id)
-                .filter(AdminRegistrationApplication::isWaiting)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
-
 
         final AysUser user = adminRegistrationApplicationCompleteRequestToUserMapper.map(completeRequest);
 
@@ -84,6 +79,11 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
 
         log.trace("Admin Registration Request checked successfully!");
 
+
+        final AdminRegistrationApplication application = adminRegistrationApplicationReadPort
+                .findById(id)
+                .filter(AdminRegistrationApplication::isWaiting)
+                .orElseThrow(() -> new AdminRegistrationApplicationNotExistException(id));
 
         user.setInstitution(application.getInstitution());
         user.notVerify();
