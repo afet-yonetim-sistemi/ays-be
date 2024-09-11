@@ -32,7 +32,7 @@ public class AysPermissionBuilder extends TestDataBuilder<AysPermission> {
     }
 
     public AysPermissionBuilder withIsSuper(boolean isSuper) {
-        data.setSuper(isSuper);
+        data.setIsSuper(isSuper);
         return this;
     }
 
