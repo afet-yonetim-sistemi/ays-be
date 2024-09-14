@@ -125,7 +125,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("updatedAt")
-                        .isEmpty());
+                        .doesNotHaveJsonPath());
     }
 
     @Test
@@ -173,7 +173,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("updatedAt")
-                        .isEmpty());
+                        .doesNotHaveJsonPath());
     }
 
 
