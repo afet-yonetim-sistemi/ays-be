@@ -6,6 +6,7 @@ import org.ays.auth.model.AysPermission;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.service.AysPermissionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ class AysPermissionServiceImpl implements AysPermissionService {
      * @return A list of {@link AysPermission} objects based on the user's identity.
      */
     @Override
+    @Transactional(readOnly = true)
     public List<AysPermission> findAll() {
 
         if (identity.isSuperAdmin()) {

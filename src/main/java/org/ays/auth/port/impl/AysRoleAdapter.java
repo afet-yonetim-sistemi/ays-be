@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +28,6 @@ import java.util.Set;
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
 
     private final AysRoleRepository roleRepository;
@@ -137,7 +135,6 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
      * @return The saved {@link AysRole} after persistence.
      */
     @Override
-    @Transactional
     public AysRole save(final AysRole role) {
         final AysRoleEntity roleEntity = roleToEntityMapper.map(role);
         roleRepository.save(roleEntity);

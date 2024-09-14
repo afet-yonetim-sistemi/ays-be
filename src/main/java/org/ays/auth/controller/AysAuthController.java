@@ -14,6 +14,7 @@ import org.ays.auth.service.AysAuthService;
 import org.ays.auth.service.AysUserPasswordService;
 import org.ays.common.model.response.AysResponse;
 import org.hibernate.validator.constraints.UUID;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -104,6 +105,7 @@ class AysAuthController {
      * @return AysResponse with a success message and no data.
      */
     @GetMapping("/password/{id}/validity")
+    @Transactional(readOnly = true)
     public AysResponse<Void> checkPasswordChangingValidity(@PathVariable @UUID String id) {
         userPasswordService.checkPasswordChangingValidity(id);
         return AysResponse.SUCCESS;

@@ -59,8 +59,8 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
      * @param completeRequest The request containing necessary information to complete the registration.
      *                        This includes user details such as email, phone number, and password.
      * @throws AdminRegistrationApplicationNotExistException if the registration application does not exist or is not in a waiting state.
-     * @throws AysUserAlreadyExistsByEmailAddressException          if a user with the given email already exists.
-     * @throws AysUserAlreadyExistsByPhoneNumberException           if a user with the given phone number already exists.
+     * @throws AysUserAlreadyExistsByEmailAddressException   if a user with the given email already exists.
+     * @throws AysUserAlreadyExistsByPhoneNumberException    if a user with the given phone number already exists.
      */
     @Override
     public void complete(final String id, final AdminRegistrationApplicationCompleteRequest completeRequest) {

@@ -211,4 +211,5 @@ class AysTokenServiceImpl implements AysTokenService {
 
         return UsernamePasswordAuthenticationToken.authenticated(jwt, null, authorities);
     }
+
 }

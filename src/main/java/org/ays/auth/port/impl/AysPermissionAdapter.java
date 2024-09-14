@@ -7,7 +7,6 @@ import org.ays.auth.model.mapper.AysPermissionEntityToDomainMapper;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.repository.AysPermissionRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -18,7 +17,6 @@ import java.util.Set;
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class AysPermissionAdapter implements AysPermissionReadPort {
 
     private final AysPermissionRepository permissionRepository;

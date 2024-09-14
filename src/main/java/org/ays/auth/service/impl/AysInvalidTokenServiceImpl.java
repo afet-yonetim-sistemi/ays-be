@@ -7,6 +7,7 @@ import org.ays.auth.port.AysInvalidTokenSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.util.exception.AysTokenAlreadyInvalidatedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -57,6 +58,7 @@ class AysInvalidTokenServiceImpl implements AysInvalidTokenService {
      * @throws AysTokenAlreadyInvalidatedException if the token has already been invalidated
      */
     @Override
+    @Transactional(readOnly = true)
     public void checkForInvalidityOfToken(final String tokenId) {
         final boolean isTokenInvalid = invalidTokenReadPort.findByTokenId(tokenId).isPresent();
         if (isTokenInvalid) {

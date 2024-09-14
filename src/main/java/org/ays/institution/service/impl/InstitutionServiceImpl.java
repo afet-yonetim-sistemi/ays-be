@@ -6,6 +6,7 @@ import org.ays.institution.model.enums.InstitutionStatus;
 import org.ays.institution.port.InstitutionReadPort;
 import org.ays.institution.service.InstitutionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ class InstitutionServiceImpl implements InstitutionService {
      * @return a list of {@link Institution} representing the summary of active institutions
      */
     @Override
+    @Transactional(readOnly = true)
     public List<Institution> getSummaryOfActiveInstitutions() {
         return institutionReadPort.findAllByStatusOrderByNameAsc(InstitutionStatus.ACTIVE);
     }

@@ -15,6 +15,7 @@ import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -39,6 +40,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      * @return A page of emergency evacuation applications. Each application includes details such as the ID, status, and other related information.
      */
     @Override
+    @Transactional(readOnly = true)
     public AysPage<EmergencyEvacuationApplication> findAll(final EmergencyEvacuationApplicationListRequest listRequest) {
 
         Optional.ofNullable(listRequest.getFilter())
@@ -63,6 +65,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      * @return the emergency evacuation application corresponding to the given ID.
      */
     @Override
+    @Transactional(readOnly = true)
     public EmergencyEvacuationApplication findById(final String id) {
         return emergencyEvacuationApplicationReadPort.findById(id)
                 .filter(application -> application.hasNotInstitution() || application.isInstitutionOwner(identity.getInstitutionId()))

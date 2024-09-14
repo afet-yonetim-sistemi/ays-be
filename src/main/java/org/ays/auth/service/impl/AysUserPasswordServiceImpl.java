@@ -14,6 +14,7 @@ import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
 import org.ays.common.util.AysRandomUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -81,6 +82,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * @throws AysUserPasswordCannotChangedException if the password cannot be changed due to invalid conditions.
      */
     @Override
+    @Transactional(readOnly = true)
     public void checkPasswordChangingValidity(final String passwordId) {
 
         final AysUser.Password password = userReadPort.findByPasswordId(passwordId)

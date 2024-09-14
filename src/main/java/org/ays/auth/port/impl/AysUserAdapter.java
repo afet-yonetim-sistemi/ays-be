@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +27,6 @@ import java.util.Optional;
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
     private final AysUserRepository userRepository;
@@ -153,7 +151,6 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
      * @return The saved {@link AysUser} after persistence.
      */
     @Override
-    @Transactional
     public AysUser save(final AysUser user) {
 
         final AysUserEntity userEntity = userToEntityMapper.map(user);

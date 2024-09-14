@@ -107,9 +107,9 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
      * </p>
      *
      * @param id The ID of the role to passivate.
-     * @throws AysRoleNotExistByIdException  if a role with the given ID does not exist.
+     * @throws AysRoleNotExistByIdException   if a role with the given ID does not exist.
      * @throws AysRoleAssignedToUserException if any user is assigned to the role.
-     * @throws AysInvalidRoleStatusException if the role's current status is not {@link AysRoleStatus#ACTIVE}.
+     * @throws AysInvalidRoleStatusException  if the role's current status is not {@link AysRoleStatus#ACTIVE}.
      */
     @Override
     public void passivate(String id) {
