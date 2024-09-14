@@ -14,6 +14,7 @@ import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
 import org.ays.common.util.AysRandomUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -47,6 +48,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * @throws AysEmailAddressNotValidException if the email address does not correspond to any existing user.
      */
     @Override
+    @Transactional
     public void forgotPassword(final AysPasswordForgotRequest forgotPasswordRequest) {
 
         final String emailAddress = forgotPasswordRequest.getEmailAddress();
@@ -106,6 +108,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      *                                               the elapsed time or other conditions that prevent the password from being changed.
      */
     @Override
+    @Transactional
     public void createPassword(final String passwordId,
                                final AysPasswordCreateRequest createRequest) {
 
