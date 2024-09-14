@@ -15,19 +15,14 @@ import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 /**
- * This class implements the interface {@link EmergencyEvacuationApplicationService}
- * It is annotated with {@code @Service} to indicate that it is a service component in the application.
- * The class is also annotated with {@code @RequiredArgsConstructor} to automatically generate a constructor based on the declared final fields.
- * The {@code @Transactional} annotation ensures that all the methods in this class are executed within a transactional context.
+ * Emergency evacuation application service to perform emergency evacuation related operations
  */
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationApplicationService {
 
     private final EmergencyEvacuationApplicationReadPort emergencyEvacuationApplicationReadPort;
@@ -81,7 +76,6 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      * @param emergencyEvacuationApplicationRequest The emergency evacuation request containing application information
      */
     @Override
-    @Transactional
     public void create(final EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
 
         EmergencyEvacuationApplication application = applicationRequestToDomainMapper
@@ -101,7 +95,6 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      * @throws EmergencyEvacuationApplicationNotExistException if the application with the specified ID does not exist
      */
     @Override
-    @Transactional
     public void update(final String id,
                        final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
 

@@ -11,7 +11,6 @@ import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,7 +23,6 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class AysUserReadServiceImpl implements AysUserReadService {
 
     private final AysUserReadPort userReadPort;

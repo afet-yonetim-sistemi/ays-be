@@ -20,7 +20,6 @@ import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotPassiveException;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -30,7 +29,6 @@ import java.util.Set;
  * This service handles the update operation of existing users based on the provided update request.
  */
 @Service
-@Transactional
 @RequiredArgsConstructor
 class AysUserUpdateServiceImpl implements AysUserUpdateService {
 

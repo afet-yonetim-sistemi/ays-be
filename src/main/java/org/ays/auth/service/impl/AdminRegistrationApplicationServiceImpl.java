@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
  * The class is also annotated with {@code @RequiredArgsConstructor} to automatically generate a constructor based on the declared final fields.
  */
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplicationService {
 
@@ -93,7 +92,6 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      * @return A response object containing the created register application.
      */
     @Override
-    @Transactional
     public AdminRegistrationApplication create(AdminRegistrationApplicationCreateRequest request) {
 
         boolean isInstitutionExists = institutionReadPort.existsByIdAndIsStatusActive(request.getInstitutionId());
