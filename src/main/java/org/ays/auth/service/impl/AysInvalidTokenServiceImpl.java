@@ -7,6 +7,7 @@ import org.ays.auth.port.AysInvalidTokenSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.util.exception.AysTokenAlreadyInvalidatedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,6 +36,7 @@ class AysInvalidTokenServiceImpl implements AysInvalidTokenService {
      * @param tokenIds the set of token IDs to invalidate
      */
     @Override
+    @Transactional
     public void invalidateTokens(final Set<String> tokenIds) {
         final Set<AysInvalidToken> invalidTokens = tokenIds.stream()
                 .map(tokenId -> AysInvalidToken.builder()

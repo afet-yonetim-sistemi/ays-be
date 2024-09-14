@@ -92,6 +92,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      * @return A response object containing the created register application.
      */
     @Override
+    @Transactional
     public AdminRegistrationApplication create(AdminRegistrationApplicationCreateRequest request) {
 
         boolean isInstitutionExists = institutionReadPort.existsByIdAndIsStatusActive(request.getInstitutionId());

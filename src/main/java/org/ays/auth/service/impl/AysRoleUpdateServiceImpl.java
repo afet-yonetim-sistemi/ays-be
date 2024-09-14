@@ -18,6 +18,7 @@ import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,7 @@ import java.util.Set;
  * ensuring permissions and role name uniqueness are validated before saving.
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
 
@@ -107,9 +109,9 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
      * </p>
      *
      * @param id The ID of the role to passivate.
-     * @throws AysRoleNotExistByIdException  if a role with the given ID does not exist.
+     * @throws AysRoleNotExistByIdException   if a role with the given ID does not exist.
      * @throws AysRoleAssignedToUserException if any user is assigned to the role.
-     * @throws AysInvalidRoleStatusException if the role's current status is not {@link AysRoleStatus#ACTIVE}.
+     * @throws AysInvalidRoleStatusException  if the role's current status is not {@link AysRoleStatus#ACTIVE}.
      */
     @Override
     public void passivate(String id) {
