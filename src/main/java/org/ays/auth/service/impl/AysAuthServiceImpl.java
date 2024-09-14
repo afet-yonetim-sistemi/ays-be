@@ -21,6 +21,7 @@ import org.ays.auth.util.exception.AysUserIdNotValidException;
 import org.ays.auth.util.exception.AysUserNotActiveException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -67,6 +68,7 @@ class AysAuthServiceImpl implements AysAuthService {
      * @throws AysUserDoesNotAccessPageException If the user does not have permission to access the requested page.
      */
     @Override
+    @Transactional
     public AysToken authenticate(final AysLoginRequest loginRequest) {
 
         final AysUser user = userReadPort.findByEmailAddress(loginRequest.getEmailAddress())
@@ -170,6 +172,7 @@ class AysAuthServiceImpl implements AysAuthService {
      * @param refreshToken the refresh token used to invalidate the associated access token and refresh token
      */
     @Override
+    @Transactional
     public void invalidateTokens(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);

@@ -18,6 +18,7 @@ import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,7 @@ import java.util.Set;
  * </p>
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 class AysUserCreateServiceImpl implements AysUserCreateService {
 
