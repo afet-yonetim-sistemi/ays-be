@@ -12,7 +12,7 @@ public class AysLoginRequestBuilder extends TestDataBuilder<AysLoginRequest> {
 
     public AysLoginRequestBuilder withValidValues() {
         return new AysLoginRequestBuilder()
-                .withEmailAddress(AysValidTestData.EMAIL)
+                .withEmailAddress(AysValidTestData.EMAIL_ADDRESS)
                 .withPassword(AysValidTestData.PASSWORD)
                 .withSourcePage(AysSourcePage.INSTITUTION);
     }

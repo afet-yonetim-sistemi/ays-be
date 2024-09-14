@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.ays.common.model.entity.BaseEntity;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.institution.model.entity.InstitutionEntity;
 
 /**

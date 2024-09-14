@@ -8,7 +8,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.common.model.AysFilter;
 import org.ays.common.util.validation.NoSpecialCharacters;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.domain.Specification;
 

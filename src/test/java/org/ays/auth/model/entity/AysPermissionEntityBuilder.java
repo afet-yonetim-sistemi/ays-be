@@ -33,7 +33,7 @@ public class AysPermissionEntityBuilder extends TestDataBuilder<AysPermissionEnt
     }
 
     public AysPermissionEntityBuilder withIsSuper(boolean isSuper) {
-        data.setSuper(isSuper);
+        data.setIsSuper(isSuper);
         return this;
     }
 

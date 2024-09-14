@@ -15,6 +15,7 @@ import org.ays.auth.util.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.util.exception.AysUserIsNotActiveOrPassiveException;
+import org.ays.auth.util.exception.AysUserNotActiveException;
 import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.auth.util.exception.AysUserNotPassiveException;
 import org.ays.common.model.AysPhoneNumber;
@@ -83,7 +84,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      *
      * @param id The unique identifier of the user to be activated.
      * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
-     * @throws AysUserNotPassiveException if the user is not in a passive state and cannot be activated.
+     * @throws AysUserNotPassiveException   if the user is not in a passive state and cannot be activated.
      */
     @Override
     public void activate(String id) {
@@ -97,6 +98,29 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         }
 
         user.activate();
+        userSavePort.save(user);
+    }
+
+    /**
+     * Passivates (deactivates) a user by ID if the user is currently active.
+     * This method retrieves the user by the provided ID and deactivates the user.
+     *
+     * @param id The unique identifier of the user to be passivated.
+     * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
+     * @throws AysUserNotActiveException    if the user is not in an active state and cannot be passivated.
+     */
+    @Override
+    public void passivate(String id) {
+
+        final AysUser user = userReadPort.findById(id)
+                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
+                .orElseThrow(() -> new AysUserNotExistByIdException(id));
+
+        if (!user.isActive()) {
+            throw new AysUserNotActiveException(id);
+        }
+
+        user.passivate();
         userSavePort.save(user);
     }
 

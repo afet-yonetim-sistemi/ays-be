@@ -19,13 +19,12 @@ import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationNotExistByIdException;
+import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
-import org.ays.common.util.AysRandomUtil;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,7 +72,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     void givenValidAdminRegisterApplicationCompleteRequest_whenFirstAdminRegistered_thenDoNothing() {
 
         // Given
-        String mockApplicationId = AysRandomUtil.generateUUID();
+        String mockApplicationId = "407d252c-7fe6-4425-9be7-08d586df6e67";
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
                 .build();
@@ -167,7 +166,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     void givenValidAdminRegisterApplicationCompleteRequest_whenAdminRegistered_thenDoNothing() {
 
         // Given
-        String mockApplicationId = AysRandomUtil.generateUUID();
+        String mockApplicationId = "06293821-15e8-4edc-b8f9-2c33eaec7fc3";
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
                 .build();
@@ -249,12 +248,13 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenInvalidApplicationId_whenApplicationNotFound_thenThrowAysAdminRegistrationApplicationNotExistByIdException() {
+    void givenValidApplicationId_whenApplicationNotFound_thenThrowAdminRegistrationApplicationNotExistException() {
 
         // Given
-        String mockApplicationId = "Invalid";
+        String mockApplicationId = "85bb38cc-296d-4a63-a88c-1904c4df43e4";
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidValues().build();
+                .withValidValues()
+                .build();
         AysPhoneNumberRequest mockPhoneNumberRequest = mockCompleteRequest.getPhoneNumber();
 
         // When
@@ -273,7 +273,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdException.class,
+                AdminRegistrationApplicationNotExistException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 
@@ -307,10 +307,10 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenUsedApplicationId_whenApplicationStatusIsNotWaiting_thenThrowAysAdminRegistrationApplicationNotExistByIdException() {
+    void givenUsedApplicationId_whenApplicationStatusIsNotWaiting_thenThrowAdminRegistrationApplicationNotExistException() {
 
         // Given
-        String mockApplicationId = AysRandomUtil.generateUUID();
+        String mockApplicationId = "1d9c375a-9da0-46b3-a2a8-9dd7f2d8f353";
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
                 .build();
@@ -336,7 +336,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdException.class,
+                AdminRegistrationApplicationNotExistException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 
@@ -373,7 +373,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     void givenExistingEmailFromAdminRegisterRequest_whenAdminExist_thenThrowAysUserAlreadyExistsByEmailException() {
 
         // Given
-        String mockApplicationId = AysRandomUtil.generateUUID();
+        String mockApplicationId = "09b986c5-28a7-43be-9b48-8d48b5bfce40";
         AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
                 .build();
@@ -421,14 +421,14 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
     void givenExistingPhoneNumberFromAdminRegisterRequest_whenAdminExist_thenThrowAysUserAlreadyExistsByPhoneNumberException() {
 
         // Given
-        String applicationId = AysRandomUtil.generateUUID();
+        String applicationId = "fe98a7e7-612f-4068-abb1-aaa3cb2fd1e9";
 
         AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
                 .withValidValues()
                 .build();
 
         AdminRegistrationApplicationCompleteRequest mockAdminRegistrationApplicationCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withEmail(AysValidTestData.EMAIL)
+                .withEmailAddress(AysValidTestData.EMAIL_ADDRESS)
                 .withPhoneNumber(mockPhoneNumberRequest)
                 .build();
 

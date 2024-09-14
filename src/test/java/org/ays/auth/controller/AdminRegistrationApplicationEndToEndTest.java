@@ -3,7 +3,6 @@ package org.ays.auth.controller;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
-import org.ays.auth.model.AdminRegistrationApplicationFilter;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
@@ -31,15 +30,13 @@ import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
-import org.ays.common.model.AysPage;
-import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.response.AysErrorResponseBuilder;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.port.InstitutionSavePort;
@@ -517,7 +514,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -554,7 +551,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.BAD_REQUEST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -611,7 +608,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.NOT_FOUND;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.NOT_FOUND;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -737,7 +734,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), rejectRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -777,7 +774,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), rejectRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.BAD_REQUEST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -838,7 +835,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), rejectRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.NOT_FOUND;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.NOT_FOUND;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

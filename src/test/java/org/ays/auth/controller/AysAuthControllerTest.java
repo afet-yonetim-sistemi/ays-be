@@ -19,7 +19,7 @@ import org.ays.auth.service.AysUserPasswordService;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
-import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.response.AysErrorResponseBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
@@ -94,6 +94,37 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "g",
+            "gfh2j"
+    })
+    void givenInvalidLoginRequestWithInvalidPassword_whenPasswordDoesNotValid_thenReturnValidationError(String mockPassword) throws Exception {
+        // Given
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
+                .withEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
+                .withPassword(mockPassword)
+                .withSourcePage(AysSourcePage.INSTITUTION)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/token");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockLoginRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(authService, Mockito.never())
+                .authenticate(Mockito.any());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
             "abc.def@mail.c",
             "abc.def@mail#archive.com",
             "abc.def@mail",
@@ -113,7 +144,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockLoginRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -239,7 +270,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockForgotPasswordRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -265,7 +296,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockForgotPasswordRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -319,7 +350,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -379,7 +410,40 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockPasswordCreateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userPasswordService, Mockito.never())
+                .createPassword(Mockito.anyString(), Mockito.any(AysPasswordCreateRequest.class));
+    }
+
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "g",
+            "gfh2j"
+    })
+    void givenPasswordCreateRequest_whenPasswordDoesNotValid_thenReturnValidationError(String mockPassword) throws Exception {
+
+        // Given
+        String mockId = "1fa43c75-7a7a-4041-8cef-03be8429dd30";
+        AysPasswordCreateRequest mockPasswordCreateRequest = new AysPasswordCreateRequestBuilder()
+                .withPassword(mockPassword)
+                .withPasswordRepeat(mockPassword)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockPasswordCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

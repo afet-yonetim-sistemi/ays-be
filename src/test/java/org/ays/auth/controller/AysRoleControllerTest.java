@@ -28,7 +28,7 @@ import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.common.util.exception.model.AysErrorBuilder;
+import org.ays.common.util.exception.model.response.AysErrorResponseBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
@@ -161,7 +161,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -186,7 +186,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockListRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -247,7 +247,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -272,7 +272,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -328,7 +328,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockCreateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isForbidden())
@@ -363,7 +363,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -389,7 +389,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -415,7 +415,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -446,7 +446,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -505,7 +505,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockUserToken.getAccessToken(), mockUpdateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isForbidden())
@@ -534,7 +534,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -573,7 +573,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -601,7 +601,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -629,7 +629,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -665,7 +665,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -719,7 +719,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, mockUserToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -744,7 +744,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, mockSuperAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -798,7 +798,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, mockUserToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.FORBIDDEN;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -823,7 +823,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, mockSuperAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -834,6 +834,35 @@ class AysRoleControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(roleUpdateService, Mockito.never())
                 .passivate(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidIdForPassivation_whenRoleUsing_thenReturnConflict() throws Exception {
+
+        // Given
+        String mockId = "13e8ff0e-8d85-4f4f-8e45-efb04d1d8bf8";
+
+        // When
+        Mockito.doThrow(new AysRoleAssignedToUserException(mockId))
+                .when(roleUpdateService)
+                .passivate(mockId);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/".concat(mockId).concat("/passivate"));
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, mockSuperAdminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleUpdateService, Mockito.times(1))
+                .passivate(mockId);
     }
 
 
@@ -877,7 +906,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .delete(endpoint, mockAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.VALIDATION_ERROR;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -911,7 +940,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .delete(endpoint, mockAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -939,7 +968,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .delete(endpoint, mockAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

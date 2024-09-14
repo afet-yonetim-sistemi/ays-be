@@ -26,6 +26,5 @@ public class AysUsersResponse {
     private String city;
     private AysUserStatus status;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
 }

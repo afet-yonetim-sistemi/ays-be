@@ -10,7 +10,7 @@ import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntityBuilder;
-import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationStatus;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilter;
 import org.ays.emergency_application.model.filter.EmergencyEvacuationApplicationFilterBuilder;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationEntityToDomainMapper;

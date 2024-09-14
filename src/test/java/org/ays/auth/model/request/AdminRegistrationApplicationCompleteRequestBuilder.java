@@ -13,18 +13,8 @@ public class AdminRegistrationApplicationCompleteRequestBuilder extends TestData
 
     public AdminRegistrationApplicationCompleteRequestBuilder withValidValues() {
         return this
-                .withEmail(AysValidTestData.EMAIL)
+                .withEmailAddress(AysValidTestData.EMAIL_ADDRESS)
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build());
-    }
-
-    public AdminRegistrationApplicationCompleteRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
-        data.setPhoneNumber(phoneNumber);
-        return this;
-    }
-
-    public AdminRegistrationApplicationCompleteRequestBuilder withEmail(String email) {
-        data.setEmailAddress(email);
-        return this;
     }
 
     public AdminRegistrationApplicationCompleteRequestBuilder withFirstName(String firstName) {
@@ -34,6 +24,21 @@ public class AdminRegistrationApplicationCompleteRequestBuilder extends TestData
 
     public AdminRegistrationApplicationCompleteRequestBuilder withLastName(String lastName) {
         data.setLastName(lastName);
+        return this;
+    }
+
+    public AdminRegistrationApplicationCompleteRequestBuilder withEmailAddress(String email) {
+        data.setEmailAddress(email);
+        return this;
+    }
+
+    public AdminRegistrationApplicationCompleteRequestBuilder withPhoneNumber(AysPhoneNumberRequest phoneNumber) {
+        data.setPhoneNumber(phoneNumber);
+        return this;
+    }
+
+    public AdminRegistrationApplicationCompleteRequestBuilder withPassword(String password) {
+        data.setPassword(password);
         return this;
     }
 
