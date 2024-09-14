@@ -7,7 +7,6 @@ import org.ays.parameter.model.mapper.AysParameterEntityToDomainMapper;
 import org.ays.parameter.port.AysParameterReadPort;
 import org.ays.parameter.repository.AysParameterRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class AysParameterAdapter implements AysParameterReadPort {
 
     private final AysParameterRepository parameterRepository;

@@ -128,6 +128,7 @@ class AysAuthServiceImpl implements AysAuthService {
      * @throws AysUserNotActiveException  If the user associated with the refresh token is not active.
      */
     @Override
+    @Transactional(readOnly = true)
     public AysToken refreshAccessToken(final String refreshToken) {
 
         tokenService.verifyAndValidate(refreshToken);

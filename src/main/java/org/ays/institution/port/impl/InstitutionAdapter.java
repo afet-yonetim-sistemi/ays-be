@@ -10,7 +10,6 @@ import org.ays.institution.port.InstitutionReadPort;
 import org.ays.institution.port.InstitutionSavePort;
 import org.ays.institution.repository.InstitutionRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,7 +26,6 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
 
     private final InstitutionRepository institutionRepository;
@@ -80,7 +78,6 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return the saved institution object
      */
     @Override
-    @Transactional
     public Institution save(final Institution institution) {
         final InstitutionEntity institutionEntity = institutionToEntityMapper.map(institution);
         final InstitutionEntity institutionEntityFromDatabase = institutionRepository.save(institutionEntity);

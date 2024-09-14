@@ -11,6 +11,7 @@ import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -41,6 +42,7 @@ class AysUserReadServiceImpl implements AysUserReadService {
      * @return a paginated list of users.
      */
     @Override
+    @Transactional(readOnly = true)
     public AysPage<AysUser> findAll(AysUserListRequest listRequest) {
 
         final AysPageable aysPageable = listRequest.getPageable();
@@ -75,6 +77,7 @@ class AysUserReadServiceImpl implements AysUserReadService {
      * @throws AysUserNotExistByIdException if the user with the specified ID does not exist.
      */
     @Override
+    @Transactional(readOnly = true)
     public AysUser findById(String id) {
         return userReadPort.findById(id)
                 .filter(user -> identity.getInstitutionId().equals(user.getInstitution().getId()))

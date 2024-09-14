@@ -6,6 +6,7 @@ import org.ays.parameter.port.AysParameterReadPort;
 import org.ays.parameter.service.AysParameterService;
 import org.ays.parameter.util.exception.AysParameterNotExistException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -27,6 +28,7 @@ class AysParameterServiceImpl implements AysParameterService {
      * @return a set of {@link AysParameter} entities with names starting with the given prefix
      */
     @Override
+    @Transactional(readOnly = true)
     public Set<AysParameter> findAll(final String prefixOfName) {
         return parameterReadPort.findAll(prefixOfName);
     }
@@ -41,6 +43,7 @@ class AysParameterServiceImpl implements AysParameterService {
      * @throws AysParameterNotExistException if the parameter with the given name does not exist
      */
     @Override
+    @Transactional(readOnly = true)
     public AysParameter findByName(final String name) {
         return parameterReadPort.findByName(name)
                 .orElseThrow(() -> new AysParameterNotExistException(name));

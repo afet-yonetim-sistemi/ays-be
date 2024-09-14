@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,6 @@ import java.util.Optional;
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class EmergencyEvacuationApplicationAdapter implements EmergencyEvacuationApplicationReadPort, EmergencyEvacuationApplicationSavePort {
 
     private final EmergencyEvacuationApplicationRepository emergencyEvacuationApplicationRepository;
@@ -106,7 +104,6 @@ class EmergencyEvacuationApplicationAdapter implements EmergencyEvacuationApplic
      * @return the saved {@link EmergencyEvacuationApplication}
      */
     @Override
-    @Transactional
     public EmergencyEvacuationApplication save(final EmergencyEvacuationApplication emergencyEvacuationApplication) {
         final EmergencyEvacuationApplicationEntity applicationEntity = emergencyEvacuationApplicationToEntityMapper
                 .map(emergencyEvacuationApplication);

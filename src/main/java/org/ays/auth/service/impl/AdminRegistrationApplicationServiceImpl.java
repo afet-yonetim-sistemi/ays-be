@@ -50,6 +50,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      * @return a paginated list of admin registration applications
      */
     @Override
+    @Transactional(readOnly = true)
     public AysPage<AdminRegistrationApplication> findAll(final AdminRegistrationApplicationListRequest listRequest) {
 
         final AysPageable aysPageable = listRequest.getPageable();
@@ -65,6 +66,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      * @return An admin register application.
      */
     @Override
+    @Transactional(readOnly = true)
     public AdminRegistrationApplication findById(String id) {
         return adminRegistrationApplicationReadPort.findById(id)
                 .orElseThrow(() -> new AdminRegistrationApplicationNotExistByIdException(id));
@@ -78,6 +80,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
      * @return An admin register application.
      */
     @Override
+    @Transactional(readOnly = true)
     public AdminRegistrationApplication findSummaryById(String id) {
 
         return adminRegistrationApplicationReadPort.findById(id)

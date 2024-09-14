@@ -10,7 +10,6 @@ import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysInvalidTokenSavePort;
 import org.ays.auth.repository.AysInvalidTokenRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.Set;
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidTokenSavePort, AysInvalidTokenDeletePort {
 
     private final AysInvalidTokenRepository invalidTokenRepository;
@@ -51,7 +49,6 @@ class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidToken
      * @param invalidTokens The set of {@link AysInvalidToken} entities to save.
      */
     @Override
-    @Transactional
     public void saveAll(final Set<AysInvalidToken> invalidTokens) {
         final List<AysInvalidTokenEntity> invalidTokenEntities = invalidTokenToEntityMapper.map(invalidTokens);
         invalidTokenRepository.saveAll(invalidTokenEntities);
@@ -63,7 +60,6 @@ class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidToken
      * @param expirationThreshold The timestamp threshold before which {@link AysInvalidToken} entities will be deleted.
      */
     @Override
-    @Transactional
     public void deleteAllByCreatedAtBefore(LocalDateTime expirationThreshold) {
         invalidTokenRepository.deleteAllByCreatedAtBefore(expirationThreshold);
     }

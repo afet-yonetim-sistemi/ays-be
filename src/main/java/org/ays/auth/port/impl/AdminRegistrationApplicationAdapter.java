@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +25,6 @@ import java.util.Optional;
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 class AdminRegistrationApplicationAdapter implements AdminRegistrationApplicationReadPort, AdminRegistrationApplicationSavePort {
 
     private final AdminRegistrationApplicationRepository adminRegistrationApplicationRepository;
@@ -87,7 +85,6 @@ class AdminRegistrationApplicationAdapter implements AdminRegistrationApplicatio
      * @return The saved {@link AdminRegistrationApplication}.
      */
     @Override
-    @Transactional
     public AdminRegistrationApplication save(final AdminRegistrationApplication registrationApplication) {
 
         final AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationToEntityMapper

@@ -59,6 +59,7 @@ class AysInvalidTokenServiceImpl implements AysInvalidTokenService {
      * @throws AysTokenAlreadyInvalidatedException if the token has already been invalidated
      */
     @Override
+    @Transactional(readOnly = true)
     public void checkForInvalidityOfToken(final String tokenId) {
         final boolean isTokenInvalid = invalidTokenReadPort.findByTokenId(tokenId).isPresent();
         if (isTokenInvalid) {

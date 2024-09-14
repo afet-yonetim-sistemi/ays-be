@@ -11,6 +11,7 @@ import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 class AysRoleReadServiceImpl implements AysRoleReadService {
 
     private final AysRoleReadPort roleReadPort;

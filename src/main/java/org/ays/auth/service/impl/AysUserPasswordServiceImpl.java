@@ -83,6 +83,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * @throws AysUserPasswordCannotChangedException if the password cannot be changed due to invalid conditions.
      */
     @Override
+    @Transactional(readOnly = true)
     public void checkPasswordChangingValidity(final String passwordId) {
 
         final AysUser.Password password = userReadPort.findByPasswordId(passwordId)
