@@ -14,6 +14,7 @@ import org.ays.emergency_application.model.request.EmergencyEvacuationApplicatio
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
+import org.ays.emergency_application.util.annotation.CheckEmergencyEvacuationApplicationActivity;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -77,6 +78,7 @@ class EmergencyEvacuationApplicationController {
         return AysResponse.successOf(emergencyEvacuationApplicationResponse);
     }
 
+
     /**
      * Endpoint to create a new emergency evacuation application.
      * This method accepts a POST request with the emergency evacuation application details in the request body.
@@ -85,6 +87,7 @@ class EmergencyEvacuationApplicationController {
      * @param emergencyEvacuationApplicationRequest the details of the emergency evacuation application
      * @return a response indicating the success of the operation
      */
+    @CheckEmergencyEvacuationApplicationActivity
     @PostMapping("/emergency-evacuation-application")
     public AysResponse<Void> create(@RequestBody @Valid EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
         emergencyEvacuationApplicationService.create(emergencyEvacuationApplicationRequest);
@@ -101,7 +104,7 @@ class EmergencyEvacuationApplicationController {
      * The user must have the authority 'application:evacuation:update' to access this endpoint.
      * </p>
      *
-     * @param id the unique identifier of the Emergency Evacuation Application to be updated
+     * @param id            the unique identifier of the Emergency Evacuation Application to be updated
      * @param updateRequest the request object containing the details to update the Emergency Evacuation Application
      * @return a response indicating the success of the update operation
      */
