@@ -15,6 +15,7 @@ import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
 import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -95,6 +96,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
      * @throws EmergencyEvacuationApplicationNotExistException if the application with the specified ID does not exist
      */
     @Override
+    @Transactional
     public void update(final String id,
                        final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
 
