@@ -63,7 +63,6 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
      * @throws AysUserAlreadyExistsByPhoneNumberException    if a user with the given phone number already exists.
      */
     @Override
-    @Transactional
     public void complete(final String id, final AdminRegistrationApplicationCompleteRequest completeRequest) {
 
         log.trace("Admin Register Flow call starting for email of {}", completeRequest.getEmailAddress());
