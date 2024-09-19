@@ -75,6 +75,8 @@ management:
       base-path: /public/actuator
 
 ays:
+  emergency-evacuation-application:
+    enabled: ${AYS_EMERGENCY_EVACUATION_APPLICATION_ENABLED:true}
   scheduler:
     invalid-tokens-deletion:
       cron: ${INVALID_TOKENS_DELETION_CRON:0 0 */3 * * ?}
