@@ -81,3 +81,8 @@ ays:
     invalid-tokens-deletion:
       cron: ${INVALID_TOKENS_DELETION_CRON:0 0 */3 * * ?}
       enable: ${INVALID_TOKENS_DELETION_ENABLED:true}
+  rate-limit:
+    authorized:
+      enabled: ${AYS_AUTHORIZED_RATE_LIMIT_ENABLED:false}
+    unauthorized:
+      enabled: ${AYS_UNAUTHORIZED_RATE_LIMIT_ENABLED:false}
