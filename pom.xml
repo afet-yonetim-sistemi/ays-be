@@ -39,6 +39,9 @@
         <jsonwebtoken.version>0.12.6</jsonwebtoken.version>
         <bouncycastle.version>1.78.1</bouncycastle.version>
 
+        <bucket4j-core.version>8.10.1</bucket4j-core.version>
+        <guava.version>33.3.0-jre</guava.version>
+
         <objenesis.version>3.3</objenesis.version>
         <commons-compress.version>1.27.0</commons-compress.version>
         <commons-text.version>1.12.0</commons-text.version>
@@ -117,6 +120,25 @@
         <!-- ===================== -->
         <!-- open api dependencies -->
         <!-- ===================== -->
+
+
+        <!-- ======================= -->
+        <!-- rate limit dependencies -->
+        <!-- ======================= -->
+        <dependency>
+            <groupId>com.bucket4j</groupId>
+            <artifactId>bucket4j-core</artifactId>
+            <version>${bucket4j-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <!-- ======================= -->
+        <!-- rate limit dependencies -->
+        <!-- ======================= -->
 
 
         <!-- ===================== -->
