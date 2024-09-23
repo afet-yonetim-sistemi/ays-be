@@ -1,6 +1,5 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.util.exception.AysBadRequestException;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.io.Serial;
