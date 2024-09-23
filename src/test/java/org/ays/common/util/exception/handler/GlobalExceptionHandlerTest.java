@@ -6,7 +6,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.AysRestControllerTest;
-import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.util.exception.AysAuthException;
 import org.ays.common.util.exception.AysBadRequestException;
@@ -15,7 +14,6 @@ import org.ays.common.util.exception.AysProcessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpInputMessage;
@@ -358,40 +356,6 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
             Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getType(), errorResponse.getSubErrors().get(0).getType());
         }
 
-    }
-
-    @Test
-    void givenUserNotSuperAdmin_whenThrowAysUserNotSuperAdminException_thenReturnAysError() {
-        // Given
-        AysUserNotSuperAdminException mockException = Mockito.mock(AysUserNotSuperAdminException.class);
-        Mockito.when(mockException.getMessage()).thenReturn("User is not a super admin");
-
-        // When
-        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.AUTH_ERROR.getName())
-                .message(mockException.getMessage())
-                .build();
-
-        // Then
-        AysErrorResponse errorResponse = globalExceptionHandler.handleAysUserNotSuperAdminError(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
-    }
-
-    @Test
-    void givenUserNotSuperAdmin_whenThrowAysUserNotSuperAdminExceptionWithoutMessage_thenReturnAysError() {
-        // Given
-        AysUserNotSuperAdminException mockException = Mockito.mock(AysUserNotSuperAdminException.class);
-        Mockito.when(mockException.getMessage()).thenReturn(null);
-
-        // When
-        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.AUTH_ERROR.getName())
-                .message(null)
-                .build();
-
-        // Then
-        AysErrorResponse errorResponse = globalExceptionHandler.handleAysUserNotSuperAdminError(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
     }
 
 }

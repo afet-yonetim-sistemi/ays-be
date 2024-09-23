@@ -164,17 +164,6 @@ class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(AysUserNotSuperAdminException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    AysErrorResponse handleAysUserNotSuperAdminError(final AysUserNotSuperAdminException exception) {
-        log.error(exception.getMessage(), exception);
-
-        return AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.AUTH_ERROR.getName())
-                .message(exception.getMessage())
-                .build();
-    }
-
     @ExceptionHandler(SQLException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     AysErrorResponse handleSQLError(final SQLException exception) {
