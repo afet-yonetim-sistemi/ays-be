@@ -1,13 +1,13 @@
 package org.ays.auth.util.exception;
 
-import org.springframework.security.access.AccessDeniedException;
+import org.ays.common.util.exception.AysAuthException;
 
 import java.io.Serial;
 
 /**
  * Exception to be thrown when a user is not a super admin but tries to perform an action that requires super admin privileges.
  */
-public final class AysUserNotSuperAdminException extends AccessDeniedException {
+public final class AysUserNotSuperAdminException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
