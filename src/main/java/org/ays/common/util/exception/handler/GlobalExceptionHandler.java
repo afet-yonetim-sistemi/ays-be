@@ -3,6 +3,7 @@ package org.ays.common.util.exception.handler;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.util.exception.AysAlreadyException;
 import org.ays.common.util.exception.AysAuthException;
@@ -160,6 +161,17 @@ class GlobalExceptionHandler {
 
         return AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
+                .build();
+    }
+
+    @ExceptionHandler(AysUserNotSuperAdminException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    AysErrorResponse handleAysUserNotSuperAdminError(final AysUserNotSuperAdminException exception) {
+        log.error(exception.getMessage(), exception);
+
+        return AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.AUTH_ERROR.getName())
+                .message(exception.getMessage())
                 .build();
     }
 
