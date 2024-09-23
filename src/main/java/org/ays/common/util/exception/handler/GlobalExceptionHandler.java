@@ -3,7 +3,6 @@ package org.ays.common.util.exception.handler;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.util.exception.AysAlreadyException;
 import org.ays.common.util.exception.AysAuthException;
