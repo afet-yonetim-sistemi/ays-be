@@ -373,7 +373,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     }
 
     @Test
-    void givenRoleCreateRequest_whenRequestHasSuperPermissionsAndUserIsNotSuperAdmin_thenReturnBadRequestError() throws Exception {
+    void givenRoleCreateRequest_whenRequestHasSuperPermissionsAndUserIsNotSuperAdmin_thenReturnForbiddenError() throws Exception {
 
         // Initialize
         List<AysPermission> permissions = permissionReadPort.findAll();
@@ -392,11 +392,11 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminToken.getAccessToken(), createRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
+                        .isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotHaveJsonPath());
 
@@ -514,7 +514,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     }
 
     @Test
-    void givenValidIdAndRoleUpdateRequest_whenRequestHasSuperPermissionsAndUserIsNotSuperAdmin_thenReturnBadRequestError() throws Exception {
+    void givenValidIdAndRoleUpdateRequest_whenRequestHasSuperPermissionsAndUserIsNotSuperAdmin_thenReturnForbiddenError() throws Exception {
 
         // Initialize
         List<AysPermission> permissions = permissionReadPort.findAll();
@@ -543,11 +543,11 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, adminToken.getAccessToken(), updateRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
+                        .isForbidden())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .doesNotHaveJsonPath());
 
