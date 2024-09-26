@@ -102,7 +102,7 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
             final String tokenId = tokenService.getPayload(jwt).getId();
             invalidTokenService.checkForInvalidityOfToken(tokenId);
 
-            if (this.isNotAllowedPath(httpServletRequest) || isAuthorizedRateLimitEnabled) {
+            if (isAuthorizedRateLimitEnabled) {
                 boolean isRateLimitExceeded = this.isRateLimitExceeded(ipAddress, authorizedBuckets, httpServletResponse);
                 if (isRateLimitExceeded) {
                     return;
