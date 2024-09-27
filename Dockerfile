@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM maven:3.9.8-amazoncorretto-17-al2023 AS build
+FROM maven:3.9.9-amazoncorretto-17-al2023 AS build
 
 # Copy Maven files for dependency resolution
 COPY pom.xml ./
@@ -18,7 +18,7 @@ RUN mvn --settings settings.xml clean install -DskipTests
 FROM amazoncorretto:17.0.12-al2023
 
 # Set working directory
-WORKDIR ays-be
+WORKDIR /app
 
 # Copy the JAR file from the build stage
 COPY --from=build target/*.jar /app/ays-be.jar
