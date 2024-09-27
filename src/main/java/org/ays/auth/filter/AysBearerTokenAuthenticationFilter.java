@@ -91,10 +91,20 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse httpServletResponse,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        final String ipAddress = HttpServletRequestUtil.getClientIpAddress(httpServletRequest);
-
         final String authorizationHeader = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+
+        boolean rateLimitExceeded = this.isRateLimitExceeded(
+                authorizationHeader,
+                httpServletRequest,
+                httpServletResponse
+        );
+
+        if (rateLimitExceeded) {
+            return;
+        }
+
         if (AysToken.isBearerToken(authorizationHeader)) {
+
             final String jwt = AysToken.getJwt(authorizationHeader);
 
             tokenService.verifyAndValidate(jwt);
@@ -102,40 +112,41 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
             final String tokenId = tokenService.getPayload(jwt).getId();
             invalidTokenService.checkForInvalidityOfToken(tokenId);
 
-            if (isAuthorizedRateLimitEnabled) {
-                boolean isRateLimitExceeded = this.isRateLimitExceeded(ipAddress, authorizedBuckets, httpServletResponse);
-                if (isRateLimitExceeded) {
-                    return;
-                }
-            }
-
             final var authentication = tokenService.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
 
-        if (this.isNotAllowedPath(httpServletRequest) && isUnauthorizedRateLimitEnabled) {
-            boolean isRateLimitExceeded = this.isRateLimitExceeded(ipAddress, unauthorizedBuckets, httpServletResponse);
-            if (isRateLimitExceeded) {
-                return;
-            }
+    private boolean isRateLimitExceeded(final String authorizationHeader,
+                                        final HttpServletRequest httpServletRequest,
+                                        final HttpServletResponse httpServletResponse) {
+
+        final String endpoint = httpServletRequest.getRequestURI();
+        boolean isAllowedPath = ALLOWED_PATHS.stream()
+                .anyMatch(endpoint::startsWith);
+
+        boolean isRateLimitEnabled = isAuthorizedRateLimitEnabled || isUnauthorizedRateLimitEnabled;
+
+        if (isAllowedPath || !isRateLimitEnabled) {
+            return false;
         }
 
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
+        if (AysToken.isBearerToken(authorizationHeader)) {
+            return this.isRateLimitExceededOnBuckets(authorizedBuckets, httpServletRequest, httpServletResponse);
+        }
 
+        return this.isRateLimitExceededOnBuckets(unauthorizedBuckets, httpServletRequest, httpServletResponse);
     }
 
-    private boolean isNotAllowedPath(final HttpServletRequest httpServletRequest) {
-        final String requestURI = httpServletRequest.getRequestURI();
-        return ALLOWED_PATHS.stream()
-                .noneMatch(requestURI::startsWith);
-    }
+    private boolean isRateLimitExceededOnBuckets(final LoadingCache<String, Bucket> buckets,
+                                                 final HttpServletRequest httpServletRequest,
+                                                 final HttpServletResponse httpServletResponse) {
 
-    private boolean isRateLimitExceeded(final String ipAddress,
-                                        final LoadingCache<String, Bucket> buckets,
-                                        final HttpServletResponse httpServletResponse) {
+        final String ipAddress = HttpServletRequestUtil.getClientIpAddress(httpServletRequest);
 
         try {
 
@@ -145,12 +156,16 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
             }
 
         } catch (ExecutionException exception) {
-            log.error("Error while checking rate limit for IP: {}", ipAddress, exception);
+            final String method = httpServletRequest.getMethod();
+            final String endpoint = httpServletRequest.getRequestURI();
+            log.error("Error while checking rate limit by {} to {} - {}", ipAddress, method, endpoint);
             httpServletResponse.setStatus(429);
             return true;
         }
 
-        log.warn("Rate limit exceeded for IP: {}", ipAddress);
+        final String method = httpServletRequest.getMethod();
+        final String endpoint = httpServletRequest.getRequestURI();
+        log.warn("Rate limit exceeded by {} to {} - {}", ipAddress, method, endpoint);
         httpServletResponse.setStatus(429);
         return true;
     }
