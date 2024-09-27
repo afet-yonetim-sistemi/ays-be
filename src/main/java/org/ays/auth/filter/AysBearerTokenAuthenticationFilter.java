@@ -25,6 +25,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -81,6 +82,10 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
             });
 
 
+    private static final List<String> ALLOWED_PATHS = List
+            .of("/public/actuator");
+
+
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest,
                                     @NonNull HttpServletResponse httpServletResponse,
@@ -111,7 +116,7 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
         }
 
 
-        if (isUnauthorizedRateLimitEnabled) {
+        if (this.isNotAllowedPath(httpServletRequest) && isUnauthorizedRateLimitEnabled) {
             boolean isRateLimitExceeded = this.isRateLimitExceeded(ipAddress, unauthorizedBuckets, httpServletResponse);
             if (isRateLimitExceeded) {
                 return;
@@ -120,6 +125,12 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
+    }
+
+    private boolean isNotAllowedPath(final HttpServletRequest httpServletRequest) {
+        final String requestURI = httpServletRequest.getRequestURI();
+        return ALLOWED_PATHS.stream()
+                .noneMatch(requestURI::startsWith);
     }
 
     private boolean isRateLimitExceeded(final String ipAddress,
