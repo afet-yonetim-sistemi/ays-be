@@ -2,6 +2,7 @@ package org.ays.emergency_application.controller;
 
 import org.ays.AysEndToEndTest;
 import org.ays.common.model.AysPageable;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
@@ -84,8 +85,13 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         applications.forEach(application -> emergencyEvacuationApplicationSavePort.save(application));
 
         // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withPage(1)
+                .withPageSize(10)
+                .build();
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
                 .withValidValues()
+                .withPagination(mockAysPageable)
                 .withFilter(null)
                 .withoutOrders()
                 .build();
