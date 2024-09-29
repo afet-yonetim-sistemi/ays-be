@@ -51,7 +51,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
     private static final String BASE_PATH = "/api/v1";
 
     @Test
-    void givenValidEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
+    void givenValidEmergencyEvacuationApplicationListRequest_whenApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
 
         // Initialize
         emergencyEvacuationApplicationRepository.deleteAll();
