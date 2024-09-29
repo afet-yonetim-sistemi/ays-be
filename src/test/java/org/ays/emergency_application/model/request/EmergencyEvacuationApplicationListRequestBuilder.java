@@ -24,12 +24,12 @@ public class EmergencyEvacuationApplicationListRequestBuilder extends TestDataBu
                 .build();
 
         return this
-                .withPagination(new AysPageableBuilder().withValidValues().build())
+                .withPageable(new AysPageableBuilder().withValidValues().build())
                 .withOrders(List.of(createdAtSort))
                 .initializeFilter();
     }
 
-    public EmergencyEvacuationApplicationListRequestBuilder withPagination(AysPageable aysPageable) {
+    public EmergencyEvacuationApplicationListRequestBuilder withPageable(AysPageable aysPageable) {
         data.setPageable(aysPageable);
         return this;
     }

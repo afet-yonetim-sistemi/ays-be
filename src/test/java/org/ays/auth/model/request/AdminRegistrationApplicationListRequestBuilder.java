@@ -27,7 +27,7 @@ public class AdminRegistrationApplicationListRequestBuilder extends TestDataBuil
         return this
                 .initializeFilter()
                 .withStatuses(Set.of(AdminRegistrationApplicationStatus.WAITING))
-                .withPagination(new AysPageableBuilder().withValidValues().build())
+                .withPageable(new AysPageableBuilder().withValidValues().build())
                 .withOrders(orders);
     }
 
@@ -46,7 +46,7 @@ public class AdminRegistrationApplicationListRequestBuilder extends TestDataBuil
         return this;
     }
 
-    public AdminRegistrationApplicationListRequestBuilder withPagination(AysPageable aysPageable) {
+    public AdminRegistrationApplicationListRequestBuilder withPageable(AysPageable aysPageable) {
         data.setPageable(aysPageable);
         return this;
     }

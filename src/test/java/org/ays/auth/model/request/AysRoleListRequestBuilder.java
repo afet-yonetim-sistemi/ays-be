@@ -24,12 +24,12 @@ public class AysRoleListRequestBuilder extends TestDataBuilder<AysRoleListReques
                 .build();
 
         return this
-                .withPagination(new AysPageableBuilder().withValidValues().build())
+                .withPageable(new AysPageableBuilder().withValidValues().build())
                 .withOrders(List.of(createdAtSort))
                 .initializeFilter();
     }
 
-    public AysRoleListRequestBuilder withPagination(AysPageable aysPageable) {
+    public AysRoleListRequestBuilder withPageable(AysPageable aysPageable) {
         data.setPageable(aysPageable);
         return this;
     }

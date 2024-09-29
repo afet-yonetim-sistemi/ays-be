@@ -25,12 +25,12 @@ public class AysUserListRequestBuilder extends TestDataBuilder<AysUserListReques
                 .build();
 
         return this
-                .withPagination(new AysPageableBuilder().withValidValues().build())
+                .withPageable(new AysPageableBuilder().withValidValues().build())
                 .withOrders(List.of(createdAtSort))
                 .initializeFilter();
     }
 
-    public AysUserListRequestBuilder withPagination(AysPageable aysPageable) {
+    public AysUserListRequestBuilder withPageable(AysPageable aysPageable) {
         data.setPageable(aysPageable);
         return this;
     }

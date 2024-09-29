@@ -91,7 +91,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .build();
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
                 .withValidValues()
-                .withPagination(mockAysPageable)
+                .withPageable(mockAysPageable)
                 .withFilter(null)
                 .withoutOrders()
                 .build();
