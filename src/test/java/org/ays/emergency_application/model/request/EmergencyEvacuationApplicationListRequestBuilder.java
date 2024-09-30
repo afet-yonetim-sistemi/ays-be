@@ -1,7 +1,7 @@
 package org.ays.emergency_application.model.request;
 
 import org.ays.common.model.AysPageable;
-import org.ays.common.model.AysPagingBuilder;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.AysSort;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
@@ -24,12 +24,12 @@ public class EmergencyEvacuationApplicationListRequestBuilder extends TestDataBu
                 .build();
 
         return this
-                .withPagination(new AysPagingBuilder().withValidValues().build())
+                .withPageable(new AysPageableBuilder().withValidValues().build())
                 .withOrders(List.of(createdAtSort))
                 .initializeFilter();
     }
 
-    public EmergencyEvacuationApplicationListRequestBuilder withPagination(AysPageable aysPageable) {
+    public EmergencyEvacuationApplicationListRequestBuilder withPageable(AysPageable aysPageable) {
         data.setPageable(aysPageable);
         return this;
     }

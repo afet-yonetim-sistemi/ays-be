@@ -3,7 +3,7 @@ package org.ays.auth.model.request;
 import org.ays.auth.model.AdminRegistrationApplicationFilter;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.AysPageable;
-import org.ays.common.model.AysPagingBuilder;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.AysSort;
 import org.ays.common.model.TestDataBuilder;
 
@@ -27,7 +27,7 @@ public class AdminRegistrationApplicationListRequestBuilder extends TestDataBuil
         return this
                 .initializeFilter()
                 .withStatuses(Set.of(AdminRegistrationApplicationStatus.WAITING))
-                .withPagination(new AysPagingBuilder().withValidValues().build())
+                .withPageable(new AysPageableBuilder().withValidValues().build())
                 .withOrders(orders);
     }
 
@@ -46,7 +46,7 @@ public class AdminRegistrationApplicationListRequestBuilder extends TestDataBuil
         return this;
     }
 
-    public AdminRegistrationApplicationListRequestBuilder withPagination(AysPageable aysPageable) {
+    public AdminRegistrationApplicationListRequestBuilder withPageable(AysPageable aysPageable) {
         data.setPageable(aysPageable);
         return this;
     }

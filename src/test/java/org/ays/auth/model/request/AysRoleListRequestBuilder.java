@@ -3,7 +3,7 @@ package org.ays.auth.model.request;
 import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.AysPageable;
-import org.ays.common.model.AysPagingBuilder;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.AysSort;
 import org.ays.common.model.TestDataBuilder;
 
@@ -24,12 +24,12 @@ public class AysRoleListRequestBuilder extends TestDataBuilder<AysRoleListReques
                 .build();
 
         return this
-                .withPagination(new AysPagingBuilder().withValidValues().build())
+                .withPageable(new AysPageableBuilder().withValidValues().build())
                 .withOrders(List.of(createdAtSort))
                 .initializeFilter();
     }
 
-    public AysRoleListRequestBuilder withPagination(AysPageable aysPageable) {
+    public AysRoleListRequestBuilder withPageable(AysPageable aysPageable) {
         data.setPageable(aysPageable);
         return this;
     }
