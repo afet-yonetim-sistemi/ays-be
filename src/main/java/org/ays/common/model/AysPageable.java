@@ -35,10 +35,10 @@ public class AysPageable extends AysSort {
     private int page;
 
     /**
-     * Represents the page size.
-     * This value should be between 10 and 10, specifying the number of items per page.
+     * Represents the size of the page.
+     * The value must be between 1 and 10, specifying the number of items per page.
      */
-    @Range(min = 1, max = 99999999)
+    @Range(min = 1, max = 10)
     private int pageSize;
 
     /**
