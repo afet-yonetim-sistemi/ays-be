@@ -27,10 +27,7 @@ services:
     ports:
       - "9790:9790"
     environment:
-      - AYS_DB_USERNAME=ays
-      - AYS_DB_PASSWORD=ayspass
-      - AYS_DB_PORT=3307
-      - AYS_DB_IP=host.docker.internal
-      - AYS_LIQUIBASE_ENABLE_DROP_FIRST=false
+      - AYS_DB_WRITER_INSTANCE_IP=host.docker.internal
+      - AYS_DB_READER_INSTANCE_IP=host.docker.internal
     depends_on:
       - database

@@ -3,7 +3,7 @@ package org.ays.auth.model.request;
 import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPageable;
-import org.ays.common.model.AysPagingBuilder;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysSort;
 import org.ays.common.model.TestDataBuilder;
@@ -25,12 +25,12 @@ public class AysUserListRequestBuilder extends TestDataBuilder<AysUserListReques
                 .build();
 
         return this
-                .withPagination(new AysPagingBuilder().withValidValues().build())
+                .withPageable(new AysPageableBuilder().withValidValues().build())
                 .withOrders(List.of(createdAtSort))
                 .initializeFilter();
     }
 
-    public AysUserListRequestBuilder withPagination(AysPageable aysPageable) {
+    public AysUserListRequestBuilder withPageable(AysPageable aysPageable) {
         data.setPageable(aysPageable);
         return this;
     }
