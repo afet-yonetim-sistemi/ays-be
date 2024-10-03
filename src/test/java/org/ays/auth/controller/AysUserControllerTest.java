@@ -6,12 +6,7 @@ import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
-import org.ays.auth.model.request.AysUserCreateRequest;
-import org.ays.auth.model.request.AysUserCreateRequestBuilder;
-import org.ays.auth.model.request.AysUserListRequest;
-import org.ays.auth.model.request.AysUserListRequestBuilder;
-import org.ays.auth.model.request.AysUserUpdateRequest;
-import org.ays.auth.model.request.AysUserUpdateRequestBuilder;
+import org.ays.auth.model.request.*;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.service.AysUserCreateService;
@@ -19,6 +14,7 @@ import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
+import org.ays.common.model.AysPagingBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
@@ -185,6 +181,36 @@ class AysUserControllerTest extends AysRestControllerTest {
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
                 .withValidValues()
                 .withCity(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+    @Test
+    void givenInvalidUserListRequest_whenPageSizeNotTen_thenReturnValidationError() throws Exception {
+
+        // Given
+        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
+                .withPagination(new AysPagingBuilder()
+                        .withPage(1)
+                        .withPageSize(15)
+                        .build()
+                )
                 .build();
 
         // Then

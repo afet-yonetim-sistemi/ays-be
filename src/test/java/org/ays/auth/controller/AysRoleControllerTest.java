@@ -23,6 +23,7 @@ import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
 import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
+import org.ays.common.model.AysPagingBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
@@ -154,6 +155,36 @@ class AysRoleControllerTest extends AysRestControllerTest {
         AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
                 .withValidValues()
                 .withName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.never())
+                .findAll(Mockito.any(AysRoleListRequest.class));
+    }
+
+    @Test
+    void givenInvalidRoleListRequest_whenPageSizeNotTen_thenReturnValidationError() throws Exception {
+
+        // Given
+        AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
+                .withPagination(new AysPagingBuilder()
+                        .withPage(1)
+                        .withPageSize(15)
+                        .build()
+                )
                 .build();
 
         // Then
