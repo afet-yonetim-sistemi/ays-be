@@ -23,7 +23,7 @@ import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
 import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
-import org.ays.common.model.AysPagingBuilder;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
@@ -175,14 +175,20 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .findAll(Mockito.any(AysRoleListRequest.class));
     }
 
-    @Test
-    void givenInvalidRoleListRequest_whenPageSizeNotTen_thenReturnValidationError() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1",
+            "109",
+            "99999",
+            "15"
+    })
+    void givenInvalidRoleListRequest_whenPageSizeNotTen_thenReturnValidationError(int invalidPageSize) throws Exception {
 
         // Given
         AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
-                .withPagination(new AysPagingBuilder()
+                .withPageable(new AysPageableBuilder()
                         .withPage(1)
-                        .withPageSize(15)
+                        .withPageSize(invalidPageSize)
                         .build()
                 )
                 .build();

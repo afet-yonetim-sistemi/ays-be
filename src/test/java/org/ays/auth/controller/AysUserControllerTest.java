@@ -14,7 +14,7 @@ import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
-import org.ays.common.model.AysPagingBuilder;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
@@ -201,14 +201,20 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .findAll(Mockito.any(AysUserListRequest.class));
     }
 
-    @Test
-    void givenInvalidUserListRequest_whenPageSizeNotTen_thenReturnValidationError() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1",
+            "109",
+            "99999",
+            "15"
+    })
+    void givenInvalidUserListRequest_whenPageSizeNotTen_thenReturnValidationError(int invalidPageSize) throws Exception {
 
         // Given
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
-                .withPagination(new AysPagingBuilder()
+                .withPageable(new AysPageableBuilder()
                         .withPage(1)
-                        .withPageSize(15)
+                        .withPageSize(invalidPageSize)
                         .build()
                 )
                 .build();
