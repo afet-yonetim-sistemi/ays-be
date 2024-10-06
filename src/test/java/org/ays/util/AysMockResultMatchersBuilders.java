@@ -16,6 +16,10 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.time");
     }
 
+    public static JsonPathResultMatchers code() {
+        return MockMvcResultMatchers.jsonPath("$.code");
+    }
+
     public static JsonPathResultMatchers header() {
         return MockMvcResultMatchers.jsonPath("$.header");
     }

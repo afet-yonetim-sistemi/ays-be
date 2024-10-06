@@ -3,8 +3,10 @@ package org.ays.common.model.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
+import org.ays.common.util.AysRandomUtil;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * A generic response class representing an API response.
@@ -20,6 +22,12 @@ public class AysResponse<T> {
      */
     @Builder.Default
     private LocalDateTime time = LocalDateTime.now();
+
+    /**
+     * A unique code identifying the response.
+     */
+    @Builder.Default
+    private String code = AysRandomUtil.generateUUID();
 
     /**
      * Indicates whether the API request was successful or not.

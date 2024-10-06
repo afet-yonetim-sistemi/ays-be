@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.ays.common.util.AysRandomUtil;
 import org.springframework.validation.FieldError;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -31,6 +32,12 @@ public class AysErrorResponse {
      */
     @Builder.Default
     private LocalDateTime time = LocalDateTime.now();
+
+    /**
+     * A unique code identifying the response.
+     */
+    @Builder.Default
+    private String code = AysRandomUtil.generateUUID();
 
     /**
      * The header of the error response.
