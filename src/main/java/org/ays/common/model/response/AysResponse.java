@@ -6,7 +6,6 @@ import lombok.Getter;
 import org.ays.common.util.AysRandomUtil;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * A generic response class representing an API response.
