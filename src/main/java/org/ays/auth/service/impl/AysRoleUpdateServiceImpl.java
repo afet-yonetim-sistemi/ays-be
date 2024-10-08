@@ -20,6 +20,7 @@ import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -62,12 +63,17 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
                 .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
-        this.checkExistingRoleNameByWithoutId(id, updateRequest.getName());
+        if (!role.getName().equals(updateRequest.getName())) {
+            this.checkExistingRoleNameByWithoutId(id, updateRequest.getName());
+        }
 
         final List<AysPermission> permissions = this.checkExistingPermissionsAndGet(updateRequest.getPermissionIds());
 
         role.setName(updateRequest.getName());
         role.setPermissions(permissions);
+
+        role.setUpdatedAt(LocalDateTime.now());
+        role.setUpdatedUser(identity.getUserId());
 
         roleSavePort.save(role);
     }
