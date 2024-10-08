@@ -55,9 +55,7 @@ class AysRoleAdapterTest extends AysUnitTest {
                 .withValidValues()
                 .withoutOrders()
                 .build();
-        AysRoleFilter mockFilter = new AysRoleFilterBuilder()
-                .withValidValues()
-                .build();
+        AysRoleFilter mockFilter = new AysRoleFilterBuilder().build();
 
         // When
         List<AysRoleEntity> mockEntities = List.of(
