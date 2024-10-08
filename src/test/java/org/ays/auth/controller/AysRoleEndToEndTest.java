@@ -514,6 +514,60 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     }
 
     @Test
+    void givenValidRoleUpdateRequest_whenPermissionsUpdatedAndNameUnchanged_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        Set<String> permissionIds = permissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
+
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName("Admin Role")
+                        .withPermissions(permissions)
+                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+        AysRoleUpdateRequest updateRequest = new AysRoleUpdateRequestBuilder()
+                .withName("Admin Role")
+                .withPermissionIds(permissionIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertNotNull(roleFromDatabase.get().getId());
+        Assertions.assertNotNull(roleFromDatabase.get().getInstitution());
+        Assertions.assertEquals(updateRequest.getName(), roleFromDatabase.get().getName());
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
+        updateRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+                roleFromDatabase.get().getPermissions().stream()
+                        .anyMatch(permission -> permission.getId().equals(permissionId))
+        ));
+    }
+
+    @Test
     void givenValidIdAndRoleUpdateRequest_whenRequestHasSuperPermissionsAndUserIsNotSuperAdmin_thenReturnForbiddenError() throws Exception {
 
         // Initialize
