@@ -75,6 +75,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         user.setEmailAddress(updateRequest.getEmailAddress());
         user.setCity(updateRequest.getCity());
         user.setPhoneNumber(phoneNumber);
+        user.setUpdatedUser(identity.getUserId());
 
         userSavePort.save(user);
     }
