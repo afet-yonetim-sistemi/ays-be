@@ -2,6 +2,7 @@ package org.ays.auth.controller;
 
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysPermission;
+import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
@@ -508,6 +509,66 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(updateRequest.getName(), roleFromDatabase.get().getName());
         Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
         updateRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+                roleFromDatabase.get().getPermissions().stream()
+                        .anyMatch(permission -> permission.getId().equals(permissionId))
+        ));
+    }
+
+    @Test
+    void givenValidRoleUpdateRequest_whenPermissionsUpdatedAndNameUnchanged_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAll();
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName("Admin Role")
+                        .withPermissions(permissions)
+                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+        List<AysPermission> newPermissions = List.of(
+                new AysPermissionBuilder()
+                        .withValidValues()
+                        .withId("17dd50f6-61fe-4a30-a136-d9b80649e7fe")
+                        .build()
+        );
+
+        Set<String> newPermissionIds = newPermissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
+        AysRoleUpdateRequest updateRequest = new AysRoleUpdateRequestBuilder()
+                .withName("Admin Role")
+                .withPermissionIds(newPermissionIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertNotNull(roleFromDatabase.get().getId());
+        Assertions.assertNotNull(roleFromDatabase.get().getInstitution());
+        Assertions.assertEquals(updateRequest.getName(), roleFromDatabase.get().getName());
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
+        newPermissionIds.forEach(permissionId -> Assertions.assertTrue(
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
