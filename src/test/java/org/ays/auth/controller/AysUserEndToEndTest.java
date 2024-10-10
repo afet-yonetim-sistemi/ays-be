@@ -2,6 +2,7 @@ package org.ays.auth.controller;
 
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysRole;
+import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysUserStatus;
@@ -369,6 +370,72 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                                 userFromDatabase.get().getRoles().stream().anyMatch(role -> role.getId().equals(roleId))
                         )
                 );
+        Assertions.assertNotNull(userFromDatabase.get().getUpdatedUser());
+        Assertions.assertNotNull(userFromDatabase.get().getUpdatedAt());
+    }
+
+    @Test
+    void givenValidIdAndUserUpdateRequest_whenRolesUpdatedOnly_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withRoles(roles)
+                        .withInstitution(institution)
+                        .build()
+        );
+
+        // Given
+        String id = user.getId();
+        List<AysRole> newRoles = List.of(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withId("42fe288d-be87-4169-875e-e721a75cc833")
+                        .build()
+        );
+
+        Set<String> newRoleIds = newRoles.stream()
+                .map(AysRole::getId)
+                .limit(1)
+                .collect(Collectors.toSet());
+
+        AysUserUpdateRequest updateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withRoleIds(newRoleIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysUser> userFromDatabase = userReadPort.findById(id);
+
+        Assertions.assertTrue(userFromDatabase.isPresent());
+        Assertions.assertNotNull(userFromDatabase.get().getId());
+        Assertions.assertNotNull(userFromDatabase.get().getInstitution());
+        newRoleIds.forEach(roleId -> Assertions.assertTrue(
+                        userFromDatabase.get().getRoles().stream()
+                                .anyMatch(role -> role.getId().equals(roleId))
+                )
+        );
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedAt());
     }
