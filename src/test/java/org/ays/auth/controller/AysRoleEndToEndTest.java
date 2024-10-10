@@ -2,6 +2,7 @@ package org.ays.auth.controller;
 
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysPermission;
+import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
@@ -517,12 +518,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
     void givenValidRoleUpdateRequest_whenPermissionsUpdatedAndNameUnchanged_thenReturnSuccess() throws Exception {
 
         // Initialize
-        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
-        Set<String> permissionIds = permissions.stream()
-                .map(AysPermission::getId)
-                .collect(Collectors.toSet());
-
-
+        List<AysPermission> permissions = permissionReadPort.findAll();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
@@ -535,9 +531,20 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
 
         // Given
         String id = role.getId();
+        List<AysPermission> newPermissions = List.of(
+                new AysPermissionBuilder()
+                        .withValidValues()
+                        .withId("17dd50f6-61fe-4a30-a136-d9b80649e7fe")
+                        .build()
+        );
+
+        Set<String> newPermissionIds = newPermissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
         AysRoleUpdateRequest updateRequest = new AysRoleUpdateRequestBuilder()
                 .withName("Admin Role")
-                .withPermissionIds(permissionIds)
+                .withPermissionIds(newPermissionIds)
                 .build();
 
         // Then
@@ -561,7 +568,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(roleFromDatabase.get().getInstitution());
         Assertions.assertEquals(updateRequest.getName(), roleFromDatabase.get().getName());
         Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
-        updateRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+        newPermissionIds.forEach(permissionId -> Assertions.assertTrue(
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
