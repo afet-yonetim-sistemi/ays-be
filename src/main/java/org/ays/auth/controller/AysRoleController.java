@@ -23,10 +23,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -137,7 +137,7 @@ class AysRoleController {
     @PreAuthorize("hasAnyAuthority('role:create')")
     public AysResponse<Void> create(@RequestBody @Valid AysRoleCreateRequest createRequest) {
         roleCreateService.create(createRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -158,7 +158,7 @@ class AysRoleController {
                                     @RequestBody @Valid final AysRoleUpdateRequest updateRequest) {
 
         roleUpdateService.update(id, updateRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -176,7 +176,7 @@ class AysRoleController {
     @PreAuthorize("hasAnyAuthority('role:update')")
     public AysResponse<Void> activate(@PathVariable @UUID final String id) {
         roleUpdateService.activate(id);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -194,7 +194,7 @@ class AysRoleController {
     @PreAuthorize("hasAnyAuthority('role:update')")
     public AysResponse<Void> passivate(@PathVariable @UUID final String id) {
         roleUpdateService.passivate(id);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -212,7 +212,7 @@ class AysRoleController {
     @PreAuthorize("hasAnyAuthority('role:delete')")
     public AysResponse<Void> delete(@PathVariable @UUID final String id) {
         roleUpdateService.delete(id);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 }

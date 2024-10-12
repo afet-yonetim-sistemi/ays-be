@@ -43,8 +43,11 @@ public class AysResponse<T> {
     /**
      * A pre-defined success response with no content.
      */
-    public static final AysResponse<Void> SUCCESS = AysResponse.<Void>builder()
-            .isSuccess(true).build();
+    public static <T> AysResponse<T> success() {
+        return AysResponse.<T>builder()
+                .isSuccess(true)
+                .build();
+    }
 
     /**
      * Creates a success response with the specified response object.

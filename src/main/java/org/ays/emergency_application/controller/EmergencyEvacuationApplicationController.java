@@ -91,7 +91,7 @@ class EmergencyEvacuationApplicationController {
     @PostMapping("/emergency-evacuation-application")
     public AysResponse<Void> create(@RequestBody @Valid EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
         emergencyEvacuationApplicationService.create(emergencyEvacuationApplicationRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -114,7 +114,7 @@ class EmergencyEvacuationApplicationController {
                                     @RequestBody @Valid final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
 
         emergencyEvacuationApplicationService.update(id, updateRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 }

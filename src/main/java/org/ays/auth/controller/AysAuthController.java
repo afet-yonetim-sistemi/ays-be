@@ -76,7 +76,7 @@ class AysAuthController {
     @PostMapping("/token/invalidate")
     public AysResponse<Void> invalidateTokens(@RequestBody @Valid AysTokenInvalidateRequest invalidateRequest) {
         authService.invalidateTokens(invalidateRequest.getRefreshToken());
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -89,7 +89,7 @@ class AysAuthController {
     @PostMapping("/password/forgot")
     public AysResponse<Void> forgotPassword(@RequestBody @Valid AysPasswordForgotRequest forgotPasswordRequest) {
         userPasswordService.forgotPassword(forgotPasswordRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -106,7 +106,7 @@ class AysAuthController {
     @GetMapping("/password/{id}/validity")
     public AysResponse<Void> checkPasswordChangingValidity(@PathVariable @UUID String id) {
         userPasswordService.checkPasswordChangingValidity(id);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -126,7 +126,7 @@ class AysAuthController {
                                             @RequestBody @Valid AysPasswordCreateRequest createRequest) {
 
         userPasswordService.createPassword(id, createRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 }
