@@ -54,9 +54,7 @@ class AysUserAdapterTest extends AysUnitTest {
                 .withValidValues()
                 .withoutOrders()
                 .build();
-        AysUserFilter mockFilter = new AysUserFilterBuilder()
-                .withValidValues()
-                .build();
+        AysUserFilter mockFilter = new AysUserFilterBuilder().build();
 
         // When
         List<AysUserEntity> mockEntities = List.of(

@@ -9,7 +9,7 @@ public class AysPageableBuilder extends TestDataBuilder<AysPageable> {
     public AysPageableBuilder withValidValues() {
         return new AysPageableBuilder()
                 .withPage(1)
-                .withPageSize(1);
+                .withPageSize(10);
     }
 
     public AysPageableBuilder withPage(int page) {
