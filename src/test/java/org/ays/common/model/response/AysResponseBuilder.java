@@ -18,7 +18,7 @@ public class AysResponseBuilder {
                 .build();
     }
 
-    public static <T> AysResponse<AysPageResponse<T>> success() {
+    public static <T> AysResponse<AysPageResponse<T>> successPage() {
         return AysResponse.<AysPageResponse<T>>builder()
                 .isSuccess(true)
                 .build();

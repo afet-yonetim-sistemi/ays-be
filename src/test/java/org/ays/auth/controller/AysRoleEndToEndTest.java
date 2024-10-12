@@ -119,7 +119,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 .post(endpoint, superAdminToken.getAccessToken(), listRequest);
 
 
-        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponseBuilder.success();
+        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponseBuilder.successPage();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -158,7 +158,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 .post(endpoint, adminToken.getAccessToken(), listRequest);
 
 
-        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponseBuilder.success();
+        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponseBuilder.successPage();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -210,7 +210,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 .post(endpoint, superAdminToken.getAccessToken(), listRequest);
 
 
-        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponseBuilder.success();
+        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponseBuilder.successPage();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

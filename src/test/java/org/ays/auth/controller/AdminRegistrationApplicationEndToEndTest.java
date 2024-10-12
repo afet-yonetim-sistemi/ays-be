@@ -110,7 +110,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), listRequest);
 
-        AysResponse<AysPageResponse<AdminRegistrationApplication>> mockResponse = AysResponseBuilder.success();
+        AysResponse<AysPageResponse<AdminRegistrationApplication>> mockResponse = AysResponseBuilder.successPage();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
