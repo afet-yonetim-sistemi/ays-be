@@ -2,7 +2,6 @@ package org.ays.auth.controller;
 
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysPermission;
-import org.ays.auth.model.AysPermissionBuilder;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
@@ -531,12 +530,8 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
 
         // Given
         String id = role.getId();
-        List<AysPermission> newPermissions = List.of(
-                new AysPermissionBuilder()
-                        .withValidValues()
-                        .withId("17dd50f6-61fe-4a30-a136-d9b80649e7fe")
-                        .build()
-        );
+        AysPermission newPermission = permissions.get(0);
+        List<AysPermission> newPermissions = List.of(newPermission);
 
         Set<String> newPermissionIds = newPermissions.stream()
                 .map(AysPermission::getId)
