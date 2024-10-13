@@ -19,6 +19,7 @@ import org.ays.auth.service.AysUserReadService;
 import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
@@ -185,6 +186,42 @@ class AysUserControllerTest extends AysRestControllerTest {
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
                 .withValidValues()
                 .withCity(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1",
+            "109",
+            "99999",
+            "15"
+    })
+    void givenInvalidUserListRequest_whenPageSizeNotTen_thenReturnValidationError(int invalidPageSize) throws Exception {
+
+        // Given
+        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
+                .withPageable(new AysPageableBuilder()
+                        .withPage(1)
+                        .withPageSize(invalidPageSize)
+                        .build()
+                )
                 .build();
 
         // Then
