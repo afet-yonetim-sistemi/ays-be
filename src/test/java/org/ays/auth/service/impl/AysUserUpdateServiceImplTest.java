@@ -112,7 +112,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(identity, Mockito.times(mockRoles.size() + 1))
+        Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
 
         Mockito.verify(userReadPort, Mockito.times(1))
@@ -190,7 +190,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(identity, Mockito.times(mockRoles.size() + 1))
+        Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
 
         Mockito.verify(roleReadPort, Mockito.times(1))
