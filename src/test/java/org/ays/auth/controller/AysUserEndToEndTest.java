@@ -2,7 +2,6 @@ package org.ays.auth.controller;
 
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysRole;
-import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysUserStatus;
@@ -18,6 +17,8 @@ import org.ays.auth.model.response.AysUsersResponse;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
+import org.ays.common.model.AysPhoneNumberBuilder;
+import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
@@ -387,6 +388,11 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         AysUser user = userSavePort.save(
                 new AysUserBuilder()
                         .withValidValues()
+                        .withFirstName("Test")
+                        .withLastName("Dene")
+                        .withEmailAddress("Test.deneme@afetyonetimsistemi.org")
+                        .withCity("İzmir")
+                        .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
                         .withoutId()
                         .withRoles(roles)
                         .withInstitution(institution)
@@ -395,12 +401,8 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         // Given
         String id = user.getId();
-        List<AysRole> newRoles = List.of(
-                new AysRoleBuilder()
-                        .withValidValues()
-                        .withId("42fe288d-be87-4169-875e-e721a75cc833")
-                        .build()
-        );
+        AysRole newRole = roles.get(0);
+        List<AysRole> newRoles = List.of(newRole);
 
         Set<String> newRoleIds = newRoles.stream()
                 .map(AysRole::getId)
@@ -409,6 +411,11 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         AysUserUpdateRequest updateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
+                .withFirstName("Test")
+                .withLastName("Dene")
+                .withEmailAddress("Test.deneme@afetyonetimsistemi.org")
+                .withCity("İzmir")
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
                 .withRoleIds(newRoleIds)
                 .build();
 

@@ -66,15 +66,21 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                 .lineNumber(updateRequest.getPhoneNumber().getLineNumber())
                 .build();
 
-        this.validatePhoneNumber(user, phoneNumber);
-        this.validateEmailAddress(user, updateRequest.getEmailAddress());
+        if (!user.getPhoneNumber().equals(phoneNumber)) {
+            this.validatePhoneNumber(user, phoneNumber);
+            user.setPhoneNumber(phoneNumber);
+        }
+
+        if (!user.getEmailAddress().equals(updateRequest.getEmailAddress())) {
+            this.validateEmailAddress(user, updateRequest.getEmailAddress());
+            user.setEmailAddress(updateRequest.getEmailAddress());
+        }
+
         this.validateRolesAndSet(user, updateRequest.getRoleIds());
 
         user.setFirstName(updateRequest.getFirstName());
         user.setLastName(updateRequest.getLastName());
-        user.setEmailAddress(updateRequest.getEmailAddress());
         user.setCity(updateRequest.getCity());
-        user.setPhoneNumber(phoneNumber);
         user.setUpdatedUser(identity.getUserId());
 
         userSavePort.save(user);
