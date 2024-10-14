@@ -62,12 +62,15 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
                 .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
-        this.checkExistingRoleNameByWithoutId(id, updateRequest.getName());
+        if (!role.getName().equals(updateRequest.getName())) {
+            this.checkExistingRoleNameByWithoutId(id, updateRequest.getName());
+        }
 
         final List<AysPermission> permissions = this.checkExistingPermissionsAndGet(updateRequest.getPermissionIds());
 
         role.setName(updateRequest.getName());
         role.setPermissions(permissions);
+        role.setUpdatedUser(identity.getUserId());
 
         roleSavePort.save(role);
     }
