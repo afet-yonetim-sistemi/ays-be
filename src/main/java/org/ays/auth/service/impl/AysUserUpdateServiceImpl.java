@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Service implementation for updating users.
@@ -56,7 +57,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         final AysUser user = userReadPort.findById(id)
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
-        String institutionId = identity.getInstitutionId();
+        final String institutionId = identity.getInstitutionId();
         if (!institutionId.equals(user.getInstitution().getId())) {
             throw new AysUserNotExistByIdException(id);
         }
@@ -70,23 +71,33 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                 .lineNumber(updateRequest.getPhoneNumber().getLineNumber())
                 .build();
 
-        if (!user.getPhoneNumber().equals(phoneNumber)) {
+        final boolean isPhoneNumberChanged = !user.getPhoneNumber().equals(phoneNumber);
+        if (isPhoneNumberChanged) {
             this.validatePhoneNumber(user, phoneNumber);
-            user.setPhoneNumber(phoneNumber);
         }
 
-        if (!user.getEmailAddress().equals(updateRequest.getEmailAddress())) {
+        final boolean isEmailChanged = !user.getEmailAddress().equals(updateRequest.getEmailAddress());
+        if (isEmailChanged) {
             this.validateEmailAddress(user, updateRequest.getEmailAddress());
-            user.setEmailAddress(updateRequest.getEmailAddress());
         }
 
-        this.validateRolesAndSet(user, updateRequest.getRoleIds(), institutionId);
+        final Set<String> existingRoleIds = user.getRoles().stream()
+                .map(AysRole::getId)
+                .collect(Collectors.toSet());
+        final boolean isRoleChanged = !existingRoleIds.equals(updateRequest.getRoleIds());
+        if (isRoleChanged) {
+            this.validateRoles(updateRequest.getRoleIds(), institutionId);
+        }
 
-        user.setFirstName(updateRequest.getFirstName());
-        user.setLastName(updateRequest.getLastName());
-        user.setCity(updateRequest.getCity());
-        user.setUpdatedUser(identity.getUserId());
-
+        user.update(
+                updateRequest.getEmailAddress(),
+                updateRequest.getFirstName(),
+                updateRequest.getLastName(),
+                phoneNumber,
+                updateRequest.getCity(),
+                updateRequest.getRoleIds(),
+                identity.getUserId()
+        );
         userSavePort.save(user);
     }
 
@@ -212,36 +223,33 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
 
 
     /**
-     * Checks the existence of roles by their IDs and returns the corresponding role entities.
+     * Validates if all specified roles exist and are active within the given institution.
+     * <p>
+     * This method checks if each role ID corresponds to an active role in the specified institution.
+     * If any role is not found or not active, an exception is thrown with the list of invalid role IDs.
+     * </p>
      *
-     * @param user    The user being updated.
-     * @param roleIds The set of role IDs to be checked and retrieved.
-     * @throws AysRolesNotExistException if any of the provided role IDs do not exist.
+     * @param roleIds       the set of role IDs to validate
+     * @param institutionId the ID of the institution where the roles should exist
+     * @throws AysRolesNotExistException if any of the specified roles do not exist or are not valid for the institution
      */
-    private void validateRolesAndSet(final AysUser user, final Set<String> roleIds, final String institutionId) {
-
-        boolean isRoleNotChanged = user.getRoles().stream()
-                .allMatch(role -> roleIds.contains(role.getId()));
-        if (isRoleNotChanged) {
-            return;
-        }
+    private void validateRoles(final Set<String> roleIds, final String institutionId) {
 
         final List<AysRole> roles = roleReadPort.findAllByIds(roleIds).stream()
                 .filter(AysRole::isActive)
                 .filter(role -> institutionId.equals(role.getInstitution().getId()))
                 .toList();
 
-        if (roles.size() == roleIds.size()) {
-            user.setRoles(roles);
-            return;
+        if (roles.size() != roleIds.size()) {
+
+            final List<String> notExistsRoleIds = roleIds.stream()
+                    .filter(roleId -> roles.stream()
+                            .noneMatch(roleEntity -> roleEntity.getId().equals(roleId)))
+                    .toList();
+
+            throw new AysRolesNotExistException(notExistsRoleIds);
         }
 
-        final List<String> notExistsRoleIds = roleIds.stream()
-                .filter(roleId -> roles.stream()
-                        .noneMatch(roleEntity -> roleEntity.getId().equals(roleId)))
-                .toList();
-
-        throw new AysRolesNotExistException(notExistsRoleIds);
     }
 
 }
