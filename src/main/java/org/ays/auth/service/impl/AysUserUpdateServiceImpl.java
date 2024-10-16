@@ -54,8 +54,12 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                        final AysUserUpdateRequest updateRequest) {
 
         final AysUser user = userReadPort.findById(id)
-                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
+
+        String institutionId = identity.getInstitutionId();
+        if (!institutionId.equals(user.getInstitution().getId())) {
+            throw new AysUserNotExistByIdException(id);
+        }
 
         if (!(user.isActive() || user.isPassive())) {
             throw new AysUserIsNotActiveOrPassiveException(id);
@@ -66,15 +70,22 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                 .lineNumber(updateRequest.getPhoneNumber().getLineNumber())
                 .build();
 
-        this.validatePhoneNumber(user, phoneNumber);
-        this.validateEmailAddress(user, updateRequest.getEmailAddress());
-        this.validateRolesAndSet(user, updateRequest.getRoleIds());
+        if (!user.getPhoneNumber().equals(phoneNumber)) {
+            this.validatePhoneNumber(user, phoneNumber);
+            user.setPhoneNumber(phoneNumber);
+        }
+
+        if (!user.getEmailAddress().equals(updateRequest.getEmailAddress())) {
+            this.validateEmailAddress(user, updateRequest.getEmailAddress());
+            user.setEmailAddress(updateRequest.getEmailAddress());
+        }
+
+        this.validateRolesAndSet(user, updateRequest.getRoleIds(), institutionId);
 
         user.setFirstName(updateRequest.getFirstName());
         user.setLastName(updateRequest.getLastName());
-        user.setEmailAddress(updateRequest.getEmailAddress());
         user.setCity(updateRequest.getCity());
-        user.setPhoneNumber(phoneNumber);
+        user.setUpdatedUser(identity.getUserId());
 
         userSavePort.save(user);
     }
@@ -207,7 +218,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      * @param roleIds The set of role IDs to be checked and retrieved.
      * @throws AysRolesNotExistException if any of the provided role IDs do not exist.
      */
-    private void validateRolesAndSet(final AysUser user, final Set<String> roleIds) {
+    private void validateRolesAndSet(final AysUser user, final Set<String> roleIds, final String institutionId) {
 
         boolean isRoleNotChanged = user.getRoles().stream()
                 .allMatch(role -> roleIds.contains(role.getId()));
@@ -217,7 +228,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
 
         final List<AysRole> roles = roleReadPort.findAllByIds(roleIds).stream()
                 .filter(AysRole::isActive)
-                .filter(role -> identity.getInstitutionId().equals(role.getInstitution().getId()))
+                .filter(role -> institutionId.equals(role.getInstitution().getId()))
                 .toList();
 
         if (roles.size() == roleIds.size()) {
