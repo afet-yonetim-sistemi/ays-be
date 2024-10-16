@@ -7,6 +7,7 @@ import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.util.exception.AysAlreadyException;
 import org.ays.common.util.exception.AysAuthException;
 import org.ays.common.util.exception.AysBadRequestException;
+import org.ays.common.util.exception.AysForbiddenException;
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.common.util.exception.AysProcessException;
 import org.springframework.dao.DataAccessException;
@@ -150,6 +151,17 @@ class GlobalExceptionHandler {
 
         return AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
+                .build();
+    }
+
+    @ExceptionHandler(AysForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    AysErrorResponse handleForbiddenError(final AysForbiddenException exception) {
+        log.error(exception.getMessage(), exception);
+
+        return AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.AUTH_ERROR.getName())
+                .message(exception.getMessage())
                 .build();
     }
 

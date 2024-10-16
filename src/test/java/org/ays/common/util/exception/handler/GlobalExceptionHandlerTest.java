@@ -9,6 +9,7 @@ import org.ays.AysRestControllerTest;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.util.exception.AysAuthException;
 import org.ays.common.util.exception.AysBadRequestException;
+import org.ays.common.util.exception.AysForbiddenException;
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.common.util.exception.AysProcessException;
 import org.junit.jupiter.api.Assertions;
@@ -168,6 +169,33 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
             this.checkAysError(mockErrorResponse, errorResponse);
         }
     }
+
+
+    @Test
+    void givenForbiddenException_whenThrowForbiddenException_thenReturnAysError() {
+
+        // Given
+        AysForbiddenException mockException = new AysForbiddenException("Forbidden action") {
+
+            @Serial
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public String getMessage() {
+                return "Forbidden action";
+            }
+        };
+
+        // When
+        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.AUTH_ERROR.getName())
+                .build();
+
+        // Then
+        AysErrorResponse errorResponse = globalExceptionHandler.handleForbiddenError(mockException);
+        this.checkAysError(mockErrorResponse, errorResponse);
+    }
+
 
     @Test
     void givenAccessDeniedException_whenThrowAccessDeniedException_thenReturnAysError() {
