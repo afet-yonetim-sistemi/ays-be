@@ -41,7 +41,7 @@ public class AysResponse<T> {
 
 
     /**
-     * A pre-defined success response with no content.
+     * A success response with no content.
      */
     public static <T> AysResponse<T> success() {
         return AysResponse.<T>builder()
