@@ -160,7 +160,6 @@ class GlobalExceptionHandler {
 
         return AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
-                .message(exception.getMessage())
                 .build();
     }
 
