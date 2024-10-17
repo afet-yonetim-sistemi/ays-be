@@ -109,7 +109,7 @@ class AysUserController {
     @PreAuthorize("hasAnyAuthority('user:create')")
     public AysResponse<Void> create(@RequestBody @Valid final AysUserCreateRequest createRequest) {
         userCreateService.create(createRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -130,7 +130,7 @@ class AysUserController {
                                     @RequestBody @Valid final AysUserUpdateRequest updateRequest) {
 
         userUpdateService.update(id, updateRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -148,7 +148,7 @@ class AysUserController {
     @PreAuthorize("hasAnyAuthority('user:update')")
     public AysResponse<Void> activate(@PathVariable @UUID final String id) {
         userUpdateService.activate(id);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -166,7 +166,7 @@ class AysUserController {
     @PreAuthorize("hasAnyAuthority('user:update')")
     public AysResponse<Void> passivate(@PathVariable @UUID final String id) {
         userUpdateService.passivate(id);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 
@@ -184,7 +184,7 @@ class AysUserController {
     @PreAuthorize("hasAnyAuthority('user:delete')")
     public AysResponse<Void> delete(@PathVariable @UUID final String id) {
         userUpdateService.delete(id);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 }

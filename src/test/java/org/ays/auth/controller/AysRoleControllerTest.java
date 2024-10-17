@@ -340,7 +340,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -515,7 +515,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -732,7 +732,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, mockSuperAdminToken.getAccessToken());
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -811,7 +811,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, mockSuperAdminToken.getAccessToken());
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -918,7 +918,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .delete(endpoint, mockAdminToken.getAccessToken());
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

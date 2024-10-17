@@ -206,7 +206,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken(), mockTokenInvalidateRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -237,7 +237,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockForgotPasswordRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -325,7 +325,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -382,7 +382,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockPasswordCreateRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

@@ -433,7 +433,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockApplicationRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isOk())
@@ -463,7 +463,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockApplicationRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isOk())
@@ -952,7 +952,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(MockMvcResultMatchers.status()

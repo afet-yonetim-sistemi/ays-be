@@ -3,6 +3,7 @@ package org.ays.common.model.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
+import org.ays.common.util.AysRandomUtil;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +23,12 @@ public class AysResponse<T> {
     private LocalDateTime time = LocalDateTime.now();
 
     /**
+     * A unique code identifying the response.
+     */
+    @Builder.Default
+    private String code = AysRandomUtil.generateUUID();
+
+    /**
      * Indicates whether the API request was successful or not.
      */
     private Boolean isSuccess;
@@ -34,10 +41,13 @@ public class AysResponse<T> {
 
 
     /**
-     * A pre-defined success response with no content.
+     * A success response with no content.
      */
-    public static final AysResponse<Void> SUCCESS = AysResponse.<Void>builder()
-            .isSuccess(true).build();
+    public static <T> AysResponse<T> success() {
+        return AysResponse.<T>builder()
+                .isSuccess(true)
+                .build();
+    }
 
     /**
      * Creates a success response with the specified response object.

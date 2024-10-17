@@ -376,7 +376,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -608,7 +608,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -667,7 +667,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockSuperAdminToken.getAccessToken());
 
-        AysResponse<Void> mockResponse = AysResponse.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -721,7 +721,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockSuperAdminToken.getAccessToken(), mockRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

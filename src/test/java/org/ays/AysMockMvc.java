@@ -36,6 +36,8 @@ public class AysMockMvc {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(AysMockResultMatchersBuilders.time()
                         .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.code()
+                        .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.isSuccess()
                         .isBoolean())
                 .andExpect(AysMockResultMatchersBuilders.header()

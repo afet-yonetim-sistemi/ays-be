@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.NotNull;
-import lombok.extern.slf4j.Slf4j;
 import org.ays.AysRestControllerTest;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.util.exception.AysAuthException;
@@ -34,7 +33,6 @@ import java.io.Serial;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
-@Slf4j
 class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
     @InjectMocks
@@ -369,6 +367,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
     private void checkAysError(AysErrorResponse mockErrorResponse, AysErrorResponse errorResponse) {
         Assertions.assertNotNull(errorResponse.getTime());
+        Assertions.assertNotNull(errorResponse.getCode());
         Assertions.assertEquals(mockErrorResponse.getHeader(), errorResponse.getHeader());
         Assertions.assertEquals(mockErrorResponse.getIsSuccess(), errorResponse.getIsSuccess());
 

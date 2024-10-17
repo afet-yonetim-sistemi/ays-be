@@ -121,7 +121,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, userToken.getAccessToken(), tokenInvalidateRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -163,7 +163,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockForgotPasswordRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -224,7 +224,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockForgotPasswordRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -285,7 +285,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -335,7 +335,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockPasswordCreateRequest);
 
-        AysResponse<Void> mockResponse = AysResponseBuilder.SUCCESS;
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()

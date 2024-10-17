@@ -147,7 +147,7 @@ class AdminRegistrationApplicationController {
     public AysResponse<Void> approve(@PathVariable @UUID String id) {
 
         adminRegistrationApplicationService.approve(id);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
     /**
@@ -164,7 +164,7 @@ class AdminRegistrationApplicationController {
                                     @RequestBody @Valid AdminRegistrationApplicationRejectRequest rejectRequest) {
 
         adminRegistrationApplicationService.reject(id, rejectRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
     /**
@@ -179,7 +179,7 @@ class AdminRegistrationApplicationController {
                                       @RequestBody @Valid AdminRegistrationApplicationCompleteRequest registerRequest) {
 
         adminRegistrationCompleteService.complete(id, registerRequest);
-        return AysResponse.SUCCESS;
+        return AysResponse.success();
     }
 
 }
