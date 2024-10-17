@@ -112,7 +112,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findById(Mockito.anyString());
 
-        Mockito.verify(identity, Mockito.times(mockRoles.size() + 1))
+        Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
 
         Mockito.verify(userReadPort, Mockito.times(1))
@@ -120,6 +120,78 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(userReadPort, Mockito.times(1))
                 .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(roleReadPort, Mockito.times(1))
+                .findAllByIds(Mockito.anySet());
+
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidIdAndValidUpdateRequest_whenRolesUpdatedOnly_thenUpdateUser() {
+
+        // Given
+        String mockId = "3c57d56b-4a97-4f70-86a9-b4c9235cbe13";
+
+        Set<String> mockRoleIds = Set.of(
+                "00a07704-8d7c-4048-b001-9fb69b22bfe8",
+                "7913e093-ae70-4029-ad8d-efbb21d79f26"
+        );
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withRoleIds(mockRoleIds)
+                .build();
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withFirstName(mockUpdateRequest.getFirstName())
+                .withLastName(mockUpdateRequest.getLastName())
+                .withEmailAddress(mockUpdateRequest.getEmailAddress())
+                .withPhoneNumber(AysPhoneNumber.builder().build())
+                .withCity(mockUpdateRequest.getCity())
+                .withRoles(List.of(
+                        new AysRoleBuilder()
+                                .withValidValues()
+                                .build()
+                ))
+                .withInstitution(mockInstitution)
+                .build();
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        List<AysRole> mockRoles = new ArrayList<>();
+        mockUpdateRequest.getRoleIds().forEach(roleId -> {
+            AysRole mockRole = new AysRoleBuilder()
+                    .withValidValues()
+                    .withId(roleId)
+                    .withInstitution(mockInstitution)
+                    .build();
+            mockRoles.add(mockRole);
+        });
+        Mockito.when(roleReadPort.findAllByIds(Mockito.anySet()))
+                .thenReturn(mockRoles);
+
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(Mockito.mock(AysUser.class));
+
+        // Then
+        userUpdateService.update(mockId, mockUpdateRequest);
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findAllByIds(Mockito.anySet());
@@ -566,7 +638,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenUserNotFound_thenThrowAysUserNotExistByIdException(){
+    void givenValidId_whenUserNotFound_thenThrowAysUserNotExistByIdException() {
 
         // Given
         String mockId = "9f1eb072-7830-4c43-9a32-d77b62ccddd3";
@@ -593,7 +665,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenUserIsNotPassive_thenThrowAysUserIsNotPassiveException(){
+    void givenValidId_whenUserIsNotPassive_thenThrowAysUserIsNotPassiveException() {
 
         // Given
         String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
@@ -863,7 +935,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidUserId_whenUserNotFound_thenThrowAysUserNotExistByIdException(){
+    void givenValidUserId_whenUserNotFound_thenThrowAysUserNotExistByIdException() {
 
         // Given
         String mockId = "9f1eb072-7830-4c43-9a32-d77b62ccddd3";
@@ -890,7 +962,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenUserIsNotActive_thenThrowAysUserNotActiveException(){
+    void givenValidId_whenUserIsNotActive_thenThrowAysUserNotActiveException() {
 
         // Given
         String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
