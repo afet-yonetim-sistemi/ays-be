@@ -37,13 +37,13 @@ import java.util.Optional;
  *
  * <p>
  * This class utilizes Spring Security's {@link SecurityContextHolder} to fetch the currently
- * authenticated user's email address and sets it as the {@code createdUser} or {@code updatedUser}.
+ * authenticated user's id and sets it as the {@code createdUser} or {@code updatedUser}.
  * It also sets the timestamps {@code createdAt} and {@code updatedAt}.
  * </p>
  *
  * <pre>
  * Note: Ensure that Spring Security's context is properly configured to use JWTs and that the
- * principal contains a claim for the user's email address.
+ * principal contains a claim for the user's id.
  * </pre>
  *
  * @see SecurityContextHolder
@@ -69,7 +69,7 @@ public abstract class BaseEntity {
                 .map(Authentication::getPrincipal)
                 .filter(user -> !"anonymousUser".equals(user))
                 .map(Jwt.class::cast)
-                .map(jwt -> jwt.getClaim(AysTokenClaims.USER_EMAIL_ADDRESS.getValue()).toString())
+                .map(jwt -> jwt.getClaim(AysTokenClaims.USER_ID.getValue()).toString())
                 .orElse("AYS");
         this.createdAt = Optional.ofNullable(this.createdAt)
                 .orElse(LocalDateTime.now());
@@ -88,7 +88,7 @@ public abstract class BaseEntity {
                 .map(Authentication::getPrincipal)
                 .filter(user -> !"anonymousUser".equals(user))
                 .map(Jwt.class::cast)
-                .map(jwt -> jwt.getClaim(AysTokenClaims.USER_EMAIL_ADDRESS.getValue()).toString())
+                .map(jwt -> jwt.getClaim(AysTokenClaims.USER_ID.getValue()).toString())
                 .orElse("AYS");
         this.updatedAt = LocalDateTime.now();
     }
