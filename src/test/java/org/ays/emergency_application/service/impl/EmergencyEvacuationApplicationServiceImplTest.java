@@ -6,6 +6,7 @@ import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.emergency_application.exception.EmergencyEvacuationApplicationNotExistException;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
@@ -19,7 +20,6 @@ import org.ays.emergency_application.model.request.EmergencyEvacuationApplicatio
 import org.ays.emergency_application.model.request.EmergencyEvacuationRequestBuilder;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
-import org.ays.emergency_application.util.exception.EmergencyEvacuationApplicationNotExistException;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;

@@ -1,4 +1,4 @@
-package org.ays.emergency_application.util.exception;
+package org.ays.emergency_application.exception;
 
 import org.ays.common.util.exception.AysNotExistException;
 
