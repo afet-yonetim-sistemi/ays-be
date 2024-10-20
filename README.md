@@ -287,11 +287,13 @@ at org.eclipse.angus.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTran
 > details: https://www.jetbrains.com/help/idea/run-debug-configuration-spring-boot.html#spring-boot
 ---
 
-# Project Infrastucture
+# Project Infrastructure
 
-## 🏛️ Layer Architecture
+## 🏛️ HexaLayered Architecture
 
 ![](/documents/architecture/ays-architecture.png?raw=true)
+
+> **Reference: [HexaLayered Architecture](https://github.com/agitrubard/hexalayered-architecture)**
 
 ## 📦 Package Architecture
 

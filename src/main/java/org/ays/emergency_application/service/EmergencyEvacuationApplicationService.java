@@ -34,9 +34,17 @@ public interface EmergencyEvacuationApplicationService {
      */
     EmergencyEvacuationApplication findById(String id);
 
-    // TODO : Add javadoc
-    void update(
-            String id,
-            EmergencyEvacuationApplicationUpdateRequest updateRequest
-    );
+    /**
+     * Updates an existing Emergency Evacuation Application with the provided details.
+     * <p>
+     * This method updates the Emergency Evacuation Application identified by the given ID
+     * with the information contained in the update request. If the application does not exist
+     * or cannot be accessed by the current user, an exception is thrown.
+     * </p>
+     *
+     * @param id            the unique identifier of the Emergency Evacuation Application to be updated
+     * @param updateRequest the request object containing the details to update the Emergency Evacuation Application
+     */
+    void update(String id, EmergencyEvacuationApplicationUpdateRequest updateRequest);
+
 }

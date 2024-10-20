@@ -1,11 +1,11 @@
 package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.ays.auth.exception.AysTokenAlreadyInvalidatedException;
 import org.ays.auth.model.AysInvalidToken;
 import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysInvalidTokenSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
-import org.ays.auth.util.exception.AysTokenAlreadyInvalidatedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

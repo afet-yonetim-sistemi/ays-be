@@ -1,10 +1,10 @@
 package org.ays.parameter.service.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.parameter.exception.AysParameterNotExistException;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.model.AysParameterBuilder;
 import org.ays.parameter.port.AysParameterReadPort;
-import org.ays.parameter.util.exception.AysParameterNotExistException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

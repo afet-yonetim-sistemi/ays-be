@@ -37,7 +37,7 @@ public class AdminRegistrationApplication extends BaseDomainModel {
      * @return true if the status is 'WAITING', false otherwise
      */
     public boolean isWaiting() {
-        return AdminRegistrationApplicationStatus.WAITING.equals(this.status);
+        return this.status == AdminRegistrationApplicationStatus.WAITING;
     }
 
     /**
@@ -46,7 +46,7 @@ public class AdminRegistrationApplication extends BaseDomainModel {
      * @return true if the status is 'COMPLETED', false otherwise
      */
     public boolean isCompleted() {
-        return AdminRegistrationApplicationStatus.COMPLETED.equals(this.status);
+        return this.status == AdminRegistrationApplicationStatus.COMPLETED;
     }
 
     /**
@@ -55,7 +55,7 @@ public class AdminRegistrationApplication extends BaseDomainModel {
      * @return true if the status is 'REJECTED', false otherwise
      */
     public boolean isRejected() {
-        return AdminRegistrationApplicationStatus.REJECTED.equals(this.status);
+        return this.status == AdminRegistrationApplicationStatus.REJECTED;
     }
 
     /**
@@ -64,7 +64,7 @@ public class AdminRegistrationApplication extends BaseDomainModel {
      * @return true if the status is 'APPROVED', false otherwise
      */
     public boolean isApproved() {
-        return AdminRegistrationApplicationStatus.APPROVED.equals(this.status);
+        return this.status == AdminRegistrationApplicationStatus.APPROVED;
     }
 
 

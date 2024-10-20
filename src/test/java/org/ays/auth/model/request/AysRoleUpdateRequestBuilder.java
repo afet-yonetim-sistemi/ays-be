@@ -3,7 +3,6 @@ package org.ays.auth.model.request;
 import org.ays.common.model.TestDataBuilder;
 
 import java.util.Set;
-import java.util.UUID;
 
 public class AysRoleUpdateRequestBuilder extends TestDataBuilder<AysRoleUpdateRequest> {
 
@@ -13,7 +12,7 @@ public class AysRoleUpdateRequestBuilder extends TestDataBuilder<AysRoleUpdateRe
 
     public AysRoleUpdateRequestBuilder withValidValues() {
         return this
-                .withPermissionIds(Set.of(UUID.randomUUID().toString()));
+                .withPermissionIds(Set.of("e27eaa10-837c-45a9-9bde-2d0912db95fb"));
     }
 
     public AysRoleUpdateRequestBuilder withName(String name) {

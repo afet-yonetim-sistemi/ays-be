@@ -42,7 +42,7 @@ public class AysIdentity {
      */
     public boolean isSuperAdmin() {
         final List<String> permissions = AysListUtil.to(this.getJwt().getClaim(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
-        return permissions.stream().anyMatch(permission -> permission.equals("super"));
+        return permissions.stream().anyMatch("super"::equals);
     }
 
     /**

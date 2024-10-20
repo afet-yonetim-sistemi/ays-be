@@ -1,6 +1,8 @@
 package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
+import org.ays.auth.exception.AysRoleAlreadyDeletedException;
+import org.ays.auth.exception.AysRoleAssignedToUserException;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
@@ -19,17 +21,15 @@ import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
 import org.ays.auth.service.AysRoleReadService;
 import org.ays.auth.service.AysRoleUpdateService;
-import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
-import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.response.AysErrorResponse;
+import org.ays.common.model.response.AysErrorResponseBuilder;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.common.util.exception.model.response.AysErrorResponseBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;

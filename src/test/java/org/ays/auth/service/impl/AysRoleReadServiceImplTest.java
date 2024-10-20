@@ -1,6 +1,7 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.auth.exception.AysRoleNotExistByIdException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
@@ -8,7 +9,6 @@ import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.model.request.AysRoleListRequestBuilder;
 import org.ays.auth.port.AysRoleReadPort;
-import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;

@@ -1,6 +1,7 @@
 package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdAuthException;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
@@ -22,16 +23,15 @@ import org.ays.auth.model.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.auth.model.response.AdminRegistrationApplicationsResponse;
 import org.ays.auth.service.AdminRegistrationApplicationService;
 import org.ays.auth.service.AdminRegistrationCompleteService;
-import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.response.AysErrorResponse;
+import org.ays.common.model.response.AysErrorResponseBuilder;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
-import org.ays.common.util.exception.model.response.AysErrorResponseBuilder;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
@@ -343,7 +343,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
         // When
         Mockito.when(adminRegistrationApplicationService.findSummaryById(mockId))
-                .thenThrow(new AdminRegistrationApplicationNotExistException(mockId));
+                .thenThrow(new AysAdminRegistrationApplicationNotExistByIdAuthException(mockId));
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/summary"));
@@ -399,7 +399,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .withValidValues().build();
 
         // When
-        Mockito.doThrow(new AdminRegistrationApplicationNotExistException(mockId))
+        Mockito.doThrow(new AysAdminRegistrationApplicationNotExistByIdAuthException(mockId))
                 .when(adminRegistrationCompleteService)
                 .complete(Mockito.anyString(), Mockito.any());
 

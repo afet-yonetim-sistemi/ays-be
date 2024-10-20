@@ -1,11 +1,11 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.auth.exception.AysTokenAlreadyInvalidatedException;
 import org.ays.auth.model.AysInvalidToken;
 import org.ays.auth.model.AysInvalidTokenBuilder;
 import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysInvalidTokenSavePort;
-import org.ays.auth.util.exception.AysTokenAlreadyInvalidatedException;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

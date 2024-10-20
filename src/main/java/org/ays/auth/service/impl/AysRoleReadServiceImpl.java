@@ -1,13 +1,13 @@
 package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.ays.auth.exception.AysRoleNotExistByIdException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleFilter;
 import org.ays.auth.model.request.AysRoleListRequest;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.service.AysRoleReadService;
-import org.ays.auth.util.exception.AysRoleNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;
@@ -61,11 +61,7 @@ class AysRoleReadServiceImpl implements AysRoleReadService {
         final AysPageable aysPageable = listRequest.getPageable();
 
         Optional.ofNullable(listRequest.getFilter())
-                .ifPresentOrElse(filter -> {
-                            if (filter.getInstitutionId() == null) {
-                                filter.setInstitutionId(identity.getInstitutionId());
-                            }
-                        },
+                .ifPresentOrElse(filter -> filter.setInstitutionId(identity.getInstitutionId()),
                         () -> {
                             AysRoleFilter filter = AysRoleFilter.builder()
                                     .institutionId(identity.getInstitutionId())

@@ -149,7 +149,8 @@ public class AysErrorResponse {
 
         final List<SubError> subErrorErrors = new ArrayList<>();
 
-        fieldErrors.forEach(fieldError -> {
+        for (FieldError fieldError : fieldErrors) {
+
             final SubError.SubErrorBuilder subErrorBuilder = SubError.builder();
 
             List<String> codes = List.of(Objects.requireNonNull(fieldError.getCodes()));
@@ -161,11 +162,15 @@ public class AysErrorResponse {
                     subErrorBuilder.type(StringUtils.substringAfterLast(codes.get(codes.size() - 2), ".").replace('$', '.'));
                 }
             }
-            subErrorBuilder.value(fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null);
+
+            if (fieldError.getRejectedValue() != null) {
+                subErrorBuilder.value(fieldError.getRejectedValue().toString());
+            }
+
             subErrorBuilder.message(fieldError.getDefaultMessage());
 
             subErrorErrors.add(subErrorBuilder.build());
-        });
+        }
 
         return AysErrorResponse.builder().subErrors(subErrorErrors);
     }
@@ -185,14 +190,19 @@ public class AysErrorResponse {
 
         final List<SubError> subErrors = new ArrayList<>();
 
-        constraintViolations.forEach(constraintViolation ->
-                subErrors.add(
-                        SubError.builder()
-                                .message(constraintViolation.getMessage())
-                                .field(StringUtils.substringAfterLast(constraintViolation.getPropertyPath().toString(), "."))
-                                .value(constraintViolation.getInvalidValue() != null ? constraintViolation.getInvalidValue().toString() : null)
-                                .type(constraintViolation.getInvalidValue().getClass().getSimpleName()).build()
-                )
+        constraintViolations.forEach(constraintViolation -> {
+
+                    final SubError.SubErrorBuilder subErrorBuilder = SubError.builder()
+                            .message(constraintViolation.getMessage())
+                            .field(StringUtils.substringAfterLast(constraintViolation.getPropertyPath().toString(), "."))
+                            .type(constraintViolation.getInvalidValue().getClass().getSimpleName());
+
+                    if (constraintViolation.getInvalidValue() != null) {
+                        subErrorBuilder.value(constraintViolation.getInvalidValue().toString());
+                    }
+
+                    subErrors.add(subErrorBuilder.build());
+                }
         );
 
         return AysErrorResponse.builder().subErrors(subErrors);
