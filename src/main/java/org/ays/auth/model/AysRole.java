@@ -36,7 +36,7 @@ public class AysRole extends BaseDomainModel {
      * @return {@code true} if the role's status is {@link AysRoleStatus#ACTIVE}, otherwise {@code false}.
      */
     public boolean isActive() {
-        return AysRoleStatus.ACTIVE.equals(this.status);
+        return this.status == AysRoleStatus.ACTIVE;
     }
 
     /**
@@ -45,8 +45,18 @@ public class AysRole extends BaseDomainModel {
      * @return {@code true} if the role's status is {@link AysRoleStatus#PASSIVE}, otherwise {@code false}.
      */
     public boolean isPassive() {
-        return AysRoleStatus.PASSIVE.equals(this.status);
+        return this.status == AysRoleStatus.PASSIVE;
     }
+
+    /**
+     * Checks if the role's status is deleted.
+     *
+     * @return {@code true} if the role's status is {@link AysRoleStatus#DELETED}, otherwise {@code false}.
+     */
+    public boolean isDeleted() {
+        return this.status == AysRoleStatus.DELETED;
+    }
+
 
     /**
      * Activates the role by setting its status to {@link AysRoleStatus#ACTIVE}.
@@ -63,16 +73,6 @@ public class AysRole extends BaseDomainModel {
     public void passivate() {
         this.setStatus(AysRoleStatus.PASSIVE);
     }
-
-    /**
-     * Checks if the role's status is deleted.
-     *
-     * @return {@code true} if the role's status is {@link AysRoleStatus#DELETED}, otherwise {@code false}.
-     */
-    public boolean isDeleted() {
-        return AysRoleStatus.DELETED.equals(this.status);
-    }
-
 
     /**
      * Sets the role's status to deleted ({@link AysRoleStatus#DELETED}), marking the role as inactive.
