@@ -1,7 +1,7 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
-import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistAuthException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdAuthException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.model.AdminRegistrationApplication;
@@ -273,7 +273,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistAuthException.class,
+                AysAdminRegistrationApplicationNotExistByIdAuthException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 
@@ -336,7 +336,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistAuthException.class,
+                AysAdminRegistrationApplicationNotExistByIdAuthException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 

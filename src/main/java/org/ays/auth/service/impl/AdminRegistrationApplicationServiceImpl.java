@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
 import org.ays.auth.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
 import org.ays.auth.exception.AysAdminRegistrationApplicationInCompleteException;
-import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistAuthException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdAuthException;
 import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationFilter;
@@ -82,7 +82,7 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
 
         return adminRegistrationApplicationReadPort.findById(id)
                 .filter(AdminRegistrationApplication::isWaiting)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistAuthException(id));
+                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdAuthException(id));
     }
 
     /**
