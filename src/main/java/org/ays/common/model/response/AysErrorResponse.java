@@ -149,7 +149,8 @@ public class AysErrorResponse {
 
         final List<SubError> subErrorErrors = new ArrayList<>();
 
-        fieldErrors.forEach(fieldError -> {
+        for (FieldError fieldError : fieldErrors) {
+
             final SubError.SubErrorBuilder subErrorBuilder = SubError.builder();
 
             List<String> codes = List.of(Objects.requireNonNull(fieldError.getCodes()));
@@ -165,7 +166,7 @@ public class AysErrorResponse {
             subErrorBuilder.message(fieldError.getDefaultMessage());
 
             subErrorErrors.add(subErrorBuilder.build());
-        });
+        }
 
         return AysErrorResponse.builder().subErrors(subErrorErrors);
     }
