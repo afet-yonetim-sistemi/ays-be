@@ -12,7 +12,7 @@ import java.io.Serial;
  * Typically, this exception is thrown when an approval operation is performed on an admin register application
  * entity to an already approved or rejected admin register application.
  */
-public class AysAdminRegistrationApplicationAlreadyApprovedException extends AysConflictException {
+public final class AysAdminRegistrationApplicationAlreadyApprovedException extends AysConflictException {
 
     /**
      * Unique identifier for serialization.

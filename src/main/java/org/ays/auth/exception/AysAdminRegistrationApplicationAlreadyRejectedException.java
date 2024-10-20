@@ -11,7 +11,7 @@ import java.io.Serial;
  * Typically, this exception is thrown when a rejection operation is performed on an admin register application
  * entity to an already rejected admin register application.
  */
-public class AysAdminRegistrationApplicationAlreadyRejectedException extends AysConflictException {
+public final class AysAdminRegistrationApplicationAlreadyRejectedException extends AysConflictException {
 
     /**
      * Unique identifier for serialization.

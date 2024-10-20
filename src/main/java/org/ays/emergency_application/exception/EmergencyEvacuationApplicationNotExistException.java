@@ -4,11 +4,10 @@ import org.ays.common.exception.AysNotExistException;
 
 import java.io.Serial;
 
-
 /**
  * Exception thrown when an emergency evacuation does not exist in the system.
  */
-public class EmergencyEvacuationApplicationNotExistException extends AysNotExistException {
+public final class EmergencyEvacuationApplicationNotExistException extends AysNotExistException {
 
     /**
      * Unique identifier for serialization.

@@ -12,7 +12,7 @@ import java.io.Serial;
  * Typically, this exception is thrown when a rejection operation is performed on an admin register application
  * entity to an incomplete application, where its status is not set to 'COMPLETE'.
  */
-public class AysAdminRegistrationApplicationInCompleteException extends AysBadRequestException {
+public final class AysAdminRegistrationApplicationInCompleteException extends AysBadRequestException {
 
     /**
      * Unique identifier for serialization.
