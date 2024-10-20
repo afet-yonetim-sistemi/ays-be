@@ -61,11 +61,7 @@ class AysRoleReadServiceImpl implements AysRoleReadService {
         final AysPageable aysPageable = listRequest.getPageable();
 
         Optional.ofNullable(listRequest.getFilter())
-                .ifPresentOrElse(filter -> {
-                            if (filter.getInstitutionId() == null) {
-                                filter.setInstitutionId(identity.getInstitutionId());
-                            }
-                        },
+                .ifPresentOrElse(filter -> filter.setInstitutionId(identity.getInstitutionId()),
                         () -> {
                             AysRoleFilter filter = AysRoleFilter.builder()
                                     .institutionId(identity.getInstitutionId())

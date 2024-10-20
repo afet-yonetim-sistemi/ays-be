@@ -47,11 +47,7 @@ class AysUserReadServiceImpl implements AysUserReadService {
 
         Optional.ofNullable(listRequest.getFilter())
                 .ifPresentOrElse(
-                        filter -> {
-                            if (filter.getInstitutionId() == null) {
-                                filter.setInstitutionId(identity.getInstitutionId());
-                            }
-                        },
+                        filter -> filter.setInstitutionId(identity.getInstitutionId()),
                         () -> {
                             AysUserFilter filter = AysUserFilter.builder()
                                     .institutionId(identity.getInstitutionId())
