@@ -196,7 +196,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
         String mockId = AysRandomUtil.generateUUID();
         AysRoleUpdateRequest mockUpdateRequest = new AysRoleUpdateRequestBuilder()
                 .withName("ExistingName")
-                .withPermissionIds(Set.of(UUID.randomUUID().toString()))
+                .withPermissionIds(Set.of("b8d3ddce-45ca-4017-b52f-5826e330a1e6"))
                 .build();
 
         AysRole mockRole = new AysRoleBuilder()
