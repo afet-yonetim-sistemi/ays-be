@@ -1,13 +1,13 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.exception.AysAlreadyException;
+import org.ays.common.exception.AysConflictException;
 
 import java.io.Serial;
 
 /**
  * Exception to be thrown when a user has a status which is not active or passive.
  */
-public final class AysUserIsNotActiveOrPassiveException extends AysAlreadyException {
+public final class AysUserIsNotActiveOrPassiveException extends AysConflictException {
 
     /**
      * Unique identifier for serialization.

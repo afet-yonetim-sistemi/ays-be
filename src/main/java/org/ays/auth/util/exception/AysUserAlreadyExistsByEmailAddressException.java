@@ -1,14 +1,14 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.exception.AysAlreadyException;
+import org.ays.common.exception.AysConflictException;
 
 import java.io.Serial;
 
 /**
  * Exception indicating that an user already exists with the specified email address.
- * This exception is a subclass of {@link AysAlreadyException}.
+ * This exception is a subclass of {@link AysConflictException}.
  */
-public final class AysUserAlreadyExistsByEmailAddressException extends AysAlreadyException {
+public final class AysUserAlreadyExistsByEmailAddressException extends AysConflictException {
 
     /**
      * Unique identifier for serialization.

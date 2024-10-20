@@ -1,13 +1,13 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.exception.AysAlreadyException;
+import org.ays.common.exception.AysConflictException;
 
 import java.io.Serial;
 
 /**
  * Exception thrown when a user is deleted and attempting to perform an action that requires a deleted user.
  */
-public final class AysUserAlreadyDeletedException extends AysAlreadyException {
+public final class AysUserAlreadyDeletedException extends AysConflictException {
 
     /**
      * Unique serial version ID.

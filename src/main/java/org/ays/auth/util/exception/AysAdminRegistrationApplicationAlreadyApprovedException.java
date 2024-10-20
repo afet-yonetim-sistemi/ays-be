@@ -1,18 +1,18 @@
 package org.ays.auth.util.exception;
 
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.common.exception.AysAlreadyException;
+import org.ays.common.exception.AysConflictException;
 
 import java.io.Serial;
 
 /**
  * Exception indicating that an admin registration application is already approved.
- * This exception is a subclass of {@link AysAlreadyException}, which is typically used to indicate that an entity or
+ * This exception is a subclass of {@link AysConflictException}, which is typically used to indicate that an entity or
  * resource already exists with expected behaviour.
  * Typically, this exception is thrown when an approval operation is performed on an admin register application
  * entity to an already approved or rejected admin register application.
  */
-public class AysAdminRegistrationApplicationAlreadyApprovedException extends AysAlreadyException {
+public class AysAdminRegistrationApplicationAlreadyApprovedException extends AysConflictException {
 
     /**
      * Unique identifier for serialization.

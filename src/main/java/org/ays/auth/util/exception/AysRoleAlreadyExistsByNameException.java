@@ -1,13 +1,13 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.exception.AysAlreadyException;
+import org.ays.common.exception.AysConflictException;
 
 import java.io.Serial;
 
 /**
  * Exception to be thrown when a role with a given name already exists.
  */
-public final class AysRoleAlreadyExistsByNameException extends AysAlreadyException {
+public final class AysRoleAlreadyExistsByNameException extends AysConflictException {
 
     /**
      * Unique identifier for serialization.

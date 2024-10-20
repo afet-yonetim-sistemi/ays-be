@@ -3,9 +3,9 @@ package org.ays.common.exception.handler;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.ays.common.exception.AysAlreadyException;
 import org.ays.common.exception.AysAuthException;
 import org.ays.common.exception.AysBadRequestException;
+import org.ays.common.exception.AysConflictException;
 import org.ays.common.exception.AysForbiddenException;
 import org.ays.common.exception.AysNotExistException;
 import org.ays.common.exception.AysProcessException;
@@ -102,9 +102,9 @@ class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(AysAlreadyException.class)
+    @ExceptionHandler(AysConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    AysErrorResponse handleAlreadyExistError(final AysAlreadyException exception) {
+    AysErrorResponse handleAlreadyExistError(final AysConflictException exception) {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
