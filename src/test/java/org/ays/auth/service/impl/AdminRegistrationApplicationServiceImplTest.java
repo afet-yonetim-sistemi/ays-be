@@ -25,10 +25,10 @@ import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteExce
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
+import org.ays.institution.exception.AysInstitutionNotExistException;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.port.InstitutionReadPort;
-import org.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
