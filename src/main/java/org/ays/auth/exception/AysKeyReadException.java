@@ -1,4 +1,4 @@
-package org.ays.auth.util.exception;
+package org.ays.auth.exception;
 
 import java.io.Serial;
 

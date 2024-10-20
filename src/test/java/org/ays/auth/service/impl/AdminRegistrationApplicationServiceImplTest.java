@@ -1,6 +1,11 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.auth.exception.AdminRegistrationApplicationNotExistByIdException;
+import org.ays.auth.exception.AdminRegistrationApplicationNotExistException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationInCompleteException;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.AdminRegistrationApplicationFilter;
@@ -17,11 +22,6 @@ import org.ays.auth.model.request.AdminRegistrationApplicationRejectRequestBuild
 import org.ays.auth.port.AdminRegistrationApplicationReadPort;
 import org.ays.auth.port.AdminRegistrationApplicationSavePort;
 import org.ays.auth.port.AysUserSavePort;
-import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistByIdException;
-import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;

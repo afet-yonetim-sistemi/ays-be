@@ -1,6 +1,9 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.auth.exception.AysRolesNotExistException;
+import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
+import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
@@ -13,9 +16,6 @@ import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserMailService;
-import org.ays.auth.util.exception.AysRolesNotExistException;
-import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
-import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;

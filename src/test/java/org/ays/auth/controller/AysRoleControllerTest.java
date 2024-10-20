@@ -1,6 +1,8 @@
 package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
+import org.ays.auth.exception.AysRoleAlreadyDeletedException;
+import org.ays.auth.exception.AysRoleAssignedToUserException;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
@@ -19,8 +21,6 @@ import org.ays.auth.model.response.AysRolesSummaryResponse;
 import org.ays.auth.service.AysRoleCreateService;
 import org.ays.auth.service.AysRoleReadService;
 import org.ays.auth.service.AysRoleUpdateService;
-import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
-import org.ays.auth.util.exception.AysRoleAssignedToUserException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageableBuilder;

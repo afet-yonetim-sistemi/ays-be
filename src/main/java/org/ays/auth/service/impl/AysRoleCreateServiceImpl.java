@@ -1,6 +1,9 @@
 package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.ays.auth.exception.AysPermissionNotExistException;
+import org.ays.auth.exception.AysRoleAlreadyExistsByNameException;
+import org.ays.auth.exception.AysUserNotSuperAdminException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
@@ -10,9 +13,6 @@ import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.service.AysRoleCreateService;
-import org.ays.auth.util.exception.AysPermissionNotExistException;
-import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
-import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.ays.institution.model.Institution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

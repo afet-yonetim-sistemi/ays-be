@@ -1,4 +1,4 @@
-package org.ays.auth.util.exception;
+package org.ays.auth.exception;
 
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.exception.AysConflictException;

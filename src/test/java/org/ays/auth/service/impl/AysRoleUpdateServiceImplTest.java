@@ -1,6 +1,13 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.auth.exception.AysInvalidRoleStatusException;
+import org.ays.auth.exception.AysPermissionNotExistException;
+import org.ays.auth.exception.AysRoleAlreadyDeletedException;
+import org.ays.auth.exception.AysRoleAlreadyExistsByNameException;
+import org.ays.auth.exception.AysRoleAssignedToUserException;
+import org.ays.auth.exception.AysRoleNotExistByIdException;
+import org.ays.auth.exception.AysUserNotSuperAdminException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysPermissionBuilder;
@@ -13,13 +20,6 @@ import org.ays.auth.model.request.AysRoleUpdateRequestBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
-import org.ays.auth.util.exception.AysInvalidRoleStatusException;
-import org.ays.auth.util.exception.AysPermissionNotExistException;
-import org.ays.auth.util.exception.AysRoleAlreadyDeletedException;
-import org.ays.auth.util.exception.AysRoleAlreadyExistsByNameException;
-import org.ays.auth.util.exception.AysRoleAssignedToUserException;
-import org.ays.auth.util.exception.AysRoleNotExistByIdException;
-import org.ays.auth.util.exception.AysUserNotSuperAdminException;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
@@ -34,8 +34,8 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.Set;
+import java.util.UUID;
 
 class AysRoleUpdateServiceImplTest extends AysUnitTest {
 

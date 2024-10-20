@@ -1,13 +1,13 @@
 package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.ays.auth.exception.AysUserNotExistByIdException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.request.AysUserListRequest;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.service.AysUserReadService;
-import org.ays.auth.util.exception.AysUserNotExistByIdException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,7 @@
 package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
+import org.ays.auth.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
@@ -22,7 +23,6 @@ import org.ays.auth.model.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.auth.model.response.AdminRegistrationApplicationsResponse;
 import org.ays.auth.service.AdminRegistrationApplicationService;
 import org.ays.auth.service.AdminRegistrationCompleteService;
-import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
