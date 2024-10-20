@@ -1,7 +1,7 @@
 package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
-import org.ays.auth.exception.AdminRegistrationApplicationNotExistException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistAuthException;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
@@ -343,7 +343,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
         // When
         Mockito.when(adminRegistrationApplicationService.findSummaryById(mockId))
-                .thenThrow(new AdminRegistrationApplicationNotExistException(mockId));
+                .thenThrow(new AysAdminRegistrationApplicationNotExistAuthException(mockId));
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/summary"));
@@ -399,7 +399,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .withValidValues().build();
 
         // When
-        Mockito.doThrow(new AdminRegistrationApplicationNotExistException(mockId))
+        Mockito.doThrow(new AysAdminRegistrationApplicationNotExistAuthException(mockId))
                 .when(adminRegistrationCompleteService)
                 .complete(Mockito.anyString(), Mockito.any());
 
