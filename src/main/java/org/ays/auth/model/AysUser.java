@@ -48,7 +48,7 @@ public class AysUser extends BaseDomainModel {
      * @return {@code true} if the user's status is {@link AysUserStatus#ACTIVE}, otherwise {@code false}.
      */
     public boolean isActive() {
-        return AysUserStatus.ACTIVE.equals(this.status);
+        return this.status == AysUserStatus.ACTIVE;
     }
 
     /**
@@ -57,7 +57,7 @@ public class AysUser extends BaseDomainModel {
      * @return {@code true} if the user's status is {@link AysUserStatus#PASSIVE}, otherwise {@code false}.
      */
     public boolean isPassive() {
-        return AysUserStatus.PASSIVE.equals(this.status);
+        return this.status == AysUserStatus.PASSIVE;
     }
 
     /**
@@ -66,8 +66,9 @@ public class AysUser extends BaseDomainModel {
      * @return {@code true} if the user's status is {@link AysUserStatus#DELETED}, otherwise {@code false}.
      */
     public boolean isDeleted() {
-        return AysUserStatus.DELETED.equals(this.status);
+        return this.status == AysUserStatus.DELETED;
     }
+
 
     /**
      * Sets the user's status to {@link AysUserStatus#ACTIVE}, marking the user as active.
