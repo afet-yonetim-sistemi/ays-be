@@ -1,4 +1,4 @@
-package org.ays.common.util.exception.handler;
+package org.ays.common.exception.handler;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -10,7 +10,6 @@ import org.ays.common.exception.AysBadRequestException;
 import org.ays.common.exception.AysForbiddenException;
 import org.ays.common.exception.AysNotExistException;
 import org.ays.common.exception.AysProcessException;
-import org.ays.common.exception.handler.GlobalExceptionHandler;
 import org.ays.common.model.response.AysErrorResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

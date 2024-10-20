@@ -1,6 +1,4 @@
-package org.ays.common.util.exception.model.response;
-
-import org.ays.common.model.response.AysErrorResponse;
+package org.ays.common.model.response;
 
 public class AysErrorResponseBuilder {
 
