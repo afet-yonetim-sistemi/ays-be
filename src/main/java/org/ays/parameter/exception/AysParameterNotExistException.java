@@ -1,4 +1,4 @@
-package org.ays.parameter.util.exception;
+package org.ays.parameter.exception;
 
 import org.ays.common.util.exception.AysNotExistException;
 import org.ays.parameter.model.AysParameter;
