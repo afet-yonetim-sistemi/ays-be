@@ -186,14 +186,19 @@ public class AysErrorResponse {
 
         final List<SubError> subErrors = new ArrayList<>();
 
-        constraintViolations.forEach(constraintViolation ->
-                subErrors.add(
-                        SubError.builder()
-                                .message(constraintViolation.getMessage())
-                                .field(StringUtils.substringAfterLast(constraintViolation.getPropertyPath().toString(), "."))
-                                .value(constraintViolation.getInvalidValue() != null ? constraintViolation.getInvalidValue().toString() : null)
-                                .type(constraintViolation.getInvalidValue().getClass().getSimpleName()).build()
-                )
+        constraintViolations.forEach(constraintViolation -> {
+
+                    final SubError.SubErrorBuilder subErrorBuilder = SubError.builder()
+                            .message(constraintViolation.getMessage())
+                            .field(StringUtils.substringAfterLast(constraintViolation.getPropertyPath().toString(), "."))
+                            .type(constraintViolation.getInvalidValue().getClass().getSimpleName());
+
+                    if (constraintViolation.getInvalidValue() != null) {
+                        subErrorBuilder.value(constraintViolation.getInvalidValue().toString());
+                    }
+
+                    subErrors.add(subErrorBuilder.build());
+                }
         );
 
         return AysErrorResponse.builder().subErrors(subErrors);
