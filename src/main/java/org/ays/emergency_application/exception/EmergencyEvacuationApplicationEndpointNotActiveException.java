@@ -1,4 +1,6 @@
-package org.ays.common.exception;
+package org.ays.emergency_application.exception;
+
+import org.ays.common.exception.AysAuthException;
 
 import java.io.Serial;
 
