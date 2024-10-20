@@ -162,7 +162,11 @@ public class AysErrorResponse {
                     subErrorBuilder.type(StringUtils.substringAfterLast(codes.get(codes.size() - 2), ".").replace('$', '.'));
                 }
             }
-            subErrorBuilder.value(fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null);
+
+            if (fieldError.getRejectedValue() != null) {
+                subErrorBuilder.value(fieldError.getRejectedValue().toString());
+            }
+
             subErrorBuilder.message(fieldError.getDefaultMessage());
 
             subErrorErrors.add(subErrorBuilder.build());
