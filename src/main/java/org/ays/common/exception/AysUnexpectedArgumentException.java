@@ -1,4 +1,4 @@
-package org.ays.common.util.exception;
+package org.ays.common.exception;
 
 import java.io.Serial;
 

@@ -1,7 +1,7 @@
 package org.ays.auth.util.exception;
 
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
-import org.ays.common.util.exception.AysBadRequestException;
+import org.ays.common.exception.AysBadRequestException;
 
 import java.io.Serial;
 

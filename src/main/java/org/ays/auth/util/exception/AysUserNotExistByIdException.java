@@ -1,6 +1,6 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.util.exception.AysNotExistException;
+import org.ays.common.exception.AysNotExistException;
 
 import java.io.Serial;
 

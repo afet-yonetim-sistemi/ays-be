@@ -1,6 +1,6 @@
 package org.ays.parameter.exception;
 
-import org.ays.common.util.exception.AysNotExistException;
+import org.ays.common.exception.AysNotExistException;
 import org.ays.parameter.model.AysParameter;
 
 import java.io.Serial;

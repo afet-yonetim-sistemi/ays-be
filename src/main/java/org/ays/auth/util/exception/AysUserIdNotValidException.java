@@ -1,6 +1,6 @@
 package org.ays.auth.util.exception;
 
-import org.ays.common.util.exception.AysAuthException;
+import org.ays.common.exception.AysAuthException;
 
 import java.io.Serial;
 

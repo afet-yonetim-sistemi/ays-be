@@ -1,15 +1,15 @@
-package org.ays.common.util.exception.handler;
+package org.ays.common.exception.handler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.ays.common.exception.AysAlreadyException;
+import org.ays.common.exception.AysAuthException;
+import org.ays.common.exception.AysBadRequestException;
+import org.ays.common.exception.AysForbiddenException;
+import org.ays.common.exception.AysNotExistException;
+import org.ays.common.exception.AysProcessException;
 import org.ays.common.model.response.AysErrorResponse;
-import org.ays.common.util.exception.AysAlreadyException;
-import org.ays.common.util.exception.AysAuthException;
-import org.ays.common.util.exception.AysBadRequestException;
-import org.ays.common.util.exception.AysForbiddenException;
-import org.ays.common.util.exception.AysNotExistException;
-import org.ays.common.util.exception.AysProcessException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
