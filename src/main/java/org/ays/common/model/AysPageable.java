@@ -31,7 +31,7 @@ public class AysPageable extends AysSort {
      * Represents the page number.
      * This value should be between 1 and 99999999.
      */
-    @Range(min = 1, max = 99999999)
+    @Range(min = 1, max = 99_999_999)
     private int page;
 
     /**

@@ -1,7 +1,7 @@
 package org.ays.auth.util;
 
 import org.ays.AysUnitTest;
-import org.ays.auth.util.exception.AysKeyReadException;
+import org.ays.auth.exception.AysKeyReadException;
 import org.ays.encryption.utility.AysPrivateKeyEncryptionUtil;
 import org.ays.encryption.utility.AysPublicKeyEncryptionUtil;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;

@@ -1,10 +1,9 @@
 package org.ays.common.util.validation;
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.util.AysPhoneNumberUtil;
 import org.springframework.util.StringUtils;
 
 /**
@@ -22,9 +21,9 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
      */
     @Override
     public boolean isValid(AysPhoneNumberRequest phoneNumber, ConstraintValidatorContext context) {
+
         final String countryCode = phoneNumber.getCountryCode();
         final String lineNumber = phoneNumber.getLineNumber();
-        final String fullNumber = "+" + countryCode + lineNumber;
 
         if (!StringUtils.hasText(countryCode) || !StringUtils.hasText(lineNumber)) {
             return true;
@@ -37,15 +36,7 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
             return false;
         }
 
-        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
-
-        try {
-            final String regionCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
-            Phonenumber.PhoneNumber number = phoneNumberUtil.parse(fullNumber, null);
-            return phoneNumberUtil.isValidNumberForRegion(number, regionCode);
-        } catch (Exception e) {
-            return false;
-        }
+        return AysPhoneNumberUtil.isValid(countryCode, lineNumber);
     }
 
 }

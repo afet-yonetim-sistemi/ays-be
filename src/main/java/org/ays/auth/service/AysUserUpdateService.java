@@ -1,9 +1,9 @@
 package org.ays.auth.service;
 
+import org.ays.auth.exception.AysUserNotActiveException;
+import org.ays.auth.exception.AysUserNotExistByIdException;
+import org.ays.auth.exception.AysUserNotPassiveException;
 import org.ays.auth.model.request.AysUserUpdateRequest;
-import org.ays.auth.util.exception.AysUserNotActiveException;
-import org.ays.auth.util.exception.AysUserNotExistByIdException;
-import org.ays.auth.util.exception.AysUserNotPassiveException;
 
 /**
  * Service interface for updating users.

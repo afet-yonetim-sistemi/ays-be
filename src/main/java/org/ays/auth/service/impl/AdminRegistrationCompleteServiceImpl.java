@@ -3,6 +3,9 @@ package org.ays.auth.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdAuthException;
+import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
+import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
@@ -18,9 +21,6 @@ import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AdminRegistrationCompleteService;
-import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
-import org.ays.auth.util.exception.AysUserAlreadyExistsByEmailAddressException;
-import org.ays.auth.util.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.institution.model.Institution;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -58,7 +58,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
      * @param id              The unique identifier of the admin registration application.
      * @param completeRequest The request containing necessary information to complete the registration.
      *                        This includes user details such as email, phone number, and password.
-     * @throws AdminRegistrationApplicationNotExistException if the registration application does not exist or is not in a waiting state.
+     * @throws AysAdminRegistrationApplicationNotExistByIdAuthException if the registration application does not exist or is not in a waiting state.
      * @throws AysUserAlreadyExistsByEmailAddressException   if a user with the given email already exists.
      * @throws AysUserAlreadyExistsByPhoneNumberException    if a user with the given phone number already exists.
      */
@@ -83,7 +83,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
         final AdminRegistrationApplication application = adminRegistrationApplicationReadPort
                 .findById(id)
                 .filter(AdminRegistrationApplication::isWaiting)
-                .orElseThrow(() -> new AdminRegistrationApplicationNotExistException(id));
+                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdAuthException(id));
 
         user.setInstitution(application.getInstitution());
         user.notVerify();
