@@ -3,7 +3,7 @@ package org.ays.common.exception;
 import java.io.Serial;
 
 /**
- * Represents an exception that occurs when a conflict is detected in the AYS (Are You Sure) system.
+ * Represents an exception that occurs when a conflict is detected in the application.
  * This is an abstract base class for specific conflict-related exceptions.
  * <p>
  * This exception extends {@link RuntimeException}, making it an unchecked exception.
