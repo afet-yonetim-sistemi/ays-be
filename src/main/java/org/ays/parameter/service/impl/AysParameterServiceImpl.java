@@ -1,10 +1,10 @@
 package org.ays.parameter.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.ays.parameter.exception.AysParameterNotExistException;
 import org.ays.parameter.model.AysParameter;
 import org.ays.parameter.port.AysParameterReadPort;
 import org.ays.parameter.service.AysParameterService;
-import org.ays.parameter.util.exception.AysParameterNotExistException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

@@ -1,6 +1,11 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.auth.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationInCompleteException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdAuthException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.AdminRegistrationApplicationFilter;
@@ -17,18 +22,13 @@ import org.ays.auth.model.request.AdminRegistrationApplicationRejectRequestBuild
 import org.ays.auth.port.AdminRegistrationApplicationReadPort;
 import org.ays.auth.port.AdminRegistrationApplicationSavePort;
 import org.ays.auth.port.AysUserSavePort;
-import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistByIdException;
-import org.ays.auth.util.exception.AdminRegistrationApplicationNotExistException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyApprovedException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationAlreadyRejectedException;
-import org.ays.auth.util.exception.AysAdminRegistrationApplicationInCompleteException;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageable;
+import org.ays.institution.exception.AysInstitutionNotExistException;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.port.InstitutionReadPort;
-import org.ays.institution.util.exception.AysInstitutionNotExistException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -161,7 +161,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AdminRegistrationApplicationNotExistByIdException.class,
+                AysAdminRegistrationApplicationNotExistByIdException.class,
                 () -> adminUserRegisterApplicationService.findById(mockId)
         );
 
@@ -213,7 +213,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AdminRegistrationApplicationNotExistException.class,
+                AysAdminRegistrationApplicationNotExistByIdAuthException.class,
                 () -> adminUserRegisterApplicationService.findSummaryById(mockId)
         );
 
@@ -329,7 +329,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AdminRegistrationApplicationNotExistByIdException.class,
+                AysAdminRegistrationApplicationNotExistByIdException.class,
                 () -> adminUserRegisterApplicationService.approve(mockId)
         );
 
@@ -489,7 +489,7 @@ class AdminRegistrationApplicationServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AdminRegistrationApplicationNotExistByIdException.class,
+                AysAdminRegistrationApplicationNotExistByIdException.class,
                 () -> adminUserRegisterApplicationService.reject(mockId, mockRequest)
         );
 

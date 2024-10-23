@@ -1,6 +1,9 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
+import org.ays.auth.exception.AysEmailAddressNotValidException;
+import org.ays.auth.exception.AysUserPasswordCannotChangedException;
+import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
@@ -10,9 +13,6 @@ import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserMailService;
-import org.ays.auth.util.exception.AysEmailAddressNotValidException;
-import org.ays.auth.util.exception.AysUserPasswordCannotChangedException;
-import org.ays.auth.util.exception.AysUserPasswordDoesNotExistException;
 import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
