@@ -10,7 +10,7 @@ import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.util.AysValidTestData;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
 
@@ -30,8 +30,10 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
                 .withValidValues()
                 .build();
 
-        List<AysRoleEntity> roleEntities = List.of(
-                new AysRoleEntityBuilder().withValidValues().build()
+        Set<AysRoleEntity> roleEntities = Set.of(
+                new AysRoleEntityBuilder()
+                        .withValidValues()
+                        .build()
         );
 
         InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidValues().build();
@@ -78,7 +80,7 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
         return this;
     }
 
-    public AysUserEntityBuilder withRoles(List<AysRoleEntity> roles) {
+    public AysUserEntityBuilder withRoles(Set<AysRoleEntity> roles) {
         data.setRoles(roles);
         return this;
     }
