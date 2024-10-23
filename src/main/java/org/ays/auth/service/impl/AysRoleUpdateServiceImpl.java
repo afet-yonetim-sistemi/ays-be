@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Service implementation for updating roles.
@@ -62,17 +63,64 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
                 .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
-        if (!role.getName().equals(updateRequest.getName())) {
+        final boolean isRoleNameChanged = !role.getName().equals(updateRequest.getName());
+        if (isRoleNameChanged) {
             this.checkExistingRoleNameByWithoutId(id, updateRequest.getName());
         }
 
-        final List<AysPermission> permissions = this.checkExistingPermissionsAndGet(updateRequest.getPermissionIds());
+        final Set<String> existingRoleIds = role.getPermissions().stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+        final boolean isRoleChanged = !existingRoleIds.equals(updateRequest.getPermissionIds());
+        if (isRoleChanged) {
+            this.validatePermissions(updateRequest.getPermissionIds());
+        }
 
-        role.setName(updateRequest.getName());
-        role.setPermissions(permissions);
-        role.setUpdatedUser(identity.getUserId());
-
+        role.update(
+                updateRequest.getName(),
+                updateRequest.getPermissionIds(),
+                identity.getUserId()
+        );
         roleSavePort.save(role);
+    }
+
+    /**
+     * Checks the existence of another role with the same name, excluding the current role ID.
+     *
+     * @param id   The ID of the role being updated.
+     * @param name The name to check for uniqueness.
+     * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists, excluding the current role ID.
+     */
+    private void checkExistingRoleNameByWithoutId(final String id, final String name) {
+        roleReadPort.findByName(name)
+                .filter(role -> !id.equals(role.getId()))
+                .ifPresent(role -> {
+                    throw new AysRoleAlreadyExistsByNameException(name);
+                });
+    }
+
+    private void validatePermissions(final Set<String> permissionIds) {
+
+        final List<AysPermission> permissions = permissionReadPort.findAllByIds(permissionIds);
+
+        if (permissions.size() != permissionIds.size()) {
+
+            final List<String> notExistsPermissionIds = permissionIds.stream()
+                    .filter(permissionId -> permissions.stream()
+                            .noneMatch(permissionEntity -> permissionEntity.getId().equals(permissionId)))
+                    .toList();
+
+            throw new AysPermissionNotExistException(notExistsPermissionIds);
+        }
+
+        if (identity.isSuperAdmin()) {
+            return;
+        }
+
+        boolean haveSuperPermissions = permissions.stream().anyMatch(AysPermission::isSuper);
+        if (haveSuperPermissions) {
+            throw new AysUserNotSuperAdminException(identity.getUserId());
+        }
     }
 
 
@@ -161,56 +209,6 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
 
         role.delete();
         roleSavePort.save(role);
-    }
-
-
-    /**
-     * Checks the existence of another role with the same name, excluding the current role ID.
-     *
-     * @param id   The ID of the role being updated.
-     * @param name The name to check for uniqueness.
-     * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists, excluding the current role ID.
-     */
-    private void checkExistingRoleNameByWithoutId(final String id, final String name) {
-        roleReadPort.findByName(name)
-                .filter(role -> !id.equals(role.getId()))
-                .ifPresent(role -> {
-                    throw new AysRoleAlreadyExistsByNameException(name);
-                });
-    }
-
-    /**
-     * Checks the existence of permissions based on the provided permission IDs.
-     * Verifies if all permission IDs exist and validates super admin restrictions.
-     *
-     * @param permissionIds the set of permission IDs to check
-     * @return the list of permissions corresponding to the provided IDs
-     * @throws AysPermissionNotExistException if any of the permission IDs do not exist
-     * @throws AysUserNotSuperAdminException  if the current user is not authorized to assign super permissions
-     */
-    private List<AysPermission> checkExistingPermissionsAndGet(final Set<String> permissionIds) {
-        final List<AysPermission> permissions = permissionReadPort.findAllByIds(permissionIds);
-
-        if (permissions.size() != permissionIds.size()) {
-
-            final List<String> notExistsPermissionIds = permissionIds.stream()
-                    .filter(permissionId -> permissions.stream()
-                            .noneMatch(permissionEntity -> permissionEntity.getId().equals(permissionId)))
-                    .toList();
-
-            throw new AysPermissionNotExistException(notExistsPermissionIds);
-        }
-
-        if (identity.isSuperAdmin()) {
-            return permissions;
-        }
-
-        boolean haveSuperPermissions = permissions.stream().anyMatch(AysPermission::isSuper);
-        if (haveSuperPermissions) {
-            throw new AysUserNotSuperAdminException(identity.getUserId());
-        }
-
-        return permissions;
     }
 
 }
