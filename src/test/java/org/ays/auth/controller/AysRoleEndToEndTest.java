@@ -583,7 +583,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withName(AysRandomUtil.generateText(10))
-                        .withPermissions(permissions)
+                        .withPermissions(List.of(permissions.get(0)))
                         .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
                         .build()
         );
