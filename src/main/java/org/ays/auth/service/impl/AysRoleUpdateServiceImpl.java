@@ -99,6 +99,18 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
                 });
     }
 
+    /**
+     * Validates the specified permission IDs and checks user authorization.
+     * <p>
+     * This method verifies if all permission IDs exist in the system and checks if the user
+     * has appropriate access level for super permissions. Only super admin users can assign
+     * super permissions.
+     * </p>
+     *
+     * @param permissionIds the set of permission IDs to validate
+     * @throws AysPermissionNotExistException if any of the specified permissions do not exist
+     * @throws AysUserNotSuperAdminException  if a non-super admin user attempts to assign super permissions
+     */
     private void validatePermissions(final Set<String> permissionIds) {
 
         final List<AysPermission> permissions = permissionReadPort.findAllByIds(permissionIds);
