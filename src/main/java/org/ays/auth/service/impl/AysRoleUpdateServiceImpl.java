@@ -71,8 +71,8 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
         final Set<String> existingRoleIds = role.getPermissions().stream()
                 .map(AysPermission::getId)
                 .collect(Collectors.toSet());
-        final boolean isRoleChanged = !existingRoleIds.equals(updateRequest.getPermissionIds());
-        if (isRoleChanged) {
+        final boolean permissionsChanged = !existingRoleIds.equals(updateRequest.getPermissionIds());
+        if (permissionsChanged) {
             this.validatePermissions(updateRequest.getPermissionIds());
         }
 
