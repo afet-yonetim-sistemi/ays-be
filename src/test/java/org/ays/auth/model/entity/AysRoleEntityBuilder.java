@@ -6,7 +6,7 @@ import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 
-import java.util.List;
+import java.util.Set;
 
 public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
 
@@ -15,10 +15,18 @@ public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
     }
 
     public AysRoleEntityBuilder withValidValues() {
-        List<AysPermissionEntity> permissionEntities = List.of(
-                new AysPermissionEntityBuilder().withValidValues().build(),
-                new AysPermissionEntityBuilder().withValidValues().withName("institution:page").withCategory(AysPermissionCategory.PAGE).build()
+
+        Set<AysPermissionEntity> permissionEntities = Set.of(
+                new AysPermissionEntityBuilder()
+                        .withValidValues()
+                        .build(),
+                new AysPermissionEntityBuilder()
+                        .withValidValues()
+                        .withName("institution:page")
+                        .withCategory(AysPermissionCategory.PAGE)
+                        .build()
         );
+
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withName("admin")
@@ -41,7 +49,7 @@ public class AysRoleEntityBuilder extends TestDataBuilder<AysRoleEntity> {
         return this;
     }
 
-    public AysRoleEntityBuilder withPermissions(List<AysPermissionEntity> permissionEntities) {
+    public AysRoleEntityBuilder withPermissions(Set<AysPermissionEntity> permissionEntities) {
         data.setPermissions(permissionEntities);
         return this;
     }

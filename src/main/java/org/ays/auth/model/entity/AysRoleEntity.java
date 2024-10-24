@@ -23,7 +23,7 @@ import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Entity class representing a role within the application, extending from {@link BaseEntity}.
@@ -65,6 +65,6 @@ public class AysRoleEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "ROLE_ID"),
             inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID")
     )
-    private List<AysPermissionEntity> permissions;
+    private Set<AysPermissionEntity> permissions;
 
 }
