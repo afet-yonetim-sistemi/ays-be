@@ -1,0 +1,7 @@
+aws:
+  dynamodb:
+    region: eu-central-1
+    endpoint: https://dynamodb.eu-central-1.amazonaws.com
+  credentials:
+    access-key-id: ${AWS_DYNAMO_DB_ACCESS_KEY_ID:}
+    secret-access-key: ${AWS_DYNAMO_DB_SECRET_ACCESS_KEY:}
