@@ -15,6 +15,8 @@ import org.ays.institution.model.Institution;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Domain model representing a user entity for data transfer between the service layer and controller.
@@ -69,6 +71,37 @@ public class AysUser extends BaseDomainModel {
         return this.status == AysUserStatus.DELETED;
     }
 
+
+    /**
+     * Updates the user information with the specified details.
+     * </p>
+     *
+     * @param emailAddress the email address of the user
+     * @param firstName    the first name of the user
+     * @param lastName     the last name of the user
+     * @param phoneNumber  the {@link AysPhoneNumber} containing the user's phone information
+     * @param city         the city where the user is located
+     * @param roleIds      the set of role IDs assigned to the user
+     * @param updatedUser  the identifier of the user who performed the update
+     */
+    public void update(final String emailAddress,
+                       final String firstName,
+                       final String lastName,
+                       final AysPhoneNumber phoneNumber,
+                       final String city,
+                       final Set<String> roleIds,
+                       final String updatedUser) {
+
+        this.emailAddress = emailAddress;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.city = city;
+        this.roles = roleIds.stream()
+                .map(roleId -> AysRole.builder().id(roleId).build())
+                .collect(Collectors.toList());
+        this.updatedUser = updatedUser;
+    }
 
     /**
      * Sets the user's status to {@link AysUserStatus#ACTIVE}, marking the user as active.
