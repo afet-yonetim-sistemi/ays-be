@@ -86,3 +86,11 @@ ays:
       enabled: ${AYS_AUTHORIZED_RATE_LIMIT_ENABLED:false}
     unauthorized:
       enabled: ${AYS_UNAUTHORIZED_RATE_LIMIT_ENABLED:false}
+
+aws:
+  dynamodb:
+    region: ${AWS_DYNAMO_DB_REGION:}
+    endpoint: https://dynamodb.${AWS_DYNAMO_DB_REGION:}.amazonaws.com
+  credentials:
+    access-key-id: ${AWS_DYNAMO_DB_ACCESS_KEY_ID:}
+    secret-access-key: ${AWS_DYNAMO_DB_SECRET_ACCESS_KEY:}
