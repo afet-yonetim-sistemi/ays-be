@@ -1,4 +1,4 @@
-package org.ays.auth.port.impl;
+package org.ays.auth.port.adapter;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysUser;
