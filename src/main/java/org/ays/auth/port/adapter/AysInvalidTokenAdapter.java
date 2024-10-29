@@ -1,4 +1,4 @@
-package org.ays.auth.port.impl;
+package org.ays.auth.port.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.model.AysInvalidToken;

@@ -1,4 +1,4 @@
-package org.ays.parameter.port.impl;
+package org.ays.parameter.port.adapter;
 
 import org.ays.AysUnitTest;
 import org.ays.parameter.model.AysParameter;

@@ -1,4 +1,4 @@
-package org.ays.auth.port.impl;
+package org.ays.auth.port.adapter;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysUnitTest;

@@ -1,4 +1,4 @@
-package org.ays.institution.port.impl;
+package org.ays.institution.port.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.institution.model.Institution;

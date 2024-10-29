@@ -1,4 +1,4 @@
-package org.ays.institution.port.impl;
+package org.ays.institution.port.adapter;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysUnitTest;
