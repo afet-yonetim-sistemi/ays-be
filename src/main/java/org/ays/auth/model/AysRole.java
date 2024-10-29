@@ -9,6 +9,8 @@ import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents a role entity in the system.
@@ -57,6 +59,25 @@ public class AysRole extends BaseDomainModel {
         return this.status == AysRoleStatus.DELETED;
     }
 
+
+    /**
+     * Updates the role with the provided information.
+     * This method updates the role's name and permissions based on the provided values.
+     *
+     * @param name          The new name of the role.
+     * @param permissionIds The IDs of the permissions to be assigned to the role.
+     * @param updatedUser   The user who is updating the role.
+     */
+    public void update(final String name,
+                       final Set<String> permissionIds,
+                       final String updatedUser) {
+
+        this.name = name;
+        this.permissions = permissionIds.stream()
+                .map(roleId -> AysPermission.builder().id(roleId).build())
+                .collect(Collectors.toList());
+        this.updatedUser = updatedUser;
+    }
 
     /**
      * Activates the role by setting its status to {@link AysRoleStatus#ACTIVE}.

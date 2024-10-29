@@ -1,4 +1,4 @@
-package org.ays.emergency_application.port.impl;
+package org.ays.emergency_application.port.adapter;
 
 import org.ays.AysUnitTest;
 import org.ays.common.model.AysPage;
