@@ -1,4 +1,4 @@
-package org.ays.parameter.port.impl;
+package org.ays.parameter.port.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.parameter.model.AysParameter;
