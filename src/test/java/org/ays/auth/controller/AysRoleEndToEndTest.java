@@ -518,7 +518,6 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
         Assertions.assertTrue(UUID_REGEX.matcher(roleFromDatabase.get().getUpdatedUser()).matches());
-
     }
 
     @Test
