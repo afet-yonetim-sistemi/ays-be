@@ -33,6 +33,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
 
@@ -49,7 +50,10 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
     private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
 
 
+    private static final Pattern UUID_REGEX = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
+
     private static final String BASE_PATH = "/api/v1";
+
 
     @Test
     void givenValidEmergencyEvacuationApplicationListRequest_whenApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
@@ -320,7 +324,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, applicationRequest);
+                .post(endpoint, adminToken.getAccessToken(), applicationRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
@@ -362,6 +366,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertFalse(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
+        Assertions.assertTrue(UUID_REGEX.matcher(application.get().getCreatedUser()).matches());
     }
 
     @Test
@@ -377,7 +382,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, applicationRequest);
+                .post(endpoint, adminToken.getAccessToken(), applicationRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
@@ -419,6 +424,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
+        Assertions.assertTrue(UUID_REGEX.matcher(application.get().getCreatedUser()).matches());
     }
 
 
@@ -471,6 +477,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(applicationFromDatabase.get().getNotes(), updateRequest.getNotes());
         Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedAt());
+        Assertions.assertTrue(UUID_REGEX.matcher(applicationFromDatabase.get().getUpdatedUser()).matches());
     }
 
 }

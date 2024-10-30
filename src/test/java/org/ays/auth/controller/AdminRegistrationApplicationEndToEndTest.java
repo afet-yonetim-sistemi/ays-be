@@ -49,6 +49,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
@@ -77,6 +78,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
     private final AdminRegistrationApplicationToSummaryResponseMapper adminRegistrationApplicationToSummaryResponseMapper = AdminRegistrationApplicationToSummaryResponseMapper.initialize();
     private final AdminRegistrationApplicationToCreateResponseMapper adminRegistrationApplicationToCreateResponseMapper = AdminRegistrationApplicationToCreateResponseMapper.initialize();
 
+    private static final Pattern UUID_REGEX = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -281,6 +283,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(AdminRegistrationApplicationStatus.WAITING, registrationApplication.get().getStatus());
         Assertions.assertEquals(institution.getId(), registrationApplication.get().getInstitution().getId());
         Assertions.assertNull(registrationApplication.get().getUser());
+        Assertions.assertTrue(UUID_REGEX.matcher(registrationApplication.get().getCreatedUser()).matches());
     }
 
     @Test
@@ -355,7 +358,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/complete");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, completeRequest);
+                .post(endpoint, superAdminToken.getAccessToken(), completeRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
@@ -371,6 +374,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(applicationFromDatabase.isPresent());
         Assertions.assertEquals(AdminRegistrationApplicationStatus.COMPLETED, applicationFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUID_REGEX.matcher(applicationFromDatabase.get().getUpdatedUser()).matches());
 
 
         List<AysPermission> permissionsFromDatabase = permissionReadPort.findAllByIsSuperFalse();
@@ -680,6 +684,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(applicationFromDatabase.isPresent());
         Assertions.assertEquals(AdminRegistrationApplicationStatus.REJECTED, applicationFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUID_REGEX.matcher(applicationFromDatabase.get().getUpdatedUser()).matches());
     }
 
     @Test
