@@ -28,6 +28,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 class AysUserEndToEndTest extends AysEndToEndTest {
@@ -53,8 +53,6 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
     private final AysUserToResponseMapper userToResponseMapper = AysUserToResponseMapper.initialize();
 
-
-    private static final Pattern UUID_REGEX = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -305,7 +303,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(userFromDatabase.get().getCreatedAt());
         Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
         Assertions.assertNull(userFromDatabase.get().getUpdatedAt());
-        Assertions.assertTrue(UUID_REGEX.matcher(userFromDatabase.get().getCreatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getCreatedUser()));
     }
 
 
@@ -377,7 +375,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 );
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedAt());
-        Assertions.assertTrue(UUID_REGEX.matcher(userFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
     @Test
@@ -450,7 +448,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         );
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedAt());
-        Assertions.assertTrue(UUID_REGEX.matcher(userFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -496,7 +494,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.ACTIVE, userFromDatabase.get().getStatus());
-        Assertions.assertTrue(UUID_REGEX.matcher(userFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -549,7 +547,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertNotNull(userFromDatabase.get().getId());
         Assertions.assertEquals(AysUserStatus.DELETED, userFromDatabase.get().getStatus());
-        Assertions.assertTrue(UUID_REGEX.matcher(userFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -595,7 +593,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.PASSIVE, userFromDatabase.get().getStatus());
-        Assertions.assertTrue(UUID_REGEX.matcher(userFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 }

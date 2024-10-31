@@ -34,7 +34,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.regex.Pattern;
 
 class AysAuthEndToEndTest extends AysEndToEndTest {
 
@@ -47,8 +46,6 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
     @Autowired
     private AysRoleReadPort roleReadPort;
 
-
-    private static final Pattern UUID_REGEX = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     private static final String BASE_PATH = "/api/v1/authentication";
 
@@ -164,7 +161,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/password/forgot");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken(), mockForgotPasswordRequest);
+                .post(endpoint, mockForgotPasswordRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
@@ -188,7 +185,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
-        Assertions.assertTrue(UUID_REGEX.matcher(passwordFromDatabase.getCreatedUser()).matches());
+        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
     }
 
     @Test
@@ -227,7 +224,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/password/forgot");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken(), mockForgotPasswordRequest);
+                .post(endpoint, mockForgotPasswordRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
@@ -252,7 +249,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
-        Assertions.assertTrue(UUID_REGEX.matcher(passwordFromDatabase.getCreatedUser()).matches());
+        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
     }
 
 
@@ -340,7 +337,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/password/").concat(mockId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, userToken.getAccessToken(), mockPasswordCreateRequest);
+                .post(endpoint, mockPasswordCreateRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
@@ -364,7 +361,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
-        Assertions.assertTrue(UUID_REGEX.matcher(passwordFromDatabase.getCreatedUser()).matches());
+        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
     }
 
 }

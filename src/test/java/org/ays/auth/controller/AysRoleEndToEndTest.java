@@ -29,6 +29,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +41,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 class AysRoleEndToEndTest extends AysEndToEndTest {
@@ -57,8 +57,6 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
 
     private final AysRoleToResponseMapper roleToResponseMapper = AysRoleToResponseMapper.initialize();
 
-
-    private static final Pattern UUID_REGEX = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -332,7 +330,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 role.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
-        Assertions.assertTrue(UUID_REGEX.matcher(role.get().getCreatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(role.get().getCreatedUser()));
     }
 
     @Test
@@ -374,7 +372,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 role.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
-        Assertions.assertTrue(UUID_REGEX.matcher(role.get().getCreatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(role.get().getCreatedUser()));
     }
 
     @Test
@@ -462,7 +460,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
-        Assertions.assertTrue(UUID_REGEX.matcher(roleFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
     @Test
@@ -517,7 +515,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
-        Assertions.assertTrue(UUID_REGEX.matcher(roleFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
     @Test
@@ -574,7 +572,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
-        Assertions.assertTrue(UUID_REGEX.matcher(roleFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
     @Test
@@ -667,7 +665,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(roleFromDatabase.isPresent());
         Assertions.assertEquals(roleFromDatabase.get().getId(), id);
         Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
-        Assertions.assertTrue(UUID_REGEX.matcher(roleFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -713,7 +711,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(roleFromDatabase.isPresent());
         Assertions.assertEquals(roleFromDatabase.get().getId(), id);
         Assertions.assertEquals(AysRoleStatus.PASSIVE, roleFromDatabase.get().getStatus());
-        Assertions.assertTrue(UUID_REGEX.matcher(roleFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -755,7 +753,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(roleFromDatabase.isPresent());
         Assertions.assertNotNull(roleFromDatabase.get().getId());
         Assertions.assertEquals(AysRoleStatus.DELETED, roleFromDatabase.get().getStatus());
-        Assertions.assertTrue(UUID_REGEX.matcher(roleFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
 }

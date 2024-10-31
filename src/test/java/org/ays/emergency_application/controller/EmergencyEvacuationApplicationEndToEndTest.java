@@ -24,6 +24,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
 
@@ -49,8 +49,6 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
 
     private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
 
-
-    private static final Pattern UUID_REGEX = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     private static final String BASE_PATH = "/api/v1";
 
@@ -324,7 +322,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, adminToken.getAccessToken(), applicationRequest);
+                .post(endpoint, applicationRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
@@ -366,7 +364,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertFalse(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
-        Assertions.assertTrue(UUID_REGEX.matcher(application.get().getCreatedUser()).matches());
+        Assertions.assertEquals(application.get().getCreatedUser(), "AYS");
     }
 
     @Test
@@ -382,7 +380,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, adminToken.getAccessToken(), applicationRequest);
+                .post(endpoint, applicationRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
@@ -424,7 +422,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
-        Assertions.assertTrue(UUID_REGEX.matcher(application.get().getCreatedUser()).matches());
+        Assertions.assertEquals(application.get().getCreatedUser(), "AYS");
     }
 
 
@@ -477,7 +475,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(applicationFromDatabase.get().getNotes(), updateRequest.getNotes());
         Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedAt());
-        Assertions.assertTrue(UUID_REGEX.matcher(applicationFromDatabase.get().getUpdatedUser()).matches());
+        Assertions.assertTrue(UUIDTestUtil.isValid(applicationFromDatabase.get().getUpdatedUser()));
     }
 
 }
