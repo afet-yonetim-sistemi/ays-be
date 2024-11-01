@@ -176,6 +176,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 .orElseThrow();
 
         AysUser.Password passwordFromDatabase = userFromDatabase.getPassword();
+
         Assertions.assertNotNull(passwordFromDatabase);
         Assertions.assertNotNull(passwordFromDatabase.getValue());
         Assertions.assertNotNull(passwordFromDatabase.getForgotAt());
@@ -184,6 +185,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
+        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
     }
 
     @Test
@@ -237,6 +239,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 .orElseThrow();
 
         AysUser.Password passwordFromDatabase = userFromDatabase.getPassword();
+
         Assertions.assertNotNull(passwordFromDatabase);
         Assertions.assertNotNull(passwordFromDatabase.getValue());
         Assertions.assertEquals(password.getValue(), passwordFromDatabase.getValue());
@@ -246,6 +249,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
+        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
     }
 
 
@@ -348,6 +352,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 .orElseThrow();
 
         AysUser.Password passwordFromDatabase = userFromDatabase.getPassword();
+
         Assertions.assertNotNull(passwordFromDatabase);
         Assertions.assertNotEquals(mockId, passwordFromDatabase.getId());
         Assertions.assertNotNull(passwordFromDatabase.getValue());
@@ -356,6 +361,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
+        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
     }
 
 }

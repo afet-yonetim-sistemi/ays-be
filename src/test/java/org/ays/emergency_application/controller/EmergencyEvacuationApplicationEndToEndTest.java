@@ -24,6 +24,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
 
 
     private static final String BASE_PATH = "/api/v1";
+
 
     @Test
     void givenValidEmergencyEvacuationApplicationListRequest_whenApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
@@ -362,6 +364,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertFalse(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
+        Assertions.assertEquals(application.get().getCreatedUser(), "AYS");
     }
 
     @Test
@@ -419,6 +422,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
+        Assertions.assertEquals(application.get().getCreatedUser(), "AYS");
     }
 
 
@@ -471,6 +475,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(applicationFromDatabase.get().getNotes(), updateRequest.getNotes());
         Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedAt());
+        Assertions.assertTrue(UUIDTestUtil.isValid(applicationFromDatabase.get().getUpdatedUser()));
     }
 
 }

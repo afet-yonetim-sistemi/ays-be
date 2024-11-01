@@ -28,6 +28,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -302,6 +303,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(userFromDatabase.get().getCreatedAt());
         Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
         Assertions.assertNull(userFromDatabase.get().getUpdatedAt());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getCreatedUser()));
     }
 
 
@@ -373,6 +375,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 );
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedAt());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
     @Test
@@ -445,6 +448,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         );
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedUser());
         Assertions.assertNotNull(userFromDatabase.get().getUpdatedAt());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -490,6 +494,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.ACTIVE, userFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -542,6 +547,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertNotNull(userFromDatabase.get().getId());
         Assertions.assertEquals(AysUserStatus.DELETED, userFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -587,6 +593,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.PASSIVE, userFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 }

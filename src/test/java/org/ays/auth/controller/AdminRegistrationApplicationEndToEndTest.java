@@ -42,6 +42,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
+import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
 
     private static final String BASE_PATH = "/api/v1";
+
 
     @Test
     void givenValidAdminRegistrationApplicationListRequest_whenAdminRegistrationApplicationsFound_thenReturnAdminRegistrationApplicationsResponse() throws Exception {
@@ -281,6 +283,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(AdminRegistrationApplicationStatus.WAITING, registrationApplication.get().getStatus());
         Assertions.assertEquals(institution.getId(), registrationApplication.get().getInstitution().getId());
         Assertions.assertNull(registrationApplication.get().getUser());
+        Assertions.assertTrue(UUIDTestUtil.isValid(registrationApplication.get().getCreatedUser()));
     }
 
     @Test
@@ -371,6 +374,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(applicationFromDatabase.isPresent());
         Assertions.assertEquals(AdminRegistrationApplicationStatus.COMPLETED, applicationFromDatabase.get().getStatus());
+        Assertions.assertEquals(applicationFromDatabase.get().getUpdatedUser(), "AYS");
 
 
         List<AysPermission> permissionsFromDatabase = permissionReadPort.findAllByIsSuperFalse();
@@ -680,6 +684,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(applicationFromDatabase.isPresent());
         Assertions.assertEquals(AdminRegistrationApplicationStatus.REJECTED, applicationFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUIDTestUtil.isValid(applicationFromDatabase.get().getUpdatedUser()));
     }
 
     @Test

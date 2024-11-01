@@ -29,6 +29,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -329,6 +330,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 role.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+        Assertions.assertTrue(UUIDTestUtil.isValid(role.get().getCreatedUser()));
     }
 
     @Test
@@ -370,6 +372,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 role.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+        Assertions.assertTrue(UUIDTestUtil.isValid(role.get().getCreatedUser()));
     }
 
     @Test
@@ -457,6 +460,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
     @Test
@@ -511,6 +515,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
     @Test
@@ -567,6 +572,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
     @Test
@@ -659,6 +665,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(roleFromDatabase.isPresent());
         Assertions.assertEquals(roleFromDatabase.get().getId(), id);
         Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -704,6 +711,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(roleFromDatabase.isPresent());
         Assertions.assertEquals(roleFromDatabase.get().getId(), id);
         Assertions.assertEquals(AysRoleStatus.PASSIVE, roleFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
 
@@ -745,6 +753,7 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(roleFromDatabase.isPresent());
         Assertions.assertNotNull(roleFromDatabase.get().getId());
         Assertions.assertEquals(AysRoleStatus.DELETED, roleFromDatabase.get().getStatus());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
     }
 
 }
