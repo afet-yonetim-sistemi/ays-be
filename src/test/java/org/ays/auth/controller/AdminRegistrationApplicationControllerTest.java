@@ -2,6 +2,7 @@ package org.ays.auth.controller;
 
 import org.ays.AysRestControllerTest;
 import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdAuthException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
@@ -399,7 +400,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .withValidValues().build();
 
         // When
-        Mockito.doThrow(new AysAdminRegistrationApplicationNotExistByIdAuthException(mockId))
+        Mockito.doThrow(new AysAdminRegistrationApplicationNotExistByIdException(mockId))
                 .when(adminRegistrationCompleteService)
                 .complete(Mockito.anyString(), Mockito.any());
 

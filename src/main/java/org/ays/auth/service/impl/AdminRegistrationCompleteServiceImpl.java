@@ -1,9 +1,11 @@
 package org.ays.auth.service.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdAuthException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.model.AdminRegistrationApplication;
@@ -25,8 +27,6 @@ import org.ays.institution.model.Institution;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Implementation of {@link AdminRegistrationCompleteService} that handles the completion of admin registration applications.
@@ -83,7 +83,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
         final AdminRegistrationApplication application = adminRegistrationApplicationReadPort
                 .findById(id)
                 .filter(AdminRegistrationApplication::isWaiting)
-                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdAuthException(id));
+                .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdException(id));
 
         user.setInstitution(application.getInstitution());
         user.notVerify();
