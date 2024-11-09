@@ -22,13 +22,14 @@ import java.text.DateFormat;
 @Component
 public class AysAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    static {
-        OBJECT_MAPPER.registerModule(new JavaTimeModule());
+    public AysAuthenticationEntryPoint(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+        this.objectMapper.registerModule(new JavaTimeModule());
+        this.objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
     }
-
-    /**
+      /**
      * Handles the unauthorized request by sending an "Unauthorized"
      * response with the HTTP status code 401 (SC_UNAUTHORIZED).
      *
@@ -37,6 +38,7 @@ public class AysAuthenticationEntryPoint implements AuthenticationEntryPoint {
      * @param authenticationException the {@link AuthenticationException} that occurred during authentication
      * @throws IOException if an I/O error occurs while sending the response
      */
+
     @Override
     public void commence(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse,
@@ -47,12 +49,12 @@ public class AysAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         final AysErrorResponse error = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
+                .message(authenticationException.getMessage())
                 .isSuccess(false)
                 .build();
-        final String responseBody = OBJECT_MAPPER
-                .writer(DateFormat.getDateInstance())
-                .writeValueAsString(error);
+
+        final String responseBody = objectMapper.writeValueAsString(error);
         httpServletResponse.getOutputStream().write(responseBody.getBytes());
     }
-
 }
+
