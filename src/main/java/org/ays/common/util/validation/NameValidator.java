@@ -23,7 +23,7 @@ class NameValidator implements ConstraintValidator<Name, String> {
      *  It also avoids strings that start with special characters
      * </p>
      */
-    private static final String NAME_REGEX = "^(?![^a-zA-ZÇçĞğİıÖöŞşÜü])[a-zA-ZÇçĞğİıÖöŞşÜü ,.'-]*$";
+    private static final String NAME_REGEX = "^(?!.*[ ,.'-]{2})[a-zA-ZÇçĞğİıÖöŞşÜü]+(?:[ ,.'-](?![ ,.'-])[a-zA-ZÇçĞğİıÖöŞşÜü]+)*$";
 
     /**
      * Checks whether the given value is a valid name or not.
