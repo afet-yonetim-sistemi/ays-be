@@ -2,6 +2,7 @@ package org.ays.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.filter.AysBearerTokenAuthenticationFilter;
+import org.ays.auth.filter.AysRateLimitFilter;
 import org.ays.auth.security.AysAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -65,6 +66,7 @@ class SecurityConfiguration {
      */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity,
+                                    AysRateLimitFilter rateLimitFilter,
                                     AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
                                     AysAuthenticationEntryPoint customAuthenticationEntryPoint)
             throws Exception {
@@ -83,6 +85,7 @@ class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(rateLimitFilter, BearerTokenAuthenticationFilter.class)
                 .addFilterBefore(bearerTokenAuthenticationFilter, BearerTokenAuthenticationFilter.class);
 
         return httpSecurity.build();
