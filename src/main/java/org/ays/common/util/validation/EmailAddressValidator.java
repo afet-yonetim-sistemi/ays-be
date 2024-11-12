@@ -44,37 +44,38 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
 
         email = email.trim();
         if (email.startsWith(" ") || email.endsWith(" ")) {
-            return buildViolation(constraintValidatorContext, "email must not start or end with whitespace.");
+            return this.buildViolation(constraintValidatorContext, "email must not start or end with whitespace");
         }
 
         if (email.chars().filter(ch -> ch == '@').count() != 1) {
-            return buildViolation(constraintValidatorContext, "email must contain exactly one '@' character.");
+            return this.buildViolation(constraintValidatorContext, "email must contain exactly one '@' character");
         }
 
         if (email.matches(".*[()#\\[\\]\";,\\s].*")) {
-            return buildViolation(constraintValidatorContext, "email contains invalid special characters.");
+            return this.buildViolation(constraintValidatorContext, "email contains invalid special characters");
         }
+
 
         String[] parts = email.split("@", 2);
         if (!Character.isLetterOrDigit(parts[0].charAt(0))) {
-            return buildViolation(constraintValidatorContext, "email local part must start with a letter or number.");
+            return this.buildViolation(constraintValidatorContext, "email local part must start with a letter or number");
         }
 
         String domainPart = parts[1];
         if (domainPart.startsWith("-") || domainPart.endsWith("-")) {
-            return buildViolation(constraintValidatorContext, "domain must not start or end with a hyphen.");
+            return this.buildViolation(constraintValidatorContext, "domain must not start or end with a hyphen");
         }
 
         if (!email.matches(EMAIL_REGEX)) {
-            return buildViolation(constraintValidatorContext, "email is not in a valid format.");
+            return this.buildViolation(constraintValidatorContext, "email is not in a valid format");
         }
 
         return true;
     }
 
-    private boolean buildViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
+    private boolean buildViolation(ConstraintValidatorContext constraintValidatorContext, String message) {
+        constraintValidatorContext.disableDefaultConstraintViolation();
+        constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         return false;
     }
 }
