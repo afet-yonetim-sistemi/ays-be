@@ -147,7 +147,10 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "Role *^%$#",
             " Test",
             "? Role",
-            "J"
+            "J",
+            "J----",
+            "City--King",
+            "John  Doe"
     })
     void givenRoleListRequest_whenNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
@@ -383,6 +386,9 @@ class AysRoleControllerTest extends AysRestControllerTest {
             "  Kurum yöneticisi",
             "!Kurum",
             "12Kurum",
+            "J----",
+            "City--King",
+            "John  Doe",
             "A",
             "% fsdh     ",
             "493268349068342",
@@ -591,6 +597,9 @@ class AysRoleControllerTest extends AysRestControllerTest {
             " Role",
             "Role ",
             "123Role",
+            "J----",
+            "City--King",
+            "John  Doe",
             ".Role",
             "% fsdh     ",
             "493268349068342",
