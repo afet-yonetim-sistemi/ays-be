@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-class AysBearerTokenAuthenticationFilterEndToEndTest extends AysEndToEndTest {
+class AysRateLimitFilterEndToEndTest extends AysEndToEndTest {
 
     @Autowired
     private MockMvc mockMvc;
