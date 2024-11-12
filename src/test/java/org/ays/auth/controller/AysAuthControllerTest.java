@@ -53,7 +53,6 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "john.doe123@example.co.uk",
             "admin_123@example.org",
             "admin-test@ays.com",
-            "üşengeç-birkız@mail.com"
     })
     void givenValidLoginRequestWithValidEmailAddress_whenTokensGeneratedSuccessfully_thenReturnTokenResponse(String mockEmailAddress) throws Exception {
         // Given
@@ -129,7 +128,10 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "abc.def@mail#archive.com",
             "abc.def@mail",
             "abcdef@mail..com",
-            "abc-@mail.com"
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk"
     })
     void givenInvalidLoginRequestWithInvalidEmailAddress_whenEmailsAreNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given
@@ -256,7 +258,10 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "abc.def@mail#archive.com",
             "abc.def@mail",
             "abcdef@mail..com",
-            "abc-@mail.com"
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk"
     })
     void givenForgotPasswordRequestWithInvalidEmailAddress_whenEmailDoesNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 

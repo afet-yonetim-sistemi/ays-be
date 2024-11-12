@@ -554,7 +554,10 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "abc.def@mail#archive.com",
             "abc.def@mail",
             "abcdef@mail..com",
-            "abc-@mail.com"
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk"
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
 
@@ -590,7 +593,6 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "john.doe123@example.co.uk",
             "admin_123@example.org",
             "admin-test@ays.com",
-            "üşengeç-birkız@mail.com"
     })
     void givenValidAdminRegisterApplicationCompleteRequestWithParametrizedValidEmails_whenEmailsAreValid_thenReturnSuccessResponse(String validEmail) throws Exception {
         // Given
