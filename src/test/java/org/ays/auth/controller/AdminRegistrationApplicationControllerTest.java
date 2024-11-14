@@ -518,7 +518,10 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "John *^%$#",
             " John",
             "? John",
-            "J"
+            "J",
+            "J----",
+            "City--King",
+            "John  Doe"
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
