@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.common.exception.AysAuthException;
+import org.ays.common.exception.AysBadRequestException;
 import org.ays.common.exception.AysConflictException;
 import org.ays.common.exception.AysForbiddenException;
 import org.ays.common.exception.AysNotExistException;
@@ -86,6 +87,17 @@ class GlobalExceptionHandler {
 
         return AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.NOT_FOUND.getName())
+                .message(exception.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(AysBadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    AysErrorResponse handleBadRequestError(final AysBadRequestException exception) {
+        log.error(exception.getMessage(), exception);
+
+        return AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.BAD_REQUEST.getName())
                 .message(exception.getMessage())
                 .build();
     }

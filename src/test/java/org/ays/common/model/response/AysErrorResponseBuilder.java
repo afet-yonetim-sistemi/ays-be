@@ -18,6 +18,10 @@ public class AysErrorResponseBuilder {
             .header(AysErrorResponse.Header.ALREADY_EXIST.getName())
             .isSuccess(false).build();
 
+    public static final AysErrorResponse BAD_REQUEST = AysErrorResponse.builder()
+            .header(AysErrorResponse.Header.BAD_REQUEST.getName())
+            .isSuccess(false).build();
+
     public static final AysErrorResponse NOT_FOUND = AysErrorResponse.builder()
             .header(AysErrorResponse.Header.NOT_FOUND.getName())
             .isSuccess(false).build();
