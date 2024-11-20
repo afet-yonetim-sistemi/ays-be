@@ -35,7 +35,7 @@ class NoSpecialCharacterValidator implements ConstraintValidator<NoSpecialCharac
 
         if (startsOrEndsWithSpace) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot starts or ends with space")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot start or end with space")
                     .addConstraintViolation();
             return false;
         }
