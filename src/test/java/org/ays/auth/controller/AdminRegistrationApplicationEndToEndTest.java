@@ -555,11 +555,11 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
+                        .isConflict())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -779,11 +779,11 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), rejectRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
+                        .isConflict())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
