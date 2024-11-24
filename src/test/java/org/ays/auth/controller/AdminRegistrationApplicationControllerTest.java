@@ -400,7 +400,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .withValidValues().build();
 
         // When
-        Mockito.doThrow(new AysAdminRegistrationApplicationNotExistByIdException(mockId))
+        Mockito.doThrow(new AysAdminRegistrationApplicationNotExistByIdAuthException(mockId))
                 .when(adminRegistrationCompleteService)
                 .complete(Mockito.anyString(), Mockito.any());
 

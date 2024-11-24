@@ -1,7 +1,9 @@
 package org.ays.auth.service.impl;
 
+import java.util.List;
+import java.util.Optional;
 import org.ays.AysUnitTest;
-import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdAuthException;
+import org.ays.auth.exception.AysAdminRegistrationApplicationNotExistByIdException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.model.AdminRegistrationApplication;
@@ -32,9 +34,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.List;
-import java.util.Optional;
 
 class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
@@ -273,7 +272,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdAuthException.class,
+                AysAdminRegistrationApplicationNotExistByIdException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 
@@ -336,7 +335,7 @@ class AdminRegistrationCompleteServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysAdminRegistrationApplicationNotExistByIdAuthException.class,
+                AysAdminRegistrationApplicationNotExistByIdException.class,
                 () -> adminUserRegisterService.complete(mockApplicationId, mockCompleteRequest)
         );
 
