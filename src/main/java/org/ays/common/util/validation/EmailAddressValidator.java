@@ -42,7 +42,6 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
             return true;
         }
 
-        email = email.trim();
         if (email.startsWith(" ") || email.endsWith(" ")) {
             return this.buildViolation(constraintValidatorContext, "email must not start or end with whitespace");
         }
@@ -54,7 +53,6 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
         if (email.matches(".*[()#\\[\\]\";,\\s].*")) {
             return this.buildViolation(constraintValidatorContext, "email contains invalid special characters");
         }
-
 
         String[] parts = email.split("@", 2);
         if (!Character.isLetterOrDigit(parts[0].charAt(0))) {

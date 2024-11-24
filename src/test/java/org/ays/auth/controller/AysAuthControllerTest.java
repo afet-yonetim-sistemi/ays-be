@@ -46,6 +46,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
     private static final String BASE_PATH = "/api/v1/authentication";
 
+
     @ParameterizedTest
     @ValueSource(strings = {
             "abcdef@mail.com",
@@ -139,7 +140,9 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "user@[192.168.1.1",
             "user@exam ple.com",
             "user@.com",
-            ".user@example.com"
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com "
     })
     void givenInvalidLoginRequestWithInvalidEmailAddress_whenEmailsAreNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given
@@ -269,7 +272,17 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "abc-@mail.com",
             "admin@test@ays.com",
             "admintest@ays..com",
-            "username@gmail..co.uk"
+            "username@gmail..co.uk",
+            "user@ example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "(user)@example.com",
+            "user@[192.168.1.1",
+            "user@exam ple.com",
+            "user@.com",
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com "
     })
     void givenForgotPasswordRequestWithInvalidEmailAddress_whenEmailDoesNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 

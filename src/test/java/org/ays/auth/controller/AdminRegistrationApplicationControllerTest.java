@@ -571,7 +571,9 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "user@[192.168.1.1",
             "user@exam ple.com",
             "user@.com",
-            ".user@example.com"
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com "
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
 
