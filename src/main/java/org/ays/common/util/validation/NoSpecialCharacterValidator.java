@@ -31,6 +31,15 @@ class NoSpecialCharacterValidator implements ConstraintValidator<NoSpecialCharac
             return true;
         }
 
+        boolean startsOrEndsWithSpace = value.matches("^\\s.*|.*\\s$");
+
+        if (startsOrEndsWithSpace) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("cannot start or end with space")
+                    .addConstraintViolation();
+            return false;
+        }
+
         boolean containsOnlyDigits = value.matches("^\\d+$");
 
         if (containsOnlyDigits) {

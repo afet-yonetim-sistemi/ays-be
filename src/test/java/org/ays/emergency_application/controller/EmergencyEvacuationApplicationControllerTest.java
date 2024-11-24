@@ -134,6 +134,10 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "t",
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            " spaceAtTheBeginning",
+            "spaceAtTheEnd ",
+            " both ",
+            "   justAString     "
     })
     void givenInvalidEmergencyEvacuationApplicationListRequest_whenSourceCityNotValid_thenReturnValidationError(String sourceCity) throws Exception {
 
@@ -170,6 +174,10 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "t",
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            " spaceAtTheBeginning",
+            "spaceAtTheEnd ",
+            " both ",
+            "   justAString     ",
     })
     void givenInvalidEmergencyEvacuationApplicationListRequest_whenSourceDistrictNotValid_thenReturnValidationError(String sourceDistrict) throws Exception {
 
@@ -238,6 +246,10 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "t",
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            " spaceAtTheBeginning",
+            "spaceAtTheEnd ",
+            " both ",
+            "   justAString     ",
     })
     void givenInvalidEmergencyEvacuationApplicationListRequest_whenTargetCityNotValid_thenReturnValidationError(String targetCity) throws Exception {
 
@@ -274,6 +286,10 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "t",
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            " spaceAtTheBeginning",
+            "spaceAtTheEnd ",
+            " both ",
+            "   justAString     ",
     })
     void givenInvalidEmergencyEvacuationApplicationListRequest_whenTargetDistrictNotValid_thenReturnValidationError(String targetDistrict) throws Exception {
 
@@ -390,6 +406,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     @ValueSource(strings = {
             "Invalid with special characters: #$%",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
+            "J----",
+            "City--King",
+            "John  Doe",
             "t",
             "                                      a",
             "151201485621548562154851458614125461254125412",
@@ -510,6 +529,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
+            "J----",
+            "City--King",
+            "John  Doe",
             "t",
             "                                      a",
             "151201485621548562154851458614125461254125412",
@@ -545,6 +567,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
+            "J----",
+            "City--King",
+            "John  Doe",
             "t",
             "                                      a",
             "151201485621548562154851458614125461254125412",
@@ -817,6 +842,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
             "t",
+            "J----",
+            "City--King",
+            "John  Doe",
             "                                      a",
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
@@ -852,6 +880,9 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
             "t",
+            "J----",
+            "City--King",
+            "John  Doe",
             "                                      a",
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",

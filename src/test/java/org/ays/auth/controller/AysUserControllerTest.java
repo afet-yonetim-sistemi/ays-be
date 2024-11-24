@@ -109,7 +109,10 @@ class AysUserControllerTest extends AysRestControllerTest {
             "User *^%$#",
             " Test",
             "? User",
-            "J"
+            "J",
+            "J----",
+            "Martin-Luther--King",
+            "John  Doe"
     })
     void givenUserListRequest_whenFirstNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
@@ -144,7 +147,10 @@ class AysUserControllerTest extends AysRestControllerTest {
             "User *^%$#",
             " Test",
             "? User",
-            "J"
+            "J",
+            "J----",
+            "Martin-Luther--King",
+            "John  Doe"
     })
     void givenUserListRequest_whenLastNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
@@ -178,7 +184,10 @@ class AysUserControllerTest extends AysRestControllerTest {
             "City *^%$#",
             " Test",
             "? User",
-            "J"
+            "J",
+            "J----",
+            "City--King",
+            "John  Doe"
     })
     void givenUserListRequest_whenCityDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
