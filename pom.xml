@@ -204,13 +204,7 @@
 
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
-            <artifactId>dynamodb</artifactId>
-            <version>${awsjavasdk.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>dynamodb-enhanced</artifactId>
+            <artifactId>kinesis</artifactId>
             <version>${awsjavasdk.version}</version>
         </dependency>
         <!-- ===================== -->

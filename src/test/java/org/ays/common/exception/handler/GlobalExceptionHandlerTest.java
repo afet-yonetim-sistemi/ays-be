@@ -6,7 +6,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.NotNull;
 import org.ays.AysRestControllerTest;
 import org.ays.common.exception.AysAuthException;
-import org.ays.common.exception.AysBadRequestException;
 import org.ays.common.exception.AysForbiddenException;
 import org.ays.common.exception.AysNotExistException;
 import org.ays.common.exception.AysProcessException;
@@ -337,31 +336,6 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
-    }
-
-    @Test
-    void givenInvalidStatus_whenThrowAysInvalidStatusException_thenReturnAysErrorWithReturnAysError() {
-
-        // Given
-        AysBadRequestException mockException = new AysBadRequestException("Bad request") {
-            @Serial
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public String getMessage() {
-                return "Bad request";
-            }
-        };
-
-        // When
-        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.BAD_REQUEST.getName())
-                .message(mockException.getMessage())
-                .build();
-
-        // Then
-        AysErrorResponse errorResponse = globalExceptionHandler.handleBadRequestError(mockException);
         this.checkAysError(mockErrorResponse, errorResponse);
     }
 
