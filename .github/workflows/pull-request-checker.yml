@@ -44,10 +44,7 @@ jobs:
 
       - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
-
-      - name: Build with Maven # Step to build the application using Maven with the provided settings.xml configuration file
-        run: mvn --settings settings.xml clean install 
-        
+      
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
@@ -66,4 +63,4 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=afet-yonetim-sistemi_ays-be_d0f7524c-aae5-4394-976c-0b286114d7ff -Dsonar.projectName='ays-be'
+        run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=afet-yonetim-sistemi_ays-be_d0f7524c-aae5-4394-976c-0b286114d7ff -Dsonar.projectName='ays-be'
