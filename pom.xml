@@ -14,7 +14,7 @@
     <description>AYS Services</description>
     <groupId>org.ays</groupId>
     <artifactId>ays-be</artifactId>
-    <version>1.1.0.MVP</version>
+    <version>1.1.0.1.MVP</version>
     <name>ays-be</name>
     <packaging>jar</packaging>
 
