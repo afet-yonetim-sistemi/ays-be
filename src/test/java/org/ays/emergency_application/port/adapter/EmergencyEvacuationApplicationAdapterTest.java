@@ -79,7 +79,7 @@ class EmergencyEvacuationApplicationAdapterTest extends AysUnitTest {
         AysPageBuilder.assertEquals(mockApplicationsPage, applicationsPage);
 
         // Verify
-        Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(1))
+        Mockito.verify(emergencyEvacuationApplicationRepository, Mockito.times(2))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
 
