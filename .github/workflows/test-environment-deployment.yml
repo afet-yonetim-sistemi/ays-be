@@ -84,10 +84,10 @@ jobs:
           service: ays-be-test-service
           cluster: ays-be-test-cluster
           wait-for-service-stability: true
-
+          
       - name: Deployment successfully completed # Step to indicate that the deployment was successful
         run: echo "Deployment successfully completed!"
-
+        
       - name: Cache SonarQube packages # Caching packages related to SonarQube
         uses: actions/cache@v4 # To use GitHub Actions' cache action
         with: # The section where parameters are defined for the GitHub Actions action
