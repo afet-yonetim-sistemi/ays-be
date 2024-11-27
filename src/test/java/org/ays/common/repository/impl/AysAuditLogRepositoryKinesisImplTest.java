@@ -27,7 +27,7 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
-                .withId("d91657b3-b6e9-41ac-aa4f-f833d4c08aee")
+                .withId("a8502816-4a1b-403c-9d83-b93b7ce2781a")
                 .withoutUserId()
                 .withRequestIpAddress("127.0.0.1")
                 .withRequestReferer("http://localhost:3000")
@@ -59,12 +59,12 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
-                .withId("d91657b3-b6e9-41ac-aa4f-f833d4c08aee")
-                .withUserId("5a8a803d-d4e7-4d60-9d66-1c54ce199236")
+                .withId("1005822e-eaf7-4cfa-b0cf-41de5e5da4dd")
+                .withUserId("d70d3645-bd79-42a9-9735-1f2081b56791")
                 .withRequestIpAddress("127.0.0.1")
                 .withRequestReferer("http://localhost:3000")
                 .withRequestHttpMethod("PUT")
-                .withRequestPath("/api/v1/user/77e7abe9-dd4f-4ff8-b49a-3812611ff49b")
+                .withRequestPath("/api/v1/user/1b00645c-73db-496a-acbc-504ff970dcfc")
                 .withRequestHttpHeader("Content-Type: application/json")
                 .withRequestBody("{\\\"name\\\":\\\"John Doe\\\"}")
                 .withResponseHttpStatusCode(200)
