@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles({"default", "test"})
 @ExtendWith(MockitoExtension.class)
 public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
 
