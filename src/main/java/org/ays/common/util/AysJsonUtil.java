@@ -12,7 +12,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AysJsonUtil {
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
@@ -25,8 +24,12 @@ public class AysJsonUtil {
      * @param object the object to convert
      * @return a JSON string representation of the object
      */
-    public static String toJson(Object object) {
-        return GSON.toJson(object);
+    public static String toJson(final Object object) {
+        try {
+            return OBJECT_MAPPER.writeValueAsString(object);
+        } catch (JsonProcessingException exception) {
+            return "";
+        }
     }
 
     /**
