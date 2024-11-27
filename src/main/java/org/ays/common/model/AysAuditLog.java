@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  * the server's response, and timestamps for auditing purposes.
  */
 @Getter
+@Setter
 public class AysAuditLog {
 
     private String id;
