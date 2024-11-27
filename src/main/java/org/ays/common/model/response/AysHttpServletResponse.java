@@ -17,8 +17,7 @@ import java.nio.charset.StandardCharsets;
  * The character encoding of the response is set to UTF-8 if the encoding is not explicitly defined.
  * </p>
  */
-@SuppressWarnings("java:S1939")
-public class AysHttpServletResponse extends ContentCachingResponseWrapper implements HttpServletResponse {
+public class AysHttpServletResponse extends ContentCachingResponseWrapper {
 
     /**
      * Cached body content as a String to avoid re-computation.
