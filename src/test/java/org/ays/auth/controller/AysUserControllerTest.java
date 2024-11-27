@@ -505,6 +505,54 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysUserCreateRequest.class));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abc.def@mail.c",
+            "abc.def@mail#archive.com",
+            "abc.def@mail",
+            "abcdef@mail..com",
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk",
+            "user@ example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "(user)@example.com",
+            "user@[192.168.1.1",
+            "user@exam ple.com",
+            "user@.com",
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com ",
+            " user@example.com "
+    })
+    void givenUserCreateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withEmailAddress(mockEmailAddress)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
