@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ays.auth.filter.AysBearerTokenAuthenticationFilter;
 import org.ays.auth.filter.AysRateLimitFilter;
 import org.ays.auth.security.AysAuthenticationEntryPoint;
+import org.ays.common.filter.AysAuditLogFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -59,16 +60,19 @@ class SecurityConfiguration {
      * Returns the {@link SecurityFilterChain} instance that defines the security configuration for HTTP requests.
      *
      * @param httpSecurity                    the {@link HttpSecurity} instance to configure
+     * @param auditLogFilter                  the {@link AysAuditLogFilter} instance to log audit information
+     * @param rateLimitFilter                 the {@link AysRateLimitFilter} instance to rate limit requests
      * @param bearerTokenAuthenticationFilter the {@link AysBearerTokenAuthenticationFilter} instance to authenticate bearer tokens
      * @param customAuthenticationEntryPoint  the {@link AysAuthenticationEntryPoint} instance to handle authentication errors
      * @return the {@link SecurityFilterChain} instance
      * @throws Exception if there is an error setting up the filter chain
      */
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                    AysRateLimitFilter rateLimitFilter,
-                                    AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
-                                    AysAuthenticationEntryPoint customAuthenticationEntryPoint)
+    SecurityFilterChain filterChain(final HttpSecurity httpSecurity,
+                                    final AysAuditLogFilter auditLogFilter,
+                                    final AysRateLimitFilter rateLimitFilter,
+                                    final AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
+                                    final AysAuthenticationEntryPoint customAuthenticationEntryPoint)
             throws Exception {
 
         httpSecurity
@@ -85,6 +89,7 @@ class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(auditLogFilter, BearerTokenAuthenticationFilter.class)
                 .addFilterBefore(rateLimitFilter, BearerTokenAuthenticationFilter.class)
                 .addFilterBefore(bearerTokenAuthenticationFilter, BearerTokenAuthenticationFilter.class);
 
