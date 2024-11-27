@@ -86,5 +86,4 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
                 .putRecord(Mockito.any(PutRecordRequest.class));
     }
 
-
 }
