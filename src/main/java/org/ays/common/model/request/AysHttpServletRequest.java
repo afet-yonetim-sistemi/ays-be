@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
  * without affecting the original request.</p>
  */
 @Getter
+@SuppressWarnings("java:S1939")
 public class AysHttpServletRequest extends ContentCachingRequestWrapper implements HttpServletRequest {
 
     private final String path;
