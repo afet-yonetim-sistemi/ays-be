@@ -1,10 +1,9 @@
 package org.ays.common.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -40,9 +39,10 @@ public class AysJsonUtil {
      * @param json the formatted JSON string to be converted
      * @return a compact (unformatted) JSON string, or an empty string if the input is invalid
      */
-    public static String toUnformattedJson(String json) {
+    public static String toEscapedJson(final String json) {
         try {
-            return OBJECT_MAPPER.readTree(json).toString();
+            final JsonNode jsonNode = OBJECT_MAPPER.readTree(json);
+            return jsonNode.toString().replace("\"", "\\\"");
         } catch (JsonProcessingException exception) {
             return "";
         }

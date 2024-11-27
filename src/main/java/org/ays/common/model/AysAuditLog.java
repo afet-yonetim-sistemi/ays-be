@@ -83,8 +83,7 @@ public class AysAuditLog {
 
             this.request.httpMethod = aysHttpServletRequest.getMethod();
             this.request.path = aysHttpServletRequest.getPath();
-            this.request.body = AysJsonUtil.toUnformattedJson(aysHttpServletRequest.getBody())
-                    .replaceAll("\"", "\\\\\"");
+            this.request.body = AysJsonUtil.toEscapedJson(aysHttpServletRequest.getBody());
             return this;
         }
 
@@ -99,8 +98,7 @@ public class AysAuditLog {
         public AysAuditLogBuilder aysHttpServletResponse(final AysHttpServletResponse aysHttpServletResponse) {
 
             this.response.httpStatusCode = aysHttpServletResponse.getStatus();
-            this.response.body = AysJsonUtil.toUnformattedJson(aysHttpServletResponse.getBody())
-                    .replaceAll("\"", "\\\\\"");
+            this.response.body = AysJsonUtil.toEscapedJson(aysHttpServletResponse.getBody());
             return this;
         }
 
