@@ -12,10 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ays.auth.model.AysToken;
-import org.ays.common.util.HttpServletRequestUtil;
+import org.ays.common.model.request.AysHttpHeader;
+import org.ays.common.model.request.AysHttpServletRequest;
+import org.ays.common.model.response.AysHttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
+import org.springframework.core.annotation.Order;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,12 +28,29 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * AysBearerTokenAuthenticationFilter is a filter that intercepts HTTP requests and processes the Bearer tokens included in the Authorization headers.
- * If the token is valid, the user is authenticated and added to the SecurityContext for the duration of the request.
- * If the token is invalid, a 401 Unauthorized response is returned.
- * <p>The filter uses an instance of AysTokenService to verify and validate the token and retrieve the user authentication.
+ * AysRateLimitFilter is a filter that enforces rate-limiting policies for both
+ * authorized and unauthorized users based on predefined configurations.
+ * <p>
+ * This filter limits the number of requests that can be made by a client
+ * within a specific time window. It uses IP-based identification for unauthorized
+ * users and token-based identification for authorized users. Requests exceeding
+ * the rate limit receive a 429 (Too Many Requests) response.
+ * <p>
+ * <h2>Key Features:</h2>
+ * <ul>
+ *     <li>Separate rate limits for authorized and unauthorized users.</li>
+ *     <li>Customizable rate limit counts and durations via configuration.</li>
+ *     <li>Exemptions for specific paths (e.g., actuator endpoints).</li>
+ *     <li>Uses {@link Bucket} for efficient rate-limiting mechanisms.</li>
+ * </ul>
+ *
+ * <h2>Usage:</h2>
+ * This filter is automatically applied as part of Spring's filter chain
+ * with an order of {@code 2}, ensuring it is executed after audit logs
+ * but before authentication or other security checks.
  */
 @Slf4j
+@Order(2)
 @Component
 @RequiredArgsConstructor
 public class AysRateLimitFilter extends OncePerRequestFilter {
@@ -79,17 +97,32 @@ public class AysRateLimitFilter extends OncePerRequestFilter {
             .of("/public/actuator");
 
 
+    /**
+     * Processes incoming HTTP requests to enforce rate-limiting policies.
+     * <p>
+     * Determines if the request exceeds the configured rate limits for the client
+     * (authorized or unauthorized) and either allows the request to proceed or
+     * blocks it with a 429 status code.
+     *
+     * @param httpServletRequest  the incoming HTTP request
+     * @param httpServletResponse the HTTP response
+     * @param filterChain         the filter chain to pass the request along if allowed
+     * @throws ServletException if an error occurs during request processing
+     * @throws IOException      if an I/O error occurs during request handling
+     */
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest,
                                     @NonNull HttpServletResponse httpServletResponse,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        final String authorizationHeader = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        final AysHttpServletRequest aysHttpServletRequest = (AysHttpServletRequest) httpServletRequest;
+        final AysHttpHeader aysHttpHeader = aysHttpServletRequest.getHeader();
+        final AysHttpServletResponse aysHttpServletResponse = (AysHttpServletResponse) httpServletResponse;
 
         boolean rateLimitExceeded = this.isRateLimitExceeded(
-                authorizationHeader,
-                httpServletRequest,
-                httpServletResponse
+                aysHttpServletRequest,
+                aysHttpHeader,
+                aysHttpServletResponse
         );
 
         if (rateLimitExceeded) {
@@ -99,11 +132,22 @@ public class AysRateLimitFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
-    private boolean isRateLimitExceeded(final String authorizationHeader,
-                                        final HttpServletRequest httpServletRequest,
-                                        final HttpServletResponse httpServletResponse) {
+    /**
+     * Checks if the rate limit has been exceeded for the current request.
+     * <p>
+     * Determines whether the request falls under the authorized or unauthorized
+     * rate-limiting rules and validates against the appropriate bucket.
+     *
+     * @param aysHttpServletRequest  the wrapped HTTP request
+     * @param aysHttpHeader          the request headers
+     * @param aysHttpServletResponse the wrapped HTTP response
+     * @return {@code true} if the rate limit is exceeded; {@code false} otherwise
+     */
+    private boolean isRateLimitExceeded(final AysHttpServletRequest aysHttpServletRequest,
+                                        final AysHttpHeader aysHttpHeader,
+                                        final AysHttpServletResponse aysHttpServletResponse) {
 
-        final String endpoint = httpServletRequest.getRequestURI();
+        final String endpoint = aysHttpServletRequest.getPath();
         boolean isAllowedPath = ALLOWED_PATHS.stream()
                 .anyMatch(endpoint::startsWith);
 
@@ -113,18 +157,29 @@ public class AysRateLimitFilter extends OncePerRequestFilter {
             return false;
         }
 
-        if (AysToken.isBearerToken(authorizationHeader)) {
-            return this.isRateLimitExceededOnBuckets(authorizedBuckets, httpServletRequest, httpServletResponse);
+        if (aysHttpHeader.hasBearerToken()) {
+            return this.isRateLimitExceededOnBuckets(authorizedBuckets, aysHttpServletRequest, aysHttpServletResponse);
         }
 
-        return this.isRateLimitExceededOnBuckets(unauthorizedBuckets, httpServletRequest, httpServletResponse);
+        return this.isRateLimitExceededOnBuckets(unauthorizedBuckets, aysHttpServletRequest, aysHttpServletResponse);
     }
 
+    /**
+     * Checks if the rate limit has been exceeded for the given buckets.
+     * <p>
+     * Attempts to consume a token from the bucket associated with the client's IP
+     * address. If tokens are unavailable, the request is blocked.
+     *
+     * @param buckets                the rate-limiting buckets
+     * @param aysHttpServletRequest  the wrapped HTTP request
+     * @param aysHttpServletResponse the wrapped HTTP response
+     * @return {@code true} if the rate limit is exceeded; {@code false} otherwise
+     */
     private boolean isRateLimitExceededOnBuckets(final LoadingCache<String, Bucket> buckets,
-                                                 final HttpServletRequest httpServletRequest,
-                                                 final HttpServletResponse httpServletResponse) {
+                                                 final AysHttpServletRequest aysHttpServletRequest,
+                                                 final AysHttpServletResponse aysHttpServletResponse) {
 
-        final String ipAddress = HttpServletRequestUtil.getClientIpAddress(httpServletRequest);
+        final String ipAddress = aysHttpServletRequest.getHeader().getIpAddress();
 
         try {
 
@@ -134,20 +189,28 @@ public class AysRateLimitFilter extends OncePerRequestFilter {
             }
 
         } catch (ExecutionException exception) {
-            final String method = httpServletRequest.getMethod();
-            final String endpoint = httpServletRequest.getRequestURI();
+            final String method = aysHttpServletRequest.getMethod();
+            final String endpoint = aysHttpServletRequest.getPath();
             log.error("Error while checking rate limit by {} to {} - {}", ipAddress, method, endpoint);
-            httpServletResponse.setStatus(429);
+            aysHttpServletResponse.setStatus(429);
             return true;
         }
 
-        final String method = httpServletRequest.getMethod();
-        final String endpoint = httpServletRequest.getRequestURI();
+        final String method = aysHttpServletRequest.getMethod();
+        final String endpoint = aysHttpServletRequest.getPath();
         log.warn("Rate limit exceeded by {} to {} - {}", ipAddress, method, endpoint);
-        httpServletResponse.setStatus(429);
+        aysHttpServletResponse.setStatus(429);
         return true;
     }
 
+    /**
+     * Creates a new rate-limiting bucket with the specified maximum request counts
+     * and duration.
+     *
+     * @param maximumRequestsCounts the maximum number of requests allowed within the duration
+     * @param maximumDuration       the duration of the rate-limiting window
+     * @return a new {@link Bucket} configured with the specified parameters
+     */
     private static Bucket newBucket(int maximumRequestsCounts, Duration maximumDuration) {
         final Bandwidth bandwidth = Bandwidth
                 .builder()
