@@ -45,21 +45,21 @@ jobs:
       - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
       
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
+      - name: Cache SonarQube packages # Caching packages related to SonarQube
+        uses: actions/cache@v4 # To use GitHub Actions' cache action
+        with: # The section where parameters are defined for the GitHub Actions action
           path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+          key: ${{ runner.os }}-sonar 
+          restore-keys: ${{ runner.os }}-sonar # If the key does not match exactly, the cache will be restored with similar keys.
           
-      - name: Cache Maven packages
+      - name: Cache Maven packages # Caching of Maven packages
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
           
-      - name: Build and analyze
+      - name: Build and analyze # SonarQube integration and Maven execution
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
