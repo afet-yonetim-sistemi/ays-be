@@ -16,7 +16,7 @@ import software.amazon.awssdk.services.kinesis.model.PutRecordRequest;
 @Repository
 @Profile("kinesis")
 @RequiredArgsConstructor
-public class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
+class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
 
     private final KinesisClient kinesisClient;
 
