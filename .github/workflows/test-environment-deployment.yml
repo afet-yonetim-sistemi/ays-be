@@ -42,6 +42,25 @@ jobs:
       - name: Build with Maven # Step to build the application using Maven with the provided settings.xml configuration file
         run: mvn --settings settings.xml clean install
 
+      - name: Fill in the new image ID in the Amazon ECS task definition # Step to fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task_definition.json
+          container-name: ays-be-test
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition # Step to deploy the Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ays-be-test-service
+          cluster: ays-be-test-cluster
+          wait-for-service-stability: true
+
+      - name: Deployment successfully completed # Step to indicate that the deployment was successful
+        run: echo "Deployment successfully completed!"
+
       - name: Starting Deployment to ECS... # Step to start the deployment to ECS
         run: echo "Starting Deployment to ECS..."
 
@@ -71,22 +90,3 @@ jobs:
         run: |
           aws ecs describe-task-definition --task-definition ays-be-test \
           --query taskDefinition > task_definition.json
-
-      - name: Fill in the new image ID in the Amazon ECS task definition # Step to fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task_definition.json
-          container-name: ays-be-test
-          image: ${{ steps.build-image.outputs.image }}
-
-      - name: Deploy Amazon ECS task definition # Step to deploy the Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ays-be-test-service
-          cluster: ays-be-test-cluster
-          wait-for-service-stability: true
-
-      - name: Deployment successfully completed # Step to indicate that the deployment was successful
-        run: echo "Deployment successfully completed!"
