@@ -43,15 +43,22 @@ import java.util.Set;
 
 class AysUserControllerTest extends AysRestControllerTest {
 
-    private static final String BASE_PATH = "/api/v1";
-    private final AysUserToUsersResponseMapper userToUsersResponseMapper = AysUserToUsersResponseMapper.initialize();
-    private final AysUserToResponseMapper userToResponseMapper = AysUserToResponseMapper.initialize();
     @MockBean
     private AysUserReadService userReadService;
+
     @MockBean
     private AysUserCreateService userCreateService;
+
     @MockBean
     private AysUserUpdateService userUpdateService;
+
+
+    private final AysUserToUsersResponseMapper userToUsersResponseMapper = AysUserToUsersResponseMapper.initialize();
+    private final AysUserToResponseMapper userToResponseMapper = AysUserToResponseMapper.initialize();
+
+
+    private static final String BASE_PATH = "/api/v1";
+
 
     @Test
     void givenValidUserListRequest_whenUsersFound_thenReturnAysPageResponseOfUsersResponse() throws Exception {
