@@ -46,6 +46,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
     private static final String BASE_PATH = "/api/v1/authentication";
 
+
     @ParameterizedTest
     @ValueSource(strings = {
             "abcdef@mail.com",
@@ -53,7 +54,6 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "john.doe123@example.co.uk",
             "admin_123@example.org",
             "admin-test@ays.com",
-            "üşengeç-birkız@mail.com"
     })
     void givenValidLoginRequestWithValidEmailAddress_whenTokensGeneratedSuccessfully_thenReturnTokenResponse(String mockEmailAddress) throws Exception {
         // Given
@@ -129,7 +129,21 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "abc.def@mail#archive.com",
             "abc.def@mail",
             "abcdef@mail..com",
-            "abc-@mail.com"
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk",
+            "user@ example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "(user)@example.com",
+            "user@[192.168.1.1",
+            "user@exam ple.com",
+            "user@.com",
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com ",
+            " user@example.com "
     })
     void givenInvalidLoginRequestWithInvalidEmailAddress_whenEmailsAreNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given
@@ -256,7 +270,21 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "abc.def@mail#archive.com",
             "abc.def@mail",
             "abcdef@mail..com",
-            "abc-@mail.com"
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk",
+            "user@ example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "(user)@example.com",
+            "user@[192.168.1.1",
+            "user@exam ple.com",
+            "user@.com",
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com ",
+            " user@example.com "
     })
     void givenForgotPasswordRequestWithInvalidEmailAddress_whenEmailDoesNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
