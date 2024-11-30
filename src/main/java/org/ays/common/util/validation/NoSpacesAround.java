@@ -9,19 +9,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to validate a text using {@link NoTrailingOrLeadingSpacesValidator}.
+ * Annotation to validate a text using {@link NoSpacesAroundValidator}.
  */
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = NoTrailingOrLeadingSpacesValidator.class)
-public @interface NoTrailingOrLeadingSpaces {
+@Constraint(validatedBy = NoSpacesAroundValidator.class)
+public @interface NoSpacesAround {
 
     /**
      * Returns the error message when the text is not valid.
      *
      * @return the error message
      */
-    String message() default "must be valid";
+    String message() default "cannot start or end with space";
 
     /**
      * Returns the validation groups to which this constraint belongs.

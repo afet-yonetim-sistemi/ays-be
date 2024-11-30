@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.util.validation.NoSpecialCharacters;
-import org.ays.common.util.validation.NoTrailingOrLeadingSpaces;
+import org.ays.common.util.validation.NoSpacesAround;
 
 /**
  * Represents a request to register a new admin application. The request includes fields for the required
@@ -27,7 +27,7 @@ public class AdminRegistrationApplicationCreateRequest {
     @NotBlank
     @Size(min = 40, max = 512)
     @NoSpecialCharacters
-    @NoTrailingOrLeadingSpaces
+    @NoSpacesAround
     private String reason;
 
 }
