@@ -12,7 +12,6 @@ import lombok.Setter;
 public class AysTokenResponse {
 
     private String accessToken;
-    private Long accessTokenExpiresAt;
     private String refreshToken;
 
 }

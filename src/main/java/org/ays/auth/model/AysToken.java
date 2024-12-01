@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 public class AysToken {
 
     private String accessToken;
-    private Long accessTokenExpiresAt;
     private String refreshToken;
 
 
