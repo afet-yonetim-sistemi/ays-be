@@ -56,6 +56,7 @@ class AysTokenServiceImpl implements AysTokenService {
         final Date accessTokenExpiresAt = DateUtils.addMinutes(
                 new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute()
         );
+
         final String accessToken = tokenBuilder
                 .id(AysRandomUtil.generateUUID())
                 .expiration(accessTokenExpiresAt)
@@ -73,7 +74,6 @@ class AysTokenServiceImpl implements AysTokenService {
 
         return AysToken.builder()
                 .accessToken(accessToken)
-                .accessTokenExpiresAt(accessTokenExpiresAt.toInstant().getEpochSecond())
                 .refreshToken(refreshToken)
                 .build();
     }
@@ -94,6 +94,7 @@ class AysTokenServiceImpl implements AysTokenService {
         final Date accessTokenExpiresAt = DateUtils.addMinutes(
                 new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute()
         );
+
         final String accessToken = this.initializeTokenBuilder(currentTimeMillis)
                 .id(AysRandomUtil.generateUUID())
                 .expiration(accessTokenExpiresAt)
@@ -102,7 +103,6 @@ class AysTokenServiceImpl implements AysTokenService {
 
         return AysToken.builder()
                 .accessToken(accessToken)
-                .accessTokenExpiresAt(accessTokenExpiresAt.toInstant().getEpochSecond())
                 .refreshToken(refreshToken)
                 .build();
     }

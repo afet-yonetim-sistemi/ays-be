@@ -82,6 +82,8 @@ class AysAuthControllerTest extends AysRestControllerTest {
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
                         .value(mockResponse.getResponse().getAccessToken()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
+                        .doesNotHaveJsonPath())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .value(mockResponse.getResponse().getRefreshToken()));
 
@@ -193,6 +195,8 @@ class AysAuthControllerTest extends AysRestControllerTest {
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
                         .value(mockResponse.getResponse().getAccessToken()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
+                        .doesNotHaveJsonPath())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .value(mockResponse.getResponse().getRefreshToken()));
 

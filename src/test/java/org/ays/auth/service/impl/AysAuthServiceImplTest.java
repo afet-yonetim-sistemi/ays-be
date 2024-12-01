@@ -402,7 +402,6 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         Assertions.assertEquals(mockUserToken.getAccessToken(), token.getAccessToken());
         Assertions.assertEquals(mockUserToken.getRefreshToken(), token.getRefreshToken());
-        Assertions.assertEquals(mockUserToken.getAccessTokenExpiresAt(), token.getAccessTokenExpiresAt());
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
