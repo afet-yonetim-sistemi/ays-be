@@ -19,7 +19,6 @@ class NoSpacesAroundValidator implements ConstraintValidator<NoSpacesAround, Str
         }
 
         return !(text.startsWith(" ") || text.endsWith(" "));
-
     }
 
 }

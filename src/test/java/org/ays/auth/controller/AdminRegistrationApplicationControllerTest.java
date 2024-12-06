@@ -786,13 +786,13 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             " both ",
             "   justAString     "
     })
-    void givenInvalidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnValidationError(String reason) throws Exception {
+    void givenInvalidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnValidationError(String rejectReason) throws Exception {
 
         // Given
         String mockId = "4d04bd1e-6318-43ba-ab40-57efb8afc918";
         AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
                 .withValidValues()
-                .withRejectReason(reason)
+                .withRejectReason(rejectReason)
                 .build();
 
         // Then
@@ -810,7 +810,8 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(adminRegistrationApplicationService, Mockito.never())
-                .reject(Mockito.anyString(), Mockito.any());
+                .reject(Mockito.anyString(),
+                        Mockito.any(AdminRegistrationApplicationRejectRequest.class));
     }
 
 }
