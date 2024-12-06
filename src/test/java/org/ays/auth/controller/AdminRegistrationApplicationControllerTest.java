@@ -786,7 +786,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             " both ",
             "   justAString     "
     })
-    void givenValidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnValidationError(String reason) throws Exception {
+    void givenInvalidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnValidationError(String reason) throws Exception {
 
         // Given
         String mockId = "4d04bd1e-6318-43ba-ab40-57efb8afc918";
