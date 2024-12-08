@@ -55,7 +55,7 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
         }
 
         String[] parts = email.split("@", 2);
-        if (!Character.isLetterOrDigit(parts[0].charAt(0))) {
+        if (parts[0].isEmpty() || !Character.isLetterOrDigit(parts[0].charAt(0))) {
             return this.buildViolation(constraintValidatorContext, "email local part must start with a letter or number");
         }
 
