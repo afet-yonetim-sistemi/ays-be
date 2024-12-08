@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.ays.common.model.response.AysResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
-import org.ays.institution.model.response.InstitutionResponse;
 import org.ays.institution.model.response.InstitutionsSummaryResponse;
 import org.ays.institution.service.InstitutionService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,7 +33,7 @@ class InstitutionController {
      * Retrieves a summary of all institutions.
      * Requires the user to have the 'application:registration:create' authority.
      *
-     * @return An {@link AysResponse} containing a list of {@link InstitutionResponse} representing the summary of institutions.
+     * @return An {@link AysResponse} containing a list of {@link InstitutionsSummaryResponse} representing the summary of institutions.
      */
     @GetMapping("/institutions/summary")
     @PreAuthorize("hasAnyAuthority('application:registration:create')")
