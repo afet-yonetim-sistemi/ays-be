@@ -374,7 +374,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(applicationFromDatabase.isPresent());
         Assertions.assertEquals(AdminRegistrationApplicationStatus.COMPLETED, applicationFromDatabase.get().getStatus());
-        Assertions.assertEquals(applicationFromDatabase.get().getUpdatedUser(), "AYS");
+        Assertions.assertEquals("AYS", applicationFromDatabase.get().getUpdatedUser());
 
 
         List<AysPermission> permissionsFromDatabase = permissionReadPort.findAllByIsSuperFalse();

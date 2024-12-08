@@ -31,7 +31,7 @@ import java.util.Set;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles({"default", "test"})
 @ExtendWith(MockitoExtension.class)
 public abstract class AysRestControllerTest extends AysTestContainerConfiguration {
 

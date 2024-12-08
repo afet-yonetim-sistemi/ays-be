@@ -137,6 +137,7 @@ public class AysErrorResponse {
      * @param fieldErrors a {@link List} of {@link FieldError} objects to be used as sub-errors in the {@link AysErrorResponse} instance
      * @return an instance of {@link AysErrorResponseBuilder} with the given list of {@link FieldError} objects as sub-errors
      */
+    @SuppressWarnings("java:S1854")
     public static AysErrorResponse.AysErrorResponseBuilder subErrors(final List<FieldError> fieldErrors) {
 
         if (CollectionUtils.isEmpty(fieldErrors)) {
