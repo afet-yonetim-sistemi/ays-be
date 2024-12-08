@@ -781,4 +781,50 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .reject(Mockito.eq(mockId), Mockito.any(AdminRegistrationApplicationRejectRequest.class));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            "   ",
+            "less than 40",
+            """
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    Donec qudam felis, ultricies nec, pellentesque eu, pretscsxwium quis, sem. Nulla consequat massa quis
+                    enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
+                    imperdiet a, venenatdskjvndshjcndsis vitae, justo. Nullam dictum felis eu pedde mollis pretium. Integer tincidunt.
+                    Cras dapibus. Vivdamus ewl
+                    """,
+            " spaceAtTheBeginning",
+            "spaceAtTheEnd ",
+            " both ",
+            "   justAString     "
+    })
+    void givenInvalidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnValidationError(String rejectReason) throws Exception {
+
+        // Given
+        String mockId = "4d04bd1e-6318-43ba-ab40-57efb8afc918";
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
+                .withValidValues()
+                .withRejectReason(rejectReason)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/reject");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken(), mockRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(adminRegistrationApplicationService, Mockito.never())
+                .reject(Mockito.anyString(),
+                        Mockito.any(AdminRegistrationApplicationRejectRequest.class));
+    }
+
 }

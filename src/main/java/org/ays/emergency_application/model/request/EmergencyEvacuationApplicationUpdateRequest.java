@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.ays.common.util.validation.NoSpacesAround;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.hibernate.validator.constraints.Range;
 
@@ -43,6 +44,7 @@ public class EmergencyEvacuationApplicationUpdateRequest {
      * The notes can have a maximum length of 1000 characters.
      */
     @Size(max = 1000)
+    @NoSpacesAround
     private String notes;
 
 }
