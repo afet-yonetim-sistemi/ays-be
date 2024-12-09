@@ -249,7 +249,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
         // Then
         String endpoint = BASE_PATH.concat("/password/forgot");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockForgotPasswordRequest);
+                .post(endpoint, mockAdminToken.getAccessToken(), mockForgotPasswordRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
 

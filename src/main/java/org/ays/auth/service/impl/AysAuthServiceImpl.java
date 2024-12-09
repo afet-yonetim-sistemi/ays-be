@@ -19,6 +19,7 @@ import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysAuthService;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
+import org.ays.auth.service.AysUserValidateService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,7 @@ class AysAuthServiceImpl implements AysAuthService {
 
     private final AysTokenService tokenService;
     private final AysInvalidTokenService invalidTokenService;
+    private final AysUserValidateService aysUserValidateService;
 
     private final AysIdentity identity;
 
@@ -78,8 +80,8 @@ class AysAuthServiceImpl implements AysAuthService {
             throw new AysPasswordNotValidException();
         }
 
-        this.validateUserStatus(user);
-        this.validateUserSourcePagePermission(user, loginRequest.getSourcePage());
+        aysUserValidateService.validateUserStatus(user);
+        aysUserValidateService.validateUserSourcePagePermission(user, loginRequest.getSourcePage());
 
         Optional.ofNullable(user.getLoginAttempt())
                 .ifPresentOrElse(AysUser.LoginAttempt::success,
