@@ -96,6 +96,7 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+
     }
 
 }

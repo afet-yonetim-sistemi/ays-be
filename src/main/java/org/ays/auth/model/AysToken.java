@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.util.StringUtils;
 
 /**
- * A representation of an access token that includes the access token string, expiration time, and refresh token.
+ * A representation of an access token that includes the access token string and refresh token.
  */
 @Getter
 @Builder
