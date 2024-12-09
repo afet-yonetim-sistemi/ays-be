@@ -22,7 +22,7 @@ public final class AysUserNotActiveByStatusException extends AysAuthException {
      * @param userStatus the status of the user that is not active
      */
     public AysUserNotActiveByStatusException(AysUserStatus userStatus) {
-        super("user is not active! user status: " + userStatus.getValue());
+        super("user is not active! user status: " + userStatus.toString());
     }
 
 }
