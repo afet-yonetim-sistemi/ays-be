@@ -14,6 +14,7 @@ import org.ays.auth.service.AysAuthService;
 import org.ays.auth.service.AysUserPasswordService;
 import org.ays.common.model.response.AysResponse;
 import org.hibernate.validator.constraints.UUID;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -87,6 +88,7 @@ class AysAuthController {
      * @return An AysResponse indicating the success of the password create request.
      */
     @PostMapping("/password/forgot")
+    @PreAuthorize("hasAnyAuthority('institution:page')")
     public AysResponse<Void> forgotPassword(@RequestBody @Valid AysPasswordForgotRequest forgotPasswordRequest) {
         userPasswordService.forgotPassword(forgotPasswordRequest);
         return AysResponse.success();
