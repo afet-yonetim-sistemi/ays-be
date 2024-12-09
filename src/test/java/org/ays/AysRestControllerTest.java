@@ -127,7 +127,6 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
 
         return AysToken.builder()
                 .accessToken(accessToken)
-                .accessTokenExpiresAt(accessTokenExpiresAt.toInstant().getEpochSecond())
                 .refreshToken(refreshToken)
                 .build();
     }

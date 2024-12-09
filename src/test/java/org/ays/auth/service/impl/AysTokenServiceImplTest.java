@@ -59,7 +59,6 @@ class AysTokenServiceImplTest extends AysUnitTest {
 
         Assertions.assertNotNull(aysToken);
         Assertions.assertNotNull(aysToken.getAccessToken());
-        Assertions.assertNotNull(aysToken.getAccessTokenExpiresAt());
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
         // Verify
@@ -90,7 +89,6 @@ class AysTokenServiceImplTest extends AysUnitTest {
 
         Assertions.assertNotNull(aysToken);
         Assertions.assertNotNull(aysToken.getAccessToken());
-        Assertions.assertNotNull(aysToken.getAccessTokenExpiresAt());
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
         // Verify
@@ -121,7 +119,6 @@ class AysTokenServiceImplTest extends AysUnitTest {
 
         Assertions.assertNotNull(aysToken);
         Assertions.assertNotNull(aysToken.getAccessToken());
-        Assertions.assertNotNull(aysToken.getAccessTokenExpiresAt());
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
         // Verify

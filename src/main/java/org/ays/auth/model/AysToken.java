@@ -5,14 +5,13 @@ import lombok.Getter;
 import org.springframework.util.StringUtils;
 
 /**
- * A representation of an access token that includes the access token string, expiration time, and refresh token.
+ * A representation of an access token that includes the access token string and refresh token.
  */
 @Getter
 @Builder
 public class AysToken {
 
     private String accessToken;
-    private Long accessTokenExpiresAt;
     private String refreshToken;
 
 
