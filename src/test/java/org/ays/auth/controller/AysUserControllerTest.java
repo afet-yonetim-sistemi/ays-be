@@ -525,7 +525,8 @@ class AysUserControllerTest extends AysRestControllerTest {
             ".user@example.com",
             "  user@example.com",
             "user@example.com ",
-            " user@example.com "
+            " user@example.com ",
+            "@missingusername.com"
     })
     void givenUserCreateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
@@ -754,7 +755,8 @@ class AysUserControllerTest extends AysRestControllerTest {
             ".user@example.com",
             "  user@example.com",
             "user@example.com ",
-            " user@example.com "
+            " user@example.com ",
+            "@missingusername.com"
     })
     void givenValidIdAndInvalidUserUpdateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given
