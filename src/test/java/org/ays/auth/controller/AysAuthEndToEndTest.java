@@ -136,7 +136,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
         // Initialize
         Institution institution = new InstitutionBuilder()
-                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .withId(AysValidTestData.SuperAdmin.INSTITUTION_ID)
                 .build();
 
         AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
@@ -193,7 +193,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
         // Initialize
         Institution institution = new InstitutionBuilder()
-                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .withId(AysValidTestData.SuperAdmin.INSTITUTION_ID)
                 .build();
 
         AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
