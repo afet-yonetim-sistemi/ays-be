@@ -94,9 +94,9 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
 
         return AysToken.builder()
                 .accessToken(accessToken)
-                .accessTokenExpiresAt(accessTokenExpiresAt.toInstant().getEpochSecond())
                 .refreshToken(refreshToken)
                 .build();
+
     }
 
 }

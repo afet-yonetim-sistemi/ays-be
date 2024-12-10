@@ -76,7 +76,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
-                        .isNotEmpty())
+                        .doesNotHaveJsonPath())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .isNotEmpty());
     }
@@ -104,7 +104,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
                         .isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
-                        .isNotEmpty())
+                        .doesNotHaveJsonPath())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .isNotEmpty());
     }
