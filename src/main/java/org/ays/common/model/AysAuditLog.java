@@ -59,6 +59,7 @@ public class AysAuditLog {
     /**
      * Provides a builder for creating instances of {@link AysAuditLog}.
      */
+    @SuppressWarnings("java:S2972")
     public static class AysAuditLogBuilder {
 
         private final String id;
