@@ -91,7 +91,7 @@ public class AysAuditLog {
 
             this.request.ipAddress = aysHttpHeader.getIpAddress();
             this.request.referer = aysHttpHeader.getReferer();
-            this.request.httpHeader = aysHttpHeader.getAll();
+            this.request.httpHeader = aysHttpHeader.getAll().replace("\"", "\\\"");
             return this;
         }
 
