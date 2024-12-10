@@ -5,6 +5,7 @@ import org.ays.common.model.enums.BeanScope;
 import org.ays.common.util.AysListUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,20 @@ import java.util.List;
 @Component
 @Scope(value = BeanScope.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AysIdentity {
+
+    /**
+     * Checks if the current user is authenticated.
+     * <p>
+     * This method verifies whether the security context contains an authenticated user.
+     * It returns {@code true} if the {@link Authentication} object is present in the
+     * {@link SecurityContextHolder} and the principal is not an anonymous user.
+     *
+     * @return {@code true} if the user is authenticated; {@code false} otherwise
+     */
+    public boolean isAuthenticated() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && !"anonymousUser".equals(authentication.getPrincipal());
+    }
 
     /**
      * Returns the user ID associated with the authenticated user's AYS identity.

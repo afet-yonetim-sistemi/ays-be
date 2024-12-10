@@ -185,7 +185,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
-        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
+        Assertions.assertEquals("AYS", passwordFromDatabase.getCreatedUser());
     }
 
     @Test
@@ -249,7 +249,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
-        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
+        Assertions.assertEquals("AYS", passwordFromDatabase.getCreatedUser());
     }
 
 
@@ -361,7 +361,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(passwordFromDatabase.getCreatedAt());
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
-        Assertions.assertEquals(passwordFromDatabase.getCreatedUser(), "AYS");
+        Assertions.assertEquals("AYS", passwordFromDatabase.getCreatedUser());
     }
 
 }
