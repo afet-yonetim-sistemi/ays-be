@@ -149,7 +149,9 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
      * @throws AysInvalidRoleStatusException if the role's current status is not {@link AysRoleStatus#PASSIVE}.
      */
     @Override
+    @SuppressWarnings("java:S1941")
     public void activate(String id) {
+
         final AysRole role = roleReadPort.findById(id)
                 .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
@@ -177,7 +179,9 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
      * @throws AysInvalidRoleStatusException  if the role's current status is not {@link AysRoleStatus#ACTIVE}.
      */
     @Override
+    @SuppressWarnings("java:S1941")
     public void passivate(String id) {
+
         final AysRole role = roleReadPort.findById(id)
                 .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
@@ -205,6 +209,7 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
      * @throws AysRoleAlreadyDeletedException if the role is already marked as deleted.
      */
     @Override
+    @SuppressWarnings("java:S1941")
     public void delete(final String id) {
 
         final AysRole role = roleReadPort.findById(id)

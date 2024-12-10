@@ -11,7 +11,7 @@ import software.amazon.awssdk.services.kinesis.KinesisClient;
 
 @Configuration
 @Profile("kinesis")
-public class AysKinesisConfiguration {
+class AysKinesisConfiguration {
 
     @Value("${aws.credentials.access-key-id}")
     private String accessKey;
@@ -24,11 +24,14 @@ public class AysKinesisConfiguration {
 
     @Bean
     public KinesisClient kinesisClient() {
-        AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(accessKey, secretKey);
+
+        final AwsBasicCredentials awsCredentials = AwsBasicCredentials
+                .create(this.accessKey, this.secretKey);
 
         return KinesisClient.builder()
                 .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
-                .region(Region.of(region))
+                .region(Region.of(this.region))
                 .build();
     }
+
 }

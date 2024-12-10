@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 class AysRoleUpdateServiceImplTest extends AysUnitTest {
 
@@ -328,7 +327,7 @@ class AysRoleUpdateServiceImplTest extends AysUnitTest {
                 .thenReturn(Optional.of(mockRole));
 
         Mockito.when(identity.getInstitutionId())
-                .thenReturn(UUID.randomUUID().toString());
+                .thenReturn("becd3813-4d7a-4e40-a6d4-6dea4c037a7d");
 
         // Then
         Assertions.assertThrows(
