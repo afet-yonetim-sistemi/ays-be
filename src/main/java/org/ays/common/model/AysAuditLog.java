@@ -59,6 +59,7 @@ public class AysAuditLog {
     /**
      * Provides a builder for creating instances of {@link AysAuditLog}.
      */
+    @SuppressWarnings("java:S2972")
     public static class AysAuditLogBuilder {
 
         private final String id;
@@ -91,7 +92,7 @@ public class AysAuditLog {
 
             this.request.ipAddress = aysHttpHeader.getIpAddress();
             this.request.referer = aysHttpHeader.getReferer();
-            this.request.httpHeader = aysHttpHeader.getAll();
+            this.request.httpHeader = aysHttpHeader.getAll().replace("\"", "\\\"");
             return this;
         }
 
