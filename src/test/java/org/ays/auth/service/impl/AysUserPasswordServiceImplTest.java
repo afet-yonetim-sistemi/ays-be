@@ -186,7 +186,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidForgotPasswordRequest_whenUserHasNotInstitutionPermission_thenThrowAysUserDoesNotAccessPageException() {
+    void givenValidForgotPasswordRequest_whenUserHasNotInstitutionPagePermission_thenThrowUserDoesNotAccessPageException() {
         // Given
         AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withValidValues()
