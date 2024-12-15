@@ -2,10 +2,12 @@ package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.exception.AysEmailAddressNotValidException;
+import org.ays.auth.exception.AysUserNotActiveByStatusException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysPasswordCreateRequest;
 import org.ays.auth.model.request.AysPasswordCreateRequestBuilder;
@@ -408,6 +410,44 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         Assertions.assertThrows(
                 AysUserPasswordDoesNotExistException.class,
                 () -> userPasswordService.createPassword(mockId, mockCreateRequest)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByPasswordId(Mockito.anyString());
+
+        Mockito.verify(passwordEncoder, Mockito.never())
+                .encode(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenIdAndCreateRequest_whenUserStatusIsNotActive_thenThrowUserNotActiveByStatusException() {
+        // Given
+        String mockPasswordId = "e6903c4f-13fb-480e-87dd-319e1b743b7a";
+        AysPasswordCreateRequest mockCreateRequest = new AysPasswordCreateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withStatus(AysUserStatus.PASSIVE)
+                .withPassword(new AysUserBuilder.PasswordBuilder()
+                        .withValidValues()
+                        .withId(mockPasswordId)
+                        .build())
+                .build();
+
+        // When
+        Mockito.when(userReadPort.findByPasswordId(mockPasswordId))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotActiveByStatusException.class,
+                () -> userPasswordService.createPassword(mockPasswordId, mockCreateRequest)
         );
 
         // Verify

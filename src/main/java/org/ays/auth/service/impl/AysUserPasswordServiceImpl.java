@@ -2,6 +2,7 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysEmailAddressNotValidException;
+import org.ays.auth.exception.AysUserNotActiveByStatusException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
 import org.ays.auth.model.AysUser;
@@ -97,7 +98,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * Creates a new password for a user identified by the given password ID.
      * <p>
      * This method updates the user's password with the new password provided in the request.
-     * It first verifies if the password change request is valid based on the time elapsed since
+     * It verifies if the user is active and the password change request is valid based on the time elapsed since
      * the password change request was initiated. If the request is valid, it updates the password
      * and saves the changes.
      *
@@ -106,6 +107,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * @throws AysUserPasswordDoesNotExistException  if no user is found with the provided password ID.
      * @throws AysUserPasswordCannotChangedException if the password change request is invalid due to
      *                                               the elapsed time or other conditions that prevent the password from being changed.
+     * @throws AysUserNotActiveByStatusException     if the user is not active due to their current status.
      */
     @Override
     @Transactional
@@ -114,6 +116,10 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
 
         final AysUser user = userReadPort.findByPasswordId(passwordId)
                 .orElseThrow(() -> new AysUserPasswordDoesNotExistException(passwordId));
+
+        if(!user.isActive()) {
+            throw new AysUserNotActiveByStatusException(user.getStatus());
+        }
 
         this.checkChangingValidity(user.getPassword());
 
