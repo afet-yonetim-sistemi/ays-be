@@ -1,5 +1,6 @@
 package org.ays.common.util;
 
+import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import lombok.experimental.UtilityClass;
@@ -17,7 +18,7 @@ public class AysPhoneNumberUtil {
             final Phonenumber.PhoneNumber number = PHONE_NUMBER_UTIL
                     .parse(fullNumber, null);
             return PHONE_NUMBER_UTIL.isValidNumber(number);
-        } catch (Exception e) {
+        } catch (NumberParseException exception) {
             return false;
         }
     }

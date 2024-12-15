@@ -9,6 +9,8 @@ logging:
       ays: ${AYS_LOG_LEVEL:trace}
 
 spring:
+  profiles:
+    active: ${AYS_SPRING_PROFILE:}
   datasource:
     username: ${AYS_DB_USERNAME:ays}
     password: ${AYS_DB_PASSWORD:ayspass}

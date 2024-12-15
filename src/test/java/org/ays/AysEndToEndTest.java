@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles({"default", "test"})
 @ExtendWith(MockitoExtension.class)
 public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
 
@@ -94,7 +94,6 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
 
         return AysToken.builder()
                 .accessToken(accessToken)
-                .accessTokenExpiresAt(accessTokenExpiresAt.toInstant().getEpochSecond())
                 .refreshToken(refreshToken)
                 .build();
     }
