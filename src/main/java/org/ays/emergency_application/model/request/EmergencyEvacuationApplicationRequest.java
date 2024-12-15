@@ -107,4 +107,15 @@ public class EmergencyEvacuationApplicationRequest {
         return !this.applicantPhoneNumber.getLineNumber().equals(this.phoneNumber.getLineNumber());
     }
 
+    @JsonIgnore
+    @AssertTrue(message = "source city/district and target city/district must be different")
+    private boolean isSourceAndTargetCityAndDistrictDifferent() {
+
+        if(this.sourceCity.equalsIgnoreCase(this.targetCity)){
+            return !this.sourceDistrict.equalsIgnoreCase(this.targetDistrict);
+        }
+
+        return true;
+    }
+
 }
