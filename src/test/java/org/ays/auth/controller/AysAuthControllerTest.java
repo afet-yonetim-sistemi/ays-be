@@ -239,7 +239,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
     void givenValidForgotPasswordRequest_whenSendPasswordCreateMail_thenReturnSuccessResponse() throws Exception {
         // Given
         AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
-                .withEmailAddress(AysValidTestData.User.EMAIL_ADDRESS)
+                .withEmailAddress(AysValidTestData.Admin.EMAIL_ADDRESS)
                 .build();
 
         // When
