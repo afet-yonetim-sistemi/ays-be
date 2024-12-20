@@ -109,13 +109,18 @@ public class EmergencyEvacuationApplicationRequest {
 
     @JsonIgnore
     @AssertTrue(message = "source city/district and target city/district must be different")
-    private boolean isSourceAndTargetCityAndDistrictDifferent() {
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
+    private boolean isSourceCityAndDistrictDifferentFromTargetCityAndDistrict() {
+    
+       if (this.sourceCity == null || this.sourceDistrict == null || this.targetCity == null || this.targetDistrict == null) {
+            return true;
+       }
 
-        if(this.sourceCity.equalsIgnoreCase(this.targetCity)){
-            return !this.sourceDistrict.equalsIgnoreCase(this.targetDistrict);
+        if (!this.sourceCity.equalsIgnoreCase(this.targetCity)){
+            return true;
         }
-
-        return true;
+        
+        return !this.sourceDistrict.equalsIgnoreCase(this.targetDistrict);
     }
 
 }
