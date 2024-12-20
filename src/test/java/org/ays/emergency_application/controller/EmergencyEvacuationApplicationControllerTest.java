@@ -949,7 +949,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     }
 
     @Test
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceAndTargetCityAndDistrictAreSame_thenReturnValidationError() throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceCityAndDistrictSameAsTargetCityAndDistrict_thenReturnValidationError() throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
