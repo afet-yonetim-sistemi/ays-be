@@ -948,6 +948,33 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
     }
 
+    @Test
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceCityAndDistrictSameAsTargetCityAndDistrict_thenReturnValidationError() throws Exception {
+        // Given
+        EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
+                .withValidValues()
+                .withSourceCity("Adana")
+                .withSourceDistrict("Maltepe")
+                .withTargetCity("Adana")
+                .withTargetDistrict("Maltepe")
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockApplicationRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
+                .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
+    }
 
     @Test
     void givenValidIdAndValidUpdateRequest_whenApplicationUpdated_thenReturnSuccessResponse() throws Exception {
