@@ -898,7 +898,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .patch(endpoint, mockSuperAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -986,7 +986,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .delete(endpoint, mockAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -1014,7 +1014,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .delete(endpoint, mockAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
