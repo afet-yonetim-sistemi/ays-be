@@ -84,7 +84,7 @@ class AysMailServiceImplTest extends AysUnitTest {
 
     @Test
     @SuppressWarnings({"java:S2925"})
-    void givenValidMail_whenMailNotSentIn5Seconds_thenLogWarnAboutMailNotSentIn5Seconds() {
+    void givenValidEmailAddresses_whenMailNotSentIn5Seconds_thenLogWarnAboutMailNotSentIn5Seconds() {
         // Given
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()
