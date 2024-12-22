@@ -38,10 +38,10 @@ class AysMailServiceImpl implements AysMailService {
     @Override
     public void send(final AysMail mail) {
 
-        for (String to : mail.getTo()) {
-            boolean ignoredMailExists = IGNORED_DOMAINS.stream().anyMatch(to::endsWith);
+        for (String ignoredDomain : IGNORED_DOMAINS) {
+            boolean ignoredMailExists = mail.getTo().stream().anyMatch(to -> to.endsWith(ignoredDomain));
             if (ignoredMailExists) {
-                log.warn("Mail sending is ignored for {} with {} template", to, mail.getTemplate());
+                log.warn("Mail sending is ignored for {} with {} template", mail.getTo(), mail.getTemplate());
                 return;
             }
         }

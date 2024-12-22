@@ -123,10 +123,9 @@ class AysMailServiceImplTest extends AysUnitTest {
     void givenValidEmailAddress_whenMailSendingIgnored_thenLogWarnAboutMailSendingIgnored() {
 
         // Given
-        String mockIgnoredEmailAddress = "@afetyonetimsistemi.test";
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()
-                .withTo(List.of(mockIgnoredEmailAddress))
+                .withTo(List.of("test@afetyonetimsistemi.test"))
                 .build();
 
         // Then
@@ -143,7 +142,7 @@ class AysMailServiceImplTest extends AysUnitTest {
                             .send(Mockito.any(MimeMessage.class));
 
                     Assertions.assertEquals(Level.WARN, this.getLastLogLevel());
-                    Assertions.assertEquals(this.getLastLogMessage(), "Mail sending is ignored for " + mockIgnoredEmailAddress + " with " + mockMail.getTemplate() + " template");
+                    Assertions.assertEquals(this.getLastLogMessage(), "Mail sending is ignored for " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template");
                 });
     }
 
