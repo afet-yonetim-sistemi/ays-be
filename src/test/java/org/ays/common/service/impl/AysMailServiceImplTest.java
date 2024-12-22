@@ -120,7 +120,7 @@ class AysMailServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidEmailAddress_whenMailSendingIgnored_thenLogWarnAboutMailSendingIgnored() {
+    void givenValidEmailAddresses_whenMailSendingIgnored_thenLogWarnAboutMailSendingIgnored() {
 
         // Given
         AysMail mockMail = new AysMailBuilder()
