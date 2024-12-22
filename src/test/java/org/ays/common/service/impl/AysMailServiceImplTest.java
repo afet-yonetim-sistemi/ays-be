@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 class AysMailServiceImplTest extends AysUnitTest {
@@ -115,6 +116,34 @@ class AysMailServiceImplTest extends AysUnitTest {
 
                     Assertions.assertEquals(Level.WARN, this.getLastLogLevel());
                     Assertions.assertEquals(this.getLastLogMessage(), "Mail not sent to " + mockMail.getTo() + " in 5 seconds with " + mockMail.getTemplate() + " template");
+                });
+    }
+
+    @Test
+    void givenValidEmailAddress_whenMailSendingIgnored_thenLogWarnAboutMailSendingIgnored() {
+
+        // Given
+        String mockIgnoredEmailAddress = "@afetyonetimsistemi.test";
+        AysMail mockMail = new AysMailBuilder()
+                .withValidValues()
+                .withTo(List.of(mockIgnoredEmailAddress))
+                .build();
+
+        // Then
+        mailService.send(mockMail);
+
+        Awaitility.await()
+                .atMost(6, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
+                    // Verify
+                    Mockito.verify(mailSender, Mockito.never())
+                            .createMimeMessage();
+
+                    Mockito.verify(mailSender, Mockito.never())
+                            .send(Mockito.any(MimeMessage.class));
+
+                    Assertions.assertEquals(Level.WARN, this.getLastLogLevel());
+                    Assertions.assertEquals(this.getLastLogMessage(), "Mail sending is ignored for " + mockIgnoredEmailAddress + " with " + mockMail.getTemplate() + " template");
                 });
     }
 
