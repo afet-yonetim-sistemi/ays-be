@@ -147,7 +147,7 @@ class AysMailServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidMail_whenReceivedErrorWhileMailSending_thenLogErrorAboutReceivedErrorWhileMailSending() {
+    void givenValidEmailAddresses_whenReceivedErrorWhileMailSending_thenLogErrorAboutReceivedErrorWhileMailSending() {
         // Given
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()
