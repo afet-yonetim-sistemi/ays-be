@@ -50,7 +50,7 @@ class AysMailServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidMail_whenMailSendingSuccessfully_thenLogTraceAboutMailSentSuccessfully() {
+    void givenValidMailAddresses_whenMailSendingSuccessfully_thenLogTraceAboutMailSentSuccessfully() {
         // Given
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()
