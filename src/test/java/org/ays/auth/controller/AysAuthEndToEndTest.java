@@ -139,16 +139,13 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 .withId(AysValidTestData.Admin.INSTITUTION_ID)
                 .build();
 
-        AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
-                .stream()
-                .findFirst()
-                .orElseThrow();
+        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
 
         AysUser user = userSavePort.save(
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withRoles(List.of(role))
+                        .withRoles(roles)
                         .withInstitution(institution)
                         .build()
         );
@@ -196,10 +193,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 .withId(AysValidTestData.Admin.INSTITUTION_ID)
                 .build();
 
-        AysRole role = roleReadPort.findAllActivesByInstitutionId(institution.getId())
-                .stream()
-                .findFirst()
-                .orElseThrow();
+        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
 
         AysUser.Password password = new AysUserBuilder.PasswordBuilder()
                 .withValidValues()
@@ -210,7 +204,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withRoles(List.of(role))
+                        .withRoles(roles)
                         .withInstitution(institution)
                         .withPassword(password)
                         .build()
