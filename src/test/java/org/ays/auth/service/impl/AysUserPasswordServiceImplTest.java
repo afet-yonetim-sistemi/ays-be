@@ -2,6 +2,7 @@ package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.exception.AysEmailAddressNotValidException;
+import org.ays.auth.exception.AysUserNotActiveException;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
@@ -9,6 +10,7 @@ import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysPasswordCreateRequest;
 import org.ays.auth.model.request.AysPasswordCreateRequestBuilder;
@@ -171,6 +173,40 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         // Then
         Assertions.assertThrows(
                 AysEmailAddressNotValidException.class,
+                () -> userPasswordService.forgotPassword(mockForgotPasswordRequest)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(userMailService, Mockito.never())
+                .sendPasswordCreateEmail(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidForgotPasswordRequest_whenUserStatusNotActive_thenThrowUserNotActiveException() {
+        // Given
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
+                .withStatus(AysUserStatus.PASSIVE)
+                .build();
+
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotActiveException.class,
                 () -> userPasswordService.forgotPassword(mockForgotPasswordRequest)
         );
 
