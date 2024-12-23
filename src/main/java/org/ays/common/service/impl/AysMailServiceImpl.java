@@ -67,7 +67,7 @@ class AysMailServiceImpl implements AysMailService {
         String htmlContentWithParameters = this.addParameters(htmlContent, mail.getParameters());
         mimeMessage.setText(htmlContentWithParameters, "UTF-8", "html");
 
-        mimeMessage.setFrom(new InternetAddress("info@afetyonetimsistemi.org", "Afet Yönetim Sistemi"));
+        mimeMessage.setFrom(new InternetAddress("noreply@afetyonetimsistemi.org", "Afet Yönetim Sistemi"));
 
         for (String to : mail.getTo()) {
             mimeMessage.addRecipients(Message.RecipientType.TO, to);
