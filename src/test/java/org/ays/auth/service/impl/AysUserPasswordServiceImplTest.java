@@ -194,13 +194,13 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .build();
 
+        // When
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
                 .withStatus(AysUserStatus.PASSIVE)
                 .build();
 
-        // When
         Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
 
