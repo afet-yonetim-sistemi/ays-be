@@ -3,9 +3,12 @@ package org.ays.auth.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysEmailAddressNotValidException;
 import org.ays.auth.exception.AysUserNotActiveException;
+import org.ays.auth.exception.AysUserDoesNotAccessPageException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
+import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.request.AysPasswordCreateRequest;
 import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.port.AysUserReadPort;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -60,6 +64,8 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
         if(!user.isActive()) {
             throw new AysUserNotActiveException(user.getStatus());
         }
+
+        this.validateUserSourcePagePermission(user);
 
         final var passwordBuilder = AysUser.Password.builder()
                 .forgotAt(LocalDateTime.now());
@@ -179,6 +185,18 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
                 .isBefore(date);
         if (!isExpired) {
             throw new AysUserPasswordCannotChangedException(id);
+        }
+    }
+
+    private void validateUserSourcePagePermission(final AysUser user) {
+
+        boolean hasUserPermission = user.getRoles().stream()
+                .map(AysRole::getPermissions)
+                .flatMap(List::stream)
+                .anyMatch(permission -> AysSourcePage.INSTITUTION.getPermission().equals(permission.getName()));
+
+        if (!hasUserPermission) {
+            throw new AysUserDoesNotAccessPageException(user.getId(), AysSourcePage.INSTITUTION);
         }
     }
 

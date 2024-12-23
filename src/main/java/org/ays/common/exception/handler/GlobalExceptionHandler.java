@@ -92,11 +92,11 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(AysConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    AysErrorResponse handleAlreadyExistError(final AysConflictException exception) {
+    AysErrorResponse handleConflictError(final AysConflictException exception) {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.ALREADY_EXIST.getName())
+                .header(AysErrorResponse.Header.CONFLICT_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
     }

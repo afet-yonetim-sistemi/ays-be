@@ -99,9 +99,9 @@ public class AysErrorResponse {
          */
         API_ERROR("API ERROR"),
         /**
-         * ALREADY_EXIST header.
+         * CONFLICT_ERROR header.
          */
-        ALREADY_EXIST("ALREADY EXIST"),
+        CONFLICT_ERROR("CONFLICT ERROR"),
         /**
          * NOT_FOUND header.
          */
