@@ -190,21 +190,18 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     @Test
     void givenValidForgotPasswordRequest_whenUserStatusNotActive_thenThrowUserNotActiveException() {
         // Given
-        String mockEmailAddress = "randomEmailAddress@ays.org";
-
         AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withValidValues()
-                .withEmailAddress(mockEmailAddress)
                 .build();
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withEmailAddress(mockEmailAddress)
+                .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
                 .withStatus(AysUserStatus.PASSIVE)
                 .build();
 
         // When
-        Mockito.when(userReadPort.findByEmailAddress(mockForgotPasswordRequest.getEmailAddress()))
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
 
         // Then

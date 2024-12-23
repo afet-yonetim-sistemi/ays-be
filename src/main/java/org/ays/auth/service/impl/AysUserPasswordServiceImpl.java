@@ -46,12 +46,14 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * Handles the forgot password request by sending an email to the user with instructions to create a new password.
      * <p>
      * This method checks if the user exists based on the provided email address and verifies whether the user is active.
-     * If the user is found and active, it sets or updates the user's password with a temporary value and the current
+     * If the user is found and active, it validates whether the user has the necessary permissions to access the source page.
+     * If the user has permission, it sets or updates the user's password with a temporary value and the current
      * time as the forgotten password timestamp. An email is then sent to the user with instructions to create a new password.
      *
      * @param forgotPasswordRequest the request containing the user's email address.
      * @throws AysEmailAddressNotValidException if the email address does not correspond to any existing user.
      * @throws AysUserNotActiveException if the user status is not active.
+     * @throws AysUserDoesNotAccessPageException if the user lacks permission to access the source page.
      */
     @Override
     @Transactional
