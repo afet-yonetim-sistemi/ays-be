@@ -274,7 +274,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
+                .header(AysErrorResponse.Header.API_ERROR.getName())
                 .build();
 
         // Then
