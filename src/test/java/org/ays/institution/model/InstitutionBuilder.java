@@ -12,7 +12,7 @@ public class InstitutionBuilder extends TestDataBuilder<Institution> {
 
     public InstitutionBuilder withValidValues() {
         return this
-                .withId("56e38051-087e-4c9d-a95d-83fb26d8cd56")
+                .withId(AysRandomUtil.generateUUID())
                 .withName(AysRandomUtil.generateText(20))
                 .withStatus(InstitutionStatus.ACTIVE);
     }
