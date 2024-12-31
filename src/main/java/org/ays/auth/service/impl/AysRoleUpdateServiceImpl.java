@@ -44,14 +44,19 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
     /**
      * Updates an existing role identified by its ID.
      * <p>
-     * This method performs checks to ensure the role name is unique and validates the existence of provided permissions.
-     * It also verifies that the role belongs to the same institution as the current user's institution.
+     * This method performs the following steps:
+     * <ul>
+     *     <li>Ensures the role exists and belongs to the same institution as the current user.</li>
+     *     <li>Validates the uniqueness of the role name within the institution.</li>
+     *     <li>Checks if the provided permissions exist and validates the user's authorization for assigning super permissions.</li>
+     *     <li>Updates the role's attributes such as name and permissions, and persists the changes.</li>
+     * </ul>
      * </p>
      *
      * @param id            The ID of the role to update.
      * @param updateRequest The request object containing updated data for the role.
      * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists, excluding the current role ID.
-     * @throws AysPermissionNotExistException      if any of the permission IDs provided do not exist.
+     * @throws AysPermissionNotExistException      if any of the specified permission IDs do not exist.
      * @throws AysUserNotSuperAdminException       if the current user does not have super admin privileges required for assigning super permissions.
      * @throws AysRoleNotExistByIdException        if the role with the given ID does not exist or does not belong to the current user's institution.
      */
@@ -59,13 +64,14 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
     public void update(final String id,
                        final AysRoleUpdateRequest updateRequest) {
 
+        final String institutionId = identity.getInstitutionId();
         final AysRole role = roleReadPort.findById(id)
-                .filter(roleFromDatabase -> identity.getInstitutionId().equals(roleFromDatabase.getInstitution().getId()))
+                .filter(roleFromDatabase -> institutionId.equals(roleFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysRoleNotExistByIdException(id));
 
         final boolean isRoleNameChanged = !role.getName().equals(updateRequest.getName());
         if (isRoleNameChanged) {
-            this.checkExistingRoleNameByWithoutId(id, updateRequest.getName());
+            this.checkExistingRoleNameByWithoutId(id, updateRequest.getName(), institutionId);
         }
 
         final Set<String> existingPermissionIds = role.getPermissions().stream()
@@ -86,13 +92,18 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
 
     /**
      * Checks the existence of another role with the same name, excluding the current role ID.
+     * <p>
+     * This method ensures that the role name is unique within the institution for all roles
+     * except the one being updated.
+     * </p>
      *
-     * @param id   The ID of the role being updated.
-     * @param name The name to check for uniqueness.
+     * @param id            The ID of the role being updated.
+     * @param name          The name to check for uniqueness.
+     * @param institutionId The ID of the institution to which the role belongs.
      * @throws AysRoleAlreadyExistsByNameException if a role with the same name already exists, excluding the current role ID.
      */
-    private void checkExistingRoleNameByWithoutId(final String id, final String name) {
-        roleReadPort.findByName(name)
+    private void checkExistingRoleNameByWithoutId(final String id, final String name, final String institutionId) {
+        roleReadPort.findByNameAndInstitutionId(name, institutionId)
                 .filter(role -> !id.equals(role.getId()))
                 .ifPresent(role -> {
                     throw new AysRoleAlreadyExistsByNameException(name);
@@ -102,14 +113,17 @@ class AysRoleUpdateServiceImpl implements AysRoleUpdateService {
     /**
      * Validates the specified permission IDs and checks user authorization.
      * <p>
-     * This method verifies if all permission IDs exist in the system and checks if the user
-     * has appropriate access level for super permissions. Only super admin users can assign
-     * super permissions.
+     * This method performs the following steps:
+     * <ul>
+     *     <li>Verifies if all provided permission IDs exist in the system.</li>
+     *     <li>Ensures only super admin users can assign super permissions.</li>
+     *     <li>Throws appropriate exceptions for missing permissions or unauthorized access attempts.</li>
+     * </ul>
      * </p>
      *
-     * @param permissionIds the set of permission IDs to validate
-     * @throws AysPermissionNotExistException if any of the specified permissions do not exist
-     * @throws AysUserNotSuperAdminException  if a non-super admin user attempts to assign super permissions
+     * @param permissionIds the set of permission IDs to validate.
+     * @throws AysPermissionNotExistException if any of the specified permissions do not exist.
+     * @throws AysUserNotSuperAdminException  if a non-super admin user attempts to assign super permissions.
      */
     private void validatePermissions(final Set<String> permissionIds) {
 
