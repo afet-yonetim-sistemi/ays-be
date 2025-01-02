@@ -13,6 +13,7 @@ public class InstitutionBuilder extends TestDataBuilder<Institution> {
     public InstitutionBuilder withValidValues() {
         return this
                 .withId(AysRandomUtil.generateUUID())
+                .withName(AysRandomUtil.generateText(20))
                 .withStatus(InstitutionStatus.ACTIVE);
     }
 
@@ -23,6 +24,11 @@ public class InstitutionBuilder extends TestDataBuilder<Institution> {
 
     public InstitutionBuilder withoutId() {
         data.setId(null);
+        return this;
+    }
+
+    public InstitutionBuilder withName(String name) {
+        data.setName(name);
         return this;
     }
 

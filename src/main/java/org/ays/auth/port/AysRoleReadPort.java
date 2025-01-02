@@ -53,12 +53,13 @@ public interface AysRoleReadPort {
     List<AysRole> findAllByIds(Set<String> ids);
 
     /**
-     * Retrieves a role by its name.
+     * Retrieves a role by its name and institution ID.
      *
-     * @param name The name of the role to retrieve.
-     * @return An optional containing the role if found, otherwise empty.
+     * @param name          The name of the role to retrieve.
+     * @param institutionId The ID of the institution to which the role belongs.
+     * @return An {@link Optional} containing the role if found, otherwise empty.
      */
-    Optional<AysRole> findByName(String name);
+    Optional<AysRole> findByNameAndInstitutionId(String name, String institutionId);
 
     /**
      * Checks if any users are assigned to a role identified by its ID.

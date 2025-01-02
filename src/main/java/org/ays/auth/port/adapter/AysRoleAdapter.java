@@ -106,14 +106,14 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
 
 
     /**
-     * Retrieves an {@link AysRole} by its name.
+     * Retrieves an {@link AysRole} by its name and institution ID.
      *
-     * @param name The name of the role to retrieve.
-     * @return An optional containing the {@link AysRole} if found, otherwise empty.
+     * @param name          The name of the role to retrieve.
+     * @param institutionId The ID of the institution to which the role belongs.
+     * @return An {@link Optional} containing the {@link AysRole} if found, otherwise empty.
      */
-    @Override
-    public Optional<AysRole> findByName(final String name) {
-        final Optional<AysRoleEntity> roleEntity = roleRepository.findByName(name);
+    public Optional<AysRole> findByNameAndInstitutionId(final String name, final String institutionId) {
+        final Optional<AysRoleEntity> roleEntity = roleRepository.findByNameAndInstitutionId(name, institutionId);
         return roleEntity.map(roleEntityToDomainMapper::map);
     }
 

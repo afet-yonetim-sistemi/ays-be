@@ -31,12 +31,13 @@ public interface AysRoleRepository extends JpaRepository<AysRoleEntity, String>,
     List<AysRoleEntity> findAllByInstitutionIdAndStatus(String institutionId, AysRoleStatus status);
 
     /**
-     * Finds a {@link AysRoleEntity} by the given role name.
+     * Finds a {@link AysRoleEntity} by its name and institution ID.
      *
-     * @param name the name of the role
-     * @return an {@link Optional} containing the {@link AysRoleEntity} if found, or empty if not found
+     * @param name          The name of the role.
+     * @param institutionId The ID of the institution to which the role belongs.
+     * @return An {@link Optional} containing the {@link AysRoleEntity} if found, otherwise empty.
      */
-    Optional<AysRoleEntity> findByName(String name);
+    Optional<AysRoleEntity> findByNameAndInstitutionId(String name, String institutionId);
 
     /**
      * Checks if any users are assigned to the role identified by the given role ID.

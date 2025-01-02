@@ -276,48 +276,50 @@ class AysRoleAdapterTest extends AysUnitTest {
 
 
     @Test
-    void givenValidName_whenRoleNotFoundByName_thenReturnOptionalEmpty() {
+    void givenValidNameAndInstitutionId_whenRoleNotFound_thenReturnOptionalEmpty() {
 
         // Given
         String mockName = "Test Role";
+        String mockInstitutionId = "4907d8a9-dd9b-47ff-9780-b1a6074e81d6";
 
         // When
-        Mockito.when(roleRepository.findByName(mockName))
+        Mockito.when(roleRepository.findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         // Then
-        Optional<AysRole> role = roleAdapter.findByName(mockName);
+        Optional<AysRole> role = roleAdapter.findByNameAndInstitutionId(mockName, mockInstitutionId);
 
         Assertions.assertFalse(role.isPresent());
 
         // Verify
         Mockito.verify(roleRepository, Mockito.times(1))
-                .findByName(mockName);
+                .findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString());
     }
 
     @Test
-    void givenValidName_whenRoleFoundByName_thenReturnOptionalRole() {
+    void givenValidNameAndInstitutionId_whenRoleFound_thenReturnOptionalRole() {
 
         // Given
         String mockName = "Test Role";
+        String mockInstitutionId = "99921b54-5a19-4552-afb7-c3e8ffde3dd3";
 
         // When
         AysRoleEntity mockRoleEntity = new AysRoleEntityBuilder()
                 .withValidValues()
                 .withName(mockName)
                 .build();
-        Mockito.when(roleRepository.findByName(mockName))
+        Mockito.when(roleRepository.findByNameAndInstitutionId(mockName, mockInstitutionId))
                 .thenReturn(Optional.of(mockRoleEntity));
 
         // Then
-        Optional<AysRole> role = roleAdapter.findByName(mockName);
+        Optional<AysRole> role = roleAdapter.findByNameAndInstitutionId(mockName, mockInstitutionId);
 
         Assertions.assertTrue(role.isPresent());
         Assertions.assertEquals(mockName, role.get().getName());
 
         // Verify
         Mockito.verify(roleRepository, Mockito.times(1))
-                .findByName(mockName);
+                .findByNameAndInstitutionId(mockName, mockInstitutionId);
     }
 
 
