@@ -120,6 +120,11 @@ public class AysMaskUtil {
      * @return the masked token
      */
     private static String maskToken(String value) {
+
+        if (value.length() <= 20) {
+            return value;
+        }
+
         return value.substring(0, 20) + MASKED_VALUE;
     }
 
@@ -140,6 +145,11 @@ public class AysMaskUtil {
      * @return the masked email address
      */
     private static String maskEmailAddress(String value) {
+
+        if (value.length() <= 3) {
+            return value;
+        }
+
         int length = value.length();
         String firstThree = value.substring(0, 3);
         String lastThree = value.substring(length - 3);
@@ -154,6 +164,11 @@ public class AysMaskUtil {
      * @return the masked address
      */
     private static String maskAddress(String value) {
+
+        if (value.length() <= 10) {
+            return value;
+        }
+
         return value.substring(0, 10) + MASKED_VALUE + value.substring(value.length() - 10);
     }
 
@@ -164,6 +179,11 @@ public class AysMaskUtil {
      * @return the masked line number
      */
     private static String maskLineNumber(String value) {
+
+        if (value.length() <= 4) {
+            return value;
+        }
+
         return MASKED_VALUE + value.substring(value.length() - 4);
     }
 
@@ -175,6 +195,11 @@ public class AysMaskUtil {
      * @return the masked name
      */
     private static String maskName(String value) {
+
+        if (value.length() <= 3) {
+            return value;
+        }
+
         return value.substring(0, 3) + MASKED_VALUE + value.substring(value.length() - 3);
     }
 
