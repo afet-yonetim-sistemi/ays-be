@@ -3,6 +3,7 @@ package org.ays.common.model.request;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.ays.common.util.AysMaskUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 
@@ -58,7 +59,15 @@ public final class AysHttpHeader extends HttpHeaders {
         headerNames.remove(X_FORWARDED_FOR.toLowerCase());
         return headerNames
                 .stream()
-                .map(headerName -> headerName + ":" + httpServletRequest.getHeader(headerName))
+                .map(headerName -> {
+
+                    final String headerValue = httpServletRequest.getHeader(headerName);
+                    if (headerName.equalsIgnoreCase(AUTHORIZATION)) {
+                        return headerName + ":" + AysMaskUtil.mask(headerName, headerValue);
+                    }
+
+                    return headerName + ":" + headerValue;
+                })
                 .collect(Collectors.joining("; "));
     }
 
