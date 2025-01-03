@@ -33,18 +33,24 @@ public class AysJsonUtil {
     }
 
     /**
-     * Converts a formatted JSON string into an unformatted (compact) JSON string.
+     * Converts a JSON string into a masked and escaped JSON string.
      * <p>
-     * This method parses the input JSON string into a tree structure using the {@link ObjectMapper}
-     * and then converts it back to a compact string representation.
-     * If an exception occurs during parsing, an empty string is returned.
+     * This method performs the following steps:
+     * <ul>
+     *     <li>Parses the input JSON string into a tree structure using the {@link ObjectMapper}.</li>
+     *     <li>Masks sensitive fields in the JSON using {@link AysMaskUtil}.</li>
+     *     <li>Escapes double quotes in the JSON string by replacing them with backslash-escaped quotes.</li>
+     * </ul>
+     * If an exception occurs during parsing or masking, an empty string is returned.
+     * </p>
      *
-     * @param json the formatted JSON string to be converted
-     * @return a compact (unformatted) JSON string, or an empty string if the input is invalid
+     * @param json The JSON string to be masked and escaped.
+     * @return A masked and escaped JSON string, or an empty string if the input is invalid.
      */
-    public static String toEscapedJson(final String json) {
+    public static String toMaskedEscapedJson(final String json) {
         try {
             final JsonNode jsonNode = OBJECT_MAPPER.readTree(json);
+            AysMaskUtil.mask(jsonNode);
             return jsonNode.toString().replace("\"", "\\\"");
         } catch (JsonProcessingException exception) {
             return "";
