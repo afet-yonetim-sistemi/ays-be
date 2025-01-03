@@ -27,12 +27,17 @@ public class AysPhoneNumberRequest {
     private String lineNumber;
 
     /**
-     * This method returns a JSON representation of the object for validation exception messages.
+     * Converts the phone number object into a JSON-like string representation.
+     * <p>
+     * This method is primarily used for logging or validation exception messages.
+     * It concatenates the country code and line number into a single string.
+     * </p>
+     *
+     * @return A string representation of the phone number in the format: {@code countryCode + lineNumber}.
      */
     @Override
     public String toString() {
-        return "{\"countryCode\":\"%s\",\"lineNumber\":\"%s\"}"
-                .formatted(this.countryCode, this.lineNumber);
+        return this.countryCode + this.lineNumber;
     }
 
     public boolean isBlank() {
