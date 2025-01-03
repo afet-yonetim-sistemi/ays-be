@@ -604,7 +604,13 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value("must be valid"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())

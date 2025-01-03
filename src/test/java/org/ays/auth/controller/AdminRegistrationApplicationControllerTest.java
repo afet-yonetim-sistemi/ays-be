@@ -429,12 +429,12 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
         // Given
         String mockId = "f1b789d0-6095-4860-85bb-e1a0b20f1d13";
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(mockPhoneNumber).build();
+                .withPhoneNumber(mockPhoneNumberRequest).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
@@ -447,7 +447,13 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value("must be valid"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(adminRegistrationCompleteService, Mockito.never())
@@ -459,12 +465,12 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
         // Given
         String mockId = "25930d3f-4cea-4147-a21a-0f22c9bf72de";
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(mockPhoneNumber).build();
+                .withPhoneNumber(mockPhoneNumberRequest).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
@@ -477,7 +483,13 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value("must be valid"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(adminRegistrationCompleteService, Mockito.never())
@@ -490,12 +502,12 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         // Given
         String mockId = "2028b456-e06c-4ea1-9017-b45523529576";
         final String invalidOperator = "123";
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(mockPhoneNumber).build();
+                .withPhoneNumber(mockPhoneNumberRequest).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
@@ -508,7 +520,13 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value("must be valid"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(adminRegistrationCompleteService, Mockito.never())
