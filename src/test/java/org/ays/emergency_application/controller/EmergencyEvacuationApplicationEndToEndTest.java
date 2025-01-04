@@ -364,7 +364,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertFalse(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
-        Assertions.assertEquals(application.get().getCreatedUser(), "AYS");
+        Assertions.assertEquals("AYS", application.get().getCreatedUser());
     }
 
     @Test
@@ -422,7 +422,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(application.get().getIsInPerson());
         Assertions.assertNull(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
-        Assertions.assertEquals(application.get().getCreatedUser(), "AYS");
+        Assertions.assertEquals("AYS", application.get().getCreatedUser());
     }
 
 

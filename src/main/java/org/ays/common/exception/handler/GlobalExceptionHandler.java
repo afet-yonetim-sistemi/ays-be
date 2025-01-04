@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.ays.common.exception.AysAuthException;
-import org.ays.common.exception.AysBadRequestException;
 import org.ays.common.exception.AysConflictException;
 import org.ays.common.exception.AysForbiddenException;
 import org.ays.common.exception.AysNotExistException;
@@ -91,24 +90,13 @@ class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(AysBadRequestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    AysErrorResponse handleBadRequestError(final AysBadRequestException exception) {
-        log.error(exception.getMessage(), exception);
-
-        return AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.BAD_REQUEST.getName())
-                .message(exception.getMessage())
-                .build();
-    }
-
     @ExceptionHandler(AysConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    AysErrorResponse handleAlreadyExistError(final AysConflictException exception) {
+    AysErrorResponse handleConflictError(final AysConflictException exception) {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.ALREADY_EXIST.getName())
+                .header(AysErrorResponse.Header.CONFLICT_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
     }
@@ -202,7 +190,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
+                .header(AysErrorResponse.Header.API_ERROR.getName())
                 .build();
     }
 

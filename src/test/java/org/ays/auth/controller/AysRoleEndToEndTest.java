@@ -26,6 +26,7 @@ import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
+import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
@@ -44,6 +45,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 class AysRoleEndToEndTest extends AysEndToEndTest {
+
+    @Autowired
+    private InstitutionSavePort institutionSavePort;
 
     @Autowired
     private AysRoleSavePort roleSavePort;
@@ -319,7 +323,10 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .doesNotExist());
 
         // Verify
-        Optional<AysRole> role = roleReadPort.findByName(createRequest.getName());
+        Optional<AysRole> role = roleReadPort.findByNameAndInstitutionId(
+                createRequest.getName(),
+                AysValidTestData.SuperAdmin.INSTITUTION_ID
+        );
 
         Assertions.assertTrue(role.isPresent());
         Assertions.assertNotNull(role.get().getId());
@@ -331,6 +338,9 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
         Assertions.assertTrue(UUIDTestUtil.isValid(role.get().getCreatedUser()));
+        Assertions.assertNotNull(role.get().getCreatedAt());
+        Assertions.assertNull(role.get().getUpdatedUser());
+        Assertions.assertNull(role.get().getUpdatedAt());
     }
 
     @Test
@@ -361,7 +371,10 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .doesNotExist());
 
         // Verify
-        Optional<AysRole> role = roleReadPort.findByName(createRequest.getName());
+        Optional<AysRole> role = roleReadPort.findByNameAndInstitutionId(
+                createRequest.getName(),
+                AysValidTestData.Admin.INSTITUTION_ID
+        );
 
         Assertions.assertTrue(role.isPresent());
         Assertions.assertNotNull(role.get().getId());
@@ -373,6 +386,92 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
         Assertions.assertTrue(UUIDTestUtil.isValid(role.get().getCreatedUser()));
+        Assertions.assertNotNull(role.get().getCreatedAt());
+        Assertions.assertNull(role.get().getUpdatedUser());
+        Assertions.assertNull(role.get().getUpdatedAt());
+    }
+
+    @Test
+    void givenValidRoleCreateRequest_whenRoleCreatedWithSameNameForDifferentInstitution_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        Set<String> permissionIds = permissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
+        String sameRoleName = AysRandomUtil.generateText(10);
+
+        Institution testInstitutionOne = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName(sameRoleName)
+                        .withPermissions(permissions)
+                        .withInstitution(testInstitutionOne)
+                        .build()
+        );
+
+        Institution testInstitutionTwo = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName(sameRoleName)
+                        .withPermissions(permissions)
+                        .withInstitution(testInstitutionTwo)
+                        .build()
+        );
+
+        // Given
+        AysRoleCreateRequest createRequest = new AysRoleCreateRequestBuilder()
+                .withPermissionIds(permissionIds)
+                .withName(sameRoleName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, adminToken.getAccessToken(), createRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> role = roleReadPort.findByNameAndInstitutionId(
+                createRequest.getName(),
+                AysValidTestData.Admin.INSTITUTION_ID
+        );
+
+        Assertions.assertTrue(role.isPresent());
+        Assertions.assertNotNull(role.get().getId());
+        Assertions.assertNotNull(role.get().getInstitution());
+        Assertions.assertEquals(createRequest.getName(), role.get().getName());
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, role.get().getStatus());
+        createRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+                role.get().getPermissions().stream()
+                        .anyMatch(permission -> permission.getId().equals(permissionId))
+        ));
+        Assertions.assertTrue(UUIDTestUtil.isValid(role.get().getCreatedUser()));
+        Assertions.assertNotNull(role.get().getCreatedAt());
+        Assertions.assertNull(role.get().getUpdatedUser());
+        Assertions.assertNull(role.get().getUpdatedAt());
     }
 
     @Test
@@ -404,7 +503,10 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                         .doesNotHaveJsonPath());
 
         // Verify
-        Optional<AysRole> role = roleReadPort.findByName(createRequest.getName());
+        Optional<AysRole> role = roleReadPort.findByNameAndInstitutionId(
+                createRequest.getName(),
+                AysValidTestData.Admin.INSTITUTION_ID
+        );
 
         Assertions.assertFalse(role.isPresent());
     }
@@ -460,40 +562,44 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedUser());
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedAt());
         Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
+        Assertions.assertNotNull(roleFromDatabase.get().getUpdatedAt());
     }
 
     @Test
     void givenValidRoleUpdateRequest_whenRoleUpdated_thenReturnSuccess() throws Exception {
 
         // Initialize
-        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        List<AysPermission> permissions = permissionReadPort.findAll();
         Set<String> permissionIds = permissions.stream()
                 .map(AysPermission::getId)
                 .collect(Collectors.toSet());
 
-
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.SuperAdmin.INSTITUTION_ID)
+                .build();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withName("Admin Role 2")
+                        .withName("Admin Role 1")
                         .withPermissions(permissions)
-                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .withInstitution(institution)
                         .build()
         );
 
         // Given
         String id = role.getId();
         AysRoleUpdateRequest updateRequest = new AysRoleUpdateRequestBuilder()
-                .withName("Updated Role")
                 .withPermissionIds(permissionIds)
                 .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/role/").concat(id);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+                .put(endpoint, superAdminToken.getAccessToken(), updateRequest);
 
         AysResponse<Void> mockResponse = AysResponseBuilder.success();
 
@@ -515,7 +621,10 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedUser());
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedAt());
         Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
+        Assertions.assertNotNull(roleFromDatabase.get().getUpdatedAt());
     }
 
     @Test
@@ -572,7 +681,104 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 roleFromDatabase.get().getPermissions().stream()
                         .anyMatch(permission -> permission.getId().equals(permissionId))
         ));
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedUser());
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedAt());
         Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
+        Assertions.assertNotNull(roleFromDatabase.get().getUpdatedAt());
+    }
+
+    @Test
+    void givenValidIdAndRoleUpdateRequest_whenRoleUpdatedWithSameNameForDifferentInstitution_thenReturnSuccess() throws Exception {
+
+        // Initialize
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        Set<String> permissionIds = permissions.stream()
+                .map(AysPermission::getId)
+                .collect(Collectors.toSet());
+
+        String sameRoleName = AysRandomUtil.generateText(10);
+
+        Institution testInstitutionOne = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName(sameRoleName)
+                        .withPermissions(permissions)
+                        .withInstitution(testInstitutionOne)
+                        .build()
+        );
+
+        Institution testInstitutionTwo = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName(sameRoleName)
+                        .withPermissions(permissions)
+                        .withInstitution(testInstitutionTwo)
+                        .build()
+        );
+
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+        AysRole role = roleSavePort.save(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName(sameRoleName)
+                        .withPermissions(permissions)
+                        .withInstitution(institution)
+                        .build()
+        );
+
+        // Given
+        String id = role.getId();
+        AysRoleUpdateRequest updateRequest = new AysRoleUpdateRequestBuilder()
+                .withName(sameRoleName)
+                .withPermissionIds(permissionIds.stream().limit(1).collect(Collectors.toSet()))
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/role/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Optional<AysRole> roleFromDatabase = roleReadPort.findById(id);
+
+        Assertions.assertTrue(roleFromDatabase.isPresent());
+        Assertions.assertNotNull(roleFromDatabase.get().getId());
+        Assertions.assertNotNull(roleFromDatabase.get().getInstitution());
+        Assertions.assertEquals(updateRequest.getName(), roleFromDatabase.get().getName());
+        Assertions.assertEquals(AysRoleStatus.ACTIVE, roleFromDatabase.get().getStatus());
+        updateRequest.getPermissionIds().forEach(permissionId -> Assertions.assertTrue(
+                roleFromDatabase.get().getPermissions().stream()
+                        .anyMatch(permission -> permission.getId().equals(permissionId))
+        ));
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedUser());
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedAt());
+        Assertions.assertTrue(UUIDTestUtil.isValid(roleFromDatabase.get().getUpdatedUser()));
+        Assertions.assertNotNull(roleFromDatabase.get().getUpdatedAt());
     }
 
     @Test
@@ -584,13 +790,16 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
                 .map(AysPermission::getId)
                 .collect(Collectors.toSet());
 
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
         AysRole role = roleSavePort.save(
                 new AysRoleBuilder()
                         .withValidValues()
                         .withoutId()
                         .withName(AysRandomUtil.generateText(10))
                         .withPermissions(List.of(permissions.get(0)))
-                        .withInstitution(new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build())
+                        .withInstitution(institution)
                         .build()
         );
 
@@ -618,6 +827,8 @@ class AysRoleEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(roleFromDatabase.isPresent());
         Assertions.assertNotEquals(updateRequest.getName(), roleFromDatabase.get().getName());
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedUser());
+        Assertions.assertNotNull(roleFromDatabase.get().getCreatedAt());
         Assertions.assertNull(roleFromDatabase.get().getUpdatedUser());
         Assertions.assertNull(roleFromDatabase.get().getUpdatedAt());
     }

@@ -374,7 +374,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(applicationFromDatabase.isPresent());
         Assertions.assertEquals(AdminRegistrationApplicationStatus.COMPLETED, applicationFromDatabase.get().getStatus());
-        Assertions.assertEquals(applicationFromDatabase.get().getUpdatedUser(), "AYS");
+        Assertions.assertEquals("AYS", applicationFromDatabase.get().getUpdatedUser());
 
 
         List<AysPermission> permissionsFromDatabase = permissionReadPort.findAllByIsSuperFalse();
@@ -518,7 +518,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -555,11 +555,11 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken());
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
+                        .isConflict())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }
@@ -739,7 +739,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), rejectRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.ALREADY_EXIST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -779,11 +779,11 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, superAdminToken.getAccessToken(), rejectRequest);
 
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.BAD_REQUEST;
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
+                        .isConflict())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
     }

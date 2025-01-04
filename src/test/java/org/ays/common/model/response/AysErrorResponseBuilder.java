@@ -14,12 +14,8 @@ public class AysErrorResponseBuilder {
             .header(AysErrorResponse.Header.AUTH_ERROR.getName())
             .isSuccess(false).build();
 
-    public static final AysErrorResponse ALREADY_EXIST = AysErrorResponse.builder()
-            .header(AysErrorResponse.Header.ALREADY_EXIST.getName())
-            .isSuccess(false).build();
-
-    public static final AysErrorResponse BAD_REQUEST = AysErrorResponse.builder()
-            .header(AysErrorResponse.Header.BAD_REQUEST.getName())
+    public static final AysErrorResponse CONFLICT_ERROR = AysErrorResponse.builder()
+            .header(AysErrorResponse.Header.CONFLICT_ERROR.getName())
             .isSuccess(false).build();
 
     public static final AysErrorResponse NOT_FOUND = AysErrorResponse.builder()

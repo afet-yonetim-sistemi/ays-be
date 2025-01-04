@@ -2,9 +2,13 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysEmailAddressNotValidException;
+import org.ays.auth.exception.AysUserNotActiveException;
+import org.ays.auth.exception.AysUserDoesNotAccessPageException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
+import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
+import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.request.AysPasswordCreateRequest;
 import org.ays.auth.model.request.AysPasswordForgotRequest;
 import org.ays.auth.port.AysUserReadPort;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,12 +45,15 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
     /**
      * Handles the forgot password request by sending an email to the user with instructions to create a new password.
      * <p>
-     * This method checks if the user exists based on the provided email address. If the user is found,
-     * it sets or updates the user's password with a temporary value and the current time as the forgotten password timestamp.
-     * An email is then sent to the user with instructions to create a new password.
+     * This method checks if the user exists based on the provided email address and verifies whether the user is active.
+     * If the user is found and active, it validates whether the user has the necessary permissions to access the source page.
+     * If the user has permission, it sets or updates the user's password with a temporary value and the current
+     * time as the forgotten password timestamp. An email is then sent to the user with instructions to create a new password.
      *
      * @param forgotPasswordRequest the request containing the user's email address.
      * @throws AysEmailAddressNotValidException if the email address does not correspond to any existing user.
+     * @throws AysUserNotActiveException if the user status is not active.
+     * @throws AysUserDoesNotAccessPageException if the user lacks permission to access the source page.
      */
     @Override
     @Transactional
@@ -54,6 +62,12 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
         final String emailAddress = forgotPasswordRequest.getEmailAddress();
         final AysUser user = userReadPort.findByEmailAddress(emailAddress)
                 .orElseThrow(() -> new AysEmailAddressNotValidException(emailAddress));
+
+        if(!user.isActive()) {
+            throw new AysUserNotActiveException(user.getStatus());
+        }
+
+        this.validateUserSourcePagePermission(user);
 
         final var passwordBuilder = AysUser.Password.builder()
                 .forgotAt(LocalDateTime.now());
@@ -173,6 +187,18 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
                 .isBefore(date);
         if (!isExpired) {
             throw new AysUserPasswordCannotChangedException(id);
+        }
+    }
+
+    private void validateUserSourcePagePermission(final AysUser user) {
+
+        boolean hasUserPermission = user.getRoles().stream()
+                .map(AysRole::getPermissions)
+                .flatMap(List::stream)
+                .anyMatch(permission -> AysSourcePage.INSTITUTION.getPermission().equals(permission.getName()));
+
+        if (!hasUserPermission) {
+            throw new AysUserDoesNotAccessPageException(user.getId(), AysSourcePage.INSTITUTION);
         }
     }
 

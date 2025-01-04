@@ -13,7 +13,6 @@ import org.ays.auth.model.request.AysRoleCreateRequestBuilder;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
-import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -50,7 +49,10 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        Mockito.when(roleReadPort.findByName(Mockito.anyString()))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("3ec91697-ebc9-42b2-8d4c-c0e792b027cb");
+
+        Mockito.when(roleReadPort.findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         List<AysPermission> mockPermissions = new ArrayList<>();
@@ -68,9 +70,6 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.when(identity.isSuperAdmin())
                 .thenReturn(true);
 
-        Mockito.when(identity.getInstitutionId())
-                .thenReturn(AysRandomUtil.generateUUID());
-
         Mockito.when(roleSavePort.save(Mockito.any(AysRole.class)))
                 .thenReturn(Mockito.mock(AysRole.class));
 
@@ -78,8 +77,11 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         roleCreateService.create(mockCreateRequest);
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(roleReadPort, Mockito.times(1))
-                .findByName(Mockito.anyString());
+                .findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.times(1))
                 .findAllByIds(Mockito.anySet());
@@ -89,9 +91,6 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.never())
                 .getUserId();
-
-        Mockito.verify(identity, Mockito.times(1))
-                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.times(1))
                 .save(Mockito.any(AysRole.class));
@@ -105,7 +104,10 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        Mockito.when(roleReadPort.findByName(Mockito.anyString()))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("5e0e83da-73b2-4cbb-9753-10f17d63ab3b");
+
+        Mockito.when(roleReadPort.findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         List<AysPermission> mockPermissions = new ArrayList<>();
@@ -123,9 +125,6 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         Mockito.when(identity.isSuperAdmin())
                 .thenReturn(false);
 
-        Mockito.when(identity.getInstitutionId())
-                .thenReturn(AysRandomUtil.generateUUID());
-
         Mockito.when(roleSavePort.save(Mockito.any(AysRole.class)))
                 .thenReturn(Mockito.mock(AysRole.class));
 
@@ -133,8 +132,11 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         roleCreateService.create(mockCreateRequest);
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(roleReadPort, Mockito.times(1))
-                .findByName(Mockito.anyString());
+                .findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.times(1))
                 .findAllByIds(Mockito.anySet());
@@ -144,9 +146,6 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.never())
                 .getUserId();
-
-        Mockito.verify(identity, Mockito.times(1))
-                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.times(1))
                 .save(Mockito.any(AysRole.class));
@@ -160,7 +159,10 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        Mockito.when(roleReadPort.findByName(Mockito.anyString()))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("04ba9be6-d1bc-4c0a-9188-336af6faa7a3");
+
+        Mockito.when(roleReadPort.findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.of(Mockito.mock(AysRole.class)));
 
         // Then
@@ -170,8 +172,11 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         );
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(roleReadPort, Mockito.times(1))
-                .findByName(Mockito.anyString());
+                .findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.never())
                 .findAllByIds(Mockito.anySet());
@@ -181,9 +186,6 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.never())
                 .getUserId();
-
-        Mockito.verify(identity, Mockito.never())
-                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));
@@ -197,7 +199,10 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        Mockito.when(roleReadPort.findByName(Mockito.anyString()))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("0e1b24e2-bd74-4d3d-a419-a26a0e118d28");
+
+        Mockito.when(roleReadPort.findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         List<AysPermission> mockPermissions = new ArrayList<>();
@@ -216,7 +221,7 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .thenReturn(false);
 
         Mockito.when(identity.getUserId())
-                .thenReturn(AysRandomUtil.generateUUID());
+                .thenReturn("e3c9bbc3-bd45-4f46-9717-a38a8c94d593");
 
         // Then
         Assertions.assertThrows(
@@ -225,8 +230,11 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         );
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(roleReadPort, Mockito.times(1))
-                .findByName(Mockito.anyString());
+                .findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.times(1))
                 .findAllByIds(Mockito.anySet());
@@ -236,9 +244,6 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.times(1))
                 .getUserId();
-
-        Mockito.verify(identity, Mockito.never())
-                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));
@@ -253,7 +258,10 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
-        Mockito.when(roleReadPort.findByName(Mockito.anyString()))
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn("c38cc1dd-7474-463c-b93c-eeeae858fa35");
+
+        Mockito.when(roleReadPort.findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         Mockito.when(permissionReadPort.findAllByIds(Mockito.anySet()))
@@ -266,8 +274,11 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
         );
 
         // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
         Mockito.verify(roleReadPort, Mockito.times(1))
-                .findByName(Mockito.anyString());
+                .findByNameAndInstitutionId(Mockito.anyString(), Mockito.anyString());
 
         Mockito.verify(permissionReadPort, Mockito.times(1))
                 .findAllByIds(Mockito.anySet());
@@ -277,9 +288,6 @@ class AysRoleCreateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(identity, Mockito.never())
                 .getUserId();
-
-        Mockito.verify(identity, Mockito.never())
-                .getInstitutionId();
 
         Mockito.verify(roleSavePort, Mockito.never())
                 .save(Mockito.any(AysRole.class));

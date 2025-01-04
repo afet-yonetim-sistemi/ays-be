@@ -2,10 +2,15 @@ package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.exception.AysEmailAddressNotValidException;
+import org.ays.auth.exception.AysUserNotActiveException;
+import org.ays.auth.exception.AysUserDoesNotAccessPageException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
+import org.ays.auth.model.AysRole;
+import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysPasswordCreateRequest;
 import org.ays.auth.model.request.AysPasswordCreateRequestBuilder;
@@ -22,6 +27,7 @@ import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 class AysUserPasswordServiceImplTest extends AysUnitTest {
@@ -53,10 +59,16 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         AysUser.Password password = new AysUserBuilder.PasswordBuilder()
                 .withValidValues()
                 .build();
+
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .build();
+
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
                 .withPassword(password)
+                .withRoles(List.of(mockRole))
                 .build();
         Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
@@ -102,9 +114,14 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
                 .build();
 
         // When
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .build();
+
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
+                .withRoles(List.of(mockRole))
                 .build();
         Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
@@ -168,6 +185,85 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
 
         Mockito.verify(userMailService, Mockito.never())
                 .sendPasswordCreateEmail(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidForgotPasswordRequest_whenUserStatusNotActive_thenThrowUserNotActiveException() {
+        // Given
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
+                .withStatus(AysUserStatus.PASSIVE)
+                .build();
+
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotActiveException.class,
+                () -> userPasswordService.forgotPassword(mockForgotPasswordRequest)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(userMailService, Mockito.never())
+                .sendPasswordCreateEmail(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidForgotPasswordRequest_whenUserHasNotInstitutionPagePermission_thenThrowUserDoesNotAccessPageException() {
+        // Given
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
+                .build();
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        AysUser.Password mockPassword = new AysUserBuilder.PasswordBuilder()
+                .withValidValues()
+                .withValue(AysRandomUtil.generateText(15))
+                .withForgotAt(LocalDateTime.now())
+                .build();
+        AysUser mockSavedUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockUser.getId())
+                .withEmailAddress(mockUser.getEmailAddress())
+                .withPhoneNumber(mockUser.getPhoneNumber())
+                .withPassword(mockPassword)
+                .build();
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockSavedUser);
+
+        Mockito.doNothing()
+                .when(userMailService)
+                .sendPasswordCreateEmail(Mockito.any(AysUser.class));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserDoesNotAccessPageException.class,
+                () -> userPasswordService.forgotPassword(mockForgotPasswordRequest)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
     }
 
 

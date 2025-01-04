@@ -31,7 +31,7 @@ import java.util.Set;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles({"default", "test"})
 @ExtendWith(MockitoExtension.class)
 public abstract class AysRestControllerTest extends AysTestContainerConfiguration {
 
@@ -127,7 +127,6 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
 
         return AysToken.builder()
                 .accessToken(accessToken)
-                .accessTokenExpiresAt(accessTokenExpiresAt.toInstant().getEpochSecond())
                 .refreshToken(refreshToken)
                 .build();
     }

@@ -505,6 +505,55 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysUserCreateRequest.class));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abc.def@mail.c",
+            "abc.def@mail#archive.com",
+            "abc.def@mail",
+            "abcdef@mail..com",
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk",
+            "user@ example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "(user)@example.com",
+            "user@[192.168.1.1",
+            "user@exam ple.com",
+            "user@.com",
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com ",
+            " user@example.com ",
+            "@missingusername.com"
+    })
+    void givenUserCreateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withEmailAddress(mockEmailAddress)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
 
     @Test
     void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
@@ -666,6 +715,56 @@ class AysUserControllerTest extends AysRestControllerTest {
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
                 .withRoleIds(mockRoleIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abc.def@mail.c",
+            "abc.def@mail#archive.com",
+            "abc.def@mail",
+            "abcdef@mail..com",
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk",
+            "user@ example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "(user)@example.com",
+            "user@[192.168.1.1",
+            "user@exam ple.com",
+            "user@.com",
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com ",
+            " user@example.com ",
+            "@missingusername.com"
+    })
+    void givenValidIdAndInvalidUserUpdateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
+        // Given
+        String mockId = "b66afcb0-3029-4968-a87b-e1d94fc75642";
+
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // Then

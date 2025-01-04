@@ -3,7 +3,6 @@ package org.ays.common.model.request;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.ays.common.util.AysJsonUtil;
 
 /**
  * A class representing a phone number in filtering requests, including its country code and line number.
@@ -29,6 +28,7 @@ public class AysPhoneNumberFilterRequest {
      */
     @Override
     public String toString() {
-        return AysJsonUtil.toJson(this);
+        return "{\"countryCode\":\"%s\",\"lineNumber\":\"%s\"}"
+                .formatted(this.countryCode, this.lineNumber);
     }
 }

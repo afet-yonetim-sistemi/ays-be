@@ -17,6 +17,7 @@ import org.springframework.web.context.request.async.AsyncRequestTimeoutExceptio
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -28,8 +29,22 @@ class AysMailServiceImpl implements AysMailService {
 
     private final JavaMailSender mailSender;
 
+
+    private static final List<String> IGNORED_DOMAINS = List.of(
+            "@afetyonetimsistemi.test"
+    );
+
+
     @Override
     public void send(final AysMail mail) {
+
+        for (String ignoredDomain : IGNORED_DOMAINS) {
+            boolean ignoredMailExists = mail.getTo().stream().anyMatch(to -> to.endsWith(ignoredDomain));
+            if (ignoredMailExists) {
+                log.warn("Mail sending is ignored for {} with {} template", mail.getTo(), mail.getTemplate());
+                return;
+            }
+        }
 
         CompletableFuture.runAsync(() -> this.sendEmail(mail))
                 .orTimeout(5, TimeUnit.SECONDS)
@@ -67,7 +82,7 @@ class AysMailServiceImpl implements AysMailService {
         String htmlContentWithParameters = this.addParameters(htmlContent, mail.getParameters());
         mimeMessage.setText(htmlContentWithParameters, "UTF-8", "html");
 
-        mimeMessage.setFrom(new InternetAddress("info@afetyonetimsistemi.org", "Afet Yönetim Sistemi"));
+        mimeMessage.setFrom(new InternetAddress("noreply@afetyonetimsistemi.org", "Afet Yönetim Sistemi"));
 
         for (String to : mail.getTo()) {
             mimeMessage.addRecipients(Message.RecipientType.TO, to);

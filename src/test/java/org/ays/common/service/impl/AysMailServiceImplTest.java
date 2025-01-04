@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 class AysMailServiceImplTest extends AysUnitTest {
@@ -49,7 +50,7 @@ class AysMailServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidMail_whenMailSendingSuccessfully_thenLogTraceAboutMailSentSuccessfully() {
+    void givenValidEmailAddresses_whenMailSendingSuccessfully_thenLogTraceAboutMailSentSuccessfully() {
         // Given
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()
@@ -83,7 +84,7 @@ class AysMailServiceImplTest extends AysUnitTest {
 
     @Test
     @SuppressWarnings({"java:S2925"})
-    void givenValidMail_whenMailNotSentIn5Seconds_thenLogWarnAboutMailNotSentIn5Seconds() {
+    void givenValidEmailAddresses_whenMailNotSentIn5Seconds_thenLogWarnAboutMailNotSentIn5Seconds() {
         // Given
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()
@@ -119,7 +120,34 @@ class AysMailServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidMail_whenReceivedErrorWhileMailSending_thenLogErrorAboutReceivedErrorWhileMailSending() {
+    void givenValidEmailAddresses_whenMailSendingIgnored_thenLogWarnAboutMailSendingIgnored() {
+
+        // Given
+        AysMail mockMail = new AysMailBuilder()
+                .withValidValues()
+                .withTo(List.of("test@afetyonetimsistemi.test"))
+                .build();
+
+        // Then
+        mailService.send(mockMail);
+
+        Awaitility.await()
+                .atMost(6, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
+                    // Verify
+                    Mockito.verify(mailSender, Mockito.never())
+                            .createMimeMessage();
+
+                    Mockito.verify(mailSender, Mockito.never())
+                            .send(Mockito.any(MimeMessage.class));
+
+                    Assertions.assertEquals(Level.WARN, this.getLastLogLevel());
+                    Assertions.assertEquals(this.getLastLogMessage(), "Mail sending is ignored for " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template");
+                });
+    }
+
+    @Test
+    void givenValidEmailAddresses_whenReceivedErrorWhileMailSending_thenLogErrorAboutReceivedErrorWhileMailSending() {
         // Given
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()

@@ -86,9 +86,12 @@ public class EmergencyEvacuationApplicationRequest {
             return true;
         }
 
+
         return !StringUtils.isBlank(this.applicantFirstName) && !StringUtils.isBlank(this.applicantLastName)
                 &&
-                this.applicantPhoneNumber != null && !this.applicantPhoneNumber.isBlank();
+                this.applicantPhoneNumber != null
+                &&
+                !(StringUtils.isBlank(this.applicantPhoneNumber.getCountryCode()) && StringUtils.isBlank(this.applicantPhoneNumber.getLineNumber()));
     }
 
     @JsonIgnore
@@ -105,6 +108,22 @@ public class EmergencyEvacuationApplicationRequest {
         }
 
         return !this.applicantPhoneNumber.getLineNumber().equals(this.phoneNumber.getLineNumber());
+    }
+
+    @JsonIgnore
+    @AssertTrue(message = "source city/district and target city/district must be different")
+    @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
+    private boolean isSourceCityAndDistrictDifferentFromTargetCityAndDistrict() {
+
+       if (this.sourceCity == null || this.sourceDistrict == null || this.targetCity == null || this.targetDistrict == null) {
+            return true;
+       }
+
+        if (!this.sourceCity.equalsIgnoreCase(this.targetCity)){
+            return true;
+        }
+
+        return !this.sourceDistrict.equalsIgnoreCase(this.targetDistrict);
     }
 
 }

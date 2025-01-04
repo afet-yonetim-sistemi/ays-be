@@ -195,7 +195,6 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "This is a valid text with sufficient length and contains alphabetic characters.",
             "This text includes numbers 12345 and still should be accepted because it's within limits.",
             "This text, which includes punctuation marks, should be accepted.",
-            " This text has leading and trailing spaces which should be trimmed and accepted. ",
             "ÇalıŞkan ve dÜrüst İnsanlar her zaman başarıyı yakalar.(:;?/)"
     })
     void givenValidAdminRegisterApplicationCreateRequest_whenCreatingAdminRegisterApplication_thenReturnAdminRegisterApplicationCreateResponse(String reason) throws Exception {
@@ -248,6 +247,10 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
             "Too short",
             "                                      a",
+            " spaceAtTheBeginning",
+            "spaceAtTheEnd ",
+            " both ",
+            "   justAString     ",
             "151201485621548562154851458614125461254125412",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum commodo turpis, sed venenatis sapien suscipit sit amet. Etiam malesuada, ligula in semper varius, nisi mi pulvinar libero, ut commodo dolor orci quis urna. Vivamus ac euismod ex. Proin vel vulputate orci. Ut id nibh finibus, mattis sem id, maximus ante. Proin fringilla ipsum at arcu venenatis, non bibendum justo luctus. Phasellus vestibulum feugiat est sit amet bibendum. Donec nulla leo, ultricies sed pharetra sed, hendrerit vel nunc."
     })
@@ -557,7 +560,22 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "abc.def@mail#archive.com",
             "abc.def@mail",
             "abcdef@mail..com",
-            "abc-@mail.com"
+            "abc-@mail.com",
+            "admin@test@ays.com",
+            "admintest@ays..com",
+            "username@gmail..co.uk",
+            "user@ example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "(user)@example.com",
+            "user@[192.168.1.1",
+            "user@exam ple.com",
+            "user@.com",
+            ".user@example.com",
+            "  user@example.com",
+            "user@example.com ",
+            " user@example.com ",
+            "@missingusername.com"
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
 
@@ -593,7 +611,6 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "john.doe123@example.co.uk",
             "admin_123@example.org",
             "admin-test@ays.com",
-            "üşengeç-birkız@mail.com"
     })
     void givenValidAdminRegisterApplicationCompleteRequestWithParametrizedValidEmails_whenEmailsAreValid_thenReturnSuccessResponse(String validEmail) throws Exception {
         // Given
@@ -763,6 +780,52 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(adminRegistrationApplicationService, Mockito.never())
                 .reject(Mockito.eq(mockId), Mockito.any(AdminRegistrationApplicationRejectRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            "   ",
+            "less than 40",
+            """
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    Donec qudam felis, ultricies nec, pellentesque eu, pretscsxwium quis, sem. Nulla consequat massa quis
+                    enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
+                    imperdiet a, venenatdskjvndshjcndsis vitae, justo. Nullam dictum felis eu pedde mollis pretium. Integer tincidunt.
+                    Cras dapibus. Vivdamus ewl
+                    """,
+            " spaceAtTheBeginning",
+            "spaceAtTheEnd ",
+            " both ",
+            "   justAString     "
+    })
+    void givenInvalidAdminRegisterApplicationRejectRequest_whenRejectingAdminRegisterApplication_thenReturnValidationError(String rejectReason) throws Exception {
+
+        // Given
+        String mockId = "4d04bd1e-6318-43ba-ab40-57efb8afc918";
+        AdminRegistrationApplicationRejectRequest mockRequest = new AdminRegistrationApplicationRejectRequestBuilder()
+                .withValidValues()
+                .withRejectReason(rejectReason)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/reject");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken(), mockRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(adminRegistrationApplicationService, Mockito.never())
+                .reject(Mockito.anyString(),
+                        Mockito.any(AdminRegistrationApplicationRejectRequest.class));
     }
 
 }

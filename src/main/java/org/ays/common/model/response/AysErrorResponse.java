@@ -99,9 +99,9 @@ public class AysErrorResponse {
          */
         API_ERROR("API ERROR"),
         /**
-         * ALREADY_EXIST header.
+         * CONFLICT_ERROR header.
          */
-        ALREADY_EXIST("ALREADY EXIST"),
+        CONFLICT_ERROR("CONFLICT ERROR"),
         /**
          * NOT_FOUND header.
          */
@@ -118,10 +118,6 @@ public class AysErrorResponse {
          * PROCESS_ERROR header.
          */
         PROCESS_ERROR("PROCESS ERROR"),
-        /**
-         * BAD_REQUEST header.
-         */
-        BAD_REQUEST("BAD REQUEST"),
         /**
          * AUTH_ERROR header.
          */
@@ -141,6 +137,7 @@ public class AysErrorResponse {
      * @param fieldErrors a {@link List} of {@link FieldError} objects to be used as sub-errors in the {@link AysErrorResponse} instance
      * @return an instance of {@link AysErrorResponseBuilder} with the given list of {@link FieldError} objects as sub-errors
      */
+    @SuppressWarnings("java:S1854")
     public static AysErrorResponse.AysErrorResponseBuilder subErrors(final List<FieldError> fieldErrors) {
 
         if (CollectionUtils.isEmpty(fieldErrors)) {
