@@ -21,7 +21,8 @@ import org.ays.institution.model.entity.InstitutionEntity;
 
 /**
  * A JPA entity class that represents an emergency evacuation entity.
- * The emergency evacuation applications are defined in the AYS_EMERGENCY_EVACUATION_APPLICATION table in the database.
+ * The emergency evacuation applications are defined in the
+ * AYS_EMERGENCY_EVACUATION_APPLICATION table in the database.
  */
 @Entity
 @Getter
@@ -92,12 +93,11 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
     @Column(name = "IS_IN_PERSON")
     private Boolean isInPerson;
 
-    @Column(name = "HAS_OBSTACLE_PERSON_EXIST")
-    private Boolean hasObstaclePersonExist;
+    @Column(name = "HAS_OBSTACLE_PERSON_EXIST", nullable = false)
+    private Boolean hasObstaclePersonExist = false;
 
     @Column(name = "NOTES")
     private String notes;
-
 
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", insertable = false, updatable = false)
