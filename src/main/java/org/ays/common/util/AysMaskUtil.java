@@ -55,34 +55,34 @@ public class AysMaskUtil {
      */
     public static void mask(final JsonNode jsonNode) {
 
-        if (jsonNode.isObject()) {
-
-            ObjectNode objectNode = (ObjectNode) jsonNode;
-            Iterator<String> fieldNames = objectNode.fieldNames();
-
-            while (fieldNames.hasNext()) {
-
-                String fieldName = fieldNames.next();
-                JsonNode fieldValue = objectNode.get(fieldName);
-
-                if (fieldValue.isValueNode()) {
-                    String maskedValue = mask(fieldName, fieldValue.asText());
-                    objectNode.put(fieldName, maskedValue);
-                    continue;
-                }
-
-                mask(fieldValue);
-            }
-
-            return;
-        }
-
         if (jsonNode.isArray()) {
             ArrayNode arrayNode = (ArrayNode) jsonNode;
             for (JsonNode arrayElement : arrayNode) {
                 mask(arrayElement);
             }
         }
+
+        if (!jsonNode.isObject()) {
+            return;
+        }
+
+        ObjectNode objectNode = (ObjectNode) jsonNode;
+        Iterator<String> fieldNames = objectNode.fieldNames();
+
+        while (fieldNames.hasNext()) {
+
+            String fieldName = fieldNames.next();
+            JsonNode fieldValue = objectNode.get(fieldName);
+
+            if (fieldValue.isValueNode()) {
+                String maskedValue = mask(fieldName, fieldValue.asText());
+                objectNode.put(fieldName, maskedValue);
+                continue;
+            }
+
+            mask(fieldValue);
+        }
+
     }
 
     /**
@@ -103,7 +103,7 @@ public class AysMaskUtil {
         }
 
         return switch (field) {
-            case "Authorization", "accessToken", "refreshToken" -> maskToken(value);
+            case "Authorization", "authorization", "accessToken", "refreshToken" -> maskToken(value);
             case "password" -> maskPassword();
             case "emailAddress" -> maskEmailAddress(value);
             case "lineNumber" -> maskLineNumber(value);
@@ -165,11 +165,11 @@ public class AysMaskUtil {
      */
     private static String maskAddress(String value) {
 
-        if (value.length() <= 10) {
-            return value;
+        if (value.length() <= 20) {
+            return value.substring(0, 3) + MASKED_VALUE + value.substring(value.length() - 3);
         }
 
-        return value.substring(0, 10) + MASKED_VALUE + value.substring(value.length() - 10);
+        return value.substring(0, 5) + MASKED_VALUE + value.substring(value.length() - 5);
     }
 
     /**
@@ -196,11 +196,11 @@ public class AysMaskUtil {
      */
     private static String maskName(String value) {
 
-        if (value.length() <= 3) {
+        if (value.length() <= 1) {
             return value;
         }
 
-        return value.substring(0, 3) + MASKED_VALUE + value.substring(value.length() - 3);
+        return value.charAt(0) + MASKED_VALUE;
     }
 
 }
