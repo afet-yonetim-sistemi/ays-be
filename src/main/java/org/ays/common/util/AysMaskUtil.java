@@ -34,7 +34,7 @@ import java.util.Iterator;
  *   "emailAddress": "tes******com",
  *   "password": "******",
  *   "lineNumber": "******7890",
- *   "address": "123 M******ield",
+ *   "address": "123 M******field",
  *   "firstName": "J******",
  *   "lastName": "D******"
  * }
