@@ -156,7 +156,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"address\":\"Spr******eet\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"address\":\"S******\""));
     }
 
     @Test

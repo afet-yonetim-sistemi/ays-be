@@ -166,7 +166,7 @@ public class AysMaskUtil {
     private static String maskAddress(String value) {
 
         if (value.length() <= 20) {
-            return value.substring(0, 3) + MASKED_VALUE + value.substring(value.length() - 3);
+            return value.charAt(0) + MASKED_VALUE;
         }
 
         return value.substring(0, 5) + MASKED_VALUE + value.substring(value.length() - 5);
