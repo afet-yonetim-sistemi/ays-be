@@ -1,6 +1,7 @@
 package org.ays.emergency_application.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Strings;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
@@ -115,9 +116,9 @@ public class EmergencyEvacuationApplicationRequest {
     @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isSourceCityAndDistrictDifferentFromTargetCityAndDistrict() {
 
-       if (this.sourceCity == null || this.sourceDistrict == null || this.targetCity == null || this.targetDistrict == null) {
+        if (Strings.isNullOrEmpty(this.sourceCity) || Strings.isNullOrEmpty(this.sourceDistrict) || Strings.isNullOrEmpty(this.targetCity) || Strings.isNullOrEmpty(this.targetDistrict)) {
             return true;
-       }
+        }
 
         if (!this.sourceCity.equalsIgnoreCase(this.targetCity)){
             return true;
