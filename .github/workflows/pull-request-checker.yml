@@ -22,10 +22,10 @@ jobs:
         run: sudo apt-get update
 
       - name: Checkout code # Step to check out the code from the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Java # Step to set up the Java environment
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17 # Specify Java 17 as the version
           distribution: 'zulu' # Use the 'zulu' distribution of Java
