@@ -13,7 +13,7 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_PORT: 3307
     volumes:
-      - ./db:/var/lib/mysql
+      - ./docker/mysql:/var/lib/mysql
     ports:
       - "3307:3306"
   application:
