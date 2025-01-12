@@ -179,7 +179,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
+                .header(AysErrorResponse.Header.API_ERROR.getName())
                 .build();
     }
 
