@@ -27,13 +27,14 @@ public class AysPhoneNumberRequest {
     private String lineNumber;
 
     /**
-     * Converts the phone number object into a JSON-like string representation.
+     * Returns a string representation of the phone number object.
      * <p>
-     * This method is primarily used for logging or validation exception messages.
-     * It concatenates the country code and line number into a single string.
+     * This method concatenates the country code and line number into a single string
+     * without JSON formatting. It is primarily intended for internal use, such as
+     * validation error messages or logging.
      * </p>
      *
-     * @return A string representation of the phone number in the format: {@code countryCode + lineNumber}.
+     * @return A concatenated string of the country code and line number in the format: {@code countryCode + lineNumber}.
      */
     @Override
     public String toString() {
