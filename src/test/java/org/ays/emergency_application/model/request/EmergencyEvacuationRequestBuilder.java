@@ -12,10 +12,17 @@ public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<Emergency
 
     public EmergencyEvacuationRequestBuilder withValidValues() {
         return this
-                .withSeatingCount(1)
+                .withFirstName("Test")
+                .withLastName("User")
                 .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
+                .withSourceCity("Source City")
+                .withSourceDistrict("Source District")
+                .withAddress("Lorem Ipsum is simply dummy text of the printing and typesetting industry.")
+                .withSeatingCount(1)
+                .withTargetCity("Target City")
+                .withTargetDistrict("Target District")
                 .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
-                .withAddress("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
+                .withHasObstaclePersonExist(false);
     }
 
     public EmergencyEvacuationRequestBuilder withFirstName(String firstName) {
@@ -82,6 +89,11 @@ public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<Emergency
         data.setApplicantFirstName(null);
         data.setApplicantLastName(null);
         data.setApplicantPhoneNumber(null);
+        return this;
+    }
+
+    public EmergencyEvacuationRequestBuilder withHasObstaclePersonExist(Boolean hasObstaclePersonExist) {
+        data.setHasObstaclePersonExist(hasObstaclePersonExist);
         return this;
     }
 

@@ -58,7 +58,7 @@ public class EmergencyEvacuationApplicationBuilder extends TestDataBuilder<Emerg
     }
 
     public EmergencyEvacuationApplicationBuilder withoutHasObstaclePersonExist() {
-        data.setHasObstaclePersonExist(null);
+        data.setHasObstaclePersonExist(false);
         return this;
     }
 
