@@ -5,23 +5,14 @@ import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
-import org.ays.common.model.response.AysErrorResponse;
-import org.ays.common.model.response.AysErrorResponseBuilder;
-import org.ays.common.model.response.AysPageResponse;
-import org.ays.common.model.response.AysResponse;
-import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.common.model.response.*;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationsResponseMapper;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequestBuilder;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationRequest;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequest;
-import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequestBuilder;
-import org.ays.emergency_application.model.request.EmergencyEvacuationRequestBuilder;
+import org.ays.emergency_application.model.request.*;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.service.EmergencyEvacuationApplicationService;
@@ -957,6 +948,90 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .withSourceDistrict("Maltepe")
                 .withTargetCity("Adana")
                 .withTargetDistrict("Maltepe")
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockApplicationRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
+                .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
+    }
+
+    @Test
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenAllCitiesAreBlank_thenReturnValidationError() throws Exception {
+        // Given
+        EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
+                .withValidValues()
+                .withSourceCity("")
+                .withSourceDistrict("Maltepe")
+                .withTargetCity("")
+                .withTargetDistrict("Maltepe")
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockApplicationRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
+                .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
+    }
+
+    @Test
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenAllDistrictsAreBlank_thenReturnValidationError() throws Exception {
+        // Given
+        EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
+                .withValidValues()
+                .withSourceCity("Adana")
+                .withSourceDistrict("")
+                .withTargetCity("Adana")
+                .withTargetDistrict("")
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockApplicationRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
+                .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
+    }
+
+    @Test
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenAllCitiesAndDistrictsAreBlank_thenReturnValidationError() throws Exception {
+        // Given
+        EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
+                .withValidValues()
+                .withSourceCity("")
+                .withSourceDistrict("")
+                .withTargetCity("")
+                .withTargetDistrict("")
                 .build();
 
         // Then
