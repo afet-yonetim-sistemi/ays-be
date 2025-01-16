@@ -25,7 +25,7 @@ class PasswordValidator implements ConstraintValidator<Password, String> {
 
         if ((password.length() < 8) || (password.length() > 128)) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("size must be between 8 and 128")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("size must be between 8 and 128 characters.")
                     .addConstraintViolation();
             return false;
         }
