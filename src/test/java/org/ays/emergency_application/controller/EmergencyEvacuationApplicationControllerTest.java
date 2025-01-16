@@ -977,7 +977,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     }
 
     @Test
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenAllCitiesAreBlank_thenReturnValidationError() throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceCityAndTargetCityAreBlank_thenReturnValidationError() throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
@@ -1005,7 +1005,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     }
 
     @Test
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenAllDistrictsAreBlank_thenReturnValidationError() throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceDistrictAndTargetDistrictAreBlank_thenReturnValidationError() throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
