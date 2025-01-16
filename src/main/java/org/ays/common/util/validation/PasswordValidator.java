@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
 /**
- * Validator for password fields. This validator ensures that a password meets the minimum length requirement.
+ * Validator for password fields. This validator ensures that a password meets the minimum and maximum length requirement.
  */
 class PasswordValidator implements ConstraintValidator<Password, String> {
 
@@ -23,9 +23,9 @@ class PasswordValidator implements ConstraintValidator<Password, String> {
             return true;
         }
 
-        if (password.length() < 6) {
+        if ((password.length() < 8) || (password.length() > 128)) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("size must be at least 6 characters")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("size must be between 8 and 128")
                     .addConstraintViolation();
             return false;
         }
