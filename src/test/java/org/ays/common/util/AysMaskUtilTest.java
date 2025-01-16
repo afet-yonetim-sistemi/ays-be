@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 @Slf4j
+@SuppressWarnings("java:S5976")
 class AysMaskUtilTest extends AysUnitTest {
 
     @Test
