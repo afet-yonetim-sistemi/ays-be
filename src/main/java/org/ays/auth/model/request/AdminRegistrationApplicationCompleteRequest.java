@@ -15,8 +15,7 @@ import org.ays.common.util.validation.Password;
  * Represents a complete registration request for an admin user.
  *
  * <p>
- * Encapsulates the necessary information for completing the admin registration
- * process.
+ * Encapsulates the necessary information for completing the admin registration process.
  * </p>
  */
 @Getter
@@ -40,7 +39,6 @@ public class AdminRegistrationApplicationCompleteRequest {
 
     @EmailAddress
     @NotBlank
-    @Size(min = 6, max = 254)
     private String emailAddress;
 
     @NotBlank

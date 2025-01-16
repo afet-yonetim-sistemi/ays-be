@@ -76,7 +76,6 @@ public class EmergencyEvacuationApplicationRequest {
     @Valid
     private AysPhoneNumberRequest applicantPhoneNumber;
 
-    @NotNull
     private Boolean hasObstaclePersonExist;
 
     @JsonIgnore

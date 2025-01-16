@@ -17,8 +17,7 @@ import java.util.Set;
 /**
  * Request object for updating a user's details.
  * <p>
- * This class encapsulates the data required to update an existing user's
- * details.
+ * This class encapsulates the data required to update an existing user's details.
  * Each field is validated to ensure it meets the necessary requirements.
  */
 @Getter
@@ -37,7 +36,6 @@ public class AysUserUpdateRequest {
 
     @EmailAddress
     @NotBlank
-    @Size(min = 6, max = 254)
     private String emailAddress;
 
     @Valid

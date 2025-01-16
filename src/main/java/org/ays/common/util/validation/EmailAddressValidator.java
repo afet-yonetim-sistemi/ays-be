@@ -11,28 +11,26 @@ import org.springframework.util.StringUtils;
  */
 class EmailAddressValidator implements ConstraintValidator<EmailAddress, String> {
 
-    private static final String EMAIL_REGEX = "^(?!.*\\.\\.|.*--|.*-@|.*@\\.|.*\\.-|.*-\\.).+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private static final String EMAIL_REGEX =
+            "^(?!.*\\.\\.|.*--|.*-@|.*@\\.|.*\\.-|.*-\\.).+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     /**
      * Checks whether the given value is a valid email or not.
-     * <p>
-     * Some valid emails are:
-     * </p>
+     * <p>Some valid emails are:</p>
      * <ul>
-     * <li>user@example.com</li>
-     * <li>john.doe123@example.co.uk</li>
-     * <li>admin_123@example.org</li>
+     *     <li>user@example.com</li>
+     *     <li>john.doe123@example.co.uk</li>
+     *     <li>admin_123@example.org</li>
      * </ul>
      *
-     * <p>
-     * Some invalid emails are:
-     * </p>
+     * <p>Some invalid emails are:</p>
      * <ul>
-     * <li>user@invalid</li>
-     * <li>user@invalid!.com</li>
-     * <li>u@ser@.com</li>
-     * <li>user@..com</li>
-     * <li>user</li>
+     *     <li>user@invalid</li>
+     *     <li>user@invalid!.com</li>
+     *     <li>u@ser@.com</li>
+     *     <li>user@..com</li>
+     *     <li>user</li>
+     *     <li>a@b.c</li>
      * </ul>
      *
      * @param email object to validate
@@ -43,10 +41,6 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
 
         if (!StringUtils.hasText(email)) {
             return true;
-        }
-
-        if (email.length() < 6 || email.length() > 254) {
-            return this.buildViolation(constraintValidatorContext, "email length must be between 6 and 254 characters");
         }
 
         if (email.startsWith(" ") || email.endsWith(" ")) {
@@ -63,8 +57,7 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
 
         String[] parts = email.split("@", 2);
         if (parts[0].isEmpty() || !Character.isLetterOrDigit(parts[0].charAt(0))) {
-            return this.buildViolation(constraintValidatorContext,
-                    "email local part must start with a letter or number");
+            return this.buildViolation(constraintValidatorContext, "email local part must start with a letter or number");
         }
 
         String domainPart = parts[1];

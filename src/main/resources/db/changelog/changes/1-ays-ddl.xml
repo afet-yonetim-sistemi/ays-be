@@ -144,9 +144,7 @@
             <column name="IS_IN_PERSON" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="HAS_OBSTACLE_PERSON_EXIST" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
+            <column name="HAS_OBSTACLE_PERSON_EXIST" type="BOOLEAN"/>
             <column name="NOTES" type="VARCHAR(1000)"/>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
                 <constraints nullable="false"/>

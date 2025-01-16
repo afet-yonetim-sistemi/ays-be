@@ -93,8 +93,8 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
     @Column(name = "IS_IN_PERSON")
     private Boolean isInPerson;
 
-    @Column(name = "HAS_OBSTACLE_PERSON_EXIST", nullable = false)
-    private Boolean hasObstaclePersonExist = false;
+    @Column(name = "HAS_OBSTACLE_PERSON_EXIST")
+    private Boolean hasObstaclePersonExist;
 
     @Column(name = "NOTES")
     private String notes;

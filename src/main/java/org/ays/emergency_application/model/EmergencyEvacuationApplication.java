@@ -12,7 +12,8 @@ import org.ays.institution.model.Institution;
 
 /**
  * Represents an emergency evacuation application.
- * Extends {@link BaseDomainModel} and includes details such as personal and contact information,
+ * Extends {@link BaseDomainModel} and includes details such as personal and
+ * contact information,
  * location details, and application status.
  */
 @Getter
@@ -42,7 +43,6 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
 
     private Institution institution;
 
-
     /**
      * Checks if the application does not have an associated institution.
      *
@@ -62,7 +62,6 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
         return this.institution.getId().equals(institutionId);
     }
 
-
     /**
      * Marks the emergency evacuation application as pending.
      * Generates a reference number and updates the status to pending.
@@ -72,12 +71,14 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
         this.referenceNumber = AysRandomUtil.generateNumber(10).toString();
         this.status = EmergencyEvacuationApplicationStatus.PENDING;
         this.isInPerson = this.applicantPhoneNumber == null;
+        this.hasObstaclePersonExist = null;
     }
 
     /**
      * Sets the institution ID for the application.
      *
-     * @param institutionId the ID of the institution to associate with the application.
+     * @param institutionId the ID of the institution to associate with the
+     *                      application.
      */
     public void setInstitutionId(final String institutionId) {
         this.institution = Institution.builder()
