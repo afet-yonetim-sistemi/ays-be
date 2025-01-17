@@ -21,8 +21,7 @@ import org.ays.institution.model.entity.InstitutionEntity;
 
 /**
  * A JPA entity class that represents an emergency evacuation entity.
- * The emergency evacuation applications are defined in the
- * AYS_EMERGENCY_EVACUATION_APPLICATION table in the database.
+ * The emergency evacuation applications are defined in the AYS_EMERGENCY_EVACUATION_APPLICATION table in the database.
  */
 @Entity
 @Getter

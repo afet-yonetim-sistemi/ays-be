@@ -14,10 +14,8 @@ import org.ays.common.util.validation.Name;
 import org.hibernate.validator.constraints.Range;
 
 /**
- * Represents a request to complete emergency evacuation request. The request
- * includes fields for the required user
- * information, such as the user's phone number, as well as their first and last
- * name.
+ * Represents a request to complete emergency evacuation request. The request includes fields for the required user
+ * information, such as the user's phone number, as well as their first and last name.
  */
 @Getter
 @Setter
@@ -76,15 +74,13 @@ public class EmergencyEvacuationApplicationRequest {
     @Valid
     private AysPhoneNumberRequest applicantPhoneNumber;
 
-    private Boolean hasObstaclePersonExist;
-
     @JsonIgnore
     @AssertTrue(message = "all applicant fields must be filled")
     @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isAllApplicantFieldsFilled() {
 
-        if (StringUtils.isEmpty(this.applicantFirstName) && StringUtils.isEmpty(this.applicantLastName)
-                && this.applicantPhoneNumber == null) {
+        if (StringUtils.isEmpty(this.applicantFirstName) &&
+                StringUtils.isEmpty(this.applicantLastName) && this.applicantPhoneNumber == null) {
             return true;
         }
 
@@ -92,8 +88,8 @@ public class EmergencyEvacuationApplicationRequest {
                 &&
                 this.applicantPhoneNumber != null
                 &&
-                !(StringUtils.isBlank(this.applicantPhoneNumber.getCountryCode())
-                        && StringUtils.isBlank(this.applicantPhoneNumber.getLineNumber()));
+                !(StringUtils.isBlank(this.applicantPhoneNumber.getCountryCode()) &&
+                        StringUtils.isBlank(this.applicantPhoneNumber.getLineNumber()));
     }
 
     @JsonIgnore
@@ -105,8 +101,8 @@ public class EmergencyEvacuationApplicationRequest {
             return true;
         }
 
-        if (StringUtils.isEmpty(this.applicantPhoneNumber.getLineNumber())
-                || StringUtils.isEmpty(this.phoneNumber.getLineNumber())) {
+        if (StringUtils.isEmpty(this.applicantPhoneNumber.getLineNumber()) ||
+                StringUtils.isEmpty(this.phoneNumber.getLineNumber())) {
             return true;
         }
 
