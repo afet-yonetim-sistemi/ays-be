@@ -69,6 +69,10 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
             return this.buildViolation(constraintValidatorContext, "email is not in a valid format");
         }
 
+        if (email.length() < 6 || email.length() > 254) {
+            return this.buildViolation(constraintValidatorContext, "length must be between 6 and 254 characters");
+        }
+
         return true;
     }
 
