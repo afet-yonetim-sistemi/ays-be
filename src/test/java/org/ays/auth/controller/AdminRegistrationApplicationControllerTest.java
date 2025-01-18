@@ -662,7 +662,8 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "g",
-            "gfh2j"
+            "g.h2j5L",
+            "uqTY6zlNlPgQZtyaRIVNPEAaLAPdOxEhmLWcoCcR4TbkLWedAcaHa96ZYXdrvor7qhN8B5ccms06NfbzVG2gzq0DWkHLxQupzmmbH3W9UhrnLS0LjuBVgOjQEoyaXesrJ"
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithInvalidPassword_whenPasswordDoesNotValid_thenReturnValidationError(String mockPassword) throws Exception {
 
