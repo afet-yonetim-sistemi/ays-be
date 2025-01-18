@@ -477,10 +477,8 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
 
                 Assertions.assertTrue(applicationFromDatabase.isPresent());
                 Assertions.assertNotNull(applicationFromDatabase.get().getInstitution());
-                Assertions.assertEquals(applicationFromDatabase.get().getSeatingCount(),
-                                updateRequest.getSeatingCount());
-                Assertions.assertEquals(applicationFromDatabase.get().getHasObstaclePersonExist(),
-                                updateRequest.getHasObstaclePersonExist());
+                Assertions.assertEquals(applicationFromDatabase.get().getSeatingCount(), updateRequest.getSeatingCount());
+                Assertions.assertEquals(applicationFromDatabase.get().getHasObstaclePersonExist(), updateRequest.getHasObstaclePersonExist());
                 Assertions.assertEquals(applicationFromDatabase.get().getStatus(), updateRequest.getStatus());
                 Assertions.assertEquals(applicationFromDatabase.get().getNotes(), updateRequest.getNotes());
                 Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedUser());
