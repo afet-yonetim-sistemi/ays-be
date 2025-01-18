@@ -12,12 +12,11 @@ public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<Emergency
 
     public EmergencyEvacuationRequestBuilder withValidValues() {
         return this
-                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
-                .withAddress("Lorem Ipsum is simply dummy text of the printing and typesetting industry.")
                 .withSeatingCount(1)
-                .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build());
+                .withPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
+                .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
+                .withAddress("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
     }
-
     public EmergencyEvacuationRequestBuilder withFirstName(String firstName) {
         data.setFirstName(firstName);
         return this;

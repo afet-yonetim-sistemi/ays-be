@@ -43,6 +43,10 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
             return true;
         }
 
+        if (email.length() <= 6 || email.length() >= 254) {
+            return this.buildViolation(constraintValidatorContext, "length must be between 6 and 254 characters");
+        }
+
         if (email.startsWith(" ") || email.endsWith(" ")) {
             return this.buildViolation(constraintValidatorContext, "email must not start or end with whitespace");
         }
@@ -67,10 +71,6 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
 
         if (!email.matches(EMAIL_REGEX)) {
             return this.buildViolation(constraintValidatorContext, "email is not in a valid format");
-        }
-
-        if (email.length() < 6 || email.length() > 254) {
-            return this.buildViolation(constraintValidatorContext, "length must be between 6 and 254 characters");
         }
 
         return true;
