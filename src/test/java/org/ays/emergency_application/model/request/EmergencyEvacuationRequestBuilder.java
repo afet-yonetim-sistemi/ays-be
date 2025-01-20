@@ -17,6 +17,7 @@ public class EmergencyEvacuationRequestBuilder extends TestDataBuilder<Emergency
                 .withApplicantPhoneNumber(new AysPhoneNumberRequestBuilder().withValidValues().build())
                 .withAddress("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
     }
+
     public EmergencyEvacuationRequestBuilder withFirstName(String firstName) {
         data.setFirstName(firstName);
         return this;

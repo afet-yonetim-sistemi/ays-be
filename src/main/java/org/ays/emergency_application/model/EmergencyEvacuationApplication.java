@@ -41,6 +41,7 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
     private String notes;
     private Institution institution;
 
+
     /**
      * Checks if the application does not have an associated institution.
      *
