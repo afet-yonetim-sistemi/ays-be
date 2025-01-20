@@ -39,6 +39,7 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
     private Boolean isInPerson;
     private Boolean hasObstaclePersonExist;
     private String notes;
+
     private Institution institution;
 
 
