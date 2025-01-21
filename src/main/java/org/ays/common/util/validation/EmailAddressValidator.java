@@ -24,34 +24,56 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
     );
 
     /**
-     * Checks whether the given value is a valid email or not.
+     * Checks whether the given value is a valid emailAddress or not.
+     *
      * <p>Some valid emails are:</p>
      * <ul>
-     *     <li>user@example.com</li>
-     *     <li>john.doe123@example.co.uk</li>
-     *     <li>admin_123@example.org</li>
+     * <li>abcdef@mail.com</li>
+     * <li>abc+def@archive.com</li>
+     * <li>john.doe123@example.co.uk</li>
+     * <li>admin_123@example.org</li>
+     * <li>admin-test@ays.com</li>
+     * <li>johndoe@gmail.com</li>
+     * <li>janedoe123@yahoo.com</li>
+     * <li>michael.jordan@nba.com</li>
+     * <li>alice.smith@company.co.uk</li>
+     * <li>info@mywebsite.org</li>
+     * <li>support@helpdesk.net</li>
      * </ul>
      *
      * <p>Some invalid emails are:</p>
      * <ul>
-     *     <li>user@invalid</li>
-     *     <li>user@invalid!.com</li>
-     *     <li>u@ser@.com</li>
-     *     <li>user@..com</li>
-     *     <li>user</li>
+     * <li>plainaddress</li>
+     * <li>@missingusername.com</li>
+     * <li>username@.com</li>
+     * <li>username@gmail</li>
+     * <li>username@gmail..com</li>
+     * <li>username@gmail.c</li>
+     * <li>username@-gmail.com</li>
+     * <li>username@gmail-.com</li>
+     * <li>username@gmail.com.</li>
+     * <li>username@.gmail.com</li>
+     * <li>username@gmail@gmail.com</li>
+     * <li>username(john.doe)@gmail.com</li>
+     * <li>user@domain(comment).com</li>
+     * <li>usernamegmail.com</li>
+     * <li>username@gmail,com</li>
+     * <li>username@gmail space.co</li>
+     * <li>username@gmail..co.uk</li>
+     * <li>user#gmail.com</li>
      * </ul>
      *
-     * @param email object to validate
+     * @param emailAddress object to validate
      * @return true if the value is valid, false otherwise
      */
     @Override
-    public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String emailAddress, ConstraintValidatorContext constraintValidatorContext) {
 
-        if (!StringUtils.hasText(email)) {
+        if (!StringUtils.hasText(emailAddress)) {
             return true;
         }
 
-        return EMAIL_REGEX.matcher(email).matches();
+        return EMAIL_REGEX.matcher(emailAddress).matches();
     }
 
 }
