@@ -4,6 +4,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
+import java.util.regex.Pattern;
+
 /**
  * A custom validator implementation for the {@link EmailAddress} annotation.
  * Validates whether the provided email matches a specified set of rules
@@ -11,8 +13,15 @@ import org.springframework.util.StringUtils;
  */
 class EmailAddressValidator implements ConstraintValidator<EmailAddress, String> {
 
-    private static final String EMAIL_REGEX =
-            "^(?!.*\\.\\.|.*--|.*-@|.*@\\.|.*\\.-|.*-\\.).+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    @SuppressWarnings("java:S5998")
+    private static final Pattern EMAIL_REGEX = Pattern.compile(
+            "^(?!.*\\.{2})" +
+                    "[\\p{Alnum}][\\p{Alnum}._%+\\-]*" +
+                    "@" +
+                    "(?!-)(?:[\\p{Alnum}]+(?<!-)\\.)+" +
+                    "[\\p{Alpha}]{2,}$",
+            Pattern.UNICODE_CHARACTER_CLASS
+    );
 
     /**
      * Checks whether the given value is a valid email or not.
@@ -42,38 +51,7 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
             return true;
         }
 
-        if (email.startsWith(" ") || email.endsWith(" ")) {
-            return this.buildViolation(constraintValidatorContext, "email must not start or end with whitespace");
-        }
-
-        if (email.chars().filter(ch -> ch == '@').count() != 1) {
-            return this.buildViolation(constraintValidatorContext, "email must contain exactly one '@' character");
-        }
-
-        if (email.matches(".*[()#\\[\\]\";,\\s].*")) {
-            return this.buildViolation(constraintValidatorContext, "email contains invalid special characters");
-        }
-
-        String[] parts = email.split("@", 2);
-        if (parts[0].isEmpty() || !Character.isLetterOrDigit(parts[0].charAt(0))) {
-            return this.buildViolation(constraintValidatorContext, "email local part must start with a letter or number");
-        }
-
-        String domainPart = parts[1];
-        if (domainPart.startsWith("-") || domainPart.endsWith("-")) {
-            return this.buildViolation(constraintValidatorContext, "domain must not start or end with a hyphen");
-        }
-
-        if (!email.matches(EMAIL_REGEX)) {
-            return this.buildViolation(constraintValidatorContext, "email is not in a valid format");
-        }
-
-        return true;
+        return EMAIL_REGEX.matcher(email).matches();
     }
 
-    private boolean buildViolation(ConstraintValidatorContext constraintValidatorContext, String message) {
-        constraintValidatorContext.disableDefaultConstraintViolation();
-        constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-        return false;
-    }
 }
