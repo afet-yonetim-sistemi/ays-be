@@ -2,8 +2,8 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysEmailAddressNotValidException;
-import org.ays.auth.exception.AysUserNotActiveException;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
+import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
 import org.ays.auth.model.AysRole;
@@ -52,7 +52,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      *
      * @param forgotPasswordRequest the request containing the user's email address.
      * @throws AysEmailAddressNotValidException if the email address does not correspond to any existing user.
-     * @throws AysUserNotActiveException if the user status is not active.
+     * @throws AysUserNotActiveAuthException if the user status is not active.
      * @throws AysUserDoesNotAccessPageException if the user lacks permission to access the source page.
      */
     @Override
@@ -64,7 +64,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
                 .orElseThrow(() -> new AysEmailAddressNotValidException(emailAddress));
 
         if(!user.isActive()) {
-            throw new AysUserNotActiveException(user.getStatus());
+            throw new AysUserNotActiveAuthException(user.getStatus());
         }
 
         this.validateUserSourcePagePermission(user);

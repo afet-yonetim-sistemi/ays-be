@@ -6,7 +6,7 @@ import org.ays.auth.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
 import org.ays.auth.exception.AysUserIsNotActiveOrPassiveException;
-import org.ays.auth.exception.AysUserNotActiveException;
+import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.exception.AysUserNotExistByIdException;
 import org.ays.auth.exception.AysUserNotPassiveException;
 import org.ays.auth.model.AysIdentity;
@@ -986,7 +986,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserNotActiveException.class,
+                AysUserNotActiveAuthException.class,
                 () -> userUpdateService.passivate(mockId)
         );
 

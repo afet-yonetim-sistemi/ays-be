@@ -1,6 +1,6 @@
 package org.ays.auth.service;
 
-import org.ays.auth.exception.AysUserNotActiveException;
+import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.exception.AysUserNotExistByIdException;
 import org.ays.auth.exception.AysUserNotPassiveException;
 import org.ays.auth.model.request.AysUserUpdateRequest;
@@ -31,7 +31,7 @@ public interface AysUserUpdateService {
      *
      * @param id The unique identifier of the user to be passivated.
      * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
-     * @throws AysUserNotActiveException    if the user is not in an active state.
+     * @throws AysUserNotActiveAuthException    if the user is not in an active state.
      */
     void passivate(String id);
 

@@ -6,7 +6,7 @@ import org.ays.auth.exception.AysEmailAddressNotValidException;
 import org.ays.auth.exception.AysPasswordNotValidException;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
 import org.ays.auth.exception.AysUserIdNotValidException;
-import org.ays.auth.exception.AysUserNotActiveException;
+import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysToken;
@@ -64,7 +64,7 @@ class AysAuthServiceImpl implements AysAuthService {
      * @return {@link AysToken} representing the access token generated upon successful authentication.
      * @throws AysEmailAddressNotValidException  If the provided email address is not valid or does not exist.
      * @throws AysPasswordNotValidException      If the provided password is not valid.
-     * @throws AysUserNotActiveException         If the user's status is not active.
+     * @throws AysUserNotActiveAuthException         If the user's status is not active.
      * @throws AysUserDoesNotAccessPageException If the user does not have permission to access the requested page.
      */
     @Override
@@ -125,7 +125,7 @@ class AysAuthServiceImpl implements AysAuthService {
      * @param refreshToken The refresh token used to generate a new access token.
      * @return A new {@link AysToken} containing the refreshed access token.
      * @throws AysUserIdNotValidException If the user ID extracted from the refresh token is not valid.
-     * @throws AysUserNotActiveException  If the user associated with the refresh token is not active.
+     * @throws AysUserNotActiveAuthException  If the user associated with the refresh token is not active.
      */
     @Override
     public AysToken refreshAccessToken(final String refreshToken) {
@@ -151,15 +151,15 @@ class AysAuthServiceImpl implements AysAuthService {
 
     /**
      * Validates the status of the user.
-     * Throws {@link AysUserNotActiveException} if the user is not active.
+     * Throws {@link AysUserNotActiveAuthException} if the user is not active.
      *
      * @param user The {@link AysUser} object whose status needs to be validated.
-     * @throws AysUserNotActiveException If the user is not active.
+     * @throws AysUserNotActiveAuthException If the user is not active.
      */
     private void validateUserStatus(final AysUser user) {
 
         if (!user.isActive()) {
-            throw new AysUserNotActiveException(user.getId());
+            throw new AysUserNotActiveAuthException(user.getId());
         }
     }
 

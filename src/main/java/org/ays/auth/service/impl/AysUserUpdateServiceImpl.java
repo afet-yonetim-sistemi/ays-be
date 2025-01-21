@@ -141,7 +141,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
         if (!user.isActive()) {
-            throw new AysUserNotActiveException(id);
+            throw new AysUserNotActiveException();
         }
 
         user.passivate();
