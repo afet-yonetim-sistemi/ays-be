@@ -1,8 +1,5 @@
 package org.ays.auth.service.impl;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysRolesNotExistException;
 import org.ays.auth.exception.AysUserAlreadyDeletedException;
@@ -24,6 +21,10 @@ import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Service implementation for updating users.
