@@ -1,5 +1,8 @@
 package org.ays.auth.service.impl;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysRolesNotExistException;
 import org.ays.auth.exception.AysUserAlreadyDeletedException;
@@ -13,7 +16,6 @@ import org.ays.auth.exception.AysUserNotPassiveException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysUserUpdateRequest;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
@@ -22,10 +24,6 @@ import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPhoneNumber;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Service implementation for updating users.
@@ -119,7 +117,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
         if (!user.isPassive()) {
-            throw new AysUserNotPassiveException(AysUserStatus.PASSIVE);
+            throw new AysUserNotPassiveException();
         }
 
         user.activate();

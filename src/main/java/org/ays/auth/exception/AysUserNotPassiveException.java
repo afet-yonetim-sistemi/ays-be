@@ -1,15 +1,13 @@
 package org.ays.auth.exception;
 
-import org.ays.auth.model.enums.AysUserStatus;
-import org.ays.common.exception.AysNotExistException;
-
 import java.io.Serial;
+import org.ays.common.exception.AysConflictException;
 
 /**
  Exception thrown when a user does not in a passive state.
- * This exception extends {@link AysNotExistException}.
+ * This exception extends {@link AysConflictException}.
  */
-public final class AysUserNotPassiveException extends AysNotExistException {
+public final class AysUserNotPassiveException extends AysConflictException {
 
     /**
      * Unique serial version ID.
@@ -18,11 +16,10 @@ public final class AysUserNotPassiveException extends AysNotExistException {
     private static final long serialVersionUID = 3508025652421021710L;
 
     /**
-     * Constructs a new {@link AysNotExistException} with the specified detail message.
+     * Constructs a new {@link AysConflictException} with the specified detail message.
      *
-     * @param status the detail message.
      */
-    public AysUserNotPassiveException(AysUserStatus status) {
-        super("user status is not with " + status.toString().toLowerCase() + "!");
+    public AysUserNotPassiveException() {
+        super("user is already active!");
     }
 }
