@@ -90,7 +90,7 @@ class AysMaskUtilTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidValidationErrorJsonWith3CharsInvalidPassword_whenMasked_thenAllCharsAreMasked() throws JsonProcessingException {
+    void givenValidValidationErrorJsonWith130CharsInvalidPassword_whenMasked_thenAllCharsAreMasked() throws JsonProcessingException {
 
         // Given
         String mockRawJson = """
@@ -103,7 +103,7 @@ class AysMaskUtilTest extends AysUnitTest {
                         {
                             "message": "size must be between 8 and 128 characters.",
                             "field": "password",
-                            "value": "ds",
+                            "value": "NatoquevitaeQuisqueornareSapiensenectusPercrasVulputateorciUrnfendacTemporvariusCuraebibendumVitaeacLiberomorbiIaculisinceptosEteu",
                             "type": "String"
                         }
                     ]
@@ -120,7 +120,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"ahm******org\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"******\""));
     }
 
 
