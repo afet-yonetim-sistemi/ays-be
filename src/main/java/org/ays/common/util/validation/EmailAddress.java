@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to validate email using {@link EmailAddressValidator}.
+ * Annotation to validate emailAddress using {@link EmailAddressValidator}.
  */
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 public @interface EmailAddress {
 
     /**
-     * Returns the error message when email is not valid.
+     * Returns the error message when emailAddress is not valid.
      *
      * @return the error message
      */

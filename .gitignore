@@ -27,7 +27,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-/db
+/docker/mysql
 
 ### STS ###
 .apt_generated
@@ -64,4 +64,3 @@ build/
 .env
 
 settings.xml
-/.logs

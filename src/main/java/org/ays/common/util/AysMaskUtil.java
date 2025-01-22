@@ -15,6 +15,7 @@ import java.util.Iterator;
  * It is designed to handle common sensitive fields such as tokens, passwords, email addresses, and more.
  * </p>
  *
+ * <p><strong>Example Usage:</strong></p>
  * <p><strong>Unmasked JSON:</strong></p>
  * <pre>
  * {
@@ -33,9 +34,9 @@ import java.util.Iterator;
  *   "emailAddress": "tes******com",
  *   "password": "******",
  *   "lineNumber": "******7890",
- *   "address": "123 Main ******field",
- *   "firstName": "Joh******ohn",
- *   "lastName": "Doe******oe"
+ *   "address": "123 M******field",
+ *   "firstName": "J******",
+ *   "lastName": "D******"
  * }
  * </pre>
  */
@@ -47,35 +48,14 @@ public class AysMaskUtil {
     /**
      * Masks sensitive fields in the given {@link JsonNode}.
      * <p>
-     * This method recursively iterates through the fields in the JSON object or array,
-     * and applies masking to fields identified as sensitive.
+     * This method recursively processes the fields in the JSON object or array,
+     * applying masking to sensitive fields based on their names. The masking logic
+     * is determined by the field name and uses predefined rules for known sensitive fields.
      * </p>
      *
      * @param jsonNode the JSON node to process for masking
      */
     public static void mask(final JsonNode jsonNode) {
-
-        if (jsonNode.isObject()) {
-
-            ObjectNode objectNode = (ObjectNode) jsonNode;
-            Iterator<String> fieldNames = objectNode.fieldNames();
-
-            while (fieldNames.hasNext()) {
-
-                String fieldName = fieldNames.next();
-                JsonNode fieldValue = objectNode.get(fieldName);
-
-                if (fieldValue.isValueNode()) {
-                    String maskedValue = mask(fieldName, fieldValue.asText());
-                    objectNode.put(fieldName, maskedValue);
-                    continue;
-                }
-
-                mask(fieldValue);
-            }
-
-            return;
-        }
 
         if (jsonNode.isArray()) {
             ArrayNode arrayNode = (ArrayNode) jsonNode;
@@ -83,13 +63,35 @@ public class AysMaskUtil {
                 mask(arrayElement);
             }
         }
+
+        if (!jsonNode.isObject()) {
+            return;
+        }
+
+        ObjectNode objectNode = (ObjectNode) jsonNode;
+        Iterator<String> fieldNames = objectNode.fieldNames();
+
+        while (fieldNames.hasNext()) {
+
+            String fieldName = fieldNames.next();
+            JsonNode fieldValue = objectNode.get(fieldName);
+
+            if (fieldValue.isValueNode()) {
+                String maskedValue = mask(fieldName, fieldValue.asText());
+                objectNode.put(fieldName, maskedValue);
+                continue;
+            }
+
+            mask(fieldValue);
+        }
+
     }
 
     /**
      * Masks the value of a specific field based on its name.
      * <p>
-     * This method identifies sensitive fields by their names and applies the appropriate
-     * masking strategy. Fields not recognized as sensitive are returned without modification.
+     * Sensitive fields such as "Authorization", "accessToken", and "password" are masked using specific
+     * rules. Fields not recognized as sensitive remain unchanged.
      * </p>
      *
      * @param field the name of the field
@@ -103,7 +105,7 @@ public class AysMaskUtil {
         }
 
         return switch (field) {
-            case "Authorization", "accessToken", "refreshToken" -> maskToken(value);
+            case "Authorization", "authorization", "accessToken", "refreshToken" -> maskToken(value);
             case "password" -> maskPassword();
             case "emailAddress" -> maskEmailAddress(value);
             case "lineNumber" -> maskLineNumber(value);
@@ -114,7 +116,7 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks token fields such as "Authorization", "accessToken", or "refreshToken".
+     * Masks token fields such as "Authorization", "authorization", "accessToken", or "refreshToken".
      *
      * @param value the token value to mask
      * @return the masked token
@@ -157,7 +159,7 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks address fields by revealing the first ten and last ten characters,
+     * Masks address fields by revealing the first five and last five characters,
      * replacing the middle part with asterisks.
      *
      * @param value the address to mask
@@ -165,11 +167,11 @@ public class AysMaskUtil {
      */
     private static String maskAddress(String value) {
 
-        if (value.length() <= 10) {
-            return value;
+        if (value.length() <= 20) {
+            return value.charAt(0) + MASKED_VALUE;
         }
 
-        return value.substring(0, 10) + MASKED_VALUE + value.substring(value.length() - 10);
+        return value.substring(0, 5) + MASKED_VALUE + value.substring(value.length() - 5);
     }
 
     /**
@@ -188,19 +190,19 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks name fields such as "firstName", "lastName", or similar by revealing the first three
-     * and last three characters, replacing the middle part with asterisks.
+     * Masks name fields by revealing the first character,
+     * replacing the remaining part with asterisks.
      *
      * @param value the name to mask
      * @return the masked name
      */
     private static String maskName(String value) {
 
-        if (value.length() <= 3) {
+        if (value.length() <= 1) {
             return value;
         }
 
-        return value.substring(0, 3) + MASKED_VALUE + value.substring(value.length() - 3);
+        return value.charAt(0) + MASKED_VALUE;
     }
 
 }
