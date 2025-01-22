@@ -14,7 +14,7 @@ public final class AysUserNotActiveAuthException extends AysAuthException {
      * Unique identifier for serialization.
      */
     @Serial
-    private static final long serialVersionUID = -5218287176856317070L;
+    private static final long serialVersionUID = -3010480609839859754L;
 
     /**
      * Constructs a new AysUserNotActiveAuthException with the specified userId.

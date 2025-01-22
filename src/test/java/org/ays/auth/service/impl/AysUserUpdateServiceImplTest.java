@@ -5,8 +5,9 @@ import org.ays.auth.exception.AysRolesNotExistException;
 import org.ays.auth.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
+import org.ays.auth.exception.AysUserAlreadyPassiveException;
 import org.ays.auth.exception.AysUserIsNotActiveOrPassiveException;
-import org.ays.auth.exception.AysUserNotActiveAuthException;
+import org.ays.auth.exception.AysUserNotActiveException;
 import org.ays.auth.exception.AysUserNotExistByIdException;
 import org.ays.auth.exception.AysUserNotPassiveException;
 import org.ays.auth.model.AysIdentity;
@@ -962,6 +963,46 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
+    void givenValidId_whenUserIsAlreadyPassive_thenThrowAysUserAlreadyPassiveException() {
+
+        // Given
+        String mockId = "b64ef470-6842-400f-ba23-2379c589095c";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withInstitution(mockInstitution)
+                .withStatus(AysUserStatus.PASSIVE)
+                .build();
+
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserAlreadyPassiveException.class,
+                () -> userUpdateService.passivate(mockId)
+        );
+
+        // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @Test
     void givenValidId_whenUserIsNotActive_thenThrowAysUserNotActiveException() {
 
         // Given
@@ -978,7 +1019,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .withId(mockId)
                 .withInstitution(mockInstitution)
-                .withStatus(AysUserStatus.PASSIVE) // Not active
+                .withStatus(AysUserStatus.NOT_VERIFIED)
                 .build();
 
         Mockito.when(userReadPort.findById(Mockito.anyString()))
@@ -986,7 +1027,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserNotActiveAuthException.class,
+                AysUserNotActiveException.class,
                 () -> userUpdateService.passivate(mockId)
         );
 

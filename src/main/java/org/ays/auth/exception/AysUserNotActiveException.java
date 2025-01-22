@@ -18,8 +18,11 @@ public final class AysUserNotActiveException extends AysConflictException {
 
     /**
      * Constructs a new {@link AysUserNotActiveException} with the specified detail message.
+     *
+     * @param userId the id of the user that is not active
      */
-    public AysUserNotActiveException() {
-        super("user is already passive!");
+    public AysUserNotActiveException(String userId) {
+        super("user is not active! userId:" + userId);
     }
+
 }
