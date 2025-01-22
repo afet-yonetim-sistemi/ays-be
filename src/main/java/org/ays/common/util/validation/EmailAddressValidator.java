@@ -4,6 +4,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
+import java.util.regex.Pattern;
+
 /**
  * A custom validator implementation for the {@link EmailAddress} annotation.
  * Validates whether the provided email matches a specified set of rules
@@ -11,69 +13,67 @@ import org.springframework.util.StringUtils;
  */
 class EmailAddressValidator implements ConstraintValidator<EmailAddress, String> {
 
-    private static final String EMAIL_REGEX =
-            "^(?!.*\\.\\.|.*--|.*-@|.*@\\.|.*\\.-|.*-\\.).+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    @SuppressWarnings("java:S5998")
+    private static final Pattern EMAIL_REGEX = Pattern.compile(
+            "^(?!.*\\.{2})" +
+                    "[\\p{Alnum}][\\p{Alnum}._%+\\-]*" +
+                    "@" +
+                    "(?!-)(?:[\\p{Alnum}]+(?<!-)\\.)+" +
+                    "[\\p{Alpha}]{2,}$",
+            Pattern.UNICODE_CHARACTER_CLASS
+    );
 
     /**
-     * Checks whether the given value is a valid email or not.
+     * Checks whether the given value is a valid emailAddress or not.
+     *
      * <p>Some valid emails are:</p>
      * <ul>
-     *     <li>user@example.com</li>
-     *     <li>john.doe123@example.co.uk</li>
-     *     <li>admin_123@example.org</li>
+     * <li>abcdef@mail.com</li>
+     * <li>abc+def@archive.com</li>
+     * <li>john.doe123@example.co.uk</li>
+     * <li>admin_123@example.org</li>
+     * <li>admin-test@ays.com</li>
+     * <li>johndoe@gmail.com</li>
+     * <li>janedoe123@yahoo.com</li>
+     * <li>michael.jordan@nba.com</li>
+     * <li>alice.smith@company.co.uk</li>
+     * <li>info@mywebsite.org</li>
+     * <li>support@helpdesk.net</li>
      * </ul>
      *
      * <p>Some invalid emails are:</p>
      * <ul>
-     *     <li>user@invalid</li>
-     *     <li>user@invalid!.com</li>
-     *     <li>u@ser@.com</li>
-     *     <li>user@..com</li>
-     *     <li>user</li>
+     * <li>plainaddress</li>
+     * <li>@missingusername.com</li>
+     * <li>username@.com</li>
+     * <li>username@gmail</li>
+     * <li>username@gmail..com</li>
+     * <li>username@gmail.c</li>
+     * <li>username@-gmail.com</li>
+     * <li>username@gmail-.com</li>
+     * <li>username@gmail.com.</li>
+     * <li>username@.gmail.com</li>
+     * <li>username@gmail@gmail.com</li>
+     * <li>username(john.doe)@gmail.com</li>
+     * <li>user@domain(comment).com</li>
+     * <li>usernamegmail.com</li>
+     * <li>username@gmail,com</li>
+     * <li>username@gmail space.co</li>
+     * <li>username@gmail..co.uk</li>
+     * <li>user#gmail.com</li>
      * </ul>
      *
-     * @param email object to validate
+     * @param emailAddress object to validate
      * @return true if the value is valid, false otherwise
      */
     @Override
-    public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String emailAddress, ConstraintValidatorContext constraintValidatorContext) {
 
-        if (!StringUtils.hasText(email)) {
+        if (!StringUtils.hasText(emailAddress)) {
             return true;
         }
 
-        if (email.startsWith(" ") || email.endsWith(" ")) {
-            return this.buildViolation(constraintValidatorContext, "email must not start or end with whitespace");
-        }
-
-        if (email.chars().filter(ch -> ch == '@').count() != 1) {
-            return this.buildViolation(constraintValidatorContext, "email must contain exactly one '@' character");
-        }
-
-        if (email.matches(".*[()#\\[\\]\";,\\s].*")) {
-            return this.buildViolation(constraintValidatorContext, "email contains invalid special characters");
-        }
-
-        String[] parts = email.split("@", 2);
-        if (parts[0].isEmpty() || !Character.isLetterOrDigit(parts[0].charAt(0))) {
-            return this.buildViolation(constraintValidatorContext, "email local part must start with a letter or number");
-        }
-
-        String domainPart = parts[1];
-        if (domainPart.startsWith("-") || domainPart.endsWith("-")) {
-            return this.buildViolation(constraintValidatorContext, "domain must not start or end with a hyphen");
-        }
-
-        if (!email.matches(EMAIL_REGEX)) {
-            return this.buildViolation(constraintValidatorContext, "email is not in a valid format");
-        }
-
-        return true;
+        return EMAIL_REGEX.matcher(emailAddress).matches();
     }
 
-    private boolean buildViolation(ConstraintValidatorContext constraintValidatorContext, String message) {
-        constraintValidatorContext.disableDefaultConstraintViolation();
-        constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-        return false;
-    }
 }

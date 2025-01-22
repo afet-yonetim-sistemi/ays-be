@@ -363,12 +363,26 @@ class AysUserControllerTest extends AysRestControllerTest {
     }
 
 
-    @Test
-    void givenUserCreateRequest_whenUserCreated_thenReturnSuccess() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abcdef@mail.com",
+            "abc+def@archive.com",
+            "john.doe123@example.co.uk",
+            "admin_123@example.org",
+            "admin-test@ays.com",
+            "johndoe@gmail.com",
+            "janedoe123@yahoo.com",
+            "michael.jordan@nba.com",
+            "alice.smith@company.co.uk",
+            "info@mywebsite.org",
+            "support@helpdesk.net"
+    })
+    void givenUserCreateRequest_whenUserCreated_thenReturnSuccess(String mockEmailAddress) throws Exception {
 
         // Given
         AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
                 .withValidValues()
+                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // When
@@ -507,26 +521,24 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "abc.def@mail.c",
-            "abc.def@mail#archive.com",
-            "abc.def@mail",
-            "abcdef@mail..com",
-            "abc-@mail.com",
-            "admin@test@ays.com",
-            "admintest@ays..com",
+            "plainaddress",
+            "@missingusername.com",
+            "username@.com",
+            "username@gmail",
+            "username@gmail..com",
+            "username@gmail.c",
+            "username@-gmail.com",
+            "username@gmail-.com",
+            "username@gmail.com.",
+            "username@.gmail.com",
+            "username@gmail@gmail.com",
+            "username(john.doe)@gmail.com",
+            "user@domain(comment).com",
+            "usernamegmail.com",
+            "username@gmail,com",
+            "username@gmail space.co",
             "username@gmail..co.uk",
-            "user@ example.com",
-            "user@-example.com",
-            "user@example-.com",
-            "(user)@example.com",
-            "user@[192.168.1.1",
-            "user@exam ple.com",
-            "user@.com",
-            ".user@example.com",
-            "  user@example.com",
-            "user@example.com ",
-            " user@example.com ",
-            "@missingusername.com"
+            "user#gmail.com"
     })
     void givenUserCreateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
@@ -555,13 +567,27 @@ class AysUserControllerTest extends AysRestControllerTest {
     }
 
 
-    @Test
-    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abcdef@mail.com",
+            "abc+def@archive.com",
+            "john.doe123@example.co.uk",
+            "admin_123@example.org",
+            "admin-test@ays.com",
+            "johndoe@gmail.com",
+            "janedoe123@yahoo.com",
+            "michael.jordan@nba.com",
+            "alice.smith@company.co.uk",
+            "info@mywebsite.org",
+            "support@helpdesk.net"
+    })
+    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess(String mockEmailAddress) throws Exception {
 
         // Given
         String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
+                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // When
@@ -737,26 +763,24 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "abc.def@mail.c",
-            "abc.def@mail#archive.com",
-            "abc.def@mail",
-            "abcdef@mail..com",
-            "abc-@mail.com",
-            "admin@test@ays.com",
-            "admintest@ays..com",
+            "plainaddress",
+            "@missingusername.com",
+            "username@.com",
+            "username@gmail",
+            "username@gmail..com",
+            "username@gmail.c",
+            "username@-gmail.com",
+            "username@gmail-.com",
+            "username@gmail.com.",
+            "username@.gmail.com",
+            "username@gmail@gmail.com",
+            "username(john.doe)@gmail.com",
+            "user@domain(comment).com",
+            "usernamegmail.com",
+            "username@gmail,com",
+            "username@gmail space.co",
             "username@gmail..co.uk",
-            "user@ example.com",
-            "user@-example.com",
-            "user@example-.com",
-            "(user)@example.com",
-            "user@[192.168.1.1",
-            "user@exam ple.com",
-            "user@.com",
-            ".user@example.com",
-            "  user@example.com",
-            "user@example.com ",
-            " user@example.com ",
-            "@missingusername.com"
+            "user#gmail.com"
     })
     void givenValidIdAndInvalidUserUpdateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given
