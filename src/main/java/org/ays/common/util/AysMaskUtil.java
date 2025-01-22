@@ -126,7 +126,7 @@ public class AysMaskUtil {
             case "Authorization", "authorization", "accessToken", "refreshToken" -> maskToken(value);
             case "password" -> maskPassword();
             case "emailAddress" -> maskEmailAddress(value);
-            case "lineNumber" -> maskLineNumber(value);
+            case "lineNumber", "phoneNumber" -> maskPhoneNumber(value);
             case "address" -> maskAddress(value);
             case "firstName", "lastName", "applicantFirstName", "applicantLastName" -> maskName(value);
             default -> value;
@@ -208,15 +208,15 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks a line number by hiding all but the last four digits with asterisks.
+     * Masks a phone number by hiding all but the last four digits with asterisks.
      * <p>
-     * If the line number is shorter than or equal to four characters, it is returned as is.
+     * If the phone number is shorter than or equal to four characters, it is returned as is.
      * </p>
      *
-     * @param value the line number to mask
-     * @return the masked line number with the last four digits visible
+     * @param value the phone number to mask
+     * @return the masked phone number with the last four digits visible
      */
-    private static String maskLineNumber(String value) {
+    private static String maskPhoneNumber(String value) {
 
         if (value.length() <= 4) {
             return value;
