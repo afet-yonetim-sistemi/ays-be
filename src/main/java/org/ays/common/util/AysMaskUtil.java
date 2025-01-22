@@ -117,9 +117,13 @@ public class AysMaskUtil {
 
     /**
      * Masks token fields such as "Authorization", "authorization", "accessToken", or "refreshToken".
+     * <p>
+     * This method reveals the first 20 characters of the token and replaces the remaining part
+     * with a fixed placeholder to obscure sensitive information.
+     * </p>
      *
      * @param value the token value to mask
-     * @return the masked token
+     * @return the masked token, preserving the first 20 characters and appending "******"
      */
     private static String maskToken(String value) {
 
@@ -131,20 +135,27 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks password fields, replacing their values with a fixed placeholder.
+     * Masks password fields by replacing their values with a fixed placeholder.
+     * <p>
+     * This method is used to obscure passwords completely, ensuring no characters from
+     * the original value are visible.
+     * </p>
      *
-     * @return the masked password placeholder
+     * @return the masked password placeholder (e.g., "******")
      */
     private static String maskPassword() {
         return MASKED_VALUE;
     }
 
     /**
-     * Masks email addresses by revealing the first three and last three characters,
-     * replacing the rest with asterisks.
+     * Masks email addresses by obscuring the middle characters with asterisks,
+     * while keeping the first three and last three characters visible.
+     * <p>
+     * If the email address is shorter than or equal to three characters, the value is returned as-is.
+     * </p>
      *
      * @param value the email address to mask
-     * @return the masked email address
+     * @return the masked email address with the first three and last three characters visible, or unaltered if too short
      */
     private static String maskEmailAddress(String value) {
 
@@ -159,11 +170,15 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks address fields by revealing the first five and last five characters,
-     * replacing the middle part with asterisks.
+     * Masks address fields by hiding the middle characters with asterisks,
+     * while keeping the first five and last five characters visible.
+     * <p>
+     * If the address is shorter than or equal to 20 characters, only the first character
+     * is revealed, followed by asterisks.
+     * </p>
      *
      * @param value the address to mask
-     * @return the masked address
+     * @return the masked address with the first five and last five characters visible, or partially masked if shorter
      */
     private static String maskAddress(String value) {
 
@@ -175,10 +190,13 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks line numbers by revealing the last four digits, replacing the preceding digits with asterisks.
+     * Masks a line number by hiding all but the last four digits with asterisks.
+     * <p>
+     * If the line number is shorter than or equal to four characters, it is returned as is.
+     * </p>
      *
      * @param value the line number to mask
-     * @return the masked line number
+     * @return the masked line number with the last four digits visible
      */
     private static String maskLineNumber(String value) {
 
@@ -190,11 +208,14 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks name fields by revealing the first character,
-     * replacing the remaining part with asterisks.
+     * Masks name fields by revealing the first character and replacing the remaining part with a fixed placeholder.
+     * <p>
+     * This method ensures sensitive information in name fields such as "firstName" or "lastName"
+     * is obscured while maintaining the first character for partial identification.
+     * </p>
      *
      * @param value the name to mask
-     * @return the masked name
+     * @return the masked name, showing the first character followed by "******"
      */
     private static String maskName(String value) {
 
