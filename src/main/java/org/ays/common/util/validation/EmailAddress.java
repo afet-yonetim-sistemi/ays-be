@@ -21,7 +21,7 @@ public @interface EmailAddress {
      *
      * @return the error message
      */
-    String message() default "must be valid format";
+    String message() default "must be valid";
 
     /**
      * Returns the validation groups to which this constraint belongs.
