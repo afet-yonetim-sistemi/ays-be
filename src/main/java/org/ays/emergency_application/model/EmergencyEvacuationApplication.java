@@ -62,6 +62,7 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
         return this.institution.getId().equals(institutionId);
     }
 
+
     /**
      * Marks the emergency evacuation application as pending.
      * Generates a reference number and updates the status to pending.

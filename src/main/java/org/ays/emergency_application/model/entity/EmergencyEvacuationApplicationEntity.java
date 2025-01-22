@@ -98,6 +98,7 @@ public class EmergencyEvacuationApplicationEntity extends BaseEntity {
     @Column(name = "NOTES")
     private String notes;
 
+
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID", insertable = false, updatable = false)
     private InstitutionEntity institution;

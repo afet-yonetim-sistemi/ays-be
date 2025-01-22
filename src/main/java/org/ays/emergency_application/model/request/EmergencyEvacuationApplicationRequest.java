@@ -13,6 +13,7 @@ import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.validation.Name;
 import org.hibernate.validator.constraints.Range;
 
+
 /**
  * Represents a request to complete emergency evacuation request. The request includes fields for the required user
  * information, such as the user's phone number, as well as their first and last name.
@@ -63,6 +64,7 @@ public class EmergencyEvacuationApplicationRequest {
     @Size(min = 2, max = 100)
     private String targetDistrict;
 
+
     @Name
     @Size(min = 2, max = 100)
     private String applicantFirstName;
@@ -83,6 +85,7 @@ public class EmergencyEvacuationApplicationRequest {
         if (StringUtils.isEmpty(this.applicantFirstName) && StringUtils.isEmpty(this.applicantLastName) && this.applicantPhoneNumber == null) {
             return true;
         }
+
 
         return !StringUtils.isBlank(this.applicantFirstName) && !StringUtils.isBlank(this.applicantLastName)
                 &&
