@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Utility class for masking sensitive information in JSON data.
@@ -48,13 +50,15 @@ public class AysMaskUtil {
     /**
      * Masks sensitive fields in the given {@link JsonNode}.
      * <p>
-     * This method recursively processes the fields in the JSON object or array,
-     * applying masking to sensitive fields based on their names. The masking logic
-     * is determined by the field name and uses predefined rules for known sensitive fields.
+     * This method processes the provided JSON node, masking sensitive fields based on their names.
+     * It recursively iterates through JSON objects and arrays, applying masking rules where applicable.
+     * The method supports scenarios where field-value pairs require context-based masking
+     * (e.g., masking values based on associated field names).
      * </p>
      *
      * @param jsonNode the JSON node to process for masking
      */
+    @SuppressWarnings("java:S135")
     public static void mask(final JsonNode jsonNode) {
 
         if (jsonNode.isArray()) {
@@ -69,22 +73,36 @@ public class AysMaskUtil {
         }
 
         ObjectNode objectNode = (ObjectNode) jsonNode;
-        Iterator<String> fieldNames = objectNode.fieldNames();
 
-        while (fieldNames.hasNext()) {
+        final List<String> fieldNames = new ArrayList<>();
+        objectNode.fieldNames().forEachRemaining(fieldNames::add);
 
-            String fieldName = fieldNames.next();
-            JsonNode fieldValue = objectNode.get(fieldName);
+        final ListIterator<String> fieldNamesIterator = fieldNames.listIterator();
 
-            if (fieldValue.isValueNode()) {
-                String maskedValue = mask(fieldName, fieldValue.asText());
-                objectNode.put(fieldName, maskedValue);
+        String previousFieldName = null;
+        while (fieldNamesIterator.hasNext()) {
+
+            String currentFieldName = fieldNamesIterator.next();
+            JsonNode currentFieldValue = objectNode.get(currentFieldName);
+
+            if (!currentFieldValue.isValueNode()) {
+                mask(currentFieldValue);
                 continue;
             }
 
-            mask(fieldValue);
-        }
+            if ("field".equals(currentFieldName)) {
+                previousFieldName = currentFieldValue.asText();
+            }
 
+            if ("value".equals(currentFieldName)) {
+                String maskedValue = mask(previousFieldName, currentFieldValue.asText());
+                objectNode.put(currentFieldName, maskedValue);
+                continue;
+            }
+
+            String maskedValue = mask(currentFieldName, currentFieldValue.asText());
+            objectNode.put(currentFieldName, maskedValue);
+        }
     }
 
     /**
