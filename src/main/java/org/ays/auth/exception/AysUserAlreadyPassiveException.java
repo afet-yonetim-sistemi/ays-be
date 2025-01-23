@@ -11,7 +11,7 @@ import java.io.Serial;
 public final class AysUserAlreadyPassiveException extends AysConflictException {
 
     /**
-     * Unique serial version ID.
+     * Unique identifier for serialization.
      */
     @Serial
     private static final long serialVersionUID = 2484662602911824448L;

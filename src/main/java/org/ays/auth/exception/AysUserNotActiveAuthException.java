@@ -19,7 +19,7 @@ public final class AysUserNotActiveAuthException extends AysAuthException {
     /**
      * Constructs a new AysUserNotActiveAuthException with the specified userId.
      *
-     * @param userId the userId of the user that is not active
+     * @param userId the id of the user that is not active.
      */
     public AysUserNotActiveAuthException(String userId) {
         super("user is not active! userId:" + userId);
@@ -28,7 +28,7 @@ public final class AysUserNotActiveAuthException extends AysAuthException {
     /**
      * Constructs a new AysUserNotActiveAuthException with the specified user status.
      *
-     * @param status the status of the user that is not active
+     * @param status the status of the user that is not active.
      */
     public AysUserNotActiveAuthException(AysUserStatus status) {
         super("user is not active! currentStatus: " + status.name());
