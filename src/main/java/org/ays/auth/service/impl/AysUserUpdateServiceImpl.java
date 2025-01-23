@@ -132,7 +132,8 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      *
      * @param id The unique identifier of the user to be passivated.
      * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
-     * @throws AysUserAlreadyPassiveException if the user is in a passive state.
+     * @throws AysUserAlreadyPassiveException if the user is already in a passive state.
+     * @throws AysUserNotActiveException if the user is not in an active state.
      */
     @Override
     public void passivate(String id) {
