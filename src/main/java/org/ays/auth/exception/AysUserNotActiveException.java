@@ -6,7 +6,6 @@ import java.io.Serial;
 
 /**
  * Exception thrown when a user does not in an active state.
- * This exception extends {@link AysConflictException}.
  */
 public final class AysUserNotActiveException extends AysConflictException {
 
