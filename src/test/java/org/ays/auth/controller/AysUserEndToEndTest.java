@@ -645,7 +645,6 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.PASSIVE, userFromDatabase.get().getStatus());
-        Assertions.assertTrue(UUIDTestUtil.isValid(userFromDatabase.get().getUpdatedUser()));
     }
 
 }

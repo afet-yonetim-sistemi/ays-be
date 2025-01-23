@@ -151,7 +151,6 @@ class AysAuthServiceImpl implements AysAuthService {
 
     /**
      * Validates the status of the user.
-     * Throws {@link AysUserNotActiveAuthException} if the user is not active.
      *
      * @param user The {@link AysUser} object whose status needs to be validated.
      * @throws AysUserNotActiveAuthException If the user is not active.
