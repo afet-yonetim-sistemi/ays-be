@@ -11,13 +11,13 @@ import java.io.Serial;
 public final class AysUserNotActiveException extends AysConflictException {
 
     /**
-     * Unique serial version ID.
+     * Unique identifier for serialization.
      */
     @Serial
     private static final long serialVersionUID = 3508025652421021710L;
 
     /**
-     * Constructs a new {@link AysUserNotActiveException} with the specified detail message.
+     * Constructs a new {@link AysUserNotActiveException} with the specified userId.
      *
      * @param userId the id of the user that is not active
      */
