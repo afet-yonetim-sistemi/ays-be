@@ -4,22 +4,22 @@ import java.io.Serial;
 import org.ays.common.exception.AysConflictException;
 
 /**
- * Exception thrown when a user is not in a passive state.
+ * Exception thrown when a user is already in active state.
  * This exception extends {@link AysConflictException}.
  */
-public final class AysUserNotPassiveException extends AysConflictException {
+public class AysUserAlreadyActiveException extends AysConflictException {
 
     /**
      * Unique serial version ID.
      */
     @Serial
-    private static final long serialVersionUID = 2243994749508397732L;
+    private static final long serialVersionUID = -5085484906788378345L;
 
     /**
      * Constructs a new {@link AysConflictException} with the specified detail message.
      *
      */
-    public AysUserNotPassiveException() {
-        super("user is not passive!");
+    public AysUserAlreadyActiveException() {
+        super("user is already active!");
     }
 }

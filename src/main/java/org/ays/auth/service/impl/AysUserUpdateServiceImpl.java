@@ -2,6 +2,7 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysRolesNotExistException;
+import org.ays.auth.exception.AysUserAlreadyActiveException;
 import org.ays.auth.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
@@ -116,6 +117,10 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         final AysUser user = userReadPort.findById(id)
                 .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
+
+        if (user.isActive()) {
+            throw new AysUserAlreadyActiveException();
+        }
 
         if (!user.isPassive()) {
             throw new AysUserNotPassiveException();

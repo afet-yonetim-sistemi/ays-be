@@ -2,6 +2,7 @@ package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.exception.AysRolesNotExistException;
+import org.ays.auth.exception.AysUserAlreadyActiveException;
 import org.ays.auth.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
@@ -668,6 +669,47 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
+    void givenValidId_whenUserAlreadyActive_thenThrowAysUserAlreadyActiveException() {
+
+        // Given
+        String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+            .withValidValues()
+            .build();
+        Mockito.when(identity.getInstitutionId())
+            .thenReturn(mockInstitution.getId());
+
+        AysUser mockUser = new AysUserBuilder()
+            .withValidValues()
+            .withId(mockId)
+            .withInstitution(mockInstitution)
+            .withStatus(AysUserStatus.ACTIVE)
+            .build();
+
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+            .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+            AysUserAlreadyActiveException.class,
+            () -> userUpdateService.activate(mockId)
+        );
+
+        // Verify
+        Mockito.verify(identity, Mockito.times(1))
+            .getInstitutionId();
+
+        Mockito.verify(userReadPort, Mockito.times(1))
+            .findById(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+            .save(Mockito.any(AysUser.class));
+    }
+
+
+    @Test
     void givenValidId_whenUserIsNotPassive_thenThrowAysUserIsNotPassiveException() {
 
         // Given
@@ -684,7 +726,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .withId(mockId)
                 .withInstitution(mockInstitution)
-                .withStatus(AysUserStatus.ACTIVE)
+                .withStatus(AysUserStatus.NOT_VERIFIED)
                 .build();
 
         Mockito.when(userReadPort.findById(Mockito.anyString()))
