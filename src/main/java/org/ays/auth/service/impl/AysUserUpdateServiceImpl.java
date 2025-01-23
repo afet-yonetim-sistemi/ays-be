@@ -109,6 +109,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      *
      * @param id The unique identifier of the user to be activated.
      * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
+     * @throws AysUserAlreadyActiveException if a user is already in an active state and cannot be activated.
      * @throws AysUserNotPassiveException   if the user is not in a passive state and cannot be activated.
      */
     @Override
