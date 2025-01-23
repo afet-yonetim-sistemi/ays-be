@@ -5,7 +5,7 @@ import org.ays.common.exception.AysConflictException;
 import java.io.Serial;
 
 /**
- * Exception thrown when a user is in a passive state.
+ * Exception thrown when a user is already in a passive state.
  * This exception extends {@link AysConflictException}.
  */
 public final class AysUserAlreadyPassiveException extends AysConflictException {
