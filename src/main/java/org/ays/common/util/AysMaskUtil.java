@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Utility class for masking sensitive information in JSON data.
@@ -48,13 +50,15 @@ public class AysMaskUtil {
     /**
      * Masks sensitive fields in the given {@link JsonNode}.
      * <p>
-     * This method recursively processes the fields in the JSON object or array,
-     * applying masking to sensitive fields based on their names. The masking logic
-     * is determined by the field name and uses predefined rules for known sensitive fields.
+     * This method processes the provided JSON node, masking sensitive fields based on their names.
+     * It recursively iterates through JSON objects and arrays, applying masking rules where applicable.
+     * The method supports scenarios where field-value pairs require context-based masking
+     * (e.g., masking values based on associated field names).
      * </p>
      *
      * @param jsonNode the JSON node to process for masking
      */
+    @SuppressWarnings("java:S135")
     public static void mask(final JsonNode jsonNode) {
 
         if (jsonNode.isArray()) {
@@ -69,22 +73,36 @@ public class AysMaskUtil {
         }
 
         ObjectNode objectNode = (ObjectNode) jsonNode;
-        Iterator<String> fieldNames = objectNode.fieldNames();
 
-        while (fieldNames.hasNext()) {
+        final List<String> fieldNames = new ArrayList<>();
+        objectNode.fieldNames().forEachRemaining(fieldNames::add);
 
-            String fieldName = fieldNames.next();
-            JsonNode fieldValue = objectNode.get(fieldName);
+        final ListIterator<String> fieldNamesIterator = fieldNames.listIterator();
 
-            if (fieldValue.isValueNode()) {
-                String maskedValue = mask(fieldName, fieldValue.asText());
-                objectNode.put(fieldName, maskedValue);
+        String previousFieldName = null;
+        while (fieldNamesIterator.hasNext()) {
+
+            String currentFieldName = fieldNamesIterator.next();
+            JsonNode currentFieldValue = objectNode.get(currentFieldName);
+
+            if (!currentFieldValue.isValueNode()) {
+                mask(currentFieldValue);
                 continue;
             }
 
-            mask(fieldValue);
-        }
+            if ("field".equals(currentFieldName)) {
+                previousFieldName = currentFieldValue.asText();
+            }
 
+            if ("value".equals(currentFieldName)) {
+                String maskedValue = mask(previousFieldName, currentFieldValue.asText());
+                objectNode.put(currentFieldName, maskedValue);
+                continue;
+            }
+
+            String maskedValue = mask(currentFieldName, currentFieldValue.asText());
+            objectNode.put(currentFieldName, maskedValue);
+        }
     }
 
     /**
@@ -108,7 +126,7 @@ public class AysMaskUtil {
             case "Authorization", "authorization", "accessToken", "refreshToken" -> maskToken(value);
             case "password" -> maskPassword();
             case "emailAddress" -> maskEmailAddress(value);
-            case "lineNumber" -> maskLineNumber(value);
+            case "lineNumber", "phoneNumber" -> maskPhoneNumber(value);
             case "address" -> maskAddress(value);
             case "firstName", "lastName", "applicantFirstName", "applicantLastName" -> maskName(value);
             default -> value;
@@ -117,9 +135,13 @@ public class AysMaskUtil {
 
     /**
      * Masks token fields such as "Authorization", "authorization", "accessToken", or "refreshToken".
+     * <p>
+     * This method reveals the first 20 characters of the token and replaces the remaining part
+     * with a fixed placeholder to obscure sensitive information.
+     * </p>
      *
      * @param value the token value to mask
-     * @return the masked token
+     * @return the masked token, preserving the first 20 characters and appending "******"
      */
     private static String maskToken(String value) {
 
@@ -131,20 +153,27 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks password fields, replacing their values with a fixed placeholder.
+     * Masks password fields by replacing their values with a fixed placeholder.
+     * <p>
+     * This method is used to obscure passwords completely, ensuring no characters from
+     * the original value are visible.
+     * </p>
      *
-     * @return the masked password placeholder
+     * @return the masked password placeholder (e.g., "******")
      */
     private static String maskPassword() {
         return MASKED_VALUE;
     }
 
     /**
-     * Masks email addresses by revealing the first three and last three characters,
-     * replacing the rest with asterisks.
+     * Masks email addresses by obscuring the middle characters with asterisks,
+     * while keeping the first three and last three characters visible.
+     * <p>
+     * If the email address is shorter than or equal to three characters, the value is returned as-is.
+     * </p>
      *
      * @param value the email address to mask
-     * @return the masked email address
+     * @return the masked email address with the first three and last three characters visible, or unaltered if too short
      */
     private static String maskEmailAddress(String value) {
 
@@ -159,11 +188,15 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks address fields by revealing the first five and last five characters,
-     * replacing the middle part with asterisks.
+     * Masks address fields by hiding the middle characters with asterisks,
+     * while keeping the first five and last five characters visible.
+     * <p>
+     * If the address is shorter than or equal to 20 characters, only the first character
+     * is revealed, followed by asterisks.
+     * </p>
      *
      * @param value the address to mask
-     * @return the masked address
+     * @return the masked address with the first five and last five characters visible, or partially masked if shorter
      */
     private static String maskAddress(String value) {
 
@@ -175,12 +208,15 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks line numbers by revealing the last four digits, replacing the preceding digits with asterisks.
+     * Masks a phone number by hiding all but the last four digits with asterisks.
+     * <p>
+     * If the phone number is shorter than or equal to four characters, it is returned as is.
+     * </p>
      *
-     * @param value the line number to mask
-     * @return the masked line number
+     * @param value the phone number to mask
+     * @return the masked phone number with the last four digits visible
      */
-    private static String maskLineNumber(String value) {
+    private static String maskPhoneNumber(String value) {
 
         if (value.length() <= 4) {
             return value;
@@ -190,11 +226,14 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks name fields by revealing the first character,
-     * replacing the remaining part with asterisks.
+     * Masks name fields by revealing the first character and replacing the remaining part with a fixed placeholder.
+     * <p>
+     * This method ensures sensitive information in name fields such as "firstName" or "lastName"
+     * is obscured while maintaining the first character for partial identification.
+     * </p>
      *
      * @param value the name to mask
-     * @return the masked name
+     * @return the masked name, showing the first character followed by "******"
      */
     private static String maskName(String value) {
 
