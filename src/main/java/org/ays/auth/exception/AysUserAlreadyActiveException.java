@@ -16,8 +16,7 @@ public class AysUserAlreadyActiveException extends AysConflictException {
     private static final long serialVersionUID = -5085484906788378345L;
 
     /**
-     * Constructs a new {@link AysConflictException} with the specified detail message.
-     *
+     * Constructs a new {@link AysUserAlreadyActiveException} with the specified detail message.
      */
     public AysUserAlreadyActiveException() {
         super("user is already active!");
