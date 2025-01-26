@@ -8,8 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -139,17 +141,18 @@ public class AysMaskUtil {
      * Iterates through all sensitive masking categories and applies masking for any matching fields found
      * within the value string.
      * <p>
-     * This method checks if the value contains any sensitive fields defined in the {@link AysSensitiveMaskingCategory}
-     * and applies masking rules for the corresponding category.
+     * This method checks if the provided value contains any sensitive fields defined in the {@link AysSensitiveMaskingCategory}.
+     * If a match is found, it applies the appropriate masking rules for the corresponding category.
      * </p>
      *
-     * @param sensitiveMaskingCategories the list of sensitive masking categories to check
-     * @param value                      the value string to check and mask
-     * @return the masked value, or the original value if no sensitive fields are found
+     * @param sensitiveMaskingCategories the list of sensitive masking categories to evaluate
+     * @param value                      the input string to check and mask
+     * @return the masked string if sensitive fields are found; otherwise, the original string
      */
     private static String applyMaskForMatchingCategories(final List<AysSensitiveMaskingCategory> sensitiveMaskingCategories,
                                                          final String value) {
 
+        final Map<AysSensitiveMaskingCategory, String> sensitiveFields = new EnumMap<>(AysSensitiveMaskingCategory.class);
         for (AysSensitiveMaskingCategory category : sensitiveMaskingCategories) {
 
             for (String sensitiveField : category.getFields()) {
@@ -158,41 +161,52 @@ public class AysMaskUtil {
                     continue;
                 }
 
-                return maskAndReplaceWithMaskedValue(value, category, sensitiveField);
+                sensitiveFields.put(category, sensitiveField);
             }
         }
 
-        return value;
+        if (sensitiveFields.isEmpty()) {
+            return value;
+        }
+
+        return maskAndReplaceWithMaskedValue(value, sensitiveFields);
     }
 
     /**
      * Masks and replaces sensitive values found in a string with their masked equivalents.
      * <p>
-     * This method identifies the sensitive value associated with a specific field name in the input string,
-     * applies the appropriate masking rule from the {@link AysSensitiveMaskingCategory}, and replaces the
-     * original value with the masked value in the string.
+     * This method processes each sensitive field detected in the input string. For each field, it extracts the associated
+     * value, applies the appropriate masking rule from the {@link AysSensitiveMaskingCategory}, and replaces the original
+     * value in the string with the masked version.
      * </p>
      *
-     * @param value                    the original string containing the sensitive value
-     * @param sensitiveMaskingCategory the masking category that defines how to mask the value
-     * @param sensitiveField           the name of the sensitive field whose value is to be masked
-     * @return the string with the sensitive value masked
+     * @param value           the original string containing sensitive values
+     * @param sensitiveFields a map where the keys are {@link AysSensitiveMaskingCategory} objects representing masking rules,
+     *                        and the values are the corresponding field names whose values need to be masked
+     * @return the updated string with all sensitive values masked
      */
     private static String maskAndReplaceWithMaskedValue(final String value,
-                                                        final AysSensitiveMaskingCategory sensitiveMaskingCategory,
-                                                        final String sensitiveField) {
+                                                        final Map<AysSensitiveMaskingCategory, String> sensitiveFields) {
 
-        final String fieldFromMessage = sensitiveField + ":";
-        final String trimmedValue = value.replace(" ", "");
-        final int beginIndex = trimmedValue.indexOf(fieldFromMessage) + fieldFromMessage.length();
-        final String valueToBeMask = trimmedValue.substring(beginIndex);
+        String maskedValue = value;
+        for (Map.Entry<AysSensitiveMaskingCategory, String> entry : sensitiveFields.entrySet()) {
 
-        if (StringUtils.isBlank(valueToBeMask)) {
-            return value;
+            final String sensitiveField = entry.getValue();
+            final String fieldFromMessage = sensitiveField + ":";
+            final String trimmedValue = maskedValue.replace(" ", "");
+            final int beginIndex = trimmedValue.indexOf(fieldFromMessage) + fieldFromMessage.length();
+            final String dataToBeMask = trimmedValue.substring(beginIndex).split(",")[0];
+
+            if (StringUtils.isBlank(dataToBeMask)) {
+                return value;
+            }
+
+            final AysSensitiveMaskingCategory sensitiveMaskingCategory = entry.getKey();
+            final String maskedData = sensitiveMaskingCategory.mask(dataToBeMask);
+            maskedValue = maskedValue.replace(dataToBeMask, maskedData);
         }
 
-        final String maskedValue = sensitiveMaskingCategory.mask(valueToBeMask);
-        return value.replace(valueToBeMask, maskedValue);
+        return maskedValue;
     }
 
 }

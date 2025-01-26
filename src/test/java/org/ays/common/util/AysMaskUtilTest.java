@@ -426,6 +426,33 @@ class AysMaskUtilTest extends AysUnitTest {
         Assertions.assertTrue(mockMaskedJson.contains("countryCode:90, lineNumber:******1111"));
     }
 
+    @Test
+    void givenValidConflictErrorJsonWithExistingPhoneNumberAndEmailAddress_whenMasked_thenMaskLineNumberAndEmailAddress() throws JsonProcessingException {
+
+        // Given
+        String mockRawJson = """
+                {
+                    "time": "2025-01-25T02:03:04.380344992",
+                    "code": "d729f568-b5bd-41ac-800f-2cfc03146d85",
+                    "header": "CONFLICT ERROR",
+                    "message": "user already exist! countryCode:90, lineNumber:5051111111, emailAddress:demiragitrubar@gmail.com",
+                    "isSuccess": "false"
+                }
+                """;
+
+        // When
+        JsonNode jsonNode = new ObjectMapper().readTree(mockRawJson);
+        AysMaskUtil.mask(jsonNode);
+
+        // Then
+        String mockMaskedJson = jsonNode.toString();
+
+        log.info("Raw JSON: {}", mockRawJson);
+        log.info("Masked JSON: {}", mockMaskedJson);
+
+        Assertions.assertTrue(mockMaskedJson.contains("countryCode:90, lineNumber:******1111, emailAddress:dem******com"));
+    }
+
 
     @Test
     void givenValidJsonWithFirstNameAndLastName_whenMasked_thenOnlyFirstCharRemainsUnmasked() throws JsonProcessingException {
