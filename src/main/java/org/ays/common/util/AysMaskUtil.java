@@ -110,7 +110,7 @@ public class AysMaskUtil {
      * <p>
      * Sensitive fields such as "Authorization", "accessToken", "password", and others are masked
      * using specific rules defined in the {@link AysSensitiveMaskingCategory}. Fields not recognized as sensitive
-     * remain unchanged. If a field is part of a message string, its value is also masked.
+     * remain unchanged. If the value contains sensitive fields as part of a message, their values are also masked.
      * </p>
      *
      * @param field the name of the field to be checked
@@ -123,16 +123,34 @@ public class AysMaskUtil {
             return value;
         }
 
-        final List<AysSensitiveMaskingCategory> sensitiveCategories = Arrays.asList(AysSensitiveMaskingCategory.values());
+        final List<AysSensitiveMaskingCategory> sensitiveMaskingCategories = Arrays.asList(AysSensitiveMaskingCategory.values());
 
-        final Optional<AysSensitiveMaskingCategory> sensitiveCategoryForField = sensitiveCategories.stream()
+        final Optional<AysSensitiveMaskingCategory> sensitiveCategoryForField = sensitiveMaskingCategories.stream()
                 .filter(category -> category.getFields().contains(field))
                 .findFirst();
         if (sensitiveCategoryForField.isPresent()) {
             return sensitiveCategoryForField.get().mask(value);
         }
 
-        for (AysSensitiveMaskingCategory category : sensitiveCategories) {
+        return applyMaskForMatchingCategories(sensitiveMaskingCategories, value);
+    }
+
+    /**
+     * Iterates through all sensitive masking categories and applies masking for any matching fields found
+     * within the value string.
+     * <p>
+     * This method checks if the value contains any sensitive fields defined in the {@link AysSensitiveMaskingCategory}
+     * and applies masking rules for the corresponding category.
+     * </p>
+     *
+     * @param sensitiveMaskingCategories the list of sensitive masking categories to check
+     * @param value                      the value string to check and mask
+     * @return the masked value, or the original value if no sensitive fields are found
+     */
+    private static String applyMaskForMatchingCategories(final List<AysSensitiveMaskingCategory> sensitiveMaskingCategories,
+                                                         final String value) {
+
+        for (AysSensitiveMaskingCategory category : sensitiveMaskingCategories) {
 
             for (String sensitiveField : category.getFields()) {
 
@@ -140,30 +158,29 @@ public class AysMaskUtil {
                     continue;
                 }
 
-                return maskValue(value, category, sensitiveField);
+                return maskAndReplaceWithMaskedValue(value, category, sensitiveField);
             }
-
         }
 
         return value;
     }
 
     /**
-     * Masks a sensitive field's value extracted from a string message.
+     * Masks and replaces sensitive values found in a string with their masked equivalents.
      * <p>
-     * This method identifies the value associated with a sensitive field
-     * in the provided string, applies the appropriate masking logic
-     * defined in the {@link AysSensitiveMaskingCategory}, and returns the masked result.
+     * This method identifies the sensitive value associated with a specific field name in the input string,
+     * applies the appropriate masking rule from the {@link AysSensitiveMaskingCategory}, and replaces the
+     * original value with the masked value in the string.
      * </p>
      *
-     * @param value                       the string containing the sensitive field and its value
-     * @param aysSensitiveMaskingCategory the {@link AysSensitiveMaskingCategory} that defines the masking logic
-     * @param sensitiveField              the name of the sensitive field in the string
-     * @return the original string with the sensitive field's value masked
+     * @param value                    the original string containing the sensitive value
+     * @param sensitiveMaskingCategory the masking category that defines how to mask the value
+     * @param sensitiveField           the name of the sensitive field whose value is to be masked
+     * @return the string with the sensitive value masked
      */
-    private static String maskValue(final String value,
-                                    final AysSensitiveMaskingCategory aysSensitiveMaskingCategory,
-                                    final String sensitiveField) {
+    private static String maskAndReplaceWithMaskedValue(final String value,
+                                                        final AysSensitiveMaskingCategory sensitiveMaskingCategory,
+                                                        final String sensitiveField) {
 
         final String fieldFromMessage = sensitiveField + ":";
         final String trimmedValue = value.replace(" ", "");
@@ -174,7 +191,7 @@ public class AysMaskUtil {
             return value;
         }
 
-        final String maskedValue = aysSensitiveMaskingCategory.mask(valueToBeMask);
+        final String maskedValue = sensitiveMaskingCategory.mask(valueToBeMask);
         return value.replace(valueToBeMask, maskedValue);
     }
 
