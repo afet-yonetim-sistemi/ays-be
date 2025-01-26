@@ -7,8 +7,10 @@ import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
 
 /**
  * Utility class for masking sensitive information in JSON data.
@@ -44,8 +46,6 @@ import java.util.ListIterator;
  */
 @UtilityClass
 public class AysMaskUtil {
-
-    private static final String MASKED_VALUE = "******";
 
     /**
      * Masks sensitive fields in the given {@link JsonNode}.
@@ -108,13 +108,14 @@ public class AysMaskUtil {
     /**
      * Masks the value of a specific field based on its name.
      * <p>
-     * Sensitive fields such as "Authorization", "accessToken", and "password" are masked using specific
-     * rules. Fields not recognized as sensitive remain unchanged.
+     * Sensitive fields such as "Authorization", "accessToken", "password", and others are masked
+     * using specific rules defined in the {@link AysSensitiveMaskingCategory}. Fields not recognized as sensitive
+     * remain unchanged. If a field is part of a message string, its value is also masked.
      * </p>
      *
-     * @param field the name of the field
+     * @param field the name of the field to be checked
      * @param value the value to mask
-     * @return the masked value
+     * @return the masked value, or the original value if no sensitive fields are detected
      */
     public static String mask(final String field, final String value) {
 
@@ -122,126 +123,59 @@ public class AysMaskUtil {
             return value;
         }
 
-        return switch (field) {
-            case "Authorization", "authorization", "accessToken", "refreshToken" -> maskToken(value);
-            case "password" -> maskPassword();
-            case "emailAddress" -> maskEmailAddress(value);
-            case "lineNumber", "phoneNumber" -> maskPhoneNumber(value);
-            case "address" -> maskAddress(value);
-            case "firstName", "lastName", "applicantFirstName", "applicantLastName" -> maskName(value);
-            default -> value;
-        };
+        final List<AysSensitiveMaskingCategory> sensitiveCategories = Arrays.asList(AysSensitiveMaskingCategory.values());
+
+        final Optional<AysSensitiveMaskingCategory> sensitiveCategoryForField = sensitiveCategories.stream()
+                .filter(category -> category.getFields().contains(field))
+                .findFirst();
+        if (sensitiveCategoryForField.isPresent()) {
+            return sensitiveCategoryForField.get().mask(value);
+        }
+
+        for (AysSensitiveMaskingCategory category : sensitiveCategories) {
+
+            for (String sensitiveField : category.getFields()) {
+
+                if (!value.contains(sensitiveField)) {
+                    continue;
+                }
+
+                return maskValue(value, category, sensitiveField);
+            }
+
+        }
+
+        return value;
     }
 
     /**
-     * Masks token fields such as "Authorization", "authorization", "accessToken", or "refreshToken".
+     * Masks a sensitive field's value extracted from a string message.
      * <p>
-     * This method reveals the first 20 characters of the token and replaces the remaining part
-     * with a fixed placeholder to obscure sensitive information.
+     * This method identifies the value associated with a sensitive field
+     * in the provided string, applies the appropriate masking logic
+     * defined in the {@link AysSensitiveMaskingCategory}, and returns the masked result.
      * </p>
      *
-     * @param value the token value to mask
-     * @return the masked token, preserving the first 20 characters and appending "******"
+     * @param value                       the string containing the sensitive field and its value
+     * @param aysSensitiveMaskingCategory the {@link AysSensitiveMaskingCategory} that defines the masking logic
+     * @param sensitiveField              the name of the sensitive field in the string
+     * @return the original string with the sensitive field's value masked
      */
-    private static String maskToken(String value) {
+    private static String maskValue(final String value,
+                                    final AysSensitiveMaskingCategory aysSensitiveMaskingCategory,
+                                    final String sensitiveField) {
 
-        if (value.length() <= 20) {
+        final String fieldFromMessage = sensitiveField + ":";
+        final String trimmedValue = value.replace(" ", "");
+        final int beginIndex = trimmedValue.indexOf(fieldFromMessage) + fieldFromMessage.length();
+        final String valueToBeMask = trimmedValue.substring(beginIndex);
+
+        if (StringUtils.isBlank(valueToBeMask)) {
             return value;
         }
 
-        return value.substring(0, 20) + MASKED_VALUE;
-    }
-
-    /**
-     * Masks password fields by replacing their values with a fixed placeholder.
-     * <p>
-     * This method is used to obscure passwords completely, ensuring no characters from
-     * the original value are visible.
-     * </p>
-     *
-     * @return the masked password placeholder (e.g., "******")
-     */
-    private static String maskPassword() {
-        return MASKED_VALUE;
-    }
-
-    /**
-     * Masks email addresses by obscuring the middle characters with asterisks,
-     * while keeping the first three and last three characters visible.
-     * <p>
-     * If the email address is shorter than or equal to three characters, the value is returned as-is.
-     * </p>
-     *
-     * @param value the email address to mask
-     * @return the masked email address with the first three and last three characters visible, or unaltered if too short
-     */
-    private static String maskEmailAddress(String value) {
-
-        if (value.length() <= 3) {
-            return value;
-        }
-
-        int length = value.length();
-        String firstThree = value.substring(0, 3);
-        String lastThree = value.substring(length - 3);
-        return firstThree + MASKED_VALUE + lastThree;
-    }
-
-    /**
-     * Masks address fields by hiding the middle characters with asterisks,
-     * while keeping the first five and last five characters visible.
-     * <p>
-     * If the address is shorter than or equal to 20 characters, only the first character
-     * is revealed, followed by asterisks.
-     * </p>
-     *
-     * @param value the address to mask
-     * @return the masked address with the first five and last five characters visible, or partially masked if shorter
-     */
-    private static String maskAddress(String value) {
-
-        if (value.length() <= 20) {
-            return value.charAt(0) + MASKED_VALUE;
-        }
-
-        return value.substring(0, 5) + MASKED_VALUE + value.substring(value.length() - 5);
-    }
-
-    /**
-     * Masks a phone number by hiding all but the last four digits with asterisks.
-     * <p>
-     * If the phone number is shorter than or equal to four characters, it is returned as is.
-     * </p>
-     *
-     * @param value the phone number to mask
-     * @return the masked phone number with the last four digits visible
-     */
-    private static String maskPhoneNumber(String value) {
-
-        if (value.length() <= 4) {
-            return value;
-        }
-
-        return MASKED_VALUE + value.substring(value.length() - 4);
-    }
-
-    /**
-     * Masks name fields by revealing the first character and replacing the remaining part with a fixed placeholder.
-     * <p>
-     * This method ensures sensitive information in name fields such as "firstName" or "lastName"
-     * is obscured while maintaining the first character for partial identification.
-     * </p>
-     *
-     * @param value the name to mask
-     * @return the masked name, showing the first character followed by "******"
-     */
-    private static String maskName(String value) {
-
-        if (value.length() <= 1) {
-            return value;
-        }
-
-        return value.charAt(0) + MASKED_VALUE;
+        final String maskedValue = aysSensitiveMaskingCategory.mask(valueToBeMask);
+        return value.replace(valueToBeMask, maskedValue);
     }
 
 }
