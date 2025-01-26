@@ -669,7 +669,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenUserAlreadyActive_thenThrowAysUserAlreadyActiveException() {
+    void givenValidId_whenUserAlreadyActive_thenThrowUserAlreadyActiveException() {
 
         // Given
         String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
