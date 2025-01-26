@@ -16,7 +16,7 @@ public final class AysUserNotPassiveException extends AysConflictException {
     private static final long serialVersionUID = 2243994749508397732L;
 
     /**
-     * Constructs a new {@link AysConflictException} with the specified detail message.
+     * Constructs a new {@link AysUserNotPassiveException} with the specified detail message.
      *
      */
     public AysUserNotPassiveException() {
