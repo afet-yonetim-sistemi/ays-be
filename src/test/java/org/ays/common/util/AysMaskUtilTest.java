@@ -120,7 +120,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"password\",\"value\":\"******\""));
     }
 
 
@@ -201,7 +201,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"ahm******org\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"emailAddress\",\"value\":\"ahm******org\""));
     }
 
     @Test
@@ -309,7 +309,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"Gravi******iquam\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"address\",\"value\":\"Gravi******iquam\""));
     }
 
 
@@ -396,7 +396,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"******1111\","));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"phoneNumber\",\"value\":\"******1111\","));
     }
 
     @Test
@@ -423,7 +423,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("countryCode:90, lineNumber:******1111"));
+        Assertions.assertTrue(mockMaskedJson.contains("\"message\":\"user already exist! countryCode:90, lineNumber:******1111\","));
     }
 
     @Test
@@ -450,7 +450,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("countryCode:90, lineNumber:******1111, emailAddress:dem******com"));
+        Assertions.assertTrue(mockMaskedJson.contains("\"message\":\"user already exist! countryCode:90, lineNumber:******1111, emailAddress:dem******com\","));
     }
 
 
@@ -561,10 +561,10 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"M******\""));
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"J******\""));
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"S******\""));
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"H******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"firstName\",\"value\":\"M******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"lastName\",\"value\":\"J******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"applicantFirstName\",\"value\":\"S******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"applicantLastName\",\"value\":\"H******\""));
     }
 
 
