@@ -365,6 +365,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.co",
             "abcdef@mail.com",
             "abc+def@archive.com",
             "john.doe123@example.co.uk",
@@ -375,7 +376,8 @@ class AysUserControllerTest extends AysRestControllerTest {
             "michael.jordan@nba.com",
             "alice.smith@company.co.uk",
             "info@mywebsite.org",
-            "support@helpdesk.net"
+            "support@helpdesk.net",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
     })
     void givenUserCreateRequest_whenUserCreated_thenReturnSuccess(String mockEmailAddress) throws Exception {
 
@@ -521,6 +523,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.c",
             "plainaddress",
             "@missingusername.com",
             "username@.com",
@@ -538,7 +541,8 @@ class AysUserControllerTest extends AysRestControllerTest {
             "username@gmail,com",
             "username@gmail space.co",
             "username@gmail..co.uk",
-            "user#gmail.com"
+            "user#gmail.com",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
     })
     void givenUserCreateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
@@ -569,6 +573,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.co",
             "abcdef@mail.com",
             "abc+def@archive.com",
             "john.doe123@example.co.uk",
@@ -579,7 +584,8 @@ class AysUserControllerTest extends AysRestControllerTest {
             "michael.jordan@nba.com",
             "alice.smith@company.co.uk",
             "info@mywebsite.org",
-            "support@helpdesk.net"
+            "support@helpdesk.net",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
     })
     void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess(String mockEmailAddress) throws Exception {
 
@@ -763,6 +769,7 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.c",
             "plainaddress",
             "@missingusername.com",
             "username@.com",
@@ -780,7 +787,8 @@ class AysUserControllerTest extends AysRestControllerTest {
             "username@gmail,com",
             "username@gmail space.co",
             "username@gmail..co.uk",
-            "user#gmail.com"
+            "user#gmail.com",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
     })
     void givenValidIdAndInvalidUserUpdateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given

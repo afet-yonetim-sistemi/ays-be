@@ -365,6 +365,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.co",
             "abcdef@mail.com",
             "abc+def@archive.com",
             "john.doe123@example.co.uk",
@@ -375,7 +376,8 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "michael.jordan@nba.com",
             "alice.smith@company.co.uk",
             "info@mywebsite.org",
-            "support@helpdesk.net"
+            "support@helpdesk.net",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
     })
     void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse(String mockEmailAddress) throws Exception {
 
@@ -589,6 +591,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.c",
             "plainaddress",
             "@missingusername.com",
             "username@.com",
@@ -606,7 +609,8 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "username@gmail,com",
             "username@gmail space.co",
             "username@gmail..co.uk",
-            "user#gmail.com"
+            "user#gmail.com",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
