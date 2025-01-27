@@ -102,11 +102,6 @@ public class AysUserFilter implements AysFilter {
                     criteriaBuilder.like(criteriaBuilder.upper(root.get("emailAddress")), "%" + this.emailAddress.toUpperCase() + "%"));
         }
 
-        if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getCountryCode())) {
-            specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("countryCode"), "%" + this.phoneNumber.getCountryCode() + "%"));
-        }
-
         if (this.phoneNumber != null && StringUtils.hasText(this.phoneNumber.getLineNumber())) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.like(root.get("lineNumber"), "%" + this.phoneNumber.getLineNumber() + "%"));
