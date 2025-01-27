@@ -25,12 +25,12 @@ import java.util.List;
 enum AysSensitiveMaskingCategory {
 
     /**
-     * Category for masking token fields such as "Authorization", "authorization", "accessToken", or "refreshToken".
+     * Category for masking token fields such as "authorization", "accessToken", or "refreshToken".
      * <p>
      * Reveals the first 20 characters of the token and replaces the remaining part with a fixed placeholder.
      * </p>
      */
-    AUTH(List.of("Authorization", "authorization", "accessToken", "refreshToken")) {
+    AUTH(List.of("authorization", "accessToken", "refreshToken")) {
         @Override
         public String mask(String value) {
 
@@ -56,6 +56,7 @@ enum AysSensitiveMaskingCategory {
         }
     },
 
+
     /**
      * Category for masking email addresses by obscuring the middle characters with asterisks,
      * while keeping the first three and last three characters visible.
@@ -77,6 +78,7 @@ enum AysSensitiveMaskingCategory {
             return firstThree + MASK + lastThree;
         }
     },
+
 
     /**
      * Category for masking phone numbers by hiding all but the last four digits with asterisks.
@@ -117,6 +119,7 @@ enum AysSensitiveMaskingCategory {
         }
     },
 
+
     /**
      * Category for masking name fields such as "firstName" or "lastName" by revealing the first character
      * and replacing the remaining part with a fixed placeholder.
@@ -124,7 +127,7 @@ enum AysSensitiveMaskingCategory {
      * Ensures sensitive information in name fields is obscured while maintaining partial identification.
      * </p>
      */
-    NAME(List.of("firstName", "lastName", "applicantFirstName", "applicantLastName")) {
+    NAME(List.of("firstName", "lastName")) {
         @Override
         public String mask(String value) {
 

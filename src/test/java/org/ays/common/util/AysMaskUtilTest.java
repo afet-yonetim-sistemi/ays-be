@@ -72,7 +72,8 @@ class AysMaskUtilTest extends AysUnitTest {
         // Given
         String mockRawJson = """
                 {
-                  "password": "123456789"
+                  "password": "123456789",
+                  "passwordRepeat": "123456789"
                 }
                 """;
 
@@ -86,7 +87,8 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"password\":\"******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"password\":\"******\","));
+        Assertions.assertTrue(mockMaskedJson.contains("\"passwordRepeat\":\"******\""));
     }
 
     @Test

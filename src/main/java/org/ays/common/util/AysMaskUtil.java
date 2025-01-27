@@ -108,16 +108,19 @@ public class AysMaskUtil {
     }
 
     /**
-     * Masks the value of a specific field based on its name.
+     * Masks the value of a specific field based on its name or content.
      * <p>
-     * Sensitive fields such as "Authorization", "accessToken", "password", and others are masked
-     * using specific rules defined in the {@link AysSensitiveMaskingCategory}. Fields not recognized as sensitive
-     * remain unchanged. If the value contains sensitive fields as part of a message, their values are also masked.
+     * This method applies masking to sensitive fields such as "Authorization", "accessToken", "password", and others,
+     * using rules defined in the {@link AysSensitiveMaskingCategory}. If the field name or the value contains sensitive
+     * fields as part of a message, their values are identified and masked accordingly.
+     * </p>
+     * <p>
+     * Fields that do not match any of the predefined sensitive categories remain unchanged.
      * </p>
      *
-     * @param field the name of the field to be checked
+     * @param field the name of the field to be checked and potentially masked
      * @param value the value to mask
-     * @return the masked value, or the original value if no sensitive fields are detected
+     * @return the masked value if the field or its content matches a sensitive category; otherwise, the original value
      */
     public static String mask(final String field, final String value) {
 
@@ -128,8 +131,11 @@ public class AysMaskUtil {
         final List<AysSensitiveMaskingCategory> sensitiveMaskingCategories = Arrays.asList(AysSensitiveMaskingCategory.values());
 
         final Optional<AysSensitiveMaskingCategory> sensitiveCategoryForField = sensitiveMaskingCategories.stream()
-                .filter(category -> category.getFields().contains(field))
+                .filter(category -> category.getFields().stream()
+                        .anyMatch(fieldOfCategory -> StringUtils.containsIgnoreCase(field, fieldOfCategory))
+                )
                 .findFirst();
+
         if (sensitiveCategoryForField.isPresent()) {
             return sensitiveCategoryForField.get().mask(value);
         }
