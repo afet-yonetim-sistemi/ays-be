@@ -1009,7 +1009,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
             "NOT_VERIFIED",
             "DELETED"
     })
-    void givenValidId_whenUserIsNotActive_thenThrowAysUserNotActiveException(String inactiveStatus) {
+    void givenValidId_whenUserIsNotActive_thenThrowUserNotActiveException(String inactiveStatus) {
 
         // Given
         String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
