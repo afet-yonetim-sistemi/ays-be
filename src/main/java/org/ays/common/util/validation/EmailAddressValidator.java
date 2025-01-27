@@ -78,6 +78,9 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
         }
 
         if (emailAddress.length() < 6 || emailAddress.length() > 254) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("size must be between 6 and 254 characters.")
+                    .addConstraintViolation();
             return false;
         }
 
