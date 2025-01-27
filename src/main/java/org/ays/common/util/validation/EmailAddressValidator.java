@@ -73,6 +73,10 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
             return true;
         }
 
+        if (emailAddress.length() < 6 || emailAddress.length() > 254) {
+            return false;
+        }
+
         return EMAIL_REGEX.matcher(emailAddress).matches();
     }
 
