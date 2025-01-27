@@ -180,6 +180,37 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
+    })
+    void givenUserListRequest_whenEmailAddressDoesNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
+
+        // Given
+        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
+                .withValidValues()
+                .withEmailAddress(mockEmailAddress)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
             "City user 1234",
             "City *^%$#",
             " Test",
