@@ -16,7 +16,7 @@ public final class AysUserAlreadyPassiveException extends AysConflictException {
     private static final long serialVersionUID = 2484662602911824448L;
 
     /**
-     * Constructs a new AysUserAlreadyPassiveException with the specified detail message.
+     * Constructs a new {@link AysUserAlreadyPassiveException} with the specified detail message.
      */
     public AysUserAlreadyPassiveException() {
         super("user is already passive!");

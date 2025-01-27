@@ -28,6 +28,8 @@ import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -963,7 +965,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenUserIsAlreadyPassive_thenThrowAysUserAlreadyPassiveException() {
+    void givenValidId_whenUserIsAlreadyPassive_thenThrowUserAlreadyPassiveException() {
 
         // Given
         String mockId = "b64ef470-6842-400f-ba23-2379c589095c";
@@ -1002,8 +1004,12 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .save(Mockito.any(AysUser.class));
     }
 
-    @Test
-    void givenValidId_whenUserIsNotActive_thenThrowAysUserNotActiveException() {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "NOT_VERIFIED",
+            "DELETED"
+    })
+    void givenValidId_whenUserIsNotActive_thenThrowAysUserNotActiveException(String inactiveStatus) {
 
         // Given
         String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
@@ -1019,7 +1025,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .withId(mockId)
                 .withInstitution(mockInstitution)
-                .withStatus(AysUserStatus.NOT_VERIFIED)
+                .withStatus(AysUserStatus.valueOf(inactiveStatus))
                 .build();
 
         Mockito.when(userReadPort.findById(Mockito.anyString()))

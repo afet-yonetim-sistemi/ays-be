@@ -33,6 +33,8 @@ import org.ays.util.AysValidTestData;
 import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -633,11 +635,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isConflict())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message")
-                        .value("user is already passive!"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess")
-                        .value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.time").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists());
+                        .value("user is already passive!"));
 
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findById(userId);
@@ -645,6 +643,55 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.PASSIVE, userFromDatabase.get().getStatus());
+        Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "NOT_VERIFIED",
+            "DELETED"
+    })
+    void givenInactiveUserId_whenTryToPassivate_thenReturnUserNotActiveError(String inactiveStatus) throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withRoles(roles)
+                        .withInstitution(institution)
+                        .withStatus(AysUserStatus.valueOf(inactiveStatus))
+                        .build()
+        );
+
+        // Given
+        String userId = user.getId();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(userId).concat("/passivate");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .patch(endpoint, adminToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message")
+                        .value("user is not active! userId:" + userId));
+
+        // Verify
+        Optional<AysUser> userFromDatabase = userReadPort.findById(userId);
+
+        Assertions.assertTrue(userFromDatabase.isPresent());
+        Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
+        Assertions.assertEquals(AysUserStatus.valueOf(inactiveStatus), userFromDatabase.get().getStatus());
         Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
     }
 
