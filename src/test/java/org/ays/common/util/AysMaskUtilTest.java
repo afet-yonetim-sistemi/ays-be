@@ -72,7 +72,8 @@ class AysMaskUtilTest extends AysUnitTest {
         // Given
         String mockRawJson = """
                 {
-                  "password": "123456789"
+                  "password": "123456789",
+                  "passwordRepeat": "123456789"
                 }
                 """;
 
@@ -86,7 +87,8 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"password\":\"******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"password\":\"******\","));
+        Assertions.assertTrue(mockMaskedJson.contains("\"passwordRepeat\":\"******\""));
     }
 
     @Test
@@ -120,7 +122,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"password\",\"value\":\"******\""));
     }
 
 
@@ -201,7 +203,34 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"ahm******org\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"emailAddress\",\"value\":\"ahm******org\""));
+    }
+
+    @Test
+    void givenValidConflictErrorJsonWithExistingEmailAddress_whenMasked_thenOnlyMaskFirstAndLast3CharsRemainUnmasked() throws JsonProcessingException {
+
+        // Given
+        String mockRawJson = """
+                {
+                    "time": "2025-01-25T01:36:50.785086214",
+                    "code": "e9865a6d-ad22-4d07-927d-5b7e8121881f",
+                    "header": "CONFLICT ERROR",
+                    "message": "user already exist! emailAddress:ahmet.mehmet@afetyonetimsistemi.org",
+                    "isSuccess": "false"
+                }
+                """;
+
+        // When
+        JsonNode jsonNode = new ObjectMapper().readTree(mockRawJson);
+        AysMaskUtil.mask(jsonNode);
+
+        // Then
+        String mockMaskedJson = jsonNode.toString();
+
+        log.info("Raw JSON: {}", mockRawJson);
+        log.info("Masked JSON: {}", mockMaskedJson);
+
+        Assertions.assertTrue(mockMaskedJson.contains("\"message\":\"user already exist! emailAddress:ahm******org\""));
     }
 
 
@@ -282,7 +311,7 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"Gravi******iquam\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"address\",\"value\":\"Gravi******iquam\""));
     }
 
 
@@ -369,7 +398,61 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"******1111\","));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"phoneNumber\",\"value\":\"******1111\","));
+    }
+
+    @Test
+    void givenValidConflictErrorJsonWithExistingPhoneNumber_whenMasked_thenLast4CharsOfLineNumberAreUnmasked() throws JsonProcessingException {
+
+        // Given
+        String mockRawJson = """
+                {
+                    "time": "2025-01-25T02:03:04.380344992",
+                    "code": "d729f568-b5bd-41ac-800f-2cfc03146d85",
+                    "header": "CONFLICT ERROR",
+                    "message": "user already exist! countryCode:90, lineNumber:5051111111",
+                    "isSuccess": "false"
+                }
+                """;
+
+        // When
+        JsonNode jsonNode = new ObjectMapper().readTree(mockRawJson);
+        AysMaskUtil.mask(jsonNode);
+
+        // Then
+        String mockMaskedJson = jsonNode.toString();
+
+        log.info("Raw JSON: {}", mockRawJson);
+        log.info("Masked JSON: {}", mockMaskedJson);
+
+        Assertions.assertTrue(mockMaskedJson.contains("\"message\":\"user already exist! countryCode:90, lineNumber:******1111\","));
+    }
+
+    @Test
+    void givenValidConflictErrorJsonWithExistingPhoneNumberAndEmailAddress_whenMasked_thenMaskLineNumberAndEmailAddress() throws JsonProcessingException {
+
+        // Given
+        String mockRawJson = """
+                {
+                    "time": "2025-01-25T02:03:04.380344992",
+                    "code": "d729f568-b5bd-41ac-800f-2cfc03146d85",
+                    "header": "CONFLICT ERROR",
+                    "message": "user already exist! countryCode:90, lineNumber:5051111111, emailAddress:demiragitrubar@gmail.com",
+                    "isSuccess": "false"
+                }
+                """;
+
+        // When
+        JsonNode jsonNode = new ObjectMapper().readTree(mockRawJson);
+        AysMaskUtil.mask(jsonNode);
+
+        // Then
+        String mockMaskedJson = jsonNode.toString();
+
+        log.info("Raw JSON: {}", mockRawJson);
+        log.info("Masked JSON: {}", mockMaskedJson);
+
+        Assertions.assertTrue(mockMaskedJson.contains("\"message\":\"user already exist! countryCode:90, lineNumber:******1111, emailAddress:dem******com\","));
     }
 
 
@@ -480,10 +563,10 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"M******\""));
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"J******\""));
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"S******\""));
-        Assertions.assertTrue(mockMaskedJson.contains("\"value\":\"H******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"firstName\",\"value\":\"M******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"lastName\",\"value\":\"J******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"applicantFirstName\",\"value\":\"S******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"applicantLastName\",\"value\":\"H******\""));
     }
 
 

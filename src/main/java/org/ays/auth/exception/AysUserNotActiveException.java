@@ -1,37 +1,27 @@
 package org.ays.auth.exception;
 
-import org.ays.auth.model.enums.AysUserStatus;
-import org.ays.common.exception.AysAuthException;
+import org.ays.common.exception.AysConflictException;
 
 import java.io.Serial;
 
 /**
- * Exception thrown when attempting to authenticate a user that is not active.
+ * Exception thrown when a user does not in an active state.
  */
-public final class AysUserNotActiveException extends AysAuthException {
+public final class AysUserNotActiveException extends AysConflictException {
 
     /**
      * Unique identifier for serialization.
      */
     @Serial
-    private static final long serialVersionUID = -5218287176856317070L;
+    private static final long serialVersionUID = 3508025652421021710L;
 
     /**
-     * Constructs a new UserNotActiveException with the specified userId.
+     * Constructs a new {@link AysUserNotActiveException} with the specified userId.
      *
-     * @param userId the userId of the user that is not active
+     * @param userId the id of the user that is not active.
      */
     public AysUserNotActiveException(String userId) {
         super("user is not active! userId:" + userId);
-    }
-
-    /**
-     * Constructs a new UserNotActiveException with the specified user status.
-     *
-     * @param status the status of the user that is not active
-     */
-    public AysUserNotActiveException(AysUserStatus status) {
-        super("user is not active! currentStatus: " + status.name());
     }
 
 }
