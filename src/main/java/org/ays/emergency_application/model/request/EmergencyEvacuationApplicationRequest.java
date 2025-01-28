@@ -119,7 +119,7 @@ public class EmergencyEvacuationApplicationRequest {
             return true;
         }
 
-        if (!this.sourceCity.equalsIgnoreCase(this.targetCity)){
+        if (!this.sourceCity.equalsIgnoreCase(this.targetCity)) {
             return true;
         }
 
