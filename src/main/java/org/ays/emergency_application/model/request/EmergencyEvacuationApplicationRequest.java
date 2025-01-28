@@ -115,11 +115,11 @@ public class EmergencyEvacuationApplicationRequest {
     @SuppressWarnings("This method is unused by the application directly but Spring is using it in the background.")
     private boolean isSourceCityAndDistrictDifferentFromTargetCityAndDistrict() {
 
-       if (this.sourceCity == null || this.sourceDistrict == null || this.targetCity == null || this.targetDistrict == null) {
+        if (this.sourceCity == null || this.sourceDistrict == null || this.targetCity == null || this.targetDistrict == null) {
             return true;
-       }
+        }
 
-        if (!this.sourceCity.equalsIgnoreCase(this.targetCity)){
+        if (!this.sourceCity.equalsIgnoreCase(this.targetCity)) {
             return true;
         }
 

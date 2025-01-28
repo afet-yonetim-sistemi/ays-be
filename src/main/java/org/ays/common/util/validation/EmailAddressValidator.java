@@ -28,6 +28,7 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
      *
      * <p>Some valid emails are:</p>
      * <ul>
+     * <li>a@b.co</li>
      * <li>abcdef@mail.com</li>
      * <li>abc+def@archive.com</li>
      * <li>john.doe123@example.co.uk</li>
@@ -39,10 +40,12 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
      * <li>alice.smith@company.co.uk</li>
      * <li>info@mywebsite.org</li>
      * <li>support@helpdesk.net</li>
+     * <li>rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org</li>
      * </ul>
      *
      * <p>Some invalid emails are:</p>
      * <ul>
+     * <li>a@b.c</li>
      * <li>plainaddress</li>
      * <li>@missingusername.com</li>
      * <li>username@.com</li>
@@ -61,6 +64,7 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
      * <li>username@gmail space.co</li>
      * <li>username@gmail..co.uk</li>
      * <li>user#gmail.com</li>
+     * <li>bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org</li>
      * </ul>
      *
      * @param emailAddress object to validate
@@ -71,6 +75,13 @@ class EmailAddressValidator implements ConstraintValidator<EmailAddress, String>
 
         if (!StringUtils.hasText(emailAddress)) {
             return true;
+        }
+
+        if (emailAddress.length() < 6 || emailAddress.length() > 254) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("size must be between 6 and 254")
+                    .addConstraintViolation();
+            return false;
         }
 
         return EMAIL_REGEX.matcher(emailAddress).matches();

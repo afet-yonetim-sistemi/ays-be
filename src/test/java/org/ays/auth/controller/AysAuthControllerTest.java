@@ -49,6 +49,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.co",
             "abcdef@mail.com",
             "abc+def@archive.com",
             "john.doe123@example.co.uk",
@@ -59,7 +60,8 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "michael.jordan@nba.com",
             "alice.smith@company.co.uk",
             "info@mywebsite.org",
-            "support@helpdesk.net"
+            "support@helpdesk.net",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
     })
     void givenValidLoginRequestWithValidEmailAddress_whenTokensGeneratedSuccessfully_thenReturnTokenResponse(String mockEmailAddress) throws Exception {
         // Given
@@ -100,6 +102,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.c",
             "plainaddress",
             "@missingusername.com",
             "username@.com",
@@ -117,7 +120,8 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "username@gmail,com",
             "username@gmail space.co",
             "username@gmail..co.uk",
-            "user#gmail.com"
+            "user#gmail.com",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
     })
     void givenInvalidLoginRequestWithInvalidEmailAddress_whenEmailsAreNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given
@@ -150,7 +154,6 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "g",
             "g.h2j5L",
             "uqTY6zlNlPgQZtyaRIVNPEAaLAPdOxEhmLWcoCcR4TbkLWedAcaHa96ZYXdrvor7qhN8B5ccms06NfbzVG2gzq0DWkHLxQupzmmbH3W9UhrnLS0LjuBVgOjQEoyaXesrJ"
-
     })
     void givenInvalidLoginRequestWithInvalidPassword_whenPasswordDoesNotValid_thenReturnValidationError(String mockPassword) throws Exception {
         // Given
@@ -244,6 +247,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.co",
             "abcdef@mail.com",
             "abc+def@archive.com",
             "john.doe123@example.co.uk",
@@ -254,7 +258,8 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "michael.jordan@nba.com",
             "alice.smith@company.co.uk",
             "info@mywebsite.org",
-            "support@helpdesk.net"
+            "support@helpdesk.net",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
     })
     void givenValidForgotPasswordRequest_whenSendPasswordCreateMail_thenReturnSuccessResponse(String mockEmailAddress) throws Exception {
         // Given
@@ -287,6 +292,7 @@ class AysAuthControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "a@b.c",
             "plainaddress",
             "@missingusername.com",
             "username@.com",
@@ -304,7 +310,8 @@ class AysAuthControllerTest extends AysRestControllerTest {
             "username@gmail,com",
             "username@gmail space.co",
             "username@gmail..co.uk",
-            "user#gmail.com"
+            "user#gmail.com",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
     })
     void givenForgotPasswordRequestWithInvalidEmailAddress_whenEmailDoesNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
