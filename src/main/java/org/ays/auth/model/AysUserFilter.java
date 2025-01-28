@@ -8,7 +8,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysFilter;
-import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.util.validation.Name;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
@@ -46,7 +45,7 @@ public class AysUserFilter implements AysFilter {
     @Size(min = 1, max = 254)
     private String emailAddress;
 
-    private AysPhoneNumber phoneNumber;
+    private AysPhoneFilter phoneNumber;
 
     private Set<AysUserStatus> statuses;
 
@@ -55,6 +54,16 @@ public class AysUserFilter implements AysFilter {
     private String city;
 
     private String institutionId;
+
+    /**
+     * Nested class for filtering by phone line number.
+     */
+    @Getter
+    @Setter
+    public static class AysPhoneFilter {
+
+        private String lineNumber;
+    }
 
 
     /**
