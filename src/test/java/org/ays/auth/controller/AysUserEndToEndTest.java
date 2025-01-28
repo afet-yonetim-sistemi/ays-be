@@ -34,7 +34,7 @@ import org.ays.util.UUIDTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -644,14 +644,15 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.PASSIVE, userFromDatabase.get().getStatus());
         Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
+        Assertions.assertNull(userFromDatabase.get().getUpdatedAt());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
+    @EnumSource(value = AysUserStatus.class, names = {
             "NOT_VERIFIED",
             "DELETED"
     })
-    void givenInactiveUserId_whenTryToPassivate_thenReturnUserNotActiveError(String inactiveStatus) throws Exception {
+    void givenInactiveUserId_whenTryToPassivate_thenReturnUserNotActiveError(AysUserStatus status) throws Exception {
 
         // Initialize
         Institution institution = new InstitutionBuilder()
@@ -666,7 +667,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withRoles(roles)
                         .withInstitution(institution)
-                        .withStatus(AysUserStatus.valueOf(inactiveStatus))
+                        .withStatus(status)
                         .build()
         );
 
@@ -691,8 +692,9 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
-        Assertions.assertEquals(AysUserStatus.valueOf(inactiveStatus), userFromDatabase.get().getStatus());
+        Assertions.assertEquals(status, userFromDatabase.get().getStatus());
         Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
+        Assertions.assertNull(userFromDatabase.get().getUpdatedAt());
     }
 
 }

@@ -29,7 +29,7 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -1005,11 +1005,11 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
+    @EnumSource(value = AysUserStatus.class, names = {
             "NOT_VERIFIED",
             "DELETED"
     })
-    void givenValidId_whenUserIsNotActive_thenThrowUserNotActiveException(String inactiveStatus) {
+    void givenValidId_whenUserIsNotActive_thenThrowUserNotActiveException(AysUserStatus mockStatus) {
 
         // Given
         String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
@@ -1025,7 +1025,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .withId(mockId)
                 .withInstitution(mockInstitution)
-                .withStatus(AysUserStatus.valueOf(inactiveStatus))
+                .withStatus(mockStatus)
                 .build();
 
         Mockito.when(userReadPort.findById(Mockito.anyString()))
