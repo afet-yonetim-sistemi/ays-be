@@ -5,6 +5,7 @@ import org.ays.auth.exception.AysRolesNotExistException;
 import org.ays.auth.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
+import org.ays.auth.exception.AysUserAlreadyPassiveException;
 import org.ays.auth.exception.AysUserIsNotActiveOrPassiveException;
 import org.ays.auth.exception.AysUserNotActiveException;
 import org.ays.auth.exception.AysUserNotExistByIdException;
@@ -131,7 +132,8 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      *
      * @param id The unique identifier of the user to be passivated.
      * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
-     * @throws AysUserNotActiveException    if the user is not in an active state and cannot be passivated.
+     * @throws AysUserAlreadyPassiveException if the user is already in a passive state.
+     * @throws AysUserNotActiveException if the user is not in an active state.
      */
     @Override
     public void passivate(String id) {
@@ -139,6 +141,10 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         final AysUser user = userReadPort.findById(id)
                 .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
+
+        if (user.isPassive()) {
+            throw new AysUserAlreadyPassiveException();
+        }
 
         if (!user.isActive()) {
             throw new AysUserNotActiveException(id);

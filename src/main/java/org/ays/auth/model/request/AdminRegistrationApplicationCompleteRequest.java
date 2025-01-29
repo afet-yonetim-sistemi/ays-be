@@ -39,7 +39,6 @@ public class AdminRegistrationApplicationCompleteRequest {
 
     @EmailAddress
     @NotBlank
-    @Size(min = 2, max = 255)
     private String emailAddress;
 
     @NotBlank

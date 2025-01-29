@@ -363,13 +363,30 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
     }
 
 
-    @Test
-    void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "a@b.co",
+            "abcdef@mail.com",
+            "abc+def@archive.com",
+            "john.doe123@example.co.uk",
+            "admin_123@example.org",
+            "admin-test@ays.com",
+            "johndoe@gmail.com",
+            "janedoe123@yahoo.com",
+            "michael.jordan@nba.com",
+            "alice.smith@company.co.uk",
+            "info@mywebsite.org",
+            "support@helpdesk.net",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
+    })
+    void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse(String mockEmailAddress) throws Exception {
 
         // Given
         String mockId = "e8de09dc-a44e-40eb-bcc7-cf0141f8733c";
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidValues().build();
+                .withValidValues()
+                .withEmailAddress(mockEmailAddress)
+                .build();
 
         // When
         Mockito.doNothing().when(adminRegistrationCompleteService).complete(Mockito.anyString(), Mockito.any());
@@ -429,12 +446,12 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
         // Given
         String mockId = "f1b789d0-6095-4860-85bb-e1a0b20f1d13";
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("ABC")
                 .withLineNumber("ABC").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(mockPhoneNumber).build();
+                .withPhoneNumber(mockPhoneNumberRequest).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
@@ -447,7 +464,13 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value("must be valid"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(adminRegistrationCompleteService, Mockito.never())
@@ -459,12 +482,12 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
         // Given
         String mockId = "25930d3f-4cea-4147-a21a-0f22c9bf72de";
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("456786745645")
                 .withLineNumber("6546467456435548676845321346656654").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(mockPhoneNumber).build();
+                .withPhoneNumber(mockPhoneNumberRequest).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
@@ -477,7 +500,13 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value("must be valid"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(adminRegistrationCompleteService, Mockito.never())
@@ -490,12 +519,12 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         // Given
         String mockId = "2028b456-e06c-4ea1-9017-b45523529576";
         final String invalidOperator = "123";
-        AysPhoneNumberRequest mockPhoneNumber = new AysPhoneNumberRequestBuilder()
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
                 .withCountryCode("90")
                 .withLineNumber(invalidOperator + "6327218").build();
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(mockPhoneNumber).build();
+                .withPhoneNumber(mockPhoneNumberRequest).build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
@@ -508,7 +537,13 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value("must be valid"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(adminRegistrationCompleteService, Mockito.never())
@@ -556,34 +591,34 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "abc.def@mail.c",
-            "abc.def@mail#archive.com",
-            "abc.def@mail",
-            "abcdef@mail..com",
-            "abc-@mail.com",
-            "admin@test@ays.com",
-            "admintest@ays..com",
+            "a@b.c",
+            "plainaddress",
+            "@missingusername.com",
+            "username@.com",
+            "username@gmail",
+            "username@gmail..com",
+            "username@gmail.c",
+            "username@-gmail.com",
+            "username@gmail-.com",
+            "username@gmail.com.",
+            "username@.gmail.com",
+            "username@gmail@gmail.com",
+            "username(john.doe)@gmail.com",
+            "user@domain(comment).com",
+            "usernamegmail.com",
+            "username@gmail,com",
+            "username@gmail space.co",
             "username@gmail..co.uk",
-            "user@ example.com",
-            "user@-example.com",
-            "user@example-.com",
-            "(user)@example.com",
-            "user@[192.168.1.1",
-            "user@exam ple.com",
-            "user@.com",
-            ".user@example.com",
-            "  user@example.com",
-            "user@example.com ",
-            " user@example.com ",
-            "@missingusername.com"
+            "user#gmail.com",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
     })
-    void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String invalidEmail) throws Exception {
+    void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidEmails_whenEmailsAreNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
         // Given
         String mockId = "53617d24-e32c-4249-b9e6-b10e63a439bd";
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withEmailAddress(invalidEmail)
+                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // Then
@@ -606,45 +641,9 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "abcdef@mail.com",
-            "abc+def@archive.com",
-            "john.doe123@example.co.uk",
-            "admin_123@example.org",
-            "admin-test@ays.com",
-    })
-    void givenValidAdminRegisterApplicationCompleteRequestWithParametrizedValidEmails_whenEmailsAreValid_thenReturnSuccessResponse(String validEmail) throws Exception {
-        // Given
-        String mockId = "fe3760f1-8b44-4587-99a6-43e426c8c6d1";
-        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidValues()
-                .withEmailAddress(validEmail)
-                .build();
-
-        // When
-        Mockito.doNothing().when(adminRegistrationCompleteService).complete(Mockito.anyString(), Mockito.any());
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockRequest);
-
-        AysResponse<Void> mockResponse = AysResponseBuilder.success();
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isOk())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
-
-        // Verify
-        Mockito.verify(adminRegistrationCompleteService, Mockito.times(1))
-                .complete(Mockito.anyString(), Mockito.any());
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {
             "g",
-            "gfh2j"
+            "g.h2j5L",
+            "uqTY6zlNlPgQZtyaRIVNPEAaLAPdOxEhmLWcoCcR4TbkLWedAcaHa96ZYXdrvor7qhN8B5ccms06NfbzVG2gzq0DWkHLxQupzmmbH3W9UhrnLS0LjuBVgOjQEoyaXesrJ"
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithInvalidPassword_whenPasswordDoesNotValid_thenReturnValidationError(String mockPassword) throws Exception {
 

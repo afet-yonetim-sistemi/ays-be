@@ -43,7 +43,7 @@ public class AysUserFilter implements AysFilter {
     @Size(min = 2, max = 100)
     private String lastName;
 
-    @Size(min = 2, max = 255)
+    @Size(min = 1, max = 254)
     private String emailAddress;
 
     private AysPhoneNumber phoneNumber;

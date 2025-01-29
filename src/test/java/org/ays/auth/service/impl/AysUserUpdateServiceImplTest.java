@@ -5,6 +5,7 @@ import org.ays.auth.exception.AysRolesNotExistException;
 import org.ays.auth.exception.AysUserAlreadyDeletedException;
 import org.ays.auth.exception.AysUserAlreadyExistsByEmailAddressException;
 import org.ays.auth.exception.AysUserAlreadyExistsByPhoneNumberException;
+import org.ays.auth.exception.AysUserAlreadyPassiveException;
 import org.ays.auth.exception.AysUserIsNotActiveOrPassiveException;
 import org.ays.auth.exception.AysUserNotActiveException;
 import org.ays.auth.exception.AysUserNotExistByIdException;
@@ -27,6 +28,8 @@ import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -962,7 +965,51 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidId_whenUserIsNotActive_thenThrowAysUserNotActiveException() {
+    void givenValidId_whenUserIsAlreadyPassive_thenThrowUserAlreadyPassiveException() {
+
+        // Given
+        String mockId = "b64ef470-6842-400f-ba23-2379c589095c";
+
+        // When
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution.getId());
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .withInstitution(mockInstitution)
+                .withStatus(AysUserStatus.PASSIVE)
+                .build();
+
+        Mockito.when(userReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        Assertions.assertThrows(
+                AysUserAlreadyPassiveException.class,
+                () -> userUpdateService.passivate(mockId)
+        );
+
+        // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = AysUserStatus.class, names = {
+            "NOT_VERIFIED",
+            "DELETED"
+    })
+    void givenValidId_whenUserIsNotActive_thenThrowUserNotActiveException(AysUserStatus mockStatus) {
 
         // Given
         String mockId = "bf7cc8d4-eab7-487d-8564-19be0f439b4a";
@@ -978,7 +1025,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .withId(mockId)
                 .withInstitution(mockInstitution)
-                .withStatus(AysUserStatus.PASSIVE) // Not active
+                .withStatus(mockStatus)
                 .build();
 
         Mockito.when(userReadPort.findById(Mockito.anyString()))
