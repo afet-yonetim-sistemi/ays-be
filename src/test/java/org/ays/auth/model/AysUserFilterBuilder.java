@@ -39,7 +39,7 @@ public class AysUserFilterBuilder extends TestDataBuilder<AysUserFilter> {
         return this;
     }
 
-    public AysUserFilterBuilder withPhoneNumber(AysUserFilter.AysPhoneFilter phoneNumber) {
+    public AysUserFilterBuilder withPhoneNumber(AysUserFilter.PhoneNumber phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }

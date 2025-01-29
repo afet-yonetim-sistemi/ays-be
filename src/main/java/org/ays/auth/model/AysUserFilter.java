@@ -45,7 +45,7 @@ public class AysUserFilter implements AysFilter {
     @Size(min = 1, max = 254)
     private String emailAddress;
 
-    private AysPhoneFilter phoneNumber;
+    private PhoneNumber phoneNumber;
 
     private Set<AysUserStatus> statuses;
 
@@ -60,8 +60,7 @@ public class AysUserFilter implements AysFilter {
      */
     @Getter
     @Setter
-    public static class AysPhoneFilter {
-
+    public static class PhoneNumber {
         private String lineNumber;
     }
 

@@ -64,7 +64,7 @@ public class AysUserListRequestBuilder extends TestDataBuilder<AysUserListReques
         return this;
     }
 
-    public AysUserListRequestBuilder withPhoneNumber(AysUserFilter.AysPhoneFilter phoneNumber) {
+    public AysUserListRequestBuilder withPhoneNumber(AysUserFilter.PhoneNumber phoneNumber) {
         data.getFilter().setPhoneNumber(phoneNumber);
         return this;
     }
