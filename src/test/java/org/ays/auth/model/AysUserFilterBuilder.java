@@ -1,7 +1,6 @@
 package org.ays.auth.model;
 
 import org.ays.auth.model.enums.AysUserStatus;
-import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
 
@@ -40,7 +39,7 @@ public class AysUserFilterBuilder extends TestDataBuilder<AysUserFilter> {
         return this;
     }
 
-    public AysUserFilterBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
+    public AysUserFilterBuilder withPhoneNumber(AysUserFilter.PhoneNumber phoneNumber) {
         data.setPhoneNumber(phoneNumber);
         return this;
     }

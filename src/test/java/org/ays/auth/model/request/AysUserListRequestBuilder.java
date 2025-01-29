@@ -4,7 +4,6 @@ import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPageable;
 import org.ays.common.model.AysPageableBuilder;
-import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysSort;
 import org.ays.common.model.TestDataBuilder;
 
@@ -65,7 +64,7 @@ public class AysUserListRequestBuilder extends TestDataBuilder<AysUserListReques
         return this;
     }
 
-    public AysUserListRequestBuilder withPhoneNumber(AysPhoneNumber phoneNumber) {
+    public AysUserListRequestBuilder withPhoneNumber(AysUserFilter.PhoneNumber phoneNumber) {
         data.getFilter().setPhoneNumber(phoneNumber);
         return this;
     }
