@@ -1,6 +1,7 @@
 package org.ays.common.model.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.util.validation.PhoneNumber;
@@ -17,6 +18,7 @@ public class AysPhoneNumberRequest {
      * The country code of the phone number
      */
     @NotBlank
+    @Pattern(regexp = "90", message = "Currently, only 90 country code is allowed.")
     private String countryCode;
 
     /**
