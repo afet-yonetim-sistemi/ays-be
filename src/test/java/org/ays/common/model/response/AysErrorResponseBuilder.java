@@ -18,8 +18,8 @@ public class AysErrorResponseBuilder {
             .header(AysErrorResponse.Header.CONFLICT_ERROR.getName())
             .isSuccess(false).build();
 
-    public static final AysErrorResponse NOT_FOUND = AysErrorResponse.builder()
-            .header(AysErrorResponse.Header.NOT_FOUND.getName())
+    public static final AysErrorResponse NOT_EXIST_ERROR = AysErrorResponse.builder()
+            .header(AysErrorResponse.Header.NOT_EXIST_ERROR.getName())
             .isSuccess(false).build();
 
 }

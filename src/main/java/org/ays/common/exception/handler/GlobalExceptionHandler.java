@@ -85,7 +85,7 @@ class GlobalExceptionHandler {
         log.error(exception.getMessage(), exception);
 
         return AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.NOT_FOUND.getName())
+                .header(AysErrorResponse.Header.NOT_EXIST_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
     }
