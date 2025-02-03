@@ -515,8 +515,8 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         AysUser user = userSavePort.save(
             new AysUserBuilder()
-                .withId(AysRandomUtil.generateUUID())
                 .withValidValues()
+                .withoutId()
                 .withRoles(roles)
                 .withInstitution(institution)
                 .withStatus(AysUserStatus.ACTIVE)
@@ -537,11 +537,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
             .andExpect(AysMockResultMatchersBuilders.status()
                 .isConflict())
             .andExpect(MockMvcResultMatchers.jsonPath("$.message")
-                .value("user is already active!"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess")
-                .value(false))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.time").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists());
+                .value("user is already active!"));
 
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findById(id);
@@ -550,11 +546,16 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
         Assertions.assertEquals(AysUserStatus.ACTIVE, userFromDatabase.get().getStatus());
         Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
+        Assertions.assertNull(userFromDatabase.get().getUpdatedAt());
 
     }
 
-    @Test
-    void givenNotVerifiedUserId_whenActivateUser_thenReturnUserNotPassiveError() throws Exception {
+    @ParameterizedTest
+    @EnumSource(value = AysUserStatus.class, names = {
+        "NOT_VERIFIED",
+        "DELETED"
+    })
+    void givenInactiveUserId_whenActivateUser_thenReturnUserNotPassiveError(AysUserStatus status) throws Exception {
 
         // Initialize
         Institution institution = new InstitutionBuilder()
@@ -565,11 +566,11 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         AysUser user = userSavePort.save(
             new AysUserBuilder()
-                .withId(AysRandomUtil.generateUUID())
                 .withValidValues()
+                .withoutId()
                 .withRoles(roles)
                 .withInstitution(institution)
-                .withStatus(AysUserStatus.NOT_VERIFIED)
+                .withStatus(status)
                 .build()
         );
 
@@ -587,73 +588,18 @@ class AysUserEndToEndTest extends AysEndToEndTest {
             .andExpect(AysMockResultMatchersBuilders.status()
                 .isConflict())
             .andExpect(MockMvcResultMatchers.jsonPath("$.message")
-                .value("user is not passive!"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess")
-                .value(false))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.time").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists());
+                .value("user is not passive!"));
 
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findById(id);
 
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
-        Assertions.assertEquals(AysUserStatus.NOT_VERIFIED, userFromDatabase.get().getStatus());
+        Assertions.assertEquals(status, userFromDatabase.get().getStatus());
         Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
+        Assertions.assertNull(userFromDatabase.get().getUpdatedAt());
 
     }
-
-    @Test
-    void givenDeletedUserId_whenActivateUser_thenReturnUserNotPassiveError() throws Exception {
-
-        // Initialize
-        Institution institution = new InstitutionBuilder()
-            .withId(AysValidTestData.Admin.INSTITUTION_ID)
-            .build();
-
-        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
-
-        AysUser user = userSavePort.save(
-            new AysUserBuilder()
-                .withId(AysRandomUtil.generateUUID())
-                .withValidValues()
-                .withRoles(roles)
-                .withInstitution(institution)
-                .withStatus(AysUserStatus.DELETED)
-                .build()
-        );
-
-        // Given
-        String id = user.getId();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/user/").concat(id).concat("/activate");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-            .patch(endpoint, adminToken.getAccessToken());
-
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-            .andExpect(AysMockResultMatchersBuilders.status()
-                .isConflict())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.message")
-                .value("user is not passive!"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess")
-                .value(false))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.time").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists());
-
-        // Verify
-        Optional<AysUser> userFromDatabase = userReadPort.findById(id);
-
-        Assertions.assertTrue(userFromDatabase.isPresent());
-        Assertions.assertEquals(userFromDatabase.get().getId(), user.getId());
-        Assertions.assertEquals(AysUserStatus.DELETED, userFromDatabase.get().getStatus());
-        Assertions.assertNull(userFromDatabase.get().getUpdatedUser());
-
-    }
-
-
 
     @Test
     void givenValidId_whenUserDeleted_thenReturnSuccess() throws Exception {
