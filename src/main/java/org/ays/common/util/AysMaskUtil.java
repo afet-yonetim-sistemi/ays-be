@@ -94,6 +94,7 @@ public class AysMaskUtil {
 
             if ("field".equals(currentFieldName)) {
                 previousFieldName = currentFieldValue.asText();
+                continue;
             }
 
             if ("value".equals(currentFieldName)) {

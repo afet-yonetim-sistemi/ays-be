@@ -97,19 +97,30 @@ class AysMaskUtilTest extends AysUnitTest {
         // Given
         String mockRawJson = """
                 {
-                    "time": "2025-01-22T14:53:23.238373",
-                    "code": "fd940bff-81a4-4249-a23e-04e47d119a8e",
-                    "header": "VALIDATION ERROR",
-                    "isSuccess": false,
-                    "subErrors": [
-                        {
-                            "message": "size must be between 8 and 128 characters.",
-                            "field": "password",
-                            "value": "NatoquevitaeQuisqueornareSapiensenectusPercrasVulputateorciUrnfendacTemporvariusCuraebibendumVitaeacLiberomorbiIaculisinceptosEteu",
-                            "type": "String"
-                        }
-                    ]
-                }
+                     "time": "2025-02-03T18:48:41.217754",
+                     "code": "7f22e3cd-44e0-4df9-8545-41e99e0b366c",
+                     "header": "VALIDATION ERROR",
+                     "isSuccess": false,
+                     "subErrors": [
+                         {
+                             "message": "passwords must be equal",
+                             "field": "passwordsEqual",
+                             "value": "false"
+                         },
+                         {
+                             "message": "size must be between 8 and 128 characters.",
+                             "field": "passwordRepeat",
+                             "value": "A12.",
+                             "type": "String"
+                         },
+                         {
+                             "message": "size must be between 8 and 128 characters.",
+                             "field": "password",
+                             "value": "A123",
+                             "type": "String"
+                         }
+                     ]
+                 }
                 """;
 
         // When
@@ -122,6 +133,8 @@ class AysMaskUtilTest extends AysUnitTest {
         log.info("Raw JSON: {}", mockRawJson);
         log.info("Masked JSON: {}", mockMaskedJson);
 
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"passwordsEqual\",\"value\":\"******\""));
+        Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"passwordRepeat\",\"value\":\"******\""));
         Assertions.assertTrue(mockMaskedJson.contains("\"field\":\"password\",\"value\":\"******\""));
     }
 
