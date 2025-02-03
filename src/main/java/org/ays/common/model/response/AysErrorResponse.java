@@ -105,7 +105,7 @@ public class AysErrorResponse {
         /**
          * NOT_FOUND header.
          */
-        NOT_FOUND("NOT EXIST ERROR"),
+        NOT_EXIST_ERROR("NOT EXIST ERROR"),
         /**
          * VALIDATION_ERROR header.
          */

@@ -112,7 +112,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
-                .header(AysErrorResponse.Header.NOT_FOUND.getName())
+                .header(AysErrorResponse.Header.NOT_EXIST_ERROR.getName())
                 .message(mockException.getMessage())
                 .build();
 
