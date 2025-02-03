@@ -37,13 +37,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 class AysUserEndToEndTest extends AysEndToEndTest {
 
@@ -508,19 +506,19 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         // Initialize
         Institution institution = new InstitutionBuilder()
-            .withId(AysValidTestData.Admin.INSTITUTION_ID)
-            .build();
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
 
         List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
 
         AysUser user = userSavePort.save(
-            new AysUserBuilder()
-                .withValidValues()
-                .withoutId()
-                .withRoles(roles)
-                .withInstitution(institution)
-                .withStatus(AysUserStatus.ACTIVE)
-                .build()
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withRoles(roles)
+                        .withInstitution(institution)
+                        .withStatus(AysUserStatus.ACTIVE)
+                        .build()
         );
 
         // Given
@@ -529,15 +527,15 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/user/").concat(id).concat("/activate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-            .patch(endpoint, adminToken.getAccessToken());
+                .patch(endpoint, adminToken.getAccessToken());
 
         AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-            .andExpect(AysMockResultMatchersBuilders.status()
-                .isConflict())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.message")
-                .value("user is already active!"));
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.message()
+                        .value("user is already active!"));
 
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findById(id);
@@ -552,26 +550,26 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
     @ParameterizedTest
     @EnumSource(value = AysUserStatus.class, names = {
-        "NOT_VERIFIED",
-        "DELETED"
+            "NOT_VERIFIED",
+            "DELETED"
     })
     void givenInactiveUserId_whenActivateUser_thenReturnUserNotPassiveError(AysUserStatus status) throws Exception {
 
         // Initialize
         Institution institution = new InstitutionBuilder()
-            .withId(AysValidTestData.Admin.INSTITUTION_ID)
-            .build();
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
 
         List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
 
         AysUser user = userSavePort.save(
-            new AysUserBuilder()
-                .withValidValues()
-                .withoutId()
-                .withRoles(roles)
-                .withInstitution(institution)
-                .withStatus(status)
-                .build()
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withRoles(roles)
+                        .withInstitution(institution)
+                        .withStatus(status)
+                        .build()
         );
 
         // Given
@@ -580,15 +578,15 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         // Then
         String endpoint = BASE_PATH.concat("/user/").concat(id).concat("/activate");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-            .patch(endpoint, adminToken.getAccessToken());
+                .patch(endpoint, adminToken.getAccessToken());
 
         AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-            .andExpect(AysMockResultMatchersBuilders.status()
-                .isConflict())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.message")
-                .value("user is not passive!"));
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.message()
+                        .value("user is not passive!"));
 
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findById(id);
@@ -732,7 +730,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isConflict())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message")
+                .andExpect(AysMockResultMatchersBuilders.message()
                         .value("user is already passive!"));
 
         // Verify
@@ -782,7 +780,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isConflict())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message")
+                .andExpect(AysMockResultMatchersBuilders.message()
                         .value("user is not active! userId:" + userId));
 
         // Verify
