@@ -1,5 +1,6 @@
 package org.ays.auth.model;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +46,7 @@ public class AysUserFilter implements AysFilter {
     @Size(min = 1, max = 254)
     private String emailAddress;
 
+    @Valid
     private PhoneNumber phoneNumber;
 
     private Set<AysUserStatus> statuses;
@@ -61,6 +63,7 @@ public class AysUserFilter implements AysFilter {
     @Getter
     @Setter
     public static class PhoneNumber {
+        @Size(min = 1, max = 13)
         private String lineNumber;
     }
 
