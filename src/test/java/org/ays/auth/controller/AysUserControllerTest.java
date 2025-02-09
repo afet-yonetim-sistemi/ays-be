@@ -187,12 +187,12 @@ class AysUserControllerTest extends AysRestControllerTest {
     void givenUserListRequest_whenPhoneNumberDoesNotValid_thenReturnValidationError(String invalidPhoneLineNumber) throws Exception {
 
         // Given
-        AysUserFilter.PhoneNumber mockPhoneNumber  = new AysUserFilter.PhoneNumber();
-        mockPhoneNumber .setLineNumber(invalidPhoneLineNumber);
+        AysUserFilter.PhoneNumber mockPhoneNumber = new AysUserFilter.PhoneNumber();
+        mockPhoneNumber.setLineNumber(invalidPhoneLineNumber);
 
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(mockPhoneNumber )
+                .withPhoneNumber(mockPhoneNumber)
                 .build();
 
         // Then
