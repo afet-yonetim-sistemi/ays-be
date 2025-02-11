@@ -4,6 +4,7 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserCreateRequest;
@@ -158,6 +159,40 @@ class AysUserControllerTest extends AysRestControllerTest {
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
                 .withValidValues()
                 .withLastName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            "12345678912367"
+    })
+    void givenUserListRequest_whenPhoneNumberDoesNotValid_thenReturnValidationError(String invalidPhoneLineNumber) throws Exception {
+
+        // Given
+        AysUserFilter.PhoneNumber mockPhoneNumber = new AysUserFilter.PhoneNumber();
+        mockPhoneNumber.setLineNumber(invalidPhoneLineNumber);
+
+        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(mockPhoneNumber)
                 .build();
 
         // Then
