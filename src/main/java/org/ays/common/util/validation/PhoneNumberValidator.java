@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
  */
 class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneNumberRequest> {
 
+    private static final String COUNTRY_CODE_REGEX = "90";
     /**
      * Validates an AysPhoneNumberRequest object based on E.164 international standard.
      *
@@ -24,6 +25,8 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
 
         final String countryCode = phoneNumber.getCountryCode();
         final String lineNumber = phoneNumber.getLineNumber();
+
+        if (!COUNTRY_CODE_REGEX.equals(countryCode)) return false;
 
         if (!StringUtils.hasText(countryCode) || !StringUtils.hasText(lineNumber)) {
             return true;

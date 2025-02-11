@@ -550,6 +550,42 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .complete(Mockito.anyString(), Mockito.any());
     }
 
+    @Test
+    void givenPhoneNumberWithInvalidCountryCode_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+
+        // Given
+        String mockId = "25930d3f-4cea-4147-a21a-0f22c9bf72de";
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
+                .withCountryCode("80")
+                .withLineNumber("5468524152").build();
+        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(mockPhoneNumberRequest).build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value("must be valid"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
+
+        // Verify
+        Mockito.verify(adminRegistrationCompleteService, Mockito.never())
+                .complete(Mockito.anyString(), Mockito.any());
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "John 1234",
