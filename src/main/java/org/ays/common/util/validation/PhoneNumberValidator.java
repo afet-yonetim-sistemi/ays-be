@@ -2,7 +2,6 @@ package org.ays.common.util.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import jakarta.validation.constraints.Pattern;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.AysPhoneNumberUtil;
 import org.springframework.util.StringUtils;
@@ -13,8 +12,7 @@ import org.springframework.util.StringUtils;
  */
 class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneNumberRequest> {
 
-    @Pattern(regexp = "90", message = "Currently, only 90 country code is allowed.")
-
+    private static final String COUNTRY_CODE_REGEX = "90";
     /**
      * Validates an AysPhoneNumberRequest object based on E.164 international standard.
      *
@@ -27,6 +25,8 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
 
         final String countryCode = phoneNumber.getCountryCode();
         final String lineNumber = phoneNumber.getLineNumber();
+
+        if (!COUNTRY_CODE_REGEX.equals(countryCode)) return false;
 
         if (!StringUtils.hasText(countryCode) || !StringUtils.hasText(lineNumber)) {
             return true;
