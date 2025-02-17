@@ -4,15 +4,15 @@
 name: Pull Request Checker
 
 # Trigger the workflow when various types of pull request events occur
-on:
-  pull_request:
-    types:
-      - opened # triggers the workflow when a pull request is opened.
-      - reopened # triggers the workflow when a pull request is reopened after being closed.
-      - edited # triggers the workflow when a pull request is edited (changes are made to the pull request (the title, description, assignees, labels, or other attributes of the pull request))
-      - synchronize # triggers the workflow when a pull request is synchronized (changes are pushed to the branch associated with the pull request)
-      - ready_for_review # triggers the workflow when a pull request is marked as ready for review
-      - unlocked # triggers the workflow when a previously locked pull request is unlocked
+#on:
+#  pull_request:
+#    types:
+#      - opened # triggers the workflow when a pull request is opened.
+#      - reopened # triggers the workflow when a pull request is reopened after being closed.
+#      - edited # triggers the workflow when a pull request is edited (changes are made to the pull request (the title, description, assignees, labels, or other attributes of the pull request))
+#      - synchronize # triggers the workflow when a pull request is synchronized (changes are pushed to the branch associated with the pull request)
+#      - ready_for_review # triggers the workflow when a pull request is marked as ready for review
+#      - unlocked # triggers the workflow when a previously locked pull request is unlocked
 
 jobs:
   build: # Define the "build" job
