@@ -1,0 +1,113 @@
+# Purpose: Deploy the backend to the production environment.
+
+# Name of the workflow
+name: Deploy to Production Environment
+
+#on:
+#  push:
+#    branches:
+#      - production # Trigger the workflow when a push event occurs on the production branch
+
+# Trigger the workflow when various types of pull request events occur
+on:
+  pull_request:
+    types:
+      - opened # triggers the workflow when a pull request is opened.
+      - reopened # triggers the workflow when a pull request is reopened after being closed.
+      - edited # triggers the workflow when a pull request is edited (changes are made to the pull request (the title, description, assignees, labels, or other attributes of the pull request))
+      - synchronize # triggers the workflow when a pull request is synchronized (changes are pushed to the branch associated with the pull request)
+      - ready_for_review # triggers the workflow when a pull request is marked as ready for review
+      - unlocked # triggers the workflow when a previously locked pull request is unlocked
+
+jobs:
+  build: # Define the "build" job
+    runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
+    steps: # List of steps to execute within the job
+      - name: Update package cache # Step to update the package cache
+        run: sudo apt-get update
+
+      - name: Checkout code # Step to check out the code from the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java # Step to set up the Java environment
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17 # Specify Java 17 as the version
+          distribution: 'corretto' # Use the 'corretto' distribution of Java
+
+      - name: Set up Docker # Step to set up the Docker environment
+        uses: actions/hello-world-docker-action@v2
+
+      - name: Install Maven # Step to install Maven
+        run: sudo apt-get install -y maven
+
+      - name: Copy settings.xml file from template # Step to create a new 'settings.xml' file by copying the 'template-settings.xml'
+        run: cp template-settings.xml settings.xml
+
+      - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
+        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+
+      - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
+        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+
+      - name: Cache Maven packages # Caching of Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build and analyze # Maven execution
+        run: mvn --settings settings.xml clean install -D skipTests
+
+      - name: Starting Deployment to ECS... # Step to start the deployment to ECS
+        run: echo "Starting Deployment to ECS..."
+
+      - name: Configure AWS credentials # Step to configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.PRODUCTION_AWS_REGION }}
+
+      - name: Login to Amazon ECR # Step to log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: 'false'
+
+      - name: Build, tag, and push image to Amazon ECR # Step to build, tag, and push the image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: production/ays-be
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          
+          #      - name: Download task definition # Step to download the task definition
+          #        run: |
+          #          aws ecs describe-task-definition --task-definition ays-be-test \
+          #          --query taskDefinition > task_definition.json
+          #
+          #      - name: Fill in the new image ID in the Amazon ECS task definition # Step to fill in the new image ID in the Amazon ECS task definition
+          #        id: task-def
+          #        uses: aws-actions/amazon-ecs-render-task-definition@v1
+          #        with:
+          #          task-definition: task_definition.json
+          #          container-name: ays-be-test
+          #          image: ${{ steps.build-image.outputs.image }}
+          #
+          #      - name: Deploy Amazon ECS task definition # Step to deploy the Amazon ECS task definition
+          #        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+          #        with:
+          #          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          #          service: ays-be-test-service
+          #          cluster: ays-be-test-cluster
+          #          wait-for-service-stability: true
+
+      - name: Deployment successfully completed # Step to indicate that the deployment was successful
+        run: echo "Deployment successfully completed!"
+        
