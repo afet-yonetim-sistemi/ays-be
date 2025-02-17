@@ -1,6 +1,0 @@
-aws:
-  kinesis:
-    region: ${AWS_KINESIS_REGION:}
-  credentials:
-    access-key-id: ${AWS_KINESIS_ACCESS_KEY_ID:}
-    secret-access-key: ${AWS_KINESIS_SECRET_ACCESS_KEY:}
