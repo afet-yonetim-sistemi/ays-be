@@ -3,6 +3,7 @@ package org.ays.common.repository.impl;
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.entity.AysAuditLogEntity;
 import org.ays.common.repository.AysAuditLogRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.core.SdkBytes;
@@ -14,14 +15,15 @@ import software.amazon.awssdk.services.kinesis.model.PutRecordRequest;
  * This implementation is active only when the application is running with the "kinesis" profile.
  */
 @Repository
-@Profile("kinesis")
+@Profile("aws")
 @RequiredArgsConstructor
 class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
 
     private final KinesisClient kinesisClient;
 
 
-    private static final String STREAM_NAME = "ays-be-audit-log";
+    @Value("${aws.kinesis.audit-log.stream-name}")
+    private String streamName;
 
 
     /**
@@ -35,7 +37,7 @@ class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
         final SdkBytes sdkBytes = SdkBytes.fromUtf8String(auditLogEntity.toKinesisJsonString());
 
         final PutRecordRequest putRecordRequest = PutRecordRequest.builder()
-                .streamName(STREAM_NAME)
+                .streamName(this.streamName)
                 .partitionKey(auditLogEntity.getId())
                 .data(sdkBytes)
                 .build();

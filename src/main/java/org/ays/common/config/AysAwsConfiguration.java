@@ -23,7 +23,7 @@ class AysAwsConfiguration {
     private String region;
 
     @Bean
-    public KinesisClient kinesisClient() {
+    KinesisClient kinesisClient() {
 
         final AwsBasicCredentials awsCredentials = AwsBasicCredentials
                 .create(this.accessKey, this.secretKey);
