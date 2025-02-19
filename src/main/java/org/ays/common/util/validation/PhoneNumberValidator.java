@@ -27,7 +27,7 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
 
         if (!"90".equals(countryCode)) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("line number must be equals 90")
+            context.buildConstraintViolationWithTemplate("must be valid")
                     .addConstraintViolation();
             return false;
         }
