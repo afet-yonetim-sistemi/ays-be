@@ -25,8 +25,8 @@
     <servers>
         <server>
             <id>github</id>
-            <username>{YOUR_GITHUB_USERNAME}</username>
-            <password>{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}</password>
+            <test>{YOUR_GITHUB_USERNAME}1</test>
+            <test>{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}1</test>
         </server>
     </servers>
 </settings>
