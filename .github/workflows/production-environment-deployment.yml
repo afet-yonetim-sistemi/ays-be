@@ -23,7 +23,7 @@ jobs:
   build: # Define the "build" job
     runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
 
-    environment: Production # Define the environment as Production
+    #    environment: Production # Define the environment as Production
 
     steps: # List of steps to execute within the job
       - name: Update package cache # Step to update the package cache
@@ -54,7 +54,11 @@ jobs:
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: secrets to echo
-        run: cat settings.xml
+        run: echo ${{ secrets.GH_USERNAME }} >> test-test.txt
+
+      - name: secrets to echo
+        run: cat test-test.txt
+
 #
 #      - name: Cache Maven packages # Caching of Maven packages
 #        uses: actions/cache@v4
