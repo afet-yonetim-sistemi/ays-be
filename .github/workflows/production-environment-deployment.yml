@@ -97,7 +97,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task_definition.json
-          container-name: ays-be-test
+          container-name: production-ecs-fargate-backend-001-service-td-container
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition # Step to deploy the Amazon ECS task definition
