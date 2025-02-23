@@ -214,6 +214,18 @@
         <!-- ===================== -->
 
 
+        <!-- ======================= -->
+        <!-- monitoring dependencies -->
+        <!-- ======================= -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <!-- ======================= -->
+        <!-- monitoring dependencies -->
+        <!-- ======================= -->
+
+
         <!-- ================= -->
         <!-- test dependencies -->
         <!-- ================= -->
