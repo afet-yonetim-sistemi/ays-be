@@ -2,8 +2,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: info, health, prometheus
+        include: info, health, metrics, prometheus
   prometheus:
     metrics:
       export:
         enabled: true
+logging:
+  logstash:
+    destination: ${ELK_LOGSTASH_DESTINATION_IP:localhost}:${ELK_LOGSTASH_DESTINATION_PORT:5044}

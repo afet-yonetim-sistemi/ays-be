@@ -45,6 +45,7 @@
         <objenesis.version>3.4</objenesis.version>
         <commons-text.version>1.13.0</commons-text.version>
         <logback.version>1.5.16</logback.version>
+        <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
 
         <jacoco.version>0.8.12</jacoco.version>
     </properties>
@@ -220,6 +221,12 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
         </dependency>
         <!-- ======================= -->
         <!-- monitoring dependencies -->
