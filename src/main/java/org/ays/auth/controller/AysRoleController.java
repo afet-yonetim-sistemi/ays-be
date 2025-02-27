@@ -61,14 +61,14 @@ class AysRoleController {
      * GET /roles/summary : Retrieve a summary of all roles.
      * <p>
      * This endpoint handles the retrieval of a summary of all roles.
-     * The user must have the 'user:create' or 'user:update' authority to access this endpoint.
+     * The user must have the 'user:create', 'user:detail' or 'user:update' authority to access this endpoint.
      * </p>
      *
      * @return an {@link AysResponse} containing a list of {@link AysRolesSummaryResponse} objects,
      * which represent the summary of roles.
      */
     @GetMapping("/roles/summary")
-    @PreAuthorize("hasAnyAuthority('user:create', 'user:update')")
+    @PreAuthorize("hasAnyAuthority('user:create', 'user:detail', 'user:update')")
     public AysResponse<List<AysRolesSummaryResponse>> findAllSummary() {
 
         final List<AysRole> roles = roleReadService.findAll();
