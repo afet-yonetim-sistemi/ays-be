@@ -97,6 +97,25 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .findAll();
     }
 
+    @Test
+    void whenUserUnauthorizedOnRolesSummary_thenReturnAccessDeniedException() throws Exception {
+        // Then
+        String endpoint = BASE_PATH.concat("/roles/summary");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint, mockUserToken.getAccessToken());
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.never())
+                .findAll();
+    }
 
     @Test
     void givenValidRoleListRequest_whenRolesFound_thenReturnAysPageResponseOfRolesResponse() throws Exception {
