@@ -2,8 +2,8 @@ package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.exception.AysEmailAddressNotValidException;
-import org.ays.auth.exception.AysUserNotActiveException;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
+import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
 import org.ays.auth.model.AysRole;
@@ -206,7 +206,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserNotActiveException.class,
+                AysUserNotActiveAuthException.class,
                 () -> userPasswordService.forgotPassword(mockForgotPasswordRequest)
         );
 

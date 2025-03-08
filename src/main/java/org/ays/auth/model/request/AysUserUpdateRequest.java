@@ -36,7 +36,6 @@ public class AysUserUpdateRequest {
 
     @EmailAddress
     @NotBlank
-    @Size(min = 2, max = 255)
     private String emailAddress;
 
     @Valid

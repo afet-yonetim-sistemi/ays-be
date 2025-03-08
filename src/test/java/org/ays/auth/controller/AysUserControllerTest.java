@@ -4,6 +4,7 @@ package org.ays.auth.controller;
 import org.ays.AysRestControllerTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
+import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.mapper.AysUserToResponseMapper;
 import org.ays.auth.model.mapper.AysUserToUsersResponseMapper;
 import org.ays.auth.model.request.AysUserCreateRequest;
@@ -158,6 +159,71 @@ class AysUserControllerTest extends AysRestControllerTest {
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
                 .withValidValues()
                 .withLastName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            "12345678912367"
+    })
+    void givenUserListRequest_whenPhoneNumberDoesNotValid_thenReturnValidationError(String invalidPhoneLineNumber) throws Exception {
+
+        // Given
+        AysUserFilter.PhoneNumber mockPhoneNumber = new AysUserFilter.PhoneNumber();
+        mockPhoneNumber.setLineNumber(invalidPhoneLineNumber);
+
+        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(mockPhoneNumber)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.never())
+                .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
+    })
+    void givenUserListRequest_whenEmailAddressDoesNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
+
+        // Given
+        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
+                .withValidValues()
+                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // Then
@@ -363,12 +429,28 @@ class AysUserControllerTest extends AysRestControllerTest {
     }
 
 
-    @Test
-    void givenUserCreateRequest_whenUserCreated_thenReturnSuccess() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "a@b.co",
+            "abcdef@mail.com",
+            "abc+def@archive.com",
+            "john.doe123@example.co.uk",
+            "admin_123@example.org",
+            "admin-test@ays.com",
+            "johndoe@gmail.com",
+            "janedoe123@yahoo.com",
+            "michael.jordan@nba.com",
+            "alice.smith@company.co.uk",
+            "info@mywebsite.org",
+            "support@helpdesk.net",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
+    })
+    void givenUserCreateRequest_whenUserCreated_thenReturnSuccess(String mockEmailAddress) throws Exception {
 
         // Given
         AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
                 .withValidValues()
+                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // When
@@ -507,26 +589,26 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "abc.def@mail.c",
-            "abc.def@mail#archive.com",
-            "abc.def@mail",
-            "abcdef@mail..com",
-            "abc-@mail.com",
-            "admin@test@ays.com",
-            "admintest@ays..com",
+            "a@b.c",
+            "plainaddress",
+            "@missingusername.com",
+            "username@.com",
+            "username@gmail",
+            "username@gmail..com",
+            "username@gmail.c",
+            "username@-gmail.com",
+            "username@gmail-.com",
+            "username@gmail.com.",
+            "username@.gmail.com",
+            "username@gmail@gmail.com",
+            "username(john.doe)@gmail.com",
+            "user@domain(comment).com",
+            "usernamegmail.com",
+            "username@gmail,com",
+            "username@gmail space.co",
             "username@gmail..co.uk",
-            "user@ example.com",
-            "user@-example.com",
-            "user@example-.com",
-            "(user)@example.com",
-            "user@[192.168.1.1",
-            "user@exam ple.com",
-            "user@.com",
-            ".user@example.com",
-            "  user@example.com",
-            "user@example.com ",
-            " user@example.com ",
-            "@missingusername.com"
+            "user#gmail.com",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
     })
     void givenUserCreateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
 
@@ -555,13 +637,29 @@ class AysUserControllerTest extends AysRestControllerTest {
     }
 
 
-    @Test
-    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "a@b.co",
+            "abcdef@mail.com",
+            "abc+def@archive.com",
+            "john.doe123@example.co.uk",
+            "admin_123@example.org",
+            "admin-test@ays.com",
+            "johndoe@gmail.com",
+            "janedoe123@yahoo.com",
+            "michael.jordan@nba.com",
+            "alice.smith@company.co.uk",
+            "info@mywebsite.org",
+            "support@helpdesk.net",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
+    })
+    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess(String mockEmailAddress) throws Exception {
 
         // Given
         String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
+                .withEmailAddress(mockEmailAddress)
                 .build();
 
         // When
@@ -737,26 +835,26 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "abc.def@mail.c",
-            "abc.def@mail#archive.com",
-            "abc.def@mail",
-            "abcdef@mail..com",
-            "abc-@mail.com",
-            "admin@test@ays.com",
-            "admintest@ays..com",
+            "a@b.c",
+            "plainaddress",
+            "@missingusername.com",
+            "username@.com",
+            "username@gmail",
+            "username@gmail..com",
+            "username@gmail.c",
+            "username@-gmail.com",
+            "username@gmail-.com",
+            "username@gmail.com.",
+            "username@.gmail.com",
+            "username@gmail@gmail.com",
+            "username(john.doe)@gmail.com",
+            "user@domain(comment).com",
+            "usernamegmail.com",
+            "username@gmail,com",
+            "username@gmail space.co",
             "username@gmail..co.uk",
-            "user@ example.com",
-            "user@-example.com",
-            "user@example-.com",
-            "(user)@example.com",
-            "user@[192.168.1.1",
-            "user@exam ple.com",
-            "user@.com",
-            ".user@example.com",
-            "  user@example.com",
-            "user@example.com ",
-            " user@example.com ",
-            "@missingusername.com"
+            "user#gmail.com",
+            "bekeleandreaevelynirenealexandrascottmirasoniamustafahuivladimirmarcoyolandaraymondakhtermichaeldennistatianayuliyagangmargaretthomassumanjeanamymostafasaidrubenchenedithjumasitimeilucasgaryghulamminaxiaohongmarcosrafaelamyantoniamohamadfatmaahmed@aystest.org"
     })
     void givenValidIdAndInvalidUserUpdateRequest_whenEmailNotValid_thenReturnValidationError(String mockEmailAddress) throws Exception {
         // Given

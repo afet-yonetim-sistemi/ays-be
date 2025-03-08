@@ -954,15 +954,20 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
     }
 
-    @Test
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceCityAndDistrictSameAsTargetCityAndDistrict_thenReturnValidationError() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            " ",
+            "İstanbul",
+    })
+    void givenEmergencyEvacuationApplicationRequest_whenSourceAndTargetCityOrDistrictAreBlankOrEmptyOrTheSame_thenReturnValidationError(String name) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
-                .withSourceCity("Adana")
-                .withSourceDistrict("Maltepe")
-                .withTargetCity("Adana")
-                .withTargetDistrict("Maltepe")
+                .withSourceCity(name)
+                .withSourceDistrict(name)
+                .withTargetCity(name)
+                .withTargetDistrict(name)
                 .build();
 
         // Then

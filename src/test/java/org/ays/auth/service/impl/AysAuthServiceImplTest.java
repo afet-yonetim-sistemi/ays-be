@@ -8,7 +8,7 @@ import org.ays.auth.exception.AysTokenAlreadyInvalidatedException;
 import org.ays.auth.exception.AysTokenNotValidException;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
 import org.ays.auth.exception.AysUserIdNotValidException;
-import org.ays.auth.exception.AysUserNotActiveException;
+import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.model.AysIdentity;
 import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysPermissionBuilder;
@@ -284,7 +284,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserNotActiveException.class,
+                AysUserNotActiveAuthException.class,
                 () -> userAuthService.authenticate(mockLoginRequest)
         );
 
@@ -606,7 +606,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysUserNotActiveException.class,
+                AysUserNotActiveAuthException.class,
                 () -> userAuthService.refreshAccessToken(mockRefreshToken)
         );
 

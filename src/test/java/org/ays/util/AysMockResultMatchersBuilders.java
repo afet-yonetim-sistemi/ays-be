@@ -24,6 +24,10 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.header");
     }
 
+    public static JsonPathResultMatchers message() {
+        return MockMvcResultMatchers.jsonPath("$.message");
+    }
+
     public static JsonPathResultMatchers isSuccess() {
         return MockMvcResultMatchers.jsonPath("$.isSuccess");
     }
