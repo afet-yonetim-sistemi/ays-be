@@ -509,6 +509,40 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "20",
+            "80",
+             ""
+    })
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenPhoneNumberCountryCodeIsNotValid_thenReturnValidationError(String countryCode) throws Exception {
+        // Given
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
+                .withValidValues()
+                .withCountryCode(countryCode)
+                .build();
+        EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(mockPhoneNumberRequest)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockApplicationRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
+                .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
             "",
             "Invalid with special characters: #$%",
             "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
