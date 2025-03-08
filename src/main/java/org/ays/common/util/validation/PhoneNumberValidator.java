@@ -25,15 +25,22 @@ class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, AysPhoneN
         final String countryCode = phoneNumber.getCountryCode();
         final String lineNumber = phoneNumber.getLineNumber();
 
+        if (!StringUtils.hasText(countryCode) || !StringUtils.hasText(lineNumber)) {
+            return true;
+        }
+
         if (!"90".equals(countryCode)) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("must be valid")
+            context.buildConstraintViolationWithTemplate("country code must be 90")
                     .addConstraintViolation();
             return false;
         }
 
-        if (!StringUtils.hasText(countryCode) || !StringUtils.hasText(lineNumber)) {
-            return true;
+        if (lineNumber.length() != 10) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("line number length must be 10")
+                    .addConstraintViolation();
+            return false;
         }
 
         final boolean countryCodeIsNumeric = countryCode.chars().allMatch(Character::isDigit);
