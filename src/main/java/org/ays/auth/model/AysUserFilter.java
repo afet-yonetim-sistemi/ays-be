@@ -57,14 +57,17 @@ public class AysUserFilter implements AysFilter {
 
     private String institutionId;
 
+
     /**
      * Nested class for filtering by phone line number.
      */
     @Getter
     @Setter
     public static class PhoneNumber {
-        @Size(min = 1, max = 13)
+
+        @Size(min = 1, max = 10)
         private String lineNumber;
+
     }
 
 
