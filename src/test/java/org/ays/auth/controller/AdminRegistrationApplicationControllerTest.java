@@ -39,6 +39,7 @@ import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -441,58 +442,37 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .complete(Mockito.anyString(), Mockito.any());
     }
 
-    @Test
-    void givenPhoneNumberWithAlphanumericCharacter_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-
-        // Given
-        String mockId = "f1b789d0-6095-4860-85bb-e1a0b20f1d13";
-        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("ABC")
-                .withLineNumber("ABC").build();
-        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidValues()
-                .withPhoneNumber(mockPhoneNumberRequest).build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
-                        .value("must be valid"))
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
-                        .value("phoneNumber"))
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
-                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
-
-        // Verify
-        Mockito.verify(adminRegistrationCompleteService, Mockito.never())
-                .complete(Mockito.anyString(), Mockito.any());
-    }
-
-    @Test
-    void givenPhoneNumberWithInvalidLength_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
+    @CsvSource({
+            "country code must be 90, ABC, ABC",
+            "country code must be 90, 80, 1234567890",
+            "country code must be 90, ABC, ABCDEFGHIJ",
+            "country code must be 90, 456786745645, 6546467456435548676845321346656654",
+            "line number length must be 10, 90, ABC",
+            "line number length must be 10, 90, 123456789",
+            "line number length must be 10, 90, 12345678901",
+            "must be valid, 90, 1234567890",
+            "must be valid, 90, 9104567890",
+    })
+    @ParameterizedTest
+    void givenAdminRegistrationApplicationCompleteRequest_whenPhoneNumberIsNotValid_thenReturnValidationError(String mockMessage,
+                                                                                                              String mockCountryCode,
+                                                                                                              String mockLineNumber) throws Exception {
 
         // Given
         String mockId = "25930d3f-4cea-4147-a21a-0f22c9bf72de";
         AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("456786745645")
-                .withLineNumber("6546467456435548676845321346656654").build();
-        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withCountryCode(mockCountryCode)
+                .withLineNumber(mockLineNumber)
+                .build();
+        AdminRegistrationApplicationCompleteRequest mockCompleteRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withPhoneNumber(mockPhoneNumberRequest).build();
+                .withPhoneNumber(mockPhoneNumberRequest)
+                .build();
 
         // Then
         String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockRequest);
+                .post(endpoint, mockCompleteRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
 
@@ -502,80 +482,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
-                        .value("must be valid"))
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
-                        .value("phoneNumber"))
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
-                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
-
-        // Verify
-        Mockito.verify(adminRegistrationCompleteService, Mockito.never())
-                .complete(Mockito.anyString(), Mockito.any());
-    }
-
-    @Test
-    void givenPhoneNumberWithInvalidOperator_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-
-        // Given
-        String mockId = "2028b456-e06c-4ea1-9017-b45523529576";
-        final String invalidOperator = "123";
-        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("90")
-                .withLineNumber(invalidOperator + "6327218").build();
-        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidValues()
-                .withPhoneNumber(mockPhoneNumberRequest).build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
-                        .value("must be valid"))
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
-                        .value("phoneNumber"))
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
-                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
-
-        // Verify
-        Mockito.verify(adminRegistrationCompleteService, Mockito.never())
-                .complete(Mockito.anyString(), Mockito.any());
-    }
-
-    @Test
-    void givenPhoneNumberWithInvalidCountryCode_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-
-        // Given
-        String mockId = "25930d3f-4cea-4147-a21a-0f22c9bf72de";
-        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("80")
-                .withLineNumber("5468524152").build();
-        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidValues()
-                .withPhoneNumber(mockPhoneNumberRequest).build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
-                        .value("must be valid"))
+                        .value(mockMessage))
                 .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
                         .value("phoneNumber"))
                 .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")

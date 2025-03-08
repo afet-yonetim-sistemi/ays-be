@@ -29,6 +29,7 @@ import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
@@ -479,7 +480,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     }
 
     @Test
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenPhoneNumbersAreSameOne_thenReturnValidationError() throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantAndPersonPhoneNumbersAreSameOne_thenReturnValidationError() throws Exception {
         // Given
         AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
                 .withValidValues()
@@ -507,17 +508,26 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "20",
-            "80",
-             ""
+    @CsvSource({
+            "country code must be 90, ABC, ABC",
+            "country code must be 90, 80, 1234567890",
+            "country code must be 90, ABC, ABCDEFGHIJ",
+            "country code must be 90, 456786745645, 6546467456435548676845321346656654",
+            "line number length must be 10, 90, ABC",
+            "line number length must be 10, 90, 123456789",
+            "line number length must be 10, 90, 12345678901",
+            "must be valid, 90, 1234567890",
+            "must be valid, 90, 9104567890",
     })
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenPhoneNumberCountryCodeIsNotValid_thenReturnValidationError(String countryCode) throws Exception {
+    @ParameterizedTest
+    void givenEmergencyEvacuationApplicationRequest_whenPhoneNumberIsNotValid_thenReturnValidationError(String mockMessage,
+                                                                                                        String mockCountryCode,
+                                                                                                        String mockLineNumber) throws Exception {
+
         // Given
         AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
-                .withValidValues()
-                .withCountryCode(countryCode)
+                .withCountryCode(mockCountryCode)
+                .withLineNumber(mockLineNumber)
                 .build();
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
@@ -530,11 +540,18 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .post(endpoint, mockApplicationRequest);
 
         AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value(mockMessage))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
@@ -611,40 +628,6 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
-
-        // Verify
-        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
-                .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
-    }
-
-    @Test
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("456786745645")
-                .withLineNumber("6546467456435548676845321346656654").build();
-        EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidValues()
-                .withPhoneNumber(mockPhoneNumberRequest)
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockApplicationRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty())
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
-                        .value("must be valid"))
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
-                        .value("phoneNumber"))
-                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
-                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
@@ -916,34 +899,6 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
                 .withApplicantLastName(applicantLastName)
-                .build();
-
-        // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockApplicationRequest);
-
-        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isBadRequest())
-                .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())
-                .create(Mockito.any(EmergencyEvacuationApplicationRequest.class));
-    }
-
-    @Test
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantPhoneNumberIsNotValid_thenReturnValidationError() throws Exception {
-        // Given
-        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
-                .withCountryCode("456786745645")
-                .withLineNumber("6546467456435548676845321346656654").build();
-        EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
-                .withValidValues()
-                .withApplicantPhoneNumber(mockPhoneNumberRequest)
                 .build();
 
         // Then
