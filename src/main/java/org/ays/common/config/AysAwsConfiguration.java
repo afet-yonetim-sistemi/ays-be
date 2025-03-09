@@ -10,8 +10,8 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.kinesis.KinesisClient;
 
 @Configuration
-@Profile("kinesis")
-class AysKinesisConfiguration {
+@Profile("aws")
+class AysAwsConfiguration {
 
     @Value("${aws.credentials.access-key-id}")
     private String accessKey;
@@ -19,11 +19,11 @@ class AysKinesisConfiguration {
     @Value("${aws.credentials.secret-access-key}")
     private String secretKey;
 
-    @Value("${aws.kinesis.region}")
+    @Value("${aws.region}")
     private String region;
 
     @Bean
-    public KinesisClient kinesisClient() {
+    KinesisClient kinesisClient() {
 
         final AwsBasicCredentials awsCredentials = AwsBasicCredentials
                 .create(this.accessKey, this.secretKey);
