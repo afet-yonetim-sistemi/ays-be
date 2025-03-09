@@ -24,9 +24,10 @@ spring:
       password: ${spring.datasource.password}
       jdbc-url: ${spring.datasource.writer.url}
       driver-class-name: ${spring.datasource.driver-class-name}
-      maximum-pool-size: 5
-      connection-timeout: 180000
-      max-lifetime: 170000
+      maximum-pool-size: ${AYS_HIKARI_MAXIMUM_POOL_SIZE:5}
+      connection-timeout: ${AYS_HIKARI_CONNECTION_TIMEOUT:30000}
+      max-lifetime: ${AYS_HIKARI_MAX_LIFETIME:170000}
+      idle-timeout: ${AYS_HIKARI_IDLE_TIMEOUT:60000}
   mail:
     host: ${AYS_SMTP_HOST:smtp.gmail.com}
     port: ${AYS_SMTP_PORT:587}
