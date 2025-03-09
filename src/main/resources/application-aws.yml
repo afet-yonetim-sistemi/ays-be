@@ -1,0 +1,8 @@
+aws:
+  region: ${AWS_REGION:}
+  credentials:
+    access-key-id: ${AWS_ACCESS_KEY_ID:}
+    secret-access-key: ${AWS_SECRET_ACCESS_KEY:}
+  kinesis:
+    audit-log:
+      stream-name: ${AWS_KINESIS_AUDIT_LOG_STREAM_NAME:}
