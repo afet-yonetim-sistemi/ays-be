@@ -52,15 +52,6 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-springdoc:
-  packagesToScan: org.ays
-  cache:
-    disabled: false
-  swagger-ui:
-    path: /public/api/swagger-ui.html
-  api-docs:
-    path: /public/api/docs
-
 info:
   application:
     name: '@project.name@'
