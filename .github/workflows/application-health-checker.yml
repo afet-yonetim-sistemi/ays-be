@@ -11,6 +11,7 @@ on:
 jobs:
   build: # Define the "build" job
     runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
+    environment: Test # Define the environment as Test
     steps: # List of steps to execute within the job
       - name: Update package cache # Step to update the package cache
         run: sudo apt-get update
