@@ -35,7 +35,7 @@ jobs:
         run: cp template-settings.xml settings.xml
 
       - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
-        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml

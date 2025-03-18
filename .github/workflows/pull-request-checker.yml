@@ -41,7 +41,7 @@ jobs:
         run: cp template-settings.xml settings.xml
 
       - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
-        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
@@ -63,6 +63,6 @@ jobs:
       - name: Build and analyze # SonarQube integration and Maven execution
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+          SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
         run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.projectName='ays-be'
