@@ -39,19 +39,19 @@ public class AysAuditLogEntity {
      */
     public String toKinesisJsonString() {
         return "{" +
-                "\"id\":\"" + id + "\"," +
-                "\"user_id\":\"" + Optional.ofNullable(userId).orElse("") + "\"," +
-                "\"request_ip_address\":\"" + Optional.ofNullable(requestIpAddress).orElse("") + "\"," +
-                "\"request_referer\":\"" + Optional.ofNullable(requestReferer).orElse("") + "\"," +
-                "\"request_http_method\":\"" + Optional.ofNullable(requestHttpMethod).orElse("") + "\"," +
-                "\"request_path\":\"" + Optional.ofNullable(requestPath).orElse("") + "\"," +
-                "\"request_http_header\":\"" + Optional.ofNullable(requestHttpHeader).orElse("") + "\"," +
-                "\"request_body\":\"" + Optional.ofNullable(requestBody).orElse("") + "\"," +
-                "\"response_http_status_code\":" + Optional.ofNullable(responseHttpStatusCode).orElse(0) + "," +
-                "\"response_body\":\"" + Optional.ofNullable(responseBody).orElse("") + "\"," +
-                "\"requested_at\":\"" + requestedAt + "\"," +
-                "\"responded_at\":\"" + respondedAt + "\"" +
-                "}";
+               "\"id\":\"" + this.id + "\"," +
+               "\"user_id\":\"" + Optional.ofNullable(this.userId).orElse("") + "\"," +
+               "\"request_ip_address\":\"" + Optional.ofNullable(this.requestIpAddress).orElse("") + "\"," +
+               "\"request_referer\":\"" + Optional.ofNullable(this.requestReferer).orElse("") + "\"," +
+               "\"request_http_method\":\"" + Optional.ofNullable(this.requestHttpMethod).orElse("") + "\"," +
+               "\"request_path\":\"" + Optional.ofNullable(this.requestPath).orElse("") + "\"," +
+               "\"request_http_header\":\"" + Optional.ofNullable(this.requestHttpHeader).orElse("") + "\"," +
+               "\"request_body\":\"" + Optional.ofNullable(this.requestBody).orElse("") + "\"," +
+               "\"response_http_status_code\":" + Optional.ofNullable(this.responseHttpStatusCode).orElse(0) + "," +
+               "\"response_body\":\"" + Optional.ofNullable(this.responseBody).orElse("") + "\"," +
+               "\"requested_at\":\"" + this.requestedAt + "\"," +
+               "\"responded_at\":\"" + this.respondedAt + "\"" +
+               "}";
     }
 
 }
