@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -65,20 +66,7 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertNotNull(lastLogMessage);
-                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
-                    Assertions.assertTrue(lastLogMessage.contains("\"id\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"user_id\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_ip_address\":\"127.0.0.1"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_referer\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_http_method\":\"GET"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_path\":\"" + endpoint + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_body\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"response_http_status_code\":200"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"response_body\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requested_at\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"responded_at\":\""));
+                    this.validateLastLogMessage("", endpoint, HttpStatus.OK);
                     Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
@@ -130,20 +118,7 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertNotNull(lastLogMessage);
-                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
-                    Assertions.assertTrue(lastLogMessage.contains("\"id\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"user_id\":\"" + AysValidTestData.SuperAdmin.ID + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_ip_address\":\"127.0.0.1"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_referer\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_http_method\":\"GET"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_path\":\"" + endpoint + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_body\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"response_http_status_code\":200"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"response_body\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requested_at\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"responded_at\":\""));
+                    this.validateLastLogMessage(AysValidTestData.SuperAdmin.ID, endpoint, HttpStatus.OK);
                     Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
@@ -169,24 +144,28 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertNotNull(lastLogMessage);
-                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
-                    Assertions.assertTrue(lastLogMessage.contains("\"id\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"user_id\":\"" + AysValidTestData.SuperAdmin.ID + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_ip_address\":\"127.0.0.1"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_referer\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_http_method\":\"GET"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_path\":\"" + endpoint + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"request_body\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"response_http_status_code\":404"));
-                    Assertions.assertTrue(lastLogMessage.contains("\"response_body\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requested_at\":\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"responded_at\":\""));
+                    this.validateLastLogMessage(AysValidTestData.SuperAdmin.ID, endpoint, HttpStatus.NOT_FOUND);
                     Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
+
+    private void validateLastLogMessage(String userId, String endpoint, HttpStatus httpStatus) {
+        String lastLogMessage = this.getLastLogMessage();
+        Assertions.assertNotNull(lastLogMessage);
+        Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
+        Assertions.assertTrue(lastLogMessage.contains("\"id\":\""));
+        Assertions.assertTrue(lastLogMessage.contains("\"userId\":\"" + userId + "\""));
+        Assertions.assertTrue(lastLogMessage.contains("\"requestIpAddress\":\"127.0.0.1"));
+        Assertions.assertTrue(lastLogMessage.contains("\"requestReferer\":\"\""));
+        Assertions.assertTrue(lastLogMessage.contains("\"requestHttpMethod\":\"GET"));
+        Assertions.assertTrue(lastLogMessage.contains("\"requestPath\":\"" + endpoint + "\""));
+        Assertions.assertTrue(lastLogMessage.contains("\"requestBody\":\"\""));
+        Assertions.assertTrue(lastLogMessage.contains("\"responseHttpStatusCode\":" + httpStatus.value()));
+        Assertions.assertTrue(lastLogMessage.contains("\"responseBody\":\""));
+        Assertions.assertTrue(lastLogMessage.contains("\"requestedAt\":\""));
+        Assertions.assertTrue(lastLogMessage.contains("\"respondedAt\":\""));
+    }
 
     private String getLastLogMessage() {
 
