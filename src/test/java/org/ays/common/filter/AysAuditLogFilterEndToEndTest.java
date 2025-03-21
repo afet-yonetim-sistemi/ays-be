@@ -35,10 +35,10 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
 
     @BeforeEach
     void start() {
-        logWatcher = new ListAppender<>();
-        logWatcher.start();
+        this.logWatcher = new ListAppender<>();
+        this.logWatcher.start();
         ((Logger) LoggerFactory.getLogger(AysAuditLogRepositoryImpl.class))
-                .addAppender(logWatcher);
+                .addAppender(this.logWatcher);
     }
 
     @AfterEach
@@ -65,9 +65,9 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                     String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertTrue(lastLogMessage.contains("Audit log saved: "));
+                    Assertions.assertNotNull(lastLogMessage);
+                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
                     Assertions.assertTrue(lastLogMessage.contains("\"id\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"user_id\":\"\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"request_ip_address\":\"127.0.0.1"));
@@ -79,6 +79,7 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                     Assertions.assertTrue(lastLogMessage.contains("\"response_body\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"requested_at\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"responded_at\":\""));
+                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
@@ -129,9 +130,9 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                     String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertTrue(lastLogMessage.contains("Audit log saved: "));
+                    Assertions.assertNotNull(lastLogMessage);
+                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
                     Assertions.assertTrue(lastLogMessage.contains("\"id\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"user_id\":\"" + AysValidTestData.SuperAdmin.ID + "\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"request_ip_address\":\"127.0.0.1"));
@@ -143,6 +144,7 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                     Assertions.assertTrue(lastLogMessage.contains("\"response_body\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"requested_at\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"responded_at\":\""));
+                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
@@ -167,9 +169,9 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                     String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertTrue(lastLogMessage.contains("Audit log saved: "));
+                    Assertions.assertNotNull(lastLogMessage);
+                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
                     Assertions.assertTrue(lastLogMessage.contains("\"id\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"user_id\":\"" + AysValidTestData.SuperAdmin.ID + "\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"request_ip_address\":\"127.0.0.1"));
@@ -181,26 +183,29 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                     Assertions.assertTrue(lastLogMessage.contains("\"response_body\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"requested_at\":\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"responded_at\":\""));
+                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
+
     private String getLastLogMessage() {
-        if (logWatcher.list.isEmpty()) {
+
+        if (this.logWatcher.list.isEmpty()) {
             return null;
         }
 
-        int logSize = logWatcher.list.size();
-        return logWatcher.list.get(logSize - 1).getFormattedMessage();
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getFormattedMessage();
     }
 
     private Level getLastLogLevel() {
 
-        if (logWatcher.list.isEmpty()) {
+        if (this.logWatcher.list.isEmpty()) {
             return null;
         }
 
-        int logSize = logWatcher.list.size();
-        return logWatcher.list.get(logSize - 1).getLevel();
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getLevel();
     }
 
 }
