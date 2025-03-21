@@ -21,6 +21,8 @@ import org.ays.auth.service.AysUserUpdateService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.AysPageableBuilder;
+import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysErrorResponseBuilder;
 import org.ays.common.model.response.AysPageResponse;
@@ -31,6 +33,7 @@ import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
@@ -179,16 +182,17 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .findAll(Mockito.any(AysUserListRequest.class));
     }
 
-    @ParameterizedTest
     @ValueSource(strings = {
             "",
+            "12345678912",
             "12345678912367"
     })
-    void givenUserListRequest_whenPhoneNumberDoesNotValid_thenReturnValidationError(String invalidPhoneLineNumber) throws Exception {
+    @ParameterizedTest
+    void givenUserListRequest_whenLineNumberIsNotValid_thenReturnValidationError(String mockLineNumber) throws Exception {
 
         // Given
         AysUserFilter.PhoneNumber mockPhoneNumber = new AysUserFilter.PhoneNumber();
-        mockPhoneNumber.setLineNumber(invalidPhoneLineNumber);
+        mockPhoneNumber.setLineNumber(mockLineNumber);
 
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
                 .withValidValues()
@@ -587,6 +591,56 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysUserCreateRequest.class));
     }
 
+    @CsvSource({
+            "country code must be 90, ABC, ABC",
+            "country code must be 90, 80, 1234567890",
+            "country code must be 90, ABC, ABCDEFGHIJ",
+            "country code must be 90, 456786745645, 6546467456435548676845321346656654",
+            "line number length must be 10, 90, ABC",
+            "line number length must be 10, 90, 123456789",
+            "line number length must be 10, 90, 12345678901",
+            "must be valid, 90, 1234567890",
+            "must be valid, 90, 9104567890",
+    })
+    @ParameterizedTest
+    void givenUserCreateRequest_whenPhoneNumberIsNotValid_thenReturnValidationError(String mockMessage,
+                                                                                    String mockCountryCode,
+                                                                                    String mockLineNumber) throws Exception {
+
+        // Given
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
+                .withCountryCode(mockCountryCode)
+                .withLineNumber(mockLineNumber)
+                .build();
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(mockPhoneNumberRequest)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value(mockMessage))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "a@b.c",
@@ -763,6 +817,57 @@ class AysUserControllerTest extends AysRestControllerTest {
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
                         .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @CsvSource({
+            "country code must be 90, ABC, ABC",
+            "country code must be 90, 80, 1234567890",
+            "country code must be 90, ABC, ABCDEFGHIJ",
+            "country code must be 90, 456786745645, 6546467456435548676845321346656654",
+            "line number length must be 10, 90, ABC",
+            "line number length must be 10, 90, 123456789",
+            "line number length must be 10, 90, 12345678901",
+            "must be valid, 90, 1234567890",
+            "must be valid, 90, 9104567890",
+    })
+    @ParameterizedTest
+    void givenValidIdAndUserUpdateRequest_whenPhoneNumberIsNotValid_thenReturnValidationError(String mockMessage,
+                                                                                              String mockCountryCode,
+                                                                                              String mockLineNumber) throws Exception {
+
+        // Given
+        String mockId = "0498acd6-103e-4e72-b6a5-7584bb1c7c93";
+        AysPhoneNumberRequest mockPhoneNumberRequest = new AysPhoneNumberRequestBuilder()
+                .withCountryCode(mockCountryCode)
+                .withLineNumber(mockLineNumber)
+                .build();
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(mockPhoneNumberRequest)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].message")
+                        .value(mockMessage))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].field")
+                        .value("phoneNumber"))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[0].value")
+                        .value(mockPhoneNumberRequest.getCountryCode() + mockPhoneNumberRequest.getLineNumber()));
 
         // Verify
         Mockito.verify(userUpdateService, Mockito.never())

@@ -3,26 +3,15 @@
 # Name of the workflow
 name: Deploy to Production Environment
 
-#on:
-#  push:
-#    branches:
-#      - production # Trigger the workflow when a push event occurs on the production branch
-
-# Trigger the workflow when various types of pull request events occur
 on:
-  pull_request:
-    types:
-      - opened # triggers the workflow when a pull request is opened.
-      - reopened # triggers the workflow when a pull request is reopened after being closed.
-      - edited # triggers the workflow when a pull request is edited (changes are made to the pull request (the title, description, assignees, labels, or other attributes of the pull request))
-      - synchronize # triggers the workflow when a pull request is synchronized (changes are pushed to the branch associated with the pull request)
-      - ready_for_review # triggers the workflow when a pull request is marked as ready for review
-      - unlocked # triggers the workflow when a previously locked pull request is unlocked
+  push:
+    branches:
+      - production # Trigger the workflow when a push event occurs on the production branch
 
 jobs:
   build: # Define the "build" job
-    runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
     environment: Production # Define the environment as Production
+    runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
     steps: # List of steps to execute within the job
       - name: Update package cache # Step to update the package cache
         run: sudo apt-get update
@@ -46,7 +35,7 @@ jobs:
         run: cp template-settings.xml settings.xml
 
       - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
-        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
@@ -67,9 +56,9 @@ jobs:
       - name: Configure AWS credentials # Step to configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.PRODUCTION_AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR # Step to log in to Amazon ECR
         id: login-ecr
