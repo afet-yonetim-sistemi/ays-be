@@ -1,16 +1,16 @@
-# Purpose: Deploy the backend to the test environment.
+# Purpose: Deploy the backend to the production environment.
 
 # Name of the workflow
-name: Deploy to Test Environment
+name: Deploy to Production Environment
 
 on:
   push:
     branches:
-      - main # Trigger the workflow when a push event occurs on the main branch
+      - production # Trigger the workflow when a push event occurs on the production branch
 
 jobs:
   build: # Define the "build" job
-    environment: Test # Define the environment as Test
+    environment: Production # Define the environment as Production
     runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
     steps: # List of steps to execute within the job
       - name: Update package cache # Step to update the package cache
@@ -40,13 +40,6 @@ jobs:
       - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
-      - name: Cache SonarQube packages # Caching packages related to SonarQube
-        uses: actions/cache@v4 # To use GitHub Actions' cache action
-        with: # The section where parameters are defined for the GitHub Actions action
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar # If the key does not match exactly, the cache will be restored with similar keys.
-
       - name: Cache Maven packages # Caching of Maven packages
         uses: actions/cache@v4
         with:
@@ -54,11 +47,8 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build and analyze # SonarQube integration and Maven execution
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-        run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.projectName='ays-be'
+      - name: Build and analyze # Maven execution
+        run: mvn --settings settings.xml clean install -D skipTests
 
       - name: Starting Deployment to ECS... # Step to start the deployment to ECS
         run: echo "Starting Deployment to ECS..."
@@ -80,7 +70,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ays-be-test
+          ECR_REPOSITORY: production/ays-be
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -89,7 +79,7 @@ jobs:
 
       - name: Download task definition # Step to download the task definition
         run: |
-          aws ecs describe-task-definition --task-definition ays-be-test \
+          aws ecs describe-task-definition --task-definition production-ecs-fargate-backend-001-service-td \
           --query taskDefinition > task_definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition # Step to fill in the new image ID in the Amazon ECS task definition
@@ -97,15 +87,15 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task_definition.json
-          container-name: ays-be-test
+          container-name: production-ecs-fargate-backend-001-service-td-container
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition # Step to deploy the Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ays-be-test-service
-          cluster: ays-be-test-cluster
+          service: production-ecs-fargate-backend-001-service
+          cluster: production-ecs-fargate-backend-001
           wait-for-service-stability: true
 
       - name: Deployment successfully completed # Step to indicate that the deployment was successful

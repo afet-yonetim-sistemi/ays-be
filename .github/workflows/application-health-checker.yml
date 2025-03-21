@@ -34,7 +34,7 @@ jobs:
         run: cp template-settings.xml settings.xml
 
       - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
-        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ secrets.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
       - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
@@ -43,19 +43,18 @@ jobs:
         uses: actions/cache@v4 # To use GitHub Actions' cache action
         with: # The section where parameters are defined for the GitHub Actions action
           path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar 
+          key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar # If the key does not match exactly, the cache will be restored with similar keys.
-          
+
       - name: Cache Maven packages # Caching of Maven packages
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-          
+
       - name: Build and analyze # SonarQube integration and Maven execution
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-        run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.projectName='ays-be'
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+        run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.projectName='ays-be'
