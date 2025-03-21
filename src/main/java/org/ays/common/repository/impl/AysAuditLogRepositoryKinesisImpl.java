@@ -1,6 +1,9 @@
 package org.ays.common.repository.impl;
 
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ays.common.model.entity.AysAuditLogEntity;
 import org.ays.common.repository.AysAuditLogRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import software.amazon.awssdk.services.kinesis.model.PutRecordRequest;
  * Implementation of the {@link AysAuditLogRepository} interface for saving audit log entities to an AWS Kinesis stream.
  * This implementation is active only when the application is running with the "kinesis" profile.
  */
+@Slf4j
 @Repository
 @Profile("aws")
 @RequiredArgsConstructor
@@ -34,6 +38,12 @@ class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
     @Override
     public void save(final AysAuditLogEntity auditLogEntity) {
 
+        final String auditLogJsonString = auditLogEntity.toJsonString();
+        if (this.isParseableToJson(auditLogJsonString)) {
+            log.warn("Audit log JSON is not parseable: {}", auditLogJsonString);
+            return;
+        }
+
         final SdkBytes sdkBytes = SdkBytes.fromUtf8String(auditLogEntity.toKinesisJsonString());
 
         final PutRecordRequest putRecordRequest = PutRecordRequest.builder()
@@ -43,6 +53,15 @@ class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
                 .build();
 
         kinesisClient.putRecord(putRecordRequest);
+    }
+
+    private boolean isParseableToJson(String jsonString) {
+        try {
+            JsonParser.parseString(jsonString);
+            return false;
+        } catch (JsonSyntaxException e) {
+            return true;
+        }
     }
 
 }
