@@ -36,10 +36,10 @@ class AysMailServiceImplTest extends AysUnitTest {
 
     @BeforeEach
     void start() {
-        logWatcher = new ListAppender<>();
-        logWatcher.start();
+        this.logWatcher = new ListAppender<>();
+        this.logWatcher.start();
         ((Logger) LoggerFactory.getLogger(AysMailServiceImpl.class))
-                .addAppender(logWatcher);
+                .addAppender(this.logWatcher);
     }
 
     @AfterEach
@@ -77,8 +77,10 @@ class AysMailServiceImplTest extends AysUnitTest {
                     Mockito.verify(mailSender, Mockito.times(1))
                             .send(Mockito.any(MimeMessage.class));
 
+                    String lastLogMessage = this.getLastLogMessage();
+                    Assertions.assertNotNull(lastLogMessage);
+                    Assertions.assertEquals(lastLogMessage, "Mail sent to " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template");
                     Assertions.assertEquals(Level.TRACE, this.getLastLogLevel());
-                    Assertions.assertEquals(this.getLastLogMessage(), "Mail sent to " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template");
                 });
     }
 
@@ -114,8 +116,10 @@ class AysMailServiceImplTest extends AysUnitTest {
                     Mockito.verify(mailSender, Mockito.times(1))
                             .send(Mockito.any(MimeMessage.class));
 
+                    String lastLogMessage = this.getLastLogMessage();
+                    Assertions.assertNotNull(lastLogMessage);
+                    Assertions.assertEquals(lastLogMessage, "Mail not sent to " + mockMail.getTo() + " in 5 seconds with " + mockMail.getTemplate() + " template");
                     Assertions.assertEquals(Level.WARN, this.getLastLogLevel());
-                    Assertions.assertEquals(this.getLastLogMessage(), "Mail not sent to " + mockMail.getTo() + " in 5 seconds with " + mockMail.getTemplate() + " template");
                 });
     }
 
@@ -141,8 +145,10 @@ class AysMailServiceImplTest extends AysUnitTest {
                     Mockito.verify(mailSender, Mockito.never())
                             .send(Mockito.any(MimeMessage.class));
 
+                    String lastLogMessage = this.getLastLogMessage();
+                    Assertions.assertNotNull(lastLogMessage);
+                    Assertions.assertEquals(lastLogMessage, "Mail sending is ignored for " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template");
                     Assertions.assertEquals(Level.WARN, this.getLastLogLevel());
-                    Assertions.assertEquals(this.getLastLogMessage(), "Mail sending is ignored for " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template");
                 });
     }
 
@@ -174,28 +180,32 @@ class AysMailServiceImplTest extends AysUnitTest {
                     Mockito.verify(mailSender, Mockito.times(1))
                             .send(Mockito.any(MimeMessage.class));
 
+                    String lastLogMessage = this.getLastLogMessage();
+                    Assertions.assertNotNull(lastLogMessage);
+                    Assertions.assertEquals(lastLogMessage, "Received error while sending mail to " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template");
                     Assertions.assertEquals(Level.ERROR, this.getLastLogLevel());
-                    Assertions.assertEquals(this.getLastLogMessage(), "Received error while sending mail to " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template");
                 });
     }
 
+
     private String getLastLogMessage() {
-        if (logWatcher.list.isEmpty()) {
+
+        if (this.logWatcher.list.isEmpty()) {
             return null;
         }
 
-        int logSize = logWatcher.list.size();
-        return logWatcher.list.get(logSize - 1).getFormattedMessage();
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getFormattedMessage();
     }
 
     private Level getLastLogLevel() {
 
-        if (logWatcher.list.isEmpty()) {
+        if (this.logWatcher.list.isEmpty()) {
             return null;
         }
 
-        int logSize = logWatcher.list.size();
-        return logWatcher.list.get(logSize - 1).getLevel();
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getLevel();
     }
 
 }
