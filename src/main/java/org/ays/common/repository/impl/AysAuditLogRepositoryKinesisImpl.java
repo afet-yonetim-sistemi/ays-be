@@ -46,7 +46,7 @@ class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
     @Override
     public void save(final AysAuditLogEntity auditLogEntity) {
 
-        final String auditLogJsonString = auditLogEntity.toJsonString();
+        final String auditLogJsonString = auditLogEntity.toKinesisJsonString();
         if (this.isParseableToJson(auditLogJsonString)) {
             log.warn("Audit log JSON is not parseable: {}", auditLogJsonString);
             return;
