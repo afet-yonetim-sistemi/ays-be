@@ -28,10 +28,10 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
 
     @BeforeEach
     void start() {
-        logWatcher = new ListAppender<>();
-        logWatcher.start();
+        this.logWatcher = new ListAppender<>();
+        this.logWatcher.start();
         ((Logger) LoggerFactory.getLogger(AysAuditLogRepositoryImpl.class))
-                .addAppender(logWatcher);
+                .addAppender(this.logWatcher);
     }
 
     @AfterEach
@@ -68,9 +68,9 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                     String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertTrue(lastLogMessage.contains("Audit log saved: "));
+                    Assertions.assertNotNull(lastLogMessage);
+                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
                     Assertions.assertTrue(lastLogMessage.contains("\"id\":\"" + mockAuditLogEntity.getId() + "\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"user_id\":\"\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"request_ip_address\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\""));
@@ -82,6 +82,7 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
                     Assertions.assertTrue(lastLogMessage.contains("\"response_body\":\"" + mockAuditLogEntity.getResponseBody() + "\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"requested_at\":\"" + mockAuditLogEntity.getRequestedAt() + "\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"responded_at\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
+                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
@@ -112,8 +113,8 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                     String lastLogMessage = this.getLastLogMessage();
+                    Assertions.assertNotNull(lastLogMessage);
                     Assertions.assertTrue(lastLogMessage.contains("Audit log saved: "));
                     Assertions.assertTrue(lastLogMessage.contains("\"id\":\"" + mockAuditLogEntity.getId() + "\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"user_id\":\"" + mockAuditLogEntity.getUserId() + "\""));
@@ -126,26 +127,28 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
                     Assertions.assertTrue(lastLogMessage.contains("\"response_body\":\"" + mockAuditLogEntity.getResponseBody() + "\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"requested_at\":\"" + mockAuditLogEntity.getRequestedAt() + "\""));
                     Assertions.assertTrue(lastLogMessage.contains("\"responded_at\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
+                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
 
     private String getLastLogMessage() {
-        if (logWatcher.list.isEmpty()) {
+
+        if (this.logWatcher.list.isEmpty()) {
             return null;
         }
 
-        int logSize = logWatcher.list.size();
-        return logWatcher.list.get(logSize - 1).getFormattedMessage();
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getFormattedMessage();
     }
 
     private Level getLastLogLevel() {
 
-        if (logWatcher.list.isEmpty()) {
+        if (this.logWatcher.list.isEmpty()) {
             return null;
         }
 
-        int logSize = logWatcher.list.size();
-        return logWatcher.list.get(logSize - 1).getLevel();
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getLevel();
     }
 }
