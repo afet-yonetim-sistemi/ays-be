@@ -28,6 +28,33 @@ public class AysAuditLogEntity {
 
 
     /**
+     * Converts the audit log entity to a JSON string.
+     * <p>
+     * This method generates a compact JSON string representation of the audit log's fields,
+     * ensuring that all fields are included with default values (e.g., empty strings for null values).
+     * Optional fields are handled gracefully to avoid {@code null} values in the output.
+     * </p>
+     *
+     * @return a JSON string representing the current state of the audit log entity
+     */
+    public String toJsonString() {
+        return "{" +
+               "\"id\":\"" + this.id + "\"," +
+               "\"userId\":\"" + this.userId + "\"," +
+               "\"requestIpAddress\":\"" + this.requestIpAddress + "\"," +
+               "\"requestReferer\":\"" + this.requestReferer + "\"," +
+               "\"requestHttpMethod\":\"" + this.requestHttpMethod + "\"," +
+               "\"requestPath\":\"" + this.requestPath + "\"," +
+               "\"requestHttpHeader\":\"" + this.requestHttpHeader + "\"," +
+               "\"requestBody\":\"" + this.requestBody + "\"," +
+               "\"responseHttpStatusCode\":" + this.responseHttpStatusCode + "," +
+               "\"responseBody\":\"" + this.responseBody + "\"," +
+               "\"requestedAt\":\"" + this.requestedAt + "\"," +
+               "\"respondedAt\":\"" + this.respondedAt + "\"" +
+               "}";
+    }
+
+    /**
      * Converts the audit log entity to a JSON string specifically formatted for AWS Kinesis.
      * <p>
      * The method generates a compact JSON string representation of the audit log's fields,
