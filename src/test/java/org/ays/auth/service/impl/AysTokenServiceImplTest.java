@@ -6,7 +6,7 @@ import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
 import org.ays.AysUnitTest;
-import org.ays.auth.config.AysTokenConfigurationParameter;
+import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.exception.AysTokenNotValidException;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.AysUser;
@@ -38,7 +38,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
     private AysTokenServiceImpl tokenService;
 
     @Mock
-    private AysTokenConfigurationParameter tokenConfiguration;
+    private AysApplicationConfigurationParameter tokenConfiguration;
 
     @Test
     void givenValidUserClaims_whenTokensGenerated_thenReturnAysToken() {

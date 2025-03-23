@@ -12,7 +12,7 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
-import org.ays.auth.config.AysTokenConfigurationParameter;
+import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.exception.AysTokenNotValidException;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.enums.AysTokenClaims;
@@ -38,7 +38,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 class AysTokenServiceImpl implements AysTokenService {
 
-    private final AysTokenConfigurationParameter tokenConfiguration;
+    private final AysApplicationConfigurationParameter tokenConfiguration;
 
     /**
      * Generates an access token and a refresh token based on the provided claims.
@@ -132,7 +132,7 @@ class AysTokenServiceImpl implements AysTokenService {
 
     /**
      * Verifies and validates the given JWT (JSON Web Token).
-     * This method parses the token using the public key from the {@link AysTokenConfigurationParameter},
+     * This method parses the token using the public key from the {@link AysApplicationConfigurationParameter},
      * and throws a {@link AysTokenNotValidException} if the token is not valid due to being malformed, expired or having an invalid signature.
      *
      * @param token The JWT (JSON Web Token) to be verified and validated.
@@ -177,7 +177,7 @@ class AysTokenServiceImpl implements AysTokenService {
 
     /**
      * Retrieves the authentication object {@link UsernamePasswordAuthenticationToken} based on the provided token.
-     * This method parses the token using the public key from the {@link AysTokenConfigurationParameter} and extracts the necessary information from the token claims,
+     * This method parses the token using the public key from the {@link AysApplicationConfigurationParameter} and extracts the necessary information from the token claims,
      * such as user type and roles, to construct the authentication object.
      *
      * @param token The token string used for authentication.
