@@ -74,7 +74,7 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
                 .issuer(tokenConfiguration.getTokenIssuer())
                 .issuedAt(tokenIssuedAt)
                 .expiration(accessTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey())
+                .signWith(tokenConfiguration.getTokenPrivateKey())
                 .claims(claims)
                 .compact();
 
@@ -88,7 +88,7 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
                 .issuer(tokenConfiguration.getTokenIssuer())
                 .issuedAt(tokenIssuedAt)
                 .expiration(refreshTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey())
+                .signWith(tokenConfiguration.getTokenPrivateKey())
                 .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
                 .compact();
 

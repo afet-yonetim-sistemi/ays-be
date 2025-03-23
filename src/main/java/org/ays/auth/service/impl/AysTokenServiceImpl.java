@@ -126,7 +126,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .and()
                 .issuer(tokenConfiguration.getTokenIssuer())
                 .issuedAt(new Date(currentTimeMillis))
-                .signWith(tokenConfiguration.getPrivateKey());
+                .signWith(tokenConfiguration.getTokenPrivateKey());
     }
 
 

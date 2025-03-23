@@ -108,7 +108,7 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
                 .issuer(applicationConfigurationParameter.getTokenIssuer())
                 .issuedAt(tokenIssuedAt)
                 .expiration(accessTokenExpiresAt)
-                .signWith(applicationConfigurationParameter.getPrivateKey())
+                .signWith(applicationConfigurationParameter.getTokenPrivateKey())
                 .claims(claims)
                 .compact();
 
@@ -122,7 +122,7 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
                 .issuer(applicationConfigurationParameter.getTokenIssuer())
                 .issuedAt(tokenIssuedAt)
                 .expiration(refreshTokenExpiresAt)
-                .signWith(applicationConfigurationParameter.getPrivateKey())
+                .signWith(applicationConfigurationParameter.getTokenPrivateKey())
                 .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
                 .compact();
 

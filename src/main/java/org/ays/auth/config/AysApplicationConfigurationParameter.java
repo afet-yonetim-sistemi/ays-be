@@ -31,6 +31,11 @@ public class AysApplicationConfigurationParameter {
      */
     private final String tokenIssuer;
     /**
+     * The private key used for token signing.
+     * This key is converted from an encrypted PEM format using {@link AysKeyConverter}.
+     */
+    private final PrivateKey tokenPrivateKey;
+    /**
      * The number of minutes until access tokens expire.
      * Derived from configuration parameters or defaults if not provided.
      */
@@ -40,11 +45,6 @@ public class AysApplicationConfigurationParameter {
      * Derived from configuration parameters or defaults if not provided.
      */
     private final Integer refreshTokenExpireDay;
-    /**
-     * The private key used for token signing.
-     * This key is converted from an encrypted PEM format using {@link AysKeyConverter}.
-     */
-    private final PrivateKey privateKey;
     /**
      * The public key used for token verification.
      * This key is converted from an encrypted PEM format using {@link AysKeyConverter}.
@@ -74,7 +74,7 @@ public class AysApplicationConfigurationParameter {
         final String encryptedPrivateKey = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY, configurationParameters))
                 .orElse(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY.getDefaultValue());
-        this.privateKey = AysKeyConverter.convertPrivateKey(encryptedPrivateKey);
+        this.tokenPrivateKey = AysKeyConverter.convertPrivateKey(encryptedPrivateKey);
         log.info("Application auth configuration parameter has been set. tokenPrivateKey:{}", encryptedPrivateKey.substring(0, 100).concat("..."));
 
         final String encryptedPublicKey = Optional
