@@ -142,7 +142,7 @@ class AysTokenServiceImpl implements AysTokenService {
     public void verifyAndValidate(String token) {
         try {
             final Jws<Claims> claims = Jwts.parser()
-                    .verifyWith(tokenConfiguration.getPublicKey())
+                    .verifyWith(tokenConfiguration.getTokenPublicKey())
                     .build()
                     .parseSignedClaims(token);
 
@@ -169,7 +169,7 @@ class AysTokenServiceImpl implements AysTokenService {
     @Override
     public Claims getPayload(String token) {
         return Jwts.parser()
-                .verifyWith(tokenConfiguration.getPublicKey())
+                .verifyWith(tokenConfiguration.getTokenPublicKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -187,7 +187,7 @@ class AysTokenServiceImpl implements AysTokenService {
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
 
         Jws<Claims> claims = Jwts.parser()
-                .verifyWith(tokenConfiguration.getPublicKey())
+                .verifyWith(tokenConfiguration.getTokenPublicKey())
                 .build()
                 .parseSignedClaims(token);
 

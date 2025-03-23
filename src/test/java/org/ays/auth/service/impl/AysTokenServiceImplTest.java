@@ -66,7 +66,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getRefreshTokenExpireDay();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(0)).getPublicKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
@@ -96,7 +96,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(0)).getPublicKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
@@ -126,7 +126,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(0)).getPublicKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
@@ -146,7 +146,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
                 .compact();
 
         // When
-        Mockito.when(tokenConfiguration.getPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
+        Mockito.when(tokenConfiguration.getTokenPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
 
         // Then
         tokenService.verifyAndValidate(mockJwt);
@@ -156,7 +156,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getPublicKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
@@ -166,7 +166,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         String mockJwt = "eyJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJkYjhlNmZiYy1hMDJmLTQwMDQtOTU4ZC02M2U5MmM4ZTllM2QiLCJpc3MiOiJBWVMiLCJpYXQiOjE2ODIwMTk1MTksImV4cCI6MTY4MjAyNjcxOSwidHlwZSI6IkJlYXJlciIsInVzZXJMYXN0TmFtZSI6IlNpc3RlbWkiLCJyb2xlcyI6WyJWT0xVTlRFRVIiXSwidXNlclR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6IkFmZXQgWcO2bmV0aW0iLCJ1c2VybmFtZSI6IjIzMjE4MCJ9.JsbCDRMy2nqMb5tjcY5IZSf0jtEp4PdJQMMZdn8lYvrSkspHGxcTNMyr8P6r8JC3t1qInAuGbybuKG6COr9LTzPB9TO15x_58zxFAqRrq9VYDb-nQhjPs9auNjfL1W1HjUd29zqA4E9ZsviVA3bbHv29Uu-PYuUMXU6Oqh4ahnrngeip4mufSfEr46voLi_QUoAmzX34cgLn526FaBA3QBqtc8GJVL5fCCTC1WXy-nTSgyUMow8gRSQowYMtm9qqlMxml-NEOKU2xyJXzpyiaf7GDErvgKwMW6CxkEFI91rt_KcM88xc3uXcz8yy6m8ZZZzff54VZ9Cp9FujD6ubtg";
 
         // When
-        Mockito.when(tokenConfiguration.getPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
+        Mockito.when(tokenConfiguration.getTokenPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
 
         // Then
         Assertions.assertThrows(
@@ -179,7 +179,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getPublicKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
@@ -211,7 +211,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
                 .getPayload();
 
         // When
-        Mockito.when(tokenConfiguration.getPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
+        Mockito.when(tokenConfiguration.getTokenPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
 
         // Then
         Claims claims = tokenService.getPayload(mockToken);
@@ -223,7 +223,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getPublicKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
@@ -256,7 +256,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
                 .getPayload();
 
         // When
-        Mockito.when(tokenConfiguration.getPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
+        Mockito.when(tokenConfiguration.getTokenPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
 
         // Then
         Claims claims = tokenService.getPayload(mockToken);
@@ -267,7 +267,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getPublicKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
@@ -320,7 +320,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
 
 
         // When
-        Mockito.when(tokenConfiguration.getPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
+        Mockito.when(tokenConfiguration.getTokenPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
 
         // Then
         UsernamePasswordAuthenticationToken authentication = tokenService.getAuthentication(mockToken);
@@ -331,7 +331,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireDay();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPrivateKey();
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getPublicKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
