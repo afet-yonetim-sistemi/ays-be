@@ -124,7 +124,7 @@ class AysTokenServiceImpl implements AysTokenService {
                 .header()
                 .type(OAuth2AccessToken.TokenType.BEARER.getValue())
                 .and()
-                .issuer(tokenConfiguration.getIssuer())
+                .issuer(tokenConfiguration.getTokenIssuer())
                 .issuedAt(new Date(currentTimeMillis))
                 .signWith(tokenConfiguration.getPrivateKey());
     }
