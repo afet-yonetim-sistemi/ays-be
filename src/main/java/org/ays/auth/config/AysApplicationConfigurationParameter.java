@@ -50,6 +50,11 @@ public class AysApplicationConfigurationParameter {
      * Derived from configuration parameters or defaults if not provided.
      */
     private final Integer refreshTokenExpireDay;
+    /**
+     * The frontend URL to use for email verification, password reset, and other links.
+     * Derived from configuration parameters or defaults if not provided.
+     */
+    private final String feUrl;
 
 
     /**
@@ -69,31 +74,36 @@ public class AysApplicationConfigurationParameter {
         final List<AysParameter> configurationParameters = parameterReadPort.findAll();
 
         this.tokenIssuer = AysConfigurationParameter.AYS.getDefaultValue();
-        log.info("Application auth configuration parameter has been set. tokenIssuer:{}", tokenIssuer);
+        log.info("Application configuration parameter has been set. tokenIssuer:{}", tokenIssuer);
 
         final String encryptedPrivateKey = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY, configurationParameters))
                 .orElse(AysConfigurationParameter.AUTH_TOKEN_PRIVATE_KEY.getDefaultValue());
         this.tokenPrivateKey = AysKeyConverter.convertPrivateKey(encryptedPrivateKey);
-        log.info("Application auth configuration parameter has been set. tokenPrivateKey:{}", encryptedPrivateKey.substring(0, 100).concat("..."));
+        log.info("Application configuration parameter has been set. tokenPrivateKey:{}", encryptedPrivateKey.substring(0, 100).concat("..."));
 
         final String encryptedPublicKey = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY, configurationParameters))
                 .orElse(AysConfigurationParameter.AUTH_TOKEN_PUBLIC_KEY.getDefaultValue());
         this.tokenPublicKey = AysKeyConverter.convertPublicKey(encryptedPublicKey);
-        log.info("Application auth configuration parameter has been set. tokenPublicKey:{}", encryptedPublicKey.substring(0, 100).concat("..."));
+        log.info("Application configuration parameter has been set. tokenPublicKey:{}", encryptedPublicKey.substring(0, 100).concat("..."));
 
         this.accessTokenExpireMinute = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE, configurationParameters))
                 .map(Integer::valueOf)
                 .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE.getDefaultValue()));
-        log.info("Application auth configuration parameter has been set. accessTokenExpireMinute:{}", accessTokenExpireMinute);
+        log.info("Application configuration parameter has been set. accessTokenExpireMinute:{}", accessTokenExpireMinute);
 
         this.refreshTokenExpireDay = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY, configurationParameters))
                 .map(Integer::valueOf)
                 .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue()));
-        log.info("Application auth configuration parameter has been set. refreshTokenExpireDay:{}", refreshTokenExpireDay);
+        log.info("Application configuration parameter has been set. refreshTokenExpireDay:{}", refreshTokenExpireDay);
+
+        this.feUrl = Optional
+                .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.FE_URL, configurationParameters))
+                .orElse(AysConfigurationParameter.FE_URL.getDefaultValue());
+        log.info("Application configuration parameter has been set. feUrl:{}", feUrl);
 
         log.info("Application Configuration Parameters read!");
     }
