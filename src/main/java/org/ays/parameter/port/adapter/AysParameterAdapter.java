@@ -9,9 +9,8 @@ import org.ays.parameter.repository.AysParameterRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * An adapter class implementing {@link AysParameterReadPort} for accessing {@link AysParameter} entities.
@@ -30,16 +29,19 @@ class AysParameterAdapter implements AysParameterReadPort {
 
 
     /**
-     * Retrieves a set of {@link AysParameter} entities that have names starting with the given prefix.
+     * Retrieves all {@link AysParameter} entities from the repository and maps them to domain objects.
+     * <p>
+     * This method fetches all parameter entities stored in the underlying repository, converts them
+     * into {@link AysParameter} objects using the provided mapper, and returns them as a list.
+     * </p>
      *
-     * @param prefixOfName the prefix of the names to search for
-     * @return a set of {@link AysParameter} entities with names starting with the given prefix
+     * @return a list of {@link AysParameter} entities
      */
     @Override
-    public Set<AysParameter> findAll(final String prefixOfName) {
-        return parameterRepository.findByNameStartingWith(prefixOfName).stream()
+    public List<AysParameter> findAll() {
+        return parameterRepository.findAll().stream()
                 .map(parameterEntityToParameterMapper::map)
-                .collect(Collectors.toSet());
+                .toList();
     }
 
 

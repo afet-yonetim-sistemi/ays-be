@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.ays.auth.model.enums.AysConfigurationParameter;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * A class representing a parameter used in the AYS application.
@@ -25,7 +25,7 @@ public class AysParameter {
      * @param parameters             the set of parameters to search through
      * @return the definition of the specified configuration parameter, or null if not found
      */
-    public static String getDefinition(final AysConfigurationParameter configurationParameter, final Set<AysParameter> parameters) {
+    public static String getDefinition(final AysConfigurationParameter configurationParameter, final Collection<AysParameter> parameters) {
         return parameters.stream()
                 .filter(parameter -> parameter.getName().equals(configurationParameter.name()))
                 .findFirst()

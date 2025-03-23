@@ -10,15 +10,15 @@ import org.springframework.context.annotation.Configuration;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
- * Configuration class for AYS token-related properties.
+ * Configuration class for AYS application parameters.
  * <p>
- * This class reads and initializes token configuration parameters, including the issuer, token expiration times,
- * and cryptographic keys used for JWT generation and validation. It retrieves these parameters via the
- * {@link AysParameterReadPort} using the "AUTH_" prefix and falls back to default values when necessary.
+ * This class reads and initializes configuration parameters from the underlying data source using the
+ * {@link AysParameterReadPort}. It retrieves values such as the issuer, expiration durations, and cryptographic keys,
+ * and falls back to default values when necessary.
  * </p>
  */
 @Slf4j
@@ -55,18 +55,18 @@ public class AysApplicationConfigurationParameter {
     /**
      * Constructs a new {@code AysApplicationConfigurationParameter} instance.
      * <p>
-     * This constructor retrieves the required configuration parameters using the provided
-     * {@link AysParameterReadPort} instance. It filters parameters using the "AUTH_" prefix, applies default values
-     * when parameters are missing, and converts cryptographic key parameters into {@link PrivateKey} and {@link PublicKey} objects.
+     * This constructor retrieves the necessary configuration parameters using the provided
+     * {@link AysParameterReadPort}. It reads values such as the issuer, expiration durations,
+     * and cryptographic keys, applying default values when parameters are missing.
      * </p>
      *
-     * @param parameterReadPort the {@link AysParameterReadPort} instance to use for retrieving configuration parameters
+     * @param parameterReadPort the {@link AysParameterReadPort} instance used for retrieving configuration parameters
      */
     public AysApplicationConfigurationParameter(AysParameterReadPort parameterReadPort) {
 
         log.info("Application Configuration Parameters reading...");
 
-        final Set<AysParameter> configurationParameters = parameterReadPort.findAll("AUTH_");
+        final List<AysParameter> configurationParameters = parameterReadPort.findAll();
 
         this.tokenIssuer = AysConfigurationParameter.AYS.getDefaultValue();
         log.info("Application auth configuration parameter has been set. tokenIssuer:{}", tokenIssuer);
