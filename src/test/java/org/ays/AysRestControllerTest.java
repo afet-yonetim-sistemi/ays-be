@@ -11,7 +11,7 @@ import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.parameter.model.AysParameter;
-import org.ays.parameter.service.AysParameterService;
+import org.ays.parameter.port.AysParameterReadPort;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,7 +51,7 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
     private AysApplicationConfigurationParameter applicationConfigurationParameter;
 
     @Mock
-    private AysParameterService parameterService;
+    private AysParameterReadPort parameterReadPort;
 
     @BeforeEach
     @SuppressWarnings("OptionalGetWithoutIsPresent disabled because of the test data is valid")
@@ -76,10 +76,10 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
                         .definition("3")
                         .build()
         );
-        Mockito.when(parameterService.findAll(Mockito.anyString()))
+        Mockito.when(parameterReadPort.findAll(Mockito.anyString()))
                 .thenReturn(parameters);
 
-        this.applicationConfigurationParameter = new AysApplicationConfigurationParameter(parameterService);
+        this.applicationConfigurationParameter = new AysApplicationConfigurationParameter(parameterReadPort);
 
         final Optional<AysUser> superAdmin = userReadPort.findById(AysValidTestData.SuperAdmin.ID);
         final Claims claimsOfMockSuperAdminToken = superAdmin.get().getClaims();
