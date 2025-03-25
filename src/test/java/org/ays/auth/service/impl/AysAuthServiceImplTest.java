@@ -2,11 +2,11 @@ package org.ays.auth.service.impl;
 
 import io.jsonwebtoken.Claims;
 import org.ays.AysUnitTest;
-import org.ays.auth.exception.AysEmailAddressNotValidException;
 import org.ays.auth.exception.AysPasswordNotValidException;
 import org.ays.auth.exception.AysTokenAlreadyInvalidatedException;
 import org.ays.auth.exception.AysTokenNotValidException;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
+import org.ays.auth.exception.AysUserEmailAddressNotFoundException;
 import org.ays.auth.exception.AysUserIdNotValidException;
 import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.model.AysIdentity;
@@ -205,7 +205,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Then
         Assertions.assertThrows(
-                AysEmailAddressNotValidException.class,
+                AysUserEmailAddressNotFoundException.class,
                 () -> userAuthService.authenticate(mockLoginRequest)
         );
 
