@@ -21,7 +21,7 @@ public final class AysUserNotExistByEmailAddressAuthException extends AysAuthExc
      * Constructs a new {@link AysUserNotExistByEmailAddressAuthException} with a default message.
      */
     public AysUserNotExistByEmailAddressAuthException(final String emailAddress) {
-        super("user does not found! emailAddress: " + AysSensitiveMaskingCategory.EMAIL_ADDRESS.mask(emailAddress));
+        super("user does not exist! emailAddress: " + AysSensitiveMaskingCategory.EMAIL_ADDRESS.mask(emailAddress));
     }
 
 }
