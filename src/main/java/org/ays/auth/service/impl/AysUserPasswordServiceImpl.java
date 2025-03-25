@@ -2,8 +2,8 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
-import org.ays.auth.exception.AysUserEmailAddressNotFoundAuthException;
 import org.ays.auth.exception.AysUserNotActiveAuthException;
+import org.ays.auth.exception.AysUserNotExistByEmailAddressAuthException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
 import org.ays.auth.model.AysRole;
@@ -51,7 +51,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      * time as the forgotten password timestamp. An email is then sent to the user with instructions to create a new password.
      *
      * @param forgotPasswordRequest the request containing the user's email address.
-     * @throws AysUserEmailAddressNotFoundAuthException if the email address does not correspond to any existing user.
+     * @throws AysUserNotExistByEmailAddressAuthException if the email address does not correspond to any existing user.
      * @throws AysUserNotActiveAuthException        if the user status is not active.
      * @throws AysUserDoesNotAccessPageException    if the user lacks permission to access the source page.
      */
@@ -61,7 +61,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
 
         final String emailAddress = forgotPasswordRequest.getEmailAddress();
         final AysUser user = userReadPort.findByEmailAddress(emailAddress)
-                .orElseThrow(() -> new AysUserEmailAddressNotFoundAuthException(emailAddress));
+                .orElseThrow(() -> new AysUserNotExistByEmailAddressAuthException(emailAddress));
 
         if (!user.isActive()) {
             throw new AysUserNotActiveAuthException(user.getStatus());
