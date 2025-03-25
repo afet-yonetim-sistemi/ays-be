@@ -1,5 +1,9 @@
 package org.ays.auth.controller;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
@@ -18,6 +22,9 @@ import org.ays.auth.model.response.AysTokenResponseBuilder;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
+import org.ays.common.exception.handler.GlobalExceptionHandler;
+import org.ays.common.model.response.AysErrorResponse;
+import org.ays.common.model.response.AysErrorResponseBuilder;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.institution.model.Institution;
@@ -25,8 +32,11 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -45,6 +55,23 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
     @Autowired
     private AysRoleReadPort roleReadPort;
+
+
+    private ListAppender<ILoggingEvent> logWatcher;
+
+    @BeforeEach
+    void start() {
+        this.logWatcher = new ListAppender<>();
+        this.logWatcher.start();
+        ((Logger) LoggerFactory.getLogger(GlobalExceptionHandler.class))
+                .addAppender(this.logWatcher);
+    }
+
+    @AfterEach
+    void detach() {
+        ((Logger) LoggerFactory.getLogger(GlobalExceptionHandler.class))
+                .detachAndStopAllAppenders();
+    }
 
 
     private static final String BASE_PATH = "/api/v1/authentication";
@@ -82,6 +109,37 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
     }
 
     @Test
+    void givenLoginRequest_whenUserNotExistByEmailAddress_thenReturnUnauthorizedError() throws Exception {
+        // Given
+        AysLoginRequest loginRequest = new AysLoginRequestBuilder()
+                .withEmailAddress("notfound@afetyonetimsistemi.test")
+                .withPassword(AysValidTestData.PASSWORD)
+                .withSourcePage(AysSourcePage.INSTITUTION)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/token");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, loginRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.UNAUTHORIZED;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        String lastLogMessage = this.getLastLogMessage();
+        Assertions.assertEquals("user does not exist! emailAddress: not******est", lastLogMessage);
+
+        Level logLevel = this.getLastLogLevel();
+        Assertions.assertEquals(Level.ERROR, logLevel);
+    }
+
+
+    @Test
     void givenValidTokenRefreshRequest_whenAccessTokenGeneratedSuccessfully_thenReturnTokenResponse() throws Exception {
         // Given
         AysTokenRefreshRequest tokenRefreshRequest = AysTokenRefreshRequest.builder()
@@ -108,6 +166,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .isNotEmpty());
     }
+
 
     @Test
     void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
@@ -183,6 +242,35 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
         Assertions.assertEquals("AYS", passwordFromDatabase.getCreatedUser());
+    }
+
+    @Test
+    void givenPasswordForgotRequest_whenUserNotExistByEmailAddress_thenReturnUnauthorizedError() throws Exception {
+
+        // Given
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withEmailAddress("notfound@afetyonetimsistemi.test")
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/password/forgot");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockForgotPasswordRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.UNAUTHORIZED;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isUnauthorized())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        String lastLogMessage = this.getLastLogMessage();
+        Assertions.assertEquals("user does not exist! emailAddress: not******est", lastLogMessage);
+
+        Level logLevel = this.getLastLogLevel();
+        Assertions.assertEquals(Level.ERROR, logLevel);
     }
 
     @Test
@@ -356,6 +444,27 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNull(passwordFromDatabase.getUpdatedUser());
         Assertions.assertNull(passwordFromDatabase.getUpdatedAt());
         Assertions.assertEquals("AYS", passwordFromDatabase.getCreatedUser());
+    }
+
+
+    private String getLastLogMessage() {
+
+        if (this.logWatcher.list.isEmpty()) {
+            return null;
+        }
+
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getFormattedMessage();
+    }
+
+    private Level getLastLogLevel() {
+
+        if (this.logWatcher.list.isEmpty()) {
+            return null;
+        }
+
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getLevel();
     }
 
 }
