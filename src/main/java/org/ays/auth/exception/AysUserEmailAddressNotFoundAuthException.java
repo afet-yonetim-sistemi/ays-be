@@ -9,18 +9,18 @@ import java.io.Serial;
  * An exception that is thrown when a emailAddress does not found.
  * Extends {@link AysAuthException}.
  */
-public final class AysUserEmailAddressNotFoundException extends AysAuthException {
+public final class AysUserEmailAddressNotFoundAuthException extends AysAuthException {
 
     /**
      * Unique identifier for serialization.
      */
     @Serial
-    private static final long serialVersionUID = 741079982194537418L;
+    private static final long serialVersionUID = -7384151891321633254L;
 
     /**
-     * Constructs a new {@link AysUserEmailAddressNotFoundException} with a default message.
+     * Constructs a new {@link AysUserEmailAddressNotFoundAuthException} with a default message.
      */
-    public AysUserEmailAddressNotFoundException(final String emailAddress) {
+    public AysUserEmailAddressNotFoundAuthException(final String emailAddress) {
         super("email address does not found! emailAddress: " + AysSensitiveMaskingCategory.EMAIL_ADDRESS.mask(emailAddress));
     }
 

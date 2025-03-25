@@ -1,6 +1,6 @@
 package org.ays.auth.service;
 
-import org.ays.auth.exception.AysUserEmailAddressNotFoundException;
+import org.ays.auth.exception.AysUserEmailAddressNotFoundAuthException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
 import org.ays.auth.model.request.AysPasswordCreateRequest;
@@ -22,7 +22,7 @@ public interface AysUserPasswordService {
      * In both cases, an email is sent to the user with instructions to create a new password.
      *
      * @param forgotPasswordRequest the request containing the user's email address.
-     * @throws AysUserEmailAddressNotFoundException if no user is found with the provided email address.
+     * @throws AysUserEmailAddressNotFoundAuthException if no user is found with the provided email address.
      */
     void forgotPassword(AysPasswordForgotRequest forgotPasswordRequest);
 

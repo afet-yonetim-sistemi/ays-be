@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysPasswordNotValidException;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
-import org.ays.auth.exception.AysUserEmailAddressNotFoundException;
+import org.ays.auth.exception.AysUserEmailAddressNotFoundAuthException;
 import org.ays.auth.exception.AysUserIdNotValidException;
 import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.model.AysIdentity;
@@ -62,7 +62,7 @@ class AysAuthServiceImpl implements AysAuthService {
      *
      * @param loginRequest The login request containing the user's email address, password, and source page.
      * @return {@link AysToken} representing the access token generated upon successful authentication.
-     * @throws AysUserEmailAddressNotFoundException If the provided email address does not exist.
+     * @throws AysUserEmailAddressNotFoundAuthException If the provided email address does not exist.
      * @throws AysPasswordNotValidException         If the provided password is not valid.
      * @throws AysUserNotActiveAuthException        If the user's status is not active.
      * @throws AysUserDoesNotAccessPageException    If the user does not have permission to access the requested page.
@@ -72,7 +72,7 @@ class AysAuthServiceImpl implements AysAuthService {
     public AysToken authenticate(final AysLoginRequest loginRequest) {
 
         final AysUser user = userReadPort.findByEmailAddress(loginRequest.getEmailAddress())
-                .orElseThrow(() -> new AysUserEmailAddressNotFoundException(loginRequest.getEmailAddress()));
+                .orElseThrow(() -> new AysUserEmailAddressNotFoundAuthException(loginRequest.getEmailAddress()));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword().getValue())) {
             throw new AysPasswordNotValidException();

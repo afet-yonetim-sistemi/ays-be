@@ -2,7 +2,7 @@ package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
-import org.ays.auth.exception.AysUserEmailAddressNotFoundException;
+import org.ays.auth.exception.AysUserEmailAddressNotFoundAuthException;
 import org.ays.auth.exception.AysUserNotActiveAuthException;
 import org.ays.auth.exception.AysUserPasswordCannotChangedException;
 import org.ays.auth.exception.AysUserPasswordDoesNotExistException;
@@ -160,7 +160,7 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidForgotPasswordRequest_whenEmailDoesNotExist_thenThrowUserEmailAddressNotFoundException() {
+    void givenValidForgotPasswordRequest_whenEmailDoesNotExist_thenThrowUserEmailAddressNotFoundAuthException() {
         // Given
         AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
                 .withValidValues()
@@ -168,11 +168,11 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
 
         // When
         Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
-                .thenThrow(new AysUserEmailAddressNotFoundException(mockForgotPasswordRequest.getEmailAddress()));
+                .thenThrow(new AysUserEmailAddressNotFoundAuthException(mockForgotPasswordRequest.getEmailAddress()));
 
         // Then
         Assertions.assertThrows(
-                AysUserEmailAddressNotFoundException.class,
+                AysUserEmailAddressNotFoundAuthException.class,
                 () -> userPasswordService.forgotPassword(mockForgotPasswordRequest)
         );
 
