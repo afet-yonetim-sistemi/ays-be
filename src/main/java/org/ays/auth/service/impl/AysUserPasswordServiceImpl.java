@@ -52,8 +52,8 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
      *
      * @param forgotPasswordRequest the request containing the user's email address.
      * @throws AysUserEmailAddressNotFoundException if the email address does not correspond to any existing user.
-     * @throws AysUserNotActiveAuthException if the user status is not active.
-     * @throws AysUserDoesNotAccessPageException if the user lacks permission to access the source page.
+     * @throws AysUserNotActiveAuthException        if the user status is not active.
+     * @throws AysUserDoesNotAccessPageException    if the user lacks permission to access the source page.
      */
     @Override
     @Transactional
@@ -63,7 +63,7 @@ class AysUserPasswordServiceImpl implements AysUserPasswordService {
         final AysUser user = userReadPort.findByEmailAddress(emailAddress)
                 .orElseThrow(() -> new AysUserEmailAddressNotFoundException(emailAddress));
 
-        if(!user.isActive()) {
+        if (!user.isActive()) {
             throw new AysUserNotActiveAuthException(user.getStatus());
         }
 

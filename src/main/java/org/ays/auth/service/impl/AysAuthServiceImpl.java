@@ -62,10 +62,10 @@ class AysAuthServiceImpl implements AysAuthService {
      *
      * @param loginRequest The login request containing the user's email address, password, and source page.
      * @return {@link AysToken} representing the access token generated upon successful authentication.
-     * @throws AysUserEmailAddressNotFoundException  If the provided email address is not valid or does not exist.
-     * @throws AysPasswordNotValidException      If the provided password is not valid.
-     * @throws AysUserNotActiveAuthException         If the user's status is not active.
-     * @throws AysUserDoesNotAccessPageException If the user does not have permission to access the requested page.
+     * @throws AysUserEmailAddressNotFoundException If the provided email address does not exist.
+     * @throws AysPasswordNotValidException         If the provided password is not valid.
+     * @throws AysUserNotActiveAuthException        If the user's status is not active.
+     * @throws AysUserDoesNotAccessPageException    If the user does not have permission to access the requested page.
      */
     @Override
     @Transactional
@@ -124,8 +124,8 @@ class AysAuthServiceImpl implements AysAuthService {
      *
      * @param refreshToken The refresh token used to generate a new access token.
      * @return A new {@link AysToken} containing the refreshed access token.
-     * @throws AysUserIdNotValidException If the user ID extracted from the refresh token is not valid.
-     * @throws AysUserNotActiveAuthException  If the user associated with the refresh token is not active.
+     * @throws AysUserIdNotValidException    If the user ID extracted from the refresh token is not valid.
+     * @throws AysUserNotActiveAuthException If the user associated with the refresh token is not active.
      */
     @Override
     public AysToken refreshAccessToken(final String refreshToken) {
