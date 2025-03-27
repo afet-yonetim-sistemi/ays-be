@@ -23,7 +23,7 @@ public class AysAuditLogRepositoryImpl implements AysAuditLogRepository {
      */
     @Override
     public void save(AysAuditLogEntity auditLogEntity) {
-        log.debug("Audit log saved: {}", auditLogEntity.toKinesisJsonString());
+        log.debug("Audit log saved: {}", auditLogEntity.toJsonString());
     }
 
 }
