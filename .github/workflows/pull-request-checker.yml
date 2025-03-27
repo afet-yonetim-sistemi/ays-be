@@ -1,4 +1,4 @@
-# Purpose: This file is used to build the project when a pull request is opened, reopened, edited, synchronized, ready for review, or unlocked.
+# Purpose: This file is used to build the project when a pull request is opened, reopened, synchronized, ready for review, or unlocked.
 
 # Name of the workflow
 name: Pull Request Checker
@@ -9,7 +9,6 @@ on:
     types:
       - opened # triggers the workflow when a pull request is opened.
       - reopened # triggers the workflow when a pull request is reopened after being closed.
-      - edited # triggers the workflow when a pull request is edited (changes are made to the pull request (the title, description, assignees, labels, or other attributes of the pull request))
       - synchronize # triggers the workflow when a pull request is synchronized (changes are pushed to the branch associated with the pull request)
       - ready_for_review # triggers the workflow when a pull request is marked as ready for review
       - unlocked # triggers the workflow when a previously locked pull request is unlocked
