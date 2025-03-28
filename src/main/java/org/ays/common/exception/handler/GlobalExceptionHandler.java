@@ -29,7 +29,7 @@ import java.sql.SQLException;
  */
 @Slf4j
 @RestControllerAdvice
-class GlobalExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

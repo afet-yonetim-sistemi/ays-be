@@ -103,7 +103,7 @@ public class AysErrorResponse {
          */
         CONFLICT_ERROR("CONFLICT ERROR"),
         /**
-         * NOT_FOUND header.
+         * NOT_EXIST_ERROR header.
          */
         NOT_EXIST_ERROR("NOT EXIST ERROR"),
         /**

@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Getter
 @RequiredArgsConstructor
-enum AysSensitiveMaskingCategory {
+public enum AysSensitiveMaskingCategory {
 
     /**
      * Category for masking token fields such as "authorization", "accessToken", or "refreshToken".
