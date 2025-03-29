@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public abstract class AysLogConfiguration {
 
-    protected final AysLogTracker logTracker = new AysLogTracker();
+    protected final LogTracker logTracker = new LogTracker();
 
     @BeforeEach
     void setup() {
@@ -26,7 +26,7 @@ public abstract class AysLogConfiguration {
     }
 
 
-    protected static class AysLogTracker extends ListAppender<ILoggingEvent> {
+    protected static class LogTracker extends ListAppender<ILoggingEvent> {
 
         public Optional<String> findMessage(Level level, String messageFragment) {
 
