@@ -1,5 +1,9 @@
 package org.ays.auth.controller;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
@@ -30,6 +34,7 @@ import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
+import org.ays.common.exception.handler.GlobalExceptionHandler;
 import org.ays.common.model.AysPageable;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysErrorResponseBuilder;
@@ -42,9 +47,13 @@ import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
+import org.ays.util.AysValidTestData;
 import org.ays.util.UUIDTestUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -73,6 +82,24 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
     @Autowired
     private AdminRegistrationApplicationReadPort adminRegistrationApplicationReadPort;
+
+
+    private ListAppender<ILoggingEvent> logWatcher;
+
+    @BeforeEach
+    void start() {
+        this.logWatcher = new ListAppender<>();
+        this.logWatcher.start();
+        ((Logger) LoggerFactory.getLogger(GlobalExceptionHandler.class))
+                .addAppender(this.logWatcher);
+    }
+
+    @AfterEach
+    void detach() {
+        ((Logger) LoggerFactory.getLogger(GlobalExceptionHandler.class))
+                .detachAndStopAllAppenders();
+    }
+
 
     private final AdminRegistrationApplicationToApplicationResponseMapper adminRegistrationApplicationToApplicationResponseMapper = AdminRegistrationApplicationToApplicationResponseMapper.initialize();
     private final AdminRegistrationApplicationToSummaryResponseMapper adminRegistrationApplicationToSummaryResponseMapper = AdminRegistrationApplicationToSummaryResponseMapper.initialize();
@@ -401,6 +428,55 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 )
         ));
     }
+
+    @Test
+    void givenAdminRegistrationApplicationCompleteRequest_whenAdminAlreadyExistsByGivenEmailAddress_thenReturnConflictError() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+        AdminRegistrationApplication application = adminRegistrationApplicationSavePort.save(
+                new AdminRegistrationApplicationBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withoutUser()
+                        .withInstitution(institution)
+                        .withStatus(AdminRegistrationApplicationStatus.WAITING)
+                        .build()
+        );
+
+        // Given
+        String applicationId = application.getId();
+        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues()
+                .withEmailAddress(AysValidTestData.Admin.EMAIL_ADDRESS)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, completeRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
+
+        String errorMessage = "user already exists! emailAddress: kyl******org";
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.message()
+                        .value(errorMessage));
+
+        // Verify
+        String lastLogMessage = this.getLastLogMessage();
+        Assertions.assertEquals(errorMessage, lastLogMessage);
+
+        Level logLevel = this.getLastLogLevel();
+        Assertions.assertEquals(Level.ERROR, logLevel);
+    }
+
 
     @Test
     void givenValidAdminRegistrationApplicationId_whenApproveAdminRegistrationApplication_thenReturnNothing() throws Exception {
@@ -847,6 +923,27 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .isNotFound())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+    }
+
+
+    private String getLastLogMessage() {
+
+        if (this.logWatcher.list.isEmpty()) {
+            return null;
+        }
+
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getFormattedMessage();
+    }
+
+    private Level getLastLogLevel() {
+
+        if (this.logWatcher.list.isEmpty()) {
+            return null;
+        }
+
+        int logSize = this.logWatcher.list.size();
+        return this.logWatcher.list.get(logSize - 1).getLevel();
     }
 
 }
