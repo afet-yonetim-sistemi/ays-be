@@ -21,7 +21,7 @@ import software.amazon.awssdk.services.kinesis.model.PutRecordRequest;
 @Repository
 @Profile("aws")
 @RequiredArgsConstructor
-class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
+class AysAuditLogRepositoryKinesisImpl extends AysAbstractAuditLogRepository {
 
     private final KinesisClient kinesisClient;
 
@@ -46,9 +46,11 @@ class AysAuditLogRepositoryKinesisImpl implements AysAuditLogRepository {
     @Override
     public void save(final AysAuditLogEntity auditLogEntity) {
 
-        final String auditLogJsonString = auditLogEntity.toKinesisJsonString();
-        if (this.isParseableToJson(auditLogJsonString)) {
-            log.warn("Audit log JSON is not parseable: {}", auditLogJsonString);
+        super.save(auditLogEntity);
+
+        final String kinesisJsonString = auditLogEntity.toKinesisJsonString();
+        if (this.isParseableToJson(kinesisJsonString)) {
+            log.warn("Audit log does not parse to Kinesis JSON String: {}", kinesisJsonString);
             return;
         }
 
