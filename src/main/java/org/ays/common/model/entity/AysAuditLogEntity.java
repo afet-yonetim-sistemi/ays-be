@@ -40,16 +40,16 @@ public class AysAuditLogEntity {
     public String toJsonString() {
         return "{" +
                "\"id\":\"" + this.id + "\"," +
-               "\"userId\":\"" + Optional.ofNullable(this.userId).orElse("") + "\"" +
-               "\"requestIpAddress\":\"" + Optional.ofNullable(this.requestIpAddress).orElse("") + "\"" +
-               "\"requestReferer\":\"" + Optional.ofNullable(this.requestReferer).orElse("") + "\"" +
-               "\"requestHttpMethod\":\"" + Optional.ofNullable(this.requestHttpMethod).orElse("") + "\"" +
-               "\"requestPath\":\"" + Optional.ofNullable(this.requestPath).orElse("") + "\"" +
-               "\"requestHttpHeader\":\"" + Optional.ofNullable(this.requestHttpHeader).orElse("") + "\"" +
-               "\"requestBody\":\"" + Optional.ofNullable(this.requestBody).orElse("") + "\"" +
+               "\"userId\":\"" + Optional.ofNullable(this.userId).orElse("") + "\"," +
+               "\"requestIpAddress\":\"" + Optional.ofNullable(this.requestIpAddress).orElse("") + "\"," +
+               "\"requestReferer\":\"" + Optional.ofNullable(this.requestReferer).orElse("") + "\"," +
+               "\"requestHttpMethod\":\"" + Optional.ofNullable(this.requestHttpMethod).orElse("") + "\"," +
+               "\"requestPath\":\"" + Optional.ofNullable(this.requestPath).orElse("") + "\"," +
+               "\"requestHttpHeader\":\"" + Optional.ofNullable(this.requestHttpHeader).orElse("") + "\"," +
+               "\"requestBody\":\"" + Optional.ofNullable(this.requestBody).orElse("") + "\"," +
                "\"responseHttpStatusCode\":" + Optional.ofNullable(this.responseHttpStatusCode).orElse(0) + "," +
-               "\"responseBody\":\"" + Optional.ofNullable(this.responseBody).orElse("") + "\"" +
-               "\"requestedAt\":\"" + this.requestedAt + "\"" +
+               "\"responseBody\":\"" + Optional.ofNullable(this.responseBody).orElse("") + "\"," +
+               "\"requestedAt\":\"" + this.requestedAt + "\"," +
                "\"respondedAt\":\"" + this.respondedAt + "\"" +
                "}";
     }

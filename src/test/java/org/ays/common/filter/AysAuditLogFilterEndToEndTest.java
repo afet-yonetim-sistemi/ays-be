@@ -1,22 +1,15 @@
 package org.ays.common.filter;
 
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import org.awaitility.Awaitility;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.response.AysUserResponse;
 import org.ays.common.model.response.AysResponse;
-import org.ays.common.repository.impl.AysAuditLogRepositoryImpl;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.ays.util.AysValidTestData;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,29 +17,13 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-
-    private ListAppender<ILoggingEvent> logWatcher;
-
-    @BeforeEach
-    void start() {
-        this.logWatcher = new ListAppender<>();
-        this.logWatcher.start();
-        ((Logger) LoggerFactory.getLogger(AysAuditLogRepositoryImpl.class))
-                .addAppender(this.logWatcher);
-    }
-
-    @AfterEach
-    void detach() {
-        ((Logger) LoggerFactory.getLogger(AysAuditLogRepositoryImpl.class))
-                .detachAndStopAllAppenders();
-    }
 
 
     @Test
@@ -67,7 +44,6 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .untilAsserted(() -> {
                     // Verify
                     this.validateLastLogMessage("", endpoint, HttpStatus.OK);
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
@@ -119,7 +95,6 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .untilAsserted(() -> {
                     // Verify
                     this.validateLastLogMessage(AysValidTestData.SuperAdmin.ID, endpoint, HttpStatus.OK);
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
@@ -145,46 +120,26 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
                 .untilAsserted(() -> {
                     // Verify
                     this.validateLastLogMessage(AysValidTestData.SuperAdmin.ID, endpoint, HttpStatus.NOT_FOUND);
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
                 });
     }
 
 
     private void validateLastLogMessage(String userId, String endpoint, HttpStatus httpStatus) {
-        String lastLogMessage = this.getLastLogMessage();
-        Assertions.assertNotNull(lastLogMessage);
-        Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
-        Assertions.assertTrue(lastLogMessage.contains("\"id\":\""));
-        Assertions.assertTrue(lastLogMessage.contains("\"userId\":\"" + userId + "\""));
-        Assertions.assertTrue(lastLogMessage.contains("\"requestIpAddress\":\"127.0.0.1"));
-        Assertions.assertTrue(lastLogMessage.contains("\"requestReferer\":\"\""));
-        Assertions.assertTrue(lastLogMessage.contains("\"requestHttpMethod\":\"GET"));
-        Assertions.assertTrue(lastLogMessage.contains("\"requestPath\":\"" + endpoint + "\""));
-        Assertions.assertTrue(lastLogMessage.contains("\"requestBody\":\"\""));
-        Assertions.assertTrue(lastLogMessage.contains("\"responseHttpStatusCode\":" + httpStatus.value()));
-        Assertions.assertTrue(lastLogMessage.contains("\"responseBody\":\""));
-        Assertions.assertTrue(lastLogMessage.contains("\"requestedAt\":\""));
-        Assertions.assertTrue(lastLogMessage.contains("\"respondedAt\":\""));
-    }
-
-    private String getLastLogMessage() {
-
-        if (this.logWatcher.list.isEmpty()) {
-            return null;
-        }
-
-        int logSize = this.logWatcher.list.size();
-        return this.logWatcher.list.get(logSize - 1).getFormattedMessage();
-    }
-
-    private Level getLastLogLevel() {
-
-        if (this.logWatcher.list.isEmpty()) {
-            return null;
-        }
-
-        int logSize = this.logWatcher.list.size();
-        return this.logWatcher.list.get(logSize - 1).getLevel();
+        String logMessagePrefix = "Audit log saved: ";
+        Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, logMessagePrefix);
+        Assertions.assertTrue(logMessage.isPresent());
+        Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
+        Assertions.assertTrue(logMessage.get().contains("\"id\":\""));
+        Assertions.assertTrue(logMessage.get().contains("\"userId\":\"" + userId + "\""));
+        Assertions.assertTrue(logMessage.get().contains("\"requestIpAddress\":\"127.0.0.1"));
+        Assertions.assertTrue(logMessage.get().contains("\"requestReferer\":\"\""));
+        Assertions.assertTrue(logMessage.get().contains("\"requestHttpMethod\":\"GET"));
+        Assertions.assertTrue(logMessage.get().contains("\"requestPath\":\"" + endpoint + "\""));
+        Assertions.assertTrue(logMessage.get().contains("\"requestBody\":\"\""));
+        Assertions.assertTrue(logMessage.get().contains("\"responseHttpStatusCode\":" + httpStatus.value()));
+        Assertions.assertTrue(logMessage.get().contains("\"responseBody\":\""));
+        Assertions.assertTrue(logMessage.get().contains("\"requestedAt\":\""));
+        Assertions.assertTrue(logMessage.get().contains("\"respondedAt\":\""));
     }
 
 }
