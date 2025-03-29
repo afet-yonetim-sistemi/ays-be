@@ -22,7 +22,7 @@ public class AysParameter {
      * Returns the definition of a specified configuration parameter by searching through a set of parameters.
      *
      * @param configurationParameter the configuration parameter whose definition is being sought
-     * @param parameters             the set of parameters to search through
+     * @param parameters             the collection of parameters to search through
      * @return the definition of the specified configuration parameter, or null if not found
      */
     public static String getDefinition(final AysConfigurationParameter configurationParameter, final Collection<AysParameter> parameters) {
