@@ -11,8 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 class AysParameterAdapterTest extends AysUnitTest {
 
@@ -24,12 +24,10 @@ class AysParameterAdapterTest extends AysUnitTest {
 
 
     @Test
-    void givenValidPrefixOfParameterName_whenParametersFound_thenReturnParameters() {
-        // Given
-        String mockPrefixOfName = "AUTH_";
+    void whenAllParametersFound_thenReturnParameters() {
 
         // When
-        Set<AysParameterEntity> mockParameterEntities = Set.of(
+        List<AysParameterEntity> mockParameterEntities = List.of(
                 new AysParameterEntityBuilder()
                         .withName("AUTH_ACCESS_TOKEN_EXPIRE_MINUTE")
                         .withDefinition("120")
@@ -37,18 +35,23 @@ class AysParameterAdapterTest extends AysUnitTest {
                 new AysParameterEntityBuilder()
                         .withDefinition("AUTH_REFRESH_TOKEN_EXPIRE_DAY")
                         .withName("1")
+                        .build(),
+                new AysParameterEntityBuilder()
+                        .withName("FE_URL")
+                        .withDefinition("http://localhost:3000")
                         .build()
         );
-
-        Mockito.when(parameterRepository.findByNameStartingWith(mockPrefixOfName))
+        Mockito.when(parameterRepository.findAll())
                 .thenReturn(mockParameterEntities);
 
         // Then
-        Set<AysParameter> parameterEntities = parameterAdapter.findAll(mockPrefixOfName);
+        List<AysParameter> parameterEntities = parameterAdapter.findAll();
 
         Assertions.assertEquals(mockParameterEntities.size(), parameterEntities.size());
+
         mockParameterEntities.forEach(mockParameterEntity -> {
-                    AysParameter parameter = parameterEntities.stream()
+
+            AysParameter parameter = parameterEntities.stream()
                             .filter(parameterEntity -> parameterEntity.getName().equals(mockParameterEntity.getName()))
                             .findFirst()
                             .orElse(null);
@@ -61,8 +64,7 @@ class AysParameterAdapterTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(parameterRepository)
-                .findByNameStartingWith(mockPrefixOfName);
-
+                .findAll();
     }
 
 

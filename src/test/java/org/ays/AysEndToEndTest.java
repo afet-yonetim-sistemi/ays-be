@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.time.DateUtils;
-import org.ays.auth.config.AysTokenConfigurationParameter;
+import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.enums.AysTokenClaims;
@@ -38,7 +38,7 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
 
 
     @Autowired
-    private AysTokenConfigurationParameter tokenConfiguration;
+    private AysApplicationConfigurationParameter tokenConfiguration;
 
     @Autowired
     private AysUserReadPort userReadPort;
@@ -71,10 +71,10 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
                 .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .and()
                 .id(AysRandomUtil.generateUUID())
-                .issuer(tokenConfiguration.getIssuer())
+                .issuer(tokenConfiguration.getTokenIssuer())
                 .issuedAt(tokenIssuedAt)
                 .expiration(accessTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey())
+                .signWith(tokenConfiguration.getTokenPrivateKey())
                 .claims(claims)
                 .compact();
 
@@ -85,10 +85,10 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
                 .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
                 .and()
                 .id(AysRandomUtil.generateUUID())
-                .issuer(tokenConfiguration.getIssuer())
+                .issuer(tokenConfiguration.getTokenIssuer())
                 .issuedAt(tokenIssuedAt)
                 .expiration(refreshTokenExpiresAt)
-                .signWith(tokenConfiguration.getPrivateKey())
+                .signWith(tokenConfiguration.getTokenPrivateKey())
                 .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
                 .compact();
 

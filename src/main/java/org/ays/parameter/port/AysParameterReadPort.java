@@ -2,8 +2,8 @@ package org.ays.parameter.port;
 
 import org.ays.parameter.model.AysParameter;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * A read port interface for accessing {@link AysParameter} data.
@@ -12,12 +12,14 @@ import java.util.Set;
 public interface AysParameterReadPort {
 
     /**
-     * Retrieves a set of {@link AysParameter} entities whose names start with the given prefix.
+     * Retrieves all {@link AysParameter} entities.
+     * <p>
+     * This method returns a list of all parameters stored in the data source.
+     * </p>
      *
-     * @param prefixOfName the prefix of the names to search for
-     * @return a set of {@link AysParameter} entities with names starting with the given prefix
+     * @return a list of {@link AysParameter} entities
      */
-    Set<AysParameter> findAll(String prefixOfName);
+    List<AysParameter> findAll();
 
     /**
      * Retrieves an {@link AysParameter} entity by its name.

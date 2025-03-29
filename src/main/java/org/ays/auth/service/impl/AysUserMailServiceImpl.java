@@ -1,14 +1,12 @@
 package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.model.AysUser;
-import org.ays.auth.model.enums.AysConfigurationParameter;
 import org.ays.auth.service.AysUserMailService;
 import org.ays.common.model.AysMail;
 import org.ays.common.model.enums.AysMailTemplate;
 import org.ays.common.service.AysMailService;
-import org.ays.parameter.model.AysParameter;
-import org.ays.parameter.port.AysParameterReadPort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +25,7 @@ import java.util.Map;
 class AysUserMailServiceImpl implements AysUserMailService {
 
     private final AysMailService mailService;
-    private final AysParameterReadPort parameterReadPort;
+    private final AysApplicationConfigurationParameter applicationConfigurationParameter;
 
 
     /**
@@ -43,9 +41,13 @@ class AysUserMailServiceImpl implements AysUserMailService {
     @Override
     public void sendPasswordCreateEmail(AysUser user) {
 
+        final String userFullName = user.getFirstName() + " " + user.getLastName();
+        final String url = applicationConfigurationParameter.getFeUrl()
+                .concat("/create-password/").concat(user.getPassword().getId());
+
         final Map<String, Object> parameters = Map.of(
-                "userFullName", user.getFirstName() + " " + user.getLastName(),
-                "url", this.findFeUrl().concat("/create-password/").concat(user.getPassword().getId())
+                "userFullName", userFullName,
+                "url", url
         );
 
         final AysMail mail = AysMail.builder()
@@ -55,22 +57,6 @@ class AysUserMailServiceImpl implements AysUserMailService {
                 .build();
 
         mailService.send(mail);
-    }
-
-    /**
-     * Retrieves the front-end URL from configuration parameters.
-     * <p>
-     * This method fetches the value of the front-end URL from the parameter read port. If the parameter is not found,
-     * it returns a default value defined by {@link AysConfigurationParameter#FE_URL}.
-     * </p>
-     *
-     * @return The front-end URL as a string.
-     */
-    private String findFeUrl() {
-        return parameterReadPort
-                .findByName(AysConfigurationParameter.FE_URL.name())
-                .orElse(AysParameter.from(AysConfigurationParameter.FE_URL))
-                .getDefinition();
     }
 
 }
