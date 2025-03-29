@@ -1,25 +1,20 @@
 package org.ays.common.repository.impl;
 
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import org.ays.AysUnitTest;
 import org.ays.common.model.entity.AysAuditLogEntity;
 import org.ays.common.model.entity.AysAuditLogEntityBuilder;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.kinesis.KinesisClient;
 import software.amazon.awssdk.services.kinesis.model.PutRecordRequest;
 import software.amazon.awssdk.services.kinesis.model.PutRecordResponse;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
 
@@ -28,23 +23,6 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
 
     @Mock
     private KinesisClient kinesisClient;
-
-
-    private ListAppender<ILoggingEvent> logWatcher;
-
-    @BeforeEach
-    void start() {
-        this.logWatcher = new ListAppender<>();
-        this.logWatcher.start();
-        ((Logger) LoggerFactory.getLogger(AysAuditLogRepositoryKinesisImpl.class))
-                .addAppender(this.logWatcher);
-    }
-
-    @AfterEach
-    void detach() {
-        ((Logger) LoggerFactory.getLogger(AysAuditLogRepositoryKinesisImpl.class))
-                .detachAndStopAllAppenders();
-    }
 
 
     @Test
@@ -133,36 +111,15 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
         // Then
         auditLogRepository.save(mockAuditLogEntity);
 
-        String lastLogMessage = this.getLastLogMessage();
-        Assertions.assertNotNull(lastLogMessage);
-        Assertions.assertTrue(lastLogMessage.startsWith("Audit log JSON is not parseable: "));
-
-        Assertions.assertEquals(Level.WARN, this.getLastLogLevel());
+        String logMessagePrefix = "Audit log does not parse to Kinesis JSON String: ";
+        Optional<String> logMessage = logTracker.findMessage(Level.WARN, logMessagePrefix);
+        Assertions.assertTrue(logMessage.isPresent());
+        Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
 
         // Verify
         Mockito.verify(kinesisClient, Mockito.never())
                 .putRecord(Mockito.any(PutRecordRequest.class));
     }
 
-
-    private String getLastLogMessage() {
-
-        if (this.logWatcher.list.isEmpty()) {
-            return null;
-        }
-
-        int logSize = this.logWatcher.list.size();
-        return this.logWatcher.list.get(logSize - 1).getFormattedMessage();
-    }
-
-    private Level getLastLogLevel() {
-
-        if (this.logWatcher.list.isEmpty()) {
-            return null;
-        }
-
-        int logSize = this.logWatcher.list.size();
-        return this.logWatcher.list.get(logSize - 1).getLevel();
-    }
 
 }

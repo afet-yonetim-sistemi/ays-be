@@ -1,45 +1,22 @@
 package org.ays.common.repository.impl;
 
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import org.awaitility.Awaitility;
 import org.ays.AysUnitTest;
 import org.ays.common.model.entity.AysAuditLogEntity;
 import org.ays.common.model.entity.AysAuditLogEntityBuilder;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 class AysAuditLogRepositoryImplTest extends AysUnitTest {
 
     @InjectMocks
     private AysAuditLogRepositoryImpl auditLogRepository;
-
-
-    private ListAppender<ILoggingEvent> logWatcher;
-
-    @BeforeEach
-    void start() {
-        this.logWatcher = new ListAppender<>();
-        this.logWatcher.start();
-        ((Logger) LoggerFactory.getLogger(AysAuditLogRepositoryImpl.class))
-                .addAppender(this.logWatcher);
-    }
-
-    @AfterEach
-    void detach() {
-        ((Logger) LoggerFactory.getLogger(AysAuditLogRepositoryImpl.class))
-                .detachAndStopAllAppenders();
-    }
-
 
     @Test
     void givenValidAuditLogEntityForPublicEndpoint_whenAuditLogSaved_thenLogToConsole() {
@@ -68,21 +45,20 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertNotNull(lastLogMessage);
-                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
-                    Assertions.assertTrue(lastLogMessage.contains("\"id\":\"" + mockAuditLogEntity.getId() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"userId\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestReferer\":\"" + mockAuditLogEntity.getRequestReferer() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestHttpMethod\":\"" + mockAuditLogEntity.getRequestHttpMethod() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestPath\":\"" + mockAuditLogEntity.getRequestPath() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestBody\":\"\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"responseHttpStatusCode\":" + mockAuditLogEntity.getResponseHttpStatusCode()));
-                    Assertions.assertTrue(lastLogMessage.contains("\"responseBody\":\"" + mockAuditLogEntity.getResponseBody() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestedAt\":\"" + mockAuditLogEntity.getRequestedAt() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"respondedAt\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
+                    Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, "Audit log saved: ");
+                    Assertions.assertTrue(logMessage.isPresent());
+                    Assertions.assertTrue(logMessage.get().startsWith("Audit log saved: "));
+                    Assertions.assertTrue(logMessage.get().contains("\"id\":\"" + mockAuditLogEntity.getId() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"userId\":\"\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestReferer\":\"" + mockAuditLogEntity.getRequestReferer() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestHttpMethod\":\"" + mockAuditLogEntity.getRequestHttpMethod() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestPath\":\"" + mockAuditLogEntity.getRequestPath() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestBody\":\"\""));
+                    Assertions.assertTrue(logMessage.get().contains("\"responseHttpStatusCode\":" + mockAuditLogEntity.getResponseHttpStatusCode() + ","));
+                    Assertions.assertTrue(logMessage.get().contains("\"responseBody\":\"" + mockAuditLogEntity.getResponseBody() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestedAt\":\"" + mockAuditLogEntity.getRequestedAt() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"respondedAt\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
                 });
     }
 
@@ -113,42 +89,21 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    String lastLogMessage = this.getLastLogMessage();
-                    Assertions.assertNotNull(lastLogMessage);
-                    Assertions.assertTrue(lastLogMessage.startsWith("Audit log saved: "));
-                    Assertions.assertTrue(lastLogMessage.contains("\"id\":\"" + mockAuditLogEntity.getId() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"userId\":\"" + mockAuditLogEntity.getUserId() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestReferer\":\"" + mockAuditLogEntity.getRequestReferer() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestHttpMethod\":\"" + mockAuditLogEntity.getRequestHttpMethod() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestPath\":\"" + mockAuditLogEntity.getRequestPath() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestBody\":\"" + mockAuditLogEntity.getRequestBody() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"responseHttpStatusCode\":" + mockAuditLogEntity.getResponseHttpStatusCode()));
-                    Assertions.assertTrue(lastLogMessage.contains("\"responseBody\":\"" + mockAuditLogEntity.getResponseBody() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"requestedAt\":\"" + mockAuditLogEntity.getRequestedAt() + "\""));
-                    Assertions.assertTrue(lastLogMessage.contains("\"respondedAt\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
-                    Assertions.assertEquals(Level.DEBUG, this.getLastLogLevel());
+                    Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, "Audit log saved: ");
+                    Assertions.assertTrue(logMessage.isPresent());
+                    Assertions.assertTrue(logMessage.get().startsWith("Audit log saved: "));
+                    Assertions.assertTrue(logMessage.get().contains("\"id\":\"" + mockAuditLogEntity.getId() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"userId\":\"" + mockAuditLogEntity.getUserId() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestReferer\":\"" + mockAuditLogEntity.getRequestReferer() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestHttpMethod\":\"" + mockAuditLogEntity.getRequestHttpMethod() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestPath\":\"" + mockAuditLogEntity.getRequestPath() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestBody\":\"" + mockAuditLogEntity.getRequestBody() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"responseHttpStatusCode\":" + mockAuditLogEntity.getResponseHttpStatusCode() + ","));
+                    Assertions.assertTrue(logMessage.get().contains("\"responseBody\":\"" + mockAuditLogEntity.getResponseBody() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"requestedAt\":\"" + mockAuditLogEntity.getRequestedAt() + "\","));
+                    Assertions.assertTrue(logMessage.get().contains("\"respondedAt\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
                 });
     }
 
-
-    private String getLastLogMessage() {
-
-        if (this.logWatcher.list.isEmpty()) {
-            return null;
-        }
-
-        int logSize = this.logWatcher.list.size();
-        return this.logWatcher.list.get(logSize - 1).getFormattedMessage();
-    }
-
-    private Level getLastLogLevel() {
-
-        if (this.logWatcher.list.isEmpty()) {
-            return null;
-        }
-
-        int logSize = this.logWatcher.list.size();
-        return this.logWatcher.list.get(logSize - 1).getLevel();
-    }
 }
