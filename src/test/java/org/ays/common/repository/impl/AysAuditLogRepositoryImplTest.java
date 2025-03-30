@@ -45,9 +45,10 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, "Audit log saved: ");
+                    String logMessagePrefix = "Audit log saved: ";
+                    Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, logMessagePrefix);
                     Assertions.assertTrue(logMessage.isPresent());
-                    Assertions.assertTrue(logMessage.get().startsWith("Audit log saved: "));
+                    Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
                     Assertions.assertTrue(logMessage.get().contains("\"id\":\"" + mockAuditLogEntity.getId() + "\","));
                     Assertions.assertTrue(logMessage.get().contains("\"userId\":\"\","));
                     Assertions.assertTrue(logMessage.get().contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\","));
@@ -89,9 +90,10 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, "Audit log saved: ");
+                    String logMessagePrefix = "Audit log saved: ";
+                    Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, logMessagePrefix);
                     Assertions.assertTrue(logMessage.isPresent());
-                    Assertions.assertTrue(logMessage.get().startsWith("Audit log saved: "));
+                    Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
                     Assertions.assertTrue(logMessage.get().contains("\"id\":\"" + mockAuditLogEntity.getId() + "\","));
                     Assertions.assertTrue(logMessage.get().contains("\"userId\":\"" + mockAuditLogEntity.getUserId() + "\","));
                     Assertions.assertTrue(logMessage.get().contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\","));
