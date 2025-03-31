@@ -6,24 +6,28 @@ import org.ays.AysUnitTest;
 import org.ays.common.model.entity.AysAuditLogEntity;
 import org.ays.common.model.entity.AysAuditLogEntityBuilder;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-class AysAuditLogRepositoryImplTest extends AysUnitTest {
+class AysAbstractAuditLogRepositoryTest extends AysUnitTest {
 
-    @InjectMocks
-    private AysAuditLogRepositoryImpl auditLogRepository;
+    private AysAbstractAuditLogRepository auditLogRepository;
+
+    @BeforeEach
+    void setUp() {
+        this.auditLogRepository = new AysAuditLogRepositoryImpl();
+    }
 
     @Test
     void givenValidAuditLogEntityForPublicEndpoint_whenAuditLogSaved_thenLogToConsole() {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
-                .withId("e8981063-b250-4c54-9094-02222865cccf")
+                .withId("d9cd968c-f6cc-481d-b91a-cf119b9ed94d")
                 .withoutUserId()
                 .withRequestIpAddress("127.0.0.1")
                 .withRequestReferer("http://localhost:3000")
@@ -68,12 +72,12 @@ class AysAuditLogRepositoryImplTest extends AysUnitTest {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
-                .withId("b5596a4d-d1b1-4a7b-aa57-3467255393ed")
-                .withUserId("4e064f32-907f-472a-a8e8-a1d8073db0fb")
+                .withId("bb6552cc-43ad-4bb8-b8ff-72f92ebc207e")
+                .withUserId("555f8b44-5004-408b-a8b3-4545e75187a3")
                 .withRequestIpAddress("127.0.0.1")
                 .withRequestReferer("http://localhost:3000")
                 .withRequestHttpMethod("PUT")
-                .withRequestPath("/api/v1/user/9a2f0b36-3ac3-415e-964f-9297ecbe009e")
+                .withRequestPath("/api/v1/user/12dc9611-8ce6-4cf8-b0cc-e5e9511cc7cb")
                 .withRequestHttpHeader("Content-Type: application/json")
                 .withRequestBody("{\\\"name\\\":\\\"John Doe\\\"}")
                 .withResponseHttpStatusCode(200)
