@@ -406,6 +406,51 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
     }
 
     @Test
+    void givenAdminRegistrationApplicationCompleteRequest_whenAdminAlreadyExistsByGivenPhoneNumber_thenReturnConflictError() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+        AdminRegistrationApplication application = adminRegistrationApplicationSavePort.save(
+                new AdminRegistrationApplicationBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withoutUser()
+                        .withInstitution(institution)
+                        .withStatus(AdminRegistrationApplicationStatus.WAITING)
+                        .build()
+        );
+
+        // Given
+        String applicationId = application.getId();
+        AdminRegistrationApplicationCompleteRequest completeRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(AysValidTestData.Admin.PHONE_NUMBER)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(applicationId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, completeRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
+
+        String errorMessage = "user already exists! countryCode: 90 , lineNumber: ******7891";
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.message()
+                        .value(errorMessage));
+
+        // Verify
+        Optional<String> logMessage = logTracker.findMessage(Level.ERROR, errorMessage);
+        Assertions.assertTrue(logMessage.isPresent());
+    }
+
+    @Test
     void givenAdminRegistrationApplicationCompleteRequest_whenAdminAlreadyExistsByGivenEmailAddress_thenReturnConflictError() throws Exception {
 
         // Initialize

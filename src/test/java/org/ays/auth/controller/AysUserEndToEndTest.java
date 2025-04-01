@@ -312,6 +312,47 @@ class AysUserEndToEndTest extends AysEndToEndTest {
     }
 
     @Test
+    void givenUserCreateRequest_whenUserAlreadyExistByGivenPhoneNumber_thenReturnConflictError() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
+
+        // Given
+        Set<String> roleIds = roles.stream()
+                .map(AysRole::getId)
+                .collect(Collectors.toSet());
+        AysUserCreateRequest createRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withPhoneNumber(AysValidTestData.Admin.PHONE_NUMBER)
+                .withRoleIds(roleIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, adminToken.getAccessToken(), createRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
+
+        String errorMessage = "user already exists! countryCode: 90 , lineNumber: ******7891";
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.message()
+                        .value(errorMessage));
+
+        // Verify
+        Optional<String> logMessage = logTracker.findMessage(Level.ERROR, errorMessage);
+        Assertions.assertTrue(logMessage.isPresent());
+    }
+
+    @Test
     void givenUserCreateRequest_whenUserAlreadyExistByGivenEmailAddress_thenReturnConflictError() throws Exception {
 
         // Initialize
@@ -540,6 +581,62 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
 
         String errorMessage = "user already exists! emailAddress: kyl******org";
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isConflict())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.message()
+                        .value(errorMessage));
+
+        // Verify
+        Optional<String> logMessage = logTracker.findMessage(Level.ERROR, errorMessage);
+        Assertions.assertTrue(logMessage.isPresent());
+    }
+
+    @Test
+    void givenValidIdAndUserUpdateRequest_whenUserAlreadyExistsByGivenPhoneNumber_thenReturnConflictError() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder()
+                .withId(AysValidTestData.Admin.INSTITUTION_ID)
+                .build();
+
+        List<AysRole> roles = roleReadPort.findAllActivesByInstitutionId(institution.getId());
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withRoles(roles)
+                        .withInstitution(institution)
+                        .build()
+        );
+
+        // Given
+        String id = user.getId();
+
+        Set<String> roleIds = roles.stream()
+                .map(AysRole::getId)
+                .limit(1)
+                .collect(Collectors.toSet());
+        AysUserUpdateRequest updateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withFirstName("John")
+                .withLastName("Doe")
+                .withPhoneNumber(AysValidTestData.Admin.PHONE_NUMBER)
+                .withCity("Ankara")
+                .withRoleIds(roleIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(id);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, adminToken.getAccessToken(), updateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.CONFLICT_ERROR;
+
+        String errorMessage = "user already exists! countryCode: 90 , lineNumber: ******7891";
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isConflict())
