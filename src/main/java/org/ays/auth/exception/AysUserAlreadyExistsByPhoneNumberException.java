@@ -2,6 +2,7 @@ package org.ays.auth.exception;
 
 import org.ays.common.exception.AysConflictException;
 import org.ays.common.model.AysPhoneNumber;
+import org.ays.common.util.AysSensitiveMaskingCategory;
 
 import java.io.Serial;
 
@@ -21,8 +22,8 @@ public final class AysUserAlreadyExistsByPhoneNumberException extends AysConflic
      *
      * @param phoneNumber The phone number that already exists in the system.
      */
-    public AysUserAlreadyExistsByPhoneNumberException(AysPhoneNumber phoneNumber) {
-        super("user already exist! countryCode:" + phoneNumber.getCountryCode() + " , " + "lineNumber:" + phoneNumber.getLineNumber());
+    public AysUserAlreadyExistsByPhoneNumberException(final AysPhoneNumber phoneNumber) {
+        super("user already exists! countryCode: " + phoneNumber.getCountryCode() + " , " + "lineNumber: " + AysSensitiveMaskingCategory.PHONE_NUMBER.mask(phoneNumber.getLineNumber()));
     }
 
 }
