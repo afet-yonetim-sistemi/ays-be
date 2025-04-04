@@ -4,7 +4,6 @@ import ch.qos.logback.classic.Level;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.constraints.NotNull;
 import org.ays.AysRestControllerTest;
 import org.ays.common.exception.AysAuthException;
 import org.ays.common.exception.AysForbiddenException;
@@ -41,7 +40,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
     @Test
     @SuppressWarnings("ConstantConditions")
-    void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentTypeMismatchException_thenReturnAysError() {
+    void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentTypeMismatchException_thenReturnErrorResponse() {
         // Given
         MethodArgumentTypeMismatchException mockException = new MethodArgumentTypeMismatchException("test", String.class, "username", null, null);
 
@@ -57,10 +56,15 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnAysError() throws NoSuchMethodException {
+    void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnErrorResponse() throws NoSuchMethodException {
 
         // Given
-        MethodArgumentNotValidException mockException = this.getMethodArgumentNotValidException();
+        Method method = GlobalExceptionHandlerTest.class.getDeclaredMethod("givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnErrorResponse");
+        int parameterIndex = -1;
+
+        MethodParameter mockParameter = new MethodParameter(method, parameterIndex);
+        BindingResult mockBindingResult = new BeanPropertyBindingResult(null, "");
+        MethodArgumentNotValidException mockException = new MethodArgumentNotValidException(mockParameter, mockBindingResult);
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.subErrors(mockException.getBindingResult().getFieldErrors())
@@ -73,17 +77,8 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         this.validateConsoleLog(mockException, errorResponse);
     }
 
-    private @NotNull MethodArgumentNotValidException getMethodArgumentNotValidException() throws NoSuchMethodException {
-        Method method = GlobalExceptionHandlerTest.class.getDeclaredMethod("givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnAysError");
-        int parameterIndex = -1;
-
-        MethodParameter mockParameter = new MethodParameter(method, parameterIndex);
-        BindingResult mockBindingResult = new BeanPropertyBindingResult(null, "");
-        return new MethodArgumentNotValidException(mockParameter, mockBindingResult);
-    }
-
     @Test
-    void givenInvalidArgumentToAnyEndpoint_whenThrowConstraintViolationException_thenReturnAysError() {
+    void givenInvalidArgumentToAnyEndpoint_whenThrowConstraintViolationException_thenReturnErrorResponse() {
 
         // Given
         ConstraintViolationException mockException = new ConstraintViolationException(null);
@@ -100,7 +95,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenResourceNotFound_whenThrowAysNotExistException_thenReturnAysErrorWithReturnAysError() {
+    void givenResourceNotFound_whenThrowAysNotExistException_thenReturnErrorResponse() {
 
         // Given
         AysNotExistException mockException = new AysNotExistException("Resource not found") {
@@ -127,7 +122,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenInternalServerException_whenThrowAysProcessException_WithReturnAysError() {
+    void givenInternalServerException_whenThrowAysProcessException_thenReturnErrorResponse() {
 
         // Given
         AysProcessException mockException = new AysProcessException("Internal server error") {
@@ -154,7 +149,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenHandleEndpointNotFoundException_whenThrowNoResourceFoundException_thenReturnAysError() {
+    void givenHandleEndpointNotFoundException_whenThrowNoResourceFoundException_thenReturnErrorResponse() {
 
         // Given
         HttpMethod[] httpMethods = HttpMethod.values();
@@ -176,7 +171,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
 
     @Test
-    void givenForbiddenException_whenThrowForbiddenException_thenReturnAysError() {
+    void givenForbiddenException_whenThrowForbiddenException_thenReturnErrorResponse() {
 
         // Given
         AysForbiddenException mockException = new AysForbiddenException("Forbidden action") {
@@ -203,7 +198,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
 
     @Test
-    void givenAccessDeniedException_whenThrowAccessDeniedException_thenReturnAysError() {
+    void givenAccessDeniedException_whenThrowAccessDeniedException_thenReturnErrorResponse() {
 
         // Given
         AccessDeniedException mockException = new AccessDeniedException("Access denied");
@@ -220,7 +215,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenSQLException_whenThrowSQLException_thenReturnAysError() {
+    void givenSQLException_whenThrowSQLException_thenReturnErrorResponse() {
 
         // Given
         SQLException mockException = new SQLException("Database error");
@@ -237,7 +232,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenAuthenticationFailure_whenThrowAysAuthException_thenReturnAysError() {
+    void givenAuthenticationFailure_whenThrowAysAuthException_thenReturnErrorResponse() {
         // Given
         AysAuthException mockException = new AysAuthException("Authentication failed") {
 
@@ -262,7 +257,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenUnsupportedHttpMethod_whenThrowHttpRequestMethodNotSupportedException_thenReturnAysError() {
+    void givenUnsupportedHttpMethod_whenThrowHttpRequestMethodNotSupportedException_thenReturnErrorResponse() {
 
         // Given
         HttpRequestMethodNotSupportedException mockException = new HttpRequestMethodNotSupportedException("Unsupported method");
@@ -279,7 +274,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenUnsupportedMediaType_whenThrowHttpMediaTypeNotSupportedException_thenReturnAysError() {
+    void givenUnsupportedMediaType_whenThrowHttpMediaTypeNotSupportedException_thenReturnErrorResponse() {
 
         // Given
         HttpMediaTypeNotSupportedException mockException = new HttpMediaTypeNotSupportedException("Unsupported media type");
@@ -296,7 +291,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenDataAccessException_whenThrowDataAccessException_thenReturnAysErrorWithInternalServerErrorStatus() {
+    void givenDataAccessException_whenThrowDataAccessException_thenReturnErrorResponse() {
 
         // Given
         DataAccessException mockException = new DataAccessException("Data access error") {
@@ -317,7 +312,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
     }
 
     @Test
-    void givenJsonParseError_whenThrowHttpMessageNotReadableException_thenReturnAysError() {
+    void givenJsonParseError_whenThrowHttpMessageNotReadableException_thenReturnErrorResponse() {
 
         // Given
         HttpInputMessage mockHttpInputMessage = new MockHttpInputMessage(new byte[]{});
@@ -336,7 +331,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    void givenInvalidJsonFormat_whenThrowHttpMessageNotReadableException_thenReturnAysErrorResponse() {
+    void givenInvalidJsonFormat_whenThrowHttpMessageNotReadableException_thenReturnErrorResponse() {
 
         // Given
         InvalidFormatException mockInvalidFormatException = InvalidFormatException.from(null, "Invalid format", null, String.class);
