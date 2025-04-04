@@ -217,7 +217,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    AysErrorResponse handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+    AysErrorResponse handleMethodNotAllowedError(HttpRequestMethodNotSupportedException exception) {
 
         final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.API_ERROR.getName())
@@ -230,7 +230,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-    AysErrorResponse handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
+    AysErrorResponse handleUnsupportedMediaTypeError(HttpMediaTypeNotSupportedException exception) {
 
         final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.API_ERROR.getName())
@@ -243,7 +243,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    AysErrorResponse handleDataAccessException(DataAccessException exception) {
+    AysErrorResponse handleDataAccessError(DataAccessException exception) {
 
         final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())

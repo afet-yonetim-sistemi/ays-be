@@ -41,7 +41,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
 
     @Test
     @SuppressWarnings("ConstantConditions")
-    void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentTypeMismatchException_thenReturnErrorResponse() {
+    void givenMethodArgumentTypeMismatchException_whenValidationErrorsHandled_thenReturnErrorResponse() {
         // Given
         MethodArgumentTypeMismatchException mockException = new MethodArgumentTypeMismatchException("test", String.class, "username", null, null);
 
@@ -57,10 +57,10 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnErrorResponse() throws NoSuchMethodException {
+    void givenMethodArgumentNotValidException_whenValidationErrorsHandled_thenReturnErrorResponse() throws NoSuchMethodException {
 
         // Given
-        Method method = GlobalExceptionHandlerTest.class.getDeclaredMethod("givenInvalidArgumentToAnyEndpoint_whenThrowMethodArgumentNotValidException_thenReturnErrorResponse");
+        Method method = GlobalExceptionHandlerTest.class.getDeclaredMethod("givenMethodArgumentNotValidException_whenValidationErrorsHandled_thenReturnErrorResponse");
         int parameterIndex = -1;
 
         MethodParameter mockParameter = new MethodParameter(method, parameterIndex);
@@ -79,7 +79,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenInvalidArgumentToAnyEndpoint_whenThrowConstraintViolationException_thenReturnErrorResponse() {
+    void givenConstraintViolationException_whenPathVariableErrorsHandle_thenReturnErrorResponse() {
 
         // Given
         ConstraintViolationException mockException = new ConstraintViolationException(null);
@@ -96,17 +96,17 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenResourceNotFound_whenThrowAysNotExistException_thenReturnErrorResponse() {
+    void givenAysNotExistException_whenNotExistErrorHandled_thenReturnErrorResponse() {
 
         // Given
-        AysNotExistException mockException = new AysNotExistException("Resource not found") {
+        AysNotExistException mockException = new AysNotExistException("user does not exist") {
 
             @Serial
             private static final long serialVersionUID = 1L;
 
             @Override
             public String getMessage() {
-                return "Resource not found";
+                return "user does not exist";
             }
         };
 
@@ -123,7 +123,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenUserAlreadyExists_whenThrowAysConflictException_thenReturnErrorResponse() {
+    void givenAysConflictException_whenConflictErrorHandled_thenReturnErrorResponse() {
 
         // Given
         AysConflictException mockException = new AysConflictException("User already exists") {
@@ -150,17 +150,17 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenInternalServerException_whenThrowAysProcessException_thenReturnErrorResponse() {
+    void givenAysProcessException_whenProcessErrorHandled_thenReturnErrorResponse() {
 
         // Given
-        AysProcessException mockException = new AysProcessException("Internal server error") {
+        AysProcessException mockException = new AysProcessException("AYS server error") {
 
             @Serial
             private static final long serialVersionUID = 1L;
 
             @Override
             public String getMessage() {
-                return "Internal server error";
+                return "AYS server error";
             }
         };
 
@@ -203,7 +203,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenHandleEndpointNotFoundException_whenThrowNoResourceFoundException_thenReturnErrorResponse() {
+    void givenNoResourceFoundException_whenEndpointNotFoundErrorHandled_thenReturnErrorResponse() {
 
         // Given
         HttpMethod[] httpMethods = HttpMethod.values();
@@ -225,7 +225,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
 
 
     @Test
-    void givenForbiddenException_whenThrowForbiddenException_thenReturnErrorResponse() {
+    void givenAysForbiddenException_whenForbiddenErrorHandled_thenReturnErrorResponse() {
 
         // Given
         AysForbiddenException mockException = new AysForbiddenException("Forbidden action") {
@@ -252,7 +252,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
 
 
     @Test
-    void givenAccessDeniedException_whenThrowAccessDeniedException_thenReturnErrorResponse() {
+    void givenAccessDeniedException_whenAccessDeniedErrorHandle_thenReturnErrorResponse() {
 
         // Given
         AccessDeniedException mockException = new AccessDeniedException("Access denied");
@@ -269,7 +269,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenSQLException_whenThrowSQLException_thenReturnErrorResponse() {
+    void givenSQLException_whenSQLErrorHandled_thenReturnErrorResponse() {
 
         // Given
         SQLException mockException = new SQLException("Database error");
@@ -286,7 +286,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenAuthenticationFailure_whenThrowAysAuthException_thenReturnErrorResponse() {
+    void givenAysAuthException_whenAuthErrorHandled_thenReturnErrorResponse() {
         // Given
         AysAuthException mockException = new AysAuthException("Authentication failed") {
 
@@ -311,10 +311,10 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
-    void givenUnsupportedHttpMethod_whenThrowHttpRequestMethodNotSupportedException_thenReturnErrorResponse() {
+    void givenHttpRequestMethodNotSupportedException_whenMethodNotAllowedErrorHandled_thenReturnErrorResponse() {
 
         // Given
-        HttpRequestMethodNotSupportedException mockException = new HttpRequestMethodNotSupportedException("Unsupported method");
+        HttpRequestMethodNotSupportedException mockException = new HttpRequestMethodNotSupportedException("Method not allowed");
 
         // When
         AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
@@ -322,13 +322,13 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
                 .build();
 
         // Then
-        AysErrorResponse errorResponse = globalExceptionHandler.handleHttpRequestMethodNotSupportedException(mockException);
+        AysErrorResponse errorResponse = globalExceptionHandler.handleMethodNotAllowedError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
         this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
-    void givenUnsupportedMediaType_whenThrowHttpMediaTypeNotSupportedException_thenReturnErrorResponse() {
+    void givenHttpMediaTypeNotSupportedException_whenUnsupportedMediaTypeErrorHandled_thenReturnErrorResponse() {
 
         // Given
         HttpMediaTypeNotSupportedException mockException = new HttpMediaTypeNotSupportedException("Unsupported media type");
@@ -339,13 +339,13 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
                 .build();
 
         // Then
-        AysErrorResponse errorResponse = globalExceptionHandler.handleHttpMediaTypeNotSupportedException(mockException);
+        AysErrorResponse errorResponse = globalExceptionHandler.handleUnsupportedMediaTypeError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
         this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
-    void givenDataAccessException_whenThrowDataAccessException_thenReturnErrorResponse() {
+    void givenDataAccessException_whenDataAccessErrorHandled_thenReturnErrorResponse() {
 
         // Given
         DataAccessException mockException = new DataAccessException("Data access error") {
@@ -360,13 +360,13 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
                 .build();
 
         // Then
-        AysErrorResponse errorResponse = globalExceptionHandler.handleDataAccessException(mockException);
+        AysErrorResponse errorResponse = globalExceptionHandler.handleDataAccessError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
         this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
-    void givenJsonParseError_whenThrowHttpMessageNotReadableException_thenReturnErrorResponse() {
+    void givenHttpInputMessage_whenJsonParseErrorsHandled_thenReturnErrorResponse() {
 
         // Given
         HttpInputMessage mockHttpInputMessage = new MockHttpInputMessage(new byte[]{});
@@ -385,7 +385,7 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    void givenInvalidJsonFormat_whenThrowHttpMessageNotReadableException_thenReturnErrorResponse() {
+    void givenInvalidFormatException_whenJsonParseErrorsHandled_thenReturnErrorResponse() {
 
         // Given
         InvalidFormatException mockInvalidFormatException = InvalidFormatException.from(null, "Invalid format", null, String.class);
