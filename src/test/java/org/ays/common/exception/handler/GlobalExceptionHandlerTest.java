@@ -4,7 +4,7 @@ import ch.qos.logback.classic.Level;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
-import org.ays.AysRestControllerTest;
+import org.ays.AysUnitTest;
 import org.ays.common.exception.AysAuthException;
 import org.ays.common.exception.AysConflictException;
 import org.ays.common.exception.AysForbiddenException;
@@ -34,7 +34,7 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Optional;
 
-class GlobalExceptionHandlerTest extends AysRestControllerTest {
+class GlobalExceptionHandlerTest extends AysUnitTest {
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
