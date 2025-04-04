@@ -177,6 +177,32 @@ class GlobalExceptionHandlerTest extends AysUnitTest {
     }
 
     @Test
+    void givenNullPointerException_whenProcessErrorHandled_thenReturnErrorResponse() {
+
+        // Given
+        NullPointerException mockException = new NullPointerException("null") {
+
+            @Serial
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public String getMessage() {
+                return "null";
+            }
+        };
+
+        // When
+        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.PROCESS_ERROR.getName())
+                .build();
+
+        // Then
+        AysErrorResponse errorResponse = globalExceptionHandler.handleProcessError(mockException);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
+    }
+
+    @Test
     void givenHandleEndpointNotFoundException_whenThrowNoResourceFoundException_thenReturnErrorResponse() {
 
         // Given
