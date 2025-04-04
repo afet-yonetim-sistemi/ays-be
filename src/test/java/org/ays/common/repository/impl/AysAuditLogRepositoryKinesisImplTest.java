@@ -93,6 +93,7 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
 
     @ValueSource(strings = {
             "/public/actuator",
+            "/public/actuator/info",
             "/public/actuator/health",
             "/public/actuator/prometheus"
     })
