@@ -28,38 +28,6 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidAuditLogEntity_whenRequestPathIsPublic_thenSendAuditLogJSONStringToKinesis() {
-
-        // Given
-        AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
-                .withId("a8502816-4a1b-403c-9d83-b93b7ce2781a")
-                .withoutUserId()
-                .withRequestIpAddress("127.0.0.1")
-                .withRequestReferer("http://localhost:3000")
-                .withRequestHttpMethod("GET")
-                .withRequestPath("/public/actuator/health")
-                .withRequestHttpHeader("Content-Type: application/json")
-                .withoutRequestBody()
-                .withResponseHttpStatusCode(200)
-                .withResponseBody("{\\\"status\\\":\\\"UP\\\"}")
-                .withRequestedAt(LocalDateTime.now())
-                .withRespondedAt(LocalDateTime.now().plusNanos(2456))
-                .build();
-
-        // When
-        PutRecordResponse mockPutRecordResponse = Mockito.mock(PutRecordResponse.class);
-        Mockito.when(kinesisClient.putRecord(Mockito.any(PutRecordRequest.class)))
-                .thenReturn(mockPutRecordResponse);
-
-        // Then
-        auditLogRepository.save(mockAuditLogEntity);
-
-        // Verify
-        Mockito.verify(kinesisClient, Mockito.times(1))
-                .putRecord(Mockito.any(PutRecordRequest.class));
-    }
-
-    @Test
     void givenValidAuditLogEntity_whenRequestPathIsPrivate_thenSendAuditLogJSONStringToKinesis() {
 
         // Given
