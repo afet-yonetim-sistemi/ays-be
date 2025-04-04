@@ -1,5 +1,6 @@
 package org.ays.common.exception.handler;
 
+import ch.qos.logback.classic.Level;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.io.Serial;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.Optional;
 
 class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
@@ -51,7 +53,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleValidationErrors(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
-
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -68,6 +70,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleValidationErrors(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     private @NotNull MethodArgumentNotValidException getMethodArgumentNotValidException() throws NoSuchMethodException {
@@ -93,6 +96,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handlePathVariableErrors(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -119,6 +123,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleNotExistError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -145,6 +150,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleProcessError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -164,6 +170,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
             // Then
             AysErrorResponse errorResponse = globalExceptionHandler.handleEndpointNotFoundError(mockException);
             this.validateErrorResponse(mockErrorResponse, errorResponse);
+            this.validateConsoleLog(mockException, errorResponse);
         }
     }
 
@@ -191,6 +198,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleForbiddenError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
 
@@ -208,6 +216,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleAccessDeniedError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -224,6 +233,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleSQLError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -248,6 +258,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleAuthError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -264,6 +275,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleHttpRequestMethodNotSupportedException(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -280,6 +292,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleHttpMediaTypeNotSupportedException(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -300,6 +313,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleDataAccessException(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -317,6 +331,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     @Test
@@ -337,9 +352,11 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
     }
 
     private void validateErrorResponse(AysErrorResponse mockErrorResponse, AysErrorResponse errorResponse) {
+
         Assertions.assertNotNull(errorResponse.getTime());
         Assertions.assertNotNull(errorResponse.getCode());
         Assertions.assertEquals(mockErrorResponse.getHeader(), errorResponse.getHeader());
@@ -356,7 +373,20 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
             Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getValue(), errorResponse.getSubErrors().get(0).getValue());
             Assertions.assertEquals(mockErrorResponse.getSubErrors().get(0).getType(), errorResponse.getSubErrors().get(0).getType());
         }
+    }
 
+    private void validateConsoleLog(Exception mockException, AysErrorResponse errorResponse) {
+
+        String logMessagePrefix = "responseCode:" + errorResponse.getCode();
+        Optional<String> errorLog = logTracker.findMessage(Level.ERROR, logMessagePrefix);
+
+        Assertions.assertTrue(errorLog.isPresent());
+        Assertions.assertEquals(logMessagePrefix + " | " + mockException.getMessage(), errorLog.get());
+
+        Optional<String> traceLog = logTracker.findMessage(Level.TRACE, logMessagePrefix);
+
+        Assertions.assertTrue(traceLog.isPresent());
+        Assertions.assertEquals(logMessagePrefix + " | StackTrace:", traceLog.get());
     }
 
 }

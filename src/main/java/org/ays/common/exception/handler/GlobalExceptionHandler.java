@@ -34,175 +34,233 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     AysErrorResponse handleJsonParseErrors(final HttpMessageNotReadableException exception) {
-        log.error(exception.getMessage(), exception);
 
         if (exception.getCause() instanceof InvalidFormatException invalidFormatException) {
-            return AysErrorResponse.subErrors(invalidFormatException)
+
+            final AysErrorResponse errorResponse = AysErrorResponse.subErrors(invalidFormatException)
                     .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                     .build();
+
+            this.logException(exception, errorResponse);
+
+            return errorResponse;
         }
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     AysErrorResponse handleValidationErrors(final MethodArgumentTypeMismatchException exception) {
 
-        log.error(exception.getMessage(), exception);
-
-        return AysErrorResponse.subErrors(exception)
+        final AysErrorResponse errorResponse = AysErrorResponse.subErrors(exception)
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     AysErrorResponse handleValidationErrors(final MethodArgumentNotValidException exception) {
 
-        log.error(exception.getMessage(), exception);
-
-        return AysErrorResponse.subErrors(exception.getBindingResult().getFieldErrors())
+        final AysErrorResponse errorResponse = AysErrorResponse.subErrors(exception.getBindingResult().getFieldErrors())
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     AysErrorResponse handlePathVariableErrors(final ConstraintViolationException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.subErrors(exception.getConstraintViolations())
+        final AysErrorResponse errorResponse = AysErrorResponse.subErrors(exception.getConstraintViolations())
                 .header(AysErrorResponse.Header.VALIDATION_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(AysNotExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     AysErrorResponse handleNotExistError(final AysNotExistException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.NOT_EXIST_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(AysConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     AysErrorResponse handleConflictError(final AysConflictException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.CONFLICT_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(AysProcessException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     AysErrorResponse handleProcessError(final AysProcessException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.PROCESS_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     AysErrorResponse handleProcessError(final Exception exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.PROCESS_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     AysErrorResponse handleEndpointNotFoundError(final NoResourceFoundException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.API_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(AysAuthException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     AysErrorResponse handleAuthError(final AysAuthException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(AysForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     AysErrorResponse handleForbiddenError(final AysForbiddenException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     AysErrorResponse handleAccessDeniedError(final AccessDeniedException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.AUTH_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(SQLException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     AysErrorResponse handleSQLError(final SQLException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     AysErrorResponse handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
-        log.error(exception.getMessage(), exception);
 
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.API_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     AysErrorResponse handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
 
-        log.error(exception.getMessage(), exception);
-
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.API_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
     }
 
     @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     AysErrorResponse handleDataAccessException(DataAccessException exception) {
 
-        log.error(exception.getMessage(), exception);
-
-        return AysErrorResponse.builder()
+        final AysErrorResponse errorResponse = AysErrorResponse.builder()
                 .header(AysErrorResponse.Header.DATABASE_ERROR.getName())
                 .build();
+
+        this.logException(exception, errorResponse);
+
+        return errorResponse;
+    }
+
+
+    private void logException(final Exception exception,
+                              final AysErrorResponse errorResponse) {
+
+        final String responseCode = errorResponse.getCode();
+        log.error("responseCode:{} | {}", responseCode, exception.getMessage());
+        log.trace("responseCode:{} | StackTrace:", responseCode, exception);
     }
 
 }
