@@ -28,7 +28,7 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidAuditLogEntityForPublicEndpoint_whenAuditLogSavedToKinesis_thenDoNothing() {
+    void givenValidAuditLogEntity_whenRequestPathIsPublic_thenSendAuditLogJSONStringToKinesis() {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
@@ -60,7 +60,7 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidAuditLogEntityForPrivateEndpoint_whenAuditLogSavedToKinesis_thenDoNothing() {
+    void givenValidAuditLogEntity_whenRequestPathIsPrivate_thenSendAuditLogJSONStringToKinesis() {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
@@ -97,7 +97,7 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
             "/public/actuator/prometheus"
     })
     @ParameterizedTest
-    void givenValidAuditLogEntity_whenRequestPathIsExcluded_thenDoNothing(String mockRequestPath) {
+    void givenValidAuditLogEntity_whenRequestPathIsExcluded_thenLogMessageToConsole(String mockRequestPath) {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
@@ -129,7 +129,7 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidAuditLogEntity_whenAuditLogIsNotParsableToJson_thenDoNothing() {
+    void givenValidAuditLogEntity_whenAuditLogIsNotParsableToJson_thenLogAuditLogKinesisJSONToConsole() {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
@@ -159,6 +159,5 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
         Mockito.verify(kinesisClient, Mockito.never())
                 .putRecord(Mockito.any(PutRecordRequest.class));
     }
-
 
 }
