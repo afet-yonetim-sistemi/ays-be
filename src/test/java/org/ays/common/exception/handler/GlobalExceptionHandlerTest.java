@@ -50,7 +50,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleValidationErrors(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
 
     }
 
@@ -67,7 +67,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleValidationErrors(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     private @NotNull MethodArgumentNotValidException getMethodArgumentNotValidException() throws NoSuchMethodException {
@@ -92,7 +92,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handlePathVariableErrors(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -118,7 +118,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleNotExistError(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -144,7 +144,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleProcessError(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -163,7 +163,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
             // Then
             AysErrorResponse errorResponse = globalExceptionHandler.handleEndpointNotFoundError(mockException);
-            this.checkAysError(mockErrorResponse, errorResponse);
+            this.validateErrorResponse(mockErrorResponse, errorResponse);
         }
     }
 
@@ -190,7 +190,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleForbiddenError(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
 
@@ -207,7 +207,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleAccessDeniedError(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -223,7 +223,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleSQLError(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -247,7 +247,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleAuthError(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -263,7 +263,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleHttpRequestMethodNotSupportedException(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -279,7 +279,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleHttpMediaTypeNotSupportedException(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -299,7 +299,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleDataAccessException(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -316,7 +316,7 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
     @Test
@@ -336,10 +336,10 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleJsonParseErrors(mockException);
-        this.checkAysError(mockErrorResponse, errorResponse);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
     }
 
-    private void checkAysError(AysErrorResponse mockErrorResponse, AysErrorResponse errorResponse) {
+    private void validateErrorResponse(AysErrorResponse mockErrorResponse, AysErrorResponse errorResponse) {
         Assertions.assertNotNull(errorResponse.getTime());
         Assertions.assertNotNull(errorResponse.getCode());
         Assertions.assertEquals(mockErrorResponse.getHeader(), errorResponse.getHeader());
