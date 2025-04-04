@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import org.ays.AysRestControllerTest;
 import org.ays.common.exception.AysAuthException;
+import org.ays.common.exception.AysConflictException;
 import org.ays.common.exception.AysForbiddenException;
 import org.ays.common.exception.AysNotExistException;
 import org.ays.common.exception.AysProcessException;
@@ -117,6 +118,33 @@ class GlobalExceptionHandlerTest extends AysRestControllerTest {
 
         // Then
         AysErrorResponse errorResponse = globalExceptionHandler.handleNotExistError(mockException);
+        this.validateErrorResponse(mockErrorResponse, errorResponse);
+        this.validateConsoleLog(mockException, errorResponse);
+    }
+
+    @Test
+    void givenUserAlreadyExists_whenThrowAysConflictException_thenReturnErrorResponse() {
+
+        // Given
+        AysConflictException mockException = new AysConflictException("User already exists") {
+
+            @Serial
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public String getMessage() {
+                return "User already exists";
+            }
+        };
+
+        // When
+        AysErrorResponse mockErrorResponse = AysErrorResponse.builder()
+                .header(AysErrorResponse.Header.CONFLICT_ERROR.getName())
+                .message(mockException.getMessage())
+                .build();
+
+        // Then
+        AysErrorResponse errorResponse = globalExceptionHandler.handleConflictError(mockException);
         this.validateErrorResponse(mockErrorResponse, errorResponse);
         this.validateConsoleLog(mockException, errorResponse);
     }
