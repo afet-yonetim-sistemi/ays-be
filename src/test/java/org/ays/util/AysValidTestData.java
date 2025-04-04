@@ -1,6 +1,8 @@
 package org.ays.util;
 
 import lombok.experimental.UtilityClass;
+import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.model.request.AysPhoneNumberRequestBuilder;
 
 @UtilityClass
 public class AysValidTestData {
@@ -19,6 +21,10 @@ public class AysValidTestData {
         public static final String ID = "9ebcd692-fc0b-4f76-9948-3dd246d73758";
         public static final String INSTITUTION_ID = "08cd4b85-bb28-4e4a-a322-fb7b293d97f8";
         public static final String EMAIL_ADDRESS = "kyle.joanne@afetyonetimsistemi.org";
+        public static final AysPhoneNumberRequest PHONE_NUMBER = new AysPhoneNumberRequestBuilder()
+                .withCountryCode("90")
+                .withLineNumber("5054567891")
+                .build();
     }
 
     public static class User {
