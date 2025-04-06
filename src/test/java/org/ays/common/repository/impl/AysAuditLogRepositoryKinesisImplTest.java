@@ -6,6 +6,8 @@ import org.ays.common.model.entity.AysAuditLogEntity;
 import org.ays.common.model.entity.AysAuditLogEntityBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -26,39 +28,7 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
 
 
     @Test
-    void givenValidAuditLogEntityForPublicEndpoint_whenAuditLogSavedToKinesis_thenDoNothing() {
-
-        // Given
-        AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
-                .withId("a8502816-4a1b-403c-9d83-b93b7ce2781a")
-                .withoutUserId()
-                .withRequestIpAddress("127.0.0.1")
-                .withRequestReferer("http://localhost:3000")
-                .withRequestHttpMethod("GET")
-                .withRequestPath("/public/actuator/health")
-                .withRequestHttpHeader("Content-Type: application/json")
-                .withoutRequestBody()
-                .withResponseHttpStatusCode(200)
-                .withResponseBody("{\\\"status\\\":\\\"UP\\\"}")
-                .withRequestedAt(LocalDateTime.now())
-                .withRespondedAt(LocalDateTime.now().plusNanos(2456))
-                .build();
-
-        // When
-        PutRecordResponse mockPutRecordResponse = Mockito.mock(PutRecordResponse.class);
-        Mockito.when(kinesisClient.putRecord(Mockito.any(PutRecordRequest.class)))
-                .thenReturn(mockPutRecordResponse);
-
-        // Then
-        auditLogRepository.save(mockAuditLogEntity);
-
-        // Verify
-        Mockito.verify(kinesisClient, Mockito.times(1))
-                .putRecord(Mockito.any(PutRecordRequest.class));
-    }
-
-    @Test
-    void givenValidAuditLogEntityForPrivateEndpoint_whenAuditLogSavedToKinesis_thenDoNothing() {
+    void givenValidAuditLogEntity_whenRequestPathIsPrivate_thenSendAuditLogJSONStringToKinesis() {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
@@ -89,8 +59,46 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
                 .putRecord(Mockito.any(PutRecordRequest.class));
     }
 
+    @ValueSource(strings = {
+            "/public/actuator",
+            "/public/actuator/info",
+            "/public/actuator/health",
+            "/public/actuator/prometheus"
+    })
+    @ParameterizedTest
+    void givenValidAuditLogEntity_whenRequestPathIsExcluded_thenLogMessageToConsole(String mockRequestPath) {
+
+        // Given
+        AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
+                .withId("a8502816-4a1b-403c-9d83-b93b7ce2781a")
+                .withoutUserId()
+                .withRequestIpAddress("127.0.0.1")
+                .withRequestReferer("http://localhost:3000")
+                .withRequestHttpMethod("GET")
+                .withRequestPath(mockRequestPath)
+                .withRequestHttpHeader("Content-Type: application/json")
+                .withoutRequestBody()
+                .withResponseHttpStatusCode(200)
+                .withRequestedAt(LocalDateTime.now())
+                .withRespondedAt(LocalDateTime.now().plusNanos(2456))
+                .build();
+
+        // Then
+        auditLogRepository.save(mockAuditLogEntity);
+
+        String logMessagePrefix = "Audit log will not be sent to Kinesis because the request path is excluded: ";
+        Optional<String> logMessage = logTracker.findMessage(Level.TRACE, logMessagePrefix);
+        Assertions.assertTrue(logMessage.isPresent());
+        Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
+        Assertions.assertTrue(logMessage.get().endsWith(mockRequestPath));
+
+        // Verify
+        Mockito.verify(kinesisClient, Mockito.never())
+                .putRecord(Mockito.any(PutRecordRequest.class));
+    }
+
     @Test
-    void givenValidAuditLogEntity_whenAuditLogIsNotParsableToJson_thenDoNothing() {
+    void givenValidAuditLogEntity_whenAuditLogIsNotParsableToJson_thenLogAuditLogKinesisJSONToConsole() {
 
         // Given
         AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
@@ -120,6 +128,5 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
         Mockito.verify(kinesisClient, Mockito.never())
                 .putRecord(Mockito.any(PutRecordRequest.class));
     }
-
 
 }

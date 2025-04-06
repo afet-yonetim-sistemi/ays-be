@@ -13,6 +13,8 @@ import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.kinesis.KinesisClient;
 import software.amazon.awssdk.services.kinesis.model.PutRecordRequest;
 
+import java.util.List;
+
 /**
  * Implementation of the {@link AysAuditLogRepository} interface for saving audit log entities to an AWS Kinesis stream.
  * This implementation is active only when the application is running with the "kinesis" profile.
@@ -28,6 +30,11 @@ class AysAuditLogRepositoryKinesisImpl extends AysAbstractAuditLogRepository {
 
     @Value("${aws.kinesis.audit-log.stream-name}")
     private String streamName;
+
+
+    private static final List<String> EXCLUDED_PATH_PREFIXES = List.of(
+            "/public/actuator"
+    );
 
 
     /**
@@ -51,6 +58,13 @@ class AysAuditLogRepositoryKinesisImpl extends AysAbstractAuditLogRepository {
         final String kinesisJsonString = auditLogEntity.toKinesisJsonString();
         if (this.isParseableToJson(kinesisJsonString)) {
             log.warn("Audit log does not parse to Kinesis JSON String: {}", kinesisJsonString);
+            return;
+        }
+
+        final String requestPath = auditLogEntity.getRequestPath();
+        final boolean isRequestPathExcluded = EXCLUDED_PATH_PREFIXES.stream().anyMatch(requestPath::startsWith);
+        if (isRequestPathExcluded) {
+            log.trace("Audit log will not be sent to Kinesis because the request path is excluded: {}", requestPath);
             return;
         }
 
