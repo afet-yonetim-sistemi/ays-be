@@ -25,7 +25,6 @@ import org.ays.common.model.response.AysErrorResponseBuilder;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
-import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
@@ -478,12 +477,12 @@ class AysUserEndToEndTest extends AysEndToEndTest {
         AysUser user = userSavePort.save(
                 new AysUserBuilder()
                         .withValidValues()
+                        .withoutId()
                         .withFirstName("Test")
                         .withLastName("Dene")
                         .withEmailAddress("Test.deneme@afetyonetimsistemi.org")
                         .withCity("İzmir")
                         .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
-                        .withoutId()
                         .withRoles(roles)
                         .withInstitution(institution)
                         .build()
@@ -663,8 +662,8 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         AysUser user = userSavePort.save(
                 new AysUserBuilder()
-                        .withId(AysRandomUtil.generateUUID())
                         .withValidValues()
+                        .withoutId()
                         .withRoles(roles)
                         .withInstitution(institution)
                         .withStatus(AysUserStatus.PASSIVE)
@@ -859,8 +858,8 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         AysUser user = userSavePort.save(
                 new AysUserBuilder()
-                        .withId(AysRandomUtil.generateUUID())
                         .withValidValues()
+                        .withoutId()
                         .withRoles(roles)
                         .withInstitution(institution)
                         .withStatus(AysUserStatus.ACTIVE)

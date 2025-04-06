@@ -23,6 +23,11 @@ public class AysInvalidTokenBuilder extends TestDataBuilder<AysInvalidToken> {
         return this;
     }
 
+    public AysInvalidTokenBuilder withoutId() {
+        data.setId(null);
+        return this;
+    }
+
     public AysInvalidTokenBuilder withTokenId(String tokenId) {
         data.setTokenId(tokenId);
         return this;

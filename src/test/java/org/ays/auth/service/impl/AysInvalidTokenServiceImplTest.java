@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 class AysInvalidTokenServiceImplTest extends AysUnitTest {
 
@@ -30,13 +31,21 @@ class AysInvalidTokenServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidTokenIds_whenTokensInvalid_thenInvalidateTokens() {
+
+        // Initialize
+        Set<AysInvalidToken> mockInvalidTokens = Set.of(
+                new AysInvalidTokenBuilder().withId(1L).withValidValues().build(),
+                new AysInvalidTokenBuilder().withId(2L).withValidValues().build()
+        );
+
         // Given
-        Set<String> mockTokenIds = Set.of(AysRandomUtil.generateUUID(), AysRandomUtil.generateUUID());
+        Set<String> mockTokenIds = mockInvalidTokens.stream()
+                .map(AysInvalidToken::getTokenId)
+                .collect(Collectors.toSet());
 
         // When
-        Mockito.doNothing()
-                .when(invalidTokenSavePort)
-                .saveAll(Mockito.anySet());
+        Mockito.when(invalidTokenSavePort.saveAll(Mockito.anySet()))
+                .thenReturn(mockInvalidTokens);
 
         // Then
         invalidTokenService.invalidateTokens(mockTokenIds);

@@ -5,16 +5,20 @@ import org.ays.auth.model.AysInvalidToken;
 import java.util.Set;
 
 /**
- * A port interface for saving {@link AysInvalidToken} entities.
- * Defines a method to persist multiple {@link AysInvalidToken} instances.
+ * Port interface for saving invalid tokens.
+ * <p>
+ * This interface defines a contract for persisting a set of {@link AysInvalidToken} objects to the underlying storage.
+ * Implementations should handle the batch saving process and return the set of saved invalid tokens.
+ * </p>
  */
 public interface AysInvalidTokenSavePort {
 
     /**
-     * Persists multiple {@link AysInvalidToken} instances.
+     * Persists a set of {@link AysInvalidToken} objects.
      *
-     * @param invalidTokens The set of {@link AysInvalidToken} instances to be saved.
+     * @param invalidTokens the set of invalid tokens to be saved
+     * @return a {@link Set} of {@link AysInvalidToken} objects that have been successfully saved
      */
-    void saveAll(Set<AysInvalidToken> invalidTokens);
+    Set<AysInvalidToken> saveAll(Set<AysInvalidToken> invalidTokens);
 
 }
