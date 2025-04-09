@@ -61,19 +61,22 @@ class InvalidTokenDeletionSchedulerEndToEndTest extends AysEndToEndTest {
         // Initialize
         int refreshTokenExpireDay = Integer
                 .parseInt(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue());
-        Set<AysInvalidToken> mockInvalidTokens = Set.of(
-                new AysInvalidTokenBuilder()
-                        .withValidValues()
-                        .withCreatedUser("AYS")
-                        .withCreatedAt(LocalDateTime.now().minusDays(refreshTokenExpireDay + 1))
-                        .build(),
-                new AysInvalidTokenBuilder()
-                        .withValidValues()
-                        .withCreatedUser("AYS")
-                        .withCreatedAt(LocalDateTime.now().minusDays(refreshTokenExpireDay + 1))
-                        .build()
+        Set<AysInvalidToken> mockInvalidTokens = invalidTokenSavePort.saveAll(
+                Set.of(
+                        new AysInvalidTokenBuilder()
+                                .withValidValues()
+                                .withoutId()
+                                .withCreatedUser("AYS")
+                                .withCreatedAt(LocalDateTime.now().minusDays(refreshTokenExpireDay + 1))
+                                .build(),
+                        new AysInvalidTokenBuilder()
+                                .withValidValues()
+                                .withoutId()
+                                .withCreatedUser("AYS")
+                                .withCreatedAt(LocalDateTime.now().minusDays(refreshTokenExpireDay + 1))
+                                .build()
+                )
         );
-        invalidTokenSavePort.saveAll(mockInvalidTokens);
 
         // Then
         Awaitility

@@ -357,7 +357,7 @@ class AysUserAdapterTest extends AysUnitTest {
         // Given
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withId(null)
+                .withoutId()
                 .build();
 
         // When
@@ -388,7 +388,7 @@ class AysUserAdapterTest extends AysUnitTest {
         // Given
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withId(null)
+                .withoutId()
                 .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
                 .build();
 
@@ -420,7 +420,7 @@ class AysUserAdapterTest extends AysUnitTest {
         // Given
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withId(null)
+                .withoutId()
                 .withLoginAttempt(new AysUserBuilder.LoginAttemptBuilder().withValidValues().build())
                 .build();
 

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Adapter class that implements read, save, and delete ports for handling {@link AysInvalidToken} entities.
@@ -46,15 +47,20 @@ class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidToken
     }
 
     /**
-     * Saves a set of {@link AysInvalidToken} entities to the database.
+     * Persists a set of invalid tokens by mapping domain objects to entities, saving them in batch,
+     * and then mapping the saved entities back to domain objects.
      *
-     * @param invalidTokens The set of {@link AysInvalidToken} entities to save.
+     * @param invalidTokens the set of invalid tokens to be saved
+     * @return a set of {@link AysInvalidToken} objects that have been successfully saved
      */
     @Override
     @Transactional
-    public void saveAll(final Set<AysInvalidToken> invalidTokens) {
-        final List<AysInvalidTokenEntity> invalidTokenEntities = invalidTokenToEntityMapper.map(invalidTokens);
-        invalidTokenRepository.saveAll(invalidTokenEntities);
+    public Set<AysInvalidToken> saveAll(final Set<AysInvalidToken> invalidTokens) {
+        final List<AysInvalidTokenEntity> invalidTokenEntitiesToBeSave = invalidTokenToEntityMapper.map(invalidTokens);
+        final List<AysInvalidTokenEntity> invalidTokenEntities = invalidTokenRepository.saveAll(invalidTokenEntitiesToBeSave);
+        return invalidTokenEntities.stream()
+                .map(invalidTokenEntityToDomainMapper::map)
+                .collect(Collectors.toSet());
     }
 
     /**

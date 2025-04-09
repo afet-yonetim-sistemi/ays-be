@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.7</version>
+        <version>3.4.4</version>
         <relativePath/>
     </parent>
 
@@ -24,30 +24,30 @@
         <java.version>17</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.version>3.13.0</maven.compiler.version>
+        <maven.compiler.version>3.14.0</maven.compiler.version>
         <maven-compiler-plugin.version>${maven.compiler.version}</maven-compiler-plugin.version>
-        <mysql.version>8.4.0</mysql.version>
-        <awsjavasdk.version>2.28.29</awsjavasdk.version>
+        <mysql.version>9.2.0</mysql.version>
+        <awssdk.version>2.31.16</awssdk.version>
 
         <ays-be-encryption-utility.version>1.0.2</ays-be-encryption-utility.version>
-        <libphonenumber.version>8.13.52</libphonenumber.version>
-        <testcontainers.version>1.20.4</testcontainers.version>
+        <libphonenumber.version>8.13.55</libphonenumber.version>
+        <testcontainers.version>1.20.6</testcontainers.version>
         <liquibase.version>4.30.0</liquibase.version>
         <easy-random-core.version>5.0.0</easy-random-core.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jsonwebtoken.version>0.12.6</jsonwebtoken.version>
-        <bouncycastle.version>1.79</bouncycastle.version>
+        <bouncycastle.version>1.80</bouncycastle.version>
 
         <bucket4j-core.version>8.10.1</bucket4j-core.version>
-        <guava.version>33.4.0-jre</guava.version>
+        <guava.version>33.4.6-jre</guava.version>
 
         <objenesis.version>3.4</objenesis.version>
         <commons-text.version>1.13.0</commons-text.version>
-        <logback.version>1.5.16</logback.version>
+        <logback.version>1.5.18</logback.version>
         <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
 
-        <jacoco.version>0.8.12</jacoco.version>
+        <jacoco.version>0.8.13</jacoco.version>
     </properties>
 
     <dependencies>
@@ -208,7 +208,6 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>kinesis</artifactId>
-            <version>${awsjavasdk.version}</version>
         </dependency>
         <!-- ===================== -->
         <!-- database dependencies -->
@@ -322,7 +321,7 @@
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
-                <version>${awsjavasdk.version}</version>
+                <version>${awssdk.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
