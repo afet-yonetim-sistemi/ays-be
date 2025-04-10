@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="3-ays-ddl" author="ays">
+        <!-- ====================== -->
+        <!-- DDL of AYS_INSTITUTION -->
+        <!-- ====================== -->
+        <dropIndex
+                tableName="AYS_INSTITUTION"
+                indexName="NAME"
+        />
+        <createIndex
+                tableName="AYS_INSTITUTION"
+                indexName="UI__AYS_INSTITUTION__NAME"
+                unique="true"
+        >
+            <column name="NAME"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_INSTITUTION"
+                indexName="I__AYS_INSTITUTION__STATUS"
+        >
+            <column name="STATUS"/>
+        </createIndex>
+        <!-- ====================== -->
+        <!-- DDL of AYS_INSTITUTION -->
+        <!-- ====================== -->
+
+
+        <!-- ==================== -->
+        <!-- DDL of AYS_PARAMETER -->
+        <!-- ==================== -->
+        <dropIndex
+                tableName="AYS_PARAMETER"
+                indexName="U__AYS_PARAMETER__NAME"
+        />
+        <createIndex
+                tableName="AYS_PARAMETER"
+                indexName="UI__AYS_PARAMETER__NAME"
+                unique="true"
+        >
+            <column name="NAME"/>
+        </createIndex>
+        <!-- ==================== -->
+        <!-- DDL of AYS_PARAMETER -->
+        <!-- ==================== -->
+
+
+        <!-- ======================== -->
+        <!-- DDL of AYS_INVALID_TOKEN -->
+        <!-- ======================== -->
+        <dropIndex
+                tableName="AYS_INVALID_TOKEN"
+                indexName="TOKEN_ID"
+        />
+        <createIndex
+                tableName="AYS_INVALID_TOKEN"
+                indexName="UI__AYS_INVALID_TOKEN__TOKEN_ID"
+                unique="true"
+        >
+            <column name="TOKEN_ID"/>
+        </createIndex>
+        <!-- ======================== -->
+        <!-- DDL of AYS_INVALID_TOKEN -->
+        <!-- ======================== -->
+
+
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__INSTITUTION_ID"
+        >
+            <column name="INSTITUTION_ID"/>
+        </createIndex>
+
+        <dropIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="REFERENCE_NUMBER"
+        />
+
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__SOURCE_CITY"
+        >
+            <column name="SOURCE_CITY"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__SOURCE_DISTRICT"
+        >
+            <column name="SOURCE_DISTRICT"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__SEATING_COUNT"
+        >
+            <column name="SEATING_COUNT"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__TARGET_CITY"
+        >
+            <column name="TARGET_CITY"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__TARGET_DISTRICT"
+        >
+            <column name="TARGET_DISTRICT"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__STATUS"
+        >
+            <column name="STATUS"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__IS_IN_PERSON"
+        >
+            <column name="IS_IN_PERSON"/>
+        </createIndex>
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+
+
+        <!-- ===================== -->
+        <!-- DDL of AYS_PERMISSION -->
+        <!-- ===================== -->
+        <dropIndex
+                tableName="AYS_PERMISSION"
+                indexName="U__AYS_PERMISSION__NAME"
+        />
+        <createIndex
+                tableName="AYS_PERMISSION"
+                indexName="UI__AYS_PERMISSION__NAME"
+                unique="true"
+        >
+            <column name="NAME"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_PERMISSION"
+                indexName="I__AYS_PERMISSION__IS_SUPER"
+        >
+            <column name="IS_SUPER"/>
+        </createIndex>
+        <!-- ===================== -->
+        <!-- DDL of AYS_PERMISSION -->
+        <!-- ===================== -->
+
+
+        <!-- =============== -->
+        <!-- DDL of AYS_ROLE -->
+        <!-- =============== -->
+        <createIndex
+                tableName="AYS_ROLE"
+                indexName="UI__AYS_ROLE__INSTITUTION_ID__NAME"
+                unique="true"
+        >
+            <column name="INSTITUTION_ID"/>
+            <column name="NAME"/>
+        </createIndex>
+        <dropIndex tableName="AYS_ROLE" indexName="U__AYS_ROLE__INSTITUTION_ID__NAME"/>
+
+        <createIndex
+                tableName="AYS_ROLE"
+                indexName="I__AYS_ROLE__INSTITUTION_ID__STATUS"
+        >
+            <column name="INSTITUTION_ID"/>
+            <column name="STATUS"/>
+        </createIndex>
+        <!-- =============== -->
+        <!-- DDL of AYS_ROLE -->
+        <!-- =============== -->
+
+
+        <!-- =================================== -->
+        <!-- DDL of AYS_ROLE_PERMISSION_RELATION -->
+        <!-- =================================== -->
+        <createIndex
+                tableName="AYS_ROLE_PERMISSION_RELATION"
+                indexName="I__AYS_ROLE_PERMISSION_RELATION__ROLE_ID"
+        >
+            <column name="ROLE_ID"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_ROLE_PERMISSION_RELATION"
+                indexName="I__AYS_ROLE_PERMISSION_RELATION__PERMISSION_ID"
+        >
+            <column name="PERMISSION_ID"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_ROLE_PERMISSION_RELATION"
+                indexName="UI__AYS_ROLE_PERMISSION_RELATION__ROLE_ID"
+                unique="true"
+        >
+            <column name="ROLE_ID"/>
+            <column name="PERMISSION_ID"/>
+        </createIndex>
+        <!-- =================================== -->
+        <!-- DDL of AYS_ROLE_PERMISSION_RELATION -->
+        <!-- =================================== -->
+
+
+        <!-- =============== -->
+        <!-- DDL of AYS_USER -->
+        <!-- =============== -->
+        <createIndex
+                tableName="AYS_USER"
+                indexName="I__AYS_USER__INSTITUTION_ID"
+        >
+            <column name="INSTITUTION_ID"/>
+        </createIndex>
+
+        <dropIndex tableName="AYS_USER" indexName="U__AYS_USER__EMAIL"/>
+        <createIndex
+                tableName="AYS_USER"
+                indexName="UI__AYS_USER__EMAIL_ADDRESS"
+                unique="true"
+        >
+            <column name="EMAIL_ADDRESS"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_USER"
+                indexName="I__AYS_USER__FIRST_NAME"
+        >
+            <column name="FIRST_NAME"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_USER"
+                indexName="I__AYS_USER__LAST_NAME"
+        >
+            <column name="LAST_NAME"/>
+        </createIndex>
+
+        <dropIndex tableName="AYS_USER" indexName="U__AYS_USER__COUNTRY_CODE__LINE_NUMBER"/>
+        <createIndex
+                tableName="AYS_USER"
+                indexName="UI__AYS_USER__COUNTRY_CODE__LINE_NUMBER"
+                unique="true"
+        >
+            <column name="COUNTRY_CODE"/>
+            <column name="LINE_NUMBER"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_USER"
+                indexName="I__AYS_USER__CITY"
+        >
+            <column name="CITY"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_USER"
+                indexName="I__AYS_USER__STATUS"
+        >
+            <column name="STATUS"/>
+        </createIndex>
+        <!-- =============== -->
+        <!-- DDL of AYS_USER -->
+        <!-- =============== -->
+
+
+        <!-- ======================== -->
+        <!-- DDL of AYS_USER_PASSWORD -->
+        <!-- ======================== -->
+        <createIndex
+                tableName="AYS_USER_PASSWORD"
+                indexName="UI__AYS_USER_PASSWORD__USER_ID"
+                unique="true"
+        >
+            <column name="USER_ID"/>
+        </createIndex>
+        <dropIndex
+                tableName="AYS_USER_PASSWORD"
+                indexName="USER_ID"
+        />
+        <!-- ======================== -->
+        <!-- DDL of AYS_USER_PASSWORD -->
+        <!-- ======================== -->
+
+
+        <!-- ============================= -->
+        <!-- DDL of AYS_USER_LOGIN_ATTEMPT -->
+        <!-- ============================= -->
+        <createIndex
+                tableName="AYS_USER_LOGIN_ATTEMPT"
+                indexName="UI__AYS_USER_LOGIN_ATTEMPT__USER_ID"
+                unique="true"
+        >
+            <column name="USER_ID"/>
+        </createIndex>
+        <!-- ============================= -->
+        <!-- DDL of AYS_USER_LOGIN_ATTEMPT -->
+        <!-- ============================= -->
+
+
+        <!-- ============================= -->
+        <!-- DDL of AYS_USER_ROLE_RELATION -->
+        <!-- ============================= -->
+        <createIndex
+                tableName="AYS_USER_ROLE_RELATION"
+                indexName="I__AYS_USER_ROLE_RELATION__USER_ID"
+        >
+            <column name="USER_ID"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_USER_ROLE_RELATION"
+                indexName="I__AYS_USER_ROLE_RELATION__ROLE_ID"
+        >
+            <column name="ROLE_ID"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_USER_ROLE_RELATION"
+                indexName="UI__AYS_USER_ROLE_RELATION__USER_ID"
+                unique="true"
+        >
+            <column name="USER_ID"/>
+            <column name="ROLE_ID"/>
+        </createIndex>
+        <!-- ============================= -->
+        <!-- DDL of AYS_USER_ROLE_RELATION -->
+        <!-- ============================= -->
+
+
+        <!-- ========================================= -->
+        <!-- DDL of AYS_ADMIN_REGISTRATION_APPLICATION -->
+        <!-- ========================================= -->
+        <createIndex
+                tableName="AYS_ADMIN_REGISTRATION_APPLICATION"
+                indexName="I__AYS_ADMIN_REGISTRATION_APPLICATION__INSTITUTION_ID"
+        >
+            <column name="INSTITUTION_ID"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_ADMIN_REGISTRATION_APPLICATION"
+                indexName="UI__AYS_ADMIN_REGISTRATION_APPLICATION__USER_ID"
+                unique="true"
+        >
+            <column name="USER_ID"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_ADMIN_REGISTRATION_APPLICATION"
+                indexName="I__AYS_ADMIN_REGISTRATION_APPLICATION__STATUS"
+        >
+            <column name="STATUS"/>
+        </createIndex>
+        <!-- ========================================= -->
+        <!-- DDL of AYS_ADMIN_REGISTRATION_APPLICATION -->
+        <!-- ========================================= -->
+    </changeSet>
+
+</databaseChangeLog>
