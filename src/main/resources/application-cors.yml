@@ -1,0 +1,6 @@
+management:
+  endpoints:
+    web:
+      cors:
+        allowed-origins: ${AYS_CORS_ALLOWED_ORIGINS:http://localhost:3000}
+        allowed-headers: ${AYS_CORS_ALLOWED_HEADERS:Authorization,Content-Type}
