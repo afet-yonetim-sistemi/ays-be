@@ -28,7 +28,7 @@ abstract class AysAbstractAuditLogRepository implements AysAuditLogRepository {
      */
     @Override
     public void save(final AysAuditLogEntity auditLogEntity) {
-        log.debug("Audit log saved: {}", auditLogEntity.toJsonString());
+        log.info("Audit log saved: {}", auditLogEntity.toJsonString());
     }
 
 }
