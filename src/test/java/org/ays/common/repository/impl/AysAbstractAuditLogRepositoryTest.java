@@ -49,21 +49,7 @@ class AysAbstractAuditLogRepositoryTest extends AysUnitTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    String logMessagePrefix = "Audit log saved: ";
-                    Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, logMessagePrefix);
-                    Assertions.assertTrue(logMessage.isPresent());
-                    Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
-                    Assertions.assertTrue(logMessage.get().contains("\"id\":\"" + mockAuditLogEntity.getId() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"userId\":\"\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestReferer\":\"" + mockAuditLogEntity.getRequestReferer() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestHttpMethod\":\"" + mockAuditLogEntity.getRequestHttpMethod() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestPath\":\"" + mockAuditLogEntity.getRequestPath() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestBody\":\"\""));
-                    Assertions.assertTrue(logMessage.get().contains("\"responseHttpStatusCode\":" + mockAuditLogEntity.getResponseHttpStatusCode() + ","));
-                    Assertions.assertTrue(logMessage.get().contains("\"responseBody\":\"" + mockAuditLogEntity.getResponseBody() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestedAt\":\"" + mockAuditLogEntity.getRequestedAt() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"respondedAt\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
+                    this.validateLastLogMessage(mockAuditLogEntity);
                 });
     }
 
@@ -94,22 +80,26 @@ class AysAbstractAuditLogRepositoryTest extends AysUnitTest {
                 .atMost(1, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
-                    String logMessagePrefix = "Audit log saved: ";
-                    Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, logMessagePrefix);
-                    Assertions.assertTrue(logMessage.isPresent());
-                    Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
-                    Assertions.assertTrue(logMessage.get().contains("\"id\":\"" + mockAuditLogEntity.getId() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"userId\":\"" + mockAuditLogEntity.getUserId() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestReferer\":\"" + mockAuditLogEntity.getRequestReferer() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestHttpMethod\":\"" + mockAuditLogEntity.getRequestHttpMethod() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestPath\":\"" + mockAuditLogEntity.getRequestPath() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestBody\":\"" + mockAuditLogEntity.getRequestBody() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"responseHttpStatusCode\":" + mockAuditLogEntity.getResponseHttpStatusCode() + ","));
-                    Assertions.assertTrue(logMessage.get().contains("\"responseBody\":\"" + mockAuditLogEntity.getResponseBody() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"requestedAt\":\"" + mockAuditLogEntity.getRequestedAt() + "\","));
-                    Assertions.assertTrue(logMessage.get().contains("\"respondedAt\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
+                    this.validateLastLogMessage(mockAuditLogEntity);
                 });
+    }
+
+    private void validateLastLogMessage(AysAuditLogEntity mockAuditLogEntity) {
+        String logMessagePrefix = "Audit log saved: ";
+        Optional<String> logMessage = logTracker.findMessage(Level.INFO, logMessagePrefix);
+        Assertions.assertTrue(logMessage.isPresent());
+        Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
+        Assertions.assertTrue(logMessage.get().contains("\"id\":\"" + mockAuditLogEntity.getId() + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"userId\":\"" + Optional.ofNullable(mockAuditLogEntity.getUserId()).orElse("") + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"requestIpAddress\":\"" + mockAuditLogEntity.getRequestIpAddress() + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"requestReferer\":\"" + mockAuditLogEntity.getRequestReferer() + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"requestHttpMethod\":\"" + mockAuditLogEntity.getRequestHttpMethod() + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"requestPath\":\"" + Optional.ofNullable(mockAuditLogEntity.getRequestPath()).orElse("") + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"requestBody\":\"" + Optional.ofNullable(mockAuditLogEntity.getRequestBody()).orElse("") + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"responseHttpStatusCode\":" + mockAuditLogEntity.getResponseHttpStatusCode() + ","));
+        Assertions.assertTrue(logMessage.get().contains("\"responseBody\":\"" + mockAuditLogEntity.getResponseBody() + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"requestedAt\":\"" + mockAuditLogEntity.getRequestedAt() + "\","));
+        Assertions.assertTrue(logMessage.get().contains("\"respondedAt\":\"" + mockAuditLogEntity.getRespondedAt() + "\""));
     }
 
 }

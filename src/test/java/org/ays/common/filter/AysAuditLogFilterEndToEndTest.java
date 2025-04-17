@@ -126,7 +126,7 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
 
     private void validateLastLogMessage(String userId, String endpoint, HttpStatus httpStatus) {
         String logMessagePrefix = "Audit log saved: ";
-        Optional<String> logMessage = logTracker.findMessage(Level.DEBUG, logMessagePrefix);
+        Optional<String> logMessage = logTracker.findMessage(Level.INFO, logMessagePrefix);
         Assertions.assertTrue(logMessage.isPresent());
         Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
         Assertions.assertTrue(logMessage.get().contains("\"id\":\""));
