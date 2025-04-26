@@ -8,6 +8,7 @@ import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.common.model.response.AysResponse;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -26,7 +27,7 @@ class AysPermissionEndToEndTest extends AysEndToEndTest {
     private static final String BASE_PATH = "/api/v1";
 
     @Test
-    void whenPermissionsFoundIfUserIsSuperAdmin_thenReturnPermissionsWithSuperPermissions() throws Exception {
+    void whenPermissionsFoundIfUserIsSuperAdmin_thenReturnPermissionsWithSuperPermissionsWithoutLandingPagePermission() throws Exception {
 
         // Initialize
         List<AysPermission> permissions = permissionReadPort.findAll();
@@ -46,11 +47,13 @@ class AysPermissionEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.response("size()")
-                        .value(response.getResponse().size()));
+                        .value(response.getResponse().size() - 1))
+                .andExpect(AysMockResultMatchersBuilders.responses("name")
+                        .value(Matchers.not("landing:page")));
     }
 
     @Test
-    void whenPermissionsFound_thenReturnPermissions() throws Exception {
+    void whenPermissionsFound_thenReturnPermissionsWithoutLandingPagePermission() throws Exception {
 
         // Initialize
         List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
@@ -70,7 +73,9 @@ class AysPermissionEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.response("size()")
-                        .value(response.getResponse().size()));
+                        .value(response.getResponse().size() - 1))
+                .andExpect(AysMockResultMatchersBuilders.responses("name")
+                        .value(Matchers.not("landing:page")));
     }
 
 }

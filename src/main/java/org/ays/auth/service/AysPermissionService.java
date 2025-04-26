@@ -11,9 +11,13 @@ import java.util.List;
 public interface AysPermissionService {
 
     /**
-     * Retrieves all permissions.
+     * Retrieves all available permissions from the system.
+     * <p>
+     * This method returns a complete list of {@link AysPermission} entities
+     * without applying any filters such as role or permission type.
+     * </p>
      *
-     * @return A list of {@link AysPermission} objects representing all permissions in the system.
+     * @return a list of {@link AysPermission} objects representing all permissions
      */
     List<AysPermission> findAll();
 

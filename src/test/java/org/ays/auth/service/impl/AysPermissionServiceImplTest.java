@@ -26,7 +26,7 @@ class AysPermissionServiceImplTest extends AysUnitTest {
 
 
     @Test
-    void whenPermissionsFoundIfUserIsSuperAdmin_thenReturnPermissionsWithSuperPermissions() {
+    void whenPermissionsFoundIfUserIsSuperAdmin_thenReturnAllPermissionsWithoutLandingPagePermission() {
 
         // When
         Mockito.when(identity.isSuperAdmin())
@@ -38,7 +38,8 @@ class AysPermissionServiceImplTest extends AysUnitTest {
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build(),
-                new AysPermissionBuilder().withValidValues().build()
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().withName("landing:page").build()
         );
         Mockito.when(permissionReadPort.findAll())
                 .thenReturn(mockPermissions);
@@ -46,7 +47,7 @@ class AysPermissionServiceImplTest extends AysUnitTest {
         // Then
         List<AysPermission> permissions = permissionService.findAll();
 
-        Assertions.assertEquals(mockPermissions.size(), permissions.size());
+        Assertions.assertEquals(mockPermissions.size() - 1, permissions.size());
 
         // Verify
         Mockito.verify(identity, Mockito.times(1))
@@ -57,7 +58,7 @@ class AysPermissionServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void whenPermissionsFound_thenReturnPermissions() {
+    void whenPermissionsFound_thenReturnPermissionsWithoutLandingPagePermission() {
 
         // When
         Mockito.when(identity.isSuperAdmin())
@@ -69,7 +70,8 @@ class AysPermissionServiceImplTest extends AysUnitTest {
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build(),
                 new AysPermissionBuilder().withValidValues().build(),
-                new AysPermissionBuilder().withValidValues().build()
+                new AysPermissionBuilder().withValidValues().build(),
+                new AysPermissionBuilder().withValidValues().withName("landing:page").build()
         );
         Mockito.when(permissionReadPort.findAllByIsSuperFalse())
                 .thenReturn(mockPermissions);
@@ -77,7 +79,7 @@ class AysPermissionServiceImplTest extends AysUnitTest {
         // Then
         List<AysPermission> permissions = permissionService.findAll();
 
-        Assertions.assertEquals(mockPermissions.size(), permissions.size());
+        Assertions.assertEquals(mockPermissions.size() - 1, permissions.size());
 
         // Verify
         Mockito.verify(identity, Mockito.times(1))
