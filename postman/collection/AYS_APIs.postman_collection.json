@@ -21,7 +21,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/public/actuato",
+								"url": "{{API_URL}}/public/actuator",
 								"description": "- Bu endpoint uygulamanın gözlemlenebileceği uç noktaları almak için kullanılır.\n- Bu endpointe herkes ulaşabilir."
 							},
 							"response": []
