@@ -1,0 +1,3752 @@
+{
+	"info": {
+		"_postman_id": "0c1edc26-2478-4910-8a80-c11e851d1fb6",
+		"name": "AYS APIs",
+		"description": "⛰️ **AYS APIs**, bir kuruma bağlı olan gönüllü kişilerin afet bölgesine kişi ve/veya alet edevat taşıma sürecinin gerçekleştirilmesi ve bu süreçte kişilerin güvenliğinin sağlanması, kurumun koordinasyonunun sağlanması, doğru envanterin doğru konuma gönderilmesi için kullanılacak olan servislerin bulunur.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public APIs",
+			"item": [
+				{
+					"name": "Actuator Service",
+					"item": [
+						{
+							"name": "actuator",
+							"id": "79491396-078d-4019-84af-10dfe10b4fe6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/public/actuator",
+								"description": "- Bu endpoint uygulamanın gözlemlenebileceği uç noktaları almak için kullanılır.\n- Bu endpointe herkes ulaşabilir."
+							},
+							"response": []
+						},
+						{
+							"name": "actuator/health",
+							"id": "bd256c17-a2a6-432a-957b-5e3320b2d80b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/public/actuator/health",
+								"description": "- Bu endpoint uygulamanın çalışırlığını kontrol etmek için kullanılır.\n- Bu endpointe herkes ulaşabilir."
+							},
+							"response": []
+						},
+						{
+							"name": "actuator/info",
+							"id": "88772bd7-b915-42ea-b078-ab0d7bc218b0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/public/actuator/info",
+								"description": "- Bu endpoint uygulamanın (versiyon, isim vb.) bilgilerini almak için kullanılır.\n    \n- Bu endpointe herkes ulaşabilir."
+							},
+							"response": []
+						}
+					],
+					"id": "68379234-0cea-4ef1-8339-cd05cdd4887e",
+					"description": "Afet Yönetim Sistemi ile ilgili detaylı bilgilere ve sağlığının gözlenebileceği bölümdür."
+				},
+				{
+					"name": "Authentication Management Service",
+					"item": [
+						{
+							"name": "authentication/token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7c545d5a-c942-4e95-bd44-fc68de3a14c7",
+										"exec": [
+											"var result = pm.response.json();",
+											"",
+											"if (result.isSuccess === true) {",
+											"    pm.environment.set(\"ACCESS_TOKEN\", result.response.accessToken)",
+											"    pm.environment.set(\"REFRESH_TOKEN\", result.response.refreshToken)",
+											"    return",
+											"}",
+											"",
+											"pm.environment.unset(\"ACCESS_TOKEN\")",
+											"console.log(result)",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d78540f4-eb58-460e-833a-0f327eb5d30d",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "17ec2d32-ec00-4d25-b1cb-4cb03ce3bda7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"emailAddress\": \"{{EMAIL_ADDRESS}}\",\n\t\"password\": \"{{PASSWORD}}\",\n\t\"sourcePage\": \"{{SOURCE_PAGE}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/authentication/token",
+								"description": "- Bu servis Landing veya Institution için kullanıcı giriş işlemlerini gerçekleştirmek için kullanılır.\n    \n- Bilgilerin doğru olması durumunda kullanıcıya ait erişim token'ı ve bu token'ı yenilemek için farklı bir token daha oluşturulur ve dönülür.\n    \n- Bu servise herkes ulaşabilir.\n    \n- Landing sayfasından giriş yapmak isteyen kullanıcıların `landing:page` yetkisine sahip olması gerekmektedir.\n    \n- Institution sayfasından giriş yapmak isteyen kullanıcıların `insititution:page` yetkisine sahip olması gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress` : Kullanıcıya Ait Email Adresi Bilgisi\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `password` : Kullanıcıya Ait Şifre Bilgisi\n    \n    - [Şifre Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/165871617/ifre+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `sourcePage` : Giriş Yapılmak İstenen Kaynak Sayfası\n    \n    - `LANDING` veya `INSTITUTION` değerlerinden birini alabilir."
+							},
+							"response": [
+								{
+									"id": "f759da93-1c46-42e6-87d5-31d2bd32b756",
+									"name": "Valid User",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"emailAddress\": \"diego.ruiz@afetyonetimsistemi.org\",\n    \"password\": \"A123y456S.\",\n    \"sourcePage\": \"LANDING\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/authentication/token"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate"
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache"
+										},
+										{
+											"key": "Expires",
+											"value": "0"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "2045"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 17 Dec 2024 13:32:49 GMT"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-12-17T13:32:49.009858079\",\n    \"code\": \"becc263c-e587-4ddf-adcf-695dd4d3f487\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"accessToken\": \"eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJBWVMiLCJpYXQiOjE3MzQ0NDIzNjgsImp0aSI6Ijg4ZGUwNGYzLTEwNzItNDI2OC1iODRkLTY3MzgwZWI2YTE3NiIsImV4cCI6MTczNDQ0OTU2OCwiaW5zdGl0dXRpb25JZCI6IjA4Y2Q0Yjg1LWJiMjgtNGU0YS1hMzIyLWZiN2IyOTNkOTdmOCIsImluc3RpdHV0aW9uTmFtZSI6IlZvbHVudGVlciBGb3VuZGF0aW9uIiwidXNlcklkIjoiY2YxNTg3ZmQtZjgwMC00MmYyLWFjNmUtYmQ3YjFjNGQ5OTNkIiwidXNlckZpcnN0TmFtZSI6IkRpZWdvIiwidXNlckxhc3ROYW1lIjoiUnVpeiIsInVzZXJFbWFpbEFkZHJlc3MiOiJkaWVnby5ydWl6QGFmZXR5b25ldGltc2lzdGVtaS5vcmciLCJ1c2VyUGVybWlzc2lvbnMiOlsibGFuZGluZzpwYWdlIl0sInVzZXJMYXN0TG9naW5BdCI6IjIwMjQtMTItMTdUMTM6MzI6NDguMzc0OTg1NTA1In0.GENnqXFy24Kcfnw40MuxbTVhenQILKWMpv3aX5GdXXfPyWhr4WXhFG_nLvVJg6SoBcaZnMtp_kCn2elgLvmsToxYvLe3CGgfbqOP6kXYnM34Sfoc4aElfr4l7546vFMz-vT1p4etV_2DwFsBXLTBoYBynWtVJGIsWIOpfsjmlk-tF1BK86FlscdVy1mwuAegW_IdhispvXFoN0H1VC03SIo9_9O1i5tp1Lk7i5yKCcFhs9VMQyiLNp76GzIIoA3lOPQxCP9dIQ-yGY_mACuGSHVCuOuC4wTZu7A1kjgQWKfUDjlypRf0VBhauvnreGbYAvyqhNke9SRmEqnExqSBbg\",\n        \"refreshToken\": \"eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJBWVMiLCJpYXQiOjE3MzQ0NDIzNjgsImp0aSI6ImZiNTQ3NTgzLTNlNTEtNDcwNy1hY2NjLTY0MDUwZTE2OTBjMyIsImV4cCI6MTczNDUyODc2OCwiaW5zdGl0dXRpb25JZCI6IjA4Y2Q0Yjg1LWJiMjgtNGU0YS1hMzIyLWZiN2IyOTNkOTdmOCIsImluc3RpdHV0aW9uTmFtZSI6IlZvbHVudGVlciBGb3VuZGF0aW9uIiwidXNlcklkIjoiY2YxNTg3ZmQtZjgwMC00MmYyLWFjNmUtYmQ3YjFjNGQ5OTNkIiwidXNlckZpcnN0TmFtZSI6IkRpZWdvIiwidXNlckxhc3ROYW1lIjoiUnVpeiIsInVzZXJFbWFpbEFkZHJlc3MiOiJkaWVnby5ydWl6QGFmZXR5b25ldGltc2lzdGVtaS5vcmciLCJ1c2VyUGVybWlzc2lvbnMiOlsibGFuZGluZzpwYWdlIl0sInVzZXJMYXN0TG9naW5BdCI6IjIwMjQtMTItMTdUMTM6MzI6NDguMzc0OTg1NTA1In0.BYI5IgZE-0SAFyi8nRwawGNWbShlcFnEAqO5Vb8ToyGC-YMJI9ZiJY8UlAzyOO4BCxFrWZaBtKz_4QefHHmPhQMVMDqWlNpEJwjq-E16IAmE_McOaOY_8Q-7qtjhhrcedRXmz0cqGDQrrTlUnIlT2IUaeVyJpJDHwELy-_WPVfLK5NjRUychc5_kjcIQ9WjEUBaej-RtAlVJNWhuAyeMkARcptEb0Ncb9eN1wDya_tA5osSWD3oQC4u7srd1B1uH-QE9KtSZfBEB79l9tyHiD-noiwBN3JW6iuRB5cdNA1SJCon1_wDQGfinYQ2ks6GOOjWJ_ceJ5qEVdFtzeoX3iw\"\n    }\n}"
+								},
+								{
+									"id": "21202866-caf5-4232-a824-497695a8025b",
+									"name": "Invalid User",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"emailAddress\": \"jane.rock@afetyonetimsistemi.org\",\n    \"password\": \"123456\",\n    \"sourcePage\": \"INSTITUTION\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/authentication/token"
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate"
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache"
+										},
+										{
+											"key": "Expires",
+											"value": "0"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "126"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 17 Dec 2024 13:33:19 GMT"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-12-17T13:33:19.880758334\",\n    \"code\": \"da26c2eb-6f26-478e-b7cf-e0634114a327\",\n    \"header\": \"AUTH ERROR\",\n    \"isSuccess\": false\n}"
+								}
+							]
+						},
+						{
+							"name": "authentication/token/refresh",
+							"id": "b55c90ef-a33d-4737-8d10-ff5e45261286",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/authentication/token/refresh",
+								"description": "- Bu servis kullanıcı erişim token'ını güncellemek için kullanılır.\n    \n- İlgili servise yenileme token'ı gönderilir. Token'ın doğru olması durumunda kullanıcıya ait yeni bir erişim token'ı ve bu token'ı yenilemek için var olan yenileme token'ı dönülür.\n    \n- Bu servise herkes ulaşabilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `refreshToken` : Kullanıcıya Ait Yenileme Token'ı Bilgisi"
+							},
+							"response": []
+						},
+						{
+							"name": "authentication/token/invalidate",
+							"id": "1d568082-f815-4d0d-8db6-d45be8cfdd06",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{ACCESS_TOKEN}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/authentication/token/invalidate",
+								"description": "- Bu servis kullanıcı çıkış işlemlerini yapmak için kullanılır.\n    \n- İlgili servise erişim token'ı ve yenileme token'ı gönderilir. Token'ların doğru olması durumunda iki token da geçersiz hâle getirilir ve bir daha kullanılamaz.\n    \n- Bu servise herkes ulaşabilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `accessToken` : Kullanıcıya Ait Erişim Token'ı Bilgisi\n    \n    - Authorization headerında gönderilmelidir.\n        \n- `refreshToken` : Kullanıcıya Ait Yenileme Token'ı Bilgisi"
+							},
+							"response": []
+						},
+						{
+							"name": "authentication/password/forgot",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7c545d5a-c942-4e95-bd44-fc68de3a14c7",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "1db01c6d-8645-4b34-b002-1f3f8a04f5b9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"emailAddress\": \"test@afetyonetimsistemi.org\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/authentication/password/forgot",
+								"description": "- Bu servis Landing veya Institution için kullanıcı şifremi unuttum işleminin gerçekleştirilmesi için kullanılır.\n    \n- Kullanıcı kaydının var olması durumunda kullanıcıya şifre yenileme maili iletilir.\n    \n- Bu servise herkes ulaşabilir.\n    \n- `AYS_USER_PASSWORD` tablosunda;\n    \n    - Kullanıcıya ait bir kayıt var ise, `FORGOT_AT` alanına var olan tarih bilgisi ile ve var olan kaydın `VALUE` alanı ile aynı olacak şekilde yeni bir kayıt oluşturur.\n        \n    - Kullanıcıya ait bir kayıt yok ise, `FORGOT_AT` alanı var olan tarih bilgisi ile dolu olacak şekilde geçici bir kayıt oluşturulur.\n        \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress` : Kullanıcıya Ait Email Adresi Bilgisi\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        "
+							},
+							"response": [
+								{
+									"id": "40c2eda0-e37e-4734-92ca-663a1b8ba1a3",
+									"name": "fail",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"emailAddress\": \"test@afetyonetimsistemi.org\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/authentication/password/forgot"
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 10 Jul 2024 12:55:26 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-07-10T12:55:26.774697958\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"header\": \"AUTH ERROR\",\n    \"isSuccess\": false\n}"
+								},
+								{
+									"id": "ce111d67-3e33-45de-96ae-5b07c11796a6",
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"emailAddress\": \"test@afetyonetimsistemi.org\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/authentication/password/forgot"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 10 Jul 2024 12:55:26 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "authentication/password/{id}/validity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7c545d5a-c942-4e95-bd44-fc68de3a14c7",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "bf7873db-9ed2-4935-97ae-3e56c3b1a4b0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/authentication/password/{id}/validity",
+								"description": "- Bu servis Landing veya Institution için kullanıcı şifre oluşturma işleminin gerçekleştirilip gerçekleştirilmeyeceğine dair bir cevap döner.\n    \n    - Buradaki gerçekleştirme kriteri;\n        \n        - `AYS_USER_PASSWORD` tablosundaki ilgili kullanıcıya ait bir kayıt bulunmalıdır.\n            \n        - Mail gönderildikten yani `AYS_USER_PASSWORD` tablosundaki kaydın `FORGOT_AT` alanın dolu olması ve bu alanın değeri olan tarih ve zaman değerinin son 2 saat içerisinde olması beklenmektedir.\n            \n- Bu servise herkes ulaşabilir."
+							},
+							"response": [
+								{
+									"id": "d4bed8e0-4568-488a-9266-792f50bec7dd",
+									"name": "fail",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/authentication/password/1dd86c84-345d-442d-86d6-53c149ec88fe/validity"
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 10 Jul 2024 12:55:26 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-07-10T12:55:26.774697958\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"header\": \"AUTH ERROR\",\n    \"isSuccess\": false\n}"
+								},
+								{
+									"id": "a0d6991f-90fb-47b6-821b-86da0b9f46ec",
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/authentication/password/1dd86c84-345d-442d-86d6-53c149ec88fe/validity"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 10 Jul 2024 12:55:26 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "authentication/password/{id}",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7c545d5a-c942-4e95-bd44-fc68de3a14c7",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "274a5f63-6e61-4f12-8196-860d0c4d9fd9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"A123y456S.\",\n    \"passwordRepeat\": \"A123y456S.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/authentication/password/{id}",
+								"description": "- Bu servis Landing veya Institution için kullanıcı şifre oluşturma işleminin gerçekleştirilmesi için kullanılır.\n    \n- Bu servise herkes ulaşabilir.\n    \n- Gönderilen `ID` değeri ile birlikte;\n    \n    - `AYS_USER_PASSWORD` tablosundaki ilgili kullanıcıya ait bir kayıt bulunmalıdır.\n        \n    - Şifre ilk kez oluşturulacaksa;\n        \n        - `AYS_USER_PASSWORD` tablosundaki kaydın `FORGOT_AT` ve `UPDATED_AT` alanlarının boş olması beklenmektedir.\n            \n    - Şifremi Unuttum akışı tetiklenmişse;\n        \n        - `AYS_USER_PASSWORD` tablosundaki kaydın `FORGOT_AT` alanın dolu olması ve bu alanın değeri olan tarih ve zaman değerinin son 2 saat içerisinde olması beklenmektedir.\n            \n- `AYS_USER_PASSWORD` tablosuna gönderilen şifrenin encrypted değeri ile birlikte yeni kayıt oluşturulur.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `password` : Şifre Bilgisi\n    \n    - [Şifre Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/165871617/ifre+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `passwordRepeat` : Şifre Bilgisinin Tekrarı\n    \n    - [Şifre Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/165871617/ifre+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+							},
+							"response": [
+								{
+									"id": "ea1a2c9c-78fa-49b1-85e6-7c13f0a7af0a",
+									"name": "fail",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"password\": \"A123y456S.\",\n    \"passwordRepeat\": \"A123y\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/authentication/password/1dd86c84-345d-442d-86d6-53c149ec88fe"
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 10 Jul 2024 12:55:26 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-07-10T12:55:26.774697958\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"header\": \"AUTH ERROR\",\n    \"isSuccess\": false\n}"
+								},
+								{
+									"id": "e9b6919f-06b6-48c8-be28-073ade8b6b59",
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"password\": \"A123y456S.\",\n    \"passwordRepeat\": \"A123y456S.\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/authentication/password/1dd86c84-345d-442d-86d6-53c149ec88fe"
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 10 Jul 2024 12:55:26 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+								}
+							]
+						}
+					],
+					"id": "9b0d05d0-36a8-45cc-b8c6-ff9af730aab6",
+					"description": "Kullanıcının doğrulama akışlarının yapıldığı servisleri barındırır.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ce3d5056-2104-49ed-b17d-ea8454ef9e09",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6bda4baa-0614-4120-9b6a-729ae0d333a1",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Landing APIs",
+					"item": [
+						{
+							"name": "Emergency Evacuation Apply Service",
+							"item": [
+								{
+									"name": "emergency-evacuation-application",
+									"id": "3faa7dcd-a2d2-419e-8d08-b4044cef72f3",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"Iris\",\n    \"lastName\": \"McKenzie\",\n    \"phoneNumber\": {\n        \"countryCode\": \"90\",\n        \"lineNumber\": \"5051234568\"\n    },\n    \"sourceCity\": \"İstanbul\",\n    \"sourceDistrict\": \"Kadıköy\",\n    \"address\": \"İstanbul, Kadıköy 2.Sk\",\n    \"seatingCount\": 2,\n    \"targetCity\": \"Antalya\",\n    \"targetDistrict\": \"Konyaaltı\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/emergency-evacuation-application",
+										"description": "- Bu servis acil durum tahliye başvurusu yapmak için kullanılır.\n    \n- Bu servise herkes ulaşabilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `applicantFirstName` : Başkasının adına başvuru yapan kişinin isim bilgini içerir.\n    \n    - Zorunlu alan değildir, sadece başkasının adına bir başvuru yapılacak ise bu alan kullanılır.\n        \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `applicantLastName` : Başkasının adına başvuru yapan kişinin soyisim bilgini içerir.\n    \n    - Zorunlu alan değildir, sadece başkasının adına bir başvuru yapılacak ise bu alan kullanılır.\n        \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `applicantPhoneNumber` : Başkasının adına başvuru yapan kişinin telefon numarası bilgini içerir.\n    \n    - Zorunlu alan değildir, sadece başkasının adına bir başvuru yapılacak ise bu alan kullanılır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, `countryCode` ve `lineNumber` değerleri alabilir.\n        \n- `firstName` : Başvuru sahibinin isim bilgisini içerir.\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName` : Başvuru sahibinin soyisim bilgisini içerir.\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber` : Başvuru sahibinin telefon numarası bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n        - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n        - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n            \n- `sourceCity` : Başvuru yapılan şehir bilgisini içerir.\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `sourceDistrict` : Başvuru yapılan ilçe bilgisini içerir.\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `address` : Başvuru yapılan açık adres bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Minimum `20`, maksimum `250` karakter uzunluğunda değerler alabilir.\n        \n- `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `targetCity` : Başvuru kapsamında gidilecek şehir bilgisini içerir.\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `targetDistrict` : Başvuru kapsamında gidilecek ilçe bilgisini içerir.\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+									},
+									"response": [
+										{
+											"id": "7767e9ae-d630-43c5-b53c-9133462480ad",
+											"name": "For Me",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"Iris\",\n    \"lastName\": \"McKenzie\",\n    \"phoneNumber\": {\n        \"countryCode\": \"90\",\n        \"lineNumber\": \"5051234568\"\n    },\n    \"sourceCity\": \"İstanbul\",\n    \"sourceDistrict\": \"Kadıköy\",\n    \"address\": \"İstanbul, Kadıköy 2.Sk\",\n    \"seatingCount\": 2,\n    \"targetCity\": \"Antalya\",\n    \"targetDistrict\": \"Konyaaltı\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{API_URL}}/api/v1/emergency-evacuation-application"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Sat, 06 Apr 2024 14:41:27 GMT",
+													"enabled": true
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"enabled": true
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked",
+													"enabled": true
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive",
+													"enabled": true
+												},
+												{
+													"key": "Vary",
+													"value": "Origin",
+													"enabled": true
+												},
+												{
+													"key": "Vary",
+													"value": "Access-Control-Request-Method",
+													"enabled": true
+												},
+												{
+													"key": "Vary",
+													"value": "Access-Control-Request-Headers",
+													"enabled": true
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff",
+													"enabled": true
+												},
+												{
+													"key": "X-XSS-Protection",
+													"value": "0",
+													"enabled": true
+												},
+												{
+													"key": "Cache-Control",
+													"value": "no-cache, no-store, max-age=0, must-revalidate",
+													"enabled": true
+												},
+												{
+													"key": "Pragma",
+													"value": "no-cache",
+													"enabled": true
+												},
+												{
+													"key": "Expires",
+													"value": "0",
+													"enabled": true
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY",
+													"enabled": true
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+										},
+										{
+											"id": "2b0b4e14-6bd9-4ff8-8281-72d4e98fdb1b",
+											"name": "For Other Person",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"applicantFirstName\": \"Iris\",\n    \"applicantLastName\": \"McKenzie\",\n    \"applicantPhoneNumber\": {\n        \"countryCode\": \"90\",\n        \"lineNumber\": \"5051234567\"\n    },\n    \"firstName\": \"Iris\",\n    \"lastName\": \"McKenzie\",\n    \"phoneNumber\": {\n        \"countryCode\": \"90\",\n        \"lineNumber\": \"5051234568\"\n    },\n    \"sourceCity\": \"İstanbul\",\n    \"sourceDistrict\": \"Kadıköy\",\n    \"address\": \"İstanbul, Kadıköy 2.Sk\",\n    \"seatingCount\": 2,\n    \"targetCity\": \"Antalya\",\n    \"targetDistrict\": \"Konyaaltı\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{API_URL}}/api/v1/emergency-evacuation-application"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Sat, 06 Apr 2024 14:41:27 GMT",
+													"enabled": true
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"enabled": true
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked",
+													"enabled": true
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive",
+													"enabled": true
+												},
+												{
+													"key": "Vary",
+													"value": "Origin",
+													"enabled": true
+												},
+												{
+													"key": "Vary",
+													"value": "Access-Control-Request-Method",
+													"enabled": true
+												},
+												{
+													"key": "Vary",
+													"value": "Access-Control-Request-Headers",
+													"enabled": true
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff",
+													"enabled": true
+												},
+												{
+													"key": "X-XSS-Protection",
+													"value": "0",
+													"enabled": true
+												},
+												{
+													"key": "Cache-Control",
+													"value": "no-cache, no-store, max-age=0, must-revalidate",
+													"enabled": true
+												},
+												{
+													"key": "Pragma",
+													"value": "no-cache",
+													"enabled": true
+												},
+												{
+													"key": "Expires",
+													"value": "0",
+													"enabled": true
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY",
+													"enabled": true
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+										}
+									]
+								}
+							],
+							"id": "ce6c06b8-22ef-4ac8-89ad-a83036ad946c",
+							"description": "Acil Durum Tahliye Başvurusu yapılabileceği servisi içerir."
+						},
+						{
+							"name": "Advert Apply Service",
+							"item": [
+								{
+									"name": "adverts",
+									"id": "ae32686f-dce9-469b-a8df-754d28fe87e6",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/adverts",
+										"description": "- Bu servis kurumların ne tür görevlerde gönüllülere ihtiyaç duyduklarını görebileceğimiz ilanları listelemek için kullanılır.\n    \n- Bu servise herkes ulaşabilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n- filter : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - Burada ilk/orta/son haneler ile birlikte arama yapılabilmelidir.\n            \n    - `participationType`: Kurumun ihtiyacı olan görev için gönüllü çalışan tipi bilgisini içerir.\n        \n        - Katılım Türü dropdown listten seçilebilir olmalıdır.\n            \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `status`: İlanın hangi durumda olduğunu belirtir.\n        \n        - Bir Dropdown List içerisinde bir seçim yapılmalıdır.\n            \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `INACCESSIBLE`, `CANCELLED` değerlerini alabilir.\n            \n    - `city` : İlanda istenen görevin yapılması beklenen şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
+									},
+									"response": [
+										{
+											"id": "c463dc50-2588-4c8c-9c89-f7cc5c041d7a",
+											"name": "adverts",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"url": "{{API_URL}}/api/v1/adverts"
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n    \"time\": \"2024-04-06T13:35:47.774102186\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"10ba7411-8a08-465a-8331-4447371dc753\",\r\n                \"title\": \"Android Developer\",\r\n\t\t\t\t\t\t\t\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n                \"participationType\": \"ONLINE\",\r\n                \"applicationDeadline\": \"2026-15-08\",\r\n                \"startedAt\": \"2025-01-08\",\r\n                \"finishedAt\": \"2025-30-08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2025-01-08T13:31:03\"\r\n            },\r\n            {\r\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\r\n                \"title\": \" Kepçe operatötü\",\r\n\t\t\t\t\t\t\t\t\"description\": \"Enkaz kaldırma çalışmalarında aktif rol alabilecek gönüllülere ihtiyacımız var.\",\r\n                \"participationType\": \"PHYSICALLY\",\r\n                \"applicationDeadline\": \"2025-15-08\",\r\n                \"startedAt\": \"2025-01-08\",\r\n                \"finishedAt\": \"2025-15-08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2025-01-08T13:31:03\"\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 10,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"sortedBy\": null,\r\n        \"filteredBy\": null\r\n    }\r\n}"
+										}
+									]
+								},
+								{
+									"name": "advert/{id}",
+									"id": "6261bbe2-3c07-4845-ba1f-f06d2b1963f4",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/advert/{id}",
+										"description": "- Bu servis ilanların detaylarını görüntülememizi sağlar.\n    \n- Bu servise herkes ulaşabilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: İlana ait ID Bilgisi"
+									},
+									"response": [
+										{
+											"id": "bd67f9e7-8ef1-42f7-bc0c-2ddcd43e3761",
+											"name": "advert/{id}",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"url": "{{API_URL}}/api/v1/advert/{id}"
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n        \"userName\": \"Kurum Adı???\",\r\n        \"title\": \"Android Developer\",\r\n        \"status\": \"IN_APPLICATION_PROCCESS\",\r\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n        \"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n        \"city\": \"Ankara\",\r\n        \"externalLink\": \"https://www.ankamall.com.tr/\",\r\n        \"applicationDeadline\": \"2026-15-01\",\r\n        \"startedAt\": \"2025-01-12\",\r\n        \"finishedAt\": \"2025-30-12\",\r\n        \"maxParticipationCount\": 10,\r\n        \"participationType\": \"ONLINE\",\r\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\r\n        \"createdAt\": \"2025-05-07T09:45:08\",\r\n        \"updatedUser\": null,\r\n        \"updatedAt\": null\r\n    }\r\n}"
+										}
+									]
+								}
+							],
+							"id": "4fe9b267-fbd9-4ca0-bc51-00b7d25e221c",
+							"description": "Kurum ilanlarınının görüntülendiği ve ilan başvurularının yapıldığı servistir."
+						}
+					],
+					"id": "4f88ba47-90fd-4b04-a723-d70626c9f564",
+					"description": "👤 **Kullanıcı Karşılama Paneli Servisleri,** Afet Yönetim Sistemi içerisinde herkese açık bir şekilde kullanılmak üzere oluşturulan servislerdir. Bu servisler Kullanıcı Karşılama Panelinde doğrulama işlemi gerekmeden kullanılabilir.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4a771218-1aa3-4719-890c-75e89783d23b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "65279da5-ad3d-4dc8-b415-10432f72943b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Institution APIs",
+					"item": [
+						{
+							"name": "Admin Register Application Management Service",
+							"item": [
+								{
+									"name": "admin-registration-application/{id}/summary",
+									"id": "fe7dd722-45b7-4976-b704-bacc15149ec4",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/admin-registration-application/{id}/summary",
+										"description": "- Bu servis, belirtilen kayıt başvuru ID'sindeki kurum yönetici kayıt başvurusunun özetini almak için kullanılır.\n    \n- Bu servis herkese açıktır.\n    \n- `AYS_ADMIN_USER_REGISTER_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Bu endpoint başvuru tamamlama sırasında kullanıldığı için başvurunun tamamlanmaya uygun olması beklenmektedir.\n  - Gönderilen ID'nin var olması\n  - Başvurunun `WAITING` statüsünde olması\n\n---\n\n**İstek Parametreleri**\n\n- `id`: Yönetici Kayıt Başvurusuna Ait ID Bilgisi"
+									},
+									"response": []
+								},
+								{
+									"name": "admin-registration-application/{id}/complete",
+									"id": "f3ee1cb8-2d23-4c8a-9627-8e2b533e12e1",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"Afet Yönetim\",\n    \"lastName\": \"Sistemi\",\n    \"city\": \"İstanbul\",\n    \"emailAddress\": \"admin@ays.org\",\n    \"password\": \"A123y456S.\",\n    \"phoneNumber\": {\n        \"countryCode\": \"90\",\n        \"lineNumber\": \"5051237891\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/admin-registration-application/{id}/complete",
+										"description": "- Bu servis **Kurum** tarafında yönetici kayıt işlemlerini gerçekleştirmek için kullanılır.\n    \n- `id` değeri tek kullanımlıktır ve AYS yetkilileri tarafından önceden oluşturulmalıdır.\n    \n- Bu servise herkes erişebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id` : Kayıt İçin Oluşturulmuş ID Bilgisi\n    \n    - Zorunlu alandır.\n        \n    - Sadece `UUID` formatında bir değer alabilir.\n        \n- `firstName` : Yöneticiye Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName` : Yöneticiye Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `city` : Yöneticinin Yaşadığı Şehir Bilgisi\n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress` : Yöneticiye Ait Email Bilgisi\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `password` : Yöneticiye Ait Şifre Bilgisi\n    \n    - [Şifre Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/165871617/ifre+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber` : Yöneticiye Ait Telefon Numarası\n    \n    - Zorunlu alandır.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n        - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n        - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir."
+									},
+									"response": []
+								}
+							],
+							"id": "922e1d16-889f-4b9c-923b-9e02ef14375e",
+							"description": "Afet Yönetim Sistemindeki Yönetici Kayıt Akışında kullanılan servisleri barındırır.",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "6e716254-e9a0-4997-ab70-a14a521c3dc8",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "db5a647c-27fa-441b-b502-5e565940fb8e",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						}
+					],
+					"id": "463ce4da-78f1-4d80-9991-890c841e5049",
+					"description": "👤 **Yönetim Paneli Servisleri,** Afet Yönetim Sistemi içerisinde sadece yönetim ekibi tarafından kullanılmak üzere oluşturulan servislerdir. Bu servisler Yönetim Panelinde doğrulama işlemi gerekmeden kullanılabilir.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "74f97442-a4b2-41bf-b74b-1eb6743db84d",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "5286390d-5075-4c5c-aa17-8664bf38a0d3",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"id": "87ce763f-153d-4c8b-8a99-149daf174a1f",
+			"description": "Afet Yönetim Sistemindeki herkese açık olan servisleri barındırır.",
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2df03155-10e5-4d37-8b5f-e5fa0a8fa5e5",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8e2786a1-5b5c-4411-83f3-e9194ca2d836",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Institution APIs",
+			"item": [
+				{
+					"name": "Admin Register Application Management Service",
+					"item": [
+						{
+							"name": "admin-registration-applications",
+							"id": "f127c580-b2d8-4a15-8e91-aa0849e86c1c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/admin-registration-applications",
+								"description": "- Bu servis kurum yönetici kayıt başvurularını listelemek için kullanılır.\n    \n- Bu servise sadece `application:registration:list` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_ADMIN_REGISTER_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable` : Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı. `createdAt` alanı sıralama için kullanılabilir.\n            \n        - `direction` : Sıranın yönü. `ASC` ya da `DESC` değerlerini alabilir.\n            \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `statuses` : Yönetici Kayıt Başvurusuna Ait Durum Bilgisi\n        \n        - Sadece `WAITING`, `COMPLETED`, `APPROVED`, `REJECTED` değerlerini alabilir."
+							},
+							"response": [
+								{
+									"id": "a9eee273-70b2-47c0-8414-628e0094e5a8",
+									"name": "Pagination with Filter and Sort",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10,\n        \"orders\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"ASC\"\n            }\n        ]\n    },\n    \"filter\": {\n        \"statuses\": [\n            \"APPROVED\"\n        ]\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/admin-registration-applications"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 May 2024 10:57:17 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-05-15T13:57:17.038704\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"3cfeb994-88f4-48d0-b105-309f42f91412\",\n                \"reason\": \"A kurumunun kurucu üyesi olan Linda Murphy için Afet Yönetim Sistemine dahil olabilmesi için oluşturulmuştur.\",\n                \"status\": \"APPROVED\",\n                \"institution\": {\n                    \"id\": \"77ece256-bf0e-4bbe-801d-173083f8bdcf\",\n                    \"name\": \"Test Institution 1\"\n                },\n                \"createdUser\": \"AYS\",\n                \"createdAt\": \"2024-05-11T07:10:50\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 1,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 1,\n        \"sortedBy\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"ASC\"\n            }\n        ],\n        \"filteredBy\": {\n            \"statuses\": [\n                \"APPROVED\"\n            ]\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "admin-registration-application/{id}",
+							"id": "d3bbc1f3-25a5-4313-b7bd-f401a4bcd5c7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/admin-registration-application/{id}",
+								"description": "- Bu servis kurum yönetici kayıt başvurusunun detay bilgisini almak için kullanılır.\n    \n- Bu servise sadece `application:registration:detail` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_ADMIN_USER_REGISTER_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Yönetici Kayıt Başvurusuna Ait ID Bilgisi"
+							},
+							"response": [
+								{
+									"id": "084051f0-a74f-483f-8910-1db436c3f41a",
+									"name": "admin-registration-application/{id}",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/admin-registration-application/4eb44207-b6a8-4d9c-82c2-292840e4f897"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Mon, 01 Jul 2024 21:21:21 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-07-01T21:21:21.879518571\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2024-06-24T13:32:49\",\n        \"updatedUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"updatedAt\": \"2024-07-01T21:20:41\",\n        \"id\": \"4eb44207-b6a8-4d9c-82c2-292840e4f897\",\n        \"reason\": \"Mo Alam  için oluşturuldu.\",\n        \"rejectReason\": null,\n        \"status\": \"COMPLETED\",\n        \"institution\": {\n            \"id\": \"d95b59c7-9ac1-4be3-a981-33af1d3f8386\",\n            \"name\": \"Disaster Foundation\"\n        },\n        \"user\": {\n            \"id\": \"828198fd-70b7-4037-9ece-b94274e72524\",\n            \"firstName\": \"Buğra\",\n            \"lastName\": \"Ercan\",\n            \"city\": \"İstanbul\",\n            \"emailAddress\": \"bugra.ercan@afetyonetimsistemi.org\",\n            \"phoneNumber\": {\n                \"countryCode\": \"90\",\n                \"lineNumber\": \"5051237891\"\n            }\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "admin-registration-application",
+							"id": "12e76eab-0db0-4044-9504-3451d0282140",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"institutionId\": \"77ece256-bf0e-4bbe-801d-173083f8bf\",\n    \"reason\": \"Valid test string must have fourty character\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/admin-registration-application",
+								"description": "- Bu servis kurum yönetici kayıt başvurularını oluşturmak için kullanılır\n    \n- Bu servise sadece `application:registration:create` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `institutionId`: Kayıt başvurusu yapıcak yöneticinin kurum id'si. Kurum aktif ve var olmalıdır.\n    \n- `reason`: Kayıt başvurusunun oluşturulma nedeni. En az 40, en çok 512 karekter olmalıdır."
+							},
+							"response": []
+						},
+						{
+							"name": "admin-registration-application/{id}/approve",
+							"id": "96417744-faff-4017-8c6e-4e4ce17b2f4e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/admin-registration-application/{id}/approve",
+								"description": "- Bu servis doldurulmuş kurum yönetici kayıt başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Yönetici kayıt başvurusuna ait ID bilgisi."
+							},
+							"response": []
+						},
+						{
+							"name": "admin-registration-application/{id}/reject",
+							"id": "b81a533a-93ab-4e19-b3e3-450cb5ed7281",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rejectReason\": \"Example reject reason above 40 character.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/admin-registration-application/{id}/reject",
+								"description": "- Bu servis doldurulmuş kurum yönetici kayıt başvurularını reddetmek için kullanılır.\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Yönetici kayıt başvurusuna ait ID bilgisi.\n    \n- `rejectReason`: Yönetici kayıt başvurusunun reddedilme nedeni."
+							},
+							"response": []
+						}
+					],
+					"id": "658c03bb-1583-4344-a016-8e99b1ce99b2",
+					"description": "Kurum yönetici kaydı başvurusunun yönetiminin yapılabileceği servis."
+				},
+				{
+					"name": "Emergency Evacuation Application Management Service",
+					"item": [
+						{
+							"name": "emergency-evacuation-applications",
+							"id": "9a1d557a-a29c-450a-94c2-1e4d51f8a364",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/emergency-evacuation-applications",
+								"description": "- Bu servis acil durum tahliye başvurularını listelemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:list` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable` : Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı. `createdAt` alanı sıralama için kullanılabilir.\n            \n        - `direction` : Sıranın yönü. `ASC` ya da `DESC` değerlerini alabilir.\n            \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `referenceNumber` : Başvuruya ait referans numarasıdır.\n        \n        - Maksimum `10` haneli değer alabilir.\n            \n        - Burada ilk ve son haneler ile birlikte arama yapılabilmelidir.\n            \n    - `sourceCity` : Başvuru yapılan şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `sourceDistrict` : Başvuru yapılan ilçe bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n        \n        - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n            \n        - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `targetCity` : Başvuru kapsamında gidilecek şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `targetDistrict` : Başvuru kapsamında gidilecek ilçe bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `statuses` : Başvuruya ait durum bilgisidir.\n        \n        - Sadece `PENDING`, `IN_REVIEW`, `RECEIVED_FIRST_APPROVE`, `RECEIVED_SECOND_APPROVE`, `RECEIVED_THIRD_APPROVE`, `COMPLETED`, `CANCELLED` değerlerini alabilir.\n            \n    - `isInPerson` : Bireysel veya Başkasının Adına yapılmış başvuru bilgisini içerir.\n        \n        - Bireysel olarak yapılan başvurularda `true` değerini alabilir.\n            \n        - Başkasının Adına yapılan başvurularda `false` değerini alabilir."
+							},
+							"response": [
+								{
+									"id": "94a1a1f9-a437-4b60-89f3-679db0dc095a",
+									"name": "All Filters",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10,\n        \"orders\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"DESC\"\n            }\n        ]\n    },\n    \"filter\": {\n        \"referenceNumber\": \"1234567890\",\n        \"sourceCity\": \"İstanbul\",\n        \"sourceDistrict\": \"Kadıköy\",\n        \"seatingCount\": 2,\n        \"targetCity\": \"Ankara\",\n        \"targetDistrict\": \"Kızılay\",\n        \"statuses\": [\n            \"PENDING\"\n        ],\n        \"isInPerson\": true\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/emergency-evacuation-applications"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 25 Nov 2023 17:49:47 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"82e54513-d829-4bbf-bfdc-d53f7c977907\",\n                \"referenceNumber\": \"7987364846\",\n                \"firstName\": \"Rea\",\n                \"lastName\": \"Becker\",\n                \"phoneNumber\": {\n                    \"countryCode\": \"90\",\n                    \"lineNumber\": \"5011234567\"\n                },\n                \"applicantFirstName\": null,\n                \"applicantLastName\": null,\n                \"applicantPhoneNumber\": {\n                    \"countryCode\": null,\n                    \"lineNumber\": null\n                },\n                \"seatingCount\": 2,\n                \"status\": \"IN_REVIEW\",\n                \"isInPerson\": false,\n                \"createdAt\": \"2024-04-06T13:31:03\"\n            },\n            {\n                \"id\": \"10ba7411-8a08-465a-8331-4447371dc753\",\n                \"referenceNumber\": \"4119190051\",\n                \"firstName\": \"Rea\",\n                \"lastName\": \"Becker\",\n                \"phoneNumber\": {\n                    \"countryCode\": \"90\",\n                    \"lineNumber\": \"5011234567\"\n                },\n                \"applicantFirstName\": \"Rich\",\n                \"applicantLastName\": \"Corwin\",\n                \"applicantPhoneNumber\": {\n                    \"countryCode\": \"90\",\n                    \"lineNumber\": \"2482657104\"\n                },\n                \"seatingCount\": 3,\n                \"status\": \"PENDING\",\n                \"isInPerson\": true,\n                \"createdAt\": \"2024-04-06T13:31:03\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 10,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 2,\n        \"sortedBy\": null,\n        \"filteredBy\": null\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "emergency-evacuation-applications V2",
+							"id": "dab4d5ed-703e-423d-8ce9-7f3b451eb6fc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"pageable\": {\n\t\t\"page\": 1,\n\t\t\"pageSize\": 10\n\t}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/emergency-evacuation-applications",
+								"description": "- Bu servis acil durum tahliye başvurularını listelemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:list` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable` : Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı. `createdAt` alanı sıralama için kullanılabilir.\n            \n        - `direction` : Sıranın yönü. `ASC` ya da `DESC` değerlerini alabilir.\n            \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `referenceNumber` : Başvuruya ait referans numarasıdır.\n        \n        - Maksimum `10` haneli değer alabilir.\n            \n        - Burada ilk ve son haneler ile birlikte arama yapılabilmelidir.\n            \n    - `sourceCity` : Başvuru yapılan şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `sourceDistrict` : Başvuru yapılan ilçe bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n        \n        - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n            \n        - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `targetCity` : Başvuru kapsamında gidilecek şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `targetDistrict` : Başvuru kapsamında gidilecek ilçe bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `statuses` : Başvuruya ait durum bilgisidir.\n        \n        - Sadece `PENDING`, `IN_REVIEW`, `RECEIVED_FIRST_APPROVE`, `RECEIVED_SECOND_APPROVE`, `RECEIVED_THIRD_APPROVE`, `COMPLETED`, `CANCELLED` değerlerini alabilir.\n            \n    - `isInPerson` : Bireysel veya Başkasının Adına yapılmış başvuru bilgisini içerir.\n        \n        - Bireysel olarak yapılan başvurularda `true` değerini alabilir.\n            \n        - Başkasının Adına yapılan başvurularda `false` değerini alabilir."
+							},
+							"response": [
+								{
+									"id": "50fef893-6ac0-4ae7-89b8-41b631c04b30",
+									"name": "All Filters",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10,\n        \"orders\": [\n            {\n                \"property\": \"priority\",\n                \"direction\": \"DESC\"\n            },\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"DESC\"\n            }\n        ]\n    },\n    \"filter\": {\n        \"referenceNumber\": \"1234567890\",\n        \"sourceCity\": \"İstanbul\",\n        \"sourceDistrict\": \"Kadıköy\",\n        \"seatingCount\": 2,\n        \"targetCity\": \"Ankara\",\n        \"targetDistrict\": \"Kızılay\",\n        \"statuses\": [\n            \"PENDING\"\n        ],\n        \"isInPerson\": true\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/emergency-evacuation-applications"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 25 Nov 2023 17:49:47 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"82e54513-d829-4bbf-bfdc-d53f7c977907\",\n                \"referenceNumber\": \"7987364846\",\n                \"applicantFirstName\": null,\n                \"applicantLastName\": null,\n                \"applicantPhoneNumber\": {\n                    \"countryCode\": null,\n                    \"lineNumber\": null\n                },\n                \"isInPerson\": false,\n                \"seatingCount\": 2,\n                \"priority\": \"LOW\",\n                \"status\": \"IN_REVIEW\",\n                \"createdAt\": \"2024-04-06T13:31:03\"\n            },\n            {\n                \"id\": \"10ba7411-8a08-465a-8331-4447371dc753\",\n                \"applicantFirstName\": \"Rich\",\n                \"applicantLastName\": \"Corwin\",\n                \"applicantPhoneNumber\": {\n                    \"countryCode\": \"90\",\n                    \"lineNumber\": \"2482657104\"\n                },\n                \"isInPerson\": true,\n                \"seatingCount\": 3,\n                \"priority\": \"HIGH\",\n                \"status\": \"PENDING\",\n                \"createdAt\": \"2024-04-06T13:31:03\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 10,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 2,\n        \"sortedBy\": null,\n        \"filteredBy\": null\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "emergency-evacuation-application/{id}",
+							"id": "cd80b0f1-b31d-45eb-ab16-300913d15db7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}",
+								"description": "- Bu servis acil durum tahliye başvurusunun detay bilgilerini görüntülemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:detail` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Başvuruya Ait ID Bilgisi"
+							},
+							"response": [
+								{
+									"id": "afd85660-b771-49ce-b780-c0f98afa9e42",
+									"name": "Exist",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sat, 06 Apr 2024 14:41:27 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"id\": \"82e54513-d829-4bbf-bfdc-d53f7c977907\",\n        \"referenceNumber\": \"7987364846\",\n        \"firstName\": \"Rea\",\n        \"lastName\": \"Becker\",\n        \"phoneNumber\": {\n            \"countryCode\": \"90\",\n            \"lineNumber\": \"5011234567\"\n        },\n        \"sourceCity\": \"İstanbul\",\n        \"sourceDistrict\": \"Kadıköy\",\n        \"address\": \"İstanbul, Kadıköy\",\n        \"seatingCount\": 2,\n        \"targetCity\": \"Antalya\",\n        \"targetDistrict\": \"Konyaaltı\",\n        \"status\": \"IN_REVIEW\",\n        \"applicantFirstName\": \"Iris\",\n        \"applicantLastName\": \"McKenzie\",\n        \"applicantPhoneNumber\": {\n            \"countryCode\": \"90\",\n            \"lineNumber\": \"5051234567\"\n        },\n        \"isInPerson\": false,\n        \"hasObstaclePersonExist\": false,\n        \"notes\": \"Ulaşılamadı\",\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2024-04-06T13:31:03\",\n        \"updatedUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"updatedAt\": \"2024-04-06T13:31:03\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "emergency-evacuation-application/{id} V2",
+							"id": "755edf41-4f61-4602-9130-6f159d35cbcf",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}",
+								"description": "- Bu servis acil durum tahliye başvurusunun detay bilgilerini görüntülemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:detail` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Başvuruya Ait ID Bilgisi"
+							},
+							"response": [
+								{
+									"id": "2d17d315-bc33-488e-99d3-dfaf3f6d6cff",
+									"name": "Exist",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sat, 06 Apr 2024 14:41:27 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"id\": \"82e54513-d829-4bbf-bfdc-d53f7c977907\",\n        \"referenceNumber\": \"7987364846\",\n        \"firstName\": \"Rea\",\n        \"lastName\": \"Becker\",\n        \"phoneNumber\": {\n            \"countryCode\": \"90\",\n            \"lineNumber\": \"5011234567\"\n        },\n        \"sourceCity\": \"İstanbul\",\n        \"sourceDistrict\": \"Kadıköy\",\n        \"address\": \"İstanbul, Kadıköy\",\n        \"seatingCount\": 2,\n        \"targetCity\": \"Antalya\",\n        \"targetDistrict\": \"Konyaaltı\",\n        \"priority\": \"MEDIUM\",\n        \"status\": \"IN_REVIEW\",\n        \"applicantFirstName\": \"Iris\",\n        \"applicantLastName\": \"McKenzie\",\n        \"applicantPhoneNumber\": {\n            \"countryCode\": \"90\",\n            \"lineNumber\": \"5051234567\"\n        },\n        \"isInPerson\": false,\n        \"hasObstaclePersonExist\": false,\n        \"notes\": \"Ulaşılamadı\",\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2024-04-06T13:31:03\",\n        \"updatedUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"updatedAt\": \"2024-04-06T13:31:03\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "emergency-evacuation-application/{id}",
+							"id": "48ae7876-6ecf-4b69-8d91-445e28cce774",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"seatingCount\": 3,\n\t\"hasObstaclePersonExist\": true,\n\t\"status\": \"IN_REVIEW\",\n\t\"notes\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}",
+								"description": "- Bu servis acil durum tahliye başvurusunu güncellemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:update` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Güncelleme sonucunda güncellemeyi yapan kullanıcının bağlı olduğu kurumun ID bilgisi `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki `INSTITUTION_ID` alanına tanımlanmalıdır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Başvuruya Ait ID Bilgisi\n    \n\n---\n\n**İstek Parametreleri**\n\n- `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n- `hasObstaclePersonExist`: Başvuru dahilinde engel durumu olan birinin var olup olmadığı bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `true` veya `false` değerini alabilir.\n        \n- `status` : Başvurunun durum bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - `PENDING`, `IN_REVIEW`, `RECEIVED_FIRST_APPROVE`, `RECEIVED_SECOND_APPROVE`, `RECEIVED_THIRD_APPROVE`, `COMPLETED`, `CANCELLED` değerlerinden sadece birini alabilir.\n        \n- `notes` : Eğer varsa başvuru ile ilgili notları içerir.\n    \n    - Zorunlu alan değildir.\n        \n    - Maksimum 1000 karakter olabilir.\n        \n    - Boşluk ile başlayamaz ve boşluk ile bitemez."
+							},
+							"response": []
+						},
+						{
+							"name": "emergency-evacuation-application/{id} V2",
+							"id": "9c26b6bc-38d3-468c-b22a-9477c657328f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"seatingCount\": 3,\n    \"hasObstaclePersonExist\": true,\n    \"priority\": \"MEDIUM\",\n    \"status\": \"IN_REVIEW\",\n    \"notes\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}",
+								"description": "- Bu servis acil durum tahliye başvurusunu güncellemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:update` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Güncelleme sonucunda güncellemeyi yapan kullanıcının bağlı olduğu kurumun ID bilgisi `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki `INSTITUTION_ID` alanına tanımlanmalıdır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Başvuruya Ait ID Bilgisi\n    \n\n---\n\n**İstek Parametreleri**\n\n- `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `hasObstaclePersonExist`: Başvuru dahilinde engel durumu olan birinin var olup olmadığı bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `true` veya `false` değerini alabilir.\n        \n- `status` : Başvurunun durum bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - `PENDING`, `IN_REVIEW`, `RECEIVED_FIRST_APPROVE`, `RECEIVED_SECOND_APPROVE`, `RECEIVED_THIRD_APPROVE`, `COMPLETED`, `CANCELLED` değerlerinden sadece birini alabilir.\n        \n- `notes` : Eğer varsa başvuru ile ilgili notları içerir.\n    \n    - Zorunlu alan değildir.\n        \n    - Maksimum 1000 karakter olabilir.\n        \n    - Boşluk ile başlayamaz ve boşluk ile bitemez.\n        \n- `priority` : Başvurunun öncelik durumunu belirtir.\n    \n    - Zorunlu alandır.\n        \n    - `LOWEST`, `LOW`, `MEDIUM`, `HIGH`, `HIGHEST`, `CRITICAL` değerlerinden sadece birini alabilir."
+							},
+							"response": []
+						}
+					],
+					"id": "ac6b0e9e-caf1-4fcb-9cb1-044ccda026ea",
+					"description": "Acil Durum Tahliye Başvurusu yönetiminin yapılabileceği servisleri içerir."
+				},
+				{
+					"name": "Insitution Service",
+					"item": [
+						{
+							"name": "institutions/summary",
+							"id": "a0ce535d-8990-4fbb-bac4-b8f0ad30c254",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/institutions/summary",
+								"description": "- Bu servis ilgili Drop-Down List'lerde kullanılmak üzere Bütün Kurumlar ile ilgili `id` ve `name` bilgilerinin görüntülenmesi sağlar.\n    \n- Bu servise sadece `application:registration:create` yetkisine sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
+							},
+							"response": []
+						}
+					],
+					"id": "e9324d65-e59f-475f-bb38-319ed7f9e12b",
+					"description": "Kurum tarafındaki kurum yöneticisi başvuru yönetimi yapılabileceği servistir."
+				},
+				{
+					"name": "User Management Service",
+					"item": [
+						{
+							"name": "users",
+							"id": "ecf1da19-2417-43e4-9f68-4d538e1c1234",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/users",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Kullanıcıları Listelemek için kullanılır.\n    \n- Bu servise sadece `user:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı kullanıcıların listelenmesi gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n- filter : Filtrelemek için kullanılır.\n    \n    - `firstName` : Kullanıcıya ait isim bilgisidir.\n        \n        - [İsim Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `lastName` : Kullanıcıya ait soyisim bilgisidir.\n        \n        - [İsim Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `emailAddress` : Kullanıcıya ait email adresi bilgisidir.\n        \n        - [E-Posta Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `city` : Başvuru yapılan şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `statuses` : Kullanıcıya ait durum bilgisidir.\n        \n        - Sadece `ACTIVE`, `PASSIVE`, `DELETED`, `NOT_VERIFIED` değerlerini alabilir.\n            \n    - `phoneNumber` : Kullanıcıya ait telefon numarası bilgisidir.\n        \n        - `lineNumber`: Telefon Numarası\n            \n            - Sadece Telefon Numarası ile arama yapılabilmelidir.\n                \n            - Minimum `1`, maksimum `10` karakter uzunluğunda bir değer alabilir."
+							},
+							"response": [
+								{
+									"id": "53734d7e-6932-4f42-9194-0c5728a25081",
+									"name": "Pageable with Filter and Orders",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10,\n        \"orders\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"ASC\"\n            }\n        ]\n    },\n    \"filter\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Doe\",\n        \"emailAddress\": \"john.doe@afetyonetimsistemi.org\",\n        \"city\": \"İstanbul\",\n        \"statuses\": [\n            \"ACTIVE\",\n            \"PASSIVE\"\n        ],\n        \"phoneNumber\": {\n            \"countryCode\": \"90\",\n            \"lineNumber\": \"5054567890\"\n        }\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/users"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 04 May 2023 20:52:09 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-04T20:52:09.712591823\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\n                \"firstName\": \"John\",\n                \"lastName\": \"Doe\",\n                \"emailAddress\": \"john.doe@afetyonetimsistemi.org\",\n                \"phoneNumber\": {\n                    \"countryCode\": \"90\",\n                    \"lineNumber\": \"5054567890\"\n                },\n                \"city\": \"İstanbul\",\n                \"status\": \"ACTIVE\",\n                \"createdAt\": \"2023-05-07T09:45:08\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 1,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 1,\n        \"sortedBy\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"ASC\"\n            }\n        ],\n        \"filteredBy\": {\n            \"firstName\": \"John\",\n            \"lastName\": \"Doe\",\n\t\t\t\"city\": \"İstanbul\",\n            \"statuses\": [\n                \"ACTIVE\",\n                \"PASSIVE\"\n            ],\n            \"phoneNumber\": {\n                \"countryCode\": \"90\",\n                \"lineNumber\": \"5054567890\"\n            },\n            \"institutionId\": \"31a02ee8-e464-42b6-a525-4511e8de1232\"\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "user/{id}",
+							"id": "a726dcb2-1557-43d7-84eb-2bedb1f93df0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/user/{id}",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Gönüllü Kullanıcı Detayını görüntülemek için kullanılır. `id` bilgisi verilen kullanıcının detayını görüntüler.\n    \n- Bu servise sadece `user:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı kullanıcıların görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcıya Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "b8f76561-9c41-4b38-8ef7-c6853f4ac1db",
+									"name": "user/{id}",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/user/0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 07 May 2023 17:48:06 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T20:48:06.398791\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2023-05-07T09:45:08\",\n        \"updatedUser\": null,\n        \"updatedAt\": null,\n        \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\n        \"firstName\": \"Ahmet\",\n        \"lastName\": \"Mehmet\",\n        \"emailAddress\": \"ahmet.mehmet@afetyonetimsistemi.org\",\n        \"phoneNumber\": {\n            \"countryCode\": \"90\",\n            \"lineNumber\": \"5054567811\"\n        },\n        \"city\": \"İstanbul\",\n        \"status\": \"ACTIVE\",\n        \"roles\": [\n            {\n                \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n                \"name\": \"Kullanıcı ve Rol Yönetimi\"\n            }\n        ]\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "user",
+							"id": "32324deb-0947-4a9c-ab5f-d5a283c7a638",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"firstName\": \"Ahmet\",\n\t\"lastName\": \"Mehmet\",\n\t\"emailAddress\": \"ahmet.mehmet@afetyonetimsistemi.org\",\n\t\"phoneNumber\": {\n\t\t\"countryCode\": \"90\",\n\t\t\"lineNumber\": \"5054567811\"\n\t},\n\t\"city\": \"İstanbul\",\n\t\"roleIds\": [\n\t\t\"0418652d-d17c-41ed-b680-b262f451b2b9\",\n\t\t\"64a19f8b-34bb-450c-adad-e311c5d416d1\"\n\t]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/user",
+								"description": "- Bu servis ilgili Yöneticiye ait Kuruma ait Gönüllü Bir Kullanıcı oluşturmak için kullanılır.\n    \n- Bu servise sadece `user:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosuna statüsü `ACTIVE` olan bir kayıt ekler.\n    \n- Oluşturulan Kullanıcı, oluşturma servisi çağıran kuruma ait bir kullanıcı olmalıdır.\n    \n- Kullanıcı kaydedildikten sonra kullanıcının mail adresine bir şifre oluşturma maili iletilir. İletilen mail ile birlikte şifresini oluşturduktan sonra sisteme giriş yapabilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - Zorunlu alandır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `roleIds`: Kurum Gönüllüsünün Sahip Olması İstenen Rollerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her bir elemanı UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "b62e4863-91df-4c00-9623-358af3df5176",
+									"name": "user",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"Ahmet\",\n    \"lastName\": \"Mehmet\",\n    \"emailAddress\": \"ahmet.mehmet@afetyonetimsistemi.org\",\n    \"phoneNumber\": {\n        \"countryCode\": \"90\",\n        \"lineNumber\": \"5054567811\"\n    },\n    \"city\": \"İstanbul\",\n    \"roleIds\": [\n        \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n        \"64a19f8b-34bb-450c-adad-e311c5d416d1\"\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/user"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 07 May 2023 17:09:50 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+								},
+								{
+									"id": "18743df4-7ebe-44ca-a194-6d98e0ccd16b",
+									"name": "user",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"Ahmet\",\n    \"lastName\": \"Mehmet\",\n    \"emailAddress\": \"ahmet.mehmet@afetyonetimsistemi.org\",\n    \"phoneNumber\": {\n        \"countryCode\": \"90\",\n        \"lineNumber\": \"5054567811\"\n    },\n    \"city\": \"İstanbul\",\n    \"roleIds\": [\n        \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n        \"64a19f8b-34bb-450c-adad-e311c5d416d1\"\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/user"
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "user/{id}",
+							"id": "cd2a5db0-a2d8-4599-a33f-a5aa65251cdb",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Ahmet\",\n    \"lastName\": \"Mehmet\",\n    \"emailAddress\": \"ahmet.mehmet@afetyonetimsistemi.org\",\n    \"phoneNumber\": {\n        \"countryCode\": \"90\",\n        \"lineNumber\": \"5054567811\"\n    },\n    \"city\": \"İstanbul\",\n    \"roleIds\": [\n        \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n        \"64a19f8b-34bb-450c-adad-e311c5d416d1\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/user/{id}",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Gönüllü Kullanıcıyı güncellemek için kullanılır. `id` bilgisi verilen Kullanıcının bilgilerini günceller.\n    \n- Bu servise sadece `user:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosunda var olan kaydı günceller.\n    \n- Sadece kuruma bağlı kullanıcının güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum Gönüllüsüne Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası.\n    \n    - Zorunlu alandır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `roleIds`: Kurum Gönüllüsünün Sahip Olması İstenen Rollerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her bir elemanı UUID formatında stringler olmalıdır."
+							},
+							"response": []
+						},
+						{
+							"name": "user/{id}/passivate",
+							"id": "ed68bbf6-cb77-4ed2-85ed-95a5d3b127b9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/user/{id}/passivate",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Gönüllü Kullanıcının statüsünü `PASSIVE` olarak güncellemek için kullanılır. `id` bilgisi verilen Kullanıcının bilgilerini günceller.\n    \n- Bu servise sadece `user:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosunda var olan kaydı günceller.\n    \n- İlgili kullanıcının pasifleştirilebilmesi sadece `ACTIVE` statüsüne sahip olmalıdır.\n    \n- Sadece kuruma bağlı kullanıcının pasifleştirilebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum Gönüllüsüne Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": []
+						},
+						{
+							"name": "user/{id}/activate",
+							"id": "6da48cc6-16d2-4d5a-92fe-71507389c8ea",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/user/{id}/activate",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Gönüllü Kullanıcının statüsünü `ACTIVE` olarak güncellemek için kullanılır. `id` bilgisi verilen Kullanıcının bilgilerini günceller.\n    \n- Bu servise sadece `user:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosunda var olan kaydı günceller.\n    \n- Sadece kuruma bağlı kullanıcının aktifleştirilebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum Gönüllüsüne Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": []
+						},
+						{
+							"name": "user/{id}",
+							"id": "c7fbb326-17e4-41f4-91fa-6a5d8204242d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/user/{id}",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Gönüllü Kullanıcının statüsünü `DELETED` olarak güncellemek için kullanılır. id bilgisi verilen Kullanıcının bilgilerini günceller.\n    \n- Bu servise sadece `user:delete` rolüne sahip kullanıcılar erişebilir.\n    \n- `AYS_USER` tablosundaki ilgili kaydın statüsünü `DELETED` olarak günceller.\n    \n- Sadece kuruma bağlı kullanıcının silinebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Kurum Gönüllüsüne Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "4260b6b2-8071-40d3-8555-78e7841a2e79",
+									"name": "user/{id}",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/user/42605bfa-951b-42ba-a081-cc76369bd3fa"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 07 May 2023 18:26:06 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+								}
+							]
+						}
+					],
+					"id": "09997674-41bb-462c-849e-271cb70bc07c",
+					"description": "Kurum tarafındaki rol yönetiminin yapılabileceği servistir."
+				},
+				{
+					"name": "Role Management Service",
+					"item": [
+						{
+							"name": "roles",
+							"id": "dd4b2655-7afb-4ded-8103-b43cdf5f9569",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/roles",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Rolleri Listelemek için kullanılır.\n    \n- Bu servise sadece `role:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ROLE` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı rollerin listelenmesi gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable` : Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı. `createdAt` alanı sıralama için kullanılabilir.\n            \n        - `direction` : Sıranın yönü. `ASC` ya da `DESC` değerlerini alabilir.\n            \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `name` : Role ait isim bilgisidir.\n        \n        - [Rol Adı Alanı için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/163250220/Rol+Ad+Alan+i+in+Validasyon+Kurallar#Listeleme-ve-Filtreleme-Alanlar%C4%B1)\n            \n- `statuses` : Role ait durum bilgisidir.\n    \n    - Sadece `ACTIVE`, `PASSIVE`, `DELETED` değerlerini alabilir."
+							},
+							"response": [
+								{
+									"id": "4dcf5dd9-3f2f-42ee-8b26-6b3d38d78eb6",
+									"name": "Pageable with Filter and Orders",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10,\n        \"orders\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"ASC\"\n            }\n        ]\n    },\n    \"filter\": {\n        \"name\": \"Yönetici\",\n        \"statuses\": [\n            \"ACTIVE\",\n            \"PASSIVE\"\n        ]\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/roles"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 27 Jun 2024 08:06:06 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-06-27T11:06:06.745384\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"6bdd52d0-2df3-4872-91f8-7a5c2ff459b8\",\n                \"name\": \"Kurum Yöneticisi\",\n                \"status\": \"ACTIVE\",\n                \"createdAt\": \"2024-06-27T08:04:40\",\n                \"updatedAt\": null\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 1,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 1,\n        \"orderedBy\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"ASC\"\n            }\n        ],\n        \"filteredBy\": {\n            \"name\": \"Yönetici\",\n            \"statuses\": [\n                \"PASSIVE\",\n                \"ACTIVE\"\n            ],\n            \"institutionId\": \"d95b59c7-9ac1-4be3-a981-33af1d3f8386\"\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "roles/summary",
+							"id": "2ded7488-a46b-4b64-843c-ca4772dcf36e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/roles/summary",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Rollerin `id` ve `name` bilgilerini Listelemek için kullanılır.\n    \n- Bu servise `user:detail`, `user:create`, `user:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_ROLE` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı rollerin listelenmesi gerekmektedir."
+							},
+							"response": [
+								{
+									"id": "60bcb02d-a7c5-42b5-af0f-7e2392dc3b33",
+									"name": "All",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/roles/summary"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 04 May 2023 20:52:09 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-04T20:52:09.712591823\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": [\n        {\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\n            \"name\": \"Kullanıcı Yönetimi\"\n        },\n        {\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n            \"name\": \"Rol Yönetimi\"\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "role/{id}",
+							"id": "b87134cd-3538-4752-ad7b-26ceb3c69bd9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/role/{id}",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Rol Detayını görüntülemek için kullanılır. `id` bilgisi verilen rolün detayını görüntüler.\n    \n- Bu servise sadece `role:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ROLE` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı rolün görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: İlgili role ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "59327db7-911c-4a52-a41f-a4a38f7756e4",
+									"name": "role/{id}",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/role/0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 07 May 2023 17:48:06 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T20:48:06.398791\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2023-05-07T09:45:08\",\n        \"updatedUser\": null,\n        \"updatedAt\": null,\n        \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\n        \"name\": \"Kurum Yöneticisi\",\n        \"status\": \"ACTIVE\",\n        \"permissions\": [\n            {\n                \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n                \"name\": \"role:list\",\n                \"category\": \"ROLE_MANAGEMENT\"\n            }\n        ]\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "role",
+							"id": "853dc780-3c35-4fb3-883a-9d0a76ccf8a4",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Kullanıcı Yönetimi\",\n    \"permissionIds\": [\n        \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n        \"64a19f8b-34bb-450c-adad-e311c5d416d1\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/role",
+								"description": "- Bu servis ilgili Yöneticiye ait Kuruma yeni bir Rol oluşturmak için kullanılır.\n    \n- Bu servise sadece `role:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ROLE` tablosuna statüsü `ACTIVE` olan bir kayıt ekler.\n    \n- Oluşturulan Rol, oluşturma servisi çağıran kuruma ait bir rol olmalıdır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `name`: Role Ait İsim Bilgisi\n    \n    - [Rol Adı Alanı için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/163250220/Rol+Ad+Alan+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1-i%C3%A7in-Validasyon-Kurallar%C4%B1)\n        \n- `permissionIds`: Rolün Sahip Olması İstenen Yetkilerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her bir elemanı UUID formatında olmalıdır."
+							},
+							"response": []
+						},
+						{
+							"name": "role/{id}",
+							"id": "0fb726fd-bc33-419a-a730-0cc9fd3a6746",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Kullanıcı Yönetimi\",\n    \"permissionIds\": [\n        \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n        \"64a19f8b-34bb-450c-adad-e311c5d416d1\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/role/{id}",
+								"description": "- Bu servise sadece `role:update` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ROLE` tablosunda var olan kaydı günceller.\n    \n- Sadece kuruma bağlı rolün güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Role Ait ID Bilgisi\n    \n\n**İstek Parametreleri**\n\n- `name`: Role Ait İsim Bilgisi\n    \n    - [Rol Adı Alanı için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/163250220/Rol+Ad+Alan+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1-i%C3%A7in-Validasyon-Kurallar%C4%B1)\n        \n- `permissionIds`: Rolün Sahip Olması İstenen Yetkilerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her elemanı UUID formatında olmalıdır."
+							},
+							"response": []
+						},
+						{
+							"name": "role/{id}/passivate",
+							"id": "bb243cba-ff9f-4095-a924-6b20a1609b8f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/role/{id}/passivate",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Rolün statüsünü `PASSIVE` olarak güncellemek için kullanılır. `id` bilgisi verilen Rolü pasifleştirir.\n    \n- Bu servise sadece `role:update` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ROLE` tablosunda var olan kaydı günceller.\n    \n- İlgili rolün pasifleştirilebilmesi için hiçbir kullanıcıya tanımlı olmamalı ve sadece `ACTIVE` statüsüne sahip olmalıdır.\n    \n- Sadece kuruma bağlı rolün pasifleştirilebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Role Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": []
+						},
+						{
+							"name": "role/{id}/activate",
+							"id": "bcc8aa22-1d30-4d93-82cb-cb23f054c4d9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/role/{id}/activate",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Rolün statüsünü `ACTIVE` olarak güncellemek için kullanılır. `id` bilgisi verilen Rolün aktifleştirir.\n    \n- Bu servise sadece `role:update` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ROLE` tablosunda var olan kaydı günceller.\n    \n- İlgili rolün aktifleştirilebilmesi için `PASSIVE` statüsünde olmalıdır.\n    \n- Sadece kuruma bağlı rolün aktifleştirilebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Role Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": []
+						},
+						{
+							"name": "role/{id}",
+							"id": "8f2bd74f-e023-4a11-920d-1ae87e3a49cd",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/role/{id}",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Rolü silmek için kullanılır. `id` bilgisi verilen rolü siler.\n    \n- Bu servise sadece `role:delete` yetkisine sahip kullanıcılar erişebilir.\n    \n- `AYS_ROLE` tablosundaki ilgili kaydın statüsünü `DELETED` olarak günceller.\n    \n- İlgili rolün silinebilmesi için hiçbir kullanıcıya tanımlı olmamalıdır.\n    \n- Sadece kuruma bağlı rolün silinebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Role Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "a24d330e-874c-4b73-8b0e-fa1dbe8c47ae",
+									"name": "role/{id}",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/role/42605bfa-951b-42ba-a081-cc76369bd3fa"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 07 May 2023 18:26:06 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+								}
+							]
+						}
+					],
+					"id": "f7610cd6-2aad-44e6-bf3a-5dcd1ddb46dd",
+					"description": "Kurum tarafındaki rol yönetiminin yapılabileceği servistir."
+				},
+				{
+					"name": "Permission Service",
+					"item": [
+						{
+							"name": "permissions",
+							"id": "723c1727-dc1b-4b89-b21a-be7af549ae14",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/permissions",
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Yetkilerin `id` ve `name` bilgisini Listelemek için kullanılır.\n    \n- Bu servise `role:detail`, `role:create`, `role:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_PERMISSION` tablosundaki verilerden yararlanır."
+							},
+							"response": [
+								{
+									"id": "78d8ac8a-1115-424d-b6f6-01aa255f4939",
+									"name": "All",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/permissions"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 27 Jun 2024 07:10:58 GMT",
+											"enabled": true
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"enabled": true
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked",
+											"enabled": true
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Origin",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method",
+											"enabled": true
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers",
+											"enabled": true
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"enabled": true
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate",
+											"enabled": true
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache",
+											"enabled": true
+										},
+										{
+											"key": "Expires",
+											"value": "0",
+											"enabled": true
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"enabled": true
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-06-27T07:10:58.03725305\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": [\n        {\n            \"id\": \"20ea9a3d-3c4d-488f-9866-529c5081c7f3\",\n            \"name\": \"role:delete\",\n            \"category\": \"ROLE_MANAGEMENT\"\n        },\n        {\n            \"id\": \"c22662f4-43e3-4f37-a607-a42a7e5a809b\",\n            \"name\": \"role:detail\",\n            \"category\": \"ROLE_MANAGEMENT\"\n        },\n        {\n            \"id\": \"2fa3c657-0d26-47ae-a113-e2daad97f45d\",\n            \"name\": \"role:create\",\n            \"category\": \"ROLE_MANAGEMENT\"\n        },\n        {\n            \"id\": \"df08d86d-0cf2-440f-8d24-395fe2d05199\",\n            \"name\": \"application:evacuation:detail\",\n            \"category\": \"EVACUATION_APPLICATION_MANAGEMENT\"\n        },\n        {\n            \"id\": \"36d536d2-4dad-4076-bf25-f8b2cce2ac51\",\n            \"name\": \"user:list\",\n            \"category\": \"USER_MANAGEMENT\"\n        },\n        {\n            \"id\": \"9c0a2119-1a12-4235-bfd3-99731ad9f2fd\",\n            \"name\": \"user:delete\",\n            \"category\": \"USER_MANAGEMENT\"\n        },\n        {\n            \"id\": \"03842dd5-0057-46ea-8574-40e1599f5c63\",\n            \"name\": \"application:evacuation:update\",\n            \"category\": \"EVACUATION_APPLICATION_MANAGEMENT\"\n        },\n        {\n            \"id\": \"57d13a91-a82f-49f8-a2ec-b45e72c660c7\",\n            \"name\": \"application:evacuation:list\",\n            \"category\": \"EVACUATION_APPLICATION_MANAGEMENT\"\n        },\n        {\n            \"id\": \"4ff193e0-4125-4f53-99a6-378f08a527c3\",\n            \"name\": \"user:detail\",\n            \"category\": \"USER_MANAGEMENT\"\n        },\n        {\n            \"id\": \"f39ac764-0a0f-4b61-8864-714f2d87d4e8\",\n            \"name\": \"institution:page\",\n            \"category\": \"PAGE\"\n        },\n        {\n            \"id\": \"b612786c-f50c-412a-ad74-c77d654c06d2\",\n            \"name\": \"landing:page\",\n            \"category\": \"PAGE\"\n        },\n        {\n            \"id\": \"e5a741d2-78b6-4cc1-8898-689459bc22f5\",\n            \"name\": \"user:update\",\n            \"category\": \"USER_MANAGEMENT\"\n        },\n        {\n            \"id\": \"7c526b19-c0e2-4a59-af70-96a62dd758a2\",\n            \"name\": \"user:create\",\n            \"category\": \"USER_MANAGEMENT\"\n        },\n        {\n            \"id\": \"17dd50f6-61fe-4a30-a136-d9b80649e7fe\",\n            \"name\": \"role:list\",\n            \"category\": \"ROLE_MANAGEMENT\"\n        },\n        {\n            \"id\": \"bf5e950d-c210-4b0a-8964-8fe1332c6a76\",\n            \"name\": \"role:update\",\n            \"category\": \"ROLE_MANAGEMENT\"\n        }\n    ]\n}"
+								}
+							]
+						}
+					],
+					"id": "0c8eaa2c-1675-428a-b3d3-3728abf5300f",
+					"description": "Kurum tarafındaki yetki listeleme işlemlerinin yapılabileceği servistir."
+				},
+				{
+					"name": "Advert Management Service",
+					"item": [
+						{
+							"name": "institution-advert",
+							"id": "abfc94be-b4bf-4702-a0c6-d26864184daa",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/institution-advert",
+								"description": "- Bu servis ilgili Yöneticiye ait Kuruma yeni bir ilan oluşturmak için kullanılır.\n    \n- Bu servise sadece `advert:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosuna statüsü `IN_APPLICATION_PROCESS` olan bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az 10, en fazla 100 karakter olmalı.\n        \n- `description`: İlanı verilen görenin detaylı tanımını veya açıklamasını içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az 10, en fazla 4096 karakter olmalı.\n        \n- `applicationDeadline`: İlana başvurulması gereken son günün tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece tarih bilgisi olmalı.\n        \n    - Sadece bulunulan gün veya sonrası bir tarih olmalı.\n        \n- `startedAt`: Kurumun ilanının başlangıç tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Tarih ve saat bilgisi olmalı.\n        \n    - Bulunulan gün veya sonraki bir tarih ve saat seçilebilmeli.\n        \n- `finishedAt`: Kurumun ilanının bitiş tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Tarih ve saat bilgisi olmalı.\n        \n    - Başlangıç tarihinden sonraki bir tarih ve saat seçilebilmeli.\n        \n- `maxParticipationCount`: Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n    \n    - Zorunlu alandır.\n        \n    - Sadece sayı olmalıdır. Max 3 basamaklı olmalı.\n        \n- `participationType`: Kurumun ihtiyacı olan görev için gönüllü çalışan tipi bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n        \n- `location`: Kurum ilanının konum bilgisini içerir.\n    \n    - Eğer fiziksel bir ilan ise açık adres ve şehir bilgisi görüntülenir.\n        \n        - 'address': Kurumun görev için tanımladığı adres bilgisini içerir. Max 250 karakter olmalı.\n            \n        - 'city': Kurumun görev için tanımladığı şehir bilgisini içerir. Max 100 karakter olmalı.\n            \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n            \n    - Eğer çevrimiçi bir ilan ise bağlantı bilgisi görüntülenir.\n        \n        - 'externalLink': Kurumun görev için tanımladığı bağlantı bilgilerini içerir.\n            \n- `responsible`: Kurumun ilanında sorumlu kişi veya kişileri içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az bir kişi sorumlu olarak tanımlanmalı."
+							},
+							"response": [
+								{
+									"id": "6e2341ea-238e-486e-8f03-b835496b18a1",
+									"name": "institution-advert",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/institution-advert"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "institution-adverts",
+							"id": "3628fd53-326e-4828-93fd-e9ab0d1ec8cb",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/adverts",
+								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece `advert:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` ve `AYS_ADVERT_APPLICATION` tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n- filter : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - Zorunlu alandır.\n            \n        - En az 10, en fazla 100 karakter olmalı.\n            \n    - `participationType`: Kurumun ihtiyacı olan görev için gönüllü çalışan tipi bilgisini içerir.\n        \n        - Zorunlu alandır.\n            \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `status`: İlanın hangi durumda olduğunu belirtir.\n        \n        - Zorunlu alandır.\n            \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `INACCESSIBLE`, `CANCELLED` değerlerini alabilir.\n            \n    - `city` : İlanda istenen görevin yapılması beklenen şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n- sort : Sıralamak için kullanılır.\n    \n    - `currentParticipationCount`: İlana başvuran gönüllü sayısını içerir.\n        \n        - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmelidir.\n            \n    - `startedAt`: Kurumun ilanının başlangıç tarih bilgisini içerir.\n        \n        - En yakından en eskiye doğru ilanlar ekrana getirilmelidir.\n            \n    - `maxParticipationCount`: Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n        \n        - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmelidir.\n            \n    - `createdAt` : İlanın oluşturulduğu zamanı içerir.\n        \n        - En yakından en eskiye doğru ilanlar ekrana getirilmelidir."
+							},
+							"response": [
+								{
+									"id": "b0ffd819-69b6-4afd-8992-ca06a4f35745",
+									"name": "institution-adverts",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": "{{API_URL}}/api/v1/adverts"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"10ba7411-8a08-465a-8331-4447371dc753\",\n                \"title\": \"Android Developer\",\n                \"participationType\": \"ONLINE\",\n                \"currentParticipationCount\": 5,\n                \"maxParticipationCount\": 10,\n                \"applicationDeadline\": \"2026-15-01\",\n                \"startedAt\": \"2025-01-12\",\n                \"finishedAt\": \"2025-30-12\",\n                \"status\": \"IN_APPLICATION_PROCESS\",\n                \"createdAt\": \"2024-04-06T13:31:03\"\n            },\n            {\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\n                \"title\": \" Kepçe operatötü\",\n                \"participationType\": \"PHYSICALLY\",\n                \"currentParticipationCount\": 10,\n                \"maxParticipationCount\": 20,\n                \"applicationDeadline\": \"2025-15-08\",\n                \"startedAt\": \"2025-01-08\",\n                \"finishedAt\": \"2025-15-08\",\n                \"status\": \"IN_APPLICATION_PROCESS\",\n                \"createdAt\": \"2025-01-08T13:31:03\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 10,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 2,\n        \"sortedBy\": null,\n        \"filteredBy\": null\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "institution-advert/{id}",
+							"id": "bcf4cdb4-9542-4b88-85e6-a64c4ce5bb30",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "- Bu servis ilgili kurum ilanına ait detayları görüntülemek için kullanılır. `id` bilgisi verilen ilanın detayları görüntüler.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilanın görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "1fbdf50d-7d8b-420f-a630-8fd02915cbd2",
+									"name": "institution-advert/{id}",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										]
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T20:48:06.398791\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\n        \"title\": \"Android Developer\",\n        \"status\": \"IN_APPLICATION_PROCCESS\",\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\n        \"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\n        \"city\": \"Ankara\",\n        \"externalLink\": \"https://www.ankamall.com.tr/\",\n        \"applicationDeadline\": \"2026-15-01\",\n        \"startedAt\": \"2025-01-12\",\n        \"finishedAt\": \"2025-30-12\",\n        \"maxParticipationCount\": 10,\n        \"currentParticipationCount\": 2,\n        \"participationType\": \"ONLINE\",\n        \"responsible\": [\n            \"Ahmet Yılmaz\",\n            \"Sevda Seher\"\n        ],\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2025-05-07T09:45:08\",\n        \"updatedUser\": null,\n        \"updatedAt\": null\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "institution-advert/{id}",
+							"id": "a38357a2-9502-441d-8ace-1ee92d5e5280",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/v1/institution-advert/{id}",
+								"description": "- Bu servis ilgili kuruma ait ilanda var olan bilgileri güncellemek için kullanılır. `id` bilgisi verilen Kurum ilanının bilgilerini günceller.\n    \n- Bu servise sadece `advert:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan kaydı günceller.\n    \n- Sadece kuruma bağlı ilanın güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n\n---\n\n**İstek Parametreleri**\n\n- `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az 10, en fazla 100 karakter olmalı.\n        \n- `description`: İlanı verilen görenin detaylı tanımını veya açıklamasını içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az 10, en fazla 4096 karakter olmalı.\n        \n- `applicationDeadline`: İlana başvurulması gereken son günün tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece tarih bilgisi olmalı.\n        \n    - Sadece bulunulan gün veya sonrası bir tarih olmalı.\n        \n- `startedAt`: Kurumun ilanının başlangıç tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Tarih ve saat bilgisi olmalı.\n        \n    - Bulunulan gün veya sonraki bir tarih ve saat seçilebilmeli.\n        \n- `finishedAt`: Kurumun ilanının bitiş tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Tarih ve saat bilgisi olmalı.\n        \n    - Başlangıç tarihinden sonraki bir tarih ve saat seçilebilmeli.\n        \n- `maxParticipationCount`: Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n    \n    - Zorunlu alandır.\n        \n    - Sadece sayı olmalıdır. Max 3 basamaklı olmalı.\n        \n- `participationType`: Kurumun ihtiyacı olan görev için gönüllü çalışan tipi bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n        \n- `location`: Kurum ilanının konum bilgisini içerir.\n    \n    - Eğer fiziksel bir ilan ise açık adres ve şehir bilgisi görüntülenir.\n        \n        - 'address': Kurumun görev için tanımladığı adres bilgisini içerir. Max 250 karakter olmalı.\n            \n        - 'city': Kurumun görev için tanımladığı şehir bilgisini içerir. Max 100 karakter olmalı.\n            \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n            \n    - Eğer çevrimiçi bir ilan ise bağlantı bilgisi görüntülenir.\n        \n        - 'externalLink': Kurumun görev için tanımladığı bağlantı bilgilerini içerir.\n            \n- `responsible`: Kurumun ilanında sorumlu kişi veya kişileri içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az bir kişi sorumlu olarak tanımlanmalı."
+							},
+							"response": [
+								{
+									"id": "043ba616-6537-4b19-a5e1-664ee2b4159c",
+									"name": "institution-advert/{id}",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/institution-advert/15"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "advert-applies",
+							"id": "bff01cd2-d846-4fe4-a775-4503cd3c7649",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "4a8aee73-c7f7-4bf4-904d-a13cde0ed519",
+									"name": "advert-applies",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										]
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n\t\"time\": \"2025-04-06T13:35:47.774102186\",\r\n\t\"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n\t\"isSuccess\": true,\r\n\t\"response\": {\r\n\t\t\"content\": [\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"emailAddress\": \"john.doe@afetyonetimsistemi.org\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5054567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 5,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2025-04-06T13:31:03\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c92b86\",\r\n                \"firstName\": \"Joe\",\r\n                \"lastName\": \"Smith\",\r\n                \"emailAddress\": \"joe.sm@gmail.com\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5354567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 12,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2024-04-06T15:45:03\"\r\n\t\t\t}\r\n\t\t]\r\n\t}\r\n}"
+								}
+							]
+						}
+					],
+					"id": "f3604b59-9413-49e4-a400-b12684814195",
+					"description": "Kurumların ilanlarını yönettikleri servistir."
+				}
+			],
+			"id": "4838ad6c-8abf-4dd9-b434-1a440e2ce27b",
+			"description": "🏢 **Yönetim Paneli Servisleri**, genel olarak Afet Yönetim Sistemi özelinde kurum içi yönetimsel işlerin yönetiminin yapıldığı bölümdür. Kurum/Kuruluş Yönetici veya Personelleri, ilgili Web Sitesi üzerinden kullanılabilen, sadece yöneticilere ve kurum personellerine ait olan, Gönüllü Kullanıcı ve Yönetici Yönetimi, İhtiyaç Yönetimi, Stok Yönetimi, İhtiyaçların Karşılanması aşamalarının aktif olarak takip edilebilmesi gibi süreçlerin yönetiminin yapılacağı yönetim bölümüdür. Ek olarak çoklu kurum desteği verilmektedir. Tüm kurumların birbiriyle bağımsız hareket edebileceği bir alt yapı geliştirilmektedir.",
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "{{ACCESS_TOKEN}}"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0256d196-d697-4fd0-84f4-9b78a1311c2e",
+						"type": "text/javascript",
+						"exec": [
+							"/** @author agitrubard */",
+							"",
+							"pm.environment.set(\"TOKEN_GENERATED_TIME\", new Date());",
+							"",
+							"var sourcePage = pm.environment.get(\"SOURCE_PAGE\")",
+							"if (sourcePage) {",
+							"    console.log(sourcePage)",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"API_URL\") + \"/api/v1/authentication/token\",",
+							"        method: 'POST',",
+							"        header: {",
+							"            'Accept': 'application/json',",
+							"            'Content-Type': 'application/json'",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                emailAddress: pm.environment.get(\"EMAIL_ADDRESS\"),",
+							"                password: pm.environment.get(\"PASSWORD\"),",
+							"                sourcePage: sourcePage",
+							"            }),",
+							"        }",
+							"    },",
+							"    (error, result) => {",
+							"        var resultJson = result.json()",
+							"        if (resultJson.isSuccess === true) {",
+							"            pm.environment.set(\"ACCESS_TOKEN\", resultJson.response.accessToken)",
+							"            pm.environment.set(\"REFRESH_TOKEN\", resultJson.response.refreshToken)",
+							"            return",
+							"        }",
+							"",
+							"        pm.environment.unset(\"ACCESS_TOKEN\")",
+							"        console.log(resultJson)",
+							"    });",
+							"    return",
+							"}",
+							"    ",
+							"/** @author agitrubard */"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d5d1740f-5928-4bbd-9541-1aeb8adc9df1",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7aa7f2a3-4b96-4a00-8c1f-172afa1add06",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0b5b76eb-3d43-40f5-aa1b-018023a3dca5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
