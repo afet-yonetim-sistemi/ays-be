@@ -36,6 +36,10 @@ class AysAuditLogRepositoryKinesisImpl extends AysAbstractAuditLogRepository {
             "/public/actuator"
     );
 
+    private static final List<Integer> EXCLUDED_HTTP_STATUS_CODES = List.of(
+            429
+    );
+
 
     /**
      * Persists an {@link AysAuditLogEntity} to an AWS Kinesis stream.
@@ -65,6 +69,13 @@ class AysAuditLogRepositoryKinesisImpl extends AysAbstractAuditLogRepository {
         final boolean isRequestPathExcluded = EXCLUDED_PATH_PREFIXES.stream().anyMatch(requestPath::startsWith);
         if (isRequestPathExcluded) {
             log.trace("Audit log will not be sent to Kinesis because the request path is excluded: {}", requestPath);
+            return;
+        }
+
+        final Integer responseHttpStatusCode = auditLogEntity.getResponseHttpStatusCode();
+        final boolean isResponseHttpStatusCodeExcluded = EXCLUDED_HTTP_STATUS_CODES.stream().anyMatch(responseHttpStatusCode::equals);
+        if (isResponseHttpStatusCodeExcluded) {
+            log.trace("Audit log will not be sent to Kinesis because the response http status code is excluded: {}", responseHttpStatusCode);
             return;
         }
 
