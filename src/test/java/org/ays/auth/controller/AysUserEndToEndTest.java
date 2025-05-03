@@ -975,7 +975,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isConflict())
                 .andExpect(AysMockResultMatchersBuilders.message()
-                        .value("user is not active! userId:" + userId));
+                        .value("user is not active!"));
 
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findById(userId);
