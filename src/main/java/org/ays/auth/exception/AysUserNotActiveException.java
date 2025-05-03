@@ -16,12 +16,10 @@ public final class AysUserNotActiveException extends AysConflictException {
     private static final long serialVersionUID = 3508025652421021710L;
 
     /**
-     * Constructs a new {@link AysUserNotActiveException} with the specified userId.
-     *
-     * @param userId the id of the user that is not active.
+     * Constructs a new {@link AysUserNotActiveException} with the specified detail message.
      */
-    public AysUserNotActiveException(String userId) {
-        super("user is not active! userId:" + userId);
+    public AysUserNotActiveException() {
+        super("user is not active!");
     }
 
 }
