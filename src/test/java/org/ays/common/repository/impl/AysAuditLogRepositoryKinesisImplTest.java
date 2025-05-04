@@ -97,6 +97,41 @@ class AysAuditLogRepositoryKinesisImplTest extends AysUnitTest {
                 .putRecord(Mockito.any(PutRecordRequest.class));
     }
 
+    @ValueSource(ints = {
+            429
+    })
+    @ParameterizedTest
+    void givenValidAuditLogEntity_whenResponseHttpStatusCodeIsExcluded_thenLogMessageToConsole(Integer mockResponseHttpStatusCode) {
+
+        // Given
+        AysAuditLogEntity mockAuditLogEntity = new AysAuditLogEntityBuilder()
+                .withId("94cc0aa6-c430-4286-93d2-afc9ae3be55b")
+                .withoutUserId()
+                .withRequestIpAddress("127.0.0.1")
+                .withRequestReferer("http://localhost:3000")
+                .withRequestHttpMethod("GET")
+                .withRequestPath("/api/v1/user/a3df6f73-b459-413f-8d93-8f99ac1a7c45")
+                .withRequestHttpHeader("Content-Type: application/json")
+                .withoutRequestBody()
+                .withResponseHttpStatusCode(mockResponseHttpStatusCode)
+                .withRequestedAt(LocalDateTime.now())
+                .withRespondedAt(LocalDateTime.now().plusNanos(2456))
+                .build();
+
+        // Then
+        auditLogRepository.save(mockAuditLogEntity);
+
+        String logMessagePrefix = "Audit log will not be sent to Kinesis because the response http status code is excluded: ";
+        Optional<String> logMessage = logTracker.findMessage(Level.TRACE, logMessagePrefix);
+        Assertions.assertTrue(logMessage.isPresent());
+        Assertions.assertTrue(logMessage.get().startsWith(logMessagePrefix));
+        Assertions.assertTrue(logMessage.get().endsWith(mockResponseHttpStatusCode.toString()));
+
+        // Verify
+        Mockito.verify(kinesisClient, Mockito.never())
+                .putRecord(Mockito.any(PutRecordRequest.class));
+    }
+
     @Test
     void givenValidAuditLogEntity_whenAuditLogIsNotParsableToJson_thenLogAuditLogKinesisJSONToConsole() {
 
