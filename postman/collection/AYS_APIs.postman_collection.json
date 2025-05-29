@@ -1308,7 +1308,8 @@
 									},
 									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"description": "- Bu servis ilgili kurum ilanına başvuran adayların doldurması gereken başvuru formudur.\n    \n- Bu formd\n    \n- Bu servise herkes erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---"
 									},
 									"response": []
 								}
