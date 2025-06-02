@@ -1,7 +1,8 @@
 package org.ays.auth.exception;
 
-import java.io.Serial;
 import org.ays.common.exception.AysConflictException;
+
+import java.io.Serial;
 
 /**
  * Exception thrown when a user is not in a passive state.
@@ -13,13 +14,15 @@ public final class AysUserNotPassiveException extends AysConflictException {
      * Unique serial version ID.
      */
     @Serial
-    private static final long serialVersionUID = 2243994749508397732L;
+    private static final long serialVersionUID = 159529363134095650L;
 
     /**
-     * Constructs a new {@link AysUserNotPassiveException} with the specified detail message.
+     * Constructs a new {@link AysUserNotPassiveException} with the specified detail message and given userId.
      *
+     * @param userId the id of the user that is not passive.
      */
-    public AysUserNotPassiveException() {
-        super("user is not passive!");
+    public AysUserNotPassiveException(final String userId) {
+        super("user is not passive! userId:" + userId);
     }
+
 }
