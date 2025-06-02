@@ -63,6 +63,15 @@ public class AysUser extends BaseDomainModel {
     }
 
     /**
+     * Checks if the user's status is not passive.
+     *
+     * @return {@code true} if the user's status is not {@link AysUserStatus#PASSIVE}, otherwise {@code false}.
+     */
+    public boolean isNotPassive() {
+        return this.status != AysUserStatus.PASSIVE;
+    }
+
+    /**
      * Checks if the user's status is deleted.
      *
      * @return {@code true} if the user's status is {@link AysUserStatus#DELETED}, otherwise {@code false}.

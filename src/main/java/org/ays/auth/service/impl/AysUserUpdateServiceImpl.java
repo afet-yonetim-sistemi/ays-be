@@ -108,9 +108,9 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      * This method retrieves the user by the provided ID and activates the user
      *
      * @param id The unique identifier of the user to be activated.
-     * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
+     * @throws AysUserNotExistByIdException  if a user with the given ID does not exist.
      * @throws AysUserAlreadyActiveException if a user is already in an active state and cannot be activated.
-     * @throws AysUserNotPassiveException   if the user is not in a passive state and cannot be activated.
+     * @throws AysUserNotPassiveException    if the user is not in a passive state and cannot be activated.
      */
     @Override
     public void activate(String id) {
@@ -123,8 +123,8 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
             throw new AysUserAlreadyActiveException();
         }
 
-        if (!user.isPassive()) {
-            throw new AysUserNotPassiveException();
+        if (user.isNotPassive()) {
+            throw new AysUserNotPassiveException(user.getId());
         }
 
         user.activate();
@@ -136,9 +136,9 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
      * This method retrieves the user by the provided ID and deactivates the user.
      *
      * @param id The unique identifier of the user to be passivated.
-     * @throws AysUserNotExistByIdException if a user with the given ID does not exist.
+     * @throws AysUserNotExistByIdException   if a user with the given ID does not exist.
      * @throws AysUserAlreadyPassiveException if the user is already in a passive state.
-     * @throws AysUserNotActiveException if the user is not in an active state.
+     * @throws AysUserNotActiveException      if the user is not in an active state.
      */
     @Override
     public void passivate(String id) {
