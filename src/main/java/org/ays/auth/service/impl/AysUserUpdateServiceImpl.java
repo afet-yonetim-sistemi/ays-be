@@ -151,7 +151,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
             throw new AysUserAlreadyPassiveException();
         }
 
-        if (!user.isActive()) {
+        if (user.isNotActive()) {
             throw new AysUserNotActiveException(id);
         }
 

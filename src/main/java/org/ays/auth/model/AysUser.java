@@ -54,6 +54,15 @@ public class AysUser extends BaseDomainModel {
     }
 
     /**
+     * Checks if the user's status is not active.
+     *
+     * @return {@code true} if the user's status is not {@link AysUserStatus#ACTIVE}, otherwise {@code false}.
+     */
+    public boolean isNotActive() {
+        return this.status != AysUserStatus.ACTIVE;
+    }
+
+    /**
      * Checks if the user's status is passive.
      *
      * @return {@code true} if the user's status is {@link AysUserStatus#PASSIVE}, otherwise {@code false}.
