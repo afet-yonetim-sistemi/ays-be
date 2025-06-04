@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.4</version>
+        <version>3.4.6</version>
         <relativePath/>
     </parent>
 
@@ -26,13 +26,13 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.version>3.14.0</maven.compiler.version>
         <maven-compiler-plugin.version>${maven.compiler.version}</maven-compiler-plugin.version>
-        <mysql.version>9.2.0</mysql.version>
-        <awssdk.version>2.31.16</awssdk.version>
+        <mysql.version>9.3.0</mysql.version>
+        <awssdk.version>2.31.54</awssdk.version>
 
         <ays-be-encryption-utility.version>1.0.2</ays-be-encryption-utility.version>
         <libphonenumber.version>8.13.55</libphonenumber.version>
-        <testcontainers.version>1.20.6</testcontainers.version>
-        <liquibase.version>4.30.0</liquibase.version>
+        <testcontainers.version>1.21.1</testcontainers.version>
+        <liquibase.version>4.32.0</liquibase.version>
         <easy-random-core.version>5.0.0</easy-random-core.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
@@ -40,12 +40,14 @@
         <bouncycastle.version>1.80</bouncycastle.version>
 
         <bucket4j-core.version>8.10.1</bucket4j-core.version>
-        <guava.version>33.4.6-jre</guava.version>
+        <guava.version>33.4.8-jre</guava.version>
 
         <objenesis.version>3.4</objenesis.version>
-        <commons-text.version>1.13.0</commons-text.version>
+        <commons-text.version>1.13.1</commons-text.version>
+        <commons-collections4.version>4.5.0</commons-collections4.version>
         <logback.version>1.5.18</logback.version>
-        <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
+        <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
+        <error_prone_annotations.version>2.38.0</error_prone_annotations.version>
 
         <jacoco.version>0.8.13</jacoco.version>
     </properties>
@@ -125,6 +127,18 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.errorprone</groupId>
+            <artifactId>error_prone_annotations</artifactId>
+            <version>${error_prone_annotations.version}</version>
         </dependency>
         <!-- ======================= -->
         <!-- rate limit dependencies -->
@@ -167,6 +181,12 @@
             <artifactId>jjwt-gson</artifactId>
             <version>${jsonwebtoken.version}</version>
             <scope>compile</scope> <!-- Not runtime -->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -191,6 +211,10 @@
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-text</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-collections4</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -198,6 +222,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>${commons-text.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
         </dependency>
 
         <dependency>

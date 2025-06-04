@@ -15,7 +15,7 @@ COPY settings.xml settings.xml
 RUN mvn --settings settings.xml clean install -DskipTests
 
 # Stage 2: Run stage
-FROM amazoncorretto:17.0.14-al2023-headless
+FROM amazoncorretto:17.0.15-al2023-headless
 
 # Set working directory
 WORKDIR /app
