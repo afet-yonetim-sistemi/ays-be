@@ -780,7 +780,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isConflict())
                 .andExpect(AysMockResultMatchersBuilders.message()
-                        .value("user is not passive!"));
+                        .value("user is not passive! userId:" + user.getId()));
 
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findById(id);
