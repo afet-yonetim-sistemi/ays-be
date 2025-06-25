@@ -85,53 +85,33 @@ First of all, generate personal access token with this url : https://github.com/
 - Then click on "Generate Token"
 - In case of errors, please check [here](#Common Maven errors)
 
-# Before Running Locally On IDE
+# Setup Project
 
-> 0. If you don't want to replace your `~/m2/settings.xml` file, use following command to build the project (go to the root folder of the application): `mvn -gs template-settings.xml clean install -U`
-> 1. If you have `~/m2/settings.xml` file in your computer, skip the step without reading the after section.
-     If you aren't using the `~/.m2/settings.xml` file to actively, you can be back up it before creating
-     the new `settings.xml` file, if you want. If you are using actively, after the perform step 3 you can
-     manually merge the `settings.xml` file in the project with the `~/.m2/settings.xml` file and skip step 2 and 4.
-> 2. While inside the project directory in the terminal; that is, when you are in the `~/afet-yonetim-sistemi/ays-be`
-     directory, run the command `cp template-settings.xml settings.xml`.
-> 3. In the settings.xml file within the project, replace the `{YOUR_GITHUB_USERNAME}` placeholder with your GitHub
-     username and replace `{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}` with the access token value you created on GitHub as
-     described in the instructions under the `'Instructions Before Building The Project'` section.
-> 4. If the `.m2` directory has not been created before, you can use the command `mkdir ~/.m2` and then run the
-     command `cp settings.xml ~/.m2/settings.xml` for copy the `settings.xml` file located in the project
-     to the `~/.m2` directory.
+Run the following command to set up the project:
+
+```shell
+sh setup/setup.sh
+```
 
 #### Don't forget to enable Lombok pre-processing in your IDE!
-
-## Building The Project With Tests
-
-```
-./mvnw clean install
-```
-
-## Building The Project Without Tests
-
-```
-./mvnw clean install -DskipTests
-```
 
 ## Running as Docker MySQL container
 
 Before running the project, you need to run the following command to start the MySQL container:
 
-```
+```shell
 docker compose up -d --build database
 ```
 
 If you want to recreate the MySQL container, you can run the following command:
 
-```
+```shell
 docker compose up --force-recreate -d --build database
 ```
 
 If you want to stop the MySQL container, you can run the following command:
 
-```
+```shell
 docker compose down -v database
 ```
 
@@ -139,27 +119,21 @@ docker compose down -v database
 
 # Running As Docker Container
 
-> 1. While inside the project directory in the terminal; that is, when you are in the `~/afet-yonetim-sistemi/ays-be`
-     directory, run the command `cp template-settings.xml settings.xml`.
-> 2. In the `settings.xml` file within the project, replace the `{YOUR_GITHUB_USERNAME}` placeholder with your GitHub
-     username and replace `{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}` with the access token value you created on GitHub as
-     described in the instructions under the `'Instructions Before Building The Project'` section.
-
 Before running the project, you need to run the following command to start the project container:
 
-```
+```shell
 docker compose up -d --build
 ```
 
 If you want to recreate the project container, you can run the following command:
 
-```
+```shell
 docker compose up --force-recreate -d --build 
 ```
 
 If you want to stop the project container, you can run the following command:
 
-```
+```shell
 docker compose down -v 
 ```
 
@@ -212,7 +186,7 @@ ZipException opening "bcprov-jdk18on-1.78.jar": zip END header not found
 
 #### Solution:
 
-> Make sure to remove bouncy castle from your .m2 folder then run `mvn clean install` again to download the packages.
+> Make sure to remove bouncy castle from your .m2 folder then run `./mvnw clean install` again to download the packages.
 
 ### 3. Can't download the package from the private repo:
 
@@ -228,7 +202,7 @@ or updates are forced -> [Help 1]
 
 #### Solution:
 
-> Use the following command to build the project: `mvn clean install -U -DskipTests`
+> Use the following command to build the project: `./mvnw clean install -U -DskipTests`
 
 ### 4. Email Configuration Errors:
 
