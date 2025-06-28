@@ -80,33 +80,12 @@ if [[ "$IS_OVERWRITE" == true ]]; then
   echo "📝 \033[44mCredentials setting up...\033[0m"
 
   sleep 1
-  cat <<EOL > settings.xml
-  <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                        http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
-      <profiles>
-          <profile>
-              <repositories>
-                  <repository>
-                      <id>org.ays</id>
-                      <url>https://maven.pkg.github.com/afet-yonetim-sistemi/ays-be-encryption-utility</url>
-                  </repository>
-              </repositories>
-          </profile>
-      </profiles>
+  cp template-settings.xml settings.xml
+  sed 's|'{YOUR_GITHUB_USERNAME}'|'${YOUR_GITHUB_USERNAME}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+  sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
-      <servers>
-          <server>
-              <id>org.ays</id>
-              <username>${YOUR_GITHUB_USERNAME}</username>
-              <password>${YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}</password>
-          </server>
-      </servers>
-  </settings>
-EOL
-  echo "🎉 \033[102mCredentials set successfully!\033[0m"
+  echo "🎉 \033[102mCredentials have been configured!\033[0m"
   echo ""
 else
   echo ""
