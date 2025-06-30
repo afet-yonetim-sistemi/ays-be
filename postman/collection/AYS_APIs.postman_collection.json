@@ -1337,15 +1337,22 @@
 													}
 												}
 											},
-											"_postman_previewlanguage": "",
-											"header": [],
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
 											"cookie": [
 												{
 													"expires": "Invalid Date"
 												}
 											],
 											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2024-04-06T13:35:47.774102186\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true\r\n}"
+											"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
 										}
 									]
 								}
