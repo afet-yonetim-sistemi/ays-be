@@ -1311,7 +1311,21 @@
 										"header": [],
 										"description": "- Bu servis ilgili kurum ilanına gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir. Ancak Başvuru formunun doldurulması için Kurum Gönüllüsü Ol Başvurusu yapılmış olmalı.\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n \n---"
 									},
-									"response": []
+									"response": [
+										{
+											"id": "bd20af3f-2b5b-44d4-93b6-f326bb2d20ef",
+											"name": "advert-application",
+											"originalRequest": {
+												"method": "POST",
+												"header": []
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": null
+										}
+									]
 								}
 							],
 							"id": "4fe9b267-fbd9-4ca0-bc51-00b7d25e221c",
