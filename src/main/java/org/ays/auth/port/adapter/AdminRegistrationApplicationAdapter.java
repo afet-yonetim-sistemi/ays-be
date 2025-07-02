@@ -5,6 +5,7 @@ import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationFilter;
 import org.ays.auth.model.entity.AdminRegistrationApplicationEntity;
 import org.ays.auth.model.mapper.AdminRegistrationApplicationEntityToDomainMapper;
+import org.ays.auth.model.mapper.AdminRegistrationApplicationEntityToDomainWithoutRelationsMapper;
 import org.ays.auth.model.mapper.AdminRegistrationApplicationToEntityMapper;
 import org.ays.auth.port.AdminRegistrationApplicationReadPort;
 import org.ays.auth.port.AdminRegistrationApplicationSavePort;
@@ -33,6 +34,7 @@ class AdminRegistrationApplicationAdapter implements AdminRegistrationApplicatio
 
 
     private final AdminRegistrationApplicationEntityToDomainMapper adminRegistrationApplicationEntityToDomainMapper = AdminRegistrationApplicationEntityToDomainMapper.initialize();
+    private final AdminRegistrationApplicationEntityToDomainWithoutRelationsMapper adminRegistrationApplicationEntityToDomainWithoutRelationsMapper = AdminRegistrationApplicationEntityToDomainWithoutRelationsMapper.initialize();
     private final AdminRegistrationApplicationToEntityMapper adminRegistrationApplicationToEntityMapper = AdminRegistrationApplicationToEntityMapper.initialize();
 
 
@@ -57,7 +59,7 @@ class AdminRegistrationApplicationAdapter implements AdminRegistrationApplicatio
         final Page<AdminRegistrationApplicationEntity> applicationEntitiesPage = adminRegistrationApplicationRepository
                 .findAll(specification, pageable);
 
-        final List<AdminRegistrationApplication> registerApplications = adminRegistrationApplicationEntityToDomainMapper
+        final List<AdminRegistrationApplication> registerApplications = adminRegistrationApplicationEntityToDomainWithoutRelationsMapper
                 .map(applicationEntitiesPage.getContent());
 
         return AysPage.of(
