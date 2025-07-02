@@ -5,6 +5,7 @@ import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserFilter;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.mapper.AysUserEntityToDomainMapper;
+import org.ays.auth.model.mapper.AysUserEntityToDomainWithoutRelationsMapper;
 import org.ays.auth.model.mapper.AysUserToEntityMapper;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
@@ -36,6 +37,7 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
     private final AysUserToEntityMapper userToEntityMapper = AysUserToEntityMapper.initialize();
     private final AysUserEntityToDomainMapper userEntityToDomainMapper = AysUserEntityToDomainMapper.initialize();
+    private final AysUserEntityToDomainWithoutRelationsMapper userEntityToDomainWithoutRelationsMapper = AysUserEntityToDomainWithoutRelationsMapper.initialize();
 
 
     /**
@@ -58,7 +60,7 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
         final Page<AysUserEntity> userEntitysPage = userRepository.findAll(specification, pageable);
 
-        final List<AysUser> users = userEntityToDomainMapper.map(userEntitysPage.getContent());
+        final List<AysUser> users = userEntityToDomainWithoutRelationsMapper.map(userEntitysPage.getContent());
 
         return AysPage.of(filter, userEntitysPage, users);
     }
