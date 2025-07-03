@@ -246,6 +246,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .withoutInstitution()
                         .withoutApplicant()
+                        .withHasObstaclePersonExist(false)
                         .build()
         );
 
@@ -363,7 +364,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(application.get().getApplicantPhoneNumber().getCountryCode(), applicationRequest.getApplicantPhoneNumber().getCountryCode());
         Assertions.assertEquals(application.get().getApplicantPhoneNumber().getLineNumber(), applicationRequest.getApplicantPhoneNumber().getLineNumber());
         Assertions.assertFalse(application.get().getIsInPerson());
-        Assertions.assertNull(application.get().getHasObstaclePersonExist());
+        Assertions.assertFalse(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
         Assertions.assertEquals("AYS", application.get().getCreatedUser());
     }
@@ -421,7 +422,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertNull(application.get().getApplicantPhoneNumber().getCountryCode());
         Assertions.assertNull(application.get().getApplicantPhoneNumber().getLineNumber());
         Assertions.assertTrue(application.get().getIsInPerson());
-        Assertions.assertNull(application.get().getHasObstaclePersonExist());
+        Assertions.assertFalse(application.get().getHasObstaclePersonExist());
         Assertions.assertNull(application.get().getNotes());
         Assertions.assertEquals("AYS", application.get().getCreatedUser());
     }
@@ -440,7 +441,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutApplicant()
                         .withSeatingCount(5)
                         .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
-                        .withoutHasObstaclePersonExist()
+                        .withHasObstaclePersonExist(false)
                         .withoutNotes()
                         .build()
         );
