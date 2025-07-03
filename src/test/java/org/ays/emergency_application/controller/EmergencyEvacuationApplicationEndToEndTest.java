@@ -17,6 +17,7 @@ import org.ays.emergency_application.model.request.EmergencyEvacuationApplicatio
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationUpdateRequestBuilder;
 import org.ays.emergency_application.model.request.EmergencyEvacuationRequestBuilder;
 import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationResponse;
+import org.ays.emergency_application.model.response.EmergencyEvacuationApplicationsResponse;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationReadPort;
 import org.ays.emergency_application.port.EmergencyEvacuationApplicationSavePort;
 import org.ays.emergency_application.repository.EmergencyEvacuationApplicationRepository;
@@ -103,7 +104,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminToken.getAccessToken(), mockListRequest);
 
-        AysResponse<AysPageResponse<EmergencyEvacuationApplication>> mockResponse = AysResponseBuilder.successPage();
+        AysResponse<AysPageResponse<EmergencyEvacuationApplicationsResponse>> mockResponse = AysResponseBuilder.successPage();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
@@ -181,7 +182,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminToken.getAccessToken(), mockListRequest);
 
-        AysResponse<AysPageResponse<EmergencyEvacuationApplication>> mockResponse = AysResponseBuilder.successPage();
+        AysResponse<AysPageResponse<EmergencyEvacuationApplicationsResponse>> mockResponse = AysResponseBuilder.successPage();
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
