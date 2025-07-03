@@ -264,6 +264,11 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
         // Then
         emergencyEvacuationApplicationService.create(mockApplicationRequest);
 
+        Assertions.assertNotNull(mockApplication.getReferenceNumber());
+        Assertions.assertEquals(EmergencyEvacuationApplicationStatus.PENDING, mockApplication.getStatus());
+        Assertions.assertFalse(mockApplication.getIsInPerson());
+        Assertions.assertFalse(mockApplication.getHasObstaclePersonExist());
+
         // Verify
         Mockito.verify(emergencyEvacuationApplicationSavePort, Mockito.times(1))
                 .save(Mockito.any(EmergencyEvacuationApplication.class));
