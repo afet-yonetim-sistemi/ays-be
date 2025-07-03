@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="4-ays-ddl" author="ays">
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+        <update tableName="AYS_EMERGENCY_EVACUATION_APPLICATION">
+            <column name="HAS_OBSTACLE_PERSON_EXIST" valueBoolean="false"/>
+            <where>HAS_OBSTACLE_PERSON_EXIST IS NULL</where>
+        </update>
+
+        <addDefaultValue
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                columnName="HAS_OBSTACLE_PERSON_EXIST"
+                defaultValueBoolean="false"
+        />
+
+        <addNotNullConstraint
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                columnName="HAS_OBSTACLE_PERSON_EXIST"
+                columnDataType="BOOLEAN"
+        />
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+    </changeSet>
+
+</databaseChangeLog>
