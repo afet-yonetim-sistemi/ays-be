@@ -185,7 +185,14 @@ class AysUserControllerTest extends AysRestControllerTest {
     @ValueSource(strings = {
             "",
             "12345678912",
-            "12345678912367"
+            "12345678912367",
+            "-321",
+            "321.",
+            "12.34",
+            "1 234",
+            "-45",
+            "12a34",
+            "    "
     })
     @ParameterizedTest
     void givenUserListRequest_whenLineNumberIsNotValid_thenReturnValidationError(String mockLineNumber) throws Exception {
@@ -210,7 +217,11 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isArray())
+                .andExpect(AysMockResultMatchersBuilders.subErrorsSize()
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[*].field")
+                        .value("lineNumber"));
 
         // Verify
         Mockito.verify(userReadService, Mockito.never())
