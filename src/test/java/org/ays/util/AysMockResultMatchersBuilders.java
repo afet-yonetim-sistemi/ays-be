@@ -72,6 +72,10 @@ public class AysMockResultMatchersBuilders {
         return MockMvcResultMatchers.jsonPath("$.subErrors");
     }
 
+    public static JsonPathResultMatchers subErrorsSize() {
+        return MockMvcResultMatchers.jsonPath("$.subErrors.size()");
+    }
+
     public static JsonPathResultMatchers subErrors(String path) {
         return MockMvcResultMatchers.jsonPath("$.subErrors".concat(path));
     }
