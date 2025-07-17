@@ -182,20 +182,23 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .findAll(Mockito.any(AysUserListRequest.class));
     }
 
-    @ValueSource(strings = {
-            "",
-            "12345678912",
-            "12345678912367",
-            "-321",
-            "321.",
-            "12.34",
-            "1 234",
-            "-45",
-            "12a34",
-            "    "
+    @CsvSource({
+            "must be integer, 321.",
+            "must be integer, 12.34",
+            "must be integer, '12,34'",
+            "must be integer, 1 234",
+            "must be integer, 12a34",
+            "must be integer, #",
+            "must be integer, '    '",
+            "must be positive integer, -321",
+            "must be positive integer, 0",
+            "size must be between 1 and 10, ''",
+            "size must be between 1 and 10, 12345678912367",
+            "size must be between 1 and 10, 12345678912367564656464858",
     })
     @ParameterizedTest
-    void givenUserListRequest_whenLineNumberIsNotValid_thenReturnValidationError(String mockLineNumber) throws Exception {
+    void givenUserListRequest_whenLineNumberIsNotValid_thenReturnValidationError(String mockSubErrorMessage,
+                                                                                 String mockLineNumber) throws Exception {
 
         // Given
         AysUserFilter.PhoneNumber mockPhoneNumber = new AysUserFilter.PhoneNumber();
@@ -220,6 +223,8 @@ class AysUserControllerTest extends AysRestControllerTest {
                         .isArray())
                 .andExpect(AysMockResultMatchersBuilders.subErrorsSize()
                         .value(1))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[*].message")
+                        .value(mockSubErrorMessage))
                 .andExpect(AysMockResultMatchersBuilders.subErrors("[*].field")
                         .value("lineNumber"));
 

@@ -10,7 +10,7 @@ import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysFilter;
 import org.ays.common.util.validation.Name;
-import org.ays.common.util.validation.OnlyPositiveNumber;
+import org.ays.common.util.validation.OnlyInteger;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -66,7 +66,7 @@ public class AysUserFilter implements AysFilter {
     @Setter
     public static class PhoneNumber {
 
-        @OnlyPositiveNumber
+        @OnlyInteger(sign = OnlyInteger.Sign.POSITIVE)
         @Size(min = 1, max = 10)
         private String lineNumber;
 
