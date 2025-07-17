@@ -28,7 +28,15 @@ class OnlyPositiveNumberValidator implements ConstraintValidator<OnlyPositiveNum
             return true;
         }
 
-        return NumberUtils.isDigits(number) && Long.parseLong(number) > 0;
+        if (!NumberUtils.isDigits(number)) {
+            return false;
+        }
+
+        if (number.length() <= 19) {
+            return Long.parseLong(number) > 0;
+        }
+
+        return !number.startsWith("-");
     }
 
 }
