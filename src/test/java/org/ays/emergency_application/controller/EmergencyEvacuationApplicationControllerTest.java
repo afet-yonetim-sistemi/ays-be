@@ -95,17 +95,28 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .findAll(Mockito.any(EmergencyEvacuationApplicationListRequest.class));
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "",
-            "151201485621548562154851458614125461254125412"
+    @CsvSource({
+            "must be integer, 321.",
+            "must be integer, 12.34",
+            "must be integer, '12,34'",
+            "must be integer, 1 234",
+            "must be integer, 12a34",
+            "must be integer, #",
+            "must be integer, '    '",
+            "must be positive integer, -321",
+            "must be positive integer, 0",
+            "size must be between 1 and 10, ''",
+            "size must be between 1 and 10, 12345678912367",
+            "size must be between 1 and 10, 12345678912367564656464858",
     })
-    void givenInvalidEmergencyEvacuationApplicationListRequest_whenReferenceNumberNotValid_thenReturnValidationError(String referenceNumber) throws Exception {
+    @ParameterizedTest
+    void givenInvalidEmergencyEvacuationApplicationListRequest_whenReferenceNumberNotValid_thenReturnValidationError(String mockSubErrorMessage,
+                                                                                                                     String mockReferenceNumber) throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
                 .withValidValues()
-                .withReferenceNumber(referenceNumber)
+                .withReferenceNumber(mockReferenceNumber)
                 .build();
 
         // Then
@@ -119,7 +130,13 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
                 .andExpect(AysMockResultMatchersBuilders.status()
                         .isBadRequest())
                 .andExpect(AysMockResultMatchersBuilders.subErrors()
-                        .isNotEmpty());
+                        .isArray())
+                .andExpect(AysMockResultMatchersBuilders.subErrorsSize()
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[*].message")
+                        .value(mockSubErrorMessage))
+                .andExpect(AysMockResultMatchersBuilders.subErrors("[*].field")
+                        .value("referenceNumber"));
 
         // Verify
         Mockito.verify(emergencyEvacuationApplicationService, Mockito.never())

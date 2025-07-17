@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.ays.common.model.AysFilter;
 import org.ays.common.util.validation.NoSpecialCharacters;
+import org.ays.common.util.validation.OnlyInteger;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.hibernate.validator.constraints.Range;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Builder
 public class EmergencyEvacuationApplicationFilter implements AysFilter {
 
+    @OnlyInteger(sign = OnlyInteger.Sign.POSITIVE)
     @Size(min = 1, max = 10)
     private String referenceNumber;
 
@@ -51,8 +53,6 @@ public class EmergencyEvacuationApplicationFilter implements AysFilter {
     /**
      * Converts this request's filter configuration into a {@link Specification} for querying.
      *
-     * @param clazz The class type to which the specification will be applied.
-     * @param <C>   The type of the class.
      * @return A specification built based on the current filter configuration.
      */
     @Override
