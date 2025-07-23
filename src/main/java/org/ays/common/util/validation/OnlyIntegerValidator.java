@@ -8,16 +8,16 @@ import org.apache.commons.lang3.math.NumberUtils;
 /**
  * A custom validator implementation for the {@link OnlyInteger} annotation.
  * <p>
- * Validates whether a given {@link String} value conforms to the expected sign constraint
- * ({@code POSITIVE}, {@code NEGATIVE}, or {@code ANY}) and represents a valid integer value.
+ * Validates whether a given {@link String} value represents a valid integer
+ * and conforms to the specified sign constraint defined by {@link OnlyInteger.Sign}.
  * </p>
  *
  * <p><strong>Validation behavior:</strong></p>
  * <ul>
- *   <li>If the input is {@code null} or blank, it is considered valid.</li>
- *   <li>The input must be an integer value (no decimal points or non-numeric characters).</li>
- *   <li>The sign of the number must match the configured {@link OnlyInteger.Sign} rule.</li>
- *   <li>Custom messages such as {@code "must be positive integer"} or {@code "must be negative integer"} are added on failure.</li>
+ *   <li>If the input is {@code null}, empty, or exceeds {@link Long#MAX_VALUE} in length, it is considered valid (no validation error).</li>
+ *   <li>If the input contains non-numeric characters or a decimal point, it is considered invalid.</li>
+ *   <li>If a specific sign constraint is defined (e.g., {@code POSITIVE}, {@code NEGATIVE}), the input must match that sign.</li>
+ *   <li>Custom constraint violation messages such as {@code "must be positive integer"} or {@code "must be negative integer"} are added on sign mismatch.</li>
  * </ul>
  */
 class OnlyIntegerValidator implements ConstraintValidator<OnlyInteger, String> {
@@ -36,19 +36,26 @@ class OnlyIntegerValidator implements ConstraintValidator<OnlyInteger, String> {
 
     /**
      * Validates whether the given string is a valid integer and conforms to the specified sign constraint.
+     * <p>
+     * This method performs the following validation logic:
+     * <ul>
+     *     <li>If the value is {@code null}, empty, or exceeds {@link Long#MAX_VALUE} in length, it is considered valid.</li>
+     *     <li>If the value is not a valid integer (e.g., contains non-digit characters or decimal point), it is invalid.</li>
+     *     <li>If the value passes basic checks, it proceeds to sign validation (e.g., positive or negative).</li>
+     * </ul>
      *
      * @param number  the value to validate
-     * @param context the constraint validation context
-     * @return {@code true} if the number is valid or blank; {@code false} otherwise
+     * @param context the constraint validation context used to build violation messages
+     * @return {@code true} if the value is valid or blank or too long; {@code false} if invalid
      */
     @Override
     public boolean isValid(String number, ConstraintValidatorContext context) {
 
-        if (StringUtils.isEmpty(number)) {
+        if (StringUtils.isEmpty(number) || number.length() > Long.toString(Long.MAX_VALUE).length()) {
             return true;
         }
 
-        if (this.isValidInteger(number)) {
+        if (this.isNotValidInteger(number)) {
             return false;
         }
 
@@ -56,12 +63,18 @@ class OnlyIntegerValidator implements ConstraintValidator<OnlyInteger, String> {
     }
 
     /**
-     * Checks whether the given string can be parsed as an integer.
+     * Checks whether the given string fails to qualify as a valid integer.
+     * <p>
+     * A string is considered invalid if:
+     * <ul>
+     *     <li>It cannot be parsed into a number (non-numeric characters).</li>
+     *     <li>It contains a decimal point, which disqualifies it as an integer.</li>
+     * </ul>
      *
-     * @param number the input string
-     * @return {@code true} if not an integer (i.e., invalid); {@code false} if it is parsable
+     * @param number the input string to evaluate
+     * @return {@code true} if the input is not a valid integer; {@code false} otherwise
      */
-    private boolean isValidInteger(String number) {
+    private boolean isNotValidInteger(String number) {
 
         if (!NumberUtils.isParsable(number)) {
             return true;
@@ -108,10 +121,6 @@ class OnlyIntegerValidator implements ConstraintValidator<OnlyInteger, String> {
             return false;
         }
 
-        if (number.length() > Long.toString(Long.MAX_VALUE).length()) {
-            return true;
-        }
-
         return Long.parseLong(number) > 0;
     }
 
@@ -122,7 +131,7 @@ class OnlyIntegerValidator implements ConstraintValidator<OnlyInteger, String> {
      * @return {@code true} if the number is lower than zero
      */
     private boolean isNegative(String number) {
-        return !number.startsWith("-") && Long.parseLong(number) < 0;
+        return Long.parseLong(number) < 0;
     }
 
 }
