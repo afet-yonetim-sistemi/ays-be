@@ -3604,7 +3604,7 @@
 							]
 						},
 						{
-							"name": "institution-advert/{id}",
+							"name": "advert/{id}",
 							"id": "bcf4cdb4-9542-4b88-85e6-a64c4ce5bb30",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3612,6 +3612,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
+								"url": "{{API_URL}}/api/v1/advert/{id}",
 								"description": "- Bu servis ilgili kurum ilanına ait detayları görüntülemek için kullanılır. `id` bilgisi verilen ilanın detayları görüntüler.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilanın görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
@@ -3626,7 +3627,8 @@
 												"value": "application/json",
 												"type": "text"
 											}
-										]
+										],
+										"url": "{{API_URL}}/api/v1/advert/{id}"
 									},
 									"_postman_previewlanguage": "json",
 									"header": [
@@ -3644,7 +3646,7 @@
 							]
 						},
 						{
-							"name": "institution-advert",
+							"name": "advert",
 							"id": "abfc94be-b4bf-4702-a0c6-d26864184daa",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
