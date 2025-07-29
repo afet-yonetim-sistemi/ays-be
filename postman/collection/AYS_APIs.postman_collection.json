@@ -3528,7 +3528,7 @@
 							]
 						},
 						{
-							"name": "adverts",
+							"name": "institution-advert",
 							"id": "3628fd53-326e-4828-93fd-e9ab0d1ec8cb",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3750,6 +3750,18 @@
 									"body": "{\r\n\t\"time\": \"2025-04-06T13:35:47.774102186\",\r\n\t\"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n\t\"isSuccess\": true,\r\n\t\"response\": {\r\n\t\t\"content\": [\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"emailAddress\": \"john.doe@afetyonetimsistemi.org\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5054567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 5,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2025-04-06T13:31:03\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c92b86\",\r\n                \"firstName\": \"Joe\",\r\n                \"lastName\": \"Smith\",\r\n                \"emailAddress\": \"joe.sm@gmail.com\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5354567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 12,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2024-04-06T15:45:03\"\r\n\t\t\t}\r\n\t\t]\r\n\t}\r\n}"
 								}
 							]
+						},
+						{
+							"name": "New Request",
+							"id": "4843856f-3895-4bf4-8d56-66a9d2464035",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "f3604b59-9413-49e4-a400-b12684814195",
