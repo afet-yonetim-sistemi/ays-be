@@ -3669,7 +3669,7 @@
 							"response": [
 								{
 									"id": "6e2341ea-238e-486e-8f03-b835496b18a1",
-									"name": "institution-advert",
+									"name": "advert",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
