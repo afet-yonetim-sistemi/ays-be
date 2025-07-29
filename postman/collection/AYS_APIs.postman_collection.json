@@ -3474,6 +3474,176 @@
 					"name": "Advert Management Service",
 					"item": [
 						{
+							"name": "institution-adverts",
+							"id": "3628fd53-326e-4828-93fd-e9ab0d1ec8cb",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/adverts",
+								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece `advert:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n           + `currentParticipationCount`: İlana başvuran gönüllü sayısını içerir.\n                  - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmelidir.\n           + `maximumParticipationCount`: Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n                  - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmelidir.\n           + `startedAt`: Etkinlik başlangıç tarih bilgisini içerir.\n                  - En yakından en eskiye doğru ekrana getirilmelidir.\n           + `createdAt` : İlanın oluşturulduğu zamanı içerir.\n                  - En yakından en eskiye doğru ilanlar ekrana getirilmelidir.\n            \n             ```\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n\n- filter : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az 1, en fazla 100 karakter olmalı.\n            \n    - `participationTypes`: Kurumun yapacağı etkinlik türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses`: İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `INACCESSIBLE`, `CANCELLED` değerlerini alabilir.\n            \n    - `accessibility`: İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE` yada `FALSE` değerlerini alabilir.\n            \n    - `city` : İlanda istenen görevin yapılması beklenen şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
+							},
+							"response": [
+								{
+									"id": "b0ffd819-69b6-4afd-8992-ca06a4f35745",
+									"name": "adverts",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": "{{API_URL}}/api/v1/adverts"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"10ba7411-8a08-465a-8331-4447371dc753\",\n                \"title\": \"Android Developer\",\n                \"participationType\": \"ONLINE\",\n                \"currentParticipationCount\": 5,\n                \"maxParticipationCount\": 10,\n                \"applicationDeadline\": \"2026-15-01\",\n                \"startedAt\": \"2025-01-12\",\n                \"finishedAt\": \"2025-30-12\",\n                \"status\": \"IN_APPLICATION_PROCESS\",\n                \"createdAt\": \"2024-04-06T13:31:03\"\n            },\n            {\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\n                \"title\": \" Kepçe operatötü\",\n                \"participationType\": \"PHYSICALLY\",\n                \"currentParticipationCount\": 10,\n                \"maxParticipationCount\": 20,\n                \"applicationDeadline\": \"2025-15-08\",\n                \"startedAt\": \"2025-01-08\",\n                \"finishedAt\": \"2025-15-08\",\n                \"status\": \"IN_APPLICATION_PROCESS\",\n                \"createdAt\": \"2025-01-08T13:31:03\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 10,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 2,\n        \"sortedBy\": null,\n        \"filteredBy\": null\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "institution-advertV2",
+							"id": "4843856f-3895-4bf4-8d56-66a9d2464035",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}"
+								},
+								"url": "{{API_URL}}/api/v1/institution-advertV2",
+								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece advert::list yetkisine sahip olanlar erişebilir.\n    \n- AYS_ADVERT tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `currentParticipationCount` : İlana başvuran gönüllü sayısını içerir.\n            \n            - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `maximumParticipationCount` : Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n            \n            - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `startedAt` : Etkinlik başlangıç tarih bilgisini içerir.\n            \n            - En yakından en eskiye doğru ekrana getirilmeli.\n                \n        - `createdAt` : İlanın oluşturulduğu zamanı içerir.\n            \n            - En yakından en eskiye doğru ilanlar ekrana getirilmeli.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az 1, en fazla 100 karakter olmalı.\n            \n    - `participationTypes`: Kurum yapacağı etkinliğin türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses` : İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece IN_APPLICATION_PROCESS, IN_APPLICATION_EVALUATION_PROCESS, COMPLETED, INACCESSIBLE, CANCELLED değerlerini alabilir.\n            \n    - `accessibility` : İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE`, `FALSE` değerlerini alabilir.\n            \n    - `city` : Yapılacak etkinliğin şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
+							},
+							"response": [
+								{
+									"id": "ca6feea7-4e3f-468a-9772-87e738b1881c",
+									"name": "institution-advert",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}"
+										},
+										"url": "{{API_URL}}/api/v1/institution-advert"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date"
+										}
+									],
+									"responseTime": null,
+									"body": "{\r\n    \"time\": \"2024-04-06T13:35:47.774102186\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"title\": \"Android Developer\",\r\n                \"participationType\": \"ONLINE\",\r\n                \"currentParticipationCount\": 5,\r\n                \"maximumParticipationCount\": 10,\r\n                \"applicationDeadline\": \"2026-15-01\",\r\n                \"startedAt\": \"2023-05-07T09:45:08\",\r\n                \"finishedAt\": \"2023-05-10T09:45:08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2024-04-06T13:31:03\"\r\n            },\r\n            {\r\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\r\n                \"title\": \" Kepçe operatötü\",\r\n                \"participationType\": \"PHYSICALLY\",\r\n                \"currentParticipationCount\": 10,\r\n                \"maximumParticipationCount\": 20,\r\n                \"applicationDeadline\": \"2025-15-08\",\r\n                \"startedAt\": \"2024-08-03T09:00:08\",\r\n                \"finishedAt\": \"2024-08-10T17:00:08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2024-07-25T13:31:03\"\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 10,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"sortedBy\": null,\r\n        \"filteredBy\": null\r\n    }\r\n}"
+								}
+							]
+						},
+						{
+							"name": "advert-applies",
+							"id": "bff01cd2-d846-4fe4-a775-4503cd3c7649",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "4a8aee73-c7f7-4bf4-904d-a13cde0ed519",
+									"name": "advert-applies",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										]
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n\t\"time\": \"2025-04-06T13:35:47.774102186\",\r\n\t\"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n\t\"isSuccess\": true,\r\n\t\"response\": {\r\n\t\t\"content\": [\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"emailAddress\": \"john.doe@afetyonetimsistemi.org\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5054567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 5,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2025-04-06T13:31:03\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c92b86\",\r\n                \"firstName\": \"Joe\",\r\n                \"lastName\": \"Smith\",\r\n                \"emailAddress\": \"joe.sm@gmail.com\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5354567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 12,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2024-04-06T15:45:03\"\r\n\t\t\t}\r\n\t\t]\r\n\t}\r\n}"
+								}
+							]
+						},
+						{
+							"name": "institution-advert/{id}",
+							"id": "bcf4cdb4-9542-4b88-85e6-a64c4ce5bb30",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "- Bu servis ilgili kurum ilanına ait detayları görüntülemek için kullanılır. `id` bilgisi verilen ilanın detayları görüntüler.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilanın görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "1fbdf50d-7d8b-420f-a630-8fd02915cbd2",
+									"name": "institution-advert/{id}",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										]
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-07T20:48:06.398791\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\n        \"title\": \"Android Developer\",\n        \"status\": \"IN_APPLICATION_PROCCESS\",\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\n        \"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\n        \"city\": \"Ankara\",\n        \"externalLink\": \"https://www.ankamall.com.tr/\",\n        \"applicationDeadline\": \"2026-15-01\",\n        \"startedAt\": \"2023-08-10T09:30:00\",\n        \"finishedAt\": \"2023-08-12T12:45:00\",\n        \"maximumParticipationCount\": 10,\n        \"currentParticipationCount\": 2,\n        \"participationType\": \"ONLINE\",\n        \"responsibles\": [\n            {\n                \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\",\n                \"firstName\": \"Ahmet\",\n                \"lastName\": \"Yılmaz\"\n            },\n            {\n                \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\",\n                \"firstName\": \"Sevda\",\n                \"lastName\": \"Seher\"\n            }\n        ],\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2025-05-07T09:45:08\",\n        \"updatedUser\": null,\n        \"updatedAt\": null\n    }\n}"
+								}
+							]
+						},
+						{
 							"name": "institution-advert",
 							"id": "abfc94be-b4bf-4702-a0c6-d26864184daa",
 							"protocolProfileBehavior": {
@@ -3524,88 +3694,6 @@
 									"cookie": [],
 									"responseTime": null,
 									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
-								}
-							]
-						},
-						{
-							"name": "institution-advert",
-							"id": "3628fd53-326e-4828-93fd-e9ab0d1ec8cb",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": "{{API_URL}}/api/v1/adverts",
-								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece `advert:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n           + `currentParticipationCount`: İlana başvuran gönüllü sayısını içerir.\n                  - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmelidir.\n           + `maximumParticipationCount`: Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n                  - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmelidir.\n           + `startedAt`: Etkinlik başlangıç tarih bilgisini içerir.\n                  - En yakından en eskiye doğru ekrana getirilmelidir.\n           + `createdAt` : İlanın oluşturulduğu zamanı içerir.\n                  - En yakından en eskiye doğru ilanlar ekrana getirilmelidir.\n            \n             ```\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n\n- filter : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az 1, en fazla 100 karakter olmalı.\n            \n    - `participationTypes`: Kurumun yapacağı etkinlik türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses`: İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `INACCESSIBLE`, `CANCELLED` değerlerini alabilir.\n            \n    - `accessibility`: İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE` yada `FALSE` değerlerini alabilir.\n            \n    - `city` : İlanda istenen görevin yapılması beklenen şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
-							},
-							"response": [
-								{
-									"id": "b0ffd819-69b6-4afd-8992-ca06a4f35745",
-									"name": "adverts",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": "{{API_URL}}/api/v1/adverts"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"10ba7411-8a08-465a-8331-4447371dc753\",\n                \"title\": \"Android Developer\",\n                \"participationType\": \"ONLINE\",\n                \"currentParticipationCount\": 5,\n                \"maxParticipationCount\": 10,\n                \"applicationDeadline\": \"2026-15-01\",\n                \"startedAt\": \"2025-01-12\",\n                \"finishedAt\": \"2025-30-12\",\n                \"status\": \"IN_APPLICATION_PROCESS\",\n                \"createdAt\": \"2024-04-06T13:31:03\"\n            },\n            {\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\n                \"title\": \" Kepçe operatötü\",\n                \"participationType\": \"PHYSICALLY\",\n                \"currentParticipationCount\": 10,\n                \"maxParticipationCount\": 20,\n                \"applicationDeadline\": \"2025-15-08\",\n                \"startedAt\": \"2025-01-08\",\n                \"finishedAt\": \"2025-15-08\",\n                \"status\": \"IN_APPLICATION_PROCESS\",\n                \"createdAt\": \"2025-01-08T13:31:03\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 10,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 2,\n        \"sortedBy\": null,\n        \"filteredBy\": null\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "institution-advert/{id}",
-							"id": "bcf4cdb4-9542-4b88-85e6-a64c4ce5bb30",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"description": "- Bu servis ilgili kurum ilanına ait detayları görüntülemek için kullanılır. `id` bilgisi verilen ilanın detayları görüntüler.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilanın görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
-							},
-							"response": [
-								{
-									"id": "1fbdf50d-7d8b-420f-a630-8fd02915cbd2",
-									"name": "institution-advert/{id}",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json",
-												"type": "text"
-											}
-										]
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"time\": \"2023-05-07T20:48:06.398791\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\n        \"title\": \"Android Developer\",\n        \"status\": \"IN_APPLICATION_PROCCESS\",\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\n        \"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\n        \"city\": \"Ankara\",\n        \"externalLink\": \"https://www.ankamall.com.tr/\",\n        \"applicationDeadline\": \"2026-15-01\",\n        \"startedAt\": \"2023-08-10T09:30:00\",\n        \"finishedAt\": \"2023-08-12T12:45:00\",\n        \"maximumParticipationCount\": 10,\n        \"currentParticipationCount\": 2,\n        \"participationType\": \"ONLINE\",\n        \"responsibles\": [\n            {\n                \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\",\n                \"firstName\": \"Ahmet\",\n                \"lastName\": \"Yılmaz\"\n            },\n            {\n                \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\",\n                \"firstName\": \"Sevda\",\n                \"lastName\": \"Seher\"\n            }\n        ],\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2025-05-07T09:45:08\",\n        \"updatedUser\": null,\n        \"updatedAt\": null\n    }\n}"
 								}
 							]
 						},
@@ -3666,94 +3754,6 @@
 									"cookie": [],
 									"responseTime": null,
 									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
-								}
-							]
-						},
-						{
-							"name": "advert-applies",
-							"id": "bff01cd2-d846-4fe4-a775-4503cd3c7649",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
-							},
-							"response": [
-								{
-									"id": "4a8aee73-c7f7-4bf4-904d-a13cde0ed519",
-									"name": "advert-applies",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json",
-												"type": "text"
-											}
-										]
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\r\n\t\"time\": \"2025-04-06T13:35:47.774102186\",\r\n\t\"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n\t\"isSuccess\": true,\r\n\t\"response\": {\r\n\t\t\"content\": [\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"emailAddress\": \"john.doe@afetyonetimsistemi.org\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5054567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 5,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2025-04-06T13:31:03\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c92b86\",\r\n                \"firstName\": \"Joe\",\r\n                \"lastName\": \"Smith\",\r\n                \"emailAddress\": \"joe.sm@gmail.com\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5354567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 12,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2024-04-06T15:45:03\"\r\n\t\t\t}\r\n\t\t]\r\n\t}\r\n}"
-								}
-							]
-						},
-						{
-							"name": "institution-advertV2",
-							"id": "4843856f-3895-4bf4-8d56-66a9d2464035",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}"
-								},
-								"url": "{{API_URL}}/api/v1/institution-advertV2",
-								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece advert::list yetkisine sahip olanlar erişebilir.\n    \n- AYS_ADVERT tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `currentParticipationCount` : İlana başvuran gönüllü sayısını içerir.\n            \n            - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `maximumParticipationCount` : Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n            \n            - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `startedAt` : Etkinlik başlangıç tarih bilgisini içerir.\n            \n            - En yakından en eskiye doğru ekrana getirilmeli.\n                \n        - `createdAt` : İlanın oluşturulduğu zamanı içerir.\n            \n            - En yakından en eskiye doğru ilanlar ekrana getirilmeli.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az 1, en fazla 100 karakter olmalı.\n            \n    - `participationTypes`: Kurum yapacağı etkinliğin türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses` : İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece IN_APPLICATION_PROCESS, IN_APPLICATION_EVALUATION_PROCESS, COMPLETED, INACCESSIBLE, CANCELLED değerlerini alabilir.\n            \n    - `accessibility` : İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE`, `FALSE` değerlerini alabilir.\n            \n    - `city` : Yapılacak etkinliğin şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
-							},
-							"response": [
-								{
-									"id": "ca6feea7-4e3f-468a-9772-87e738b1881c",
-									"name": "institution-advert",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}"
-										},
-										"url": "{{API_URL}}/api/v1/institution-advert"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [
-										{
-											"expires": "Invalid Date"
-										}
-									],
-									"responseTime": null,
-									"body": "{\r\n    \"time\": \"2024-04-06T13:35:47.774102186\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"title\": \"Android Developer\",\r\n                \"participationType\": \"ONLINE\",\r\n                \"currentParticipationCount\": 5,\r\n                \"maximumParticipationCount\": 10,\r\n                \"applicationDeadline\": \"2026-15-01\",\r\n                \"startedAt\": \"2023-05-07T09:45:08\",\r\n                \"finishedAt\": \"2023-05-10T09:45:08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2024-04-06T13:31:03\"\r\n            },\r\n            {\r\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\r\n                \"title\": \" Kepçe operatötü\",\r\n                \"participationType\": \"PHYSICALLY\",\r\n                \"currentParticipationCount\": 10,\r\n                \"maximumParticipationCount\": 20,\r\n                \"applicationDeadline\": \"2025-15-08\",\r\n                \"startedAt\": \"2024-08-03T09:00:08\",\r\n                \"finishedAt\": \"2024-08-10T17:00:08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2024-07-25T13:31:03\"\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 10,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"sortedBy\": null,\r\n        \"filteredBy\": null\r\n    }\r\n}"
 								}
 							]
 						}
