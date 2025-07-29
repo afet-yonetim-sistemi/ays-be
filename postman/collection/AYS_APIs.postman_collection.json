@@ -3570,48 +3570,6 @@
 							]
 						},
 						{
-							"name": "adverts Copy",
-							"id": "d4df17c6-db4b-4a4e-9d08-a65ec409ee36",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": "{{API_URL}}/api/v1/adverts",
-								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece `advert:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n           + `currentParticipationCount`: İlana başvuran gönüllü sayısını içerir.\n                  - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmelidir.\n           + `maximumParticipationCount`: Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n                  - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmelidir.\n           + `startedAt`: Etkinlik başlangıç tarih bilgisini içerir.\n                  - En yakından en eskiye doğru ekrana getirilmelidir.\n           + `createdAt` : İlanın oluşturulduğu zamanı içerir.\n                  - En yakından en eskiye doğru ilanlar ekrana getirilmelidir.\n            \n             ```\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n\n- filter : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az 1, en fazla 100 karakter olmalı.\n            \n    - `participationTypes`: Kurumun yapacağı etkinlik türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses`: İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `INACCESSIBLE`, `CANCELLED` değerlerini alabilir.\n            \n    - `accessibility`: İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE` yada `FALSE` değerlerini alabilir.\n            \n    - `city` : İlanda istenen görevin yapılması beklenen şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
-							},
-							"response": [
-								{
-									"id": "28a4d667-8427-4ed1-a5cb-6791341663a5",
-									"name": "adverts",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": "{{API_URL}}/api/v1/adverts"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"10ba7411-8a08-465a-8331-4447371dc753\",\n                \"title\": \"Android Developer\",\n                \"participationType\": \"ONLINE\",\n                \"currentParticipationCount\": 5,\n                \"maxParticipationCount\": 10,\n                \"applicationDeadline\": \"2026-15-01\",\n                \"startedAt\": \"2025-01-12\",\n                \"finishedAt\": \"2025-30-12\",\n                \"status\": \"IN_APPLICATION_PROCESS\",\n                \"createdAt\": \"2024-04-06T13:31:03\"\n            },\n            {\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\n                \"title\": \" Kepçe operatötü\",\n                \"participationType\": \"PHYSICALLY\",\n                \"currentParticipationCount\": 10,\n                \"maxParticipationCount\": 20,\n                \"applicationDeadline\": \"2025-15-08\",\n                \"startedAt\": \"2025-01-08\",\n                \"finishedAt\": \"2025-15-08\",\n                \"status\": \"IN_APPLICATION_PROCESS\",\n                \"createdAt\": \"2025-01-08T13:31:03\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 10,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 2,\n        \"sortedBy\": null,\n        \"filteredBy\": null\n    }\n}"
-								}
-							]
-						},
-						{
 							"name": "institution-advert/{id}",
 							"id": "bcf4cdb4-9542-4b88-85e6-a64c4ce5bb30",
 							"protocolProfileBehavior": {
@@ -3752,14 +3710,15 @@
 							]
 						},
 						{
-							"name": "New Request",
+							"name": "institution-advert",
 							"id": "4843856f-3895-4bf4-8d56-66a9d2464035",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"description": "- Bu servis kurum yönetici kayıt başvurularını listelemek için kullanılır.\n    \n- Bu servise sadece `application:registration:list` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_ADMIN_REGISTER_APPLICATION` tablosundaki verilerden yararlanır."
 							},
 							"response": []
 						}
