@@ -3605,47 +3605,6 @@
 									],
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\n    \"time\": \"2023-05-07T20:48:06.398791\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\n        \"title\": \"Android Developer\",\n        \"status\": \"IN_APPLICATION_PROCCESS\",\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\n        \"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\n        \"city\": \"Ankara\",\n        \"externalLink\": \"https://www.ankamall.com.tr/\",\n        \"applicationDeadline\": \"2026-15-01\",\n        \"startedAt\": \"2025-01-12\",\n        \"finishedAt\": \"2025-30-12\",\n        \"maxParticipationCount\": 10,\n        \"currentParticipationCount\": 2,\n        \"participationType\": \"ONLINE\",\n        \"responsible\": [\n            \"Ahmet Yılmaz\",\n            \"Sevda Seher\"\n        ],\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2025-05-07T09:45:08\",\n        \"updatedUser\": null,\n        \"updatedAt\": null\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "institution-advert/{id}V2",
-							"id": "19ae74dd-7f2f-4847-9968-2d70e107f547",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"description": "- Bu servis ilgili kurum ilanına ait detayları görüntülemek için kullanılır. `id` bilgisi verilen ilanın detayları görüntüler.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilanın görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
-							},
-							"response": [
-								{
-									"id": "e0258d21-e462-49ef-aa2d-c4e3f8823fa5",
-									"name": "institution-advert/{id}",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": "{{API_URL}}/api/v1/institution-advert/{id}"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
 									"body": "{\n    \"time\": \"2023-05-07T20:48:06.398791\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\n        \"title\": \"Android Developer\",\n        \"status\": \"IN_APPLICATION_PROCCESS\",\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\n        \"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\n        \"city\": \"Ankara\",\n        \"externalLink\": \"https://www.ankamall.com.tr/\",\n        \"applicationDeadline\": \"2026-15-01\",\n        \"startedAt\": \"2023-08-10T09:30:00\",\n        \"finishedAt\": \"2023-08-12T12:45:00\",\n        \"maximumParticipationCount\": 10,\n        \"currentParticipationCount\": 2,\n        \"participationType\": \"ONLINE\",\n        \"responsibles\": [\n            {\n                \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\",\n                \"firstName\": \"Ahmet\",\n                \"lastName\": \"Yılmaz\"\n            },\n            {\n                \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\",\n                \"firstName\": \"Sevda\",\n                \"lastName\": \"Seher\"\n            }\n        ],\n        \"createdUser\": \"9dd53f56-0304-4d14-9ca6-7b0b88457b3f\",\n        \"createdAt\": \"2025-05-07T09:45:08\",\n        \"updatedUser\": null,\n        \"updatedAt\": null\n    }\n}"
 								}
 							]
