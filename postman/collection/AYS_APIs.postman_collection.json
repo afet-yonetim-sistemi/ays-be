@@ -3528,7 +3528,7 @@
 							]
 						},
 						{
-							"name": "institution-adverts",
+							"name": "adverts",
 							"id": "3628fd53-326e-4828-93fd-e9ab0d1ec8cb",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3542,7 +3542,7 @@
 							"response": [
 								{
 									"id": "b0ffd819-69b6-4afd-8992-ca06a4f35745",
-									"name": "institution-adverts",
+									"name": "adverts",
 									"originalRequest": {
 										"method": "POST",
 										"header": [
