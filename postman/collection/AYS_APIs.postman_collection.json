@@ -3794,7 +3794,8 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"description": "Kurumun ilan verirken sorumlu atamasını sağlayacak listeleyi getirir."
 							},
 							"response": []
 						}
