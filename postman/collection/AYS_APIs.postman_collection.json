@@ -3822,7 +3822,7 @@
 							]
 						},
 						{
-							"name": "New Request",
+							"name": "advert/{id}/application/{id}/approve",
 							"id": "7b7c2db0-e8d2-41f4-a200-bf77a040a038",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
