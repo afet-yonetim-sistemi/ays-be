@@ -3836,7 +3836,7 @@
 							"response": []
 						},
 						{
-							"name": "advert/{id_advert}/application/{id}/approve Copy",
+							"name": "advert/{id_advert}/application/{id}/reject",
 							"id": "d51e3cd9-899a-4807-9a3f-8b1243a426b6",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3844,20 +3844,8 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/advert/{id}/application/{id}/approve",
-								"description": "- Bu servis doldurulmuş ilan başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
-							},
-							"response": []
-						},
-						{
-							"name": "New Request",
-							"id": "3daa1ec8-ce66-4374-80b2-f6949f94df8f",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": []
+								"url": "{{API_URL}}/api/v1/advert/{id}/application/{id}/reject",
+								"description": "- Bu servis doldurulmuş ilan başvurularını reddetmek için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
 							},
 							"response": []
 						}
