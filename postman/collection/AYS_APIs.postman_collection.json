@@ -3795,7 +3795,8 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"description": "Kurumun ilan verirken sorumlu atamasını sağlayacak listeleyi getirir."
+								"url": "{{API_URL}}/api/v1/advert/summary-responsibles",
+								"description": "- Bu servis ilgili Kurumdaki Userların `id` , `firstName` ve `lastName` bilgilerini listelemek için kullanılır.\n    \n- Bu servise  `advert:create`, `advert:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı userların listelenmesi gerekmektedir."
 							},
 							"response": []
 						}
