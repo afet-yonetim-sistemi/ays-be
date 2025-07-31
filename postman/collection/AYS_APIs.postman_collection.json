@@ -3587,7 +3587,16 @@
 												"value": "application/json",
 												"type": "text"
 											}
-										]
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										}
 									},
 									"_postman_previewlanguage": "json",
 									"header": [
@@ -3600,7 +3609,7 @@
 									],
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\r\n\t\"time\": \"2025-04-06T13:35:47.774102186\",\r\n\t\"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n\t\"isSuccess\": true,\r\n\t\"response\": {\r\n\t\t\"content\": [\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"emailAddress\": \"john.doe@afetyonetimsistemi.org\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5054567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 5,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2025-04-06T13:31:03\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\t\"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c92b86\",\r\n                \"firstName\": \"Joe\",\r\n                \"lastName\": \"Smith\",\r\n                \"emailAddress\": \"joe.sm@gmail.com\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5354567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"hoursSpentPerWeekOnAdvert\": 12,\r\n                \"age\":25,\r\n                \"gender\": \"MALE\",\r\n                \"status\": \"IN_REVIEW\",\r\n\t\t\t\t\"createdAt\": \"2024-04-06T15:45:03\"\r\n\t\t\t}\r\n\t\t]\r\n\t}\r\n}"
+									"body": "{\r\n    \"time\": \"2025-04-06T13:35:47.774102186\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"user\": {\r\n                    \"id\": \"6871f0d1-94f2-4655-a72e-0f957f652e52\",\r\n                    \"hoursSpentPerWeekOnAdvert\": 5,\r\n                    \"status\": \"IN_REVIEW\",\r\n                    \"createdAt\": \"2025-04-06T13:31:03\"\r\n                },\r\n                \"application\": {\r\n                    \"id\": \"edd5d08d-2295-4660-8795-186d04b27f39\",\r\n                    \"firstName\": \"John\",\r\n                    \"lastName\": \"Doe\",\r\n                    \"emailAddress\": \"john.doe@afetyonetimsistemi.org\",\r\n                    \"phoneNumber\": {\r\n                        \"countryCode\": \"90\",\r\n                        \"lineNumber\": \"5054567890\"\r\n                    },\r\n                    \"city\": \"İstanbul\",\r\n                    \"age\": 25,\r\n                    \"gender\": \"MALE\"\r\n                }\r\n            },\r\n            {\r\n                \"user\": {\r\n                    \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\",\r\n                    \"hoursSpentPerWeekOnAdvert\": 8,\r\n                    \"status\": \"IN_REVIEW\",\r\n                    \"createdAt\": \"2025-05-10T17:35:42\"\r\n                },\r\n                \"application\": {\r\n                    \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\",\r\n                    \"firstName\": \"Jack\",\r\n                    \"lastName\": \"Smith\",\r\n                    \"emailAddress\": \"jacksm@afetyonetimsistemi.org\",\r\n                    \"phoneNumber\": {\r\n                        \"countryCode\": \"90\",\r\n                        \"lineNumber\": \"5328797812\"\r\n                    },\r\n                    \"city\": \"Ankara\",\r\n                    \"age\": 32,\r\n                    \"gender\": \"MALE\"\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}"
 								}
 							]
 						},
