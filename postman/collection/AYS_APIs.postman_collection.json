@@ -1307,7 +1307,7 @@
 									]
 								},
 								{
-									"name": "advert-application",
+									"name": "landing/advert/apply",
 									"id": "1af3d5ab-de85-44fd-805a-e0a062002a3f",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1324,6 +1324,7 @@
 												}
 											}
 										},
+										"url": "{{API_URL}}/api/v1/landing/advert/apply",
 										"description": "- Bu servis ilgili kurum ilanına gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir. Ancak Başvuru formunun doldurulması için Kurum Gönüllüsü Ol Başvurusu yapılmış olmalı.\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName` : Başvuru sahibinin isim bilgisini içerir.\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName` : Başvuru sahibinin soyisim bilgisini içerir.\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber` : Başvuru sahibinin telefon numarası bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n        - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n        - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n            \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `city` : Başvuru yapan gönüllünün şehir bilgisini içerir.\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `age` : Başvuru sahibinin yaş bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n- `gender` : Başvuru sahibinin cinsiyet bilgisini içerir.\n    \n    - Zorunlu alandır\n        \n    - Sadece `MALE`, `FEMALE` , `NOT_SPECIFIED` değerlerini alabilir.\n        \n- `hoursAvailablePerDay` : Başvuru sahibinin günlük ayırabileceği zaman bilgisini içerir.\n    \n    - Zorunlu alandır."
 									},
 									"response": [
