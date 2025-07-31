@@ -1370,19 +1370,21 @@
 							"name": "Institution Service",
 							"item": [
 								{
-									"name": "New Request",
+									"name": "landing/instutitons/summary",
 									"id": "350c7cf1-dafc-440d-a129-2a3139c612a9",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"description": "- Bu servis ilgili Drop-Down List'lerde kullanılmak üzere Bütün Kurumlar ile ilgili `id` ve `name` bilgilerinin görüntülenmesi sağlar.\n    \n- Bu servise sadece `application:registration:create` yetkisine sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 									},
 									"response": []
 								}
 							],
-							"id": "676d88ca-f1bb-4169-8702-5874fdd40e89"
+							"id": "676d88ca-f1bb-4169-8702-5874fdd40e89",
+							"description": "Bu servis dışarıdan herkes ulaşabilecek."
 						}
 					],
 					"id": "4f88ba47-90fd-4b04-a723-d70626c9f564",
