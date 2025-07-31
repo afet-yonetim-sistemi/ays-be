@@ -3820,6 +3820,18 @@
 									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
 								}
 							]
+						},
+						{
+							"name": "New Request",
+							"id": "7b7c2db0-e8d2-41f4-a200-bf77a040a038",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "f3604b59-9413-49e4-a400-b12684814195",
