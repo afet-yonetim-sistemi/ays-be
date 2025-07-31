@@ -3756,44 +3756,7 @@
 								"url": "{{API_URL}}/api/v1/advert/{id}/accessibility/toggle",
 								"description": "- Bu servis ilgili kuruma ait ilanın erişime açık olup olmadığını belirtir.\n    \n- Bu servise sadece `advert:create` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan kaydı günceller.\n    \n- Gelen istekte değeri eğer `false` ise `true` yapılır. `true` ise `false` yapılır.\n    \n- Bu alan sadece bu endpointle değiştirilebilir\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        "
 							},
-							"response": [
-								{
-									"id": "5de62750-3edd-4016-a5c4-65be8ac2da88",
-									"name": "institution-advert/{id}",
-									"originalRequest": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/v1/institution-advert/15"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "advert/{id_advert}/application/{id}/approve",
