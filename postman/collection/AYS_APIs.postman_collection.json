@@ -3524,8 +3524,17 @@
 							"request": {
 								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"pageable\": {\r\n        \"page\": 1,\r\n        \"pageSize\": 10\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": "{{API_URL}}/api/v1/adverts",
-								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece advert::list yetkisine sahip olanlar erişebilir.\n    \n- AYS_ADVERT tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `currentParticipationCount` : İlana başvuran gönüllü sayısını içerir.\n            \n            - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `maximumParticipationCount` : Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n            \n            - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `startedAt` : İlan başlangıç tarih bilgisini içerir.\n            \n            - En yakından en eskiye doğru ekrana getirilmeli.\n                \n        - `createdAt` : İlanın oluşturulduğu zamanı içerir.\n            \n            - En yakından en eskiye doğru ilanlar ekrana getirilmeli.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az 1, en fazla 100 karakter olmalı.\n            \n    - `participationTypes`: Kurum yapacağı etkinliğin türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses` : İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `INACCESSIBLE`, `CANCELLED` değerlerini alabilir.\n            \n    - `accessibility` : İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE`, `FALSE` değerlerini alabilir.\n            \n    - `city` : Yapılacak etkinliğin şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
+								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece `advert::list` yetkisine sahip olanlar erişebilir.\n    \n- AYS_ADVERT tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `currentParticipationCount` : İlana başvuran gönüllü sayısını içerir.\n            \n            - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `maximumParticipationCount` : Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n            \n            - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `startedAt` : İlan başlangıç tarih bilgisini içerir.\n            \n            - En yakından en eskiye doğru ekrana getirilmeli.\n                \n        - `createdAt` : İlanın oluşturulduğu zamanı içerir.\n            \n            - En yakından en eskiye doğru ilanlar ekrana getirilmeli.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az 1, en fazla 100 karakter olmalı.\n            \n    - `participationTypes`: Kurum yapacağı etkinliğin türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses` : İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `INACCESSIBLE`, `CANCELLED` değerlerini alabilir.\n            \n    - `accessibility` : İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE`, `FALSE` değerlerini alabilir.\n            \n    - `city` : Yapılacak etkinliğin şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
 							},
 							"response": [
 								{
@@ -3533,7 +3542,22 @@
 									"name": "advert",
 									"originalRequest": {
 										"method": "POST",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"pageable\": {\r\n        \"page\": 1,\r\n        \"pageSize\": 10,\r\n        \"orders\": [\r\n            {\r\n                \"property\": \"createdAt\",\r\n                \"direction\": \"ASC\"\r\n            }\r\n        ]\r\n    },\r\n    \"filter\": {\r\n        \"city\": \"İstanbul\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{API_URL}}/api/v1/adverts"
 									},
 									"_postman_previewlanguage": "json",
@@ -3551,7 +3575,7 @@
 										}
 									],
 									"responseTime": null,
-									"body": "{\r\n    \"time\": \"2024-04-06T13:35:47.774102186\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"title\": \"Android Developer\",\r\n                \"participationType\": \"ONLINE\",\r\n                \"currentParticipationCount\": 5,\r\n                \"maximumParticipationCount\": 10,\r\n                \"applicationDeadline\": \"2026-15-01\",\r\n                \"startedAt\": \"2023-05-07T09:45:08\",\r\n                \"finishedAt\": \"2023-05-10T09:45:08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2024-04-06T13:31:03\"\r\n            },\r\n            {\r\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\r\n                \"title\": \" Kepçe operatötü\",\r\n                \"participationType\": \"PHYSICALLY\",\r\n                \"currentParticipationCount\": 10,\r\n                \"maximumParticipationCount\": 20,\r\n                \"applicationDeadline\": \"2025-15-08\",\r\n                \"startedAt\": \"2024-08-03T09:00:08\",\r\n                \"finishedAt\": \"2024-08-10T17:00:08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2024-07-25T13:31:03\"\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 10,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"sortedBy\": null,\r\n        \"filteredBy\": null\r\n    }\r\n}"
+									"body": "{\r\n    \"time\": \"2024-04-06T13:35:47.774102186\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"title\": \"Android Developer\",\r\n                \"participationType\": \"ONLINE\",\r\n                \"currentParticipationCount\": 5,\r\n                \"maxParticipationCount\": 10,\r\n                \"applicationDeadline\": \"2026-15-01\",\r\n                \"startedAt\": \"2023-05-07T09:45:08\",\r\n                \"finishedAt\": \"2023-05-10T09:45:08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2024-04-06T13:31:03\"\r\n            },\r\n            {\r\n                \"id\": \"10ba7411-8785-465a-8331-4447371dc753\",\r\n                \"title\": \" Kepçe operatötü\",\r\n                \"participationType\": \"PHYSICALLY\",\r\n                \"currentParticipationCount\": 10,\r\n                \"maxParticipationCount\": 20,\r\n                \"applicationDeadline\": \"2025-15-08\",\r\n                \"startedAt\": \"2023-08-03T09:00:08\",\r\n                \"finishedAt\": \"2023-08-10T17:00:08\",\r\n                \"status\": \"IN_APPLICATION_PROCESS\",\r\n                \"createdAt\": \"2024-07-25T13:31:03\"\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 10,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"sortedBy\": null,\r\n        \"filteredBy\": null\r\n    }\r\n}"
 								}
 							]
 						},
