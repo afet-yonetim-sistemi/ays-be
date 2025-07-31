@@ -1380,7 +1380,21 @@
 										"header": [],
 										"description": "- Bu servis kurumları listelemelidir. Bu Kurumlar ile ilgili `id` ve `name` bilgilerinin görüntülenmesi sağlar.\n    \n- Bu servise sadece `advert:create` yetkisine sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 									},
-									"response": []
+									"response": [
+										{
+											"id": "f222b32f-8f3b-4791-9c87-63104f04b257",
+											"name": "landing/instutitons/summary",
+											"originalRequest": {
+												"method": "GET",
+												"header": []
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": null
+										}
+									]
 								}
 							],
 							"id": "676d88ca-f1bb-4169-8702-5874fdd40e89",
