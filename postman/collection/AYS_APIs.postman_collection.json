@@ -3787,7 +3787,7 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "advert/summary-responsibles",
 							"id": "757d3dfd-bdcf-4805-9630-8062d1be25fc",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
