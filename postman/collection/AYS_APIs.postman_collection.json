@@ -3830,6 +3830,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
+								"url": "{{API_URL}}/api/v1/advert/{id}/application/{id}/approve",
 								"description": "- Bu servis doldurulmuş ilan başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: İlana ait ID bilgisi."
 							},
 							"response": []
