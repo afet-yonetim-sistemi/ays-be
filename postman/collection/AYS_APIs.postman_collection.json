@@ -1265,7 +1265,7 @@
 									]
 								},
 								{
-									"name": "advert/{id}",
+									"name": "landing/advert/{id}",
 									"id": "6261bbe2-3c07-4845-ba1f-f06d2b1963f4",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1273,13 +1273,13 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"url": "{{API_URL}}/api/v1/advert/{id}",
+										"url": "{{API_URL}}/api/v1/landing/advert/{id}",
 										"description": "- Bu servis ilanların detaylarını görüntülememizi sağlar.\n    \n- Bu servise herkes ulaşabilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: İlana ait ID Bilgisi"
 									},
 									"response": [
 										{
 											"id": "bd67f9e7-8ef1-42f7-bc0c-2ddcd43e3761",
-											"name": "advert/{id}",
+											"name": "landing/advert/{id}",
 											"originalRequest": {
 												"method": "GET",
 												"header": [
@@ -1289,7 +1289,7 @@
 														"type": "text"
 													}
 												],
-												"url": "{{API_URL}}/api/v1/advert/{id}"
+												"url": "{{API_URL}}/api/v1/landing/advert/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1388,11 +1388,22 @@
 												"method": "GET",
 												"header": []
 											},
-											"_postman_previewlanguage": null,
-											"header": null,
-											"cookie": [],
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [
+												{
+													"expires": "Invalid Date"
+												}
+											],
 											"responseTime": null,
-											"body": null
+											"body": "{\r\n    \"time\": \"2023-05-04T20:52:09.712591823\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": [\r\n        {\r\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\r\n            \"name\": \"AHBAP\"\r\n        },\r\n        {\r\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\r\n            \"name\": \"UNICEF\"\r\n        }\r\n    ]\r\n}"
 										}
 									]
 								}
