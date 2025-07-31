@@ -3760,7 +3760,7 @@
 							]
 						},
 						{
-							"name": "institution-advert/{id} Copy",
+							"name": "advert/{id}/accessibility/toggle",
 							"id": "0093063d-cfb1-44ab-ba75-c845abe8c09b",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
