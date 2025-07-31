@@ -3594,7 +3594,7 @@
 							"response": [
 								{
 									"id": "4a8aee73-c7f7-4bf4-904d-a13cde0ed519",
-									"name": "advert-applies",
+									"name": "advert/{id}/applications",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
@@ -3699,7 +3699,7 @@
 							"response": [
 								{
 									"id": "043ba616-6537-4b19-a5e1-664ee2b4159c",
-									"name": "institution-advert/{id}",
+									"name": "advert/{id}",
 									"originalRequest": {
 										"method": "PUT",
 										"header": [
@@ -3718,7 +3718,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/institution-advert/15"
+										"url": "{{API_URL}}/api/v1/advert/{id}"
 									},
 									"_postman_previewlanguage": "json",
 									"header": [
