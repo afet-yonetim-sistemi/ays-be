@@ -3588,15 +3588,7 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										}
+										"url": "{{API_URL}}/api/v1/advert/{id}/applications"
 									},
 									"_postman_previewlanguage": "json",
 									"header": [
