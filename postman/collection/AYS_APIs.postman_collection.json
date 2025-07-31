@@ -3564,7 +3564,7 @@
 							]
 						},
 						{
-							"name": "advert-applies",
+							"name": "advert/{id}/applications",
 							"id": "bff01cd2-d846-4fe4-a775-4503cd3c7649",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3572,6 +3572,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
+								"url": "{{API_URL}}/api/v1/advert/{id}/applications",
 								"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
