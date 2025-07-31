@@ -1365,6 +1365,24 @@
 							],
 							"id": "4fe9b267-fbd9-4ca0-bc51-00b7d25e221c",
 							"description": "Kurum ilanlarınının görüntülendiği ve ilan başvurularının yapıldığı servistir."
+						},
+						{
+							"name": "Institution Service",
+							"item": [
+								{
+									"name": "New Request",
+									"id": "350c7cf1-dafc-440d-a129-2a3139c612a9",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							],
+							"id": "676d88ca-f1bb-4169-8702-5874fdd40e89"
 						}
 					],
 					"id": "4f88ba47-90fd-4b04-a723-d70626c9f564",
