@@ -3807,11 +3807,22 @@
 										"header": [],
 										"url": "{{API_URL}}/api/v1/advert/summary-responsibles"
 									},
-									"_postman_previewlanguage": null,
-									"header": null,
-									"cookie": [],
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date"
+										}
+									],
 									"responseTime": null,
-									"body": null
+									"body": "{\n    \"time\": \"2023-05-04T20:52:09.712591823\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": [\n        {\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\n            \"firstName\": \"Joe\",\n            \"lastName\": \"Doe\"\n        },\n        {\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n            \"firstName\": \"Jack\",\n            \"lastName\": \"Smith\"\n        }\n    ]\n}"
 								}
 							]
 						}
