@@ -3534,7 +3534,7 @@
 							"response": [
 								{
 									"id": "ca6feea7-4e3f-468a-9772-87e738b1881c",
-									"name": "institution-advert",
+									"name": "advert",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
@@ -3620,7 +3620,7 @@
 							"response": [
 								{
 									"id": "1fbdf50d-7d8b-420f-a630-8fd02915cbd2",
-									"name": "institution-advert/{id}",
+									"name": "advert/{id}",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
