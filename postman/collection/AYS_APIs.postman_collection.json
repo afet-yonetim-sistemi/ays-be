@@ -3602,6 +3602,46 @@
 							]
 						},
 						{
+							"name": "advert/summary-responsibles",
+							"id": "757d3dfd-bdcf-4805-9630-8062d1be25fc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{API_URL}}/api/v1/advert/summary-responsibles",
+								"description": "- Bu servis ilgili Kurumdaki Userların `id` , `firstName` ve `lastName` bilgilerini listelemek için kullanılır.\n    \n- Bu servise  `advert:create`, `advert:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı userların listelenmesi gerekmektedir."
+							},
+							"response": [
+								{
+									"id": "278dbdb2-cd16-40b4-b3c9-93795a5f1f1a",
+									"name": "advert/summary-responsibles",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/advert/summary-responsibles"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date"
+										}
+									],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2023-05-04T20:52:09.712591823\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": [\n        {\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\n            \"firstName\": \"Joe\",\n            \"lastName\": \"Doe\"\n        },\n        {\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n            \"firstName\": \"Jack\",\n            \"lastName\": \"Smith\"\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
 							"name": "advert/{id}",
 							"id": "bcf4cdb4-9542-4b88-85e6-a64c4ce5bb30",
 							"protocolProfileBehavior": {
@@ -3849,46 +3889,6 @@
 								"description": "- Bu servis doldurulmuş ilan başvurularını reddetmek için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
 							},
 							"response": []
-						},
-						{
-							"name": "advert/summary-responsibles",
-							"id": "757d3dfd-bdcf-4805-9630-8062d1be25fc",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{API_URL}}/api/v1/advert/summary-responsibles",
-								"description": "- Bu servis ilgili Kurumdaki Userların `id` , `firstName` ve `lastName` bilgilerini listelemek için kullanılır.\n    \n- Bu servise  `advert:create`, `advert:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı userların listelenmesi gerekmektedir."
-							},
-							"response": [
-								{
-									"id": "278dbdb2-cd16-40b4-b3c9-93795a5f1f1a",
-									"name": "advert/summary-responsibles",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": "{{API_URL}}/api/v1/advert/summary-responsibles"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [
-										{
-											"expires": "Invalid Date"
-										}
-									],
-									"responseTime": null,
-									"body": "{\n    \"time\": \"2023-05-04T20:52:09.712591823\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": [\n        {\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\n            \"firstName\": \"Joe\",\n            \"lastName\": \"Doe\"\n        },\n        {\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n            \"firstName\": \"Jack\",\n            \"lastName\": \"Smith\"\n        }\n    ]\n}"
-								}
-							]
 						}
 					],
 					"id": "f3604b59-9413-49e4-a400-b12684814195",
