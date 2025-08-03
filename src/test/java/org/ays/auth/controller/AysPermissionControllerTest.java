@@ -13,14 +13,14 @@ import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
 
 class AysPermissionControllerTest extends AysRestControllerTest {
 
-    @MockBean
+    @MockitoBean
     private AysPermissionService permissionService;
 
 

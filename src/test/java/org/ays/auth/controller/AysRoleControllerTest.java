@@ -37,7 +37,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.Collections;
@@ -47,13 +47,13 @@ import java.util.Set;
 
 class AysRoleControllerTest extends AysRestControllerTest {
 
-    @MockBean
+    @MockitoBean
     private AysRoleReadService roleReadService;
 
-    @MockBean
+    @MockitoBean
     private AysRoleCreateService roleCreateService;
 
-    @MockBean
+    @MockitoBean
     private AysRoleUpdateService roleUpdateService;
 
 

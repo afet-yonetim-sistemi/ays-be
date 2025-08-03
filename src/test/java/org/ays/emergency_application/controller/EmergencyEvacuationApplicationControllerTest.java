@@ -33,7 +33,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -41,7 +41,7 @@ import java.util.List;
 
 class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest {
 
-    @MockBean
+    @MockitoBean
     private EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
 
 
