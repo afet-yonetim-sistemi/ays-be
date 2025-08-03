@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.scheduling.config.ScheduledTaskHolder;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -29,7 +29,7 @@ class InvalidTokenDeletionSchedulerEndToEndTest extends AysEndToEndTest {
     @Autowired
     private ScheduledTaskHolder taskHolder;
 
-    @SpyBean
+    @MockitoSpyBean
     private AysInvalidTokenDeletionScheduler invalidTokenDeletionScheduler;
 
 
