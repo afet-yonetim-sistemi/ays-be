@@ -1515,6 +1515,18 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "New Request",
+							"id": "0ea66e48-6360-4765-a279-9edf07a600db",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "463ce4da-78f1-4d80-9991-890c841e5049",
