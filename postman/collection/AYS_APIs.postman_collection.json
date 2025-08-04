@@ -3915,7 +3915,7 @@
 									}
 								},
 								"url": "{{API_URL}}/api/v1/advert/{id}/accessibility/toggle",
-								"description": "- Bu servis ilgili kuruma ait ilanın erişime açık olup olmadığını belirtir.\n    \n- Bu servise sadece `advert:create` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan kaydı günceller.\n    \n- Gelen istekte değeri eğer `false` ise `true` yapılır. `true` ise `false` yapılır.\n    \n- Bu alan sadece bu endpointle değiştirilebilir\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        "
+								"description": "- Bu servis ilgili kuruma ait ilanın erişime açık olup olmadığını belirtir.\n    \n- Bu servise sadece `advert:create` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan ilanın `ACCESSIBILITY` değerini , değeri eğer `false` ise `true` yapar. `true` ise `false` yapar.\n    \n- Bu alan sadece bu endpointle değiştirilebilir\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
 						},
