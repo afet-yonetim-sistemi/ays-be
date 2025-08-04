@@ -3785,7 +3785,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"title\": \"Android Developer\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n    \"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n    \"city\": \"Ankara\",\r\n    \"externalLink\": \"https://www.ankamall.com.tr/\",\r\n    \"applicationDeadline\": \"2026-15-01\",\r\n    \"startedAt\": \"2023-11-10T09:30:00\",\r\n    \"finishedAt\": \"2023-12-10T17:30:00\",\r\n    \"maxParticipationCount\": 10,\r\n    \"participationType\": \"ONLINE\",\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\"\r\n        },\r\n        {\r\n            \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\"\r\n        }\r\n    ]\r\n}",
+											"raw": "{\r\n    \"title\": \"Java Developer\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a web service project.\",\r\n    \"address\": \"ODTO Kampüsü\",\r\n    \"city\": \"Ankara\",\r\n    \"applicationDeadline\": \"2025-15-02\",\r\n    \"startedAt\": \"2025-11-05T09:30:00\",\r\n    \"finishedAt\": \"2025-12-10T17:30:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationTypes\": [\r\n        \"PHYSICALLY\"\r\n    ],\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"2c8d4f6c-8e03-4f91-b3b3-8f0a9c6d321d\"\r\n        },\r\n        {\r\n            \"id\": \"5a9e7d2b-6c4f-4d8e-9c1b-2d5e8f7a3c4b\"\r\n        }\r\n    ]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3805,7 +3805,7 @@
 									],
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
+									"body": "{\n    \"time\": \"2023-05-07T18:25:04.017616569\",\n    \"code\": \"8f3b2d1c-7e5a-4b9d-c8d1-4f6e2a7b9c1d\",\n    \"isSuccess\": true\n}"
 								}
 							]
 						},
