@@ -3845,7 +3845,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"title\": \"Flutter Developer\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n    \"externalLink\": \"https://www.ankara.com.tr/\",\r\n    \"applicationDeadline\": \"2025-15-08\",\r\n    \"startedAt\": \"2025-09-10T09:00:00\",\r\n    \"finishedAt\": \"2025-12-12T17:00:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationTypes\": [\r\n        \"ONLINE\"\r\n    ],\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\"\r\n        },\r\n        {\r\n            \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\"\r\n        }\r\n    ]\r\n}",
+											"raw": "{\r\n    \"title\": \"Python Developer\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a data application.\",\r\n   \r\n    \"applicationDeadline\": \"2024-15-08\",\r\n    \"startedAt\": \"2024-09-10T09:00:00\",\r\n    \"finishedAt\": \"2024-12-12T17:00:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationTypes\": [\r\n        \"ONLINE\"\r\n    ],\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\"\r\n        },\r\n        {\r\n            \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\"\r\n        }\r\n    ]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3869,13 +3869,13 @@
 								},
 								{
 									"id": "a4ac5152-3e1d-41d6-8252-49c525591c93",
-									"name": "advert/{id}",
+									"name": "advert/{id}ForPhysically",
 									"originalRequest": {
 										"method": "PUT",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"title\": \"Flutter Developer\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n    \"externalLink\": \"https://www.ankara.com.tr/\",\r\n    \"applicationDeadline\": \"2025-15-08\",\r\n    \"startedAt\": \"2025-09-10T09:00:00\",\r\n    \"finishedAt\": \"2025-12-12T17:00:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationTypes\": [\r\n        \"ONLINE\"\r\n    ],\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\"\r\n        },\r\n        {\r\n            \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\"\r\n        }\r\n    ]\r\n}",
+											"raw": "{\r\n    \"title\": \"Java Developer\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n    \"address\": \"Uludag unv Kampüsü\",\r\n    \"city\": \"Bursa\",\r\n    \"applicationDeadline\": \"2025-15-08\",\r\n    \"startedAt\": \"2025-09-10T09:00:00\",\r\n    \"finishedAt\": \"2025-12-12T17:00:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationTypes\": [\r\n        \"PHYSICALLY\"\r\n    ],\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a\"\r\n        },\r\n        {\r\n            \"id\": \"4e5f6a7b-8c9d-0e1f-2a3b-4c5d6e7f8a9b\"\r\n        }\r\n    ]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3884,11 +3884,15 @@
 										},
 										"url": "{{API_URL}}/api/v1/advert/{id}"
 									},
-									"_postman_previewlanguage": null,
-									"header": null,
-									"cookie": [],
+									"_postman_previewlanguage": "",
+									"header": [],
+									"cookie": [
+										{
+											"expires": "Invalid Date"
+										}
+									],
 									"responseTime": null,
-									"body": null
+									"body": ""
 								}
 							]
 						},
