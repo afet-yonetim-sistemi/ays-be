@@ -23,18 +23,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller class for managing emergency evacuation application-related operations via HTTP requests.
  * This controller handles the business operations for emergency evacuation applications in the system.
- * The mapping path for this controller is "/api/v1/emergency-evacuation-application".
  */
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
 class EmergencyEvacuationApplicationController {
 
     private final EmergencyEvacuationApplicationService emergencyEvacuationApplicationService;
@@ -50,7 +47,7 @@ class EmergencyEvacuationApplicationController {
      * @param listRequest The request body containing the parameters for listing emergency evacuation applications.
      * @return A response containing a paginated list of {@link EmergencyEvacuationApplicationsResponse}.
      */
-    @PostMapping("/emergency-evacuation-applications")
+    @PostMapping({"/api/v1/emergency-evacuation-applications", "/api/institution/v1/emergency-evacuation-applications"})
     @PreAuthorize("hasAnyAuthority('application:evacuation:list')")
     public AysResponse<AysPageResponse<EmergencyEvacuationApplicationsResponse>> findAll(
             @RequestBody @Valid EmergencyEvacuationApplicationListRequest listRequest) {
@@ -64,13 +61,14 @@ class EmergencyEvacuationApplicationController {
         return AysResponse.successOf(pageOfEmergencyEvacuationApplicationsResponse);
     }
 
+
     /**
      * Handles GET requests for retrieving the details of an emergency evacuation application by its ID.
      *
      * @param id the ID of the emergency evacuation application to retrieve
      * @return a response entity containing the details of the emergency evacuation application
      */
-    @GetMapping("/emergency-evacuation-application/{id}")
+    @GetMapping({"/api/v1/emergency-evacuation-application/{id}", "/api/institution/v1/emergency-evacuation-application/{id}"})
     @PreAuthorize("hasAuthority('application:evacuation:detail')")
     public AysResponse<EmergencyEvacuationApplicationResponse> findById(@PathVariable @UUID String id) {
         final EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationService.findById(id);
@@ -88,7 +86,7 @@ class EmergencyEvacuationApplicationController {
      * @return a response indicating the success of the operation
      */
     @CheckEmergencyEvacuationApplicationActivity
-    @PostMapping("/emergency-evacuation-application")
+    @PostMapping({"/api/v1/emergency-evacuation-application", "/api/landing/v1/emergency-evacuation-application"})
     public AysResponse<Void> create(@RequestBody @Valid EmergencyEvacuationApplicationRequest emergencyEvacuationApplicationRequest) {
         emergencyEvacuationApplicationService.create(emergencyEvacuationApplicationRequest);
         return AysResponse.success();
@@ -108,7 +106,7 @@ class EmergencyEvacuationApplicationController {
      * @param updateRequest the request object containing the details to update the Emergency Evacuation Application
      * @return a response indicating the success of the update operation
      */
-    @PutMapping("/emergency-evacuation-application/{id}")
+    @PutMapping({"/api/v1/emergency-evacuation-application/{id}", "/api/institution/v1/emergency-evacuation-application/{id}"})
     @PreAuthorize("hasAuthority('application:evacuation:update')")
     public AysResponse<Void> update(@PathVariable @UUID final String id,
                                     @RequestBody @Valid final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
