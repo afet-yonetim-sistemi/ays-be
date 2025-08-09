@@ -27,7 +27,8 @@ class InstitutionControllerTest extends AysRestControllerTest {
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1/institutions";
+    private static final String BASE_PATH = "/api/institution/v1";
+
 
     @Test
     void whenInstitutionStatusActive_thenReturnListInstitutionResponse() throws Exception {
@@ -42,7 +43,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
                 .thenReturn(mockActiveInstitutions);
 
         // Then
-        String endpoint = BASE_PATH.concat("/summary");
+        String endpoint = BASE_PATH.concat("/institutions/summary");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockSuperAdminToken.getAccessToken());
 
@@ -67,7 +68,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH.concat("/summary"), mockUserToken.getAccessToken());
+                .get(BASE_PATH.concat("/institutions/summary"), mockUserToken.getAccessToken());
 
         AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 

@@ -20,7 +20,8 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1/institutions";
+    private static final String BASE_PATH = "/api/institution/v1";
+
 
     @Test
     void whenActiveInstitutionsExist_thenReturnInstitutionSummaryResponses() throws Exception {
@@ -32,7 +33,7 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
         );
 
         // Then
-        String endpoint = BASE_PATH.concat("/summary");
+        String endpoint = BASE_PATH.concat("/institutions/summary");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, superAdminToken.getAccessToken());
 

@@ -27,7 +27,8 @@ class AysPermissionControllerTest extends AysRestControllerTest {
     private final AysPermissionToPermissionsResponseMapper permissionToPermissionsResponseMapper = AysPermissionToPermissionsResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1";
+    private static final String BASE_PATH = "/api/institution/v1";
+
 
     @Test
     void whenPermissionsFound_thenReturnPermissions() throws Exception {

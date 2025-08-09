@@ -51,7 +51,8 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
     private final EmergencyEvacuationApplicationToApplicationResponseMapper emergencyEvacuationApplicationToApplicationResponseMapper = EmergencyEvacuationApplicationToApplicationResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1";
+    private static final String BASE_PATH_INSTITUTION = "/api/institution/v1";
+    private static final String BASE_PATH_LANDING = "/api/landing/v1";
 
 
     @Test
@@ -100,7 +101,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
+        String endpoint = BASE_PATH_INSTITUTION.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminToken.getAccessToken(), mockListRequest);
 
@@ -178,7 +179,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-applications");
+        String endpoint = BASE_PATH_INSTITUTION.concat("/emergency-evacuation-applications");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, adminToken.getAccessToken(), mockListRequest);
 
@@ -254,7 +255,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         String applicationId = application.getId();
 
         // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(applicationId);
+        String endpoint = BASE_PATH_INSTITUTION.concat("/emergency-evacuation-application/").concat(applicationId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, adminToken.getAccessToken());
 
@@ -322,7 +323,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
+        String endpoint = BASE_PATH_LANDING.concat("/emergency-evacuation-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, applicationRequest);
 
@@ -380,7 +381,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-application");
+        String endpoint = BASE_PATH_LANDING.concat("/emergency-evacuation-application");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, applicationRequest);
 
@@ -453,7 +454,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .build();
 
         // Then
-        String endpoint = BASE_PATH.concat("/emergency-evacuation-application/").concat(id);
+        String endpoint = BASE_PATH_INSTITUTION.concat("/emergency-evacuation-application/").concat(id);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .put(endpoint, adminToken.getAccessToken(), updateRequest);
 
