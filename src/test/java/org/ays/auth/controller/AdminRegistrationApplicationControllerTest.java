@@ -175,7 +175,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         String mockApplicationId = "68c867b4-e84a-405c-b1ab-f8dcaa9c41f2";
 
         // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/" .concat(mockApplicationId));
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockApplicationId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
@@ -324,7 +324,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .thenReturn(mockAdminRegistrationApplication);
 
         // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/" .concat(mockId).concat("/summary"));
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/summary"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
@@ -351,7 +351,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .thenThrow(new AysAdminRegistrationApplicationNotExistByIdAuthException(mockId));
 
         // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/" .concat(mockId).concat("/summary"));
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/summary"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint);
 
@@ -626,7 +626,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .when(adminRegistrationApplicationService).approve(mockId);
 
         // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/" .concat(mockId).concat("/approve"));
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/approve"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockSuperAdminToken.getAccessToken());
 
@@ -650,7 +650,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
         String mockId = "5cbc8774-e2c3-414b-a1d8-26abcf3c9d17";
 
         // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/" .concat(mockId).concat("/approve"));
+        String endpoint = BASE_PATH.concat("/admin-registration-application/".concat(mockId).concat("/approve"));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockUserToken.getAccessToken());
 

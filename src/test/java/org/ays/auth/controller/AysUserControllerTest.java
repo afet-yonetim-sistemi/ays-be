@@ -405,7 +405,7 @@ class AysUserControllerTest extends AysRestControllerTest {
         String mockUserId = AysRandomUtil.generateUUID();
 
         // Then
-        String endpoint = BASE_PATH.concat("/user/" .concat(mockUserId));
+        String endpoint = BASE_PATH.concat("/user/".concat(mockUserId));
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockUserToken.getAccessToken());
 
