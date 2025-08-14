@@ -45,7 +45,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-class AysRoleControllerTest extends AysRestControllerTest {
+@Deprecated(since = "1.2.0 - Use or Develop AysRoleControllerTest Class", forRemoval = true)
+class AysRoleControllerOldTest extends AysRestControllerTest {
 
     @MockitoBean
     private AysRoleReadService roleReadService;
@@ -62,7 +63,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
     private final AysRoleToResponseMapper roleToRoleResponseMapper = AysRoleToResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/institution/v1";
+    private static final String BASE_PATH = "/api/v1";
 
 
     @Test

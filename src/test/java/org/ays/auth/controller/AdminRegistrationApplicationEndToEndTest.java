@@ -82,7 +82,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
     private final AdminRegistrationApplicationToCreateResponseMapper adminRegistrationApplicationToCreateResponseMapper = AdminRegistrationApplicationToCreateResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1";
+    private static final String BASE_PATH = "/api/institution/v1";
 
 
     @Test

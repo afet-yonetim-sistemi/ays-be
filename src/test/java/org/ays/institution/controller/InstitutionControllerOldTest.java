@@ -18,7 +18,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 
-class InstitutionControllerTest extends AysRestControllerTest {
+@Deprecated(since = "1.2.0 - Use or Develop InstitutionControllerTest Class", forRemoval = true)
+class InstitutionControllerOldTest extends AysRestControllerTest {
 
     @MockitoBean
     private InstitutionService institutionService;
@@ -27,7 +28,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/institution/v1";
+    private static final String BASE_PATH = "/api/v1";
 
 
     @Test

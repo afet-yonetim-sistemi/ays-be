@@ -47,7 +47,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 
-class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
+@Deprecated(since = "1.2.0 - Use or Develop AdminRegistrationApplicationControllerTest Class", forRemoval = true)
+class AdminRegistrationApplicationControllerOldTest extends AysRestControllerTest {
 
     @MockitoBean
     private AdminRegistrationApplicationService adminRegistrationApplicationService;
@@ -62,7 +63,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
     private final AdminRegistrationApplicationToCreateResponseMapper adminRegistrationApplicationToCreateResponseMapper = AdminRegistrationApplicationToCreateResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/institution/v1";
+    private static final String BASE_PATH = "/api/v1";
 
 
     @Test

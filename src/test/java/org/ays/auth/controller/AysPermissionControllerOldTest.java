@@ -18,7 +18,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 
-class AysPermissionControllerTest extends AysRestControllerTest {
+@Deprecated(since = "1.2.0 - Use or Develop AysPermissionControllerTest Class", forRemoval = true)
+class AysPermissionControllerOldTest extends AysRestControllerTest {
 
     @MockitoBean
     private AysPermissionService permissionService;
@@ -27,7 +28,7 @@ class AysPermissionControllerTest extends AysRestControllerTest {
     private final AysPermissionToPermissionsResponseMapper permissionToPermissionsResponseMapper = AysPermissionToPermissionsResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/institution/v1";
+    private static final String BASE_PATH = "/api/v1";
 
 
     @Test

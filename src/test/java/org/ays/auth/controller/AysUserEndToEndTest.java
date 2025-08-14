@@ -58,7 +58,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
     private final AysUserToResponseMapper userToResponseMapper = AysUserToResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/v1";
+    private static final String BASE_PATH = "/api/institution/v1";
 
 
     @Test

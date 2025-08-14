@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping({"/api/v1", "/api/institution/v1"})
 class AdminRegistrationApplicationController {
 
     private final AdminRegistrationApplicationService adminRegistrationApplicationService;
