@@ -1463,7 +1463,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/admin-registration-application/{id}/summary",
+										"url": "{{API_URL}}/api/institution/v1/admin-registration-application/{id}/summary",
 										"description": "- Bu servis, belirtilen kayıt başvuru ID'sindeki kurum yönetici kayıt başvurusunun özetini almak için kullanılır.\n    \n- Bu servis herkese açıktır.\n    \n- `AYS_ADMIN_USER_REGISTER_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Bu endpoint başvuru tamamlama sırasında kullanıldığı için başvurunun tamamlanmaya uygun olması beklenmektedir.\n  - Gönderilen ID'nin var olması\n  - Başvurunun `WAITING` statüsünde olması\n\n---\n\n**İstek Parametreleri**\n\n- `id`: Yönetici Kayıt Başvurusuna Ait ID Bilgisi"
 									},
 									"response": []
@@ -1486,7 +1486,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/admin-registration-application/{id}/complete",
+										"url": "{{API_URL}}/api/institution/v1/admin-registration-application/{id}/complete",
 										"description": "- Bu servis **Kurum** tarafında yönetici kayıt işlemlerini gerçekleştirmek için kullanılır.\n    \n- `id` değeri tek kullanımlıktır ve AYS yetkilileri tarafından önceden oluşturulmalıdır.\n    \n- Bu servise herkes erişebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id` : Kayıt İçin Oluşturulmuş ID Bilgisi\n    \n    - Zorunlu alandır.\n        \n    - Sadece `UUID` formatında bir değer alabilir.\n        \n- `firstName` : Yöneticiye Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName` : Yöneticiye Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `city` : Yöneticinin Yaşadığı Şehir Bilgisi\n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress` : Yöneticiye Ait Email Bilgisi\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `password` : Yöneticiye Ait Şifre Bilgisi\n    \n    - [Şifre Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/165871617/ifre+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber` : Yöneticiye Ait Telefon Numarası\n    \n    - Zorunlu alandır.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n        - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n        - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir."
 									},
 									"response": []
@@ -1596,7 +1596,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/admin-registration-applications",
+								"url": "{{API_URL}}/api/institution/v1/admin-registration-applications",
 								"description": "- Bu servis kurum yönetici kayıt başvurularını listelemek için kullanılır.\n    \n- Bu servise sadece `application:registration:list` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_ADMIN_REGISTER_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable` : Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı. `createdAt` alanı sıralama için kullanılabilir.\n            \n        - `direction` : Sıranın yönü. `ASC` ya da `DESC` değerlerini alabilir.\n            \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `statuses` : Yönetici Kayıt Başvurusuna Ait Durum Bilgisi\n        \n        - Sadece `WAITING`, `COMPLETED`, `APPROVED`, `REJECTED` değerlerini alabilir."
 							},
 							"response": [
@@ -1716,7 +1716,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/admin-registration-application/{id}",
+								"url": "{{API_URL}}/api/institution/v1/admin-registration-application/{id}",
 								"description": "- Bu servis kurum yönetici kayıt başvurusunun detay bilgisini almak için kullanılır.\n    \n- Bu servise sadece `application:registration:detail` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_ADMIN_USER_REGISTER_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Yönetici Kayıt Başvurusuna Ait ID Bilgisi"
 							},
 							"response": [
@@ -1831,7 +1831,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/admin-registration-application",
+								"url": "{{API_URL}}/api/institution/v1/admin-registration-application",
 								"description": "- Bu servis kurum yönetici kayıt başvurularını oluşturmak için kullanılır\n    \n- Bu servise sadece `application:registration:create` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `institutionId`: Kayıt başvurusu yapıcak yöneticinin kurum id'si. Kurum aktif ve var olmalıdır.\n    \n- `reason`: Kayıt başvurusunun oluşturulma nedeni. En az 40, en çok 512 karekter olmalıdır."
 							},
 							"response": []
@@ -1845,7 +1845,7 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/admin-registration-application/{id}/approve",
+								"url": "{{API_URL}}/api/institution/v1/admin-registration-application/{id}/approve",
 								"description": "- Bu servis doldurulmuş kurum yönetici kayıt başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Yönetici kayıt başvurusuna ait ID bilgisi."
 							},
 							"response": []
@@ -1868,7 +1868,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/admin-registration-application/{id}/reject",
+								"url": "{{API_URL}}/api/institution/v1/admin-registration-application/{id}/reject",
 								"description": "- Bu servis doldurulmuş kurum yönetici kayıt başvurularını reddetmek için kullanılır.\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Yönetici kayıt başvurusuna ait ID bilgisi.\n    \n- `rejectReason`: Yönetici kayıt başvurusunun reddedilme nedeni."
 							},
 							"response": []
@@ -1898,7 +1898,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/emergency-evacuation-applications",
+								"url": "{{API_URL}}/api/institution/v1/emergency-evacuation-applications",
 								"description": "- Bu servis acil durum tahliye başvurularını listelemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:list` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable` : Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı. `createdAt` alanı sıralama için kullanılabilir.\n            \n        - `direction` : Sıranın yönü. `ASC` ya da `DESC` değerlerini alabilir.\n            \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `referenceNumber` : Başvuruya ait referans numarasıdır.\n        \n        - Maksimum `10` haneli değer alabilir.\n            \n        - Burada ilk ve son haneler ile birlikte arama yapılabilmelidir.\n            \n    - `sourceCity` : Başvuru yapılan şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `sourceDistrict` : Başvuru yapılan ilçe bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n        \n        - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n            \n        - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `targetCity` : Başvuru kapsamında gidilecek şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `targetDistrict` : Başvuru kapsamında gidilecek ilçe bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `statuses` : Başvuruya ait durum bilgisidir.\n        \n        - Sadece `PENDING`, `IN_REVIEW`, `RECEIVED_FIRST_APPROVE`, `RECEIVED_SECOND_APPROVE`, `RECEIVED_THIRD_APPROVE`, `COMPLETED`, `CANCELLED` değerlerini alabilir.\n            \n    - `isInPerson` : Bireysel veya Başkasının Adına yapılmış başvuru bilgisini içerir.\n        \n        - Bireysel olarak yapılan başvurularda `true` değerini alabilir.\n            \n        - Başkasının Adına yapılan başvurularda `false` değerini alabilir."
 							},
 							"response": [
@@ -2018,7 +2018,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/emergency-evacuation-applications",
+								"url": "{{API_URL}}/api/institution/v1/emergency-evacuation-applications",
 								"description": "- Bu servis acil durum tahliye başvurularını listelemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:list` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable` : Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı. `createdAt` alanı sıralama için kullanılabilir.\n            \n        - `direction` : Sıranın yönü. `ASC` ya da `DESC` değerlerini alabilir.\n            \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `referenceNumber` : Başvuruya ait referans numarasıdır.\n        \n        - Maksimum `10` haneli değer alabilir.\n            \n        - Burada ilk ve son haneler ile birlikte arama yapılabilmelidir.\n            \n    - `sourceCity` : Başvuru yapılan şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `sourceDistrict` : Başvuru yapılan ilçe bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n        \n        - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n            \n        - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `targetCity` : Başvuru kapsamında gidilecek şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `targetDistrict` : Başvuru kapsamında gidilecek ilçe bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `statuses` : Başvuruya ait durum bilgisidir.\n        \n        - Sadece `PENDING`, `IN_REVIEW`, `RECEIVED_FIRST_APPROVE`, `RECEIVED_SECOND_APPROVE`, `RECEIVED_THIRD_APPROVE`, `COMPLETED`, `CANCELLED` değerlerini alabilir.\n            \n    - `isInPerson` : Bireysel veya Başkasının Adına yapılmış başvuru bilgisini içerir.\n        \n        - Bireysel olarak yapılan başvurularda `true` değerini alabilir.\n            \n        - Başkasının Adına yapılan başvurularda `false` değerini alabilir."
 							},
 							"response": [
@@ -2129,7 +2129,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}",
+								"url": "{{API_URL}}/api/institution/v1/emergency-evacuation-application/{id}",
 								"description": "- Bu servis acil durum tahliye başvurusunun detay bilgilerini görüntülemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:detail` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Başvuruya Ait ID Bilgisi"
 							},
 							"response": [
@@ -2227,7 +2227,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}",
+								"url": "{{API_URL}}/api/institution/v1/emergency-evacuation-application/{id}",
 								"description": "- Bu servis acil durum tahliye başvurusunun detay bilgilerini görüntülemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:detail` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Başvuruya Ait ID Bilgisi"
 							},
 							"response": [
@@ -2334,7 +2334,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}",
+								"url": "{{API_URL}}/api/institution/v1/emergency-evacuation-application/{id}",
 								"description": "- Bu servis acil durum tahliye başvurusunu güncellemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:update` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Güncelleme sonucunda güncellemeyi yapan kullanıcının bağlı olduğu kurumun ID bilgisi `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki `INSTITUTION_ID` alanına tanımlanmalıdır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Başvuruya Ait ID Bilgisi\n    \n\n---\n\n**İstek Parametreleri**\n\n- `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n- `hasObstaclePersonExist`: Başvuru dahilinde engel durumu olan birinin var olup olmadığı bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `true` veya `false` değerini alabilir.\n        \n- `status` : Başvurunun durum bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - `PENDING`, `IN_REVIEW`, `RECEIVED_FIRST_APPROVE`, `RECEIVED_SECOND_APPROVE`, `RECEIVED_THIRD_APPROVE`, `COMPLETED`, `CANCELLED` değerlerinden sadece birini alabilir.\n        \n- `notes` : Eğer varsa başvuru ile ilgili notları içerir.\n    \n    - Zorunlu alan değildir.\n        \n    - Maksimum 1000 karakter olabilir.\n        \n    - Boşluk ile başlayamaz ve boşluk ile bitemez."
 							},
 							"response": []
@@ -2357,7 +2357,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/emergency-evacuation-application/{id}",
+								"url": "{{API_URL}}/api/institution/v1/emergency-evacuation-application/{id}",
 								"description": "- Bu servis acil durum tahliye başvurusunu güncellemek için kullanılır.\n    \n- Bu servise sadece `application:evacuation:update` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Güncelleme sonucunda güncellemeyi yapan kullanıcının bağlı olduğu kurumun ID bilgisi `AYS_EMERGENCY_EVACUATION_APPLICATION` tablosundaki `INSTITUTION_ID` alanına tanımlanmalıdır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Başvuruya Ait ID Bilgisi\n    \n\n---\n\n**İstek Parametreleri**\n\n- `seatingCount` : Başvuru sonucunda kaç kişilik koltuk ihtiyacı olduğu bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece maksimum `3` haneli, pozitif sayı değerleri alabilir.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `hasObstaclePersonExist`: Başvuru dahilinde engel durumu olan birinin var olup olmadığı bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `true` veya `false` değerini alabilir.\n        \n- `status` : Başvurunun durum bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - `PENDING`, `IN_REVIEW`, `RECEIVED_FIRST_APPROVE`, `RECEIVED_SECOND_APPROVE`, `RECEIVED_THIRD_APPROVE`, `COMPLETED`, `CANCELLED` değerlerinden sadece birini alabilir.\n        \n- `notes` : Eğer varsa başvuru ile ilgili notları içerir.\n    \n    - Zorunlu alan değildir.\n        \n    - Maksimum 1000 karakter olabilir.\n        \n    - Boşluk ile başlayamaz ve boşluk ile bitemez.\n        \n- `priority` : Başvurunun öncelik durumunu belirtir.\n    \n    - Zorunlu alandır.\n        \n    - `LOWEST`, `LOW`, `MEDIUM`, `HIGH`, `HIGHEST`, `CRITICAL` değerlerinden sadece birini alabilir."
 							},
 							"response": []
@@ -2378,7 +2378,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/institutions/summary",
+								"url": "{{API_URL}}/api/institution/v1/institutions/summary",
 								"description": "- Bu servis ilgili Drop-Down List'lerde kullanılmak üzere Bütün Kurumlar ile ilgili `id` ve `name` bilgilerinin görüntülenmesi sağlar.\n    \n- Bu servise sadece `application:registration:create` yetkisine sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 							},
 							"response": []
@@ -2408,7 +2408,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/users",
+								"url": "{{API_URL}}/api/institution/v1/users",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Kullanıcıları Listelemek için kullanılır.\n    \n- Bu servise sadece `user:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı kullanıcıların listelenmesi gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n- filter : Filtrelemek için kullanılır.\n    \n    - `firstName` : Kullanıcıya ait isim bilgisidir.\n        \n        - [İsim Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `lastName` : Kullanıcıya ait soyisim bilgisidir.\n        \n        - [İsim Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `emailAddress` : Kullanıcıya ait email adresi bilgisidir.\n        \n        - [E-Posta Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `city` : Başvuru yapılan şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `statuses` : Kullanıcıya ait durum bilgisidir.\n        \n        - Sadece `ACTIVE`, `PASSIVE`, `DELETED`, `NOT_VERIFIED` değerlerini alabilir.\n            \n    - `phoneNumber` : Kullanıcıya ait telefon numarası bilgisidir.\n        \n        - `lineNumber`: Telefon Numarası\n            \n            - Sadece Telefon Numarası ile arama yapılabilmelidir.\n                \n            - Minimum `1`, maksimum `10` karakter uzunluğunda bir değer alabilir."
 							},
 							"response": [
@@ -2519,7 +2519,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/user/{id}",
+								"url": "{{API_URL}}/api/institution/v1/user/{id}",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Gönüllü Kullanıcı Detayını görüntülemek için kullanılır. `id` bilgisi verilen kullanıcının detayını görüntüler.\n    \n- Bu servise sadece `user:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı kullanıcıların görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcıya Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
@@ -2630,7 +2630,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/user",
+								"url": "{{API_URL}}/api/institution/v1/user",
 								"description": "- Bu servis ilgili Yöneticiye ait Kuruma ait Gönüllü Bir Kullanıcı oluşturmak için kullanılır.\n    \n- Bu servise sadece `user:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosuna statüsü `ACTIVE` olan bir kayıt ekler.\n    \n- Oluşturulan Kullanıcı, oluşturma servisi çağıran kuruma ait bir kullanıcı olmalıdır.\n    \n- Kullanıcı kaydedildikten sonra kullanıcının mail adresine bir şifre oluşturma maili iletilir. İletilen mail ile birlikte şifresini oluşturduktan sonra sisteme giriş yapabilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - Zorunlu alandır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `roleIds`: Kurum Gönüllüsünün Sahip Olması İstenen Rollerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her bir elemanı UUID formatında olmalıdır."
 							},
 							"response": [
@@ -2773,7 +2773,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/user/{id}",
+								"url": "{{API_URL}}/api/institution/v1/user/{id}",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Gönüllü Kullanıcıyı güncellemek için kullanılır. `id` bilgisi verilen Kullanıcının bilgilerini günceller.\n    \n- Bu servise sadece `user:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosunda var olan kaydı günceller.\n    \n- Sadece kuruma bağlı kullanıcının güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum Gönüllüsüne Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası.\n    \n    - Zorunlu alandır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `roleIds`: Kurum Gönüllüsünün Sahip Olması İstenen Rollerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her bir elemanı UUID formatında stringler olmalıdır."
 							},
 							"response": []
@@ -2787,7 +2787,7 @@
 							"request": {
 								"method": "PATCH",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/user/{id}/passivate",
+								"url": "{{API_URL}}/api/institution/v1/user/{id}/passivate",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Gönüllü Kullanıcının statüsünü `PASSIVE` olarak güncellemek için kullanılır. `id` bilgisi verilen Kullanıcının bilgilerini günceller.\n    \n- Bu servise sadece `user:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosunda var olan kaydı günceller.\n    \n- İlgili kullanıcının pasifleştirilebilmesi sadece `ACTIVE` statüsüne sahip olmalıdır.\n    \n- Sadece kuruma bağlı kullanıcının pasifleştirilebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum Gönüllüsüne Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
@@ -2801,7 +2801,7 @@
 							"request": {
 								"method": "PATCH",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/user/{id}/activate",
+								"url": "{{API_URL}}/api/institution/v1/user/{id}/activate",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Gönüllü Kullanıcının statüsünü `ACTIVE` olarak güncellemek için kullanılır. `id` bilgisi verilen Kullanıcının bilgilerini günceller.\n    \n- Bu servise sadece `user:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosunda var olan kaydı günceller.\n    \n- Sadece kuruma bağlı kullanıcının aktifleştirilebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum Gönüllüsüne Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
@@ -2815,7 +2815,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/user/{id}",
+								"url": "{{API_URL}}/api/institution/v1/user/{id}",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Gönüllü Kullanıcının statüsünü `DELETED` olarak güncellemek için kullanılır. id bilgisi verilen Kullanıcının bilgilerini günceller.\n    \n- Bu servise sadece `user:delete` rolüne sahip kullanıcılar erişebilir.\n    \n- `AYS_USER` tablosundaki ilgili kaydın statüsünü `DELETED` olarak günceller.\n    \n- Sadece kuruma bağlı kullanıcının silinebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Kurum Gönüllüsüne Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
@@ -2933,7 +2933,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/roles",
+								"url": "{{API_URL}}/api/institution/v1/roles",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Rolleri Listelemek için kullanılır.\n    \n- Bu servise sadece `role:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ROLE` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı rollerin listelenmesi gerekmektedir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable` : Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı. `createdAt` alanı sıralama için kullanılabilir.\n            \n        - `direction` : Sıranın yönü. `ASC` ya da `DESC` değerlerini alabilir.\n            \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `name` : Role ait isim bilgisidir.\n        \n        - [Rol Adı Alanı için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/163250220/Rol+Ad+Alan+i+in+Validasyon+Kurallar#Listeleme-ve-Filtreleme-Alanlar%C4%B1)\n            \n- `statuses` : Role ait durum bilgisidir.\n    \n    - Sadece `ACTIVE`, `PASSIVE`, `DELETED` değerlerini alabilir."
 							},
 							"response": [
@@ -3044,7 +3044,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/roles/summary",
+								"url": "{{API_URL}}/api/institution/v1/roles/summary",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Rollerin `id` ve `name` bilgilerini Listelemek için kullanılır.\n    \n- Bu servise `user:detail`, `user:create`, `user:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_ROLE` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı rollerin listelenmesi gerekmektedir."
 							},
 							"response": [
@@ -3146,7 +3146,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/role/{id}",
+								"url": "{{API_URL}}/api/institution/v1/role/{id}",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Rol Detayını görüntülemek için kullanılır. `id` bilgisi verilen rolün detayını görüntüler.\n    \n- Bu servise sadece `role:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ROLE` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı rolün görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: İlgili role ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
@@ -3257,7 +3257,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/role",
+								"url": "{{API_URL}}/api/institution/v1/role",
 								"description": "- Bu servis ilgili Yöneticiye ait Kuruma yeni bir Rol oluşturmak için kullanılır.\n    \n- Bu servise sadece `role:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ROLE` tablosuna statüsü `ACTIVE` olan bir kayıt ekler.\n    \n- Oluşturulan Rol, oluşturma servisi çağıran kuruma ait bir rol olmalıdır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `name`: Role Ait İsim Bilgisi\n    \n    - [Rol Adı Alanı için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/163250220/Rol+Ad+Alan+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1-i%C3%A7in-Validasyon-Kurallar%C4%B1)\n        \n- `permissionIds`: Rolün Sahip Olması İstenen Yetkilerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her bir elemanı UUID formatında olmalıdır."
 							},
 							"response": []
@@ -3280,7 +3280,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/role/{id}",
+								"url": "{{API_URL}}/api/institution/v1/role/{id}",
 								"description": "- Bu servise sadece `role:update` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ROLE` tablosunda var olan kaydı günceller.\n    \n- Sadece kuruma bağlı rolün güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Role Ait ID Bilgisi\n    \n\n**İstek Parametreleri**\n\n- `name`: Role Ait İsim Bilgisi\n    \n    - [Rol Adı Alanı için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/163250220/Rol+Ad+Alan+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1-i%C3%A7in-Validasyon-Kurallar%C4%B1)\n        \n- `permissionIds`: Rolün Sahip Olması İstenen Yetkilerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her elemanı UUID formatında olmalıdır."
 							},
 							"response": []
@@ -3294,7 +3294,7 @@
 							"request": {
 								"method": "PATCH",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/role/{id}/passivate",
+								"url": "{{API_URL}}/api/institution/v1/role/{id}/passivate",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Rolün statüsünü `PASSIVE` olarak güncellemek için kullanılır. `id` bilgisi verilen Rolü pasifleştirir.\n    \n- Bu servise sadece `role:update` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ROLE` tablosunda var olan kaydı günceller.\n    \n- İlgili rolün pasifleştirilebilmesi için hiçbir kullanıcıya tanımlı olmamalı ve sadece `ACTIVE` statüsüne sahip olmalıdır.\n    \n- Sadece kuruma bağlı rolün pasifleştirilebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Role Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
@@ -3308,7 +3308,7 @@
 							"request": {
 								"method": "PATCH",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/role/{id}/activate",
+								"url": "{{API_URL}}/api/institution/v1/role/{id}/activate",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Rolün statüsünü `ACTIVE` olarak güncellemek için kullanılır. `id` bilgisi verilen Rolün aktifleştirir.\n    \n- Bu servise sadece `role:update` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ROLE` tablosunda var olan kaydı günceller.\n    \n- İlgili rolün aktifleştirilebilmesi için `PASSIVE` statüsünde olmalıdır.\n    \n- Sadece kuruma bağlı rolün aktifleştirilebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Role Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
@@ -3322,7 +3322,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/role/{id}",
+								"url": "{{API_URL}}/api/institution/v1/role/{id}",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Rolü silmek için kullanılır. `id` bilgisi verilen rolü siler.\n    \n- Bu servise sadece `role:delete` yetkisine sahip kullanıcılar erişebilir.\n    \n- `AYS_ROLE` tablosundaki ilgili kaydın statüsünü `DELETED` olarak günceller.\n    \n- İlgili rolün silinebilmesi için hiçbir kullanıcıya tanımlı olmamalıdır.\n    \n- Sadece kuruma bağlı rolün silinebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Role Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
@@ -3431,7 +3431,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/permissions",
+								"url": "{{API_URL}}/api/institution/v1/permissions",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Yetkilerin `id` ve `name` bilgisini Listelemek için kullanılır.\n    \n- Bu servise `role:detail`, `role:create`, `role:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_PERMISSION` tablosundaki verilerden yararlanır."
 							},
 							"response": [
@@ -3544,7 +3544,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/adverts",
+								"url": "{{API_URL}}/api/institution/v1/adverts",
 								"description": "- Bu servis kurumların ihtiyaç duydukları gönüllü görevleri için verdikleri ilanları listelemek için kullanılır.\n    \n- Bu servise sadece `advert::list` yetkisine sahip olanlar erişebilir.\n    \n- AYS_ADVERT tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma bağlı ilanların listelenmesi gerekmektedir.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `currentParticipationCount` : İlana başvuran gönüllü sayısını içerir.\n            \n            - Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `maximumParticipationCount` : Kurumun ihtiyacı olan görev için belirlediği max gönüllü sayısı.\n            \n            - Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n        - `startedAt` : İlan başlangıç tarih bilgisini içerir.\n            \n            - En yakından en eskiye doğru ekrana getirilmeli.\n                \n        - `createdAt` : İlanın oluşturulduğu zamanı içerir.\n            \n            - En yakından en eskiye doğru ilanlar ekrana getirilmeli.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az `1`, en fazla `100` karakter olmalı.\n            \n    - `participationTypes`: İlana katılım türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses` : İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `INACCESSIBLE`, `CANCELLED` değerlerini alabilir.\n            \n    - `accessibility` : İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE`, `FALSE` değerlerini alabilir.\n            \n    - `city` : Yapılacak etkinliğin şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
 							},
 							"response": [
@@ -3599,7 +3599,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/advert/summary-responsibles",
+								"url": "{{API_URL}}/api/institution/v1/advert/summary-responsibles",
 								"description": "- Bu servis ilgili Kurumdaki Userların `id` , `firstName` ve `lastName` bilgilerini listelemek için kullanılır.\n    \n- Bu servise  `advert:create`, `advert:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı userların listelenmesi gerekmektedir."
 							},
 							"response": [
@@ -3639,7 +3639,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/advert/{id}",
+								"url": "{{API_URL}}/api/institution/v1/advert/{id}",
 								"description": "- Bu servis ilgili kurum ilanına ait detayları görüntülemek için kullanılır. `id` bilgisi verilen ilanın detayları görüntüler.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilanın görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
@@ -3681,7 +3681,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/advert/{id}/applications",
+								"url": "{{API_URL}}/api/institution/v1/advert/{id}/applications",
 								"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
@@ -3732,7 +3732,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/advert",
+								"url": "{{API_URL}}/api/institution/v1/advert",
 								"description": "- Bu servis ilgili Yöneticiye ait Kuruma yeni bir ilan oluşturmak için kullanılır.\n    \n- Bu servise sadece `advert:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosuna statüsü `IN_APPLICATION_PROCESS` olan bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `10`, en fazla `100` karakter olmalı.\n        \n- `description`: İlanı verilen görevin detaylı tanımını veya açıklamasını içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `10`, en fazla `4096` karakter olmalı.\n        \n- `applicationDeadline`: İlana başvurulması gereken son günün tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece tarih bilgisi olmalı.\n        \n    - Sadece bulunulan gün veya sonrası bir tarih olmalı.\n        \n- `startedAt`: Kurumun ilanının başlangıç tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Tarih ve saat bilgisi olmalı.\n        \n    - Bulunulan gün veya sonraki bir tarih ve saat seçilebilmeli.\n        \n- `finishedAt`: Kurumun ilanının bitiş tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Tarih ve saat bilgisi olmalı.\n        \n    - Başlangıç tarihinden sonraki bir tarih ve saat seçilebilmeli.\n        \n- `maximumParticipationCount`: İlgili ilan için belirlenen maksimum katılımcı sayısı bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n        \n- `participationTypes`: Kurumun ilanının katılım türünü ifade eder.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n        \n    - Bu alan `PHYSICALLY` ise `city` ve `address` alanları zorunlu alandır.\n        \n    - Bu alan `ONLINE` ise `externalLink` alanını zorunlu alandır.\n        \n- `city` : Kurum ilanının şehir bilgisini içerir. Eğer fiziksel bir ilan ise,\n    \n    - Zorunlu bir alandır.\n        \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `address` : Kurumun ilan için tanımladığı adres bilgisini içerir.Eğer fiziksel bir ilan ise,\n    \n    - Zorunlu bir alandır.\n        \n    - En az `10`, en fazla `250` karakter olmalı.\n        \n- `externalLink` : Kurumun görev için tanımladığı bağlantı bilgilerini içerir.Eğer çevrimiçi bir ilan ise,\n    \n    - Zorunlu bir alandır.\n        \n    - En az `10`, en fazla `2048` karakter olmalı\n        \n- `responsibles`: Kurumun ilanında sorumlu kişi veya kişileri içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az bir kişi sorumlu olarak tanımlanmalı."
 							},
 							"response": [
@@ -3816,7 +3816,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/advert/{id}",
+								"url": "{{API_URL}}/api/institution/v1/advert/{id}",
 								"description": "- Bu servis ilgili kuruma ait ilanda var olan bilgileri güncellemek için kullanılır. `id` bilgisi verilen Kurum ilanının bilgilerini günceller.\n    \n- Bu servise sadece `advert:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan kaydı günceller.\n    \n- Sadece kuruma bağlı ilanın güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n\n---\n\n**İstek Parametreleri**\n\n- `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `10`, en fazla `100` karakter olmalı.\n        \n- `description`: İlanı verilen görenin detaylı tanımını veya açıklamasını içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `10`, en fazla `4096` karakter olmalı.\n        \n- `applicationDeadline`: İlana başvurulması gereken son günün tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece tarih bilgisi olmalı.\n        \n    - Sadece bulunulan gün veya sonrası bir tarih olmalı.\n        \n- `startedAt`: Kurumun ilanının başlangıç tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Tarih ve saat bilgisi olmalı.\n        \n    - Bulunulan gün veya sonraki bir tarih ve saat seçilebilmeli.\n        \n- `finishedAt`: Kurumun ilanının bitiş tarih bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Tarih ve saat bilgisi olmalı.\n        \n    - Başlangıç tarihinden sonraki bir tarih ve saat seçilebilmeli.\n        \n- `maximumParticipationCount`: İlgili ilan için belirlenen maksimum katılımcı sayısı bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n        \n- `participationTypes`: Kurumun ilanının katılım türünü ifade eder.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n        \n    - Bu alan `PHYSICALLY` ise `city` ve `address` alanları zorunlu alandır.\n        \n    - Bu alan `ONLINE` ise `externalLink` alanını zorunlu alandır.\n        \n\n- `city` : Kurum ilanının şehir bilgisini içerir. Eğer fiziksel bir ilan ise,\n    \n    - Zorunlu bir alandır.\n        \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `address` : Kurumun ilan için tanımladığı adres bilgisini içerir.Eğer fiziksel bir ilan ise,\n    \n    - Zorunlu bir alandır.\n        \n    - En az `10`, en fazla `250` karakter olmalı.\n        \n- `externalLink` : Kurumun görev için tanımladığı bağlantı bilgilerini içerir.Eğer çevrimiçi bir ilan ise,\n    \n    - Zorunlu bir alandır.\n        \n    - En az `10`, en fazla `2048` karakter olmalı\n        \n- `responsibles`: Kurumun ilanında sorumlu kişi veya kişileri içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az bir kişi sorumlu olarak tanımlanmalı."
 							},
 							"response": [
@@ -3903,7 +3903,7 @@
 										}
 									}
 								},
-								"url": "{{API_URL}}/api/v1/advert/{id}/accessibility/toggle",
+								"url": "{{API_URL}}/api/institution/v1/advert/{id}/accessibility/toggle",
 								"description": "- Bu servis ilgili kuruma ait ilanın erişime açık olup olmadığını belirtir.\n    \n- Bu servise sadece `advert:create` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan ilanın `ACCESSIBILITY` değerini , değeri eğer `false` ise `true` yapar. `true` ise `false` yapar.\n    \n- Bu alan sadece bu endpointle değiştirilebilir\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
@@ -3917,7 +3917,7 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/advert/{id}/application/{id}/approve",
+								"url": "{{API_URL}}/api/institution/v1/advert/{id}/application/{id}/approve",
 								"description": "- Bu servis doldurulmuş ilan başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
 							},
 							"response": []
@@ -3931,14 +3931,14 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"url": "{{API_URL}}/api/v1/advert/{id}/application/{id}/reject",
+								"url": "{{API_URL}}/api/institution/v1/advert/{id}/application/{id}/reject",
 								"description": "- Bu servis doldurulmuş ilan başvurularını reddetmek için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
 							},
 							"response": []
 						}
 					],
 					"id": "f3604b59-9413-49e4-a400-b12684814195",
-					"description": "Kurumların ilanlarını yönettikleri servistir."
+					"description": "Kurumlara ait ilan yönetiminin yapılabileceği servistir."
 				}
 			],
 			"id": "4838ad6c-8abf-4dd9-b434-1a440e2ce27b",
