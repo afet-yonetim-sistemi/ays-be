@@ -1329,7 +1329,7 @@
 											],
 											"cookie": [],
 											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"8a5b2f6c-9e7d-4e1c-9f3d-7b8a2e5c6d1f\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"id\": \"d3e7f1c9-6b2a-4f8d-c5e1-9a7b4f3c8d5e\",\r\n        \"institution\": {\r\n            \"name\": \"Afet Yönetim Sistemi\"\r\n        },\r\n        \"title\": \"Android Developer\",\r\n        \"statuses\": [\r\n            \"IN_APPLICATION_PROCCESS\"\r\n        ],\r\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n        \"externalLink\": \"https://www.ankamall.com.tr/\",\r\n        \"applicationDeadline\": \"2025-15-05\",\r\n        \"startedAt\": \"2025-01-12T09:15:00\",\r\n        \"finishedAt\": \"2025-02-6T09:15:00\",\r\n        \"maximumParticipationCount\": 10,\r\n        \"participationTypes\": [\r\n            \"ONLINE\"\r\n        ],\r\n        \"createdAt\": \"2024-12-07T09:45:08\",\r\n        \"updatedAt\": null\r\n    }\r\n}"
+											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"d9f3a1e8-7c5d-4b0a-9e2f-6d4c8b7e0f21\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"id\": \"b2c5e8d1-4f7a-9c6e-3d8f-1a2b5c8e3f4d\",\r\n        \"institution\": {\r\n            \"name\": \"Afet Yönetim Sistemi\"\r\n        },\r\n        \"title\": \"Java Developer\",\r\n        \"status\": [\r\n            \"IN_APPLICATION_PROCCESS\"\r\n        ],\r\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via web application.\",\r\n        \"address\": \"ODTO Kampüsü\",\r\n        \"city\": \"Ankara\",\r\n        \"applicationDeadline\": \"2025-15-05\",\r\n        \"startedAt\": \"2025-01-12T09:15:00\",\r\n        \"finishedAt\": \"2025-02-6T09:15:00\",\r\n        \"maximumParticipationCount\": 10,\r\n        \"participationType\": [\r\n        \"PHYSICALLY\"\r\n        ],\r\n        \"createdAt\": \"2024-12-07T09:45:08\",\r\n        \"updatedAt\": null\r\n    }\r\n}"
 										}
 									]
 								},
@@ -1351,7 +1351,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/landing/v1/advert/apply",
+										"url": "{{API_URL}}/api/v1/advert/apply",
 										"description": "- Bu servis ilgili kurum ilanına gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise `advert:application:apply` yetkisine sahip kişiler erişebilir.\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `age` : Başvuru sahibinin yaş bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n        \n- `gender` : Başvuru sahibinin cinsiyet bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `MALE`, `FEMALE` , `NOT_SPECIFIED` değerlerini alabilir.\n        \n- `hoursAvailablePerDay` : Başvuru sahibinin günlük ayırabileceği zaman bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
 									},
 									"response": [
@@ -1369,7 +1369,8 @@
 															"language": "json"
 														}
 													}
-												}
+												},
+												"url": "{{API_URL}}/api/v1/advert/apply"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -3801,7 +3802,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"title\": \"Java Developer\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a web service project.\",\r\n    \"address\": \"ODTO Kampüsü\",\r\n    \"city\": \"Ankara\",\r\n    \"applicationDeadline\": \"2025-15-02\",\r\n    \"startedAt\": \"2025-11-05T09:30:00\",\r\n    \"finishedAt\": \"2025-12-10T17:30:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationTypes\": [\r\n        \"PHYSICALLY\"\r\n    ],\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"2c8d4f6c-8e03-4f91-b3b3-8f0a9c6d321d\"\r\n        },\r\n        {\r\n            \"id\": \"5a9e7d2b-6c4f-4d8e-9c1b-2d5e8f7a3c4b\"\r\n        }\r\n    ]\r\n}",
+											"raw": "{\r\n    \"title\": \"Java Developer\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a web service project.\",\r\n    \"address\": \"ODTO Kampüsü\",\r\n    \"city\": \"Ankara\",\r\n    \"applicationDeadline\": \"2025-15-02\",\r\n    \"startedAt\": \"2025-11-05T09:30:00\",\r\n    \"finishedAt\": \"2025-12-10T17:30:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationType\": [\r\n        \"PHYSICALLY\"\r\n    ],\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"2c8d4f6c-8e03-4f91-b3b3-8f0a9c6d321d\"\r\n        },\r\n        {\r\n            \"id\": \"5a9e7d2b-6c4f-4d8e-9c1b-2d5e8f7a3c4b\"\r\n        }\r\n    ]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3861,7 +3862,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"title\": \"Python Developer\",\r\n    \"status\":\"IN_APPLICATION_PROCESS\",\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a data application.\",\r\n   \r\n    \"applicationDeadline\": \"2024-15-08\",\r\n    \"startedAt\": \"2024-09-10T09:00:00\",\r\n    \"finishedAt\": \"2024-12-12T17:00:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationTypes\": [\r\n        \"ONLINE\"\r\n    ],\r\n    \"externalLink\": \"https://www.ankamall.com.tr/\",\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\"\r\n        },\r\n        {\r\n            \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\"\r\n        }\r\n    ]\r\n}",
+											"raw": "{\r\n    \"title\": \"Python Developer\",\r\n    \"status\": [\r\n        \"IN_APPLICATION_PROCESS\"\r\n    ],\r\n    \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a data application.\",\r\n    \"applicationDeadline\": \"2024-15-08\",\r\n    \"startedAt\": \"2024-09-10T09:00:00\",\r\n    \"finishedAt\": \"2024-12-12T17:00:00\",\r\n    \"maximumParticipationCount\": 10,\r\n    \"participationType\": [\r\n        \"ONLINE\"\r\n    ],\r\n    \"externalLink\": \"https://www.ankamall.com.tr/\",\r\n    \"responsibles\": [\r\n        {\r\n            \"id\": \"1abb1b82-7781-4f77-b308-44c8a5cde74e\"\r\n        },\r\n        {\r\n            \"id\": \"7345de87-7a1c-4c75-a1e2-c476fe8cf197\"\r\n        }\r\n    ]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
