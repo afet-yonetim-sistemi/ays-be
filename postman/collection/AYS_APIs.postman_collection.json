@@ -1357,7 +1357,7 @@
 									"response": [
 										{
 											"id": "44da0123-919e-4caf-bea3-f43c0d859991",
-											"name": "advert-application",
+											"name": "advert/apply",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
