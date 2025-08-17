@@ -1223,7 +1223,7 @@
 							"name": "Advert Apply Service",
 							"item": [
 								{
-									"name": "adverts",
+									"name": "landing/adverts",
 									"id": "ae32686f-dce9-469b-a8df-754d28fe87e6",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
