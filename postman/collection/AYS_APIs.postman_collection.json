@@ -1279,7 +1279,7 @@
 									"response": [
 										{
 											"id": "bd67f9e7-8ef1-42f7-bc0c-2ddcd43e3761",
-											"name": "landing/advert/{id}",
+											"name": "landing/advert/{id}ForOnline",
 											"originalRequest": {
 												"method": "GET",
 												"header": [
@@ -1306,7 +1306,7 @@
 										},
 										{
 											"id": "2edb8635-055d-4fdc-b450-03b506030215",
-											"name": "landing/advert/{id} Copy",
+											"name": "landing/advert/{id}ForPhysically",
 											"originalRequest": {
 												"method": "GET",
 												"header": [
