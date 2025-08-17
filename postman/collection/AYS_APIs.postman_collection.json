@@ -1232,7 +1232,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/landing/v1/adverts",
-										"description": "- Bu servis kurumların ne tür gönüllülere ihtiyaç duyduklarını görebileceğimiz ilanları listelemek için kullanılır.\n    \n- Bu servise herkes ulaşabilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.Veriler varsayılan olarak ilanın başlangıç ve bitiş tarihine göre, en yakın olan ilan başta olacak şekilde ekranda görüntülenmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n- filter : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - Burada ilk/orta/son haneler ile birlikte arama yapılabilmelidir.\n            \n    - `participationTypes`: Kurumun ihtiyacı olan görev için gönüllü çalışan tipi bilgisini içerir.\n        \n        - Katılım Türü dropdown listten seçilebilir olmalıdır.\n            \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses`: İlan durumunu içerir.\n        \n        - Varsayılan olarak `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED` olan ilanlar listelenir.\n            \n        - Eğer checkbox işaretnmişse `IN_APPLICATION_PROCESS` durumunda olan ilanlar listelenmeli .\n            \n    - `city` : İlanda istenen görevin yapılması beklenen şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
+										"description": "- Bu servis kurumların ne tür gönüllülere ihtiyaç duyduklarını görebileceğimiz ilanları listelemek için kullanılır.\n    \n- Bu servise herkes ulaşabilir.\n    \n- `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- pageable : Sayfa Numaralama için kullanılır.\n    \n    - page : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - pageSize : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - orders : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.Veriler varsayılan olarak ilanın başlangıç ve bitiş tarihine göre, en yakın olan ilan başta olacak şekilde ekranda görüntülenmelidir.\n        \n        - property : Sıralanıcak alanın adı. firstName ve createdAt alanı sıralama için kullanılabilir.\n            \n        - direction : Sıranın yönü. ASC ya da DESC değerlerini alabilir.\n            \n- filter : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - Burada ilk/orta/son haneler ile birlikte arama yapılabilmelidir.\n            \n    - `participationTypes`: Kurumun ihtiyacı olan görev için gönüllü çalışan tipi bilgisini içerir.\n        \n        - Katılım Türü dropdown listten seçilebilir olmalıdır.\n            \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses`: İlan durumunu içerir.\n        \n        - Varsayılan olarak `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED` olan ilanlar listelenir.\n            \n        - Eğer checkbox işaretnmişse `IN_APPLICATION_PROCESS` durumunda olan ilanlar listelenmeli .\n            \n    - `city` : İlanda istenen görevin yapılması beklenen şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `institution_id` : Bu filtreleme tab yapısı şeklinde olacak. Kurum İsimleri tab şeklinde gösterilecek ve hangi tab seçilirse o kurumun ilanları gösterilecek.\n        \n        - Varsayılan olarak hiçbir kurum seçili olmamalı ve bütün kurumların ilanları başlangıç ve bitiş tarihine göre, en yakın olan ilan başta olacak şekilde ekranda görüntülenmelidir."
 									},
 									"response": [
 										{
@@ -1280,6 +1280,33 @@
 										{
 											"id": "bd67f9e7-8ef1-42f7-bc0c-2ddcd43e3761",
 											"name": "landing/advert/{id}",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"url": "{{API_URL}}/api/v1/landing/advert/{id}"
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"8a5b2f6c-9e7d-4e1c-9f3d-7b8a2e5c6d1f\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"id\": \"d3e7f1c9-6b2a-4f8d-c5e1-9a7b4f3c8d5e\",\r\n        \"institution\": {\r\n            \"name\": \"Afet Yönetim Sistemi\"\r\n        },\r\n        \"title\": \"Android Developer\",\r\n        \"statuses\": [\r\n            \"IN_APPLICATION_PROCCESS\"\r\n        ],\r\n        \"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n        \"externalLink\": \"https://www.ankamall.com.tr/\",\r\n        \"applicationDeadline\": \"2025-15-05\",\r\n        \"startedAt\": \"2025-01-12T09:15:00\",\r\n        \"finishedAt\": \"2025-02-6T09:15:00\",\r\n        \"maximumParticipationCount\": 10,\r\n        \"participationTypes\": [\r\n            \"ONLINE\"\r\n        ],\r\n        \"createdAt\": \"2024-12-07T09:45:08\",\r\n        \"updatedAt\": null\r\n    }\r\n}"
+										},
+										{
+											"id": "2edb8635-055d-4fdc-b450-03b506030215",
+											"name": "landing/advert/{id} Copy",
 											"originalRequest": {
 												"method": "GET",
 												"header": [
