@@ -1454,21 +1454,7 @@
 										"method": "GET",
 										"header": []
 									},
-									"response": [
-										{
-											"id": "82eaba87-4170-4489-b047-913f83ca0eab",
-											"name": "volunteer-apply-email-check",
-											"originalRequest": {
-												"method": "GET",
-												"header": []
-											},
-											"_postman_previewlanguage": null,
-											"header": null,
-											"cookie": [],
-											"responseTime": null,
-											"body": null
-										}
-									]
+									"response": []
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b"
