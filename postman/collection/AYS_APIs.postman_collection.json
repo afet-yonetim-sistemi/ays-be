@@ -1510,9 +1510,24 @@
 									},
 									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"description": "- Bu servis gönüllü başvuruları için `ACTIVE` statüsüne sahip kurumları listeler.\n    \n- Bu servise herkes erişebilir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 									},
-									"response": []
+									"response": [
+										{
+											"id": "e1b94a08-4df5-48da-b63a-1b7489728ce8",
+											"name": "volunteer-apply/institutions",
+											"originalRequest": {
+												"method": "GET",
+												"header": []
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": null
+										}
+									]
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b",
