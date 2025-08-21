@@ -1491,7 +1491,7 @@
 									]
 								},
 								{
-									"name": "New Request",
+									"name": "volunteer-apply/institutions",
 									"id": "274b66bc-16ed-432f-b2b1-687c02fc8a47",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1503,7 +1503,8 @@
 									"response": []
 								}
 							],
-							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b"
+							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b",
+							"description": "Kâr amacı gütmeyen kuruluşlar için dışarıdan gönüllülerin başvurularını sorunsuz bir şekilde yapmalarını sağlar. Gönüllülerin farklı kurumlara hızlı ve kolay bir şekilde başvuru yapabilmesini sağlar."
 						}
 					],
 					"id": "4f88ba47-90fd-4b04-a723-d70626c9f564",
