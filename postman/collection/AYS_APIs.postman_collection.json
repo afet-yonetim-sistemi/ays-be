@@ -1445,16 +1445,50 @@
 							"name": "Volunteer Apply Service",
 							"item": [
 								{
-									"name": "volunteer-apply-email-check",
+									"name": "volunteer-apply/check-email",
 									"id": "2ae56644-8361-4a60-bb93-a90848e0b3c5",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
-										"method": "GET",
-										"header": []
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"johndoe@example.com\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/volunteer-apply/check-email"
 									},
-									"response": []
+									"response": [
+										{
+											"id": "5c3b98ee-ced3-453b-9054-865eed210866",
+											"name": "volunteer-apply/check-email",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"email\": \"johndoe@example.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{API_URL}}/api/v1/volunteer-apply/check-email"
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": null
+										}
+									]
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b"
