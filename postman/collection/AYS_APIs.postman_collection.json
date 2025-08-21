@@ -1462,7 +1462,8 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/volunteer-apply/check-email"
+										"url": "{{API_URL}}/api/v1/volunteer-apply/check-email",
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `age` : Başvuru sahibinin yaş bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n        "
 									},
 									"response": [
 										{
