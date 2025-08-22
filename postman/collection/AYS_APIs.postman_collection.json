@@ -1536,8 +1536,18 @@
 										"disableBodyPruning": true
 									},
 									"request": {
-										"method": "GET",
-										"header": []
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Salih\",\r\n    \"lastName\": \"Selim\",\r\n    \"emailAddress\": \"salihselim@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5354567811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/volunteer-apply"
 									},
 									"response": []
 								}
