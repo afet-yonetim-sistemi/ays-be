@@ -1575,6 +1575,19 @@
 											"body": null
 										}
 									]
+								},
+								{
+									"name": "volunteer-apply",
+									"id": "79694c28-6994-460f-9080-d76e4c9f7c5b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": "{{API_URL}}/api/v1/volunteer-apply"
+									},
+									"response": []
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b",
