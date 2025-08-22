@@ -1568,11 +1568,22 @@
 												},
 												"url": "{{API_URL}}/api/v1/volunteer-apply/user"
 											},
-											"_postman_previewlanguage": null,
-											"header": null,
-											"cookie": [],
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [
+												{
+													"expires": "Invalid Date"
+												}
+											],
 											"responseTime": null,
-											"body": null
+											"body": "{\r\n    \"time\": \"2025-05-07T18:25:04.017616569\",\r\n    \"code\": \"1f9d7c3b-2a4e-8d6f-5b1c-9e2a4f7c8d5e\",\r\n    \"isSuccess\": true\r\n}"
 										}
 									]
 								},
@@ -1585,7 +1596,8 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/v1/volunteer-apply"
+										"url": "{{API_URL}}/api/v1/volunteer-apply",
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise `volunteer:application:apply` yetkisine sahip kişiler erişebilir.\n    \n- Bu servis `AYS_USER` ve `AYS_VOLUNTEER_APPLICATION` tablosunu kullanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `userId` : Başvuru sahibinin Başvuru sahibinin userId bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n        \n- `institutionId` : Başvuru sahibinin Gönüllü Ol başvurusunu yaptığı Kurumun id bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `MALE`, `FEMALE` , `NOT_SPECIFIED` değerlerini alabilir.\n        \n- `hoursAvailablePerDay` : Başvuru sahibinin günlük ayırabileceği zaman bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
 									},
 									"response": []
 								}
