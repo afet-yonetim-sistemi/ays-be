@@ -1445,6 +1445,33 @@
 							"name": "Volunteer Apply Service",
 							"item": [
 								{
+									"name": "volunteer-apply/institutions",
+									"id": "274b66bc-16ed-432f-b2b1-687c02fc8a47",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"description": "- Bu servis gönüllü başvuruları için `ACTIVE` statüsüne sahip kurumları listeler.\n    \n- Bu servise herkes erişebilir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
+									},
+									"response": [
+										{
+											"id": "e1b94a08-4df5-48da-b63a-1b7489728ce8",
+											"name": "volunteer-apply/institutions",
+											"originalRequest": {
+												"method": "GET",
+												"header": []
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": null
+										}
+									]
+								},
+								{
 									"name": "volunteer-apply/check-email",
 									"id": "2ae56644-8361-4a60-bb93-a90848e0b3c5",
 									"protocolProfileBehavior": {
@@ -1503,31 +1530,16 @@
 									]
 								},
 								{
-									"name": "volunteer-apply/institutions",
-									"id": "274b66bc-16ed-432f-b2b1-687c02fc8a47",
+									"name": "New Request",
+									"id": "7b6430c8-5153-4175-998d-bd0f5b3cde5b",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
 										"method": "GET",
-										"header": [],
-										"description": "- Bu servis gönüllü başvuruları için `ACTIVE` statüsüne sahip kurumları listeler.\n    \n- Bu servise herkes erişebilir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
+										"header": []
 									},
-									"response": [
-										{
-											"id": "e1b94a08-4df5-48da-b63a-1b7489728ce8",
-											"name": "volunteer-apply/institutions",
-											"originalRequest": {
-												"method": "GET",
-												"header": []
-											},
-											"_postman_previewlanguage": null,
-											"header": null,
-											"cookie": [],
-											"responseTime": null,
-											"body": null
-										}
-									]
+									"response": []
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b",
