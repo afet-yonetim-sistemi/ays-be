@@ -1530,7 +1530,7 @@
 									]
 								},
 								{
-									"name": "New Request",
+									"name": "volunteer-apply/user",
 									"id": "7b6430c8-5153-4175-998d-bd0f5b3cde5b",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1547,9 +1547,33 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/volunteer-apply"
+										"url": "{{API_URL}}/api/v1/volunteer-apply/user"
 									},
-									"response": []
+									"response": [
+										{
+											"id": "7a6439f1-cdda-4d37-a9e3-7666fb3769d7",
+											"name": "volunteer-apply/user",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"firstName\": \"Salih\",\r\n    \"lastName\": \"Selim\",\r\n    \"emailAddress\": \"salihselim@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5354567811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{API_URL}}/api/v1/volunteer-apply/user"
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": null
+										}
+									]
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b",
