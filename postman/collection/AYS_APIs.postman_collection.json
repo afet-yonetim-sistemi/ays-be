@@ -1586,20 +1586,6 @@
 											"body": "{\r\n    \"time\": \"2025-05-07T18:25:04.017616569\",\r\n    \"code\": \"1f9d7c3b-2a4e-8d6f-5b1c-9e2a4f7c8d5e\",\r\n    \"isSuccess\": true\r\n}"
 										}
 									]
-								},
-								{
-									"name": "volunteer-apply",
-									"id": "79694c28-6994-460f-9080-d76e4c9f7c5b",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [],
-										"url": "{{API_URL}}/api/v1/volunteer-apply",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise `volunteer:application:apply` yetkisine sahip kişiler erişebilir.\n    \n- Bu servis `AYS_USER` ve `AYS_VOLUNTEER_APPLICATION` tablosunu kullanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `userId` : Başvuru sahibinin Başvuru sahibinin userId bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Her bir elemanı UUID formatında olmalıdır.\n        \n\n---\n\n**Istek Parametreleri**\n\n- `status`: Gönüllünün bu başvuru için durumunu belirtir.\n    \n    - `APPROVED`, `REJECTED` değerlerini alır.\n        \n    - Zorunlu alandır.\n        \n- `rejectionReason` : Başvuru reddedilme sebebini içerir. Status `REJECTED` ise doldurulur."
-									},
-									"response": []
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b",
