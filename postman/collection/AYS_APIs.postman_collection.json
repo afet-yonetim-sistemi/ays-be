@@ -4012,7 +4012,7 @@
 							"response": [
 								{
 									"id": "043ba616-6537-4b19-a5e1-664ee2b4159c",
-									"name": "advert/{id}ForOnline",
+									"name": "advert/{id} - Online",
 									"originalRequest": {
 										"method": "PUT",
 										"header": [
@@ -4048,7 +4048,7 @@
 								},
 								{
 									"id": "a4ac5152-3e1d-41d6-8252-49c525591c93",
-									"name": "advert/{id}ForPhysically",
+									"name": "advert/{id} - Physically",
 									"originalRequest": {
 										"method": "PUT",
 										"header": [],
