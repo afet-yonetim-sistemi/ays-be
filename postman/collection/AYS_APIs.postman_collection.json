@@ -1223,7 +1223,7 @@
 							"name": "Advert Apply Service",
 							"item": [
 								{
-									"name": "landing/adverts",
+									"name": "adverts",
 									"id": "ae32686f-dce9-469b-a8df-754d28fe87e6",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1265,7 +1265,7 @@
 									]
 								},
 								{
-									"name": "landing/advert/{id}",
+									"name": "advert/{id}",
 									"id": "6261bbe2-3c07-4845-ba1f-f06d2b1963f4",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1351,7 +1351,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/advert/apply",
+										"url": "{{API_URL}}/api/v1/landing/advert/apply",
 										"description": "- Bu servis ilgili kurum ilanına gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise `advert:application:apply` yetkisine sahip kişiler erişebilir.\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `age` : Başvuru sahibinin yaş bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n        \n- `gender` : Başvuru sahibinin cinsiyet bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `MALE`, `FEMALE` , `NOT_SPECIFIED` değerlerini alabilir.\n        \n- `hoursAvailablePerDay` : Başvuru sahibinin günlük ayırabileceği zaman bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
 									},
 									"response": [
@@ -1383,7 +1383,9 @@
 											],
 											"cookie": [
 												{
-													"expires": "Invalid Date"
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
 												}
 											],
 											"responseTime": null,
@@ -1429,7 +1431,9 @@
 											],
 											"cookie": [
 												{
-													"expires": "Invalid Date"
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
 												}
 											],
 											"responseTime": null,
@@ -1521,7 +1525,9 @@
 											],
 											"cookie": [
 												{
-													"expires": "Invalid Date"
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
 												}
 											],
 											"responseTime": null,
@@ -1579,7 +1585,9 @@
 											],
 											"cookie": [
 												{
-													"expires": "Invalid Date"
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
 												}
 											],
 											"responseTime": null,
@@ -3760,7 +3768,9 @@
 									],
 									"cookie": [
 										{
-											"expires": "Invalid Date"
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
 										}
 									],
 									"responseTime": null,
@@ -3800,7 +3810,9 @@
 									],
 									"cookie": [
 										{
-											"expires": "Invalid Date"
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
 										}
 									],
 									"responseTime": null,
@@ -4062,7 +4074,9 @@
 									],
 									"cookie": [
 										{
-											"expires": "Invalid Date"
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
 										}
 									],
 									"responseTime": null,
