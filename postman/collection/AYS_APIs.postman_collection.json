@@ -1344,7 +1344,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"firstName\": \"Afet Yönetim\",\r\n    \"lastName\": \"Sistemi\",\r\n    \"city\": \"İstanbul\",\r\n    \"emailAddress\": \"admin@ays.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5051237891\"\r\n    },\r\n    \"age\": \"25\",\r\n    \"gender\": \"MALE\",\r\n    \"hoursAvailablePerDay\": \"3\"\r\n}",
+											"raw": "{\r\n    \"age\": 25,\r\n    \"gender\": \"MALE\",\r\n    \"hoursAvailablePerDay\": 3\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
