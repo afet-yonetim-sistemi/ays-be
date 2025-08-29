@@ -1344,7 +1344,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"age\": 25,\r\n    \"gender\": \"MALE\",\r\n    \"hoursAvailablePerDay\": 3\r\n}",
+											"raw": "{\r\n    \"user\": {\r\n        \"age\": 25,\r\n        \"gender\": \"MALE\"\r\n    },\r\n    \"application\": {\r\n        \"hoursAvailablePerDay\": 3\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1437,7 +1437,7 @@
 												}
 											],
 											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2023-05-04T20:52:09.712591823\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": [\r\n        {\r\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\r\n            \"name\": \"AHBAP\"\r\n        },\r\n        {\r\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\r\n            \"name\": \"UNICEF\"\r\n        }\r\n    ]\r\n}"
+											"body": "{\r\n    \"time\": \"2023-05-04T20:52:09.712591823\",\r\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\r\n    \"isSuccess\": true,\r\n    \"response\": [\r\n        {\r\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\r\n            \"name\": \"Test Institution 1\"\r\n        },\r\n        {\r\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\r\n            \"name\": \"Test Institution 2\"\r\n        }\r\n    ]\r\n}"
 										}
 									]
 								}
