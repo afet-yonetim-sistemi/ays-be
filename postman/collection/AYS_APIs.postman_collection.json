@@ -1352,7 +1352,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/v1/landing/advert/apply",
-										"description": "- Bu servis ilgili kurum ilanına gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise `advert:application:apply` yetkisine sahip kişiler erişebilir.\n    \n- Bu servis `AYS_USER` ve `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `age` : Başvuru sahibinin yaş bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n        \n- `gender` : Başvuru sahibinin cinsiyet bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `MALE`, `FEMALE` , `NOT_SPECIFIED` değerlerini alabilir.\n        \n- `hoursAvailablePerDay` : Başvuru sahibinin günlük ayırabileceği zaman bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
+										"description": "- Bu servis ilgili kurum ilanına gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise `application:advert:apply` yetkisine sahip kişiler erişebilir.\n    \n- Bu servis `AYS_USER` ve `AYS_ADVERT` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `age` : Başvuru sahibinin yaş bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n        \n- `gender` : Başvuru sahibinin cinsiyet bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - Sadece `MALE`, `FEMALE` , `NOT_SPECIFIED` değerlerini alabilir.\n        \n- `hoursAvailablePerDay` : Başvuru sahibinin günlük ayırabileceği zaman bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - [Numerik Alanlar için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/168165377/Numerik+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)"
 									},
 									"response": [
 										{
@@ -1410,7 +1410,7 @@
 										"method": "GET",
 										"header": [],
 										"url": "{{API_URL}}/api/landing/v1/instutitons/summary",
-										"description": "- Bu servis kurumları listelemelidir. Bu Kurumlar ile ilgili `id` ve `name` bilgilerinin görüntülenmesi sağlar.\n    \n- Bu servise sadece `advert:create` yetkisine sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
+										"description": "- Bu servis kurumları listelemelidir. Bu Kurumlar ile ilgili `id` ve `name` bilgilerinin görüntülenmesi sağlar.\n    \n- Bu servise sadece `advert:create` yetkisine sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- Bu servis `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
 										{
