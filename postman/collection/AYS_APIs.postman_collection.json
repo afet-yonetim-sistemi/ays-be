@@ -1610,20 +1610,11 @@
 									"response": [
 										{
 											"id": "779516f8-510a-4990-89f3-1678502a6b12",
-											"name": "volunteer-apply/user/{id}",
+											"name": "volunteer-apply/user",
 											"originalRequest": {
-												"method": "POST",
+												"method": "GET",
 												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"firstName\": \"Salih\",\r\n    \"lastName\": \"Selim\",\r\n    \"emailAddress\": \"salihselim@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5354567811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": "{{API_URL}}/api/v1/volunteer-apply/user"
+												"url": "{{API_URL}}/api/v1/volunteer-apply/user/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1642,7 +1633,7 @@
 												}
 											],
 											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-07T18:25:04.017616569\",\r\n    \"code\": \"1f9d7c3b-2a4e-8d6f-5b1c-9e2a4f7c8d5e\",\r\n    \"isSuccess\": true\r\n}"
+											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"8d3f1a9b-4e6c-482d-8b0a-7f2e1c4a9d63\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"createdUser\": \"c2e5b7d9-1f0e-47c3-9d8a-6b5c3d4f1a2e\",\r\n        \"createdAt\": \"2023-05-07T09:45:08\",\r\n        \"updatedUser\": null,\r\n        \"updatedAt\": null,\r\n        \"id\": \"e9a4f6d8-9c2b-45e0-8a7f-1d2b3c4d5e6fc\",\r\n        \"firstName\": \"Ahmet\",\r\n        \"lastName\": \"Mehmet\",\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n        \"phoneNumber\": {\r\n            \"countryCode\": \"90\",\r\n            \"lineNumber\": \"5324467811\"\r\n        },\r\n        \"city\": \"İstanbul\"\r\n    }\r\n}"
 										}
 									]
 								}
