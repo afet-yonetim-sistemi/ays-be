@@ -1493,7 +1493,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/volunteer-apply/check-email",
+										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/check-email",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
 									},
 									"response": [
@@ -1512,7 +1512,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/volunteer-apply/check-email"
+												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/check-email"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1553,7 +1553,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/volunteer-apply/verify",
+										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/verify",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine gönderilen doğrulama kodu doğrulanmak üzere gönderilir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n\n- `verificationCode` : Kullanıcı Gönüllü olmak için başvuruda bulunduğunda gönüllüye mail ile gönderilen doğrulama kodunu içermesi gerekir."
 									},
 									"response": [
@@ -1572,7 +1572,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/volunteer-apply/check-email"
+												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/check-email"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1613,7 +1613,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/volunteer-apply/verify",
+										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/verify",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
@@ -1632,7 +1632,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/volunteer-apply/{id}/send-verification-code"
+												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/{id}/send-verification-code"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1673,7 +1673,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/volunteer-apply/verify",
+										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/verify",
 										"description": "- Bu servis kullanıcının şifresini girmesi için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servis `AYS_USER_PASSWORD` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `value`: Kullanıcın giriş yapmasını sağlayan şifre Bilgisidir.\n    \n    - Zorunlu alandır.\n        "
 									},
 									"response": [
@@ -1692,7 +1692,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/volunteer-apply/password"
+												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/password"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1724,7 +1724,7 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/v1/volunteer-apply",
+										"url": "{{API_URL}}/api/v1/landing/volunteer-apply",
 										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapması için kullanılır.\n    \n- Bu servise sadece `volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler."
 									},
 									"response": [
