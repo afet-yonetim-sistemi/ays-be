@@ -1596,7 +1596,7 @@
 									]
 								},
 								{
-									"name": "volunteer-apply/send-verification-code",
+									"name": "volunteer-apply/{id}/send-verification-code",
 									"id": "398696d9-84f8-4e00-b124-6af77a97e716",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1614,25 +1614,25 @@
 											}
 										},
 										"url": "{{API_URL}}/api/v1/volunteer-apply/verify",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine gönderilen doğrulama kodu doğrulanmak üzere gönderilir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n\n- `verificationCode` : Kullanıcı Gönüllü olmak için başvuruda bulunduğunda gönüllüye mail ile gönderilen doğrulama kodunu içermesi gerekir."
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
 										{
 											"id": "57278246-2e18-4a78-8b77-a1fa7ef66578",
-											"name": "volunteer-apply/verify",
+											"name": "volunteer-apply/{id}/send-verification-code",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+													"raw": "",
 													"options": {
 														"raw": {
 															"language": "json"
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/volunteer-apply/check-email"
+												"url": "{{API_URL}}/api/v1/volunteer-apply/{id}/send-verification-code"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1651,7 +1651,7 @@
 												}
 											],
 											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"5897f6b1-9480-42bf-455c-f14f171c9812\",\r\n    \"isSuccess\": true\r\n}"
+											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"9a8b7c6d-5e4f-41d0-9a8b-7c6d5e4f3a2b\",\r\n    \"isSuccess\": true\r\n}"
 										}
 									]
 								},
