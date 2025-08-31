@@ -1614,12 +1614,12 @@
 											}
 										},
 										"url": "{{API_URL}}/api/v1/volunteer-apply/verify",
-										"description": "- Bu servis kullanıcının şifresini girmesi için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servis `AYS_USER_PASSWORD` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+										"description": "- Bu servis kullanıcının şifresini girmesi için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servis `AYS_USER_PASSWORD` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `value`: Kullanıcın giriş yapmasını sağlayan şifre Bilgisidir.\n    \n    - Zorunlu alandır.\n        "
 									},
 									"response": [
 										{
 											"id": "6cc80845-f813-4039-95fd-40111e29a2fa",
-											"name": "volunteer-apply/check-email",
+											"name": "volunteer-apply/password",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
@@ -1632,7 +1632,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/volunteer-apply/check-email"
+												"url": "{{API_URL}}/api/v1/volunteer-apply/password"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1651,7 +1651,7 @@
 												}
 											],
 											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"5897f6b1-9480-42bf-455c-f14f171c9812\",\r\n    \"isSuccess\": true\r\n}"
+											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"4e5f6a7b-8c9d-42e1-9f0a-1b2c3d4e5f6a\",\r\n    \"isSuccess\": true\r\n}"
 										}
 									]
 								},
