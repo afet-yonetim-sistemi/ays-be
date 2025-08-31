@@ -1536,6 +1536,66 @@
 									]
 								},
 								{
+									"name": "volunteer-apply/verify",
+									"id": "63fc9f6e-e961-4428-a56d-db4c60a25804",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/v1/volunteer-apply/verify",
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n\n    - Zorunlu alandır.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+									},
+									"response": [
+										{
+											"id": "be6f7e18-73da-4585-8731-178ee5c8764a",
+											"name": "volunteer-apply/check-email",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{API_URL}}/api/v1/volunteer-apply/check-email"
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [
+												{
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
+												}
+											],
+											"responseTime": null,
+											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"5897f6b1-9480-42bf-455c-f14f171c9812\",\r\n    \"isSuccess\": true\r\n}"
+										}
+									]
+								},
+								{
 									"name": "volunteer-apply/user",
 									"id": "7b6430c8-5153-4175-998d-bd0f5b3cde5b",
 									"protocolProfileBehavior": {
@@ -1605,7 +1665,7 @@
 										"method": "GET",
 										"header": [],
 										"url": "{{API_URL}}/api/v1/volunteer-apply/user",
-										"description": "- Bu servis sistemde kayıtlı olan User'ın bilgilerini getirmek için kullanılır.\n    \n- Bu servise sadece `user:detail` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcıların bilgileri görüntülenebilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - Zorunlu alandır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+										"description": "- Bu servis sistemde kayıtlı olan User'ın bilgilerini getirmek için kullanılır.\n    \n- Bu servise sadece `user:detail` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcının bilgileri görüntülenebilir.\n    \n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcıya Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
 										{
