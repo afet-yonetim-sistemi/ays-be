@@ -1494,7 +1494,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/v1/volunteer-apply/check-email",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n\n    - Zorunlu alandır.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
 									},
 									"response": [
 										{
@@ -1546,7 +1546,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+											"raw": "{\r\n    \"application\": {\r\n        \"id\":\"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n        \"verificationCode\": \"859674\"\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1614,7 +1614,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/v1/volunteer-apply/verify",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine doğrulama kodu gönderilir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
 									},
 									"response": [
 										{
