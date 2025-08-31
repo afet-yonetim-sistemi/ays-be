@@ -1724,17 +1724,8 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"firstName\": \"Salih\",\r\n    \"lastName\": \"Selim\",\r\n    \"emailAddress\": \"salihselim@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5354567811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/v1/volunteer-apply/user",
-										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapması için kullanılır.\n    \n- Bu servise sadece `volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler.\n    "
+										"url": "{{API_URL}}/api/v1/volunteer-apply",
+										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapması için kullanılır.\n    \n- Bu servise sadece `volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler."
 									},
 									"response": [
 										{
@@ -1743,15 +1734,6 @@
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"institutionId\": \"f8e7d6c5-4b3a-40d9-8c7b-6a5f4e3d2c1b\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
 												"url": "{{API_URL}}/api/v1/volunteer-apply"
 											},
 											"_postman_previewlanguage": "json",
@@ -4360,6 +4342,11 @@
 					],
 					"id": "f3604b59-9413-49e4-a400-b12684814195",
 					"description": "Kurumlara ait ilan yönetiminin yapılabileceği servistir."
+				},
+				{
+					"name": "Volunteer Management Service",
+					"item": [],
+					"id": "7396a06e-298f-44ee-b4d1-b802380e69f8"
 				}
 			],
 			"id": "4838ad6c-8abf-4dd9-b434-1a440e2ce27b",
