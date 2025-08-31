@@ -4355,45 +4355,9 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [],
 								"description": "- Bu servis kurumlara başvuran gönüllüleri listelemek için kullanılır.\n    \n- Bu servise sadece `volunteer::list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_USER` ve `AYS_VOLUNTEER_APPLICATION` tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma başvuran gönüllülerin listelenmesi gerekmektedir.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı.\n            \n            - `currentParticipationCount` : Başvuru sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n            - `maximumParticipationCount` : Maksimum katılımcı sayısına göre ilanlar çoktan aza doğru sıralanarak ekrana getirilmeli.\n                \n            - `startedAt` : En yakından en eskiye doğru ekrana getirilmeli.\n                \n            - `createdAt` : En yakından en eskiye doğru ilanlar ekrana getirilmeli.\n                \n        - `direction` : Sıranın yönü.\n            \n            - `ASC` ya da `DESC` değerlerini alabilir.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `title`: Kurumun ihtiyacı olan görevin başlık bilgisini içerir.\n        \n        - En az `1`, en fazla `100` karakter olmalı.\n            \n    - `participationTypes`: İlana katılım türünü içerir.\n        \n        - Sadece `PHYSICALLY`, `ONLINE` değerlerini alabilir.\n            \n    - `statuses` : İlanın hangi durumda olduğunu belirtir.\n        \n        - Sadece `IN_APPLICATION_PROCESS`, `IN_APPLICATION_EVALUATION_PROCESS`, `COMPLETED`, `CANCELLED` değerlerini alabilir.\n            \n    - `city` : Yapılacak etkinliğin şehir bilgisini içerir.\n        \n        - [Şehir ve İlçe Alanları için Validasyon Kuralları | Filtreleme Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Filtreleme-Alanlar%C4%B1)\n            \n    - `accessibility` : İlana erişilebilirlik durumunu belirtir.\n        \n        - Sadece `TRUE`, `FALSE` değerlerini alabilir.\n            \n        - Default olarak `TRUE` değerini alır."
-							},
-							"response": []
-						},
-						{
-							"name": "New Request",
-							"id": "53764e78-7cc0-47c3-b689-c28b25115855",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": []
-							},
-							"response": []
-						},
-						{
-							"name": "New Request",
-							"id": "5467c497-32ff-43fa-acd3-198ca4a3c98b",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": []
-							},
-							"response": []
-						},
-						{
-							"name": "New Request",
-							"id": "47903577-2391-44b9-b52f-1f18be605779",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": []
 							},
 							"response": []
 						}
