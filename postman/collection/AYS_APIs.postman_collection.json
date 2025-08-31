@@ -1457,6 +1457,7 @@
 									"request": {
 										"method": "GET",
 										"header": [],
+										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/institutions",
 										"description": "- Bu servis gönüllü başvuruları için `ACTIVE` statüsüne sahip kurumları listeler.\n    \n- Bu servise herkes erişebilir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
@@ -1465,7 +1466,8 @@
 											"name": "volunteer-apply/institutions",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/institutions"
 											},
 											"_postman_previewlanguage": null,
 											"header": null,
@@ -1766,7 +1768,7 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"url": "{{API_URL}}/api/v1/volunteer-apply/user",
+										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/user",
 										"description": "- Bu servis sistemde kayıtlı olan User'ın bilgilerini getirmek için kullanılır.\n    \n- Bu servise sadece `user:detail` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcının bilgileri görüntülenebilir.\n    \n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcıya Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
@@ -1776,7 +1778,7 @@
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
-												"url": "{{API_URL}}/api/v1/volunteer-apply/user/{id}"
+												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/user/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
