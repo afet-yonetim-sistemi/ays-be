@@ -4345,7 +4345,56 @@
 				},
 				{
 					"name": "Volunteer Management Service",
-					"item": [],
+					"item": [
+						{
+							"name": "volunteers",
+							"id": "be2a024a-fb48-4e4f-b346-59238541c151",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "53764e78-7cc0-47c3-b689-c28b25115855",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "5467c497-32ff-43fa-acd3-198ca4a3c98b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "47903577-2391-44b9-b52f-1f18be605779",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
 					"id": "7396a06e-298f-44ee-b4d1-b802380e69f8"
 				}
 			],
