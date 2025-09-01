@@ -4314,7 +4314,7 @@
 							"response": []
 						},
 						{
-							"name": "volunteer/application/{id}/approve",
+							"name": "advert/{id}/application/{id}/approve",
 							"id": "7b7c2db0-e8d2-41f4-a200-bf77a040a038",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4323,7 +4323,7 @@
 								"method": "POST",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/advert/{id}/application/{id}/approve",
-								"description": "- Bu servis gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi"
+								"description": "- Bu servis kurumların ilanlarına yapılan başvuruları onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n\n     - UUID formatında olmalıdır."
 							},
 							"response": []
 						},
@@ -4456,7 +4456,7 @@
 							]
 						},
 						{
-							"name": "New Request",
+							"name": "volunteer/application/{id}/approve",
 							"id": "ef4a8999-5090-4d27-b9c1-6ce55e293256",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
