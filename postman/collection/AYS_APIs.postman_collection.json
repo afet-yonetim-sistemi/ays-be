@@ -1725,7 +1725,7 @@
 									]
 								},
 								{
-									"name": "volunteer-apply",
+									"name": "{user_id}/volunteer-apply",
 									"id": "7b6430c8-5153-4175-998d-bd0f5b3cde5b",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
