@@ -4314,7 +4314,7 @@
 							"response": []
 						},
 						{
-							"name": "advert/{id_advert}/application/{id}/approve",
+							"name": "volunteer/application/{id}/approve",
 							"id": "7b7c2db0-e8d2-41f4-a200-bf77a040a038",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4323,7 +4323,7 @@
 								"method": "POST",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/advert/{id}/application/{id}/approve",
-								"description": "- Bu servis doldurulmuş ilan başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
+								"description": "- Bu servis gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi"
 							},
 							"response": []
 						},
