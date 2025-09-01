@@ -1808,10 +1808,56 @@
 									"request": {
 										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Ahmet\",\r\n    \"lastName\": \"Kara\",\r\n    \"emailAddress\": \"ahmetkara@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5324567811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/user",
-										"description": "- Bu servis sistemde kayıtlı olmayan Gönüllü bilgileri ile kullanıcı oluşturmak için kullanılır.\n    \n- `AYS_USER` tablosuna statüsü `ACTIVE` olan bir kayıt ekler.\n    \n- Oluşturulan Kullanıcı, oluşturma servisi çağıran kuruma ait bir kullanıcı olmalıdır.\n    \n- Kullanıcı kaydedildikten sonra kullanıcının mail adresine bir şifre oluşturma maili iletilir. İletilen mail ile birlikte şifresini oluşturduktan sonra sisteme giriş yapabilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - [Telefon Numaraları için Validasyon Kuralları | Form Alanları]\n\n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        "
+										"description": "- Bu servis sistemde kayıtlı olmayan Gönüllü bilgileri ile kullanıcı oluşturmak için kullanılır.\n    \n- `AYS_USER` tablosuna statüsü `ACTIVE` olan bir kayıt ekler.\n    \n- Oluşturulan Kullanıcı, oluşturma servisi çağıran kuruma ait bir kullanıcı olmalıdır.\n    \n- Kullanıcı kaydedildikten sonra kullanıcının mail adresine bir şifre oluşturma maili iletilir. İletilen mail ile birlikte şifresini oluşturduktan sonra sisteme giriş yapabilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - [Telefon Numaraları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/229736450/T+rkiye+Telefon+Numaras+Validasyon+Kurallar)\n        \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
 									},
-									"response": []
+									"response": [
+										{
+											"id": "55883f75-b4ef-4a1e-9126-5f2b9fa2d00a",
+											"name": "volunteer-apply/user",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"firstName\": \"Ahmet\",\r\n    \"lastName\": \"Kara\",\r\n    \"emailAddress\": \"ahmetkara@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5324567811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/user"
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [
+												{
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
+												}
+											],
+											"responseTime": null,
+											"body": "{\r\n    \"time\": \"2023-05-07T18:25:04.017616569\",\r\n    \"code\": \"e3d2c1b0-f9a8-44e7-9d6c-5b4a3c2d1e0f\",\r\n    \"isSuccess\": true\r\n}"
+										}
+									]
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b",
