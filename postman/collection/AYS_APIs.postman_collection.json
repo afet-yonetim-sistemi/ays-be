@@ -1766,7 +1766,7 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/user",
+										"url": "{{API_URL}}/api/landing/v1/landing/volunteer-apply/user/{id}",
 										"description": "- Bu servis sistemde kayıtlı olan User'ın bilgilerini getirmek için kullanılır.\n    \n- Bu servise sadece `user:detail` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcının bilgileri görüntülenebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcıya Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
@@ -1776,7 +1776,7 @@
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
-												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/user/{id}"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/user/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1798,6 +1798,18 @@
 											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"8d3f1a9b-4e6c-482d-8b0a-7f2e1c4a9d63\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"createdUser\": \"c2e5b7d9-1f0e-47c3-9d8a-6b5c3d4f1a2e\",\r\n        \"createdAt\": \"2023-05-07T09:45:08\",\r\n        \"updatedUser\": null,\r\n        \"updatedAt\": null,\r\n        \"id\": \"e9a4f6d8-9c2b-45e0-8a7f-1d2b3c4d5e6fc\",\r\n        \"firstName\": \"Ahmet\",\r\n        \"lastName\": \"Mehmet\",\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n        \"phoneNumber\": {\r\n            \"countryCode\": \"90\",\r\n            \"lineNumber\": \"5324467811\"\r\n        },\r\n        \"city\": \"İstanbul\"\r\n    }\r\n}"
 										}
 									]
+								},
+								{
+									"name": "New Request",
+									"id": "e1c3755f-9fd2-4c76-973c-5f9750180437",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
 								}
 							],
 							"id": "d20ce139-8af9-4f99-9dd3-62251fdf416b",
