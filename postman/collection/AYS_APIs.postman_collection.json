@@ -1457,7 +1457,7 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/institutions",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/institutions",
 										"description": "- Bu servis gönüllü başvuruları için `ACTIVE` statüsüne sahip kurumları listeler.\n    \n- Bu servise herkes erişebilir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
@@ -1467,7 +1467,7 @@
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
-												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/institutions"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/institutions"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1502,7 +1502,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/check-email",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/check-email",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
 									},
 									"response": [
@@ -1521,7 +1521,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/check-email"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/check-email"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1562,7 +1562,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/verify",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/verify",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine gönderilen doğrulama kodu doğrulanmak üzere gönderilir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n\n- `verificationCode` : Kullanıcı Gönüllü olmak için başvuruda bulunduğunda gönüllüye mail ile gönderilen doğrulama kodunu içermesi gerekir."
 									},
 									"response": [
