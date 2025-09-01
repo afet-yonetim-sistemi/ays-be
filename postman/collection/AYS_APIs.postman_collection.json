@@ -4314,7 +4314,7 @@
 							"response": []
 						},
 						{
-							"name": "advert/{id}/application/{id}/approve",
+							"name": "advert/{id_advert}/application/{id}/approve",
 							"id": "7b7c2db0-e8d2-41f4-a200-bf77a040a038",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4323,7 +4323,7 @@
 								"method": "POST",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/advert/{id}/application/{id}/approve",
-								"description": "- Bu servis kurumların ilanlarına yapılan başvuruları onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n\n     - UUID formatında olmalıdır."
+								"description": "- Bu servis kurumların ilanlarına yapılan başvuruları onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Kurum ilanına yapılan başvurusuya ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
 						},
@@ -4463,7 +4463,8 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"description": "- Bu servis kurumlara yapılan gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
 						}
