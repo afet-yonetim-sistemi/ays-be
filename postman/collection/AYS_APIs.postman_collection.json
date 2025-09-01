@@ -1495,7 +1495,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+											"raw": "{\r\n    \"user\": {\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1514,7 +1514,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+													"raw": "{\r\n    \"user\": {\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n    }\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1555,7 +1555,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"application\": {\r\n        \"id\":\"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n        \"verificationCode\": \"859674\"\r\n    }\r\n}",
+											"raw": "{\r\n    \"application\": {\r\n        \"id\": \"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n        \"verificationCode\": \"859674\"\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1563,7 +1563,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/verify",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine gönderilen doğrulama kodu doğrulanmak üzere gönderilir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n\n- `verificationCode` : Kullanıcı Gönüllü olmak için başvuruda bulunduğunda gönüllüye mail ile gönderilen doğrulama kodunu içermesi gerekir."
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine gönderilen doğrulama kodu girilir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n- `verificationCode` : Kullanıcı Gönüllü olmak için başvuruda bulunduğunda gönüllüye mail ile gönderilen doğrulama kodunu içermesi gerekir."
 									},
 									"response": [
 										{
@@ -1574,14 +1574,14 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+													"raw": "{\r\n    \"application\": {\r\n        \"id\": \"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n        \"verificationCode\": \"859674\"\r\n    }\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/landing/v1/landing/volunteer-apply/check-email"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/verify"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1666,7 +1666,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"value\": \"9874563215fdr\"\r\n}",
+											"raw": "{\r\n    \"user\": {\r\n        \"value\": \"blkdNMLbrsyfddyr123\"\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
