@@ -1800,14 +1800,16 @@
 									]
 								},
 								{
-									"name": "New Request",
+									"name": "volunteer-apply/user",
 									"id": "e1c3755f-9fd2-4c76-973c-5f9750180437",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
-										"method": "GET",
-										"header": []
+										"method": "POST",
+										"header": [],
+										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/user",
+										"description": "- Bu servis sistemde kayıtlı olmayan User'ın bilgilerini kaydetmek için kullanılır.\n    \n- Bu servise sadece `user:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosuna kayıt yapar.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcının bilgileri görüntülenebilir.\n    \n"
 									},
 									"response": []
 								}
