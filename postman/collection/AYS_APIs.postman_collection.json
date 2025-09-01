@@ -1581,7 +1581,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/check-email"
+												"url": "{{API_URL}}/api/landing/v1/landing/volunteer-apply/check-email"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1613,16 +1613,7 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"application\": {\r\n        \"id\":\"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n        \"verificationCode\": \"859674\"\r\n    }\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/verify",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/verify",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
@@ -1675,14 +1666,14 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+											"raw": "{\r\n    \"value\": \"9874563215fdr\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/v1/landing/volunteer-apply/verify",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/password",
 										"description": "- Bu servis kullanıcının şifresini girmesi için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servis `AYS_USER_PASSWORD` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `value`: Kullanıcın giriş yapmasını sağlayan şifre Bilgisidir.\n    \n    - Zorunlu alandır.\n        "
 									},
 									"response": [
