@@ -4425,16 +4425,47 @@
 									"name": "volunteer/{id}",
 									"originalRequest": {
 										"method": "GET",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
 										"url": "{{API_URL}}/api/institution/v1/volunteer/{id}"
 									},
-									"_postman_previewlanguage": null,
-									"header": null,
-									"cookie": [],
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
 									"responseTime": null,
-									"body": null
+									"body": "{\r\n    \"time\": \"2025-04-06T13:35:47.774102186\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"user\": {\r\n            \"id\": \"5d6e7f8a-9b0c-47d6-8e9f-0a1b2c3d4e5f\",\r\n            \"firstName\": \"Samuel\",\r\n            \"lastName\": \"Soul\",\r\n            \"emailAddress\": \"samuel@afetyonetimsistemi.org\",\r\n            \"phoneNumber\": {\r\n                \"countryCode\": \"90\",\r\n                \"lineNumber\": \"5324567890\"\r\n            },\r\n            \"city\": \"İstanbul\",\r\n            \"status\": \"ACTIVE\",\r\n            \"roles\": [\r\n                {\r\n                    \"id\": \"a1b2c3d4-e5f6-48c7-9d8e-7f6a5b4c3d2e\",\r\n                    \"name\": \"Kullanıcı ve Rol Yönetimi\"\r\n                }\r\n            ]\r\n        },\r\n        \"application\": {\r\n            \"id\": \"e3d2c1b0-f9a8-44e7-9d6c-5b4a3c2d1e0f\",\r\n            \"applicationDate\": \"2025-04-06T13:31:03\",\r\n            \"status\": \"APPROVED\",\r\n            \"completedAt\": \"2025-05-06T13:31:03\",\r\n            \"rejectionReason\": null\r\n        }\r\n    }\r\n}"
 								}
 							]
+						},
+						{
+							"name": "New Request",
+							"id": "ef4a8999-5090-4d27-b9c1-6ce55e293256",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "7396a06e-298f-44ee-b4d1-b802380e69f8"
