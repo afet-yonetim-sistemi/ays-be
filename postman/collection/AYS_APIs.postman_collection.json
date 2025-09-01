@@ -1469,11 +1469,18 @@
 												"header": [],
 												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/institutions"
 											},
-											"_postman_previewlanguage": null,
-											"header": null,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
 											"cookie": [],
 											"responseTime": null,
-											"body": null
+											"body": "{\r\n    \"time\": \"2023-05-04T20:52:09.712591823\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true,\r\n    \"response\": [\r\n        {\r\n            \"id\": \"5d6e7f8a-9b0c-47d6-8e9f-0a1b2c3d4e5f\",\r\n            \"name\": \"Test Institution 1\"\r\n        },\r\n        {\r\n            \"id\": \"a1b2c3d4-e5f6-48c7-9d8e-7f6a5b4c3d2e\",\r\n            \"name\": \"Test Institution 2\"\r\n        }\r\n    ]\r\n}"
 										}
 									]
 								},
