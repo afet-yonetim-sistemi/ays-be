@@ -4479,7 +4479,7 @@
 								"method": "POST",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/volunteer/application/{id}/approve",
-								"description": "- Bu servis kurumlara yapılan gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
+								"description": "- Bu servis kurumlara yapılan gönüllü başvurusunu reddetmek için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
 						}
