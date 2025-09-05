@@ -8,7 +8,6 @@ import org.ays.auth.service.AysPermissionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service implementation for managing permissions.
@@ -21,7 +20,6 @@ class AysPermissionServiceImpl implements AysPermissionService {
     private final AysPermissionReadPort permissionReadPort;
 
     private final AysIdentity identity;
-
 
     /**
      * Retrieves a filtered list of permissions based on the user's identity.
@@ -39,12 +37,12 @@ class AysPermissionServiceImpl implements AysPermissionService {
         if (identity.isSuperAdmin()) {
             return permissionReadPort.findAll().stream()
                     .filter(permission -> !"landing:page".equals(permission.getName()))
-                    .collect(Collectors.toList());
+                    .toList();
         }
 
         return permissionReadPort.findAllByIsSuperFalse().stream()
                 .filter(permission -> !"landing:page".equals(permission.getName()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

@@ -27,7 +27,7 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withInstitution(institution)
-                .withEmailAddress(RandomStringUtils.randomAlphabetic(8).concat("@afetyonetimsistemi.org"))
+                .withEmailAddress(RandomStringUtils.secure().nextAlphabetic(8).concat("@afetyonetimsistemi.org"))
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
                 .withStatus(AysUserStatus.ACTIVE)
                 .withPassword(null)
