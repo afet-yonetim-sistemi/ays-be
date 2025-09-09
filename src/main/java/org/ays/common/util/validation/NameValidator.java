@@ -22,8 +22,14 @@ class NameValidator implements ConstraintValidator<Name, String> {
      * </ul>
      *  It also avoids strings that start with special characters
      * </p>
+     *
+     * Regex for validating names.
+     * Note: The "+" before the end anchor "$" is a possessive quantifier (*+).
+     * It behaves like "*" but disallows backtracking, which prevents
+     * catastrophic backtracking and improves performance.
+     * The accepted matches remain the same, only execution is safer and faster.
      */
-    private static final String NAME_REGEX = "^(?!.*[ ,.'-]{2})[a-zA-ZÇçĞğİıÖöŞşÜü]+(?:[ ,.'-](?![ ,.'-])[a-zA-ZÇçĞğİıÖöŞşÜü]+)*$";
+    private static final String NAME_REGEX = "^(?!.*[ ,.'-]{2})[a-zA-ZÇçĞğİıÖöŞşÜü]+(?:[ ,.'-](?![ ,.'-])[a-zA-ZÇçĞğİıÖöŞşÜü]+)*+$";
 
     /**
      * Checks whether the given value is a valid name or not.

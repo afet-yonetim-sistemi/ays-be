@@ -60,7 +60,7 @@ public class AysRandomUtil {
     /**
      * Utility method to generate a random alphabetic string of the specified length.
      * <p>
-     * This method uses the {@link RandomStringUtils#randomAlphabetic(int)} to generate a string
+     * This method uses the {@link RandomStringUtils#secure().nextAlphabetic(int)} to generate a string
      * containing random alphabetic characters (a-z, A-Z). The length of the generated string is
      * determined by the input parameter.
      * </p>
@@ -70,7 +70,7 @@ public class AysRandomUtil {
      * @throws IllegalArgumentException if the specified length is negative
      */
     public static String generateText(int length) {
-        return RandomStringUtils.randomAlphabetic(length);
+        return RandomStringUtils.secure().nextAlphabetic(length);
     }
 
 }
