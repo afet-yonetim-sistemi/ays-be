@@ -47,33 +47,44 @@ if [[ "$IS_OVERWRITE" == true ]]; then
 
   while true; do
     echo "\033[97m"
-    read -p "➡️ Enter your GitHub Access Token (press enter for creating) : " YOUR_PERSONAL_GITHUB_ACCESS_TOKEN
-    if [[ -n "$YOUR_PERSONAL_GITHUB_ACCESS_TOKEN" ]]; then
-      break
-    fi
-
-    echo ""
-    echo "\033[96mPress Enter to open browser for creating a new Personal Access Token...\033[0m"
-    read -p "" _
-
-    if command -v xdg-open >/dev/null; then
-      xdg-open "https://github.com/settings/tokens/new"
-    elif command -v open >/dev/null; then
-      open "https://github.com/settings/tokens/new"
-    else
-      echo "Please open the following URL in your browser to create a new Personal Access Token: "
-      echo "  https://github.com/settings/tokens/new"
-    fi
-
-    while true; do
-      echo "\033[97m"
-      read -p "➡️ Paste your Personal Access Token here: " YOUR_PERSONAL_GITHUB_ACCESS_TOKEN
-      if [[ -n "$YOUR_PERSONAL_GITHUB_ACCESS_TOKEN" ]]; then
+    read -p "➡️ Do you already have a GitHub Access Token? (y/n): " has_token
+    case "$has_token" in
+      [Yy]* )
+        while true; do
+          echo "\033[97m"
+          read -p "➡️ Enter your GitHub Access Token: " YOUR_PERSONAL_GITHUB_ACCESS_TOKEN
+          if [[ -n "$YOUR_PERSONAL_GITHUB_ACCESS_TOKEN" ]]; then
+            break
+          fi
+          echo "\033[41mPlease enter your GitHub Access Token.\033[0m"
+        done
         break
-      fi
-      echo "\033[41mPlease paste your Personal Access Token.\033[0m"
-    done
-    break
+        ;;
+      [Nn]* )
+        echo "\033[96m➡️ Press Enter for creating Token:\033[0m"
+        read -p "" _
+        if command -v xdg-open >/dev/null; then
+          xdg-open "https://github.com/settings/tokens/new"
+        elif command -v open >/dev/null; then
+          open "https://github.com/settings/tokens/new"
+        else
+          echo "Please open the following URL in your browser to create a new Personal Access Token: "
+          echo "  https://github.com/settings/tokens/new"
+        fi
+        while true; do
+          echo "\033[97m"
+          read -p "➡️ Paste your Personal Access Token: " YOUR_PERSONAL_GITHUB_ACCESS_TOKEN
+          if [[ -n "$YOUR_PERSONAL_GITHUB_ACCESS_TOKEN" ]]; then
+            break
+          fi
+          echo "\033[41mPlease paste your Personal Access Token.\033[0m"
+        done
+        break
+        ;;
+      * )
+        echo "Invalid choice, please enter 'y' or 'n'."
+        ;;
+    esac
   done
   echo "\033[0m"
 
