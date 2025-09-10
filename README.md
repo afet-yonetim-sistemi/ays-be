@@ -86,23 +86,18 @@ sh setup/setup.sh
 During the setup process, you will be asked whether you already have a GitHub Personal Access Token.
 
   - If you already have one, just paste it.
-
   - If not, the script will guide you to generate a new one.
+      - Make sure to give project, read:packages, repo scopes
+      - Give it a name
+      - Then click on "Generate Token"
+  - If you prefer to create a token manually before running the setup: https://github.com/settings/tokens
+    - Create one classic token
+    - Make sure to give project, read:packages, repo scopes
+    - Give it a name
+    - Then click on "Generate Token"
+  - In case of errors, please check [here](#Common Maven errors)
 
 #### Don't forget to enable Lombok pre-processing in your IDE!
-
-## Generate GitHub Personal Access Token (Optional)
-
-If you prefer to create a token manually before running the setup:
-- Go to : https://github.com/settings/tokens
-- Create one classic token
-- Make sure to give project, read:packages, repo scopes
-- Give it a name
-- Then click on "Generate Token"
-- In case of errors, please check [here](#Common Maven errors)
-
-⚠ Copy your token somewhere safe, you will need it during setup.
-
 ## Running as Docker MySQL container
 
 Before running the project, you need to run the following command to start the MySQL container:
