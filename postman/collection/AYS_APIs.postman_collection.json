@@ -2832,6 +2832,18 @@
 								"description": "- Bu servis ilgili Drop-Down List'lerde kullanılmak üzere Bütün Kurumlar ile ilgili `id` ve `name` bilgilerinin görüntülenmesi sağlar.\n    \n- Bu servise sadece `application:registration:create` yetkisine sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 							},
 							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "46c7e22a-3105-4cc5-8fe5-938623bc1c30",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "e9324d65-e59f-475f-bb38-319ed7f9e12b",
