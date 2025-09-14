@@ -2855,7 +2855,8 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"description": "- Bu servis kurum detayını görüntülemek için kullanılır.\n    \n- Bu servise sadece `institution::detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanılır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
 						}
