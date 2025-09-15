@@ -2933,6 +2933,19 @@
 							]
 						},
 						{
+							"name": "institution",
+							"id": "cac56119-0a74-4c84-a167-144862a9df2b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{API_URL}}/api/institution/v1/institution"
+							},
+							"response": []
+						},
+						{
 							"name": "institution/{id}",
 							"id": "821e15f9-5494-4799-bbbb-3e1cc6162b81",
 							"protocolProfileBehavior": {
