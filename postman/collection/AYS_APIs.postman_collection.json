@@ -3001,6 +3001,15 @@
 							"request": {
 								"method": "PUT",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Afet Koordinasyon Destek Gönüllüleri\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
 								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun \\`name\\` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
 							},
@@ -3010,7 +3019,22 @@
 									"name": "institution/{id}",
 									"originalRequest": {
 										"method": "PUT",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Afet Koordinasyon Destek Gönüllüleri\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{API_URL}}/api/institution/v1/institution/{id}"
 									},
 									"_postman_previewlanguage": "json",
