@@ -2987,6 +2987,20 @@
 								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanının `ACTIVE` olarak güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    "
 							},
 							"response": []
+						},
+						{
+							"name": "institution/{id}/passive",
+							"id": "a56f91e1-cfb0-4d0e-a1ee-81a441fce020",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": "{{API_URL}}/api/institution/v1/institution/{id}/passive",
+								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanının `ACTIVE` olarak güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    "
+							},
+							"response": []
 						}
 					],
 					"id": "e9324d65-e59f-475f-bb38-319ed7f9e12b",
