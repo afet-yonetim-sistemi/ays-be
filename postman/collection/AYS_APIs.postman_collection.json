@@ -2975,7 +2975,7 @@
 							]
 						},
 						{
-							"name": "institution/{id}",
+							"name": "institution/{id}/active",
 							"id": "ee013117-e90c-47cf-b372-0afce8a2f650",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
