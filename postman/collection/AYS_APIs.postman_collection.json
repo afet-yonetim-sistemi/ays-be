@@ -2843,7 +2843,7 @@
 								"method": "POST",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institutions",
-								"description": "- Bu servis kurumların listelenmesini sağlar.\n    \n- Bu servise sadece `institutions::list` yetkisine sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` ve `PASIF` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.Buradaki sıralama alanları birbirinden bağımsız çalışmaktadır. Örneğin aynı anda hem `A - Z`’ye hem de `En Yeni Tarihten - En Eski Tarihe` sıralama yapılabilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı.\n            \n            - `name` : Burada `A - Z`'ye veya `Z - A`'ya sıralama yapılabilmelidir.\n                \n        - `direction` : Sıranın yönü.\n            \n            - `ASC` ya da `DESC` değerlerini alabilir.\n                \n- filter : Filtrelemek için kullanılır.\n    \n    - `name` : Kurumun eşsiz isim bilgisidir.\n        \n        - Burada ilk/orta/son karakterler ile birlikte arama yapılabilmelidir.\n            \n        - Minimum 2, maksimum 255 karakterden oluşmalıdır.\n            \n    - `status` : Kurumun durum bilgisidir.\n        \n        - Sadece `ACTIVE`, `PASSIVE`, `DELETED` değerlerini alabilir.\n            \n        - Farklı kurum statüsü seçilebilmeli, ve güncellenebilmelidir."
+								"description": "- Bu servis kurumların listelenmesini sağlar.\n    \n- Bu servise sadece `SUPER_ADMIN` rolüne sahip olanlar erişebilir.\n    \n- Sadece `ACTIVE` ve `PASIF` statüsüne sahip kurumların listelenmesi gerekmektedir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir.Buradaki sıralama alanları birbirinden bağımsız çalışmaktadır. Örneğin aynı anda hem `A - Z`’ye hem de `En Yeni Tarihten - En Eski Tarihe` sıralama yapılabilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı.\n            \n            - `name` : Burada `A - Z`'ye veya `Z - A`'ya sıralama yapılabilmelidir.\n                \n        - `direction` : Sıranın yönü.\n            \n            - `ASC` ya da `DESC` değerlerini alabilir.\n                \n- filter : Filtrelemek için kullanılır.\n    \n    - `name` : Kurumun eşsiz isim bilgisidir.\n        \n        - Burada ilk/orta/son karakterler ile birlikte arama yapılabilmelidir.\n            \n        - Minimum 2, maksimum 255 karakterden oluşmalıdır.\n            \n    - `status` : Kurumun durum bilgisidir.\n        \n        - Sadece `ACTIVE`, `PASSIVE`, `DELETED` değerlerini alabilir.\n            \n        - Farklı kurum statüsü seçilebilmeli, ve güncellenebilmelidir."
 							},
 							"response": [
 								{
@@ -2900,7 +2900,7 @@
 								"method": "GET",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
-								"description": "- Bu servis kurum detayını görüntülemek için kullanılır.\n    \n- Bu servise sadece `institution::detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanılır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+								"description": "- Bu servis kurum detayını görüntülemek için kullanılır.\n    \n- Bu servise sadece `SUPER_ADMIN` rolüne sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanılır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
 								{
@@ -2973,6 +2973,19 @@
 									"body": "{\r\n    \"time\": \"2023-05-07T18:25:04.017616569\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true\r\n} "
 								}
 							]
+						},
+						{
+							"name": "institution/{id}",
+							"id": "ee013117-e90c-47cf-b372-0afce8a2f650",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": "{{API_URL}}/api/institution/v1/institution/{id}"
+							},
+							"response": []
 						}
 					],
 					"id": "e9324d65-e59f-475f-bb38-319ed7f9e12b",
