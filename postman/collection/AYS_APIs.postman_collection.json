@@ -2941,10 +2941,43 @@
 							"request": {
 								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Afet Yönetim Sistemi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": "{{API_URL}}/api/institution/v1/institution",
 								"description": "- Bu servis yeni bir Kurum oluşturmak için kullanılır.\n    \n- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosuna bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `100` karakter olmalı."
 							},
-							"response": []
+							"response": [
+								{
+									"id": "d8099595-2034-4853-931c-349f63cc1eba",
+									"name": "institution",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Afet Yönetim Sistemi\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/institution/v1/institution"
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": null
+								}
+							]
 						},
 						{
 							"name": "institution/{id}",
@@ -2987,6 +3020,48 @@
 								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `PASSIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
 							},
 							"response": []
+						},
+						{
+							"name": "institution/{id}",
+							"id": "821e15f9-5494-4799-bbbb-3e1cc6162b81",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{API_URL}}/api/institution/v1/delete/{id}",
+								"description": "- Bu servis `id` bilgisi verilen Kurumun var olan statusunü `PASSIVE` yapmak için kullanılır.\n    \n- Bu servisde sadece `SUPER_ADMIN` rolüne sahip kullanıcılar tarafından aksiyon alınabilir.\n    \n- `AYS_INSTITUTION` tablosundaki ilgili kaydın statüsünü `PASSIVE` olarak günceller.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Institutiona Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+							},
+							"response": [
+								{
+									"id": "c707d5ff-494a-4329-8384-9b116d0accb6",
+									"name": "institution/{id}",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{API_URL}}/api/institution/v1/delete/{id}"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"responseTime": null,
+									"body": "{\r\n    \"time\": \"2023-05-07T18:25:04.017616569\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true\r\n} "
+								}
+							]
 						}
 					],
 					"id": "e9324d65-e59f-475f-bb38-319ed7f9e12b",
@@ -4698,48 +4773,6 @@
 						}
 					],
 					"id": "7396a06e-298f-44ee-b4d1-b802380e69f8"
-				},
-				{
-					"name": "institution/{id}",
-					"id": "821e15f9-5494-4799-bbbb-3e1cc6162b81",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": "{{API_URL}}/api/institution/v1/delete/{id}",
-						"description": "- Bu servis `id` bilgisi verilen Kurumun var olan statusunü `PASSIVE` yapmak için kullanılır.\n    \n- Bu servisde sadece `SUPER_ADMIN` rolüne sahip kullanıcılar tarafından aksiyon alınabilir.\n    \n- `AYS_INSTITUTION` tablosundaki ilgili kaydın statüsünü `PASSIVE` olarak günceller.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Institutiona Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
-					},
-					"response": [
-						{
-							"id": "c707d5ff-494a-4329-8384-9b116d0accb6",
-							"name": "institution/{id}",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": "{{API_URL}}/api/institution/v1/delete/{id}"
-							},
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json",
-									"description": "",
-									"type": "text"
-								}
-							],
-							"cookie": [
-								{
-									"expires": "Invalid Date",
-									"domain": "",
-									"path": ""
-								}
-							],
-							"responseTime": null,
-							"body": "{\r\n    \"time\": \"2023-05-07T18:25:04.017616569\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true\r\n} "
-						}
-					]
 				}
 			],
 			"id": "4838ad6c-8abf-4dd9-b434-1a440e2ce27b",
