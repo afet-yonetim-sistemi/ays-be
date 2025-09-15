@@ -2941,7 +2941,8 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"url": "{{API_URL}}/api/institution/v1/institution"
+								"url": "{{API_URL}}/api/institution/v1/institution",
+								"description": "- Bu servis yeni bir Kurum oluşturmak için kullanılır.\n    \n- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosuna bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `100` karakter olmalı.\n        "
 							},
 							"response": []
 						},
