@@ -2851,7 +2851,22 @@
 									"name": "institutions",
 									"originalRequest": {
 										"method": "POST",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"pageable\": {\r\n        \"page\": 1,\r\n        \"pageSize\": 5\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{API_URL}}/api/institution/v1/institutions"
 									},
 									"_postman_previewlanguage": "json",
