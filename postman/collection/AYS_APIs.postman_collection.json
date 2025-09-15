@@ -3004,7 +3004,35 @@
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
 								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun \\`name\\` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
 							},
-							"response": []
+							"response": [
+								{
+									"id": "0f7967b6-9d04-44b6-81bc-8b2c0a30a250",
+									"name": "institution/{id}",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": "{{API_URL}}/api/institution/v1/institution/{id}"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"responseTime": null,
+									"body": "{\r\n    \"time\": \"2024-02-07T18:25:04.017616569\",\r\n    \"code\": \"f8e7d6c5-4b3a-40d9-8c7b-6a5f4e3d2c1b\",\r\n    \"isSuccess\": true\r\n}"
+								}
+							]
 						},
 						{
 							"name": "institution/{id}/active",
