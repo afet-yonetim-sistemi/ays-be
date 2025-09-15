@@ -3003,7 +3003,7 @@
 							"response": []
 						},
 						{
-							"name": "institution/{id}/active Copy",
+							"name": "institution/{id}",
 							"id": "d06ebdb6-884a-44f1-8750-faad9b858b72",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
