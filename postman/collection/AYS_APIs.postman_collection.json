@@ -2933,14 +2933,15 @@
 							]
 						},
 						{
-							"name": "New Request",
+							"name": "institution/{id}",
 							"id": "821e15f9-5494-4799-bbbb-3e1cc6162b81",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
+								"method": "DELETE",
 								"header": [],
+								"url": "{{API_URL}}/api/institution/v1/delete/{id}",
 								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Rolü silmek için kullanılır. `id` bilgisi verilen rolü siler.\n    \n- Bu servise sadece `role:delete` yetkisine sahip kullanıcılar erişebilir.\n    \n- `AYS_ROLE` tablosundaki ilgili kaydın statüsünü `DELETED` olarak günceller.\n    \n- İlgili rolün silinebilmesi için hiçbir kullanıcıya tanımlı olmamalıdır.\n    \n- Sadece kuruma bağlı rolün silinebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Role Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
