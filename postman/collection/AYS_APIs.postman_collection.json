@@ -2942,7 +2942,7 @@
 								"method": "POST",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution",
-								"description": "- Bu servis yeni bir Kurum oluşturmak için kullanılır.\n    \n- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosuna bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `100` karakter olmalı.\n        "
+								"description": "- Bu servis yeni bir Kurum oluşturmak için kullanılır.\n    \n- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosuna bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `100` karakter olmalı."
 							},
 							"response": []
 						},
@@ -2991,6 +2991,20 @@
 						{
 							"name": "institution/{id}/active",
 							"id": "ee013117-e90c-47cf-b372-0afce8a2f650",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
+								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `ACTIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
+							},
+							"response": []
+						},
+						{
+							"name": "institution/{id}/active Copy",
+							"id": "d06ebdb6-884a-44f1-8750-faad9b858b72",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
