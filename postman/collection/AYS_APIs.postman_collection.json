@@ -2953,11 +2953,24 @@
 										"header": [],
 										"url": "{{API_URL}}/api/institution/v1/delete/{id}"
 									},
-									"_postman_previewlanguage": null,
-									"header": null,
-									"cookie": [],
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
 									"responseTime": null,
-									"body": null
+									"body": "{\r\n    \"time\": \"2023-05-07T18:25:04.017616569\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true\r\n} "
 								}
 							]
 						}
