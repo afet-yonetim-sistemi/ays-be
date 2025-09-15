@@ -2942,9 +2942,24 @@
 								"method": "DELETE",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/delete/{id}",
-								"description": "- Bu servis ilgili Yöneticiye ait Kurumda var olan Rolü silmek için kullanılır. `id` bilgisi verilen rolü siler.\n    \n- Bu servise sadece `role:delete` yetkisine sahip kullanıcılar erişebilir.\n    \n- `AYS_ROLE` tablosundaki ilgili kaydın statüsünü `DELETED` olarak günceller.\n    \n- İlgili rolün silinebilmesi için hiçbir kullanıcıya tanımlı olmamalıdır.\n    \n- Sadece kuruma bağlı rolün silinebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Role Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+								"description": "- Bu servis `id` bilgisi verilen Kurumun var olan statusunü `PASSIVE` yapmak için kullanılır.\n    \n- Bu servisde sadece `SUPER_ADMIN` rolüne sahip kullanıcılar tarafından aksiyon alınabilir.\n    \n- `AYS_INSTITUTION` tablosundaki ilgili kaydın statüsünü `PASSIVE` olarak günceller.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Institutiona Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
-							"response": []
+							"response": [
+								{
+									"id": "c707d5ff-494a-4329-8384-9b116d0accb6",
+									"name": "institution/{id}",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{API_URL}}/api/institution/v1/delete/{id}"
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": null
+								}
+							]
 						}
 					],
 					"id": "e9324d65-e59f-475f-bb38-319ed7f9e12b",
