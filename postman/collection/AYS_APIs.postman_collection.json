@@ -2948,49 +2948,7 @@
 						},
 						{
 							"name": "institution/{id}",
-							"id": "821e15f9-5494-4799-bbbb-3e1cc6162b81",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": "{{API_URL}}/api/institution/v1/delete/{id}",
-								"description": "- Bu servis `id` bilgisi verilen Kurumun var olan statusunü `PASSIVE` yapmak için kullanılır.\n    \n- Bu servisde sadece `SUPER_ADMIN` rolüne sahip kullanıcılar tarafından aksiyon alınabilir.\n    \n- `AYS_INSTITUTION` tablosundaki ilgili kaydın statüsünü `PASSIVE` olarak günceller.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Institutiona Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
-							},
-							"response": [
-								{
-									"id": "c707d5ff-494a-4329-8384-9b116d0accb6",
-									"name": "institution/{id}",
-									"originalRequest": {
-										"method": "DELETE",
-										"header": [],
-										"url": "{{API_URL}}/api/institution/v1/delete/{id}"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [
-										{
-											"expires": "Invalid Date",
-											"domain": "",
-											"path": ""
-										}
-									],
-									"responseTime": null,
-									"body": "{\r\n    \"time\": \"2023-05-07T18:25:04.017616569\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true\r\n} "
-								}
-							]
-						},
-						{
-							"name": "institution/{id}/active",
-							"id": "ee013117-e90c-47cf-b372-0afce8a2f650",
+							"id": "d06ebdb6-884a-44f1-8750-faad9b858b72",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -2998,13 +2956,13 @@
 								"method": "PUT",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
-								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `ACTIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
+								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun \\`name\\` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
 							},
 							"response": []
 						},
 						{
-							"name": "institution/{id}",
-							"id": "d06ebdb6-884a-44f1-8750-faad9b858b72",
+							"name": "institution/{id}/active",
+							"id": "ee013117-e90c-47cf-b372-0afce8a2f650",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4740,6 +4698,48 @@
 						}
 					],
 					"id": "7396a06e-298f-44ee-b4d1-b802380e69f8"
+				},
+				{
+					"name": "institution/{id}",
+					"id": "821e15f9-5494-4799-bbbb-3e1cc6162b81",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API_URL}}/api/institution/v1/delete/{id}",
+						"description": "- Bu servis `id` bilgisi verilen Kurumun var olan statusunü `PASSIVE` yapmak için kullanılır.\n    \n- Bu servisde sadece `SUPER_ADMIN` rolüne sahip kullanıcılar tarafından aksiyon alınabilir.\n    \n- `AYS_INSTITUTION` tablosundaki ilgili kaydın statüsünü `PASSIVE` olarak günceller.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Institutiona Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+					},
+					"response": [
+						{
+							"id": "c707d5ff-494a-4329-8384-9b116d0accb6",
+							"name": "institution/{id}",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{API_URL}}/api/institution/v1/delete/{id}"
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"responseTime": null,
+							"body": "{\r\n    \"time\": \"2023-05-07T18:25:04.017616569\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true\r\n} "
+						}
+					]
 				}
 			],
 			"id": "4838ad6c-8abf-4dd9-b434-1a440e2ce27b",
