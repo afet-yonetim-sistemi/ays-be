@@ -2984,7 +2984,7 @@
 								"method": "PUT",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
-								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanının `ACTIVE` olarak güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n\n**İstek Parametreleri**\n\n- `name`: Kuruma Ait İsim Bilgisi\n    \n    - [Rol Adı Alanı için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/163250220/Rol+Ad+Alan+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1-i%C3%A7in-Validasyon-Kurallar%C4%B1)\n        \n- `permissionIds`: Rolün Sahip Olması İstenen Yetkilerin ID Bilgileri\n    \n    - Zorunlu alandır.\n        \n    - Her elemanı UUID formatında olmalıdır."
+								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanının `ACTIVE` olarak güncellenebiliyor olması gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    "
 							},
 							"response": []
 						}
