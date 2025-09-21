@@ -63,8 +63,8 @@ class AysTokenServiceImpl implements AysTokenService {
                 .claims(claims)
                 .compact();
 
-        final Date refreshTokenExpiresAt = DateUtils.addDays(
-                new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireDay()
+        final Date refreshTokenExpiresAt = DateUtils.addMinutes(
+                new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireMinute()
         );
         final String refreshToken = tokenBuilder
                 .id(AysRandomUtil.generateUUID())

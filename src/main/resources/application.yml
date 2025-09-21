@@ -73,7 +73,7 @@ ays:
     enabled: ${AYS_EMERGENCY_EVACUATION_APPLICATION_ENABLED:true}
   scheduler:
     invalid-tokens-deletion:
-      cron: ${INVALID_TOKENS_DELETION_CRON:0 0 */3 * * ?}
+      cron: ${INVALID_TOKENS_DELETION_CRON:0 0 */1 * * ?}
       enable: ${INVALID_TOKENS_DELETION_ENABLED:true}
   rate-limit:
     authorized:

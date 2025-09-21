@@ -14,7 +14,7 @@ public enum AysConfigurationParameter {
     AYS("AYS"),
 
     AUTH_ACCESS_TOKEN_EXPIRE_MINUTE("120"),
-    AUTH_REFRESH_TOKEN_EXPIRE_DAY("1"),
+    AUTH_REFRESH_TOKEN_EXPIRE_MINUTE("2"),
     AUTH_TOKEN_PRIVATE_KEY(""),
     AUTH_TOKEN_PUBLIC_KEY(""),
     FE_URL("http://localhost:3000");

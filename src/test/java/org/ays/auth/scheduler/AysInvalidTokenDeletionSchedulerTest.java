@@ -30,7 +30,7 @@ class AysInvalidTokenDeletionSchedulerTest extends AysUnitTest {
 
         // When
         Optional<AysParameter> mockParameter = Optional.of(
-                AysParameter.from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY)
+                AysParameter.from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE)
         );
         Mockito.when(parameterReadPort.findByName(Mockito.anyString()))
                 .thenReturn(mockParameter);

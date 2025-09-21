@@ -46,10 +46,10 @@ public class AysApplicationConfigurationParameter {
      */
     private final Integer accessTokenExpireMinute;
     /**
-     * The number of days until refresh tokens expire.
+     * The number of minutes until refresh tokens expire.
      * Derived from configuration parameters or defaults if not provided.
      */
-    private final Integer refreshTokenExpireDay;
+    private final Integer refreshTokenExpireMinute;
     /**
      * The frontend URL to use for email verification, password reset, and other links.
      * Derived from configuration parameters or defaults if not provided.
@@ -94,11 +94,11 @@ public class AysApplicationConfigurationParameter {
                 .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE.getDefaultValue()));
         log.info("Application configuration parameter has been set. accessTokenExpireMinute:{}", accessTokenExpireMinute);
 
-        this.refreshTokenExpireDay = Optional
-                .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY, configurationParameters))
+        this.refreshTokenExpireMinute = Optional
+                .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE, configurationParameters))
                 .map(Integer::valueOf)
-                .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue()));
-        log.info("Application configuration parameter has been set. refreshTokenExpireDay:{}", refreshTokenExpireDay);
+                .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE.getDefaultValue()));
+        log.info("Application configuration parameter has been set. refreshTokenExpireMinute:{}", refreshTokenExpireMinute);
 
         this.feUrl = Optional
                 .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.FE_URL, configurationParameters))
