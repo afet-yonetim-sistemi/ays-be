@@ -61,8 +61,9 @@ if [[ "$IS_OVERWRITE" == true ]]; then
         break
         ;;
       [Nn]* )
-        echo "\033[96m➡️ Press Enter for creating Token:\033[0m"
-        read -p "" _
+        echo "\033[96m"
+        read -p "Press Enter to open browser for creating a new Personal Access Token:" _
+        echo "\033[0m"
         if command -v xdg-open >/dev/null; then
           xdg-open "https://github.com/settings/tokens/new"
         elif command -v open >/dev/null; then
