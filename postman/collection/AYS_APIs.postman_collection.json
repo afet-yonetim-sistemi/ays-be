@@ -4631,7 +4631,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/institution/v1/advert/{id}/applications",
-										"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir."
 									},
 									"response": [
 										{
@@ -4640,6 +4640,15 @@
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
 												"url": "{{API_URL}}/api/v1/advert/{id}/applications"
 											},
 											"_postman_previewlanguage": "json",
@@ -4653,7 +4662,7 @@
 											],
 											"cookie": [],
 											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-04-06T13:35:47.774102186\",\r\n    \"code\": \"e8d2f1c5-7b3a-4f6e-9c1d-8a5b2f6c9e7d\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"user\": {\r\n                    \"id\": \"f6c9e7d2-a8b5-4e1c-9f3d-7b8a2e5c6d1f\",\r\n                    \"firstName\": \"Samuel\",\r\n                    \"lastName\": \"Soul\",\r\n                    \"emailAddress\": \"samuel@afetyonetimsistemi.org\",\r\n                    \"phoneNumber\": {\r\n                        \"countryCode\": \"90\",\r\n                        \"lineNumber\": \"5324567890\"\r\n                    },\r\n                    \"city\": \"İstanbul\",\r\n                    \"age\": 25,\r\n                    \"gender\": \"MALE\"\r\n                },\r\n                \"application\": {\r\n                    \"id\": \"c1a5d8b2-e6f7-4c9d-8a3b-1e2f5d6c7b9a\",\r\n                    \"hoursAvailablePerDay\": 5,\r\n                    \"status\": [\r\n                        \"IN_REVIEW\"\r\n                    ],\r\n                    \"createdAt\": \"2025-04-06T13:31:03\"\r\n                }\r\n            },\r\n            {\r\n                \"user\": {\r\n                    \"id\": \"9b8c2a1e-5d4f-4e7c-b3a6-8d9e2f1c7b5a\",\r\n                    \"firstName\": \"Jackie\",\r\n                    \"lastName\": \"Sam\",\r\n                    \"emailAddress\": \"jacksamm@afetyonetimsistemi.org\",\r\n                    \"phoneNumber\": {\r\n                        \"countryCode\": \"90\",\r\n                        \"lineNumber\": \"5558797812\"\r\n                    },\r\n                    \"city\": \"Ankara\",\r\n                    \"age\": 32,\r\n                    \"gender\": \"MALE\"\r\n                },\r\n                \"application\": {\r\n                    \"id\": \"4d2e7f1c-6b8a-4e9d-c5f3-1b2d8e7c9a6f\",\r\n                    \"hoursAvailablePerDay\": 8,\r\n                    \"status\": [\r\n                        \"IN_REVIEW\"\r\n                    ],\r\n                    \"createdAt\": \"2025-05-10T17:35:42\"\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}"
+											"body": "{\r\n    \"time\": \"2025-04-06T13:35:47.774102186\",\r\n    \"code\": \"e8d2f1c5-7b3a-4f6e-9c1d-8a5b2f6c9e7d\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"user\": {\r\n                    \"id\": \"f6c9e7d2-a8b5-4e1c-9f3d-7b8a2e5c6d1f\",\r\n                    \"firstName\": \"Samuel\",\r\n                    \"lastName\": \"Soul\",\r\n                    \"emailAddress\": \"samuel@afetyonetimsistemi.org\",\r\n                    \"phoneNumber\": {\r\n                        \"countryCode\": \"90\",\r\n                        \"lineNumber\": \"5324567890\"\r\n                    },\r\n                    \"city\": \"İstanbul\",\r\n                    \"age\": 25,\r\n                    \"gender\": \"MALE\"\r\n                },\r\n                \"application\": {\r\n                    \"id\": \"c1a5d8b2-e6f7-4c9d-8a3b-1e2f5d6c7b9a\",\r\n                    \"hoursAvailablePerDay\": 5,\r\n                    \"status\": \"IN_REVIEW\",\r\n                    \"createdAt\": \"2025-04-06T13:31:03\"\r\n                }\r\n            },\r\n            {\r\n                \"user\": {\r\n                    \"id\": \"9b8c2a1e-5d4f-4e7c-b3a6-8d9e2f1c7b5a\",\r\n                    \"firstName\": \"Jackie\",\r\n                    \"lastName\": \"Sam\",\r\n                    \"emailAddress\": \"jacksamm@afetyonetimsistemi.org\",\r\n                    \"phoneNumber\": {\r\n                        \"countryCode\": \"90\",\r\n                        \"lineNumber\": \"5558797812\"\r\n                    },\r\n                    \"city\": \"Ankara\",\r\n                    \"age\": 32,\r\n                    \"gender\": \"MALE\"\r\n                },\r\n                \"application\": {\r\n                    \"id\": \"4d2e7f1c-6b8a-4e9d-c5f3-1b2d8e7c9a6f\",\r\n                    \"hoursAvailablePerDay\": 8,\r\n                    \"status\": \"IN_REVIEW\",\r\n                    \"createdAt\": \"2025-05-10T17:35:42\"\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}"
 										}
 									]
 								},
