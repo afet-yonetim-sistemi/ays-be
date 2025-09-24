@@ -4335,25 +4335,34 @@
 									]
 								},
 								{
-									"name": "advert/summary-responsibles",
+									"name": "advert/responsibles/summary",
 									"id": "757d3dfd-bdcf-4805-9630-8062d1be25fc",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
-										"method": "GET",
+										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/institution/v1/advert/summary-responsibles",
-										"description": "- Bu servis ilgili Kurumdaki Userların `id` , `firstName` ve `lastName` bilgilerini listelemek için kullanılır.\n    \n- Bu servise `advert:create`, `advert:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı userların listelenmesi gerekmektedir."
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/institution/v1/advert/responsibles/summary",
+										"description": "- Bu servis ilgili Kurumdaki Userların `id` , `firstName` ve `lastName` bilgilerini listelemek için kullanılır.\n    \n- Bu servise `advert:create`, `advert:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı `ACTIVE` statüsüne sahip kullanıcıların listelenmesi gerekmektedir."
 									},
 									"response": [
 										{
 											"id": "278dbdb2-cd16-40b4-b3c9-93795a5f1f1a",
-											"name": "advert/summary-responsibles",
+											"name": "advert/responsibles/summary",
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
-												"url": "{{API_URL}}/api/v1/advert/summary-responsibles"
+												"url": "{{API_URL}}/api/v1/advert/responsibles/summary"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
