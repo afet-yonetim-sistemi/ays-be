@@ -4601,17 +4601,8 @@
 									"request": {
 										"method": "PATCH",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n\t\"title\": \"Android Developer\",\r\n\t\"description\": \"We need developers to design a system that will carry out data sharing in aid organizations via a mobile application.\",\r\n\t\"address\": \"Konya Devlet Yolu, Gazi, Mevlana Blv. No:2, 06560 Yenimahalle\",\r\n\t\"city\": \"Ankara\",\r\n\t\"externalLink\": \"https://www.ankamall.com.tr/\",\r\n\t\"applicationDeadline\": \"2026-15-01\",\r\n\t\"startedAt\": \"2025-01-12\",\r\n\t\"finishedAt\": \"2025-30-12\",\r\n\t\"maxParticipationCount\": 10,\r\n\t\"participationType\": \"ONLINE\",\r\n\t\"responsible\": [\r\n\t\t\"Ahmet Yılmaz\",\r\n\t\t\"Sevda Seher\"\r\n\t]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
 										"url": "{{API_URL}}/api/institution/v1/advert/{id}/accessibility/toggle",
-										"description": "- Bu servis ilgili kuruma ait ilanın erişime açık olup olmadığını belirtir.\n    \n- Bu servise sadece `advert:create` rolüne sahip kişiler erişebilir.\n\n- Varsayılan değeri true olmalıdır.\n    \n- `AYS_ADVERT` tablosunda var olan id'si verilen ilanın `ACCESSIBILITY` değerini , değeri eğer `false` ise `true` yapar. `true` ise `false` yapar.\n    \n- Bu alan sadece bu endpointle değiştirilebilir\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis ilgili kuruma ait ilanın erişime açık olup olmadığını yönetmek için kullanılır.\n    \n- Bu servise sadece `advert:create` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan id'si verilen ilanın `ACCESSIBILITY` değeri;\n    \n    - `false` ise `true` olarak günceller.\n        \n    - `true` ise `false` olarak günceller.\n        \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": []
 								}
