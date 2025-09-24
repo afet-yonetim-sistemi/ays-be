@@ -4631,7 +4631,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/institution/v1/advert/{id}/applications",
-										"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir."
+										"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `application:advert:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir."
 									},
 									"response": [
 										{
@@ -4667,7 +4667,7 @@
 									]
 								},
 								{
-									"name": "advert/{id_advert}/application/{id}/approve",
+									"name": "advert/application/{id}/approve",
 									"id": "7b7c2db0-e8d2-41f4-a200-bf77a040a038",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -4675,8 +4675,8 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/institution/v1/advert/{id}/application/{id}/approve",
-										"description": "- Bu servis kurumların ilanlarına yapılan başvuruları onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Kurum ilanına yapılan başvurusuya ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
+										"url": "{{API_URL}}/api/institution/v1/advert/application/{id}/approve",
+										"description": "- Bu servis kurumların ilanlarına yapılan başvuruları onaylamak için kullanılır\n    \n- Bu servise sadece `application:advert:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Kurum ilanına yapılan başvurusuya ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": []
 								},
@@ -4690,7 +4690,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/institution/v1/advert/{id}/application/{id}/reject",
-										"description": "- Bu servis doldurulmuş ilan başvurularını reddetmek için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
+										"description": "- Bu servis doldurulmuş ilan başvurularını reddetmek için kullanılır\n    \n- Bu servise sadece `application:advert:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
 									},
 									"response": []
 								}
