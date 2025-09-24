@@ -4602,7 +4602,7 @@
 										"method": "PATCH",
 										"header": [],
 										"url": "{{API_URL}}/api/institution/v1/advert/{id}/accessibility/toggle",
-										"description": "- Bu servis ilgili kuruma ait ilanın erişime açık olup olmadığını yönetmek için kullanılır.\n    \n- Bu servise sadece `advert:create` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan id'si verilen ilanın `ACCESSIBILITY` değeri;\n    \n    - `false` ise `true` olarak günceller.\n        \n    - `true` ise `false` olarak günceller.\n        \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis ilgili kuruma ait ilanın erişime açık olup olmadığını yönetmek için kullanılır.\n    \n- Bu servise sadece `advert:update` rolüne sahip kişiler erişebilir.\n    \n- `AYS_ADVERT` tablosunda var olan id'si verilen ilanın `ACCESSIBILITY` değeri;\n    \n    - `false` ise `true` olarak günceller.\n        \n    - `true` ise `false` olarak günceller.\n        \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kurum ilanına Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": []
 								}
@@ -4619,8 +4619,17 @@
 										"disableBodyPruning": true
 									},
 									"request": {
-										"method": "GET",
+										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{API_URL}}/api/institution/v1/advert/{id}/applications",
 										"description": "- Bu servis ilgili kurum ilanına ait başvuruları görüntülemek için kullanılır. `id` bilgisi verilen ilana başvuran gönüllülerin bilgileri ve başvuru durumları görüntülenir.\n    \n- Bu servise sadece `advert:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_ADVERT_APPLICATION` ve `AYS_USER` tablolarındaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı id'si verilen ilana başvuran gönüllülerin bilgilerinin görüntülenmesi gerekmektedir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma ait ilanın ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
