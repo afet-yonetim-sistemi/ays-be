@@ -4676,7 +4676,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/institution/v1/advert/application/{id}/approve",
-										"description": "- Bu servis kurumların ilanlarına yapılan başvuruları onaylamak için kullanılır\n    \n- Bu servise sadece `application:advert:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Kurum ilanına yapılan başvurusuya ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis kurumların ilanlarına yapılan başvuruları onaylamak için kullanılır\n    \n- Bu servise sadece `application:advert:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- Sadece ilan durumu `IN_REVIEW` olan ilanlar onaylayabilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id` : Kurum ilanına yapılan başvurusuya ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": []
 								},
@@ -4690,7 +4690,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/institution/v1/advert/application/{id}/reject",
-										"description": "- Bu servis doldurulmuş ilan başvurularını reddetmek için kullanılır\n    \n- Bu servise sadece `application:advert:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
+										"description": "- Bu servis doldurulmuş ilan başvurularını reddetmek için kullanılır\n    \n- Bu servise sadece `application:advert:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- Sadece ilan durumu `IN_REVIEW` olan ilanlar reddedilebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id` : Kurum ilanına yapılan başvurusuya ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": []
 								}
