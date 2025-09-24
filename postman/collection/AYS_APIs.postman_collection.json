@@ -4681,7 +4681,7 @@
 									"response": []
 								},
 								{
-									"name": "advert/{id_advert}/application/{id}/reject",
+									"name": "advert/application/{id}/reject",
 									"id": "d51e3cd9-899a-4807-9a3f-8b1243a426b6",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -4689,7 +4689,7 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/institution/v1/advert/{id}/application/{id}/reject",
+										"url": "{{API_URL}}/api/institution/v1/advert/application/{id}/reject",
 										"description": "- Bu servis doldurulmuş ilan başvurularını reddetmek için kullanılır\n    \n- Bu servise sadece `application:advert:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id_advert` : İlana ait ID bilgisi.\n    \n- `id` : İlana yapılan başvuruya ait ID bilgisi"
 									},
 									"response": []
