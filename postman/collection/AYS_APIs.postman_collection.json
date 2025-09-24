@@ -4361,7 +4361,22 @@
 											"name": "advert/responsibles/summary",
 											"originalRequest": {
 												"method": "GET",
-												"header": [],
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"time\": \"2023-05-04T20:52:09.712591823\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n            {\n                \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\n                \"firstName\": \"Joe\",\n                \"lastName\": \"Doe\"\n            },\n            {\n                \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n                \"firstName\": \"Jack\",\n                \"lastName\": \"Smith\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 10,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 2,\n        \"sortedBy\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"ASC\"\n            }\n        ],\n        \"filteredBy\": {\n            \"institutionId\": \"c5f9f610-f1c8-48a4-b1e9-1fee95f5a51f\",\n            \"fullName\": \"j\"\n        }\n    }\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
 												"url": "{{API_URL}}/api/v1/advert/responsibles/summary"
 											},
 											"_postman_previewlanguage": "json",
@@ -4381,7 +4396,7 @@
 												}
 											],
 											"responseTime": null,
-											"body": "{\n    \"time\": \"2023-05-04T20:52:09.712591823\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": [\n        {\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\n            \"firstName\": \"Joe\",\n            \"lastName\": \"Doe\"\n        },\n        {\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n            \"firstName\": \"Jack\",\n            \"lastName\": \"Smith\"\n        }\n    ]\n}"
+											"body": "{\n    \"time\": \"2023-05-04T20:52:09.712591823\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true,\n    \"response\": {\n        \"content\": [\n        {\n            \"id\": \"64a19f8b-34bb-450c-adad-e311c5d416d1\",\n            \"firstName\": \"Joe\",\n            \"lastName\": \"Doe\"\n        },\n        {\n            \"id\": \"0418652d-d17c-41ed-b680-b262f451b2b9\",\n            \"firstName\": \"Jack\",\n            \"lastName\": \"Smith\"\n            }\n        ],\n        \"pageNumber\": 1,\n        \"pageSize\": 10,\n        \"totalPageCount\": 1,\n        \"totalElementCount\": 2,\n        \"sortedBy\": [\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"ASC\"\n            }\n        ],\n        \"filteredBy\": {\n            \"institutionId\": \"c5f9f610-f1c8-48a4-b1e9-1fee95f5a51f\",\n            \"title\": \"ilan\",\n            \"participationTypes\": [\n                \"ONLINE\",\n                \"PHYSICALLY\"\n            ],\n            \"statuses\": [\n                \"IN_APPLICATION_PROCESS\",\n                \"IN_APPLICATION_EVALUATION_PROCESS\",\n                \"COMPLETED\",\n                \"CANCELLED\"\n            ],\n            \"city\": \"Ank\",\n            \"accessibility\": true\n        }\n    }\n}"
 										}
 									]
 								},
