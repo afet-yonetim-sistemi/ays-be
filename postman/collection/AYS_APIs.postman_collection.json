@@ -4833,7 +4833,22 @@
 								"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/approve",
 								"description": "- Bu servis kurumlara yapılan gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:volunteer:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
-							"response": []
+							"response": [
+								{
+									"id": "a2510ed9-19a8-4e33-9962-ad76fa70c394",
+									"name": "volunteer-application/{id}/approve",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/approve"
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": null
+								}
+							]
 						},
 						{
 							"name": "volunteer-application/{id}/reject",
