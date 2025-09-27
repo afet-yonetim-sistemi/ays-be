@@ -4899,14 +4899,42 @@
 									"name": "volunteer-application/{id}/reject",
 									"originalRequest": {
 										"method": "POST",
-										"header": [],
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"rejectReason\": \"Bu başvuru gerekli koşulları sağlamadığı için reddedilmiştir.\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/reject"
 									},
-									"_postman_previewlanguage": null,
-									"header": null,
-									"cookie": [],
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
 									"responseTime": null,
-									"body": null
+									"body": "{\r\n    \"time\": \"2025-07-07T18:25:04.017616569\",\r\n    \"code\": \"5897f6c8-9570-41bf-775c-f84f171c9812\",\r\n    \"isSuccess\": true\r\n}"
 								}
 							]
 						}
