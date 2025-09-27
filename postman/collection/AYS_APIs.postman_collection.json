@@ -4828,7 +4828,7 @@
 							]
 						},
 						{
-							"name": "volunteer/application/{id}/approve",
+							"name": "volunteer-application/{id}/approve",
 							"id": "ef4a8999-5090-4d27-b9c1-6ce55e293256",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4836,13 +4836,13 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"url": "{{API_URL}}/api/institution/v1/volunteer/application/{id}/approve",
-								"description": "- Bu servis kurumlara yapılan gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
+								"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/approve",
+								"description": "- Bu servis kurumlara yapılan gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:volunteer:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
 						},
 						{
-							"name": "volunteer/application/{id}/reject",
+							"name": "volunteer-application/{id}/reject",
 							"id": "bfae6994-aa7e-4de4-85ec-ae3630755292",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4850,8 +4850,8 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"url": "{{API_URL}}/api/institution/v1/volunteer/application/{id}/approve",
-								"description": "- Bu servis kurumlara yapılan gönüllü başvurusunu reddetmek için kullanılır\n    \n- Bu servise sadece `application:registration:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
+								"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/reject",
+								"description": "- Bu servis kurumlara yapılan gönüllü başvurusunu reddetmek için kullanılır\n    \n- Bu servise sadece `application:volunteer:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": []
 						}
