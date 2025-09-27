@@ -4775,7 +4775,7 @@
 										}
 									],
 									"responseTime": null,
-									"body": "{\r\n    \"time\": \"2024-06-27T11:06:06.745384\",\r\n    \"code\": \"b9c8d7e6-5f4e-43d2-8a1f-9c8d7e6f5a4b\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"firstName\": \"Jack\",\r\n                \"lastName\": \"Doe\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5054567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"status\": \"INITIATED\",\r\n                \"applicationDate\": \"2024-08-07T09:45:08\",\r\n                \"completedAt\": null,\r\n                \"createdAt\": \"2024-08-07T09:45:08\"\r\n            },\r\n            {\r\n                \"id\": \"4e5f6a7b-8c9d-42e1-9f0a-1b2c3d4e5f6a\",\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Joe\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5354567890\"\r\n                },\r\n                \"city\": \"Ankara\",\r\n                \"status\": \"INITIATED\",\r\n                \"applicationDate\": \"2024-08-10T09:45:08\",\r\n                \"completedAt\": null,\r\n                \"createdAt\": \"2024-08-10T09:45:08\"\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 5,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"orderedBy\": [\r\n            {\r\n                \"property\": \"firstName\",\r\n                \"direction\": \"ASC\"\r\n            }\r\n        ],\r\n        \"filteredBy\": {\r\n            \"firstName\": \"J\",\r\n            \"status\": [\r\n                \"INITIATED\"\r\n            ]\r\n        }\r\n    }"
+									"body": "{\r\n    \"time\": \"2024-06-27T11:06:06.745384\",\r\n    \"code\": \"b9c8d7e6-5f4e-43d2-8a1f-9c8d7e6f5a4b\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n                \"firstName\": \"Jack\",\r\n                \"lastName\": \"Doe\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5054567890\"\r\n                },\r\n                \"city\": \"İstanbul\",\r\n                \"status\": \"INITIATED\",\r\n                \"createdAt\": \"2024-08-07T09:45:08\",\r\n                \"updatedAt\": null\r\n            },\r\n            {\r\n                \"id\": \"4e5f6a7b-8c9d-42e1-9f0a-1b2c3d4e5f6a\",\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Joe\",\r\n                \"phoneNumber\": {\r\n                    \"countryCode\": \"90\",\r\n                    \"lineNumber\": \"5354567890\"\r\n                },\r\n                \"city\": \"Ankara\",\r\n                \"status\": \"INITIATED\",\r\n                \"createdAt\": \"2024-08-10T09:45:08\",\r\n                \"updatedAt\": null\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 5,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"orderedBy\": [\r\n            {\r\n                \"property\": \"firstName\",\r\n                \"direction\": \"ASC\"\r\n            }\r\n        ],\r\n        \"filteredBy\": {\r\n            \"firstName\": \"J\",\r\n            \"status\": [\r\n                \"INITIATED\"\r\n            ]\r\n        }\r\n    }"
 								}
 							]
 						},
@@ -4797,13 +4797,7 @@
 									"name": "volunteer-application/{id}",
 									"originalRequest": {
 										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
+										"header": [],
 										"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}"
 									},
 									"_postman_previewlanguage": "json",
