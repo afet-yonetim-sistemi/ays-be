@@ -4788,13 +4788,13 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{API_URL}}/api/institution/v1/volunteer/{id}",
-								"description": "- Bu servis gönüllü başvurusunun detayını görüntülemek için kullanılır.\n    \n- Bu servise sadece `volunteer:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_USER` ve `AYS_VOLUNTEER_APPLICATION` tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma başvuran gönüllülerin detayları görüntülenebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcının başvurusuna Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+								"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}",
+								"description": "- Bu servis gönüllü başvurusunun detayını görüntülemek için kullanılır.\n    \n- Bu servise sadece `application:volunteer:detail` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_USER` ve `AYS_VOLUNTEER_APPLICATION` tablosundaki verilerden yararlanılır.\n    \n- Sadece kuruma başvuran gönüllülerin detayları görüntülenebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcının başvurusuna Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
 								{
 									"id": "53dcda96-8bb2-4ea3-95e6-21f56ed2baa4",
-									"name": "volunteer/{id}",
+									"name": "volunteer-application/{id}",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
