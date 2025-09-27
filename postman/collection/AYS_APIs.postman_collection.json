@@ -4830,16 +4830,34 @@
 							"request": {
 								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n    \"name\": \"Kurum Yöneticisi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/approve",
 								"description": "- Bu servis kurumlara yapılan gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:volunteer:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
 								{
-									"id": "a2510ed9-19a8-4e33-9962-ad76fa70c394",
+									"id": "5464e7b6-540e-47ee-a3ee-7d1bb3cc3251",
 									"name": "volunteer-application/{id}/approve",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"id\": \"0fe8ed42-bc8f-4e58-a0d1-7ad668c89b86\",\r\n    \"name\": \"Kurum Yöneticisi\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/approve"
 									},
 									"_postman_previewlanguage": null,
