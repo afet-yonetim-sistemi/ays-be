@@ -964,6 +964,66 @@
 									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
 								}
 							]
+						},
+						{
+							"name": "authentication/email",
+							"id": "2ae56644-8361-4a60-bb93-a90848e0b3c5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{API_URL}}/api/landing/v1/authentication/email",
+								"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+							},
+							"response": [
+								{
+									"id": "00f793fa-ba8e-4151-b489-1defcc146a7a",
+									"name": "authentication/email",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"user\": {\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/landing/v1/authentication/email"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"responseTime": null,
+									"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"5897f6b1-9480-42bf-455c-f14f171c9812\",\r\n    \"isSuccess\": true\r\n}"
+								}
+							]
 						}
 					],
 					"id": "9b0d05d0-36a8-45cc-b8c6-ff9af730aab6",
@@ -1490,66 +1550,6 @@
 											"cookie": [],
 											"responseTime": null,
 											"body": "{\r\n    \"time\": \"2023-05-04T20:52:09.712591823\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true,\r\n    \"response\": [\r\n        {\r\n            \"id\": \"5d6e7f8a-9b0c-47d6-8e9f-0a1b2c3d4e5f\",\r\n            \"name\": \"Test Institution 1\"\r\n        },\r\n        {\r\n            \"id\": \"a1b2c3d4-e5f6-48c7-9d8e-7f6a5b4c3d2e\",\r\n            \"name\": \"Test Institution 2\"\r\n        }\r\n    ]\r\n}"
-										}
-									]
-								},
-								{
-									"name": "volunteer-apply/check-email",
-									"id": "2ae56644-8361-4a60-bb93-a90848e0b3c5",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"user\": {\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n    }\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/check-email",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
-									},
-									"response": [
-										{
-											"id": "00f793fa-ba8e-4151-b489-1defcc146a7a",
-											"name": "volunteer-apply/check-email",
-											"originalRequest": {
-												"method": "POST",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"user\": {\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n    }\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/check-email"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json",
-													"description": "",
-													"type": "text"
-												}
-											],
-											"cookie": [
-												{
-													"expires": "Invalid Date",
-													"domain": "",
-													"path": ""
-												}
-											],
-											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"5897f6b1-9480-42bf-455c-f14f171c9812\",\r\n    \"isSuccess\": true\r\n}"
 										}
 									]
 								},
