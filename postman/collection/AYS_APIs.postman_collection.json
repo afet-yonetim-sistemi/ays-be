@@ -4890,6 +4890,15 @@
 							"request": {
 								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rejectReason\": \"Bu başvuru gerekli koşulları sağlamadığı için reddedilmiştir.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/reject",
 								"description": "- Bu servis kurumlara yapılan gönüllü başvurusunu reddetmek için kullanılır\n    \n- Bu servise sadece `application:volunteer:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
