@@ -1478,7 +1478,8 @@
 											"name": "landing/instutitons/summary",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": "{{API_URL}}/api/landing/v1/instutitons/summary"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
