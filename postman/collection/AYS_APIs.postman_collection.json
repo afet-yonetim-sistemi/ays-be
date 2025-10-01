@@ -3790,7 +3790,7 @@
 								"method": "GET",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/roles/summary",
-								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Rollerin `id` ve `name` bilgilerini Listelemek için kullanılır.\n    \n- Bu servise `user:detail`, `user:create`, `user:update` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_ROLE` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı rollerin listelenmesi gerekmektedir."
+								"description": "- Bu servis ilgili Yöneticiye ait Kurumdaki Rollerin `id` ve `name` bilgilerini Listelemek için kullanılır.\n    \n- Bu servise `user:detail`, `user:create`, `user:update` , `application:volunteer:detail` yetkilerinden en az birine sahip olanlar erişebilir.\n    \n- `AYS_ROLE` tablosundaki verilerden yararlanır.\n    \n- Sadece kuruma bağlı rollerin listelenmesi gerekmektedir."
 							},
 							"response": [
 								{
