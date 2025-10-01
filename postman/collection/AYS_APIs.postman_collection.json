@@ -964,66 +964,6 @@
 									"body": "{\n    \"time\": \"2024-04-06T13:35:47.774102186\",\n    \"code\": \"5897f6b8-9470-41bf-855c-f84f171c9812\",\n    \"isSuccess\": true\n}"
 								}
 							]
-						},
-						{
-							"name": "authentication/email",
-							"id": "2ae56644-8361-4a60-bb93-a90848e0b3c5",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{API_URL}}/api/landing/v1/authentication/email",
-								"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
-							},
-							"response": [
-								{
-									"id": "00f793fa-ba8e-4151-b489-1defcc146a7a",
-									"name": "authentication/email",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"user\": {\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n    }\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/landing/v1/authentication/email"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": "",
-											"type": "text"
-										}
-									],
-									"cookie": [
-										{
-											"expires": "Invalid Date",
-											"domain": "",
-											"path": ""
-										}
-									],
-									"responseTime": null,
-									"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"5897f6b1-9480-42bf-455c-f14f171c9812\",\r\n    \"isSuccess\": true\r\n}"
-								}
-							]
 						}
 					],
 					"id": "9b0d05d0-36a8-45cc-b8c6-ff9af730aab6",
@@ -1510,7 +1450,7 @@
 							"name": "Volunteer Apply Service",
 							"item": [
 								{
-									"name": "volunteer-apply/institutions",
+									"name": "volunteer-application/institutions/summary",
 									"id": "274b66bc-16ed-432f-b2b1-687c02fc8a47",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1527,7 +1467,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/institutions",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application/institutions/summary",
 										"description": "- Bu servis gönüllü başvuruları için `ACTIVE` statüsüne sahip kurumları listeler.\n    \n- Bu servise `application:volunteer:apply` yetkisine sahip kişiler erişebilir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
@@ -1866,6 +1806,66 @@
 											],
 											"responseTime": null,
 											"body": "{\r\n    \"time\": \"2023-05-07T18:25:04.017616569\",\r\n    \"code\": \"e3d2c1b0-f9a8-44e7-9d6c-5b4a3c2d1e0f\",\r\n    \"isSuccess\": true\r\n}"
+										}
+									]
+								},
+								{
+									"name": "authentication/email",
+									"id": "2ae56644-8361-4a60-bb93-a90848e0b3c5",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/landing/v1/authentication/email",
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvurmak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresi ile kurumda kayıtlı olup olmaması kontrolü yapılır\n    \n- Bu servis `AYS_USER` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - Zorunlu alandır.\n        \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+									},
+									"response": [
+										{
+											"id": "00f793fa-ba8e-4151-b489-1defcc146a7a",
+											"name": "authentication/email",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"user\": {\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{API_URL}}/api/landing/v1/authentication/email"
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [
+												{
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
+												}
+											],
+											"responseTime": null,
+											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"5897f6b1-9480-42bf-455c-f14f171c9812\",\r\n    \"isSuccess\": true\r\n}"
 										}
 									]
 								}
