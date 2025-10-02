@@ -1615,7 +1615,7 @@
 									]
 								},
 								{
-									"name": "volunteer-apply/{id}/send-verification-code",
+									"name": "volunteer-application/{id}/send-verification-code-again",
 									"id": "398696d9-84f8-4e00-b124-6af77a97e716",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1623,7 +1623,7 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/verify",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application/{id}/send-verification-code-again",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
