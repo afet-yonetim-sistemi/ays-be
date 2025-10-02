@@ -1764,7 +1764,7 @@
 									"response": [
 										{
 											"id": "55883f75-b4ef-4a1e-9126-5f2b9fa2d00a",
-											"name": "volunteer-apply/user",
+											"name": "volunteer-application/user",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
@@ -1777,7 +1777,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/user"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/user"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
