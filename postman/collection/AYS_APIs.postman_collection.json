@@ -1584,7 +1584,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"id\": \"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n    \"verificationCode\": \"859674\"\r\n}",
+													"raw": "{\r\n    \"id\": \"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n    \"code\": \"859674\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
