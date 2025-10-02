@@ -1665,17 +1665,17 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/{id}/volunteer-apply",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/{id}",
 										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapma aksiyonunu başlatmak için kullanılır.\n    \n- Bu servise sadece `volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler."
 									},
 									"response": [
 										{
 											"id": "7a6439f1-cdda-4d37-a9e3-7666fb3769d7",
-											"name": "volunteer-apply",
+											"name": "volunteer-apply/{id}",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
-												"url": "{{API_URL}}/api/v1/volunteer-apply"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1699,7 +1699,7 @@
 									]
 								},
 								{
-									"name": "volunteer-apply/user/{id}",
+									"name": "volunteer-application/user/{id}",
 									"id": "384a09c3-0aa1-413a-b256-b33378cc3805",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1707,7 +1707,7 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/landing/volunteer-apply/user/{id}",
+										"url": "{{API_URL}}/api/landing/v1/landing/volunteer-application/user/{id}",
 										"description": "- Bu servis sistemde kayıtlı olan User'ın bilgilerini getirmek için kullanılır.\n    \n- Bu servise sadece `user:detail` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcının bilgileri görüntülenebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcıya Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
