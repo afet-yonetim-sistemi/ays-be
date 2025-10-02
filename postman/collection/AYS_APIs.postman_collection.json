@@ -1584,7 +1584,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"id\": \"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n    \"code\": \"859674\"\r\n}",
+													"raw": "{\r\n    \"userId\": \"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n    \"code\": \"859674\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1624,7 +1624,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/landing/v1/volunteer-application/{id}/send-verification-code-again",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_VOLUNTEER_APLICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının gönüllü ol başvuru ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
 										{
