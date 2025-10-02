@@ -1533,11 +1533,11 @@
 									"response": [
 										{
 											"id": "e1b94a08-4df5-48da-b63a-1b7489728ce8",
-											"name": "volunteer-application/institutions",
+											"name": "volunteer-application/institutions/summary",
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/institutions"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/institutions/summary"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
