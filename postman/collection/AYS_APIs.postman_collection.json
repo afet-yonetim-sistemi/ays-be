@@ -1713,11 +1713,11 @@
 									"response": [
 										{
 											"id": "779516f8-510a-4990-89f3-1678502a6b12",
-											"name": "volunteer-apply/user/{id}",
+											"name": "volunteer-application/user/{id}",
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/user/{id}"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/user/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1736,12 +1736,12 @@
 												}
 											],
 											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"8d3f1a9b-4e6c-482d-8b0a-7f2e1c4a9d63\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"createdUser\": \"c2e5b7d9-1f0e-47c3-9d8a-6b5c3d4f1a2e\",\r\n        \"createdAt\": \"2023-05-07T09:45:08\",\r\n        \"updatedUser\": null,\r\n        \"updatedAt\": null,\r\n        \"id\": \"e9a4f6d8-9c2b-45e0-8a7f-1d2b3c4d5e6fc\",\r\n        \"firstName\": \"Ahmet\",\r\n        \"lastName\": \"Mehmet\",\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n        \"phoneNumber\": {\r\n            \"countryCode\": \"90\",\r\n            \"lineNumber\": \"5324467811\"\r\n        },\r\n        \"city\": \"İstanbul\"\r\n    }\r\n}"
+											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"8d3f1a9b-4e6c-482d-8b0a-7f2e1c4a9d63\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"id\": \"e9a4f6d8-9c2b-45e0-8a7f-1d2b3c4d5e6fc\",\r\n        \"firstName\": \"Ahmet\",\r\n        \"lastName\": \"Mehmet\",\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n        \"phoneNumber\": {\r\n            \"countryCode\": \"90\",\r\n            \"lineNumber\": \"5324467811\"\r\n        },\r\n        \"city\": \"İstanbul\",\r\n        \"createdUser\": \"c2e5b7d9-1f0e-47c3-9d8a-6b5c3d4f1a2e\",\r\n        \"createdAt\": \"2023-05-07T09:45:08\"\r\n    }\r\n}"
 										}
 									]
 								},
 								{
-									"name": "volunteer-apply/user",
+									"name": "volunteer-application/user",
 									"id": "e1c3755f-9fd2-4c76-973c-5f9750180437",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1758,7 +1758,7 @@
 												}
 											}
 										},
-										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/user",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application/user",
 										"description": "- Bu servis sistemde kayıtlı olmayan Gönüllü bilgileri ile kullanıcı oluşturmak için kullanılır.\n    \n- `AYS_USER` tablosuna statüsü `ACTIVE` olan bir kayıt ekler.\n    \n- Oluşturulan Kullanıcı, oluşturma servisi çağıran kuruma ait bir kullanıcı olmalıdır.\n    \n- Kullanıcı kaydedildikten sonra kullanıcının mail adresine bir şifre oluşturma maili iletilir. İletilen mail ile birlikte şifresini oluşturduktan sonra sisteme giriş yapabilir.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - [Telefon Numaraları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/229736450/T+rkiye+Telefon+Numaras+Validasyon+Kurallar)\n        \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
 									},
 									"response": [
