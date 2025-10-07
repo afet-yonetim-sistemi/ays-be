@@ -2878,7 +2878,7 @@
 										}
 									],
 									"responseTime": null,
-									"body": "{\r\n    \"time\": \"2025-09-06T13:35:47.774102186\",\r\n    \"code\": \"8f9a0b1c-2d3e-43a4-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"institution\": {\r\n            \"id\": \"e3d2c1b0-f9a8-44e7-9d6c-5b4a3c2d1e0f\",\r\n            \"name\": \"Afet Yönetim\",\r\n            \"status\": \"ACTIVE\",\r\n            \"userCount\": 22,\r\n            \"createdUser\": \"a1b2c3d4-e5f6-48c7-9d8e-7f6a5b4c3d2e\",\r\n            \"createdAt\": \"2023-05-07T09:45:08\",\r\n            \"updatedUser\": null,\r\n            \"updatedAt\": null\r\n        }\r\n    }\r\n}"
+									"body": "{\r\n    \"time\": \"2025-09-06T13:35:47.774102186\",\r\n    \"code\": \"8f9a0b1c-2d3e-43a4-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"id\": \"e3d2c1b0-f9a8-44e7-9d6c-5b4a3c2d1e0f\",\r\n        \"name\": \"Afet Yönetim\",\r\n        \"status\": \"ACTIVE\",\r\n        \"userCount\": 22,\r\n        \"createdUser\": \"a1b2c3d4-e5f6-48c7-9d8e-7f6a5b4c3d2e\",\r\n        \"createdAt\": \"2023-05-07T09:45:08\",\r\n        \"updatedUser\": null,\r\n        \"updatedAt\": null\r\n    }\r\n}"
 								}
 							]
 						},
