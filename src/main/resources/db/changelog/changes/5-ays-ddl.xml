@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="5-ays-ddl" author="ays">
+        <!-- ==================================== -->
+        <!--        DDL of AYS_PARAMETER          -->
+        <!-- ==================================== -->
+
+        <update tableName="AYS_PARAMETER">
+            <column name="NAME" value="AUTH_REFRESH_TOKEN_EXPIRE_MINUTE"/>
+            <column name="DEFINITION" value="1440"/>
+            <where>NAME = 'AUTH_REFRESH_TOKEN_EXPIRE_DAY'</where>
+        </update>
+
+        <!-- ==================================== -->
+        <!--        DDL of AYS_PARAMETER          -->
+        <!-- ==================================== -->
+    </changeSet>
+
+</databaseChangeLog>
+
