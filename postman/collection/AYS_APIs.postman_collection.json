@@ -1657,6 +1657,48 @@
 									]
 								},
 								{
+									"name": "volunteer-application/verification/confirm",
+									"id": "eae02196-4775-4ff7-89cb-22ee67f15b0c",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm",
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+									},
+									"response": [
+										{
+											"id": "6f950962-7d2c-4bb9-96b8-296aff52e1b5",
+											"name": "volunteer-application/verification/confirm",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm"
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [
+												{
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
+												}
+											],
+											"responseTime": null,
+											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"9a8b7c6d-5e4f-41d0-9a8b-7c6d5e4f3a2b\",\r\n    \"isSuccess\": true\r\n}"
+										}
+									]
+								},
+								{
 									"name": "volunteer-application",
 									"id": "7b6430c8-5153-4175-998d-bd0f5b3cde5b",
 									"protocolProfileBehavior": {
