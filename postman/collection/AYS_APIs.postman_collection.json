@@ -2783,6 +2783,15 @@
 							"request": {
 								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": "{{API_URL}}/api/institution/v1/institutions",
 								"description": "- Bu servis kurumların listelenmesini sağlar.\n    \n- Bu servise sadece `SUPER_ADMIN` rolüne sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir. Buradaki sıralama alanları birbirinden bağımsız çalışmaktadır. Örneğin aynı anda hem `A - Z`’ye hem de `En Yeni Tarihten - En Eski Tarihe` sıralama yapılabilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı.\n            \n            - `name` : Burada `A - Z`'ye veya `Z - A`'ya sıralama yapılabilmelidir.\n                \n        - `direction` : Sıranın yönü.\n            \n            - `ASC` ya da `DESC` değerlerini alabilir.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `name` : Kurumun eşsiz isim bilgisidir.\n        \n        - Burada ilk/orta/son karakterler ile birlikte arama yapılabilmelidir.\n            \n        - Minimum `1`, maksimum `255` karakterden oluşmalıdır.\n            \n    - `status` : Kurumun durum bilgisidir.\n        \n        - Sadece `ACTIVE`, `PASSIVE`, `DELETED` değerlerini alabilir."
 							},
@@ -2801,7 +2810,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"pageable\": {\r\n        \"page\": 1,\r\n        \"pageSize\": 5\r\n    }\r\n}",
+											"raw": "{\r\n    \"pageable\": {\r\n        \"page\": 1,\r\n        \"pageSize\": 10,\r\n        \"orders\": [\r\n            {\r\n                \"property\": \"name\",\r\n                \"direction\": \"ASC\"\r\n            }\r\n        ]\r\n    },\r\n    \"filter\": {\r\n        \"name\": \"A\",\r\n        \"status\": [\r\n            \"ACTIVE\",\r\n            \"PASSIVE\"\r\n        ]\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -2827,7 +2836,7 @@
 										}
 									],
 									"responseTime": null,
-									"body": "{\r\n    \"time\": \"2025-10-27T11:06:06.745384\",\r\n    \"code\": \"6b5a4c3d-2e1f-49d8-9c7b-6a5f4e3d2c1b\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"4c3b2a1d-0e9f-41a2-8c7b-6a5f4e3d2c1b\",\r\n                \"name\": \"Disaster Foundation\",\r\n                \"status\": \"ACTIVE\",\r\n                \"createdAt\": \"2025-08-07T09:45:08\",\r\n                \"updatedAt\": \"2025-09-07T12:13:28\"\r\n            },\r\n            {\r\n                \"id\": \"b1a2c3d4-e5f6-40d9-8c7b-6a5f4e3d2c1b\",\r\n                \"name\": \"Volunteer Foundation\",\r\n                \"status\": \"PASSIVE\",\r\n                \"createdAt\": \"2025-08-10T09:45:08\",\r\n                \"updatedAt\": null\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 5,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"orderedBy\": [\r\n            {\r\n                \"property\": \"firstName\",\r\n                \"direction\": \"ASC\"\r\n            }\r\n        ],\r\n        \"filteredBy\": {\r\n            \"name\": \"A\",\r\n            \"status\": [\r\n                \"ACTIVE\",\r\n                \"PASSIVE\"\r\n            ]\r\n        }\r\n    }\r\n}"
+									"body": "{\r\n    \"time\": \"2025-10-27T11:06:06.745384\",\r\n    \"code\": \"6b5a4c3d-2e1f-49d8-9c7b-6a5f4e3d2c1b\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"content\": [\r\n            {\r\n                \"id\": \"4c3b2a1d-0e9f-41a2-8c7b-6a5f4e3d2c1b\",\r\n                \"name\": \"Disaster Foundation\",\r\n                \"status\": \"ACTIVE\",\r\n                \"createdAt\": \"2025-08-07T09:45:08\",\r\n                \"updatedAt\": \"2025-09-07T12:13:28\"\r\n            },\r\n            {\r\n                \"id\": \"b1a2c3d4-e5f6-40d9-8c7b-6a5f4e3d2c1b\",\r\n                \"name\": \"Volunteer Foundation\",\r\n                \"status\": \"PASSIVE\",\r\n                \"createdAt\": \"2025-08-10T09:45:08\",\r\n                \"updatedAt\": null\r\n            }\r\n        ],\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 10,\r\n        \"totalPageCount\": 1,\r\n        \"totalElementCount\": 2,\r\n        \"orderedBy\": [\r\n            {\r\n                \"property\": \"name\",\r\n                \"direction\": \"ASC\"\r\n            }\r\n        ],\r\n        \"filteredBy\": {\r\n            \"name\": \"A\",\r\n            \"status\": [\r\n                \"ACTIVE\",\r\n                \"PASSIVE\"\r\n            ]\r\n        }\r\n    }\r\n}"
 								}
 							]
 						},
