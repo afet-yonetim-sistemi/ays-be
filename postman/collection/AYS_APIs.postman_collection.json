@@ -1657,7 +1657,7 @@
 									]
 								},
 								{
-									"name": "volunteer-apply/{id}",
+									"name": "volunteer-application",
 									"id": "7b6430c8-5153-4175-998d-bd0f5b3cde5b",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1665,17 +1665,17 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/volunteer-apply/{id}",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application",
 										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapma aksiyonunu başlatmak için kullanılır.\n    \n- Bu servise sadece `volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler."
 									},
 									"response": [
 										{
 											"id": "7a6439f1-cdda-4d37-a9e3-7666fb3769d7",
-											"name": "volunteer-apply/{id}",
+											"name": "volunteer-application",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-apply/{id}"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
