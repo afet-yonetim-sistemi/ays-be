@@ -2793,7 +2793,7 @@
 									}
 								},
 								"url": "{{API_URL}}/api/institution/v1/institutions",
-								"description": "- Bu servis kurumların listelenmesini sağlar.\n    \n- Bu servise sadece `institution:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır.\n    \n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir. Buradaki sıralama alanları birbirinden bağımsız çalışmaktadır. Örneğin aynı anda hem `A - Z`’ye hem de `En Yeni Tarihten - En Eski Tarihe` sıralama yapılabilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı.\n            \n            - `name` : Burada `A - Z`'ye veya `Z - A`'ya sıralama yapılabilmelidir.\n                \n        - `direction` : Sıranın yönü.\n            \n            - `ASC` ya da `DESC` değerlerini alabilir.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `name` : Kurumun eşsiz isim bilgisidir.\n        \n        - Burada ilk/orta/son karakterler ile birlikte arama yapılabilmelidir.\n            \n        - Minimum `1`, maksimum `255` karakterden oluşmalıdır.\n            \n    - `status` : Kurumun durum bilgisidir.\n        \n        - Sadece `ACTIVE`, `PASSIVE`, `DELETED` değerlerini alabilir."
+								"description": "- Bu servis kurumların listelenmesini sağlar.\n    \n- Bu servise sadece `institution:list` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `pageable`: Sayfa Numaralama için kullanılır.\n    \n    - `page` : Listeleme yapıldığında kaçıncı sayfadaki kayıtlar olduğunu belirtir.\n        \n    - `pageSize` : Listeleme yapıldığında bir sayfada kaç kayıt olduğunu belirtir.\n        \n    - `orders` : Sıralamak için kullanılır. Sıralanıcak alanlar liste olarak verilmelidir. Buradaki sıralama alanları birbirinden bağımsız çalışmaktadır. Örneğin aynı anda hem `A - Z`’ye hem de `En Yeni Tarihten - En Eski Tarihe` sıralama yapılabilmelidir.\n        \n        - `property` : Sıralanıcak alanın adı.\n            \n            - `name` : Burada `A - Z`'ye veya `Z - A`'ya sıralama yapılabilmelidir.\n                \n        - `direction` : Sıranın yönü.\n            \n            - `ASC` ya da `DESC` değerlerini alabilir.\n                \n- `filter` : Filtrelemek için kullanılır.\n    \n    - `name` : Kurumun eşsiz isim bilgisidir.\n        \n        - Burada ilk/orta/son karakterler ile birlikte arama yapılabilmelidir.\n            \n        - Minimum `1`, maksimum `255` karakterden oluşmalıdır.\n            \n    - `status` : Kurumun durum bilgisidir.\n        \n        - Sadece `ACTIVE`, `PASSIVE`, `DELETED` değerlerini alabilir."
 							},
 							"response": [
 								{
@@ -2901,7 +2901,7 @@
 									}
 								},
 								"url": "{{API_URL}}/api/institution/v1/institution",
-								"description": "- Bu servis yeni bir Kurum oluşturmak için kullanılır.\n\n- Bu servise sadece `institution:create` yetkisine sahip olanlar erişebilir.\n\n- `AYS_INSTITUTION` tablosuna bir kayıt ekler.\n\n- Kurum kaydedilirken statüsü default olarak `ACTIVE` olur.\n\n---\n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `100` karakter olmalı."
+								"description": "- Bu servis yeni bir Kurum oluşturmak için kullanılır.\n    \n- Bu servise sadece `institution:create` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosuna bir kayıt ekler.\n    \n- Kurum kaydedilirken statüsü default olarak `ACTIVE` olur.\n\n---\n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `255` karakter olmalı."
 							},
 							"response": [
 								{
@@ -2961,7 +2961,7 @@
 									}
 								},
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
-								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun \\`name\\` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
+								"description": "- Bu servis var olan bir Kurumun güncellenmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `255` karakter olmalı."
 							},
 							"response": [
 								{
@@ -3015,7 +3015,7 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "PUT",
+								"method": "PATCH",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}/active",
 								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `ACTIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
