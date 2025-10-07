@@ -1633,7 +1633,7 @@
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
-												"url": "{{API_URL}}/api/v1/landing/volunteer-apply/{id}/send-verification-code"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
