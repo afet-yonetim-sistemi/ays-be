@@ -2961,7 +2961,7 @@
 									}
 								},
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
-								"description": "- Bu servis var olan bir Kurumun güncellenmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n    \n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `255` karakter olmalı."
+								"description": "- Bu servis var olan bir Kurumun güncellenmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `255` karakter olmalı."
 							},
 							"response": [
 								{
@@ -3018,7 +3018,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}/active",
-								"description": "- Bu servis var olan bir Kurumun aktifleştirilmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `ACTIVE` olarak güncellenir.\n    \n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+								"description": "- Bu servis var olan bir Kurumun aktifleştirilmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `ACTIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
 								{
@@ -3055,7 +3055,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}/passive",
-								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `PASSIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+								"description": "- Bu servis var olan bir Kurumun pasifleştirilmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `PASSIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
 								{
@@ -3091,7 +3091,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{API_URL}}/api/institution/v1/delete/{id}",
+								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
 								"description": "- Bu servis `id` bilgisi verilen Kurumun var olan statusunü `PASSIVE` yapmak için kullanılır.\n    \n- Bu servisde sadece `SUPER_ADMIN` rolüne sahip kullanıcılar tarafından aksiyon alınabilir.\n    \n- `AYS_INSTITUTION` tablosundaki ilgili kaydın statüsünü `PASSIVE` olarak günceller.\n    \n\n---\n\n**Adres Parametreleri:**\n\n- `id`: Institutiona Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
 							"response": [
@@ -3101,7 +3101,7 @@
 									"originalRequest": {
 										"method": "DELETE",
 										"header": [],
-										"url": "{{API_URL}}/api/institution/v1/delete/{id}"
+										"url": "{{API_URL}}/api/institution/v1/institution/{id}"
 									},
 									"_postman_previewlanguage": "json",
 									"header": [
