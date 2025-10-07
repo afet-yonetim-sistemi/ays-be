@@ -2961,7 +2961,7 @@
 									}
 								},
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}",
-								"description": "- Bu servis var olan bir Kurumun güncellenmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `255` karakter olmalı."
+								"description": "- Bu servis var olan bir Kurumun güncellenmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n    \n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `255` karakter olmalı."
 							},
 							"response": [
 								{
@@ -3018,9 +3018,32 @@
 								"method": "PATCH",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}/active",
-								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `ACTIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
+								"description": "- Bu servis var olan bir Kurumun aktifleştirilmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `ACTIVE` olarak güncellenir.\n    \n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
-							"response": []
+							"response": [
+								{
+									"id": "8899b499-54f1-43fb-94d6-61e0c927a09b",
+									"name": "institution/{id}/active",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"url": "{{API_URL}}/api/institution/v1/institution/{id}/active"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-02-07T18:25:04.017616569\",\n    \"code\": \"f8e7d6c5-4b3a-40d9-8c7b-6a5f4e3d2c1b\",\n    \"isSuccess\": true\n}"
+								}
+							]
 						},
 						{
 							"name": "institution/{id}/passive",
@@ -3029,12 +3052,35 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "PUT",
+								"method": "PATCH",
 								"header": [],
 								"url": "{{API_URL}}/api/institution/v1/institution/{id}/passive",
-								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `PASSIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi"
+								"description": "- Bu servise sadece `SUPER_ADMIN` rolüne sahip kişiler erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `PASSIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 							},
-							"response": []
+							"response": [
+								{
+									"id": "dabcef87-f65e-4362-8744-1389428cf9ff",
+									"name": "institution/{id}/passive",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"url": "{{API_URL}}/api/institution/v1/institution/{id}/passive"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"responseTime": null,
+									"body": "{\n    \"time\": \"2024-02-07T18:25:04.017616569\",\n    \"code\": \"f8e7d6c5-4b3a-40d9-8c7b-6a5f4e3d2c1b\",\n    \"isSuccess\": true\n}"
+								}
+							]
 						},
 						{
 							"name": "institution/{id}",
