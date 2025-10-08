@@ -4,19 +4,21 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
-    <changeSet id="5-ays-ddl" author="ays">
+    <changeSet id="5-ays-dml" author="ays">
         <!-- ==================================== -->
-        <!--        DDL of AYS_PARAMETER          -->
+        <!--        DML of AYS_PARAMETER          -->
         <!-- ==================================== -->
 
         <update tableName="AYS_PARAMETER">
             <column name="NAME" value="AUTH_REFRESH_TOKEN_EXPIRE_MINUTE"/>
             <column name="DEFINITION" value="1440"/>
+            <column name="UPDATED_USER" value="AYS"/>
+            <column name="UPDATED_AT" value="now()"/>
             <where>NAME = 'AUTH_REFRESH_TOKEN_EXPIRE_DAY'</where>
         </update>
 
         <!-- ==================================== -->
-        <!--        DDL of AYS_PARAMETER          -->
+        <!--        DML of AYS_PARAMETER          -->
         <!-- ==================================== -->
     </changeSet>
 
