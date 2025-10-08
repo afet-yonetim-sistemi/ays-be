@@ -215,12 +215,12 @@ public class AysUser extends BaseDomainModel {
         return claimsBuilder.build();
     }
 
-    private List<String> getPermissionNames() {
+    private Set<String> getPermissionNames() {
         return this.roles.stream()
                 .map(AysRole::getPermissions)
                 .flatMap(List::stream)
                 .map(AysPermission::getName)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
 }
