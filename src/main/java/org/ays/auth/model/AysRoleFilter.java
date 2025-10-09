@@ -54,7 +54,7 @@ public class AysRoleFilter implements AysFilter {
     @Override
     public Specification<AysRoleEntity> toSpecification() {
 
-        Specification<AysRoleEntity> specification = Specification.where(null);
+        Specification<AysRoleEntity> specification = Specification.unrestricted();
 
         specification = specification.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("institutionId"), this.institutionId));

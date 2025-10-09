@@ -87,7 +87,7 @@ public class AysUserFilter implements AysFilter {
     @Override
     public Specification<AysUserEntity> toSpecification() {
 
-        Specification<AysUserEntity> specification = Specification.where(null);
+        Specification<AysUserEntity> specification = Specification.unrestricted();
 
         specification = specification.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("institutionId"), this.institutionId));

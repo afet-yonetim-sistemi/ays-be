@@ -29,7 +29,7 @@ public class AdminRegistrationApplicationFilter implements AysFilter {
     @Override
     public Specification<AdminRegistrationApplicationEntity> toSpecification() {
 
-        Specification<AdminRegistrationApplicationEntity> specification = Specification.where(null);
+        Specification<AdminRegistrationApplicationEntity> specification = Specification.unrestricted();
 
         if (!CollectionUtils.isEmpty(this.statuses)) {
             Specification<AdminRegistrationApplicationEntity> statusSpecification = this.statuses.stream()

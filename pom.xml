@@ -36,7 +36,7 @@
         <easy-random-core.version>5.0.0</easy-random-core.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-        <jsonwebtoken.version>0.12.7</jsonwebtoken.version>
+        <jsonwebtoken.version>0.13.0</jsonwebtoken.version>
         <bouncycastle.version>1.82</bouncycastle.version>
 
         <bucket4j_jdk17-core.version>8.15.0</bucket4j_jdk17-core.version>
