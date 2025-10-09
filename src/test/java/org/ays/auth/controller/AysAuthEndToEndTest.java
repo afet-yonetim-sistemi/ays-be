@@ -1,11 +1,15 @@
 package org.ays.auth.controller;
 
 import ch.qos.logback.classic.Level;
+import io.jsonwebtoken.Claims;
 import org.ays.AysEndToEndTest;
+import org.ays.auth.model.AysPermission;
 import org.ays.auth.model.AysRole;
+import org.ays.auth.model.AysRoleBuilder;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysSourcePage;
+import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.model.request.AysForgotPasswordRequestBuilder;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
@@ -16,21 +20,27 @@ import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.response.AysTokenResponse;
 import org.ays.auth.model.response.AysTokenResponseBuilder;
+import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
+import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysErrorResponseBuilder;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.common.util.AysListUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
+import org.ays.util.AysMvcResultParser;
 import org.ays.util.AysValidTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -48,7 +58,16 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
     private AysUserReadPort userReadPort;
 
     @Autowired
+    private AysRoleSavePort roleSavePort;
+
+    @Autowired
     private AysRoleReadPort roleReadPort;
+
+    @Autowired
+    private AysPermissionReadPort permissionReadPort;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     private static final String BASE_PATH = "/api/v1/authentication";
@@ -83,6 +102,85 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .doesNotHaveJsonPath())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .isNotEmpty());
+    }
+
+
+    @Test
+    void givenValidUserLoginRequest_whenTokensGeneratedSuccessfullyWithTwoDifferentRoles_thenReturnTokenResponse() throws Exception {
+
+        // Initialize
+        Institution institution = new InstitutionBuilder().withId(AysValidTestData.Admin.INSTITUTION_ID).build();
+        String rawPassword = "12345678";
+        AysUser.Password password = AysUser.Password.builder().value(passwordEncoder.encode(rawPassword)).build();
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        List<AysRole> roles = List.of(
+                roleSavePort.save(
+                        new AysRoleBuilder().withValidValues()
+                                .withoutId()
+                                .withName("Different Role 1")
+                                .withInstitution(institution)
+                                .withPermissions(permissions)
+                                .build()
+                ),
+                roleSavePort.save(
+                        new AysRoleBuilder().withValidValues()
+                                .withoutId()
+                                .withName("Different Role 2")
+                                .withInstitution(institution)
+                                .withPermissions(permissions)
+                                .build()
+                )
+        );
+        AysUser user = userSavePort.save(
+                new AysUserBuilder().withValidValues()
+                        .withoutId()
+                        .withInstitution(institution)
+                        .withPassword(password)
+                        .withRoles(roles)
+                        .build()
+        );
+
+        // Given
+        AysLoginRequest loginRequest = new AysLoginRequestBuilder()
+                .withEmailAddress(user.getEmailAddress())
+                .withPassword(rawPassword)
+                .withSourcePage(AysSourcePage.INSTITUTION)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/token");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, loginRequest);
+
+        AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder
+                .successOf(new AysTokenResponseBuilder().build());
+
+        MvcResult result = aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessTokenExpiresAt")
+                        .doesNotHaveJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
+                        .isNotEmpty())
+                .andReturn();
+
+        // Verify
+        Optional<AysTokenResponse> response = AysMvcResultParser.response(result, AysTokenResponse.class);
+        Assertions.assertTrue(response.isPresent());
+
+        Claims payload = this.getPayload(response.get().getAccessToken());
+
+        List<String> expectedPermissionNames = permissions.stream().map(AysPermission::getName).toList();
+        List<String> actualPermissionNames = AysListUtil.to(payload.get(AysTokenClaims.USER_PERMISSIONS.getValue()), String.class);
+
+        Assertions.assertEquals(expectedPermissionNames.size(), actualPermissionNames.size());
+        Assertions.assertTrue(actualPermissionNames.containsAll(expectedPermissionNames));
+        Assertions.assertTrue(expectedPermissionNames.containsAll(actualPermissionNames));
     }
 
     @Test

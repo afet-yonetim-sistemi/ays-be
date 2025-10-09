@@ -98,4 +98,12 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
                 .build();
     }
 
+    protected Claims getPayload(String token) {
+        return Jwts.parser()
+                .verifyWith(tokenConfiguration.getTokenPublicKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
 }
