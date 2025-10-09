@@ -190,10 +190,17 @@ class SecurityConfiguration {
      * with credentials disabled. The configuration is applied to all paths (/**).
      * </p>
      *
+     * <p>
+     * <strong>Security Note:</strong> This permissive CORS configuration is intended for local development environments.
+     * It is not recommended for production use due to potential security risks associated with allowing unrestricted
+     * cross-origin requests.
+     * </p>
+     *
      * @return a {@link CorsConfigurationSource} configured with permissive CORS settings
      */
     @Profile("!cors")
     @Bean(name = "corsConfigurationSource")
+    @SuppressWarnings("java:S5122")
     CorsConfigurationSource corsConfigurationNotActiveSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
