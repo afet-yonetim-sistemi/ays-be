@@ -30,7 +30,7 @@
         <awssdk.version>2.35.3</awssdk.version>
 
         <ays-be-encryption-utility.version>1.0.2</ays-be-encryption-utility.version>
-        <libphonenumber.version>8.13.55</libphonenumber.version>
+        <libphonenumber.version>9.0.15</libphonenumber.version>
         <testcontainers.version>1.21.3</testcontainers.version>
         <liquibase.version>4.33.0</liquibase.version>
         <easy-random-core.version>5.0.0</easy-random-core.version>
