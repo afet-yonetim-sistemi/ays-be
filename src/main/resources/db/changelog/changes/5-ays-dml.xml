@@ -5,10 +5,9 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
     <changeSet id="5-ays-dml" author="ays">
-        <!-- ==================================== -->
-        <!--        DML of AYS_PARAMETER          -->
-        <!-- ==================================== -->
-
+        <!-- ==================== -->
+        <!-- DML of AYS_PARAMETER -->
+        <!-- ==================== -->
         <update tableName="AYS_PARAMETER">
             <column name="NAME" value="AUTH_REFRESH_TOKEN_EXPIRE_MINUTE"/>
             <column name="DEFINITION" value="1440"/>
@@ -16,10 +15,9 @@
             <column name="UPDATED_AT" value="now()"/>
             <where>NAME = 'AUTH_REFRESH_TOKEN_EXPIRE_DAY'</where>
         </update>
-
-        <!-- ==================================== -->
-        <!--        DML of AYS_PARAMETER          -->
-        <!-- ==================================== -->
+        <!-- ==================== -->
+        <!-- DML of AYS_PARAMETER -->
+        <!-- ==================== -->
     </changeSet>
 
 </databaseChangeLog>
