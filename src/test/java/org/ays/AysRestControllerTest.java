@@ -117,7 +117,7 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
                 .claims(claims)
                 .compact();
 
-        final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), applicationConfigurationParameter.getRefreshTokenExpireDay());
+        final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), applicationConfigurationParameter.getRefreshTokenExpireMinute());
         final JwtBuilder refreshTokenBuilder = Jwts.builder();
         final String refreshToken = refreshTokenBuilder
                 .header()

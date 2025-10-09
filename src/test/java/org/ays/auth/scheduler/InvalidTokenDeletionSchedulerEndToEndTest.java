@@ -60,7 +60,7 @@ class InvalidTokenDeletionSchedulerEndToEndTest extends AysEndToEndTest {
 
         // Initialize
         int refreshTokenExpireDay = Integer
-                .parseInt(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.getDefaultValue());
+                .parseInt(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE.getDefaultValue());
         Set<AysInvalidToken> mockInvalidTokens = invalidTokenSavePort.saveAll(
                 Set.of(
                         new AysInvalidTokenBuilder()

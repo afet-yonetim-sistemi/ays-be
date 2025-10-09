@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * Scheduler component for deleting invalid tokens based on a configured cron expression.
  * <p>
  * This component deletes invalid tokens that were created before a specified expiration threshold,
- * as determined by the configured refresh token expiration day parameter. It uses a {@link AysInvalidTokenDeletePort}
+ * as determined by the configured refresh token expiration minute parameter. It uses a {@link AysInvalidTokenDeletePort}
  * to perform the deletion operation. The scheduler is enabled if the property
  * `ays.scheduler.invalid-tokens-deletion.enable` is set to `true` in the application properties.
  * </p>
@@ -54,12 +54,12 @@ class AysInvalidTokenDeletionScheduler {
     @Transactional
     @Scheduled(cron = "${ays.scheduler.invalid-tokens-deletion.cron}")
     public void deleteInvalidTokens() {
-        final AysParameter refreshTokenExpireDayParameter = parameterReadPort
-                .findByName(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY.name())
-                .orElse(AysParameter.from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_DAY));
+        final AysParameter refreshTokenExpireMinuteParameter = parameterReadPort
+                .findByName(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE.name())
+                .orElse(AysParameter.from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE));
 
         LocalDateTime expirationThreshold = LocalDateTime.now()
-                .minusDays(Long.parseLong(refreshTokenExpireDayParameter.getDefinition()));
+                .minusMinutes(Long.parseLong(refreshTokenExpireMinuteParameter.getDefinition()));
 
         log.trace("Clearing all unused invalid tokens created before {}", expirationThreshold);
         invalidTokenDeletePort.deleteAllByCreatedAtBefore(expirationThreshold);
