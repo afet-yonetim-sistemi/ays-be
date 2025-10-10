@@ -48,6 +48,7 @@
         <logback.version>1.5.19</logback.version>
         <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
         <error_prone_annotations.version>2.42.0</error_prone_annotations.version>
+        <nimbus-jose-jwt.version>10.5</nimbus-jose-jwt.version>
 
         <jacoco.version>0.8.13</jacoco.version>
     </properties>
@@ -156,6 +157,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.nimbusds</groupId>
+                    <artifactId>nimbus-jose-jwt</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>${nimbus-jose-jwt.version}</version>
         </dependency>
 
         <dependency>
