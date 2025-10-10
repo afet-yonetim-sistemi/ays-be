@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM maven:3.9.9-amazoncorretto-17-al2023 AS build
+FROM maven:3.9.11-amazoncorretto-17-al2023 AS build
 
 # Copy Maven files for dependency resolution
 COPY pom.xml ./
