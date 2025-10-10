@@ -112,7 +112,7 @@ class SecurityConfiguration {
      * </p>
      *
      * <p>
-     * <b>Security Note:</b>
+     * <strong>Security Note:</strong>
      * CSRF protection is deliberately disabled because the API is stateless and uses header-based JWT.
      * No session cookies are used.
      * Re-enable CSRF if cookie-based auth or browser forms are introduced.
