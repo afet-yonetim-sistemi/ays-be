@@ -63,7 +63,7 @@ class AysAbstractAuditLogRepositoryTest extends AysUnitTest {
                 .withRequestIpAddress("127.0.0.1")
                 .withRequestReferer("http://localhost:3000")
                 .withRequestHttpMethod("PUT")
-                .withRequestPath("/api/v1/user/12dc9611-8ce6-4cf8-b0cc-e5e9511cc7cb")
+                .withRequestPath("/api/v1/institution/user/12dc9611-8ce6-4cf8-b0cc-e5e9511cc7cb")
                 .withRequestHttpHeader("Content-Type: application/json")
                 .withRequestBody("{\\\"name\\\":\\\"John Doe\\\"}")
                 .withResponseHttpStatusCode(200)

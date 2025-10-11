@@ -101,7 +101,7 @@ class AysRateLimitFilterEndToEndTest extends AysEndToEndTest {
         String userId = AysValidTestData.SuperAdmin.ID;
 
         // Then
-        String endpoint = "/api/v1/user/".concat(userId);
+        String endpoint = "/api/institution/v1/user/".concat(userId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, superAdminToken.getAccessToken());
 
