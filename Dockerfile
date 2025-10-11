@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM maven:3.9.9-amazoncorretto-17-al2023 AS build
+FROM maven:3.9.11-amazoncorretto-17-al2023 AS build
 
 # Copy Maven files for dependency resolution
 COPY pom.xml ./
@@ -15,7 +15,7 @@ COPY settings.xml settings.xml
 RUN mvn --settings settings.xml clean install -DskipTests
 
 # Stage 2: Run stage
-FROM amazoncorretto:17.0.15-al2023-headless
+FROM amazoncorretto:17.0.16-al2023-headless
 
 # Set working directory
 WORKDIR /app

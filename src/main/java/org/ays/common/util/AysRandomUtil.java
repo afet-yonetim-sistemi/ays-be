@@ -3,24 +3,26 @@ package org.ays.common.util;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.UUID;
 
 /**
- * Utility class for generating random numbers and UUIDs.
- * This class provides methods for generating a random number with a specified number of digits, as well as a method for
- * generating a UUID string.
+ * Utility class for generating secure random numbers and unique identifiers.
  * <p>
- * The class uses the Java built-in {@link Random} class for generating random numbers and the {@link UUID} class for
- * generating UUIDs.
+ * Uses {@link SecureRandom} for cryptographically strong random number generation.
+ * This class is designed for cases where predictable sequences must be avoided,
+ * such as token creation, reference numbers, or identifiers.
+ * </p>
+ *
  * <p>
- * Note that this class is a utility class and should not be instantiated.
- * All methods are static and can be called using the class name.
+ * All methods are static and can be accessed directly via the class name.
+ * This class cannot be instantiated.
+ * </p>
  */
 @UtilityClass
 public class AysRandomUtil {
 
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
 
     /**
@@ -33,7 +35,7 @@ public class AysRandomUtil {
     public static Long generateNumber(int length) {
         long minimumValue = generateMinimumValue(length);
         long maximumValue = generateMaximumValue(length);
-        return RANDOM.nextLong(minimumValue, maximumValue);
+        return SECURE_RANDOM.nextLong(minimumValue, maximumValue);
     }
 
     private static Long generateMinimumValue(int length) {

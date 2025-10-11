@@ -58,7 +58,7 @@ public class EmergencyEvacuationApplicationFilter implements AysFilter {
     @Override
     public Specification<EmergencyEvacuationApplicationEntity> toSpecification() {
 
-        Specification<EmergencyEvacuationApplicationEntity> specification = Specification.where(null);
+        Specification<EmergencyEvacuationApplicationEntity> specification = Specification.unrestricted();
 
         specification = specification.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("institutionId"), this.institutionId));

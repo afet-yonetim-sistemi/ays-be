@@ -111,6 +111,13 @@ class SecurityConfiguration {
      * </ul>
      * </p>
      *
+     * <p>
+     * <strong>Security Note:</strong>
+     * CSRF protection is deliberately disabled because the API is stateless and uses header-based JWT.
+     * No session cookies are used.
+     * Re-enable CSRF if cookie-based auth or browser forms are introduced.
+     * <p>
+     *
      * @param httpSecurity                    the {@link HttpSecurity} instance for configuring web-based security
      * @param auditLogFilter                  the custom filter for audit logging
      * @param rateLimitFilter                 the custom filter for rate limiting
@@ -121,6 +128,7 @@ class SecurityConfiguration {
      * @throws Exception if an error occurs during the configuration of the security filter chain
      */
     @Bean
+    @SuppressWarnings("java:S4502")
     SecurityFilterChain filterChain(final HttpSecurity httpSecurity,
                                     final AysAuditLogFilter auditLogFilter,
                                     final AysRateLimitFilter rateLimitFilter,
@@ -190,10 +198,17 @@ class SecurityConfiguration {
      * with credentials disabled. The configuration is applied to all paths (/**).
      * </p>
      *
+     * <p>
+     * <strong>Security Note:</strong> This permissive CORS configuration is intended for local development environments.
+     * It is not recommended for production use due to potential security risks associated with allowing unrestricted
+     * cross-origin requests.
+     * </p>
+     *
      * @return a {@link CorsConfigurationSource} configured with permissive CORS settings
      */
     @Profile("!cors")
     @Bean(name = "corsConfigurationSource")
+    @SuppressWarnings("java:S5122")
     CorsConfigurationSource corsConfigurationNotActiveSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
