@@ -1741,7 +1741,7 @@
 									]
 								},
 								{
-									"name": "volunteer-application/user",
+									"name": "volunteer-application/user/{id}",
 									"id": "384a09c3-0aa1-413a-b256-b33378cc3805",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1755,7 +1755,7 @@
 									"response": [
 										{
 											"id": "779516f8-510a-4990-89f3-1678502a6b12",
-											"name": "volunteer-application/user",
+											"name": "volunteer-application/user/{id}",
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
