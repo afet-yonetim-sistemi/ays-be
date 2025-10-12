@@ -1565,7 +1565,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"userId\": \"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n    \"code\": \"859674\"\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"johndoe@ays.com.tr\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1584,7 +1584,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"userId\": \"d1e2f3a4-5b6c-48d7-9e0f-1a2b3c4d5e6f\",\r\n    \"code\": \"859674\"\r\n}",
+													"raw": "{\r\n    \"emailAddress\": \"johndoe@ays.com.tr\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1624,7 +1624,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise mail adresi ve şifresi girişi yapılmış kişiler erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n"
 									},
 									"response": [
 										{
@@ -1666,7 +1666,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin kurum gönüllüsü ol başvurusu başlatıldığında kullanılır.\n    \n- Bu servise giriş yapan kullanıcılar erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine bilgilendirme maili gönderilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n"
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin kurum gönüllüsü ol başvurusu başlatıldığında kullanılır.\n    \n- Bu servise giriş yapan kullanıcılar erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine bilgilendirme maili gönderilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
 										{
