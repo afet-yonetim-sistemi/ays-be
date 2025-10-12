@@ -1708,7 +1708,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/landing/v1/volunteer-application",
-										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapma aksiyonunu başlatmak için kullanılır.\n    \n- Bu servise sadece `volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler."
+										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapma aksiyonunu başlatmak için kullanılır.\n    \n- Bu servise sadece `aplication:volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler."
 									},
 									"response": [
 										{
@@ -1741,7 +1741,7 @@
 									]
 								},
 								{
-									"name": "volunteer-application/user/{id}",
+									"name": "volunteer-application/user",
 									"id": "384a09c3-0aa1-413a-b256-b33378cc3805",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1750,12 +1750,12 @@
 										"method": "GET",
 										"header": [],
 										"url": "{{API_URL}}/api/landing/v1/landing/volunteer-application/user",
-										"description": "- Bu servis sistemde kayıtlı olan User'ın bilgilerini getirmek için kullanılır.\n    \n- Bu servise sadece `user:detail` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcının bilgileri görüntülenebilir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Gönüllü Kullanıcıya Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis sistemde kayıtlı olan User'ın bilgilerini getirmek için kullanılır.\n    \n- Bu servise sadece `user:detail` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcının bilgileri görüntülenebilir.\n    \n"
 									},
 									"response": [
 										{
 											"id": "779516f8-510a-4990-89f3-1678502a6b12",
-											"name": "volunteer-application/user/{id}",
+											"name": "volunteer-application/user",
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
