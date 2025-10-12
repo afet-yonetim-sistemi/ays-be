@@ -1573,7 +1573,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/user",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine gönderilen doğrulama kodu girilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `userId`: Kullanıcının ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n- `code` : Kullanıcı Gönüllü olmak için başvuruda bulunduğunda gönüllüye mail ile gönderilen doğrulama kodunu içermesi gerekir."
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresinin sistemde kayıtlı olup olmadığı kontrol edilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `userId`: Kullanıcının ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n- `code` : Kullanıcı Gönüllü olmak için başvuruda bulunduğunda gönüllüye mail ile gönderilen doğrulama kodunu içermesi gerekir."
 									},
 									"response": [
 										{
