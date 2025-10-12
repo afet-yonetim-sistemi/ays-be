@@ -1666,7 +1666,7 @@
 										"method": "POST",
 										"header": [],
 										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin kurum gönüllüsü ol başvurusu başlatıldığında kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine bilgilendirme maili gönderilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kullanıcının ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
 										{
