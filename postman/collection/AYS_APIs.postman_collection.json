@@ -5014,6 +5014,11 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "New Folder",
+			"item": [],
+			"id": "69f232e1-c8fe-43a0-bfc6-43fe4e5ff85c"
 		}
 	],
 	"event": [
