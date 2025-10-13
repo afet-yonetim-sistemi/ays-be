@@ -1570,6 +1570,66 @@
 									]
 								},
 								{
+									"name": "volunteer-application",
+									"id": "7b6430c8-5153-4175-998d-bd0f5b3cde5b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Ahmet\",\r\n    \"lastName\": \"Mehmet\",\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5324467811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application",
+										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapma aksiyonunu başlatır.\n    \n- Bu servise sadece `aplication:volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - Zorunlu alandır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
+									},
+									"response": [
+										{
+											"id": "7a6439f1-cdda-4d37-a9e3-7666fb3769d7",
+											"name": "volunteer-application",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"firstName\": \"Ahmet\",\r\n    \"lastName\": \"Mehmet\",\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5324467811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application"
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": "",
+													"type": "text"
+												}
+											],
+											"cookie": [
+												{
+													"expires": "Invalid Date",
+													"domain": "",
+													"path": ""
+												}
+											],
+											"responseTime": null,
+											"body": "{\r\n    \"time\": \"2025-05-07T18:25:04.017616569\",\r\n    \"code\": \"1f9d7c3b-2a4e-8d6f-5b1c-9e2a4f7c8d5e\",\r\n    \"isSuccess\": true\r\n}"
+										}
+									]
+								},
+								{
 									"name": "volunteer-application/verification/resend",
 									"id": "398696d9-84f8-4e00-b124-6af77a97e716",
 									"protocolProfileBehavior": {
@@ -1650,108 +1710,6 @@
 											],
 											"responseTime": null,
 											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"9a8b7c6d-5e4f-41d0-9a8b-7c6d5e4f3a2b\",\r\n    \"isSuccess\": true\r\n}"
-										}
-									]
-								},
-								{
-									"name": "volunteer-application",
-									"id": "7b6430c8-5153-4175-998d-bd0f5b3cde5b",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"firstName\": \"Ahmet\",\r\n    \"lastName\": \"Mehmet\",\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5324467811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application",
-										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapma aksiyonunu başlatır.\n    \n- Bu servise sadece `aplication:volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - Zorunlu alandır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
-									},
-									"response": [
-										{
-											"id": "7a6439f1-cdda-4d37-a9e3-7666fb3769d7",
-											"name": "volunteer-application",
-											"originalRequest": {
-												"method": "POST",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"firstName\": \"Ahmet\",\r\n    \"lastName\": \"Mehmet\",\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5324467811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json",
-													"description": "",
-													"type": "text"
-												}
-											],
-											"cookie": [
-												{
-													"expires": "Invalid Date",
-													"domain": "",
-													"path": ""
-												}
-											],
-											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-07T18:25:04.017616569\",\r\n    \"code\": \"1f9d7c3b-2a4e-8d6f-5b1c-9e2a4f7c8d5e\",\r\n    \"isSuccess\": true\r\n}"
-										}
-									]
-								},
-								{
-									"name": "volunteer-application/user",
-									"id": "384a09c3-0aa1-413a-b256-b33378cc3805",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/landing/volunteer-application/user",
-										"description": "- Bu servis sistemde kayıtlı olan User'ın bilgilerini getirmek için kullanılır.\n    \n- Bu servise sadece `user:detail` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_USER` tablosundaki verilerden yararlanır.\n    \n- Sadece daha önce bir kuruma bağlı olan kullanıcının bilgileri görüntülenebilir.\n    \n"
-									},
-									"response": [
-										{
-											"id": "779516f8-510a-4990-89f3-1678502a6b12",
-											"name": "volunteer-application/user",
-											"originalRequest": {
-												"method": "GET",
-												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/user"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json",
-													"description": "",
-													"type": "text"
-												}
-											],
-											"cookie": [
-												{
-													"expires": "Invalid Date",
-													"domain": "",
-													"path": ""
-												}
-											],
-											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2023-05-07T20:48:06.398791\",\r\n    \"code\": \"8d3f1a9b-4e6c-482d-8b0a-7f2e1c4a9d63\",\r\n    \"isSuccess\": true,\r\n    \"response\": {\r\n        \"id\": \"e9a4f6d8-9c2b-45e0-8a7f-1d2b3c4d5e6fc\",\r\n        \"firstName\": \"Ahmet\",\r\n        \"lastName\": \"Mehmet\",\r\n        \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n        \"phoneNumber\": {\r\n            \"countryCode\": \"90\",\r\n            \"lineNumber\": \"5324467811\"\r\n        },\r\n        \"city\": \"İstanbul\",\r\n        \"createdUser\": \"c2e5b7d9-1f0e-47c3-9d8a-6b5c3d4f1a2e\",\r\n        \"createdAt\": \"2023-05-07T09:45:08\"\r\n    }\r\n}"
 										}
 									]
 								}
@@ -1969,150 +1927,6 @@
 											"cookie": [],
 											"responseTime": null,
 											"body": "{\r\n    \"time\": \"2023-05-04T20:52:09.712591823\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true,\r\n    \"response\": [\r\n        {\r\n            \"id\": \"5d6e7f8a-9b0c-47d6-8e9f-0a1b2c3d4e5f\",\r\n            \"name\": \"Test Institution 1\"\r\n        },\r\n        {\r\n            \"id\": \"a1b2c3d4-e5f6-48c7-9d8e-7f6a5b4c3d2e\",\r\n            \"name\": \"Test Institution 2\"\r\n        }\r\n    ]\r\n}"
-										}
-									]
-								},
-								{
-									"name": "volunteer-application/verification/resend",
-									"id": "ca9c0ada-a4d8-4fa5-a416-3a086b3a782a",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise mail adresi ve şifre girişi yapılmış kişiler erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
-									},
-									"response": [
-										{
-											"id": "5b311cec-7c49-40c1-b0fb-5c5abb9b4621",
-											"name": "volunteer-application/verification/resend",
-											"originalRequest": {
-												"method": "POST",
-												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json",
-													"description": "",
-													"type": "text"
-												}
-											],
-											"cookie": [
-												{
-													"expires": "Invalid Date",
-													"domain": "",
-													"path": ""
-												}
-											],
-											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"9a8b7c6d-5e4f-41d0-9a8b-7c6d5e4f3a2b\",\r\n    \"isSuccess\": true\r\n}"
-										}
-									]
-								},
-								{
-									"name": "volunteer-application/verification/confirm",
-									"id": "0810bf9d-ce4a-49b4-a4be-e1b9a9c87158",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin doğrulama kodu doğrulandıktan sonra kurum gönüllüsü ol başvurusu başlatılılır.\n    \n- Bu servise giriş yapan kullanıcılar erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine bilgilendirme maili gönderilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
-									},
-									"response": [
-										{
-											"id": "566b3a36-ceeb-4733-b496-6cc0cdf1a882",
-											"name": "volunteer-application/verification/confirm",
-											"originalRequest": {
-												"method": "POST",
-												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json",
-													"description": "",
-													"type": "text"
-												}
-											],
-											"cookie": [
-												{
-													"expires": "Invalid Date",
-													"domain": "",
-													"path": ""
-												}
-											],
-											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"9a8b7c6d-5e4f-41d0-9a8b-7c6d5e4f3a2b\",\r\n    \"isSuccess\": true\r\n}"
-										}
-									]
-								},
-								{
-									"name": "volunteer-application",
-									"id": "73517982-0a12-4336-88e6-e97be86cc01d",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"firstName\": \"Ahmet\",\r\n    \"lastName\": \"Mehmet\",\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5324467811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application",
-										"description": "- Bu servis kullanıcının gönüllü olarak kuruma başvuru yapma aksiyonunu başlatır.\n    \n- Bu servise sadece `aplication:volunteer:create` yetkisine sahip kişiler erişebilir.\n    \n- `AYS_VOLUNTEER_APPLICATION` tablosuna statüsü `INITIATED` olan bir kayıt ekler.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `firstName`: Kurum Gönüllüsüne Ait İsim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `lastName`: Kurum Gönüllüsüne Ait Soyisim Bilgisi\n    \n    - [İsim Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/114819084/sim+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `emailAddress`: Kurum Gönüllüsüne Ait Email Adresi Bilgisi.\n    \n    - [E-Posta Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/166068225/E-Posta+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)\n        \n- `phoneNumber`: Kurum Gönüllüsüne Ait Telefon Numarası\n    \n    - Zorunlu alandır.\n        \n    - Dünyada geçerli olan telefon numarası standartlara bağlı olarak, sadece `google/libphonenumber` kütüphanesinde geçerli olan değerleri alabilir.\n        \n    - `countryCode`: Ülke Kodu\n        \n        - Zorunlu alandır.\n            \n    - `lineNumber`: Telefon Numarası\n        \n        - Zorunlu alandır.\n            \n- `city`: Kurum Gönüllüsünün Bulunduğu Şehir Bilgisi\n    \n    - [Şehir ve İlçe Alanları için Validasyon Kuralları | Form Alanları](https://afetyonetimsistemi.atlassian.net/wiki/spaces/AYS/pages/162431026/ehir+ve+l+e+Alanlar+i+in+Validasyon+Kurallar#Form-Alanlar%C4%B1)"
-									},
-									"response": [
-										{
-											"id": "84de3f13-8157-440f-9e77-9693c527b074",
-											"name": "volunteer-application",
-											"originalRequest": {
-												"method": "POST",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"firstName\": \"Ahmet\",\r\n    \"lastName\": \"Mehmet\",\r\n    \"emailAddress\": \"ahmett@afetyonetimsistemi.org\",\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"90\",\r\n        \"lineNumber\": \"5324467811\"\r\n    },\r\n    \"city\": \"İstanbul\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json",
-													"description": "",
-													"type": "text"
-												}
-											],
-											"cookie": [
-												{
-													"expires": "Invalid Date",
-													"domain": "",
-													"path": ""
-												}
-											],
-											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-07T18:25:04.017616569\",\r\n    \"code\": \"1f9d7c3b-2a4e-8d6f-5b1c-9e2a4f7c8d5e\",\r\n    \"isSuccess\": true\r\n}"
 										}
 									]
 								},
