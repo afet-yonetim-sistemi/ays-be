@@ -2268,7 +2268,33 @@
 							"description": "Kâr amacı gütmeyen kuruluşlar için dışarıdan gönüllülerin başvurularını sorunsuz bir şekilde yapmalarını sağlar. Gönüllülerin farklı kurumlara hızlı ve kolay bir şekilde başvuru yapabilmesini sağlar."
 						}
 					],
-					"id": "1e121216-d276-44ce-ac6d-c11725163be0"
+					"id": "1e121216-d276-44ce-ac6d-c11725163be0",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f8e0ac70-3e68-4a39-9055-23b4385d327a",
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0da66d47-3c08-4e50-8603-181bd9f6732f",
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Institution APIs",
@@ -5260,18 +5286,18 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ad2fb4c1-044f-4678-9d38-f34743f935ac",
+								"id": "76ac3b06-5965-4215-8965-004dc4f59e92",
 								"type": "text/javascript",
 								"requests": {},
 								"exec": [
-									""
+									"pm.environment.set(\"SOURCE_PAGE\", 'INSTITUTION')"
 								]
 							}
 						},
 						{
 							"listen": "test",
 							"script": {
-								"id": "7fd28a94-84ba-4dd2-9584-0eb23fa670d8",
+								"id": "64e16f08-ab02-44a5-b610-ac015e5ab1e2",
 								"type": "text/javascript",
 								"requests": {},
 								"exec": [
@@ -5293,7 +5319,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "4aac6d7b-aabc-4cc5-a3fc-6f5bc6bca774",
+						"id": "dced009f-b292-400d-b4fc-2f8dfac7f6e5",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
@@ -5302,6 +5328,7 @@
 							"",
 							"pm.environment.set(\"TOKEN_GENERATED_TIME\", new Date());",
 							"",
+							"pm.environment.set(\"SOURCE_PAGE\", 'LANDING')",
 							"var sourcePage = pm.environment.get(\"SOURCE_PAGE\")",
 							"if (sourcePage) {",
 							"    console.log(sourcePage)",
@@ -5342,7 +5369,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0fd11466-7cf3-438c-ba92-93bc52334d61",
+						"id": "16d25059-163a-4e05-ba96-e3a7a1ef386e",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
