@@ -1510,51 +1510,6 @@
 							"name": "Volunteer Apply Service",
 							"item": [
 								{
-									"name": "volunteer-application/institutions/summary",
-									"id": "274b66bc-16ed-432f-b2b1-687c02fc8a47",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"pageable\": {\r\n        \"page\": 1,\r\n        \"pageSize\": 10\r\n    }\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application/institutions/summary",
-										"description": "- Bu servis gönüllü başvuruları için `ACTIVE` statüsüne sahip kurumları listeler.\n    \n- Sadece kullanıcının daha önce gönüllü olmadığı ve gönüllü olma başvurusu yapmadığı kurumlar listelenmelidir.\n    \n- Bu servise `application:volunteer:apply` yetkisine sahip kişiler erişebilir.\n    \n- Kurumlar varsayılan olarak `name` alanına göre `ASC` yani A'dan Z'ye sıralanmalıdır.\n    \n- `AYS_INSTITUTION` ve `AYS_USER_INSTITUTION_RELATION` tablosundaki verilerden yararlanır."
-									},
-									"response": [
-										{
-											"id": "e1b94a08-4df5-48da-b63a-1b7489728ce8",
-											"name": "volunteer-application/institutions/summary",
-											"originalRequest": {
-												"method": "GET",
-												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/institutions/summary"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json",
-													"description": "",
-													"type": "text"
-												}
-											],
-											"cookie": [],
-											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2023-05-04T20:52:09.712591823\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true,\r\n    \"response\": [\r\n        {\r\n            \"id\": \"5d6e7f8a-9b0c-47d6-8e9f-0a1b2c3d4e5f\",\r\n            \"name\": \"Test Institution 1\"\r\n        },\r\n        {\r\n            \"id\": \"a1b2c3d4-e5f6-48c7-9d8e-7f6a5b4c3d2e\",\r\n            \"name\": \"Test Institution 2\"\r\n        }\r\n    ]\r\n}"
-										}
-									]
-								},
-								{
 									"name": "volunteer-application/verification/user",
 									"id": "63fc9f6e-e961-4428-a56d-db4c60a25804",
 									"protocolProfileBehavior": {
@@ -1970,7 +1925,7 @@
 					"name": "Landing APIs",
 					"item": [
 						{
-							"name": "Volunteer Apply Service Copy",
+							"name": "Volunteer Apply Service",
 							"item": [
 								{
 									"name": "volunteer-application/institutions/summary",
@@ -2014,66 +1969,6 @@
 											"cookie": [],
 											"responseTime": null,
 											"body": "{\r\n    \"time\": \"2023-05-04T20:52:09.712591823\",\r\n    \"code\": \"7a8b9c0d-1e2f-46a5-8b9c-0d1e2f3a4b5c\",\r\n    \"isSuccess\": true,\r\n    \"response\": [\r\n        {\r\n            \"id\": \"5d6e7f8a-9b0c-47d6-8e9f-0a1b2c3d4e5f\",\r\n            \"name\": \"Test Institution 1\"\r\n        },\r\n        {\r\n            \"id\": \"a1b2c3d4-e5f6-48c7-9d8e-7f6a5b4c3d2e\",\r\n            \"name\": \"Test Institution 2\"\r\n        }\r\n    ]\r\n}"
-										}
-									]
-								},
-								{
-									"name": "volunteer-application/verification/user",
-									"id": "1f957964-a2be-4ac7-b556-cfaa182c05d7",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"johndoe@ays.com.tr\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/user",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için kullanılır.\n    \n- Bu servise herkes erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresinin sistemde kayıtlı olup olmadığı kontrol edilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `userId`: Kullanıcının ID Bilgisi\n    \n    - UUID formatında olmalıdır.\n        \n- `code` : Kullanıcı Gönüllü olmak için başvuruda bulunduğunda gönüllüye mail ile gönderilen doğrulama kodunu içermesi gerekir."
-									},
-									"response": [
-										{
-											"id": "c524f22c-f5c7-4d8f-bc76-dfc9a1853a05",
-											"name": "volunteer-application/verification/user",
-											"originalRequest": {
-												"method": "POST",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"emailAddress\": \"johndoe@ays.com.tr\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/user"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json",
-													"description": "",
-													"type": "text"
-												}
-											],
-											"cookie": [
-												{
-													"expires": "Invalid Date",
-													"domain": "",
-													"path": ""
-												}
-											],
-											"responseTime": null,
-											"body": "{\r\n    \"time\": \"2025-05-08T18:25:04.017616569\",\r\n    \"code\": \"5897f6b1-9480-42bf-455c-f14f171c9812\",\r\n    \"isSuccess\": true\r\n}"
 										}
 									]
 								},
@@ -2273,19 +2168,57 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f8e0ac70-3e68-4a39-9055-23b4385d327a",
+								"id": "78011184-9ae3-4471-94ce-5c9a29c2bbe8",
 								"type": "text/javascript",
 								"packages": {},
 								"requests": {},
 								"exec": [
-									""
+									"/** @author agitrubard */",
+									"",
+									"pm.environment.set(\"TOKEN_GENERATED_TIME\", new Date());",
+									"",
+									"pm.environment.set(\"SOURCE_PAGE\", 'LANDING')",
+									"var sourcePage = pm.environment.get(\"SOURCE_PAGE\")",
+									"if (sourcePage) {",
+									"    console.log(sourcePage)",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get(\"API_URL\") + \"/api/v1/authentication/token\",",
+									"        method: 'POST',",
+									"        header: {",
+									"            'Accept': 'application/json',",
+									"            'Content-Type': 'application/json'",
+									"        },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({",
+									"                emailAddress: pm.environment.get(\"EMAIL_ADDRESS\"),",
+									"                password: pm.environment.get(\"PASSWORD\"),",
+									"                sourcePage: sourcePage",
+									"            }),",
+									"        }",
+									"    },",
+									"    (error, result) => {",
+									"        var resultJson = result.json()",
+									"        if (resultJson.isSuccess === true) {",
+									"            pm.environment.set(\"ACCESS_TOKEN\", resultJson.response.accessToken)",
+									"            pm.environment.set(\"REFRESH_TOKEN\", resultJson.response.refreshToken)",
+									"            return",
+									"        }",
+									"",
+									"        pm.environment.unset(\"ACCESS_TOKEN\")",
+									"        console.log(resultJson)",
+									"    });",
+									"    return",
+									"}",
+									"    ",
+									"/** @author agitrubard */"
 								]
 							}
 						},
 						{
 							"listen": "test",
 							"script": {
-								"id": "0da66d47-3c08-4e50-8603-181bd9f6732f",
+								"id": "7a4fd727-eee7-49d8-8378-752d4d69adac",
 								"type": "text/javascript",
 								"packages": {},
 								"requests": {},
@@ -5286,18 +5219,56 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "76ac3b06-5965-4215-8965-004dc4f59e92",
+								"id": "a2005b7c-a197-47f4-905e-5c08a1dd0e8a",
 								"type": "text/javascript",
 								"requests": {},
 								"exec": [
-									"pm.environment.set(\"SOURCE_PAGE\", 'INSTITUTION')"
+									"/** @author agitrubard */",
+									"",
+									"pm.environment.set(\"TOKEN_GENERATED_TIME\", new Date());",
+									"",
+									"pm.environment.set(\"SOURCE_PAGE\", 'INSTITUTION')",
+									"var sourcePage = pm.environment.get(\"SOURCE_PAGE\")",
+									"if (sourcePage) {",
+									"    console.log(sourcePage)",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get(\"API_URL\") + \"/api/v1/authentication/token\",",
+									"        method: 'POST',",
+									"        header: {",
+									"            'Accept': 'application/json',",
+									"            'Content-Type': 'application/json'",
+									"        },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({",
+									"                emailAddress: pm.environment.get(\"EMAIL_ADDRESS\"),",
+									"                password: pm.environment.get(\"PASSWORD\"),",
+									"                sourcePage: sourcePage",
+									"            }),",
+									"        }",
+									"    },",
+									"    (error, result) => {",
+									"        var resultJson = result.json()",
+									"        if (resultJson.isSuccess === true) {",
+									"            pm.environment.set(\"ACCESS_TOKEN\", resultJson.response.accessToken)",
+									"            pm.environment.set(\"REFRESH_TOKEN\", resultJson.response.refreshToken)",
+									"            return",
+									"        }",
+									"",
+									"        pm.environment.unset(\"ACCESS_TOKEN\")",
+									"        console.log(resultJson)",
+									"    });",
+									"    return",
+									"}",
+									"    ",
+									"/** @author agitrubard */"
 								]
 							}
 						},
 						{
 							"listen": "test",
 							"script": {
-								"id": "64e16f08-ab02-44a5-b610-ac015e5ab1e2",
+								"id": "79a11944-5e00-4cb8-9d93-c978f406b2e5",
 								"type": "text/javascript",
 								"requests": {},
 								"exec": [
@@ -5319,57 +5290,19 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "dced009f-b292-400d-b4fc-2f8dfac7f6e5",
+						"id": "0bc3aa61-b136-45ea-a42b-d435318d3103",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
 						"exec": [
-							"/** @author agitrubard */",
-							"",
-							"pm.environment.set(\"TOKEN_GENERATED_TIME\", new Date());",
-							"",
-							"pm.environment.set(\"SOURCE_PAGE\", 'LANDING')",
-							"var sourcePage = pm.environment.get(\"SOURCE_PAGE\")",
-							"if (sourcePage) {",
-							"    console.log(sourcePage)",
-							"    pm.sendRequest({",
-							"        url: pm.environment.get(\"API_URL\") + \"/api/v1/authentication/token\",",
-							"        method: 'POST',",
-							"        header: {",
-							"            'Accept': 'application/json',",
-							"            'Content-Type': 'application/json'",
-							"        },",
-							"        body: {",
-							"            mode: 'raw',",
-							"            raw: JSON.stringify({",
-							"                emailAddress: pm.environment.get(\"EMAIL_ADDRESS\"),",
-							"                password: pm.environment.get(\"PASSWORD\"),",
-							"                sourcePage: sourcePage",
-							"            }),",
-							"        }",
-							"    },",
-							"    (error, result) => {",
-							"        var resultJson = result.json()",
-							"        if (resultJson.isSuccess === true) {",
-							"            pm.environment.set(\"ACCESS_TOKEN\", resultJson.response.accessToken)",
-							"            pm.environment.set(\"REFRESH_TOKEN\", resultJson.response.refreshToken)",
-							"            return",
-							"        }",
-							"",
-							"        pm.environment.unset(\"ACCESS_TOKEN\")",
-							"        console.log(resultJson)",
-							"    });",
-							"    return",
-							"}",
-							"    ",
-							"/** @author agitrubard */"
+							""
 						]
 					}
 				},
 				{
 					"listen": "test",
 					"script": {
-						"id": "16d25059-163a-4e05-ba96-e3a7a1ef386e",
+						"id": "956eb6be-d3e2-4a0b-8429-edf4e69cb878",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
