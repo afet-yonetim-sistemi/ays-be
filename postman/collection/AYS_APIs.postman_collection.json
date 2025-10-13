@@ -1520,7 +1520,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"johndoe@ays.com.tr\"\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"johndoe@afetyonetimsistemi.test\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
