@@ -1672,7 +1672,7 @@
 									]
 								},
 								{
-									"name": "volunteer-application/verification/confirm",
+									"name": "volunteer-application/verification/confirm/{id}",
 									"id": "eae02196-4775-4ff7-89cb-22ee67f15b0c",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1680,17 +1680,17 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm/{id}",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin doğrulama kodu doğrulandıktan sonra kurum gönüllüsü ol başvurusu başlatılılır.\n    \n- Bu servise giriş yapan kullanıcılar erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine bilgilendirme maili gönderilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
 										{
 											"id": "6f950962-7d2c-4bb9-96b8-296aff52e1b5",
-											"name": "volunteer-application/verification/confirm",
+											"name": "volunteer-application/verification/confirm/{id}",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
