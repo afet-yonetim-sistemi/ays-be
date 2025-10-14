@@ -1630,7 +1630,7 @@
 									]
 								},
 								{
-									"name": "volunteer-application/verification/resend",
+									"name": "volunteer-application/verification/resend/{id}",
 									"id": "398696d9-84f8-4e00-b124-6af77a97e716",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1638,17 +1638,17 @@
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend",
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend/{id}",
 										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise mail adresi ve şifre girişi yapılmış kişiler erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
 										{
 											"id": "57278246-2e18-4a78-8b77-a1fa7ef66578",
-											"name": "volunteer-application/verification/resend",
+											"name": "volunteer-application/verification/resend/{id}",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
