@@ -3089,7 +3089,7 @@
 									]
 								},
 								{
-									"name": "institution/{id}/active",
+									"name": "institution/{id}/activate",
 									"id": "ee013117-e90c-47cf-b372-0afce8a2f650",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -3097,7 +3097,7 @@
 									"request": {
 										"method": "PATCH",
 										"header": [],
-										"url": "{{API_URL}}/api/institution/v1/institution/{id}/active",
+										"url": "{{API_URL}}/api/institution/v1/institution/{id}/activate",
 										"description": "- Bu servis var olan bir Kurumun aktifleştirilmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `ACTIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
@@ -3126,7 +3126,7 @@
 									]
 								},
 								{
-									"name": "institution/{id}/passive",
+									"name": "institution/{id}/passivate",
 									"id": "a56f91e1-cfb0-4d0e-a1ee-81a441fce020",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -3134,17 +3134,17 @@
 									"request": {
 										"method": "PATCH",
 										"header": [],
-										"url": "{{API_URL}}/api/institution/v1/institution/{id}/passive",
+										"url": "{{API_URL}}/api/institution/v1/institution/{id}/passivate",
 										"description": "- Bu servis var olan bir Kurumun pasifleştirilmesi için kullanılır.\n    \n- Bu servise sadece `institution:update` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosunda var olan kaydı günceller.\n    \n- Sadece kurumun status alanı `PASSIVE` olarak güncellenir.\n    \n\n---\n\n**Adres Parametreleri**\n\n- `id`: Kuruma Ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
 										{
 											"id": "dabcef87-f65e-4362-8744-1389428cf9ff",
-											"name": "institution/{id}/passive",
+											"name": "institution/{id}/passivate",
 											"originalRequest": {
 												"method": "PATCH",
 												"header": [],
-												"url": "{{API_URL}}/api/institution/v1/institution/{id}/passive"
+												"url": "{{API_URL}}/api/institution/v1/institution/{id}/passivate"
 											},
 											"status": "OK",
 											"code": 200,
