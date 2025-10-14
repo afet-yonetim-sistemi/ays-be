@@ -1630,25 +1630,25 @@
 									]
 								},
 								{
-									"name": "volunteer-application/verification/resend/{id}",
-									"id": "398696d9-84f8-4e00-b124-6af77a97e716",
+									"name": "volunteer-application/verification/confirm/{id}",
+									"id": "eae02196-4775-4ff7-89cb-22ee67f15b0c",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend/{id}",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise mail adresi ve şifre girişi yapılmış kişiler erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm/{id}",
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin doğrulama kodu doğrulandıktan sonra kurum gönüllüsü ol başvurusu başlatılılır.\n    \n- Bu servise giriş yapan kullanıcılar erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine bilgilendirme maili gönderilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
 										{
-											"id": "57278246-2e18-4a78-8b77-a1fa7ef66578",
-											"name": "volunteer-application/verification/resend/{id}",
+											"id": "6f950962-7d2c-4bb9-96b8-296aff52e1b5",
+											"name": "volunteer-application/verification/confirm/{id}",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend/{id}"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -1672,25 +1672,25 @@
 									]
 								},
 								{
-									"name": "volunteer-application/verification/confirm/{id}",
-									"id": "eae02196-4775-4ff7-89cb-22ee67f15b0c",
+									"name": "volunteer-application/verification/resend/{id}",
+									"id": "398696d9-84f8-4e00-b124-6af77a97e716",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
 										"method": "POST",
 										"header": [],
-										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm/{id}",
-										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin doğrulama kodu doğrulandıktan sonra kurum gönüllüsü ol başvurusu başlatılılır.\n    \n- Bu servise giriş yapan kullanıcılar erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine bilgilendirme maili gönderilir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
+										"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend/{id}",
+										"description": "- Bu servis ilgili kuruma gönüllü olarak başvuran kişinin epostasını doğrulamak için tekrar kod isteği yaptığında kullanılır.\n    \n- Bu servise mail adresi ve şifre girişi yapılmış kişiler erişebilir.\n    \n- Bu servisle kullanıcının e-mail adresine tekrar doğrulama kodu gönderir.\n    \n- Bu servis `AYS_USER_VERIFICATION` tablosundaki verilerden yararlanır."
 									},
 									"response": [
 										{
-											"id": "6f950962-7d2c-4bb9-96b8-296aff52e1b5",
-											"name": "volunteer-application/verification/confirm/{id}",
+											"id": "57278246-2e18-4a78-8b77-a1fa7ef66578",
+											"name": "volunteer-application/verification/resend/{id}",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
-												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/confirm/{id}"
+												"url": "{{API_URL}}/api/landing/v1/volunteer-application/verification/resend/{id}"
 											},
 											"_postman_previewlanguage": "json",
 											"header": [
@@ -2981,7 +2981,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/institution/v1/institution",
-										"description": "- Bu servis yeni bir Kurum oluşturmak için kullanılır.\n    \n- Bu servise sadece `institution:create` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosuna bir kayıt ekler.\n    \n- Kurum kaydedilirken statüsü default olarak `ACTIVE` olur.\n\n---\n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `255` karakter olmalı."
+										"description": "- Bu servis Kurum kaydetmek için kullanılır.\n    \n- Bu servise sadece `institution:save` yetkisine sahip olanlar erişebilir.\n    \n- `AYS_INSTITUTION` tablosuna bir kayıt ekler.\n    \n- Kurum kaydedilirken statüsü default olarak `ACTIVE` olur.\n    \n\n---\n\n**İstek Parametreleri**\n\n- `name`: Kurumun isim bilgisini içerir.\n    \n    - Zorunlu alandır.\n        \n    - En az `2`, en fazla `255` karakter olmalı."
 									},
 									"response": [
 										{
@@ -3103,11 +3103,11 @@
 									"response": [
 										{
 											"id": "8899b499-54f1-43fb-94d6-61e0c927a09b",
-											"name": "institution/{id}/active",
+											"name": "institution/{id}/activate",
 											"originalRequest": {
 												"method": "PATCH",
 												"header": [],
-												"url": "{{API_URL}}/api/institution/v1/institution/{id}/active"
+												"url": "{{API_URL}}/api/institution/v1/institution/{id}/activate"
 											},
 											"status": "OK",
 											"code": 200,
