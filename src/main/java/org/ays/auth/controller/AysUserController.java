@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping({"/api/v1", "/api/institution/v1"})
+@RequestMapping("/api/institution/v1")
 class AysUserController {
 
     private final AysUserReadService userReadService;

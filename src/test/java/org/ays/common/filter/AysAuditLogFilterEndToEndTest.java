@@ -54,7 +54,7 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
         String userId = AysValidTestData.SuperAdmin.ID;
 
         // Then
-        String endpoint = "/api/v1/user/".concat(userId);
+        String endpoint = "/api/institution/v1/user/".concat(userId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, superAdminToken.getAccessToken());
 
@@ -105,7 +105,7 @@ class AysAuditLogFilterEndToEndTest extends AysEndToEndTest {
         String userId = "8734e9ad-906f-4fc0-8535-3589e410a22c";
 
         // Then
-        String endpoint = "/api/v1/user/".concat(userId);
+        String endpoint = "/api/institution/v1/user/".concat(userId);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, superAdminToken.getAccessToken());
 

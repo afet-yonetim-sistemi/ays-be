@@ -44,7 +44,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping({"/api/v1", "/api/institution/v1"})
+@RequestMapping("/api/institution/v1")
 class AysRoleController {
 
     private final AysRoleReadService roleReadService;

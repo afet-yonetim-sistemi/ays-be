@@ -16,11 +16,10 @@ import java.util.List;
 /**
  * REST controller class for managing institution-related operations via HTTP requests.
  * This controller handles the business operations for institutions in the system.
- * The mapping path for this controller is "/api/v1/institutions".
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping({"/api/v1", "/api/institution/v1"})
+@RequestMapping("/api/institution/v1")
 class InstitutionController {
 
     private final InstitutionService institutionService;
