@@ -2501,7 +2501,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10,\n        \"orders\": [\n            {\n                \"property\": \"priority\",\n                \"direction\": \"DESC\"\n            },\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"DESC\"\n            }\n        ]\n    },\n    \"filter\": {\n        \"referenceNumber\": \"1234567890\",\n        \"sourceCity\": \"İstanbul\",\n        \"sourceDistrict\": \"Kadıköy\",\n        \"seatingCount\": 2,\n        \"targetCity\": \"Ankara\",\n        \"targetDistrict\": \"Kızılay\",\n        \"statuses\": [\n            \"PENDING\"\n        ],\n        \"isInPerson\": true\n    }\n}",
+													"raw": "{\n    \"pageable\": {\n        \"page\": 1,\n        \"pageSize\": 10,\n        \"orders\": [\n            {\n                \"property\": \"priority\",\n                \"direction\": \"DESC\"\n            },\n            {\n                \"property\": \"createdAt\",\n                \"direction\": \"DESC\"\n            }\n        ]\n    },\n    \"filter\": {\n        \"referenceNumber\": \"1234567890\",\n        \"sourceCity\": \"İstanbul\",\n        \"sourceDistrict\": \"Kadıköy\",\n        \"seatingCount\": 2,\n        \"targetCity\": \"Ankara\",\n        \"targetDistrict\": \"Kızılay\",\n        \"statuses\": [\n            \"PENDING\"\n        ],\n        \"isInPerson\": true,\n        \"priority\": [\n            \"LOW\",\n            \"HIGH\"\n        ]\n    }\n}",
 													"options": {
 														"raw": {
 															"language": "json"
