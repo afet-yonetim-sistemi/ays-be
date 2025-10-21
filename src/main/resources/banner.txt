@@ -3,6 +3,6 @@ ${AnsiColor.GREEN}    /   \ ${AnsiColor.BLUE}\   \  /   /${AnsiColor.YELLOW} /  
 ${AnsiColor.GREEN}   /  ^  \ ${AnsiColor.BLUE}\   \/   /${AnsiColor.YELLOW} |   (----`
 ${AnsiColor.GREEN}  /  /_\  \ ${AnsiColor.BLUE}\_    _/${AnsiColor.YELLOW}   \   \
 ${AnsiColor.GREEN} /  _____  \ ${AnsiColor.BLUE} |  |${AnsiColor.YELLOW} .----)   |
-${AnsiColor.GREEN}/__/     \__\ ${AnsiColor.BLUE}|__|${AnsiColor.YELLOW} |_______/${AnsiColor.BRIGHT_WHITE}〔v${info.application.version}〕
+${AnsiColor.GREEN}/__/     \__\ ${AnsiColor.BLUE}|__|${AnsiColor.YELLOW} |_______/${AnsiColor.BRIGHT_WHITE}〔v${info.application.version} - ${info.build.number}〕
 :: AYS | Afet Yönetim Sistemi ::
 ${AnsiColor.DEFAULT}

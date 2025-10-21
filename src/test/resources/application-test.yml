@@ -1,3 +1,11 @@
+info:
+  application:
+    name: 'ays-be-test'
+    description: 'AYS Services Test'
+    version: '1.2.0.test'
+  build:
+    number: '20251021.2309'
+
 ays:
   scheduler:
     invalid-tokens-deletion:
