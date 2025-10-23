@@ -5029,7 +5029,8 @@
 						{
 							"name": "Activity Management Service",
 							"item": [],
-							"id": "b2bf8cd3-e081-453d-9368-7c204110a97f"
+							"id": "b2bf8cd3-e081-453d-9368-7c204110a97f",
+							"description": "Kullanıcının hâlâ aktif olduğunu backend’e bildirmek ve Redis TTL’ini yenileyerek online durumunu sürdürmek için kullanılan sevis."
 						}
 					],
 					"id": "4838ad6c-8abf-4dd9-b434-1a440e2ce27b",
