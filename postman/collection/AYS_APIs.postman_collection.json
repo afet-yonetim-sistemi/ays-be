@@ -52,7 +52,77 @@
 								"url": "{{API_URL}}/public/actuator/info",
 								"description": "- Bu endpoint uygulamanın (versiyon, isim vb.) bilgilerini almak için kullanılır.\n    \n- Bu endpointe herkes ulaşabilir."
 							},
-							"response": []
+							"response": [
+								{
+									"id": "02d86d02-9167-4096-b08c-ff364ee683e4",
+									"name": "actuator/info",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{API_URL}}/public/actuator/info"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sat, 25 Oct 2025 06:54:31 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/vnd.spring-boot.actuator.v3+json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "115"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate"
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache"
+										},
+										{
+											"key": "Expires",
+											"value": "0"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"application\": {\n        \"name\": \"ays-be\",\n        \"description\": \"AYS Services\",\n        \"version\": \"1.2.0\"\n    },\n    \"build\": {\n        \"number\": \"20251025.0637\"\n    }\n}"
+								}
+							]
 						}
 					],
 					"id": "68379234-0cea-4ef1-8339-cd05cdd4887e",
