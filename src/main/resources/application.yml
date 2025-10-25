@@ -57,6 +57,8 @@ info:
     name: '@project.name@'
     description: '@project.description@'
     version: '@project.version@'
+  build:
+    number: '@build.number@'
 
 management:
   info:

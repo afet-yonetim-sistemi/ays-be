@@ -9,12 +9,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @Component
 @RequiredArgsConstructor
 public class AysMockMvc {
 
     private final MockMvc mockMvc;
+
+    public ResultActions perform(final MockHttpServletRequestBuilder mockHttpServletRequestBuilder) throws Exception {
+
+        return mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 
     public ResultActions perform(final MockHttpServletRequestBuilder mockHttpServletRequestBuilder,
                                  final AysResponse<?> mockResponse) throws Exception {
