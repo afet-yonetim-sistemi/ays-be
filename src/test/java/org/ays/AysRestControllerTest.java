@@ -75,10 +75,6 @@ public abstract class AysRestControllerTest extends AysTestContainerConfiguratio
                 AysParameter.builder()
                         .name("AUTH_LOGIN_MAX_TRY_COUNT")
                         .definition("3")
-                        .build(),
-                AysParameter.builder()
-                        .name("FE_URL")
-                        .definition("http://localhost:3000")
                         .build()
         );
         Mockito.when(parameterReadPort.findAll())

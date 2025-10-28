@@ -36,4 +36,7 @@ public class InstitutionEntity extends BaseEntity {
     @Column(name = "STATUS")
     private InstitutionStatus status;
 
+    @Column(name = "FE_URL")
+    private String feUrl;
+
 }

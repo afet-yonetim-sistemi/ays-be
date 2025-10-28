@@ -1,11 +1,11 @@
 package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
-import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.common.model.AysMail;
 import org.ays.common.service.AysMailService;
+import org.ays.institution.model.Institution;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,38 +17,39 @@ class AysUserMailServiceImplTest extends AysUnitTest {
     private AysUserMailServiceImpl userMailService;
 
     @Mock
-    private AysApplicationConfigurationParameter applicationConfigurationParameter;
+    private Institution mockInstitution;
 
     @Mock
-    private AysMailService mailService;
+    private AysMailService mockMailService;
 
 
     @Test
     void givenValidUser_whenMailCreated_thenSendPasswordCreateEmail() {
         // Given
-        AysUser mockUser = new AysUserBuilder()
+        AysUser user = new AysUserBuilder()
                 .withValidValues()
                 .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
+                .withInstitution(mockInstitution)
                 .build();
 
         // When
-        Mockito.when(applicationConfigurationParameter.getFeUrl())
+        Mockito.when(mockInstitution.getFeUrl())
                 .thenReturn("http://localhost:3000");
 
         Mockito.doNothing()
-                .when(mailService)
+                .when(mockMailService)
                 .send(Mockito.any(AysMail.class));
 
         // Then
-        userMailService.sendPasswordCreateEmail(mockUser);
+        userMailService.sendPasswordCreateEmail(user);
 
         // Verify
-        Mockito.verify(applicationConfigurationParameter, Mockito.times(1))
+        Mockito.verify(mockInstitution, Mockito.times(1))
                 .getFeUrl();
 
-        Mockito.verifyNoMoreInteractions(applicationConfigurationParameter);
+        Mockito.verifyNoMoreInteractions(user.getInstitution());
 
-        Mockito.verify(mailService, Mockito.times(1))
+        Mockito.verify(mockMailService, Mockito.times(1))
                 .send(Mockito.any(AysMail.class));
     }
 

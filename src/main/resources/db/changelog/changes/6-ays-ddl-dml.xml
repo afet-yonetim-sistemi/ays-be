@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="6-ays-ddl-dml" author="ays">
+        <!-- ==================== -->
+        <!-- DML of AYS_PARAMETER -->
+        <!-- ==================== -->
+        <delete tableName="AYS_PARAMETER">
+            <where>NAME = 'FE_URL'</where>
+        </delete>
+        <!-- ==================== -->
+        <!-- DML of AYS_PARAMETER -->
+        <!-- ==================== -->
+
+
+        <!-- ====================== -->
+        <!-- DDL of AYS_INSTITUTION -->
+        <!-- ====================== -->
+        <addColumn tableName="AYS_INSTITUTION">
+            <column name="FE_URL" type="VARCHAR(100)" afterColumn="STATUS" defaultValue="http://localhost:3000">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <update tableName="AYS_INSTITUTION">
+            <column name="FE_URL" value="http://localhost:3000"/>
+            <where>FE_URL IS NULL OR FE_URL = ''</where>
+        </update>
+        <!-- ====================== -->
+        <!-- DDL of AYS_INSTITUTION -->
+        <!-- ====================== -->
+    </changeSet>
+
+</databaseChangeLog>
