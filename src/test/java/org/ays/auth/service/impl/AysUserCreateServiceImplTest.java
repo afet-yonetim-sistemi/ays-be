@@ -119,6 +119,9 @@ class AysUserCreateServiceImplTest extends AysUnitTest {
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findAllByIds(Mockito.anySet());
 
+        Mockito.verify(institutionReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
         Mockito.verify(userSavePort, Mockito.times(1))
                 .save(Mockito.any(AysUser.class));
 
