@@ -16,7 +16,8 @@ import org.ays.auth.service.AysUserCreateService;
 import org.ays.auth.service.AysUserMailService;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.util.AysRandomUtil;
-import org.ays.institution.model.Institution;
+import org.ays.institution.exception.AysInstitutionNotExistException;
+import org.ays.institution.port.InstitutionReadPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,8 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
     private final AysUserReadPort userReadPort;
     private final AysRoleReadPort roleReadPort;
     private final AysUserMailService userMailService;
+
+    private final InstitutionReadPort institutionReadPort;
 
     private final AysIdentity identity;
 
@@ -79,9 +82,8 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
 
         user.activate();
         user.setInstitution(
-                Institution.builder()
-                        .id(identity.getInstitutionId())
-                        .build()
+                institutionReadPort.findById(identity.getInstitutionId())
+                        .orElseThrow(() -> new AysInstitutionNotExistException(identity.getInstitutionId()))
         );
         user.setPassword(
                 AysUser.Password.builder()
