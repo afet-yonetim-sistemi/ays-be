@@ -50,11 +50,6 @@ public class AysApplicationConfigurationParameter {
      * Derived from configuration parameters or defaults if not provided.
      */
     private final Integer refreshTokenExpireMinute;
-    /**
-     * The frontend URL to use for email verification, password reset, and other links.
-     * Derived from configuration parameters or defaults if not provided.
-     */
-    private final String feUrl;
 
 
     /**
@@ -99,11 +94,6 @@ public class AysApplicationConfigurationParameter {
                 .map(Integer::valueOf)
                 .orElse(Integer.valueOf(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE.getDefaultValue()));
         log.info("Application configuration parameter has been set. refreshTokenExpireMinute:{}", refreshTokenExpireMinute);
-
-        this.feUrl = Optional
-                .ofNullable(AysParameter.getDefinition(AysConfigurationParameter.FE_URL, configurationParameters))
-                .orElse(AysConfigurationParameter.FE_URL.getDefaultValue());
-        log.info("Application configuration parameter has been set. feUrl:{}", feUrl);
 
         log.info("Application Configuration Parameters read!");
     }

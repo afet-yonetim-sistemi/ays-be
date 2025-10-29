@@ -14,7 +14,8 @@ public class InstitutionBuilder extends TestDataBuilder<Institution> {
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withName(AysRandomUtil.generateText(20))
-                .withStatus(InstitutionStatus.ACTIVE);
+                .withStatus(InstitutionStatus.ACTIVE)
+                .withFeUrl("http://localhost:3000");
     }
 
     public InstitutionBuilder withId(String id) {
@@ -34,6 +35,11 @@ public class InstitutionBuilder extends TestDataBuilder<Institution> {
 
     public InstitutionBuilder withStatus(InstitutionStatus status) {
         data.setStatus(status);
+        return this;
+    }
+
+    public InstitutionBuilder withFeUrl(String feUrl) {
+        data.setFeUrl(feUrl);
         return this;
     }
 }

@@ -35,10 +35,6 @@ class AysParameterAdapterTest extends AysUnitTest {
                 new AysParameterEntityBuilder()
                         .withDefinition("AUTH_REFRESH_TOKEN_EXPIRE_DAY")
                         .withName("1")
-                        .build(),
-                new AysParameterEntityBuilder()
-                        .withName("FE_URL")
-                        .withDefinition("http://localhost:3000")
                         .build()
         );
         Mockito.when(parameterRepository.findAll())

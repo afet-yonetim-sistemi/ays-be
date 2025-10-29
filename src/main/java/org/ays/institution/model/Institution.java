@@ -19,4 +19,9 @@ public class Institution extends BaseDomainModel {
     private String id;
     private String name;
     private InstitutionStatus status;
+
+    /**
+     * The frontend URL to use for email verification, password reset, and other links.
+     */
+    private String feUrl;
 }
