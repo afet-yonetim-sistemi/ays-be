@@ -4986,7 +4986,7 @@
 											}
 										},
 										"url": "{{API_URL}}/api/institution/v1/volunteer-application/{id}/approve",
-										"description": "- Bu servis kurumlara yapılan gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:volunteer:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- Kullanıcıya ilgili kurumun sahip olduğu roller içerisinde sadece `landing:page` yetkisinin yer aldığı rolün atanmış gerekmektedir.\n    \n    - Eğer rol bulunmuyorsa rolün oluşturulması gerekmektedir.\n        \n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis kurumlara yapılan gönüllü başvurularını onaylamak için kullanılır\n    \n- Bu servise sadece `application:volunteer:conclude` yetkisine sahip olan kullanıcılar erişebilir.\n    \n- Kullanıcıya ilgili kurumun sahip olduğu roller içerisinde sadece `landing:page` yetkisinin yer aldığı rolün atanmış gerekmektedir.\n    \n    - Eğer böyle bir rol bulunmuyorsa rolün oluşturulması gerekmektedir.\n    - Oluşturulacak rol adının çakışmayı önlemek adına `Gönüllü `\n\n---\n\n**Adres Parametreleriz**\n\n- `id` : Gönüllü başvurusuna ait ID bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
 										{
