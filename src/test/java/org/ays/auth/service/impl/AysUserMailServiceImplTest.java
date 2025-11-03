@@ -6,6 +6,7 @@ import org.ays.auth.model.AysUserBuilder;
 import org.ays.common.model.AysMail;
 import org.ays.common.service.AysMailService;
 import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,39 +18,33 @@ class AysUserMailServiceImplTest extends AysUnitTest {
     private AysUserMailServiceImpl userMailService;
 
     @Mock
-    private Institution mockInstitution;
-
-    @Mock
-    private AysMailService mockMailService;
+    private AysMailService mailService;
 
 
     @Test
     void givenValidUser_whenMailCreated_thenSendPasswordCreateEmail() {
         // Given
-        AysUser user = new AysUserBuilder()
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .withFeUrl("http://localhost:3000")
+                .build();
+
+        AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
                 .withInstitution(mockInstitution)
                 .build();
 
         // When
-        Mockito.when(mockInstitution.getFeUrl())
-                .thenReturn("http://localhost:3000");
-
         Mockito.doNothing()
-                .when(mockMailService)
+                .when(mailService)
                 .send(Mockito.any(AysMail.class));
 
         // Then
-        userMailService.sendPasswordCreateEmail(user);
+        userMailService.sendPasswordCreateEmail(mockUser);
 
         // Verify
-        Mockito.verify(mockInstitution, Mockito.times(1))
-                .getFeUrl();
-
-        Mockito.verifyNoMoreInteractions(user.getInstitution());
-
-        Mockito.verify(mockMailService, Mockito.times(1))
+        Mockito.verify(mailService, Mockito.times(1))
                 .send(Mockito.any(AysMail.class));
     }
 

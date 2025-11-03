@@ -32,11 +32,11 @@ public class InstitutionEntity extends BaseEntity {
     @Column(name = "NAME")
     private String name;
 
+    @Column(name = "FE_URL")
+    private String feUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
     private InstitutionStatus status;
-
-    @Column(name = "FE_URL")
-    private String feUrl;
 
 }

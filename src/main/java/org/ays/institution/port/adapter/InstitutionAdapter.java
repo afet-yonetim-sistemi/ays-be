@@ -45,8 +45,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      */
     @Override
     public Optional<Institution> findById(final String id) {
-        Optional<InstitutionEntity> institutionEntity = institutionRepository.findById(id);
-        return institutionEntity.map(institutionEntityToDomainMapper::map);
+        return institutionRepository.findById(id).map(institutionEntityToDomainMapper::map);
     }
 
 

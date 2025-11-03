@@ -24,7 +24,6 @@ public interface InstitutionReadPort {
      */
     Optional<Institution> findById(String id);
 
-
     /**
      * Retrieves a list of institutions by their status, ordered by their names in ascending order.
      * <p>

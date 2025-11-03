@@ -4,7 +4,23 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
-    <changeSet id="6-ays-ddl-dml" author="ays">
+    <changeSet id="6-ays-ddl" author="ays">
+        <!-- ====================== -->
+        <!-- DDL of AYS_INSTITUTION -->
+        <!-- ====================== -->
+        <addColumn tableName="AYS_INSTITUTION">
+            <column name="FE_URL" type="VARCHAR(255)" afterColumn="NAME"/>
+        </addColumn>
+
+        <update tableName="AYS_INSTITUTION">
+            <column name="FE_URL" valueComputed="(SELECT DEFINITION FROM AYS_PARAMETER WHERE NAME = 'FE_URL')"/>
+        </update>
+
+        <addNotNullConstraint tableName="AYS_INSTITUTION" columnName="FE_URL" columnDataType="VARCHAR(255)"/>
+        <!-- ====================== -->
+        <!-- DDL of AYS_INSTITUTION -->
+        <!-- ====================== -->
+
         <!-- ==================== -->
         <!-- DML of AYS_PARAMETER -->
         <!-- ==================== -->
@@ -14,24 +30,6 @@
         <!-- ==================== -->
         <!-- DML of AYS_PARAMETER -->
         <!-- ==================== -->
-
-
-        <!-- ====================== -->
-        <!-- DDL of AYS_INSTITUTION -->
-        <!-- ====================== -->
-        <addColumn tableName="AYS_INSTITUTION">
-            <column name="FE_URL" type="VARCHAR(100)" afterColumn="STATUS" defaultValue="http://localhost:3000">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-
-        <update tableName="AYS_INSTITUTION">
-            <column name="FE_URL" value="http://localhost:3000"/>
-            <where>FE_URL IS NULL OR FE_URL = ''</where>
-        </update>
-        <!-- ====================== -->
-        <!-- DDL of AYS_INSTITUTION -->
-        <!-- ====================== -->
     </changeSet>
 
 </databaseChangeLog>
