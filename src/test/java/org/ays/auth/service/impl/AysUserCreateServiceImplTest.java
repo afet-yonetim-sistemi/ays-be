@@ -19,6 +19,7 @@ import org.ays.auth.service.AysUserMailService;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
+import org.ays.institution.port.InstitutionReadPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -44,6 +45,9 @@ class AysUserCreateServiceImplTest extends AysUnitTest {
 
     @Mock
     private AysUserMailService userMailService;
+
+    @Mock
+    private InstitutionReadPort institutionReadPort;
 
     @Mock
     private AysIdentity identity;
@@ -75,6 +79,9 @@ class AysUserCreateServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .withId(mockInstitutionId)
                 .build();
+        Mockito.when(institutionReadPort.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(mockInstitution));
+
         List<AysRole> mockRoles = mockCreateRequest.getRoleIds().stream()
                 .map(id -> new AysRoleBuilder()
                         .withValidValues()
@@ -111,6 +118,9 @@ class AysUserCreateServiceImplTest extends AysUnitTest {
 
         Mockito.verify(roleReadPort, Mockito.times(1))
                 .findAllByIds(Mockito.anySet());
+
+        Mockito.verify(institutionReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
 
         Mockito.verify(userSavePort, Mockito.times(1))
                 .save(Mockito.any(AysUser.class));

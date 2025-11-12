@@ -4,6 +4,7 @@ import org.ays.institution.model.Institution;
 import org.ays.institution.model.enums.InstitutionStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Port interface for reading {@link Institution} entities from a data store.
@@ -14,6 +15,14 @@ import java.util.List;
  * </p>
  */
 public interface InstitutionReadPort {
+
+    /**
+     * Retrieves a {@link Institution} by its ID.
+     *
+     * @param id The ID of the institution to retrieve.
+     * @return An optional containing the {@link Institution} if found, otherwise empty.
+     */
+    Optional<Institution> findById(String id);
 
     /**
      * Retrieves a list of institutions by their status, ordered by their names in ascending order.

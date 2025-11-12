@@ -18,5 +18,6 @@ public class Institution extends BaseDomainModel {
 
     private String id;
     private String name;
+    private String feUrl;
     private InstitutionStatus status;
 }

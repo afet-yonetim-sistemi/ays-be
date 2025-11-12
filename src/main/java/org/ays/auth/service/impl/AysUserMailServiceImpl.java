@@ -1,7 +1,6 @@
 package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.service.AysUserMailService;
 import org.ays.common.model.AysMail;
@@ -25,7 +24,6 @@ import java.util.Map;
 class AysUserMailServiceImpl implements AysUserMailService {
 
     private final AysMailService mailService;
-    private final AysApplicationConfigurationParameter applicationConfigurationParameter;
 
 
     /**
@@ -42,7 +40,7 @@ class AysUserMailServiceImpl implements AysUserMailService {
     public void sendPasswordCreateEmail(AysUser user) {
 
         final String userFullName = user.getFirstName() + " " + user.getLastName();
-        final String url = applicationConfigurationParameter.getFeUrl()
+        final String url = user.getInstitution().getFeUrl()
                 .concat("/create-password/").concat(user.getPassword().getId());
 
         final Map<String, Object> parameters = Map.of(

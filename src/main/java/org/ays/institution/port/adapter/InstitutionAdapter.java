@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Adapter class for interacting with institution-related data.
@@ -35,6 +36,17 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
 
     private final InstitutionEntityToDomainMapper institutionEntityToDomainMapper = InstitutionEntityToDomainMapper.initialize();
     private final InstitutionToEntityMapper institutionToEntityMapper = InstitutionToEntityMapper.initialize();
+
+    /**
+     * Retrieves an {@link Institution} by its ID.
+     *
+     * @param id The ID of the institution to retrieve.
+     * @return An optional containing the {@link Institution} if found, otherwise empty.
+     */
+    @Override
+    public Optional<Institution> findById(final String id) {
+        return institutionRepository.findById(id).map(institutionEntityToDomainMapper::map);
+    }
 
 
     /**

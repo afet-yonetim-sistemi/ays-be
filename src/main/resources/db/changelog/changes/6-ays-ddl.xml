@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="6-ays-ddl" author="ays">
+        <!-- ====================== -->
+        <!-- DDL of AYS_INSTITUTION -->
+        <!-- ====================== -->
+        <addColumn tableName="AYS_INSTITUTION">
+            <column name="FE_URL" type="VARCHAR(255)" afterColumn="NAME"/>
+        </addColumn>
+
+        <update tableName="AYS_INSTITUTION">
+            <column name="FE_URL" valueComputed="(SELECT DEFINITION FROM AYS_PARAMETER WHERE NAME = 'FE_URL')"/>
+        </update>
+
+        <addNotNullConstraint tableName="AYS_INSTITUTION" columnName="FE_URL" columnDataType="VARCHAR(255)"/>
+        <!-- ====================== -->
+        <!-- DDL of AYS_INSTITUTION -->
+        <!-- ====================== -->
+
+        <!-- ==================== -->
+        <!-- DML of AYS_PARAMETER -->
+        <!-- ==================== -->
+        <delete tableName="AYS_PARAMETER">
+            <where>NAME = 'FE_URL'</where>
+        </delete>
+        <!-- ==================== -->
+        <!-- DML of AYS_PARAMETER -->
+        <!-- ==================== -->
+    </changeSet>
+
+</databaseChangeLog>
