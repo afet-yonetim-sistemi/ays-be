@@ -8,7 +8,6 @@ import org.ays.institution.model.response.InstitutionsSummaryResponse;
 import org.ays.institution.service.InstitutionService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/institution/v1")
 class InstitutionController {
 
     private final InstitutionService institutionService;
@@ -34,13 +32,26 @@ class InstitutionController {
      *
      * @return An {@link AysResponse} containing a list of {@link InstitutionsSummaryResponse} representing the summary of institutions.
      */
-    @GetMapping("/institutions/summary")
+    @GetMapping("/api/institution/v1/institutions/summary")
     @PreAuthorize("hasAnyAuthority('application:registration:create')")
-    public AysResponse<List<InstitutionsSummaryResponse>> getSummaryOfActiveInstitutions() {
+    public AysResponse<List<InstitutionsSummaryResponse>> getSummaryOfActiveInstitutionsForInstitution() {
 
         final List<Institution> institutionsSummary = institutionService.getSummaryOfActiveInstitutions();
-        final List<InstitutionsSummaryResponse> institutionsSummaryRespons = institutionToInstitutionsSummaryResponseMapper.map(institutionsSummary);
-        return AysResponse.successOf(institutionsSummaryRespons);
+        final List<InstitutionsSummaryResponse> institutionsSummaryResponse = institutionToInstitutionsSummaryResponseMapper.map(institutionsSummary);
+        return AysResponse.successOf(institutionsSummaryResponse);
+    }
+
+    /**
+     * Retrieves a summary of all institutions.
+     *
+     * @return An {@link AysResponse} containing a list of {@link InstitutionsSummaryResponse} representing the summary of institutions.
+     */
+    @GetMapping("/api/landing/v1/institutions/summary")
+    public AysResponse<List<InstitutionsSummaryResponse>> getSummaryOfActiveInstitutionsForLanding() {
+
+        final List<Institution> institutionsSummary = institutionService.getSummaryOfActiveInstitutions();
+        final List<InstitutionsSummaryResponse> institutionsSummaryResponses = institutionToInstitutionsSummaryResponseMapper.map(institutionsSummary);
+        return AysResponse.successOf(institutionsSummaryResponses);
     }
 
 }

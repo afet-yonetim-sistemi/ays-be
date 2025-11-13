@@ -27,7 +27,8 @@ class InstitutionControllerTest extends AysRestControllerTest {
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
 
-    private static final String BASE_PATH = "/api/institution/v1";
+    private static final String INSTITUTION_BASE_PATH = "/api/institution/v1";
+    private static final String LANDING_BASE_PATH = "/api/landing/v1";
 
 
     @Test
@@ -43,7 +44,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
                 .thenReturn(mockActiveInstitutions);
 
         // Then
-        String endpoint = BASE_PATH.concat("/institutions/summary");
+        String endpoint = INSTITUTION_BASE_PATH.concat("/institutions/summary");
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .get(endpoint, mockSuperAdminToken.getAccessToken());
 
@@ -68,7 +69,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
 
         // Then
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .get(BASE_PATH.concat("/institutions/summary"), mockUserToken.getAccessToken());
+                .get(INSTITUTION_BASE_PATH.concat("/institutions/summary"), mockUserToken.getAccessToken());
 
         AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
 
@@ -80,6 +81,43 @@ class InstitutionControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(institutionService, Mockito.never())
+                .getSummaryOfActiveInstitutions();
+    }
+
+    @Test
+    void whenInstitutionStatusActive_thenReturnListInstitutionResponseForLanding() throws Exception {
+
+        // When
+        List<Institution> mockActiveInstitutions = List.of(
+                new InstitutionBuilder().withValidValues().build(),
+                new InstitutionBuilder().withValidValues().build()
+        );
+
+        Mockito.when(institutionService.getSummaryOfActiveInstitutions())
+                .thenReturn(mockActiveInstitutions);
+
+        // Then
+        String endpoint = LANDING_BASE_PATH.concat("/institutions/summary");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .get(endpoint);
+
+        List<InstitutionsSummaryResponse> mockActiveInstitutionsSummaryResponses = institutionToInstitutionsSummaryResponseMapper
+                .map(mockActiveInstitutions);
+        AysResponse<List<InstitutionsSummaryResponse>> mockResponse = AysResponse
+                .successOf(mockActiveInstitutionsSummaryResponses);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.response(1, "id")
+                        .value(mockActiveInstitutions.get(1).getId()))
+                .andExpect(AysMockResultMatchersBuilders.response(1, "name")
+                        .value(mockActiveInstitutions.get(1).getName()));
+
+        // Verify
+        Mockito.verify(institutionService, Mockito.times(1))
                 .getSummaryOfActiveInstitutions();
     }
 
