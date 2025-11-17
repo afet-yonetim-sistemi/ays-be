@@ -5098,7 +5098,20 @@
 						},
 						{
 							"name": "Activity Management Service",
-							"item": [],
+							"item": [
+								{
+									"name": "New Request",
+									"id": "94c6777e-8e34-4f70-9de4-d0f1ee4bdbc0",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							],
 							"id": "b2bf8cd3-e081-453d-9368-7c204110a97f",
 							"description": "Kullanıcının hâlâ aktif olduğunu backend’e bildirmek ve Redis TTL’ini yenileyerek online durumunu sürdürmek için kullanılan sevis."
 						}
