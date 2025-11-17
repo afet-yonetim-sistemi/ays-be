@@ -5100,7 +5100,7 @@
 							"name": "Activity Management Service",
 							"item": [
 								{
-									"name": "New Request",
+									"name": "activity/interact",
 									"id": "94c6777e-8e34-4f70-9de4-d0f1ee4bdbc0",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
