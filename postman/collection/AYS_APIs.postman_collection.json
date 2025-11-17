@@ -5107,7 +5107,8 @@
 									},
 									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"description": "**Amaç:**  \nKullanıcının hâlâ aktif olduğunu backend’e bildirmek ve Redis’teki oturum kaydının TTL süresini yenilemek.\n\n**Kullanım Senaryosu:**  \nFrontend bu endpoint’i her 5 dakikada bir çağırır.  \n  \nÇağrı geldikçe:\n\n- Redis’te kullanıcıya ait oturum kaydı güncellenir.\n    \n- TTL yeniden başlatılır.\n    \n- Kullanıcı aktif sayılmaya devam eder.\n    \n\nBelirlenen hareketsizlik süresi boyunca hiçbir `interact` çağrısı ya da başka bir API isteği gelmezse, TTL dolar ve kullanıcı çevrim dışı kabul edilir."
 									},
 									"response": []
 								}
