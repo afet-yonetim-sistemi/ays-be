@@ -5108,7 +5108,7 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"description": "## Bu servis, oturumu bulunan kullanıcının hâlâ aktif olduğunu backend'e bildirmek için kullanılır.\n\nFrontend tarafından belirli aralıklarla çağrılarak kullanıcının Redis üzerinde tutulan oturum bilgisinin güncellenmesini sağlar.  \n  \nBu servise sadece **user:interact** veya eşdeğer yetkiye sahip kullanıcılar erişebilir.  \n  \nKullanıcının aktifliğini korumak için Redis’teki mevcut oturum kaydının TTL değeri yenilenir.  \n  \nBelirlenen hareketsizlik süresi boyunca herhangi bir isteğin iletilmemesi durumunda ilgili kullanıcının oturumu pasif duruma düşer."
+										"description": "## Bu servis, oturumu bulunan kullanıcının hâlâ aktif olduğunu backend'e bildirmek için kullanılır.\n\nFrontend tarafından belirli aralıklarla çağrılarak kullanıcının Redis üzerinde tutulan oturum bilgisinin güncellenmesini sağlar.\n\nBu servise sadece **user:interact** veya eşdeğer yetkiye sahip kullanıcılar erişebilir.\n\nKullanıcının aktifliğini korumak için Redis’teki mevcut oturum kaydının TTL değeri yenilenir.\n\nBelirlenen hareketsizlik süresi boyunca herhangi bir isteğin iletilmemesi durumunda ilgili kullanıcının oturumu pasif duruma düşer."
 									},
 									"response": []
 								}
