@@ -1,13 +1,22 @@
 package org.ays.institution.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.institution.model.Institution;
+import org.ays.institution.model.mapper.InstitutionToInstitutionsResponseMapper;
 import org.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
+import org.ays.institution.model.request.InstitutionListRequest;
+import org.ays.institution.model.response.InstitutionsResponse;
 import org.ays.institution.model.response.InstitutionsSummaryResponse;
+import org.ays.institution.service.InstitutionReadService;
 import org.ays.institution.service.InstitutionService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,10 +30,34 @@ import java.util.List;
 class InstitutionController {
 
     private final InstitutionService institutionService;
-
+    private final InstitutionReadService institutionReadService;
 
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
+    private final InstitutionToInstitutionsResponseMapper institutionToInstitutionsResponseMapper = InstitutionToInstitutionsResponseMapper.initialize();
 
+    /**
+     * POST /institutions : Retrieve all institutions based on the provided filtering and pagination criteria.
+     * <p>
+     * This endpoint handles the retrieval of institutions based on the filtering and pagination criteria
+     * provided in {@link InstitutionListRequest}. The user must have the 'institution:list' authority to access this endpoint.
+     * </p>
+     *
+     * @param request the request object containing filtering and pagination criteria.
+     * @return an {@link AysResponse} indicating the success of the operation.
+     */
+    @PostMapping("/api/institution/v1/institutions")
+    @PreAuthorize("hasAnyAuthority('institution:list')")
+    public AysResponse<AysPageResponse<InstitutionsResponse>> findAll(@RequestBody @Valid InstitutionListRequest request) {
+
+        AysPage<Institution> pageOfInstitutions = institutionReadService.findAll(request);
+
+        final AysPageResponse<InstitutionsResponse> pageOfInstitutionsResponse = AysPageResponse.<InstitutionsResponse>builder()
+                .of(pageOfInstitutions)
+                .content(institutionToInstitutionsResponseMapper.map(pageOfInstitutions.getContent()))
+                .build();
+
+        return AysResponse.successOf(pageOfInstitutionsResponse);
+    }
 
     /**
      * Retrieves a summary of all institutions.

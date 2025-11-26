@@ -1,17 +1,29 @@
 package org.ays.institution.controller;
 
 import org.ays.AysRestControllerTest;
+import org.ays.auth.model.request.AysUserListRequest;
+import org.ays.auth.model.request.AysUserListRequestBuilder;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysErrorResponseBuilder;
+import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
+import org.ays.institution.model.mapper.InstitutionToInstitutionsResponseMapper;
 import org.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
+import org.ays.institution.model.request.InstitutionListRequest;
+import org.ays.institution.model.request.InstitutionListRequestBuilder;
+import org.ays.institution.model.response.InstitutionsResponse;
 import org.ays.institution.model.response.InstitutionsSummaryResponse;
+import org.ays.institution.service.InstitutionReadService;
 import org.ays.institution.service.InstitutionService;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -21,15 +33,121 @@ import java.util.List;
 class InstitutionControllerTest extends AysRestControllerTest {
 
     @MockitoBean
+    private InstitutionReadService institutionReadService;
+
+    @MockitoBean
     private InstitutionService institutionService;
 
 
+    private final InstitutionToInstitutionsResponseMapper institutionToInstitutionsResponseMapper = InstitutionToInstitutionsResponseMapper.initialize();
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
 
     private static final String INSTITUTION_BASE_PATH = "/api/institution/v1";
     private static final String LANDING_BASE_PATH = "/api/landing/v1";
 
+    @Test
+    void givenValidInstitutionListRequest_whenInstitutionsFound_thenReturnAysPageResponseOfInstitutionsResponse() throws Exception {
+        // Given
+        InstitutionListRequest mockListRequest = new InstitutionListRequestBuilder()
+                .withValidValues()
+                .build();
+
+        //When
+        List<Institution> mockInstitutions = List.of(
+                new InstitutionBuilder().withValidValues().build()
+        );
+
+        AysPage<Institution> mockInstitutionPage = AysPageBuilder
+                .from(mockInstitutions, mockListRequest.getPageable());
+
+        Mockito.when(institutionReadService.findAll(Mockito.any(InstitutionListRequest.class)))
+                .thenReturn(mockInstitutionPage);
+
+        // Then
+        String endpoint = INSTITUTION_BASE_PATH.concat("/institutions");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        List<InstitutionsResponse> mockInstitutionsResponse = institutionToInstitutionsResponseMapper.map(mockInstitutions);
+        AysPageResponse<InstitutionsResponse> pageOfResponse = AysPageResponse.<InstitutionsResponse>builder()
+                .of(mockInstitutionPage)
+                .content(mockInstitutionsResponse)
+                .build();
+        AysResponse<AysPageResponse<InstitutionsResponse>> mockResponse = AysResponse
+                .successOf(pageOfResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(institutionReadService, Mockito.times(1))
+                .findAll(Mockito.any(InstitutionListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Test Foundation 1234",
+            "Foundation *^%$#",
+            " Test",
+            "? Foundation",
+            "J----",
+            "Volunteer-Disaster--Foundation",
+            "Disaster  Foundation"
+    })
+    void givenInstitutionListRequest_whenNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
+
+        // Given
+        InstitutionListRequest mockListRequest = new InstitutionListRequestBuilder()
+                .withValidValues()
+                .withName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = INSTITUTION_BASE_PATH.concat("/institutions");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(institutionReadService, Mockito.never())
+                .findAll(Mockito.any(InstitutionListRequest.class));
+    }
+
+    @Test
+    void givenValidInstitutionListRequest_whenInstitutionUnauthorized_thenReturnAccessDeniedException() throws Exception {
+        // Given
+        InstitutionListRequest mockListRequest = new InstitutionListRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // Then
+        String endpoint = INSTITUTION_BASE_PATH.concat("/institutions");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockUserToken.getAccessToken(), mockListRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.FORBIDDEN;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isForbidden())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(institutionReadService, Mockito.never())
+                .findAll(Mockito.any(InstitutionListRequest.class));
+    }
 
     @Test
     void whenInstitutionStatusActive_thenReturnListInstitutionResponse() throws Exception {

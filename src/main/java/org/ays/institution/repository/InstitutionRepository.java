@@ -3,6 +3,7 @@ package org.ays.institution.repository;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.enums.InstitutionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * It extends the JpaRepository interface with InstitutionEntity as the entity type and String as the ID type.
  * The default behavior of the repository can be extended by adding custom methods to this interface.
  */
-public interface InstitutionRepository extends JpaRepository<InstitutionEntity, String> {
+public interface InstitutionRepository extends JpaRepository<InstitutionEntity, String>, JpaSpecificationExecutor<InstitutionEntity> {
 
     /**
      * Find all institutions by status
