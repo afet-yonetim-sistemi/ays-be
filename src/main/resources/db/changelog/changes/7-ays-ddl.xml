@@ -4,9 +4,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
-    <changeSet id="7-ays-ddl" author="ays">
+    <changeSet id="7-ays-dml" author="ays">
         <!-- ===================== -->
-        <!-- DDL of AYS_PERMISSION -->
+        <!-- DML of AYS_PERMISSION -->
         <!-- ===================== -->
         <insert tableName="AYS_PERMISSION">
             <column name="ID" value="363b995b-16bc-4ba2-9ea0-0a878d70eb3c"/>
@@ -17,19 +17,19 @@
             <column name="CREATED_AT" valueDate="now()"/>
         </insert>
         <!-- ===================== -->
-        <!-- DDL of AYS_PERMISSION -->
+        <!-- DML of AYS_PERMISSION -->
         <!-- ===================== -->
 
 
         <!-- =================================== -->
-        <!-- DDL of AYS_ROLE_PERMISSION_RELATION -->
+        <!-- DML of AYS_ROLE_PERMISSION_RELATION -->
         <!-- =================================== -->
         <insert tableName="AYS_ROLE_PERMISSION_RELATION">
             <column name="ROLE_ID" value="d931b241-9f05-41f6-b8b5-bc88aa327994"/>
             <column name="PERMISSION_ID" value="363b995b-16bc-4ba2-9ea0-0a878d70eb3c"/>
         </insert>
         <!-- =================================== -->
-        <!-- DDL of AYS_ROLE_PERMISSION_RELATION -->
+        <!-- DML of AYS_ROLE_PERMISSION_RELATION -->
         <!-- =================================== -->
     </changeSet>
 

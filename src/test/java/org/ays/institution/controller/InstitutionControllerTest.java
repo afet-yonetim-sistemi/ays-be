@@ -1,8 +1,6 @@
 package org.ays.institution.controller;
 
 import org.ays.AysRestControllerTest;
-import org.ays.auth.model.request.AysUserListRequest;
-import org.ays.auth.model.request.AysUserListRequestBuilder;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageBuilder;
 import org.ays.common.model.response.AysErrorResponse;
@@ -17,7 +15,6 @@ import org.ays.institution.model.request.InstitutionListRequest;
 import org.ays.institution.model.request.InstitutionListRequestBuilder;
 import org.ays.institution.model.response.InstitutionsResponse;
 import org.ays.institution.model.response.InstitutionsSummaryResponse;
-import org.ays.institution.service.InstitutionReadService;
 import org.ays.institution.service.InstitutionService;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
@@ -31,9 +28,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.List;
 
 class InstitutionControllerTest extends AysRestControllerTest {
-
-    @MockitoBean
-    private InstitutionReadService institutionReadService;
 
     @MockitoBean
     private InstitutionService institutionService;
@@ -61,7 +55,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
         AysPage<Institution> mockInstitutionPage = AysPageBuilder
                 .from(mockInstitutions, mockListRequest.getPageable());
 
-        Mockito.when(institutionReadService.findAll(Mockito.any(InstitutionListRequest.class)))
+        Mockito.when(institutionService.findAll(Mockito.any(InstitutionListRequest.class)))
                 .thenReturn(mockInstitutionPage);
 
         // Then
@@ -84,7 +78,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(institutionReadService, Mockito.times(1))
+        Mockito.verify(institutionService, Mockito.times(1))
                 .findAll(Mockito.any(InstitutionListRequest.class));
     }
 
@@ -120,7 +114,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
                         .isNotEmpty());
 
         // Verify
-        Mockito.verify(institutionReadService, Mockito.never())
+        Mockito.verify(institutionService, Mockito.never())
                 .findAll(Mockito.any(InstitutionListRequest.class));
     }
 
@@ -145,7 +139,7 @@ class InstitutionControllerTest extends AysRestControllerTest {
                         .doesNotExist());
 
         // Verify
-        Mockito.verify(institutionReadService, Mockito.never())
+        Mockito.verify(institutionService, Mockito.never())
                 .findAll(Mockito.any(InstitutionListRequest.class));
     }
 

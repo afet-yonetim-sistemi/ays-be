@@ -23,10 +23,6 @@ import java.util.Set;
  * <p>
  * When converting to a {@link Specification}, it combines the criteria using logical AND operations.
  * </p>
- *
- * @see InstitutionEntity
- * @see AysFilter
- * @see Specification
  */
 @Getter
 @Setter
@@ -72,7 +68,6 @@ public class InstitutionFilter implements AysFilter {
         }
 
         return specification;
-
     }
 
 }

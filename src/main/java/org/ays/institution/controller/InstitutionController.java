@@ -11,7 +11,6 @@ import org.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponse
 import org.ays.institution.model.request.InstitutionListRequest;
 import org.ays.institution.model.response.InstitutionsResponse;
 import org.ays.institution.model.response.InstitutionsSummaryResponse;
-import org.ays.institution.service.InstitutionReadService;
 import org.ays.institution.service.InstitutionService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,16 +29,15 @@ import java.util.List;
 class InstitutionController {
 
     private final InstitutionService institutionService;
-    private final InstitutionReadService institutionReadService;
 
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
     private final InstitutionToInstitutionsResponseMapper institutionToInstitutionsResponseMapper = InstitutionToInstitutionsResponseMapper.initialize();
 
     /**
-     * POST /institutions : Retrieve all institutions based on the provided filtering and pagination criteria.
+     * Retrieve all institutions based on the provided filtering and pagination criteria.
      * <p>
      * This endpoint handles the retrieval of institutions based on the filtering and pagination criteria
-     * provided in {@link InstitutionListRequest}. The user must have the 'institution:list' authority to access this endpoint.
+     * provided in {@link InstitutionListRequest}. The user must have a authority to access this endpoint.
      * </p>
      *
      * @param request the request object containing filtering and pagination criteria.
@@ -49,7 +47,7 @@ class InstitutionController {
     @PreAuthorize("hasAnyAuthority('institution:list')")
     public AysResponse<AysPageResponse<InstitutionsResponse>> findAll(@RequestBody @Valid InstitutionListRequest request) {
 
-        AysPage<Institution> pageOfInstitutions = institutionReadService.findAll(request);
+        AysPage<Institution> pageOfInstitutions = institutionService.findAll(request);
 
         final AysPageResponse<InstitutionsResponse> pageOfInstitutionsResponse = AysPageResponse.<InstitutionsResponse>builder()
                 .of(pageOfInstitutions)

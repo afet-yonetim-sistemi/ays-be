@@ -7,6 +7,8 @@ import lombok.experimental.SuperBuilder;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.enums.InstitutionStatus;
 
+import java.time.LocalDateTime;
+
 /**
  * Institution Domain Model to perform data transfer from service layer to controller
  */
@@ -20,4 +22,6 @@ public class Institution extends BaseDomainModel {
     private String name;
     private String feUrl;
     private InstitutionStatus status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

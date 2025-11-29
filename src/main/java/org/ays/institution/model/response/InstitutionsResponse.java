@@ -2,6 +2,7 @@ package org.ays.institution.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.ays.institution.model.enums.InstitutionStatus;
 
 import java.time.LocalDateTime;
 
@@ -18,5 +19,8 @@ public class InstitutionsResponse {
 
     private String id;
     private String name;
+    private InstitutionStatus status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

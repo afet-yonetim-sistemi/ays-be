@@ -64,11 +64,11 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
                 .map(InstitutionFilter::toSpecification)
                 .orElse(Specification.allOf());
 
-        final Page<InstitutionEntity> institutionEntitysPage = institutionRepository.findAll(specification, pageable);
+        final Page<InstitutionEntity> pageOfInstitutionEntities = institutionRepository.findAll(specification, pageable);
 
-        final List<Institution> institutions = institutionEntityToDomainMapper.map(institutionEntitysPage.getContent());
+        final List<Institution> institutions = institutionEntityToDomainMapper.map(pageOfInstitutionEntities.getContent());
 
-        return AysPage.of(filter, institutionEntitysPage, institutions);
+        return AysPage.of(filter, pageOfInstitutionEntities, institutions);
     }
 
     /**
