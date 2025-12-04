@@ -76,7 +76,9 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.firstContent("status")
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
-                        .exists());
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("updatedAt")
+                        .isEmpty());
     }
 
     @Test

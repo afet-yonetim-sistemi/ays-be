@@ -64,7 +64,7 @@ class InstitutionServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidListRequest_whenInstitutionsNotFound_thenReturnAysPageOfInstitutions() {
+    void givenValidListRequest_whenInstitutionsNotFound_thenReturnAysPageWithoutInstitutions() {
 
         // Given
         InstitutionListRequest mockListRequest = new InstitutionListRequestBuilder()

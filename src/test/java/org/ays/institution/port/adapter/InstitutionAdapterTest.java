@@ -160,6 +160,38 @@ class InstitutionAdapterTest extends AysUnitTest {
                 .findAllByStatusOrderByNameAsc(mockStatus);
     }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    void givenValidAysPageableAndFilter_whenInstitutionsNotFound_thenReturnEmptyPage() {
+
+        // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+
+        InstitutionFilter mockFilter = new InstitutionFilterBuilder()
+                .withName("NonExisting")
+                .withStatuses(Set.of(InstitutionStatus.ACTIVE))
+                .build();
+
+        // When
+        Page<InstitutionEntity> mockEmptyPage = new PageImpl<>(Collections.emptyList());
+        Mockito.when(institutionRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockEmptyPage);
+
+        AysPage<Institution> mockEmptyInstitutionsPage = AysPageBuilder.from(Collections.emptyList(), mockAysPageable, mockFilter);
+
+        // Then
+        AysPage<Institution> institutionsPage = institutionAdapter.findAll(mockAysPageable, mockFilter);
+
+        AysPageBuilder.assertEquals(mockEmptyInstitutionsPage, institutionsPage);
+
+        // Verify
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
+
 
     @Test
     void givenValidId_whenActiveInstitutionExist_thenReturnTrue() {
