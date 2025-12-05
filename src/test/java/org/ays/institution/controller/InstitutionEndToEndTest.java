@@ -4,6 +4,7 @@ import org.ays.AysEndToEndTest;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.model.enums.InstitutionStatus;
@@ -16,6 +17,8 @@ import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -33,24 +36,27 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
     private static final String INSTITUTION_BASE_PATH = "/api/institution/v1";
     private static final String LANDING_BASE_PATH = "/api/landing/v1";
 
-    @Test
-    void givenValidInstitutionListRequest_whenInstitutionsFoundForSuperAdmin_thenReturnAysPageResponseOfInstitutionsResponse() throws Exception {
+    @ParameterizedTest
+    @MethodSource("mockStatuses")
+    void givenValidInstitutionListRequest_whenInstitutionsFoundForSuperAdmin_thenReturnAysPageResponseOfInstitutionsResponse(InstitutionStatus mockStatus) throws Exception {
 
         // Initialize
+        String institutionName = AysRandomUtil.generateText(10).concat(" Derneği");
+
         institutionSavePort.save(
                 new InstitutionBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withName("Afet Derneği")
-                        .withStatus(InstitutionStatus.ACTIVE)
+                        .withName(institutionName)
+                        .withStatus(mockStatus)
                         .build()
         );
 
         // Given
         InstitutionListRequest listRequest = new InstitutionListRequestBuilder()
                 .withValidValues()
-                .withName("Afet Derneği")
-                .withStatuses(Set.of(InstitutionStatus.ACTIVE))
+                .withName(institutionName)
+                .withStatuses(Set.of(mockStatus))
                 .build();
 
         // Then
@@ -133,4 +139,11 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
                         .isNotEmpty());
     }
 
+    private static List<InstitutionStatus> mockStatuses() {
+        return List.of(
+                InstitutionStatus.ACTIVE,
+                InstitutionStatus.PASSIVE,
+                InstitutionStatus.DELETED
+        );
+    }
 }
