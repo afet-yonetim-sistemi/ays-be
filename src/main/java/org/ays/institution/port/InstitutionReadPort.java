@@ -1,6 +1,9 @@
 package org.ays.institution.port;
 
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageable;
 import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionFilter;
 import org.ays.institution.model.enums.InstitutionStatus;
 
 import java.util.List;
@@ -15,6 +18,15 @@ import java.util.Optional;
  * </p>
  */
 public interface InstitutionReadPort {
+
+    /**
+     * Finds all institutions with pagination and optional filtering.
+     *
+     * @param aysPageable the pagination configuration
+     * @param filter      the filter for institutions
+     * @return a paginated list of institutions
+     */
+    AysPage<Institution> findAll(AysPageable aysPageable, InstitutionFilter filter);
 
     /**
      * Retrieves a {@link Institution} by its ID.
