@@ -1,7 +1,10 @@
 package org.ays.institution.port.adapter;
 
 import lombok.RequiredArgsConstructor;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageable;
 import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionFilter;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.enums.InstitutionStatus;
 import org.ays.institution.model.mapper.InstitutionEntityToDomainMapper;
@@ -9,6 +12,9 @@ import org.ays.institution.model.mapper.InstitutionToEntityMapper;
 import org.ays.institution.port.InstitutionReadPort;
 import org.ays.institution.port.InstitutionSavePort;
 import org.ays.institution.repository.InstitutionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +42,34 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
 
     private final InstitutionEntityToDomainMapper institutionEntityToDomainMapper = InstitutionEntityToDomainMapper.initialize();
     private final InstitutionToEntityMapper institutionToEntityMapper = InstitutionToEntityMapper.initialize();
+
+    /**
+     * Finds all institutions with pagination and optional filtering.
+     * <p>
+     * This method uses the provided {@link AysPageable} for pagination and {@link InstitutionFilter} for filtering.
+     * It returns a paginated list of {@link Institution} domain models.
+     * </p>
+     *
+     * @param aysPageable the pagination configuration
+     * @param filter      the filter for institutions
+     * @return a paginated list of institutions
+     */
+    @Override
+    public AysPage<Institution> findAll(AysPageable aysPageable, InstitutionFilter filter) {
+
+        final Pageable pageable = aysPageable.toPageable();
+
+        final Specification<InstitutionEntity> specification = Optional
+                .ofNullable(filter)
+                .map(InstitutionFilter::toSpecification)
+                .orElse(Specification.allOf());
+
+        final Page<InstitutionEntity> pageOfInstitutionEntities = institutionRepository.findAll(specification, pageable);
+
+        final List<Institution> institutions = institutionEntityToDomainMapper.map(pageOfInstitutionEntities.getContent());
+
+        return AysPage.of(filter, pageOfInstitutionEntities, institutions);
+    }
 
     /**
      * Retrieves an {@link Institution} by its ID.

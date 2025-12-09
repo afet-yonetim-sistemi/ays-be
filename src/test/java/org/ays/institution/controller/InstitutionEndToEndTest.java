@@ -1,21 +1,34 @@
 package org.ays.institution.controller;
 
 import org.ays.AysEndToEndTest;
+import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
+import org.ays.common.model.response.AysResponseBuilder;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.model.enums.InstitutionStatus;
 import org.ays.institution.model.mapper.InstitutionToInstitutionsSummaryResponseMapper;
+import org.ays.institution.model.request.InstitutionListRequest;
+import org.ays.institution.model.request.InstitutionListRequestBuilder;
+import org.ays.institution.model.response.InstitutionsResponse;
 import org.ays.institution.model.response.InstitutionsSummaryResponse;
+import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
+import java.util.Set;
 
 class InstitutionEndToEndTest extends AysEndToEndTest {
 
+    @Autowired
+    private InstitutionSavePort institutionSavePort;
 
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
@@ -23,6 +36,64 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
     private static final String INSTITUTION_BASE_PATH = "/api/institution/v1";
     private static final String LANDING_BASE_PATH = "/api/landing/v1";
 
+    @ParameterizedTest
+    @MethodSource("mockStatuses")
+    void givenValidInstitutionListRequest_whenInstitutionsFoundForSuperAdmin_thenReturnAysPageResponseOfInstitutionsResponse(InstitutionStatus mockStatus) throws Exception {
+
+        // Initialize
+        String institutionName = AysRandomUtil.generateText(10).concat(" Derneği");
+
+        institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName(institutionName)
+                        .withStatus(mockStatus)
+                        .build()
+        );
+
+        // Given
+        InstitutionListRequest listRequest = new InstitutionListRequestBuilder()
+                .withValidValues()
+                .withName(institutionName)
+                .withStatuses(Set.of(mockStatus))
+                .build();
+
+        // Then
+        String endpoint = INSTITUTION_BASE_PATH.concat("/institutions");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminToken.getAccessToken(), listRequest);
+
+        AysResponse<AysPageResponse<InstitutionsResponse>> mockResponse = AysResponseBuilder.successPage();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.content()
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.contentSize()
+                        .value(1))
+                .andExpect(AysMockResultMatchersBuilders.firstContent("id")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("name")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("status")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("createdAt")
+                        .exists())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("updatedAt")
+                        .isEmpty());
+    }
+
+    private static List<InstitutionStatus> mockStatuses() {
+        return List.of(
+                InstitutionStatus.ACTIVE,
+                InstitutionStatus.PASSIVE,
+                InstitutionStatus.DELETED
+        );
+    }
 
     @Test
     void whenActiveInstitutionsExist_thenReturnInstitutionSummaryResponses() throws Exception {
@@ -75,5 +146,4 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
     }
-
 }

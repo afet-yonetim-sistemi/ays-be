@@ -2,9 +2,15 @@ package org.ays.institution.port.adapter;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysUnitTest;
+import org.ays.common.model.AysPage;
+import org.ays.common.model.AysPageBuilder;
+import org.ays.common.model.AysPageable;
+import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
+import org.ays.institution.model.InstitutionFilter;
+import org.ays.institution.model.InstitutionFilterBuilder;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.ays.institution.model.enums.InstitutionStatus;
@@ -16,9 +22,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 class InstitutionAdapterTest extends AysUnitTest {
 
@@ -32,6 +43,77 @@ class InstitutionAdapterTest extends AysUnitTest {
     private final InstitutionEntityToDomainMapper institutionEntityToDomainMapper = InstitutionEntityToDomainMapper.initialize();
     private final InstitutionToEntityMapper institutionToEntityMapper = InstitutionToEntityMapper.initialize();
 
+    @Test
+    @SuppressWarnings("unchecked")
+    void givenValidAysPageableWithoutFilter_whenInstitutionsFound_thenReturnInstitutionsPage() {
+
+        // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+        InstitutionFilter mockFilter = new InstitutionFilterBuilder().build();
+
+        // When
+        List<InstitutionEntity> mockEntities = List.of(
+                new InstitutionEntityBuilder()
+                        .withValidValues()
+                        .build()
+        );
+        Page<InstitutionEntity> mockEntitiesPage = new PageImpl<>(mockEntities);
+        Mockito.when(institutionRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockEntitiesPage);
+
+        List<Institution> mockInstitutions = institutionEntityToDomainMapper.map(mockEntities);
+        AysPage<Institution> mockInstitutionsPage = AysPageBuilder.from(mockInstitutions, mockAysPageable, mockFilter);
+
+        // Then
+        AysPage<Institution> institutionsPage = institutionAdapter.findAll(mockAysPageable, mockFilter);
+
+        AysPageBuilder.assertEquals(mockInstitutionsPage, institutionsPage);
+
+        // Verify
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void givenValidAysPageableAndFilter_whenInstitutionsFound_thenReturnInstitutionsPage() {
+
+        // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+        InstitutionFilter mockFilter = new InstitutionFilterBuilder()
+                .withName("Dernek")
+                .withStatuses(Set.of(InstitutionStatus.ACTIVE))
+                .build();
+
+        // When
+        List<InstitutionEntity> mockInstitutionEntities = List.of(
+                new InstitutionEntityBuilder()
+                        .withValidValues()
+                        .withStatus(InstitutionStatus.ACTIVE)
+                        .build()
+        );
+        Page<InstitutionEntity> mockInstitutionEntitiesPage = new PageImpl<>(mockInstitutionEntities);
+        Mockito.when(institutionRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockInstitutionEntitiesPage);
+
+        List<Institution> mockInstitutions = institutionEntityToDomainMapper.map(mockInstitutionEntities);
+        AysPage<Institution> mockInstitutionsPage = AysPageBuilder.from(mockInstitutions, mockAysPageable, mockFilter);
+
+        // Then
+        AysPage<Institution> institutionsPage = institutionAdapter.findAll(mockAysPageable, mockFilter);
+
+        AysPageBuilder.assertEquals(mockInstitutionsPage, institutionsPage);
+
+        // Verify
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+    }
 
     @Test
     void givenActiveInstitutionStatus_whenActiveInstitutionsExist_thenReturnInstitutions() {
@@ -76,6 +158,38 @@ class InstitutionAdapterTest extends AysUnitTest {
         // Verify
         Mockito.verify(institutionRepository, Mockito.times(1))
                 .findAllByStatusOrderByNameAsc(mockStatus);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void givenValidAysPageableAndFilter_whenInstitutionsNotFound_thenReturnEmptyPage() {
+
+        // Given
+        AysPageable mockAysPageable = new AysPageableBuilder()
+                .withValidValues()
+                .withoutOrders()
+                .build();
+
+        InstitutionFilter mockFilter = new InstitutionFilterBuilder()
+                .withName("NonExisting")
+                .withStatuses(Set.of(InstitutionStatus.ACTIVE))
+                .build();
+
+        // When
+        Page<InstitutionEntity> mockEmptyPage = new PageImpl<>(Collections.emptyList());
+        Mockito.when(institutionRepository.findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .thenReturn(mockEmptyPage);
+
+        AysPage<Institution> mockEmptyInstitutionsPage = AysPageBuilder.from(Collections.emptyList(), mockAysPageable, mockFilter);
+
+        // Then
+        AysPage<Institution> institutionsPage = institutionAdapter.findAll(mockAysPageable, mockFilter);
+
+        AysPageBuilder.assertEquals(mockEmptyInstitutionsPage, institutionsPage);
+
+        // Verify
+        Mockito.verify(institutionRepository, Mockito.times(1))
+                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
 
 
