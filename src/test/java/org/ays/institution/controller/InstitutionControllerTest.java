@@ -104,6 +104,29 @@ class InstitutionControllerTest extends AysRestControllerTest {
                 .findAll(Mockito.any(InstitutionListRequest.class));
     }
 
+    private static List<Set<InstitutionStatus>> mockStatuses() {
+        Set<InstitutionStatus> all = Set.of(
+                InstitutionStatus.ACTIVE,
+                InstitutionStatus.PASSIVE,
+                InstitutionStatus.DELETED
+        );
+        Set<InstitutionStatus> actives = Set.of(
+                InstitutionStatus.ACTIVE
+        );
+        Set<InstitutionStatus> passives = Set.of(
+                InstitutionStatus.PASSIVE
+        );
+        Set<InstitutionStatus> deleted = Set.of(
+                InstitutionStatus.DELETED
+        );
+        return List.of(
+                all,
+                actives,
+                passives,
+                deleted
+        );
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "Test Foundation 1234",
@@ -253,28 +276,5 @@ class InstitutionControllerTest extends AysRestControllerTest {
         // Verify
         Mockito.verify(institutionService, Mockito.times(1))
                 .getSummaryOfActiveInstitutions();
-    }
-
-    private static List<Set<InstitutionStatus>> mockStatuses() {
-        Set<InstitutionStatus> all = Set.of(
-                InstitutionStatus.ACTIVE,
-                InstitutionStatus.PASSIVE,
-                InstitutionStatus.DELETED
-        );
-        Set<InstitutionStatus> actives = Set.of(
-                InstitutionStatus.ACTIVE
-        );
-        Set<InstitutionStatus> passives = Set.of(
-                InstitutionStatus.PASSIVE
-        );
-        Set<InstitutionStatus> deleted = Set.of(
-                InstitutionStatus.DELETED
-        );
-        return List.of(
-                all,
-                actives,
-                passives,
-                deleted
-        );
     }
 }

@@ -87,6 +87,14 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
                         .isEmpty());
     }
 
+    private static List<InstitutionStatus> mockStatuses() {
+        return List.of(
+                InstitutionStatus.ACTIVE,
+                InstitutionStatus.PASSIVE,
+                InstitutionStatus.DELETED
+        );
+    }
+
     @Test
     void whenActiveInstitutionsExist_thenReturnInstitutionSummaryResponses() throws Exception {
 
@@ -137,13 +145,5 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
-    }
-
-    private static List<InstitutionStatus> mockStatuses() {
-        return List.of(
-                InstitutionStatus.ACTIVE,
-                InstitutionStatus.PASSIVE,
-                InstitutionStatus.DELETED
-        );
     }
 }
