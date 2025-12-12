@@ -402,14 +402,17 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "",
+            "Gönüllü#,Rolu",
             "  Kurum yöneticisi",
             "!Kurum",
             "12Kurum",
             "J----",
-            "City--King",
-            "John  Doe",
+            "City-,King",
             "A",
             "% fsdh     ",
+            "#$½%",
+            "         ",
+            "123Gönüllü",
             "493268349068342",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
     })
@@ -612,15 +615,17 @@ class AysRoleControllerTest extends AysRestControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "",
-            "A",
-            " Role",
-            "Role ",
-            "123Role",
+            "Gönüllü#,Rolu",
+            "  Kurum yöneticisi",
+            "!Kurum",
+            "12Kurum",
             "J----",
-            "City--King",
-            "John  Doe",
-            ".Role",
+            "City-,King",
+            "A",
             "% fsdh     ",
+            "#$½%",
+            "         ",
+            "123Gönüllü",
             "493268349068342",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
     })
