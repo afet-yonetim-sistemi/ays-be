@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.ays.common.util.validation.Role;
+import org.ays.common.util.validation.RoleName;
 import org.hibernate.validator.constraints.UUID;
 
 import java.util.Set;
@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 public class AysRoleUpdateRequest {
 
-    @Role
+    @RoleName
     @NotBlank
     @Size(min = 2, max = 255)
     private String name;

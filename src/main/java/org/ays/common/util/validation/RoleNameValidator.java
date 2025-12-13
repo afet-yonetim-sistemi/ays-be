@@ -5,13 +5,13 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
 /**
- * Validator implementation for the {@link Role} annotation.
+ * Validator implementation for the {@link RoleName} annotation.
  * <p>
  * This validator ensures that role names adhere to a strict formatting standard.
  * The validation includes checks for:
  * </p>
  */
-class RoleValidator implements ConstraintValidator<Role, String> {
+class RoleNameValidator implements ConstraintValidator<RoleName, String> {
 
     /**
      * Regular expression defining the valid structure of a role name.
@@ -28,7 +28,7 @@ class RoleValidator implements ConstraintValidator<Role, String> {
 
 
     /**
-     * A custom validator implementation for the {@link Role} annotation.
+     * A custom validator implementation for the {@link RoleName} annotation.
      * <p>
      * This validator checks whether the provided role name satisfies a set of
      * structural and formatting rules defined by a regular expression and several
@@ -61,7 +61,7 @@ class RoleValidator implements ConstraintValidator<Role, String> {
      * constraint violation message indicating the specific rule that was violated.
      * </p>
      *
-     * @see Role
+     * @see RoleName
      * @see ConstraintValidator
      */
     @Override
