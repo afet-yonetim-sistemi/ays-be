@@ -32,42 +32,54 @@ import java.util.List;
 /**
  * Spring Security configuration class for the application.
  * <p>
- * This class configures and customizes web security using Spring Security. It sets up exception handling, CORS,
- * CSRF, session management, and custom filters to secure application endpoints. The configuration is designed
+ * This class configures and customizes web security using Spring Security. It
+ * sets up exception handling, CORS,
+ * CSRF, session management, and custom filters to secure application endpoints.
+ * The configuration is designed
  * for stateless environments, making it ideal for REST APIs.
  * </p>
  * <p>
  * <strong>Key Components:</strong>
  * <ul>
- *   <li>
- *     <strong>Exception Handling:</strong> Configures a custom authentication entry point to handle unauthorized access.
- *   </li>
- *   <li>
- *     <strong>CORS Configuration:</strong> Sets up Cross-Origin Resource Sharing via a {@link CorsConfigurationSource}.
- *     When the "cors" profile is active, it uses restrictive settings based on external properties; otherwise, it applies
- *     a permissive configuration.
- *   </li>
- *   <li>
- *     <strong>CSRF Protection:</strong> Disabled to support stateless session management.
- *   </li>
- *   <li>
- *     <strong>Authorization Rules:</strong> Permits public access to specific endpoints (e.g., GET requests on "/public/**")
- *     and requires authentication for all other requests.
- *   </li>
- *   <li>
- *     <strong>Session Management:</strong> Configures stateless session management, ensuring that no HTTP sessions are maintained.
- *   </li>
- *   <li>
- *     <strong>Custom Filters:</strong> Integrates custom filters for audit logging, rate limiting, and bearer token authentication.
- *     These filters are added before the default {@link BearerTokenAuthenticationFilter} to ensure proper processing.
- *   </li>
- *   <li>
- *     <strong>Password Encoding:</strong> Declares a bean for password encoding using {@link BCryptPasswordEncoder}.
- *   </li>
+ * <li>
+ * <strong>Exception Handling:</strong> Configures a custom authentication entry
+ * point to handle unauthorized access.
+ * </li>
+ * <li>
+ * <strong>CORS Configuration:</strong> Sets up Cross-Origin Resource Sharing
+ * via a {@link CorsConfigurationSource}.
+ * When the "cors" profile is active, it uses restrictive settings based on
+ * external properties; otherwise, it applies
+ * a permissive configuration.
+ * </li>
+ * <li>
+ * <strong>CSRF Protection:</strong> Disabled to support stateless session
+ * management.
+ * </li>
+ * <li>
+ * <strong>Authorization Rules:</strong> Permits public access to specific
+ * endpoints (e.g., GET requests on "/public/**")
+ * and requires authentication for all other requests.
+ * </li>
+ * <li>
+ * <strong>Session Management:</strong> Configures stateless session management,
+ * ensuring that no HTTP sessions are maintained.
+ * </li>
+ * <li>
+ * <strong>Custom Filters:</strong> Integrates custom filters for audit logging,
+ * rate limiting, and bearer token authentication.
+ * These filters are added before the default
+ * {@link BearerTokenAuthenticationFilter} to ensure proper processing.
+ * </li>
+ * <li>
+ * <strong>Password Encoding:</strong> Declares a bean for password encoding
+ * using {@link BCryptPasswordEncoder}.
+ * </li>
  * </ul>
  * </p>
  * <p>
- * This centralized configuration ensures that all security aspects of the application are managed consistently and efficiently.
+ * This centralized configuration ensures that all security aspects of the
+ * application are managed consistently and efficiently.
  * </p>
  *
  * @see HttpSecurity
@@ -87,7 +99,8 @@ import java.util.List;
 class SecurityConfiguration {
 
     /**
-     * Returns a new instance of the {@link RegisterSessionAuthenticationStrategy} class that
+     * Returns a new instance of the {@link RegisterSessionAuthenticationStrategy}
+     * class that
      * registers the session authentication strategy with the session registry.
      *
      * @return the new instance of {@link SessionAuthenticationStrategy}
@@ -102,39 +115,47 @@ class SecurityConfiguration {
      * <p>
      * This method sets up HTTP security by configuring:
      * <ul>
-     *   <li>Exception handling with a custom authentication entry point.</li>
-     *   <li>CORS settings using the provided {@link CorsConfigurationSource}.</li>
-     *   <li>CSRF disablement.</li>
-     *   <li>Authorization rules that permit public access to specific endpoints and require authentication for all other requests.</li>
-     *   <li>Stateless session management.</li>
-     *   <li>Custom filters for audit logging, rate limiting, and bearer token authentication, which are added before the default {@link BearerTokenAuthenticationFilter}.</li>
+     * <li>Exception handling with a custom authentication entry point.</li>
+     * <li>CORS settings using the provided {@link CorsConfigurationSource}.</li>
+     * <li>CSRF disablement.</li>
+     * <li>Authorization rules that permit public access to specific endpoints and
+     * require authentication for all other requests.</li>
+     * <li>Stateless session management.</li>
+     * <li>Custom filters for audit logging, rate limiting, and bearer token
+     * authentication, which are added before the default
+     * {@link BearerTokenAuthenticationFilter}.</li>
      * </ul>
      * </p>
      *
      * <p>
      * <strong>Security Note:</strong>
-     * CSRF protection is deliberately disabled because the API is stateless and uses header-based JWT.
+     * CSRF protection is deliberately disabled because the API is stateless and
+     * uses header-based JWT.
      * No session cookies are used.
      * Re-enable CSRF if cookie-based auth or browser forms are introduced.
      * <p>
      *
-     * @param httpSecurity                    the {@link HttpSecurity} instance for configuring web-based security
+     * @param httpSecurity                    the {@link HttpSecurity} instance for
+     *                                        configuring web-based security
      * @param auditLogFilter                  the custom filter for audit logging
      * @param rateLimitFilter                 the custom filter for rate limiting
-     * @param bearerTokenAuthenticationFilter the custom filter for bearer token authentication
-     * @param customAuthenticationEntryPoint  the entry point to handle authentication errors
+     * @param bearerTokenAuthenticationFilter the custom filter for bearer token
+     *                                        authentication
+     * @param customAuthenticationEntryPoint  the entry point to handle
+     *                                        authentication errors
      * @param corsConfigurationSource         the CORS configuration source
      * @return a fully configured {@link SecurityFilterChain} instance
-     * @throws Exception if an error occurs during the configuration of the security filter chain
+     * @throws Exception if an error occurs during the configuration of the security
+     *                   filter chain
      */
     @Bean
     @SuppressWarnings("java:S4502")
     SecurityFilterChain filterChain(final HttpSecurity httpSecurity,
-                                    final AysAuditLogFilter auditLogFilter,
-                                    final AysRateLimitFilter rateLimitFilter,
-                                    final AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
-                                    final AysAuthenticationEntryPoint customAuthenticationEntryPoint,
-                                    final CorsConfigurationSource corsConfigurationSource)
+            final AysAuditLogFilter auditLogFilter,
+            final AysRateLimitFilter rateLimitFilter,
+            final AysBearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
+            final AysAuthenticationEntryPoint customAuthenticationEntryPoint,
+            final CorsConfigurationSource corsConfigurationSource)
             throws Exception {
 
         httpSecurity
@@ -145,12 +166,16 @@ class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/authentication/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/authentication/password/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/institution/v1/admin-registration-application/*/summary").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/institution/v1/admin-registration-application/*/complete").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/landing/v1/emergency-evacuation-application").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/institution/v1/admin-registration-application/*/summary")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/institution/v1/admin-registration-application/*/complete")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/landing/v1/emergency-evacuation-application")
+                        .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/landing/v1/institutions/summary").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers(HttpMethod.POST, "/api/mobile/v1/user/register").permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(auditLogFilter, BearerTokenAuthenticationFilter.class)
                 .addFilterBefore(rateLimitFilter, BearerTokenAuthenticationFilter.class)
@@ -160,15 +185,21 @@ class SecurityConfiguration {
     }
 
     /**
-     * Configures and returns a {@link CorsConfigurationSource} bean when the "cors" profile is active.
+     * Configures and returns a {@link CorsConfigurationSource} bean when the "cors"
+     * profile is active.
      * <p>
-     * This configuration uses properties defined in {@link CorsEndpointProperties} to set the allowed origins
-     * and headers. The allowed HTTP methods are explicitly set to GET, POST, PUT, PATCH, DELETE, and OPTIONS.
-     * Credentials are not allowed (set to false). The configuration is applied to all paths (/**).
+     * This configuration uses properties defined in {@link CorsEndpointProperties}
+     * to set the allowed origins
+     * and headers. The allowed HTTP methods are explicitly set to GET, POST, PUT,
+     * PATCH, DELETE, and OPTIONS.
+     * Credentials are not allowed (set to false). The configuration is applied to
+     * all paths (/**).
      * </p>
      *
-     * @param corsEndpointProperties the properties object containing CORS configuration values
-     * @return a {@link CorsConfigurationSource} configured with the specified CORS settings
+     * @param corsEndpointProperties the properties object containing CORS
+     *                               configuration values
+     * @return a {@link CorsConfigurationSource} configured with the specified CORS
+     *         settings
      */
     @Profile("cors")
     @Bean(name = "corsConfigurationSource")
@@ -182,8 +213,7 @@ class SecurityConfiguration {
                 HttpMethod.PUT.name(),
                 HttpMethod.PATCH.name(),
                 HttpMethod.DELETE.name(),
-                HttpMethod.OPTIONS.name()
-        );
+                HttpMethod.OPTIONS.name());
         configuration.setAllowedMethods(allowedMethods);
         configuration.setAllowedHeaders(corsEndpointProperties.getAllowedHeaders());
         configuration.setAllowCredentials(false);
@@ -193,19 +223,24 @@ class SecurityConfiguration {
     }
 
     /**
-     * Configures and returns a {@link CorsConfigurationSource} bean when the "cors" profile is not active.
+     * Configures and returns a {@link CorsConfigurationSource} bean when the "cors"
+     * profile is not active.
      * <p>
-     * This configuration is permissive, allowing all origins, methods, and headers (each set to "*"),
+     * This configuration is permissive, allowing all origins, methods, and headers
+     * (each set to "*"),
      * with credentials disabled. The configuration is applied to all paths (/**).
      * </p>
      *
      * <p>
-     * <strong>Security Note:</strong> This permissive CORS configuration is intended for local development environments.
-     * It is not recommended for production use due to potential security risks associated with allowing unrestricted
+     * <strong>Security Note:</strong> This permissive CORS configuration is
+     * intended for local development environments.
+     * It is not recommended for production use due to potential security risks
+     * associated with allowing unrestricted
      * cross-origin requests.
      * </p>
      *
-     * @return a {@link CorsConfigurationSource} configured with permissive CORS settings
+     * @return a {@link CorsConfigurationSource} configured with permissive CORS
+     *         settings
      */
     @Profile("!cors")
     @Bean(name = "corsConfigurationSource")
@@ -222,7 +257,8 @@ class SecurityConfiguration {
     }
 
     /**
-     * Returns a new instance of the {@link BCryptPasswordEncoder} class that sets up the password encoder
+     * Returns a new instance of the {@link BCryptPasswordEncoder} class that sets
+     * up the password encoder
      * for the application.
      *
      * @return the new instance of {@link PasswordEncoder}
