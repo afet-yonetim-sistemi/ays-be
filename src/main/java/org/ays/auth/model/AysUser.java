@@ -206,11 +206,6 @@ public class AysUser extends BaseDomainModel {
         claimsBuilder.add(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
         claimsBuilder.add(AysTokenClaims.USER_PERMISSIONS.getValue(), this.getPermissionNames());
 
-
-        if (this.loginAttempt != null && this.loginAttempt.lastLoginAt != null) {
-            claimsBuilder.add(AysTokenClaims.USER_LAST_LOGIN_AT.getValue(), this.loginAttempt.lastLoginAt.toString());
-        }
-
         return claimsBuilder.build();
     }
 

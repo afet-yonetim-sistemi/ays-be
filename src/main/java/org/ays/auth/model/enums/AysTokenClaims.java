@@ -13,13 +13,9 @@ public enum AysTokenClaims {
 
     TYPE("typ"),
     USER_ID("userId"),
-    USERNAME("username"),
-    USER_TYPE("userType"),
-    USER_CITY("userCity"),
     USER_PERMISSIONS("userPermissions"),
     USER_FIRST_NAME("userFirstName"),
     USER_LAST_NAME("userLastName"),
-    USER_LAST_LOGIN_AT("userLastLoginAt"),
     INSTITUTION_ID("institutionId"),
     INSTITUTION_NAME("institutionName"),
     ISSUED_AT("iat"),
