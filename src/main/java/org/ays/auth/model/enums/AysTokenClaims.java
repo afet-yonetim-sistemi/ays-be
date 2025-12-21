@@ -13,9 +13,6 @@ public enum AysTokenClaims {
 
     TYPE("typ"),
     USER_ID("userId"),
-    USERNAME("username"),
-    USER_TYPE("userType"),
-    USER_CITY("userCity"),
     USER_PERMISSIONS("userPermissions"),
     USER_FIRST_NAME("userFirstName"),
     USER_LAST_NAME("userLastName"),
