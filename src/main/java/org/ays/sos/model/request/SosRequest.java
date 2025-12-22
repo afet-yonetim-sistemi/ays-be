@@ -21,4 +21,6 @@ public class SosRequest {
     @NotNull(message = "Longitude is required")
     private Double longitude;
 
+    private String message;
+
 }

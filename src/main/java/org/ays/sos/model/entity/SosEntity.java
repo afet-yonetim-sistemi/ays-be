@@ -43,6 +43,9 @@ public class SosEntity extends BaseEntity {
     @Column(name = "LAST_NAME")
     private String lastName;
 
+    @Column(name = "MESSAGE")
+    private String message;
+
     @Column(name = "LATITUDE")
     private Double latitude;
 

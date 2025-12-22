@@ -36,6 +36,7 @@ public class SosService {
                 .userId(aysIdentity.getUserId())
                 .firstName(firstName)
                 .lastName(lastName)
+                .message(sosRequest.getMessage())
                 .latitude(sosRequest.getLatitude())
                 .longitude(sosRequest.getLongitude())
                 .build();

@@ -23,8 +23,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Adapter class implementing both {@link AysUserReadPort} and {@link AysUserSavePort} interfaces.
- * Retrieves {@link AysUser} entities from the repository, saves {@link AysUser} entities to the database,
+ * Adapter class implementing both {@link AysUserReadPort} and
+ * {@link AysUserSavePort} interfaces.
+ * Retrieves {@link AysUser} entities from the repository, saves {@link AysUser}
+ * entities to the database,
  * and maps between domain models and entity models.
  */
 @Component
@@ -34,16 +36,16 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
     private final AysUserRepository userRepository;
 
-
     private final AysUserToEntityMapper userToEntityMapper = AysUserToEntityMapper.initialize();
     private final AysUserEntityToDomainMapper userEntityToDomainMapper = AysUserEntityToDomainMapper.initialize();
-    private final AysUserEntityToDomainWithoutRelationsMapper userEntityToDomainWithoutRelationsMapper = AysUserEntityToDomainWithoutRelationsMapper.initialize();
-
+    private final AysUserEntityToDomainWithoutRelationsMapper userEntityToDomainWithoutRelationsMapper = AysUserEntityToDomainWithoutRelationsMapper
+            .initialize();
 
     /**
      * Finds all users with pagination and optional filtering.
      * <p>
-     * This method uses the provided {@link AysPageable} for pagination and {@link AysUserFilter} for filtering.
+     * This method uses the provided {@link AysPageable} for pagination and
+     * {@link AysUserFilter} for filtering.
      * It returns a paginated list of {@link AysUser} domain models.
      * </p>
      *
@@ -65,7 +67,6 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
         return AysPage.of(filter, userEntitysPage, users);
     }
 
-
     /**
      * Retrieves an {@link AysUser} by its ID.
      *
@@ -77,7 +78,6 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
         Optional<AysUserEntity> userEntity = userRepository.findById(id);
         return userEntity.map(userEntityToDomainMapper::map);
     }
-
 
     /**
      * Retrieves an {@link AysUser} by its email address.
@@ -91,7 +91,6 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
         return userEntity.map(userEntityToDomainMapper::map);
     }
 
-
     /**
      * Checks if a user with the given email address exists in the repository.
      *
@@ -103,35 +102,35 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
         return userRepository.existsByEmailAddress(emailAddress);
     }
 
-
     /**
-     * Finds a user by their phone number, which is a concatenation of country code and line number.
+     * Finds a user by their phone number, which is a concatenation of country code
+     * and line number.
      *
-     * @param phoneNumber the concatenated phone number (country code + line number) of the user to be found
-     * @return an optional containing the {@link AysUser} with the given phone number, or an empty optional if not found
+     * @param phoneNumber the concatenated phone number (country code + line number)
+     *                    of the user to be found
+     * @return an optional containing the {@link AysUser} with the given phone
+     *         number, or an empty optional if not found
      */
     @Override
     public Optional<AysUser> findByPhoneNumber(AysPhoneNumber phoneNumber) {
         Optional<AysUserEntity> userEntity = userRepository.findByCountryCodeAndLineNumber(
                 phoneNumber.getCountryCode(),
-                phoneNumber.getLineNumber()
-        );
+                phoneNumber.getLineNumber());
         return userEntity.map(userEntityToDomainMapper::map);
     }
-
 
     /**
      * Finds a user by their password ID.
      *
      * @param passwordId the ID of the password to search for.
-     * @return an Optional containing the found user, or empty if no user was found with the given password ID.
+     * @return an Optional containing the found user, or empty if no user was found
+     *         with the given password ID.
      */
     @Override
     public Optional<AysUser> findByPasswordId(final String passwordId) {
         Optional<AysUserEntity> userEntity = userRepository.findByPasswordId(passwordId);
         return userEntity.map(userEntityToDomainMapper::map);
     }
-
 
     /**
      * Checks if a user with the given phone number exists in the repository.
@@ -143,10 +142,8 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
     public boolean existsByPhoneNumber(final AysPhoneNumber phoneNumber) {
         return userRepository.existsByCountryCodeAndLineNumber(
                 phoneNumber.getCountryCode(),
-                phoneNumber.getLineNumber()
-        );
+                phoneNumber.getLineNumber());
     }
-
 
     /**
      * Saves an {@link AysUser} to the database.

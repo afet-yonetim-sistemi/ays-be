@@ -25,6 +25,9 @@
             <column name="LAST_NAME" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
+            <column name="MESSAGE" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
             <column name="LATITUDE" type="DOUBLE">
                 <constraints nullable="false"/>
             </column>
