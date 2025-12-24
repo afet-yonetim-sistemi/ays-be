@@ -43,7 +43,19 @@ public class SosService {
                 .build();
 
         SosEntity savedEntity = sosRepository.save(sosEntity);
-        messagingTemplate.convertAndSend("/topic/sos", savedEntity);
+
+        org.ays.sos.model.response.SosResponse response = org.ays.sos.model.response.SosResponse.builder()
+                .id(savedEntity.getId())
+                .userId(savedEntity.getUserId())
+                .firstName(savedEntity.getFirstName())
+                .lastName(savedEntity.getLastName())
+                .message(savedEntity.getMessage())
+                .latitude(savedEntity.getLatitude())
+                .longitude(savedEntity.getLongitude())
+                .createdAt(savedEntity.getCreatedAt().toInstant(java.time.ZoneOffset.UTC).toEpochMilli())
+                .build();
+
+        messagingTemplate.convertAndSend("/topic/sos", response);
     }
 
 }
