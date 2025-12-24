@@ -2,8 +2,8 @@ services:
   database:
     container_name: database
     image: mysql:8.4.0
-#    platform: linux/x86_64     # for Intel Chips with WSL2 Enabled
-#    platform: linux/arm64/v8    # for Mac Silicon Chips
+    #    platform: linux/x86_64     # for Intel Chips with WSL2 Enabled
+    #    platform: linux/arm64/v8    # for Mac Silicon Chips
     restart: always
     environment:
       MYSQL_DATABASE: ays
@@ -25,7 +25,10 @@ services:
     ports:
       - "9790:9790"
     environment:
-      - AYS_DB_WRITER_INSTANCE_IP=host.docker.internal
-      - AYS_DB_READER_INSTANCE_IP=host.docker.internal
+      - AYS_DB_WRITER_INSTANCE_IP=database
+      - AYS_DB_WRITER_INSTANCE_PORT=3306
+      - AYS_DB_READER_INSTANCE_IP=database
+      - AYS_DB_READER_INSTANCE_PORT=3306
+      - AYS_CORS_ALLOWED_ORIGINS=https://ays.github.rocks,http://localhost:3000,https://api.ays.github.rocks
     depends_on:
       - database
