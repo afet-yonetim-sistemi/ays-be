@@ -5,6 +5,7 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
     <changeSet id="8-ays-ddl" author="ays">
+        <validCheckSum>9:b14b126bf3f95630d8687f9c68ceca60</validCheckSum>
         <!-- ============== -->
         <!-- DDL of AYS_SOS -->
         <!-- ============== -->
