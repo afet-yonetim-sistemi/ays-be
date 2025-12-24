@@ -204,13 +204,7 @@ public class AysUser extends BaseDomainModel {
         claimsBuilder.add(AysTokenClaims.USER_ID.getValue(), this.id);
         claimsBuilder.add(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claimsBuilder.add(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        claimsBuilder.add(AysTokenClaims.USER_EMAIL_ADDRESS.getValue(), this.emailAddress);
         claimsBuilder.add(AysTokenClaims.USER_PERMISSIONS.getValue(), this.getPermissionNames());
-
-
-        if (this.loginAttempt != null && this.loginAttempt.lastLoginAt != null) {
-            claimsBuilder.add(AysTokenClaims.USER_LAST_LOGIN_AT.getValue(), this.loginAttempt.lastLoginAt.toString());
-        }
 
         return claimsBuilder.build();
     }
