@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ays.common.model.response.AysResponse;
 import org.ays.sos.model.request.SosRequest;
+import org.ays.sos.model.response.SosCreateResponse;
 import org.ays.sos.service.SosService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -26,13 +27,16 @@ class SosController {
      * This endpoint is accessible to authenticated mobile users only.
      *
      * @param sosRequest the SOS request containing the user's location
-     * @return a response indicating the success of the operation
+     * @return a response containing the created SOS ID
      */
     @PostMapping("/api/mobile/v1/sos")
     @PreAuthorize("isAuthenticated()")
-    public AysResponse<Void> createSos(@RequestBody @Valid SosRequest sosRequest) {
-        sosService.create(sosRequest);
-        return AysResponse.success();
+    public AysResponse<SosCreateResponse> createSos(@RequestBody @Valid SosRequest sosRequest) {
+        String sosId = sosService.create(sosRequest);
+        SosCreateResponse response = SosCreateResponse.builder()
+                .sosId(sosId)
+                .build();
+        return AysResponse.successOf(response);
     }
 
 }
