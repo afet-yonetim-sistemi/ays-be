@@ -1,5 +1,8 @@
 server:
   port: 9790
+  tomcat:
+    max-http-post-size: 10MB
+    max-swallow-size: 10MB
 
 logging:
   level:
