@@ -49,7 +49,8 @@ public class SosMessageEntity extends BaseEntity {
     @Column(name = "MESSAGE")
     private String message;
 
-    @Column(name = "IMAGE_URL")
+    @jakarta.persistence.Lob
+    @Column(name = "IMAGE_URL", columnDefinition = "MEDIUMTEXT")
     private String imageUrl;
 
     @ManyToOne

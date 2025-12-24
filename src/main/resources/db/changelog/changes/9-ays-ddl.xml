@@ -28,7 +28,7 @@
             <column name="MESSAGE" type="TEXT">
                 <constraints nullable="true"/>
             </column>
-            <column name="IMAGE_URL" type="TEXT">
+            <column name="IMAGE_URL" type="MEDIUMTEXT">
                 <constraints nullable="true"/>
             </column>
             <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
