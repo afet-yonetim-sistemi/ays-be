@@ -42,4 +42,9 @@ public class AdminRegistrationApplicationCompleteRequestBuilder extends TestData
         return this;
     }
 
+    public AdminRegistrationApplicationCompleteRequestBuilder withCity(String city) {
+        data.setCity(city);
+        return this;
+    }
+
 }

@@ -495,6 +495,57 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysUserCreateRequest.class));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Ankara",
+            "İstanbul",
+            "Kadıköy",
+            "İst",
+            "St. Luis",
+            "New York CityName",
+            "An.kara",
+            "An-kara",
+            "An,kara",
+            "An-ka.ra",
+            "An-ka-ra",
+            "An - kara",
+            "Anka ra",
+            "An .kara",
+            "An'kara",
+            "An",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed"
+    })
+    void givenUserCreateRequest_whenUserCreatedWithValidCity_thenReturnSuccess(String mockCity) throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withCity(mockCity)
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(userCreateService)
+                .create(Mockito.any(AysUserCreateRequest.class));
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.times(1))
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
     @Test
     void givenValidUserCreateRequest_whenUserUnauthorized_thenReturnAccessDeniedException() throws Exception {
 
@@ -705,6 +756,47 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysUserCreateRequest.class));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Anka..ra",
+            "Ankara-",
+            "Ankara,",
+            "Ank@ra",
+            "12365",
+            "Ankara06",
+            "Bur#sa",
+            "26Eskisehir",
+            " ",
+            " Kastamonu",
+            "Antalya ",
+            "A",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into"
+    })
+    void givenUserCreateRequest_whenCityNotValid_thenReturnValidationError(String mockCity) throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withCity(mockCity)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
 
     @ParameterizedTest
     @ValueSource(strings = {
@@ -751,6 +843,59 @@ class AysUserControllerTest extends AysRestControllerTest {
 
         // Verify
         Mockito.verify(userUpdateService, Mockito.times(1))
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Ankara",
+            "İstanbul",
+            "Kadıköy",
+            "İst",
+            "St. Luis",
+            "New York CityName",
+            "An.kara",
+            "An-kara",
+            "An,kara",
+            "An-ka.ra",
+            "An-ka-ra",
+            "An - kara",
+            "Anka ra",
+            "An .kara",
+            "An'kara",
+            "An",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed"
+    })
+    void givenValidIdAndUserUpdateRequest_whenUserUpdatedWithValidCity_thenReturnSuccess(String mockCity) throws Exception {
+
+        // Given
+        String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withCity(mockCity)
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(userUpdateService)
+                .update(Mockito.any(), Mockito.any(AysUserUpdateRequest.class));
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/")
+                .concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(userUpdateService)
                 .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
     }
 
@@ -1003,6 +1148,49 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Anka..ra",
+            "Ankara-",
+            "Ankara,",
+            "Ank@ra",
+            "12365",
+            "Ankara06",
+            "Bur#sa",
+            "26Eskisehir",
+            " ",
+            " Kastamonu",
+            "Antalya ",
+            "A",
+            "One morning, when Gregor Samsa woke from troubled dreams , he found himself transformed in his bed into"
+    })
+    void givenValidIdAndInvalidUserUpdateRequest_whenCityNotValid_thenReturnValidationError(String mockCity) throws Exception {
+        // Given
+        String mockId = "b66afcb0-3029-4968-a87b-e1d94fc75642";
+
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withCity(mockCity)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/")
+                .concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
 
     @Test
     void givenValidId_whenActivateUser_thenReturnSuccess() throws Exception {
