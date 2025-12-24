@@ -64,6 +64,7 @@ public class SosService {
                     .senderType(SenderType.USER)
                     .senderId(aysIdentity.getUserId())
                     .message(sosRequest.getMessage())
+                    .messageType(MessageType.TEXT)
                     .build();
             sosMessageRepository.save(messageEntity);
         }
