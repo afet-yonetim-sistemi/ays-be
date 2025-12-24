@@ -1,9 +1,7 @@
 services:
   database:
     container_name: database
-    image: mysql:8.4.0
-#    platform: linux/x86_64     # for Intel Chips with WSL2 Enabled
-#    platform: linux/arm64/v8    # for Mac Silicon Chips
+    image: mysql:8.4.7
     restart: always
     environment:
       MYSQL_DATABASE: ays
@@ -16,6 +14,8 @@ services:
       - ./docker/mysql:/var/lib/mysql
     ports:
       - "3307:3306"
+    networks:
+      - ays-network
   application:
     build:
       context: .
@@ -25,7 +25,15 @@ services:
     ports:
       - "9790:9790"
     environment:
-      - AYS_DB_WRITER_INSTANCE_IP=host.docker.internal
-      - AYS_DB_READER_INSTANCE_IP=host.docker.internal
+      - AYS_DB_WRITER_INSTANCE_IP=database
+      - AYS_DB_WRITER_INSTANCE_PORT=3306
+      - AYS_DB_READER_INSTANCE_IP=database
+      - AYS_DB_READER_INSTANCE_PORT=3306
+    networks:
+      - ays-network
     depends_on:
       - database
+
+networks:
+  ays-network:
+    driver: bridge
