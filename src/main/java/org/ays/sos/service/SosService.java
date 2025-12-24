@@ -20,6 +20,7 @@ public class SosService {
 
     private final SosRepository sosRepository;
     private final AysIdentity aysIdentity;
+    private final org.springframework.messaging.simp.SimpMessagingTemplate messagingTemplate;
 
     /**
      * Create a new SOS emergency request with the user's current location.
@@ -41,7 +42,8 @@ public class SosService {
                 .longitude(sosRequest.getLongitude())
                 .build();
 
-        sosRepository.save(sosEntity);
+        SosEntity savedEntity = sosRepository.save(sosEntity);
+        messagingTemplate.convertAndSend("/topic/sos", savedEntity);
     }
 
 }
