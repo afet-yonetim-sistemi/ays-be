@@ -206,7 +206,7 @@ class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationActiveSource(final CorsEndpointProperties corsEndpointProperties) {
 
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(corsEndpointProperties.getAllowedOrigins());
+        configuration.setAllowedOriginPatterns(corsEndpointProperties.getAllowedOrigins());
         final List<String> allowedMethods = List.of(
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
@@ -216,7 +216,7 @@ class SecurityConfiguration {
                 HttpMethod.OPTIONS.name());
         configuration.setAllowedMethods(allowedMethods);
         configuration.setAllowedHeaders(corsEndpointProperties.getAllowedHeaders());
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true);
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -247,10 +247,10 @@ class SecurityConfiguration {
     @SuppressWarnings("java:S5122")
     CorsConfigurationSource corsConfigurationNotActiveSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true);
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
