@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ays.sos.model.enums.MessageType;
 
 /**
  * Request DTO for creating a new SOS message.
@@ -20,5 +21,10 @@ public class SosMessageRequest {
 
     @Size(max = 10000000, message = "Image data is too large")
     private String imageUrl;
+
+    @Size(max = 10000000, message = "Audio data is too large")
+    private String audioUrl;
+
+    private MessageType messageType;
 
 }

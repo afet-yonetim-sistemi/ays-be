@@ -17,6 +17,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.sos.model.enums.SenderType;
+import org.ays.sos.model.enums.MessageType;
 
 /**
  * A JPA entity class that represents a message in an SOS chat conversation.
@@ -52,6 +53,14 @@ public class SosMessageEntity extends BaseEntity {
     @jakarta.persistence.Lob
     @Column(name = "IMAGE_URL", columnDefinition = "MEDIUMTEXT")
     private String imageUrl;
+
+    @jakarta.persistence.Lob
+    @Column(name = "AUDIO_URL", columnDefinition = "MEDIUMTEXT")
+    private String audioUrl;
+
+    @Column(name = "MESSAGE_TYPE")
+    @Enumerated(EnumType.STRING)
+    private MessageType messageType;
 
     @ManyToOne
     @JoinColumn(name = "SOS_ID", insertable = false, updatable = false)

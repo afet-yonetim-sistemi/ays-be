@@ -22,6 +22,8 @@ public class SosMessageResponse {
     private String senderId;
     private String message;
     private String imageUrl;
+    private String audioUrl;
+    private String messageType;
     private Long createdAt;
 
 }

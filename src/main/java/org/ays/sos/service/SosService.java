@@ -12,6 +12,7 @@ import org.ays.sos.model.response.SosMessageResponse;
 import org.ays.sos.model.response.SosResponse;
 import org.ays.sos.repository.SosMessageRepository;
 import org.ays.sos.repository.SosRepository;
+import org.ays.sos.model.enums.MessageType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -112,6 +113,10 @@ public class SosService {
                 .senderId(aysIdentity.getUserId())
                 .message(request.getMessage())
                 .imageUrl(request.getImageUrl())
+                .audioUrl(request.getAudioUrl())
+                .messageType(request.getMessageType() != null ? request.getMessageType()
+                        : (request.getAudioUrl() != null ? MessageType.AUDIO
+                                : (request.getImageUrl() != null ? MessageType.IMAGE : MessageType.TEXT)))
                 .build();
 
         SosMessageEntity savedMessage = sosMessageRepository.save(messageEntity);
@@ -132,6 +137,8 @@ public class SosService {
                 .senderId(entity.getSenderId())
                 .message(entity.getMessage())
                 .imageUrl(entity.getImageUrl())
+                .audioUrl(entity.getAudioUrl())
+                .messageType(entity.getMessageType() != null ? entity.getMessageType().name() : MessageType.TEXT.name())
                 .createdAt(entity.getCreatedAt().toInstant(ZoneOffset.UTC).toEpochMilli())
                 .build();
     }
