@@ -175,6 +175,7 @@ class SecurityConfiguration {
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/landing/v1/institutions/summary").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/mobile/v1/user/register").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(auditLogFilter, BearerTokenAuthenticationFilter.class)
