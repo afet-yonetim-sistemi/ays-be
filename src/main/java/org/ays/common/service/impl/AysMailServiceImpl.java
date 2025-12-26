@@ -90,10 +90,15 @@ class AysMailServiceImpl implements AysMailService {
         return mimeMessage;
     }
 
-    private String findTemplate(AysMailTemplate template) throws IOException {
-        ClassPathResource resource = new ClassPathResource("mail/template/" + template.getFile());
-        byte[] binaryData = FileCopyUtils.copyToByteArray(resource.getInputStream());
-        return new String(binaryData, StandardCharsets.UTF_8);
+    private String findTemplate(final AysMailTemplate template) throws IOException {
+        final ClassPathResource classPathResource = new ClassPathResource(
+                "/mail/template/" + template.getFile(),
+                AysMailServiceImpl.class.getClassLoader()
+        );
+        return new String(
+                FileCopyUtils.copyToByteArray(classPathResource.getInputStream()),
+                StandardCharsets.UTF_8
+        );
     }
 
     private String findTitle(String htmlContent) {
