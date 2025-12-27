@@ -510,13 +510,13 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "A",
             "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into"
     })
-    void givenInvalidAdminRegisterApplicationCompleteRequests_whenCityNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
+    void givenAdminRegisterApplicationCompleteRequestWithInvalidCity_whenCityIsInvalid_thenReturnValidationError(String mockCity) throws Exception {
 
         // Given
         String mockId = "f423facc-36fe-4615-a68d-f7f1fe5cd860";
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
-                .withCity(invalidName)
+                .withCity(mockCity)
                 .build();
 
         // Then

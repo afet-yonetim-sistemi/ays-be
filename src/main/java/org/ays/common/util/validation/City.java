@@ -9,12 +9,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to validate cities using {@link CityNameValidator}.
+ * Annotation to validate cities using {@link CityValidator}.
  */
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CityNameValidator.class)
-public @interface CityName {
+@Constraint(validatedBy = CityValidator.class)
+public @interface City {
 
     /**
      * Returns the error message when city is not valid.

@@ -5,11 +5,11 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
 /**
- * A custom validator implementation for the {@link CityName} annotation.
+ * A custom validator implementation for the {@link City} annotation.
  * Validates whether the provided city name is a valid city name based on the
  * specified regular expression.
  */
-class CityNameValidator implements ConstraintValidator<CityName, String> {
+class CityValidator implements ConstraintValidator<City, String> {
 
     /**
      * Regular expression defining the valid structure of a city name.
@@ -41,7 +41,7 @@ class CityNameValidator implements ConstraintValidator<CityName, String> {
      * <p><b>Examples of invalid city names:</b></p>
      * <ul>
      *   <li>12345</li>
-     *   <li>New*CityName</li>
+     *   <li>New*City</li>
      *   <li>A</li>
      *   <li>Saint--Louis</li>
      *   <li>Los  Angele</li>
@@ -62,8 +62,7 @@ class CityNameValidator implements ConstraintValidator<CityName, String> {
         boolean hasLeadingOrTrailingWhitespace = !value.equals(value.trim());
         if (hasLeadingOrTrailingWhitespace) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                            "city must not start or end with whitespace")
+            context.buildConstraintViolationWithTemplate("city must not start or end with whitespace")
                     .addConstraintViolation();
             return false;
         }
@@ -72,8 +71,7 @@ class CityNameValidator implements ConstraintValidator<CityName, String> {
                 .isEmpty();
         if (containsOnlyWhitespace) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                            "city cannot be only whitespace")
+            context.buildConstraintViolationWithTemplate("city cannot be only whitespace")
                     .addConstraintViolation();
             return false;
         }
@@ -82,8 +80,7 @@ class CityNameValidator implements ConstraintValidator<CityName, String> {
                 .allMatch(Character::isDigit);
         if (containsOnlyDigits) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                            "city cannot consist only of digits")
+            context.buildConstraintViolationWithTemplate("city cannot consist only of digits")
                     .addConstraintViolation();
             return false;
         }
@@ -95,8 +92,7 @@ class CityNameValidator implements ConstraintValidator<CityName, String> {
 
         if (containsOnlySpecialCharacters) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                            "city cannot consist only of special characters")
+            context.buildConstraintViolationWithTemplate("city cannot consist only of special characters")
                     .addConstraintViolation();
             return false;
         }
@@ -104,8 +100,7 @@ class CityNameValidator implements ConstraintValidator<CityName, String> {
         boolean matchesFormat = value.matches(CITY_REGEX);
         if (!matchesFormat) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                            "city format is invalid")
+            context.buildConstraintViolationWithTemplate("city format is invalid")
                     .addConstraintViolation();
             return false;
         }
