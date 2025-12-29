@@ -8,21 +8,18 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.auth.model.entity.AysRoleEntity;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.AysFilter;
-import org.ays.common.util.validation.Name;
+import org.ays.common.util.validation.RoleNameFilter;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import java.util.Set;
 
 /**
- * Filter criteria for querying roles in the application.
+ * Encapsulates filter criteria for querying {@link AysRoleEntity}.
  * <p>
- * The {@link AysRoleFilter} class allows the construction of dynamic query specifications
- * for roles, based on the provided filter parameters. It implements the {@link AysFilter} interface,
- * which requires the implementation of the {@link AysRoleFilter#toSpecification()} method.
- * </p>
- * <p>
- * This filter supports filtering by role name and statuses. When converting to a
- * {@link Specification}, it combines the criteria for name and statuses using logical AND operations.
+ * This class constructs a dynamic JPA {@link Specification} based on fields
+ * like role name, status, and institution ID. It ensures that queries are
+ * built efficiently and securely.
  * </p>
  *
  * @see AysRoleEntity
@@ -34,22 +31,33 @@ import java.util.Set;
 @Builder
 public class AysRoleFilter implements AysFilter {
 
-    @Name
+    /**
+     * The name of the role to search for.
+     * <p>
+     * This field supports partial matching and is case-insensitive.
+     * Leading and trailing whitespaces are trimmed before the query is constructed.
+     * Validated by {@link RoleNameFilter} to ensure it meets the application's naming standards.
+     * </p>
+     */
+    @RoleNameFilter
     @Size(min = 2, max = 255)
     private String name;
     private Set<AysRoleStatus> statuses;
     private String institutionId;
 
     /**
-     * Converts the current filter criteria into a {@link Specification} for querying roles.
+     * Converts the current filter criteria into a JPA {@link Specification}.
      * <p>
-     * This method builds a {@link Specification} based on the filter properties. It uses
-     * the role name for partial matching (case-insensitive) and filters by the provided
-     * role statuses. If no statuses are specified, this criterion is not included in the
-     * final specification.
+     * This method constructs a dynamic query with the following logic:
+     * <ul>
+     * <li><b>Institution ID:</b> exact match (Always applied).</li>
+     * <li><b>Name:</b> case-insensitive partial match with trimmed input. Applied only if text is present.</li>
+     * <li><b>Statuses:</b> efficient clause. Applied only if the set is not empty.</li>
+     * </ul>
+     * All conditions are combined using the operator.
      * </p>
      *
-     * @return a {@link Specification} object representing the query criteria based on the current filter.
+     * @return a {@link Specification} representing the query criteria.
      */
     @Override
     public Specification<AysRoleEntity> toSpecification() {
@@ -59,18 +67,21 @@ public class AysRoleFilter implements AysFilter {
         specification = specification.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("institutionId"), this.institutionId));
 
-        if (this.name != null) {
-            specification = specification.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(criteriaBuilder.upper(root.get("name")), "%" + this.name.toUpperCase() + "%"));
+        if (StringUtils.hasText(this.name)) {
+            String searchKey = this.name.trim();
+
+            if (StringUtils.hasText(searchKey)) {
+                specification = specification.and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.like(
+                                criteriaBuilder.upper(root.get("name")),
+                                "%" + searchKey.toUpperCase() + "%"
+                        ));
+            }
         }
 
         if (!CollectionUtils.isEmpty(this.statuses)) {
-
-            Specification<AysRoleEntity> statusSpecification = this.statuses.stream()
-                    .map(status -> (Specification<AysRoleEntity>) (root, query, criteriaBuilder) ->
-                            criteriaBuilder.equal(root.get("status"), status))
-                    .reduce(Specification::or)
-                    .orElse(null);
+            Specification<AysRoleEntity> statusSpecification = (root, query, criteriaBuilder) ->
+                    root.get("status").in(this.statuses);
 
             specification = specification.and(statusSpecification);
         }
