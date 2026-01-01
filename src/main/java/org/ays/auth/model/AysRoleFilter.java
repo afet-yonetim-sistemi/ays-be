@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 import java.util.Set;
 
 /**
- * Encapsulates filter criteria for querying {@link AysRoleEntity}.
+ * Filter criteria for querying roles.
  * <p>
  * This class constructs a dynamic JPA {@link Specification} based on fields
  * like role name, status, and institution ID. It ensures that queries are

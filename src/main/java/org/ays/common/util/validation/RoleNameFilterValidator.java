@@ -80,28 +80,15 @@ class RoleNameFilterValidator implements ConstraintValidator<RoleNameFilter, Str
     }
 
     /**
-     * Checks if the given string contains two consecutive characters that are
-     * considered "special" (not a letter, not a digit, and not whitespace).
+     * Checks whether the given text contains any consecutive special characters
+     * (non-alphanumeric and non-whitespace characters).
      *
-     * @param value the string to check
-     * @return true if consecutive special characters are found, false otherwise.
+     * @param text the input string to check for consecutive special characters
+     * @return true if the text contains consecutive special characters, false otherwise
      */
-    private boolean hasConsecutiveSpecialCharacters(String value) {
-        boolean lastWasSpecial = false;
-
-        for (char ch : value.toCharArray()) {
-            boolean isSpecial = !Character.isLetterOrDigit(ch) && !Character.isWhitespace(ch);
-
-            if (isSpecial) {
-                if (lastWasSpecial) {
-                    return true;
-                }
-                lastWasSpecial = true;
-            } else {
-                lastWasSpecial = false;
-            }
-        }
-        return false;
+    private boolean hasConsecutiveSpecialCharacters(String text) {
+        return text.chars()
+                .anyMatch(character -> !Character.isLetterOrDigit(character) && !Character.isWhitespace(character));
     }
 
 }
