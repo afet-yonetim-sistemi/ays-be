@@ -4,6 +4,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
+import java.util.stream.IntStream;
+
 /**
  * Validator implementation for the {@link RoleNameFilter} annotation.
  */
@@ -51,14 +53,6 @@ class RoleNameFilterValidator implements ConstraintValidator<RoleNameFilter, Str
             return true;
         }
 
-        boolean containsOnlyWhitespace = value.trim().isEmpty();
-        if (containsOnlyWhitespace) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("role filter cannot be only whitespace")
-                    .addConstraintViolation();
-            return false;
-        }
-
         boolean containsOnlySpecialCharacters = value.chars()
                 .noneMatch(ch -> Character.isLetterOrDigit(ch) || Character.isWhitespace(ch));
 
@@ -80,15 +74,22 @@ class RoleNameFilterValidator implements ConstraintValidator<RoleNameFilter, Str
     }
 
     /**
-     * Checks whether the given text contains any consecutive special characters
-     * (non-alphanumeric and non-whitespace characters).
+     * Checks whether a given text contains consecutive special characters.
+     * A character is considered special if it is neither a letter, digit, nor whitespace.
+     * The method ensures that there are at least two consecutive special characters in the text.
      *
-     * @param text the input string to check for consecutive special characters
-     * @return true if the text contains consecutive special characters, false otherwise
+     * @param text the input string to check for consecutive special characters; can be null
+     * @return true if the text contains consecutive special characters, otherwise false
      */
     private boolean hasConsecutiveSpecialCharacters(String text) {
-        return text.chars()
-                .anyMatch(character -> !Character.isLetterOrDigit(character) && !Character.isWhitespace(character));
+        if (text == null || text.length() < 2) return false;
+
+        return IntStream.range(0, text.length() - 1)
+                .anyMatch(i -> isSpecial(text.charAt(i)) && isSpecial(text.charAt(i + 1)));
+    }
+
+    private boolean isSpecial(int ch) {
+        return !Character.isLetterOrDigit(ch) && !Character.isWhitespace(ch);
     }
 
 }
