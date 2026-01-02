@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
  * Validates whether the provided city name is a valid city name based on the
  * specified regular expression.
  */
-class CityValidator implements ConstraintValidator<CityForm, String> {
+class CityFormValidator implements ConstraintValidator<CityForm, String> {
 
     /**
      * Regular expression defining the valid structure of a city name.

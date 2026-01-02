@@ -9,11 +9,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to validate cities using {@link CityValidator}.
+ * Annotation to validate cities using {@link CityFormValidator}.
  */
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CityValidator.class)
+@Constraint(validatedBy = CityFormValidator.class)
 public @interface CityForm {
 
     /**
