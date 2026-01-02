@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = CityValidator.class)
-public @interface City {
+public @interface CityForm {
 
     /**
      * Returns the error message when city is not valid.

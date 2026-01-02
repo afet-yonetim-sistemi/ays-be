@@ -5,11 +5,11 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
 /**
- * A custom validator implementation for the {@link City} annotation.
+ * A custom validator implementation for the {@link CityForm} annotation.
  * Validates whether the provided city name is a valid city name based on the
  * specified regular expression.
  */
-class CityValidator implements ConstraintValidator<City, String> {
+class CityValidator implements ConstraintValidator<CityForm, String> {
 
     /**
      * Regular expression defining the valid structure of a city name.
