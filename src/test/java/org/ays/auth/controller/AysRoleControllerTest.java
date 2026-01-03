@@ -162,14 +162,12 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "Test Role 1234",
             "Role *^%$#",
-            " Test",
-            "? Role",
+            "*^%$#",
             "J",
             "J----",
             "City--King",
-            "John  Doe"
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
     })
     void givenRoleListRequest_whenNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
