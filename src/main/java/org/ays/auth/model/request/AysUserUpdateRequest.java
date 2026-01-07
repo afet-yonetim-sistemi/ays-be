@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.model.request.AysPhoneNumberRequest;
+import org.ays.common.util.validation.CityForm;
 import org.ays.common.util.validation.EmailAddress;
 import org.ays.common.util.validation.Name;
 import org.hibernate.validator.constraints.UUID;
@@ -42,7 +43,7 @@ public class AysUserUpdateRequest {
     @NotNull
     private AysPhoneNumberRequest phoneNumber;
 
-    @Name
+    @CityForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String city;
