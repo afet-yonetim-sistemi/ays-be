@@ -162,6 +162,69 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "Giriş",
+            "Admin",
+            "Administrator",
+            "A ",
+            "adm",
+            "21",
+            "- 1",
+            "&a",
+            "a26",
+            "use",
+            "Super user",
+            "project.manager",
+            "project.",
+            "Agit'in Rolü",
+            "Agit'",
+            "Admin-Acil Durum",
+            "Admin-",
+            "Acil Durum & Yönetici",
+            "Acil &",
+            "AYS | Admin",
+            "AYS |",
+            " Afet",
+            "Yönetim "
+    })
+    void givenRoleListRequest_whenNameIsValid_thenReturnAysRolesResponse(String validName) throws Exception {
+
+        // Given
+        AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
+                .withValidValues()
+                .withName(validName)
+                .build();
+
+        // When
+        List<AysRole> mockRoles = List.of(
+                new AysRoleBuilder().withValidValues().build()
+        );
+
+        AysPage<AysRole> mockRolePage = AysPageBuilder
+                .from(mockRoles, mockListRequest.getPageable());
+
+        Mockito.when(roleReadService.findAll(Mockito.any(AysRoleListRequest.class)))
+                .thenReturn(mockRolePage);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/roles");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        AysResponse<AysRolesResponse> mockResponse = AysResponse.success();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(roleReadService, Mockito.times(1))
+                .findAll(Mockito.any(AysRoleListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
             "Role *^%$#",
             "*^%$#",
             "J",
