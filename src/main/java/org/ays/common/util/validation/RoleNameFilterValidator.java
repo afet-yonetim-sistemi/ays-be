@@ -58,14 +58,14 @@ class RoleNameFilterValidator implements ConstraintValidator<RoleNameFilter, Str
 
         if (containsOnlySpecialCharacters) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("role filter cannot consist only of special characters")
+            context.buildConstraintViolationWithTemplate("role name filter cannot consist only of special characters")
                     .addConstraintViolation();
             return false;
         }
 
-        if (hasConsecutiveSpecialCharacters(value)) {
+        if (this.hasConsecutiveSpecialCharacters(value)) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("role filter cannot contain consecutive special characters")
+            context.buildConstraintViolationWithTemplate("role name filter cannot contain consecutive special characters")
                     .addConstraintViolation();
             return false;
         }
@@ -82,8 +82,6 @@ class RoleNameFilterValidator implements ConstraintValidator<RoleNameFilter, Str
      * @return true if the text contains consecutive special characters, otherwise false
      */
     private boolean hasConsecutiveSpecialCharacters(String text) {
-        if (text == null || text.length() < 2) return false;
-
         return IntStream.range(0, text.length() - 1)
                 .anyMatch(i -> isSpecial(text.charAt(i)) && isSpecial(text.charAt(i + 1)));
     }
