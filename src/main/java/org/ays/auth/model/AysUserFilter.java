@@ -9,6 +9,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysFilter;
+import org.ays.common.util.validation.CityFilter;
 import org.ays.common.util.validation.Name;
 import org.ays.common.util.validation.OnlyInteger;
 import org.springframework.data.jpa.domain.Specification;
@@ -52,7 +53,7 @@ public class AysUserFilter implements AysFilter {
 
     private Set<AysUserStatus> statuses;
 
-    @Name
+    @CityFilter
     @Size(min = 2, max = 100)
     private String city;
 
