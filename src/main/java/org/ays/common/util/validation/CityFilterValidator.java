@@ -125,8 +125,7 @@ class CityFilterValidator implements ConstraintValidator<CityFilter, String> {
                 .find();
         if (hasConsecutivePunctuation) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                            "city filter cannot contain consecutive punctuation characters")
+            context.buildConstraintViolationWithTemplate("city filter cannot contain consecutive punctuation characters")
                     .addConstraintViolation();
             return false;
         }

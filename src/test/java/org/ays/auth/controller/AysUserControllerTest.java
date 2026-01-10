@@ -70,7 +70,7 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .withValidValues()
                 .build();
 
-        //When
+        // When
         List<AysUser> mockUsers = List.of(
                 new AysUserBuilder().withValidValues().build()
         );
@@ -126,7 +126,7 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .withCity(mockCity)
                 .build();
 
-        //When
+        // When
         List<AysUser> mockUsers = List.of(
                 new AysUserBuilder().withValidValues().build()
         );
@@ -173,7 +173,6 @@ class AysUserControllerTest extends AysRestControllerTest {
             "Martin-Luther--King",
             "John  Doe"
     })
-
     void givenUserListRequest_whenFirstNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
         // Given
