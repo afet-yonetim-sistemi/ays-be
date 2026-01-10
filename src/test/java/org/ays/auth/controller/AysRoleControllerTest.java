@@ -117,49 +117,6 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .findAll();
     }
 
-    @Test
-    void givenValidRoleListRequest_whenRolesFound_thenReturnAysPageResponseOfRolesResponse() throws Exception {
-
-        // Given
-        AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
-                .withValidValues()
-                .build();
-
-        // When
-        List<AysRole> mockRoles = List.of(
-                new AysRoleBuilder().withValidValues().build()
-        );
-
-        AysPage<AysRole> mockRolePage = AysPageBuilder
-                .from(mockRoles, mockListRequest.getPageable());
-
-        Mockito.when(roleReadService.findAll(Mockito.any(AysRoleListRequest.class)))
-                .thenReturn(mockRolePage);
-
-        // Then
-        String endpoint = BASE_PATH.concat("/roles");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
-
-        List<AysRolesResponse> mockRolesResponse = roleToRolesResponseMapper.map(mockRoles);
-        AysPageResponse<AysRolesResponse> pageOfResponse = AysPageResponse.<AysRolesResponse>builder()
-                .of(mockRolePage)
-                .content(mockRolesResponse)
-                .build();
-        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponse
-                .successOf(pageOfResponse);
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isOk())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(roleReadService, Mockito.times(1))
-                .findAll(Mockito.any(AysRoleListRequest.class));
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {
             "Giriş",
@@ -186,7 +143,7 @@ class AysRoleControllerTest extends AysRestControllerTest {
             " Afet",
             "Yönetim "
     })
-    void givenRoleListRequest_whenNameIsValid_thenReturnAysRolesResponse(String validName) throws Exception {
+    void givenValidRoleListRequest_whenRolesFound_thenReturnAysPageResponseOfRolesResponse(String validName) throws Exception {
 
         // Given
         AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
@@ -210,7 +167,13 @@ class AysRoleControllerTest extends AysRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
                 .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
 
-        AysResponse<AysRolesResponse> mockResponse = AysResponse.success();
+        List<AysRolesResponse> mockRolesResponse = roleToRolesResponseMapper.map(mockRoles);
+        AysPageResponse<AysRolesResponse> pageOfResponse = AysPageResponse.<AysRolesResponse>builder()
+                .of(mockRolePage)
+                .content(mockRolesResponse)
+                .build();
+        AysResponse<AysPageResponse<AysRolesResponse>> mockResponse = AysResponse
+                .successOf(pageOfResponse);
 
         aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(AysMockResultMatchersBuilders.status()
