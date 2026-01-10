@@ -9,12 +9,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to validate names using {@link RoleNameValidator}.
+ * Annotation to validate names using {@link RoleNameFormValidator}.
  */
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = RoleNameValidator.class)
-public @interface RoleName {
+@Constraint(validatedBy = RoleNameFormValidator.class)
+public @interface RoleNameForm {
 
     /**
      * Returns the error message when name is not valid.
