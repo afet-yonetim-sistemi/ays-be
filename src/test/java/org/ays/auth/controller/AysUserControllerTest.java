@@ -107,6 +107,62 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "İstanbul",
+            "Kadıköy",
+            "İst",
+            "köy",
+            "St. Luis",
+            "Las Vegas",
+            "St.",
+            "St. -",
+            "S.",
+            ".S",
+            "Az"
+    })
+    void givenValidUserListRequest_whenUsersFoundWithValidCity_thenReturnAysPageResponseOfUsersResponse(String mockCity)  throws Exception {
+        // Given
+        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
+                .withValidValues()
+                .withCity(mockCity)
+                .build();
+
+        //When
+        List<AysUser> mockUsers = List.of(
+                new AysUserBuilder().withValidValues().build()
+        );
+
+        AysPage<AysUser> mockUserPage = AysPageBuilder
+                .from(mockUsers, mockListRequest.getPageable());
+
+        Mockito.when(userReadService.findAll(Mockito.any(AysUserListRequest.class)))
+                .thenReturn(mockUserPage);
+
+        // Then
+        String endpoint = BASE_PATH.concat("/users");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
+
+        List<AysUsersResponse> mockUsersResponse = userToUsersResponseMapper.map(mockUsers);
+        AysPageResponse<AysUsersResponse> pageOfResponse = AysPageResponse.<AysUsersResponse>builder()
+                .of(mockUserPage)
+                .content(mockUsersResponse)
+                .build();
+        AysResponse<AysPageResponse<AysUsersResponse>> mockResponse = AysResponse
+                .successOf(pageOfResponse);
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userReadService, Mockito.times(1))
+                .findAll(Mockito.any(AysUserListRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
             "Lorem ipsum dolor sit amet consectetur adipiscing elit Integer nec odio Praesent libero Sed cursus ante dapibus diam Sed nisi Nulla quis sem at nibh",
             "Test user 1234",
             "User *^%$#",
@@ -117,6 +173,7 @@ class AysUserControllerTest extends AysRestControllerTest {
             "Martin-Luther--King",
             "John  Doe"
     })
+
     void givenUserListRequest_whenFirstNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
         // Given
@@ -265,14 +322,22 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "City user 1234",
             "City *^%$#",
             " Test",
+            " S",
+            "S ",
+            "#Bolu",
+            "Bur.-sa",
+            "An4ara",
+            "Adana123",
+            "369852",
+            "#$&/",
             "? User",
             "J",
             "J----",
             "City--King",
-            "John  Doe"
+            "John  Doe",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed int"
     })
     void givenUserListRequest_whenCityDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
