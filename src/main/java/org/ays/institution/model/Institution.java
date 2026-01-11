@@ -20,4 +20,13 @@ public class Institution extends BaseDomainModel {
     private String name;
     private String feUrl;
     private InstitutionStatus status;
+
+    /**
+     * Checks if the institution's status is active.
+     *
+     * @return {@code true} if the institution's status is {@link InstitutionStatus#ACTIVE}, otherwise {@code false}.
+     */
+    public boolean isActive() {
+        return this.status == InstitutionStatus.ACTIVE;
+    }
 }
