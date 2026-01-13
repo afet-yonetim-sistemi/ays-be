@@ -27,13 +27,19 @@ import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
+import org.ays.institution.exception.AysInstitutionNotActiveAuthException;
+import org.ays.institution.model.InstitutionBuilder;
+import org.ays.institution.model.enums.InstitutionStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -300,6 +306,51 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         Mockito.verify(tokenService, Mockito.never())
                 .generate(Mockito.any(Claims.class));
+    }
+
+    @ParameterizedTest
+    @MethodSource("mockStatuses")
+    void givenValidLoginRequest_whenUserInstitutionNotActive_thenThrowInstitutionNotActiveException(InstitutionStatus mockStatus) {
+        // Given
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockLoginRequest.getEmailAddress())
+                .withValidPassword()
+                .withInstitution(new InstitutionBuilder().withValidValues().withStatus(mockStatus).build())
+                .build();
+        Mockito.when(userReadPort.findByEmailAddress(mockLoginRequest.getEmailAddress()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(true);
+
+        // Then
+        Assertions.assertThrows(
+                AysInstitutionNotActiveAuthException.class,
+                () -> userAuthService.authenticate(mockLoginRequest)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(passwordEncoder, Mockito.times(1))
+                .matches(Mockito.anyString(), Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(tokenService, Mockito.never())
+                .generate(Mockito.any(Claims.class));
+    }
+
+    private static List<InstitutionStatus> mockStatuses() {
+        return Arrays.stream(InstitutionStatus.values()).filter(status -> !status.equals(InstitutionStatus.ACTIVE)).toList();
     }
 
     @Test
