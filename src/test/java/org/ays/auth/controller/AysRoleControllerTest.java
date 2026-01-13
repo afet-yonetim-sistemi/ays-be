@@ -117,12 +117,38 @@ class AysRoleControllerTest extends AysRestControllerTest {
                 .findAll();
     }
 
-    @Test
-    void givenValidRoleListRequest_whenRolesFound_thenReturnAysPageResponseOfRolesResponse() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Giriş",
+            "Admin",
+            "Administrator",
+            "A ",
+            "adm",
+            "21",
+            "- 1",
+            "&a",
+            "a26",
+            "use",
+            "Super user",
+            "project.manager",
+            "project.",
+            "Agit'in Rolü",
+            "Agit'",
+            "Admin-Acil Durum",
+            "Admin-",
+            "Acil Durum & Yönetici",
+            "Acil &",
+            "AYS | Admin",
+            "AYS |",
+            " Afet",
+            "Yönetim "
+    })
+    void givenValidRoleListRequest_whenRolesFound_thenReturnAysPageResponseOfRolesResponse(String validName) throws Exception {
 
         // Given
         AysRoleListRequest mockListRequest = new AysRoleListRequestBuilder()
                 .withValidValues()
+                .withName(validName)
                 .build();
 
         // When
@@ -162,14 +188,12 @@ class AysRoleControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "Test Role 1234",
             "Role *^%$#",
-            " Test",
-            "? Role",
+            "*^%$#",
             "J",
             "J----",
             "City--King",
-            "John  Doe"
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec urna tincidunt fermentum."
     })
     void givenRoleListRequest_whenNameDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 

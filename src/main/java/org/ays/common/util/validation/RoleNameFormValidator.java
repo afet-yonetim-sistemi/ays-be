@@ -5,13 +5,13 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
 /**
- * Validator implementation for the {@link RoleName} annotation.
+ * Validator implementation for the {@link RoleNameForm} annotation.
  * <p>
  * This validator ensures that role names adhere to a strict formatting standard.
  * The validation includes checks for:
  * </p>
  */
-class RoleNameValidator implements ConstraintValidator<RoleName, String> {
+class RoleNameFormValidator implements ConstraintValidator<RoleNameForm, String> {
 
     /**
      * Regular expression defining the valid structure of a role name.
@@ -19,7 +19,7 @@ class RoleNameValidator implements ConstraintValidator<RoleName, String> {
      * prevents consecutive special characters, and controls the allowed character set.
      */
     private static final String ROLE_REGEX =
-            "^(?=.{2,255}$)(?i)[a-zçğıöşü](?:[ a-zçğıöşü0-9]|[.,'/\\-&|_#](?![.,'/\\-&|_#]))*[a-zçğıöşü0-9]$";
+            "^(?=.{2,255}$)(?iu)[a-zçğıöşü](?:[ a-zçğıöşü0-9]|[.,'/\\-&|_#](?![.,'/\\-&|_#]))*[a-zçğıöşü0-9]$";
 
     /**
      * Set of allowed special characters used for validation checks.
@@ -28,7 +28,7 @@ class RoleNameValidator implements ConstraintValidator<RoleName, String> {
 
 
     /**
-     * A custom validator implementation for the {@link RoleName} annotation.
+     * A custom validator implementation for the {@link RoleNameForm} annotation.
      * <p>
      * This validator checks whether the provided role name satisfies a set of
      * structural and formatting rules defined by a regular expression and several
@@ -61,7 +61,7 @@ class RoleNameValidator implements ConstraintValidator<RoleName, String> {
      * constraint violation message indicating the specific rule that was violated.
      * </p>
      *
-     * @see RoleName
+     * @see RoleNameForm
      * @see ConstraintValidator
      */
     @Override
