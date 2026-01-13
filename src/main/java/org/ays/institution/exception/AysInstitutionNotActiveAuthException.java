@@ -1,7 +1,6 @@
 package org.ays.institution.exception;
 
 import org.ays.common.exception.AysAuthException;
-import org.ays.institution.model.enums.InstitutionStatus;
 
 import java.io.Serial;
 
@@ -23,15 +22,6 @@ public final class AysInstitutionNotActiveAuthException extends AysAuthException
      */
     public AysInstitutionNotActiveAuthException(String institutionId) {
         super("institution is not active! institutionId:" + institutionId);
-    }
-
-    /**
-     * Constructs a new {@link AysInstitutionNotActiveAuthException} with the specified institution status.
-     *
-     * @param status the status of the institution that is not active.
-     */
-    public AysInstitutionNotActiveAuthException(InstitutionStatus status) {
-        super("institution is not active! currentStatus: " + status.name());
     }
 
 }
