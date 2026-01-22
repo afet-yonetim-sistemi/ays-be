@@ -33,13 +33,12 @@ import org.ays.institution.model.enums.InstitutionStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -309,7 +308,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     }
 
     @ParameterizedTest
-    @MethodSource("mockStatuses")
+    @EnumSource(value = InstitutionStatus.class, mode = EnumSource.Mode.EXCLUDE, names = {"ACTIVE"})
     void givenValidLoginRequest_whenUserInstitutionNotActive_thenThrowInstitutionNotActiveException(InstitutionStatus mockStatus) {
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
@@ -349,9 +348,6 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .generate(Mockito.any(Claims.class));
     }
 
-    private static List<InstitutionStatus> mockStatuses() {
-        return Arrays.stream(InstitutionStatus.values()).filter(status -> !status.equals(InstitutionStatus.ACTIVE)).toList();
-    }
 
     @Test
     void givenValidLoginRequest_whenUserDoesNotAccessToPage_thenThrowUserDoesNotAccessException() {
