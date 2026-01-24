@@ -1404,7 +1404,7 @@
 										"method": "GET",
 										"header": [],
 										"url": "{{API_URL}}/api/v1/landing/advert/{id}",
-										"description": "- Bu servis ilanların detaylarını görüntülememizi sağlar.\n    \n- Bu servise herkes ulaşabilir.\n    \n- Bu servis `AYS_USER` , `AYS_ADVERT` ve `AYS_ADVERT_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Kullanıcı giriş yapmamış ise `isApplied` false dönmeli, kullanıcı giriş yapmış ise detayını görüntülemek istediği ilana dana önce başvuru yapıp yapmadığı kontrol edilip ona göre cevap dönülmeli. \n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: İlana ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis ilanların detaylarını görüntülememizi sağlar.\n    \n- Bu servise herkes ulaşabilir.\n    \n- Bu servis `AYS_USER` , `AYS_ADVERT` ve `AYS_ADVERT_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Bu servis herhangi bir token almadan isteklere cevap dönebilir. Bu durumda `isApplied` alanının değeri `false` olur.\n    \n    - Token mevcut ise `Private APIs` klasörü altında aynı servis için detaylar belirtilmiştir.\n        \n\n---\n\n**İstek Parametreleri**\n\n- `id`: İlana ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
 										{
@@ -1992,7 +1992,7 @@
 										"method": "GET",
 										"header": [],
 										"url": "{{API_URL}}/api/v1/landing/advert/{id}",
-										"description": "- Bu servis ilanların detaylarını görüntülememizi sağlar.\n    \n- Bu servise herkes ulaşabilir.\n    \n- Bu servis `AYS_USER` , `AYS_ADVERT` ve `AYS_ADVERT_APPLICATION` tablosundaki verilerden yararlanır.\n    \n- Kullanıcı giriş yapmamış ise `isApplied` false dönmeli, kullanıcı giriş yapmış ise detayını görüntülemek istediği ilana dana önce başvuru yapıp yapmadığı kontrol edilip ona göre cevap dönülmeli. \n    \n\n---\n\n**İstek Parametreleri**\n\n- `id`: İlana ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
+										"description": "- Bu servis ilanların detaylarını görüntülememizi sağlar.\n    \n- Bu servise herkes ulaşabilir.\n    \n- Bu servis `AYS_USER` , `AYS_ADVERT` ve `AYS_ADVERT_APPLICATION` tablosundaki verilerden yararlanır.\n   \n- Bu servis herhangi token alarak isteklere cevap dönebilir. Bu durumda `isApplied` alanının değeri `true` olur.\n    \n    - Token mevcut değil ise `Public APIs` klasörü altında aynı servis için detaylar belirtilmiştir.\n        \n\n---\n\n**İstek Parametreleri**\n\n- `id`: İlana ait ID Bilgisi\n    \n    - UUID formatında olmalıdır."
 									},
 									"response": [
 										{
