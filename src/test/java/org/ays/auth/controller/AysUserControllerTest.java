@@ -63,48 +63,6 @@ class AysUserControllerTest extends AysRestControllerTest {
     private static final String BASE_PATH = "/api/institution/v1";
 
 
-    @Test
-    void givenValidUserListRequest_whenUsersFound_thenReturnAysPageResponseOfUsersResponse() throws Exception {
-        // Given
-        AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
-                .withValidValues()
-                .build();
-
-        // When
-        List<AysUser> mockUsers = List.of(
-                new AysUserBuilder().withValidValues().build()
-        );
-
-        AysPage<AysUser> mockUserPage = AysPageBuilder
-                .from(mockUsers, mockListRequest.getPageable());
-
-        Mockito.when(userReadService.findAll(Mockito.any(AysUserListRequest.class)))
-                .thenReturn(mockUserPage);
-
-        // Then
-        String endpoint = BASE_PATH.concat("/users");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockSuperAdminToken.getAccessToken(), mockListRequest);
-
-        List<AysUsersResponse> mockUsersResponse = userToUsersResponseMapper.map(mockUsers);
-        AysPageResponse<AysUsersResponse> pageOfResponse = AysPageResponse.<AysUsersResponse>builder()
-                .of(mockUserPage)
-                .content(mockUsersResponse)
-                .build();
-        AysResponse<AysPageResponse<AysUsersResponse>> mockResponse = AysResponse
-                .successOf(pageOfResponse);
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isOk())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .isNotEmpty());
-
-        // Verify
-        Mockito.verify(userReadService, Mockito.times(1))
-                .findAll(Mockito.any(AysUserListRequest.class));
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {
             "İstanbul",
@@ -119,7 +77,7 @@ class AysUserControllerTest extends AysRestControllerTest {
             ".S",
             "Az"
     })
-    void givenValidUserListRequest_whenUsersFoundWithValidCity_thenReturnAysPageResponseOfUsersResponse(String mockCity)  throws Exception {
+    void givenValidUserListRequest_whenUsersFound_thenReturnAysPageResponseOfUsersResponse(String mockCity) throws Exception {
         // Given
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
                 .withValidValues()
@@ -334,6 +292,7 @@ class AysUserControllerTest extends AysRestControllerTest {
             "? User",
             "J",
             "J----",
+            "Sam&sun",
             "City--King",
             "John  Doe",
             "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed int"
