@@ -31,24 +31,25 @@ public interface AysRoleEntityToDomainMapper extends BaseMapper<AysRoleEntity, A
     }
 
     /**
-     * Maps an {@link AysRoleEntity} object to an {@link AysRole} object while excluding specific fields.
-     * This mapping is primarily intended for summarizing the role information, with the "permissions" field ignored.
+     * Maps an {@link AysRoleEntity} object to an {@link AysRole} object for summary representation.
+     * This mapping excludes certain fields, such as permissions and institution.
      *
-     * @param entity the {@link AysRoleEntity} object to be mapped.
-     * @return the mapped {@link AysRole} object containing summarized role data.
+     * @param entity the {@link AysRoleEntity} to be mapped.
+     * @return an {@link AysRole} object with summarized information.
      */
     @Named("toSummary")
     @Mapping(target = "permissions", ignore = true)
-    AysRole mapForSummary(AysRoleEntity entity);
+    @Mapping(target = "institution", ignore = true)
+    AysRole mapAsSummary(AysRoleEntity entity);
 
     /**
      * Maps a list of {@link AysRoleEntity} objects to a list of {@link AysRole} objects for summary representation.
-     * This mapping excludes certain fields, such as permissions, as defined by the qualified mapping method {@code toSummary}.
+     * This mapping excludes certain fields, such as permissions and institution, to produce a summarized version.
      *
      * @param entities the list of {@link AysRoleEntity} objects to be mapped.
      * @return a list of {@link AysRole} objects with summarized information.
      */
     @IterableMapping(qualifiedByName = "toSummary")
-    List<AysRole> mapListForSummary(List<AysRoleEntity> entities);
+    List<AysRole> mapAsSummary(List<AysRoleEntity> entities);
 
 }

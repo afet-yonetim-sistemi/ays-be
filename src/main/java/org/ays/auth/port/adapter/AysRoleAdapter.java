@@ -88,7 +88,7 @@ class AysRoleAdapter implements AysRoleReadPort, AysRoleSavePort {
     @Override
     public List<AysRole> findAllActivesByInstitutionId(final String institutionId) {
         List<AysRoleEntity> roleEntities = roleRepository.findAllByInstitutionIdAndStatus(institutionId, AysRoleStatus.ACTIVE);
-        return roleEntityToDomainMapper.mapListForSummary(roleEntities);
+        return roleEntityToDomainMapper.mapAsSummary(roleEntities);
     }
 
 
