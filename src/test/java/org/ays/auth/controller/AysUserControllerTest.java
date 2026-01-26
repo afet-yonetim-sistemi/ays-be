@@ -63,14 +63,28 @@ class AysUserControllerTest extends AysRestControllerTest {
     private static final String BASE_PATH = "/api/institution/v1";
 
 
-    @Test
-    void givenValidUserListRequest_whenUsersFound_thenReturnAysPageResponseOfUsersResponse() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "İstanbul",
+            "Kadıköy",
+            "İst",
+            "köy",
+            "St. Luis",
+            "Las Vegas",
+            "St.",
+            "St. -",
+            "S.",
+            ".S",
+            "Az"
+    })
+    void givenValidUserListRequest_whenUsersFound_thenReturnAysPageResponseOfUsersResponse(String mockCity) throws Exception {
         // Given
         AysUserListRequest mockListRequest = new AysUserListRequestBuilder()
                 .withValidValues()
+                .withCity(mockCity)
                 .build();
 
-        //When
+        // When
         List<AysUser> mockUsers = List.of(
                 new AysUserBuilder().withValidValues().build()
         );
@@ -265,14 +279,23 @@ class AysUserControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "City user 1234",
             "City *^%$#",
             " Test",
+            " S",
+            "S ",
+            "#Bolu",
+            "Bur.-sa",
+            "An4ara",
+            "Adana123",
+            "369852",
+            "#$&/",
             "? User",
             "J",
             "J----",
+            "Sam&sun",
             "City--King",
-            "John  Doe"
+            "John  Doe",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed int"
     })
     void givenUserListRequest_whenCityDoesNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
