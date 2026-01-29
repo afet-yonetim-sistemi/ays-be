@@ -17,33 +17,48 @@ class AysCacheClientRedisImpl implements AysCacheClient {
 
 
     @Override
-    public Optional<String> find(final String key) {
+    public Optional<String> find(final String prefix,
+                                 final String key) {
+
+        final String keyWithPrefix = mergePrefixAndKey(prefix, key);
         return Optional.ofNullable(
-                stringRedisTemplate.opsForValue().get(key)
+                stringRedisTemplate.opsForValue().get(keyWithPrefix)
         );
     }
 
 
     @Override
-    public void put(final String key,
+    public void put(final String prefix,
+                    final String key,
                     final String value,
                     final Duration timeToLive) {
 
-        stringRedisTemplate.opsForValue().set(key, value, timeToLive);
+        final String keyWithPrefix = mergePrefixAndKey(prefix, key);
+        stringRedisTemplate.opsForValue().set(keyWithPrefix, value, timeToLive);
     }
 
 
     @Override
-    public void putAll(final Map<String, String> data,
+    public void putAll(final String prefix,
+                       final Map<String, String> data,
                        final Duration timeToLive) {
 
-        data.forEach((key, value) -> this.put(key, value, timeToLive));
+        data.forEach((key, value) -> {
+            this.put(prefix, key, value, timeToLive);
+        });
     }
 
 
     @Override
-    public void remove(final String key) {
-        stringRedisTemplate.delete(key);
+    public void remove(final String prefix,
+                       final String key) {
+
+        final String keyWithPrefix = mergePrefixAndKey(prefix, key);
+        stringRedisTemplate.delete(keyWithPrefix);
+    }
+
+    private static String mergePrefixAndKey(String prefix, String key) {
+        return prefix + ":" + key;
     }
 
 }

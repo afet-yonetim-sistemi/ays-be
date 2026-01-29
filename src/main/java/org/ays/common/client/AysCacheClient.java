@@ -6,12 +6,12 @@ import java.util.Optional;
 
 public interface AysCacheClient {
 
-    Optional<String> find(String key);
+    Optional<String> find(String prefix, String key);
 
-    void put(String key, String value, Duration timeToLive);
+    void put(String prefix, String key, String value, Duration timeToLive);
 
-    void putAll(Map<String, String> data, Duration timeToLive);
+    void putAll(String prefix, Map<String, String> data, Duration timeToLive);
 
-    void remove(String key);
+    void remove(String prefix, String key);
 
 }
