@@ -334,6 +334,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.redis</groupId>
+            <artifactId>testcontainers-redis</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.jeasy</groupId>
             <artifactId>easy-random-core</artifactId>
             <version>${easy-random-core.version}</version>
