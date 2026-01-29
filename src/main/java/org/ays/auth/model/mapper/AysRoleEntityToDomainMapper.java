@@ -3,8 +3,13 @@ package org.ays.auth.model.mapper;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.entity.AysRoleEntity;
 import org.ays.common.model.mapper.BaseMapper;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 /**
  * {@link AysRoleEntityToDomainMapper} is an interface that defines the mapping between an {@link AysRoleEntity} and an {@link AysRole}.
@@ -24,5 +29,27 @@ public interface AysRoleEntityToDomainMapper extends BaseMapper<AysRoleEntity, A
     static AysRoleEntityToDomainMapper initialize() {
         return Mappers.getMapper(AysRoleEntityToDomainMapper.class);
     }
+
+    /**
+     * Maps an {@link AysRoleEntity} object to an {@link AysRole} object for summary representation.
+     * This mapping excludes certain fields, such as permissions and institution.
+     *
+     * @param entity the {@link AysRoleEntity} to be mapped.
+     * @return an {@link AysRole} object with summarized information.
+     */
+    @Named("toSummary")
+    @Mapping(target = "permissions", ignore = true)
+    @Mapping(target = "institution", ignore = true)
+    AysRole mapAsSummary(AysRoleEntity entity);
+
+    /**
+     * Maps a list of {@link AysRoleEntity} objects to a list of {@link AysRole} objects for summary representation.
+     * This mapping excludes certain fields, such as permissions and institution, to produce a summarized version.
+     *
+     * @param entities the list of {@link AysRoleEntity} objects to be mapped.
+     * @return a list of {@link AysRole} objects with summarized information.
+     */
+    @IterableMapping(qualifiedByName = "toSummary")
+    List<AysRole> mapAsSummary(List<AysRoleEntity> entities);
 
 }
