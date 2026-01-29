@@ -29,10 +29,23 @@ services:
       - AYS_DB_WRITER_INSTANCE_PORT=3306
       - AYS_DB_READER_INSTANCE_IP=database
       - AYS_DB_READER_INSTANCE_PORT=3306
+      - AYS_CACHE_IP=cache
+      - AYS_CACHE_PORT=6379
     networks:
       - ays-network
     depends_on:
       - database
+      - cache
+  cache:
+    container_name: cache
+    image: redis:8.4.0
+    restart: on-failure
+    volumes:
+      - ./docker/redis:/data
+    ports:
+      - "6380:6379"
+    networks:
+      - ays-network
 
 networks:
   ays-network:
