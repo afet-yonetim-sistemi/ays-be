@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.validation.Name;
+import org.ays.common.util.validation.NameForm;
 import org.hibernate.validator.constraints.Range;
 
 
@@ -22,12 +23,12 @@ import org.hibernate.validator.constraints.Range;
 @Setter
 public class EmergencyEvacuationApplicationRequest {
 
-    @Name
+    @NameForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String firstName;
 
-    @Name
+    @NameForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String lastName;
@@ -65,11 +66,11 @@ public class EmergencyEvacuationApplicationRequest {
     private String targetDistrict;
 
 
-    @Name
+    @NameForm
     @Size(min = 2, max = 100)
     private String applicantFirstName;
 
-    @Name
+    @NameForm
     @Size(min = 2, max = 100)
     private String applicantLastName;
 

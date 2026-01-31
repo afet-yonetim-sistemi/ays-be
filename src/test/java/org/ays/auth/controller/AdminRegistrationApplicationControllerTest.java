@@ -364,6 +364,89 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                         .doesNotHaveJsonPath());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Su",
+            "Çağla",
+            "Robert William Floyd",
+            "Dr. Ahmet",
+            "Ahmet-Mehmet",
+            "Ahmet - Mehmet",
+            "O'Connor",
+            "ya",
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
+    })
+    void givenValidAdminRegisterRequest_whenAdminRegisteredWithValidFirstName_thenReturnSuccessResponse(String mockFirstName) throws Exception {
+
+        // Given
+        String mockId = "e8de09dc-a44e-40eb-bcc7-cf0141f8733c";
+        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues()
+                .withFirstName(mockFirstName)
+                .build();
+
+        // When
+        Mockito.doNothing().when(adminRegistrationCompleteService).complete(Mockito.anyString(), Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminRegistrationCompleteService, Mockito.times(1))
+                .complete(Mockito.anyString(), Mockito.any());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Su",
+            "Çağla",
+            "Robert William Floyd",
+            "Dr. Ahmet",
+            "Ahmet-Mehmet",
+            "Ahmet - Mehmet",
+            "O'Connor",
+            "ya",
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
+    })
+    void givenValidAdminRegisterRequest_whenAdminRegisteredWithValidLastName_thenReturnSuccessResponse(String mockLastName) throws Exception {
+
+        // Given
+        String mockId = "e8de09dc-a44e-40eb-bcc7-cf0141f8733c";
+        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues()
+                .withLastName(mockLastName)
+                .build();
+
+        // When
+        Mockito.doNothing().when(adminRegistrationCompleteService).complete(Mockito.anyString(), Mockito.any());
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysResponse<Void> mockResponse = AysResponseBuilder.success();
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .doesNotExist());
+
+        // Verify
+        Mockito.verify(adminRegistrationCompleteService, Mockito.times(1))
+                .complete(Mockito.anyString(), Mockito.any());
+    }
 
     @ParameterizedTest
     @ValueSource(strings = {
@@ -539,22 +622,91 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "John 1234",
-            "John *^%$#",
-            " John",
-            "? John",
-            "J",
-            "J----",
-            "City--King",
-            "John  Doe"
+            "",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
+            "t",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
     })
-    void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
+    void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidFirstNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
 
         // Given
         String mockId = "f423facc-36fe-4615-a68d-f7f1fe5cd860";
         AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
                 .withValidValues()
                 .withFirstName(invalidName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(adminRegistrationCompleteService, Mockito.never())
+                .complete(Mockito.anyString(), Mockito.any());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
+            "t",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+    })
+    void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidLastNames_whenNamesAreNotValid_thenReturnValidationError(String invalidName) throws Exception {
+
+        // Given
+        String mockId = "f423facc-36fe-4615-a68d-f7f1fe5cd860";
+        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
+                .withValidValues()
                 .withLastName(invalidName)
                 .build();
 
