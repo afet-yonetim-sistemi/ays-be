@@ -29,3 +29,7 @@ Before submitting your pull request, ensure the following:
 
 - [ ] **Labels and Associations:**
     - No specific actions are required in the Labels and Associations section for this pull request.
+
+- [ ] **Error Management Documentation:**
+  - If a new error or exception type has been introduced, it has been added to the [Exception Management Analysis](https://afetyonetimsistemi.atlassian.net/wiki/x/MwDLC) document.
+  - I have verified that the error code, description, and scenario are consistent with existing standards.
