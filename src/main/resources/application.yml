@@ -28,6 +28,14 @@ spring:
       connection-timeout: ${AYS_HIKARI_CONNECTION_TIMEOUT:30000}
       max-lifetime: ${AYS_HIKARI_MAX_LIFETIME:170000}
       idle-timeout: ${AYS_HIKARI_IDLE_TIMEOUT:60000}
+  cache:
+    redis:
+      cache-null-values: false
+  data:
+    redis:
+      host: ${AYS_CACHE_IP:localhost}
+      port: ${AYS_CACHE_PORT:6380}
+      timeout: ${AYS_CACHE_TIMEOUT:2s}
   mail:
     host: ${AYS_SMTP_HOST:smtp.gmail.com}
     port: ${AYS_SMTP_PORT:587}
