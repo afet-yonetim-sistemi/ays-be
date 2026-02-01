@@ -459,55 +459,13 @@ class AysUserControllerTest extends AysRestControllerTest {
             "ya",
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
              })
-    void givenUserCreateRequest_whenUserCreatedWithValidFirstName_thenReturnSuccess(String mockFirstName) throws Exception {
+    void givenUserCreateRequest_whenUserCreatedWithValidFirstNameAndLastName_thenReturnSuccess(String mockValidName) throws Exception {
 
         // Given
         AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
                 .withValidValues()
-                .withFirstName(mockFirstName)
-                .build();
-
-        // When
-        Mockito.doNothing()
-                .when(userCreateService)
-                .create(Mockito.any(AysUserCreateRequest.class));
-
-        // Then
-        String endpoint = BASE_PATH.concat("/user");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
-
-        AysResponse<Void> mockResponse = AysResponseBuilder.success();
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isOk())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
-
-        // Verify
-        Mockito.verify(userCreateService, Mockito.times(1))
-                .create(Mockito.any(AysUserCreateRequest.class));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "Su",
-            "Çağla",
-            "Robert William Floyd",
-            "Dr. Ahmet",
-            "Ahmet-Mehmet",
-            "Ahmet - Mehmet",
-            "O'Connor",
-            "ya",
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
-    })
-    void givenUserCreateRequest_whenUserCreatedWithValidLastName_thenReturnSuccess(String mockLastName) throws Exception {
-
-        // Given
-        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
-                .withValidValues()
-                .withLastName(mockLastName)
+                .withFirstName(mockValidName)
+                .withLastName(mockValidName)
                 .build();
 
         // When
@@ -1001,57 +959,14 @@ class AysUserControllerTest extends AysRestControllerTest {
             "ya",
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
     })
-    void givenValidIdAndUserUpdateRequest_whenUserUpdatedWithValidFirstName_thenReturnSuccess(String mockFirstName) throws Exception {
+    void givenValidIdAndUserUpdateRequest_whenUserUpdatedWithValidFirstNameAndLastName_thenReturnSuccess(String mockValidName) throws Exception {
 
         // Given
         String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
-                .withFirstName(mockFirstName)
-                .build();
-
-        // When
-        Mockito.doNothing()
-                .when(userUpdateService)
-                .update(Mockito.any(), Mockito.any(AysUserUpdateRequest.class));
-
-        // Then
-        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
-
-        AysResponse<Void> mockResponse = AysResponseBuilder.success();
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isOk())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
-
-        // Verify
-        Mockito.verify(userUpdateService, Mockito.times(1))
-                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "Su",
-            "Çağla",
-            "Robert William Floyd",
-            "Dr. Ahmet",
-            "Ahmet-Mehmet",
-            "Ahmet - Mehmet",
-            "O'Connor",
-            "ya",
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
-    })
-    void givenValidIdAndUserUpdateRequest_whenUserUpdatedWithValidLastName_thenReturnSuccess(String mockLastName) throws Exception {
-
-        // Given
-        String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
-        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
-                .withValidValues()
-                .withLastName(mockLastName)
+                .withFirstName(mockValidName)
+                .withLastName(mockValidName)
                 .build();
 
         // When
