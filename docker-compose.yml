@@ -13,7 +13,7 @@ services:
     volumes:
       - ./docker/mysql:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "127.0.0.1:3307:3306"
     networks:
       - ays-network
   application:
@@ -23,7 +23,7 @@ services:
     container_name: application
     restart: on-failure
     ports:
-      - "9790:9790"
+      - "127.0.0.1:9790:9790"
     environment:
       - AYS_DB_WRITER_INSTANCE_IP=database
       - AYS_DB_WRITER_INSTANCE_PORT=3306
@@ -43,7 +43,7 @@ services:
     volumes:
       - ./docker/redis:/data
     ports:
-      - "6380:6379"
+      - "127.0.0.1:6380:6379"
     networks:
       - ays-network
 
