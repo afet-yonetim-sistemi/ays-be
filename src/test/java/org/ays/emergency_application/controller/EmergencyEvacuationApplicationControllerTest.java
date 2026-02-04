@@ -440,11 +440,24 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     }
 
 
-    @Test
-    void givenValidEmergencyEvacuationApplicationRequest_whenApplicationSaved_thenReturnSuccessResponse() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Su",
+            "Çağla",
+            "Robert William Floyd",
+            "Dr. Ahmet",
+            "Ahmet-Mehmet",
+            "Ahmet - Mehmet",
+            "O'Connor",
+            "ya",
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
+    })
+    void givenValidEmergencyEvacuationApplicationRequest_whenApplicationSaved_thenReturnSuccessResponse(String mockValidName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
+                .withFirstName(mockValidName)
+                .withLastName(mockValidName)
                 .build();
 
         // When

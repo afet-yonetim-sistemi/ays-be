@@ -364,19 +364,23 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                         .doesNotHaveJsonPath());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "Su",
-            "Çağla",
-            "Robert William Floyd",
-            "Dr. Ahmet",
-            "Ahmet-Mehmet",
-            "Ahmet - Mehmet",
-            "O'Connor",
-            "ya",
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
+    @CsvSource({
+            "a@b.co, Su",
+            "abcdef@mail.com, Çağla",
+            "abc+def@archive.com, Robert William Floyd",
+            "john.doe123@example.co.uk, O'Connor",
+            "admin_123@example.org, Ahmet",
+            "admin-test@ays.com, Jane",
+            "johndoe@gmail.com , Ahmet-Selim",
+            "janedoe123@yahoo.com, Ahmet Can",
+            "michael.jordan@nba.com, Dr.Mehmet",
+            "alice.smith@company.co.uk, Mehmet - Akif",
+            "info@mywebsite.org, ADA",
+            "support@helpdesk.net , Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org, Jane"
     })
-    void givenValidAdminRegisterRequest_whenAdminRegisteredWithValidFirstNameAndLastName_thenReturnSuccessResponse(String mockValidName) throws Exception {
+    @ParameterizedTest
+    void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse(String mockEmailAddress,String mockValidName) throws Exception {
 
         // Given
         String mockId = "e8de09dc-a44e-40eb-bcc7-cf0141f8733c";
@@ -384,51 +388,6 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
                 .withValidValues()
                 .withFirstName(mockValidName)
                 .withLastName(mockValidName)
-                .build();
-
-        // When
-        Mockito.doNothing().when(adminRegistrationCompleteService).complete(Mockito.anyString(), Mockito.any());
-
-        // Then
-        String endpoint = BASE_PATH.concat("/admin-registration-application/").concat(mockId).concat("/complete");
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
-                .post(endpoint, mockRequest);
-
-        AysResponse<Void> mockResponse = AysResponseBuilder.success();
-
-        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
-                .andExpect(AysMockResultMatchersBuilders.status()
-                        .isOk())
-                .andExpect(AysMockResultMatchersBuilders.response()
-                        .doesNotExist());
-
-        // Verify
-        Mockito.verify(adminRegistrationCompleteService, Mockito.times(1))
-                .complete(Mockito.anyString(), Mockito.any());
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "a@b.co",
-            "abcdef@mail.com",
-            "abc+def@archive.com",
-            "john.doe123@example.co.uk",
-            "admin_123@example.org",
-            "admin-test@ays.com",
-            "johndoe@gmail.com",
-            "janedoe123@yahoo.com",
-            "michael.jordan@nba.com",
-            "alice.smith@company.co.uk",
-            "info@mywebsite.org",
-            "support@helpdesk.net",
-            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
-    })
-    void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse(String mockEmailAddress) throws Exception {
-
-        // Given
-        String mockId = "e8de09dc-a44e-40eb-bcc7-cf0141f8733c";
-        AdminRegistrationApplicationCompleteRequest mockRequest = new AdminRegistrationApplicationCompleteRequestBuilder()
-                .withValidValues()
                 .withEmailAddress(mockEmailAddress)
                 .build();
 

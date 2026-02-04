@@ -62,7 +62,14 @@ class NameFormValidator implements ConstraintValidator<NameForm, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
 
+        if (value == null || value.isEmpty() ) {
+            return true;
+        }
+
         if (!StringUtils.hasText(value)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("name cannot be only whitespace")
+                    .addConstraintViolation();
             return false;
         }
 
