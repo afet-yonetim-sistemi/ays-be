@@ -2,7 +2,7 @@ package org.ays.common.util.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A custom validator implementation for the {@link NameForm} annotation.
@@ -62,11 +62,11 @@ class NameFormValidator implements ConstraintValidator<NameForm, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
 
-        if (value == null || value.isEmpty() ) {
+        if (StringUtils.isEmpty(value)) {
             return true;
         }
 
-        if (!StringUtils.hasText(value)) {
+        if (StringUtils.isBlank(value)) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("name cannot be only whitespace")
                     .addConstraintViolation();

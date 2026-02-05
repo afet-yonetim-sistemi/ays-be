@@ -616,7 +616,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
     void givenInvalidEmergencyEvacuationApplicationRequest_whenFirstNameIsNotValid_thenReturnValidationError(String mockFirstName) throws Exception {
         // Given
@@ -667,7 +667,7 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
     void givenInvalidEmergencyEvacuationApplicationRequest_whenLastNameIsNotValid_thenReturnValidationError(String mockLastName) throws Exception {
         // Given
@@ -926,13 +926,13 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantFirstNameIsNotValid_thenReturnValidationError(String mockFirstName) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantFirstNameIsNotValid_thenReturnValidationError(String mockApplicantFirstName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
-                .withApplicantFirstName(mockFirstName)
+                .withApplicantFirstName(mockApplicantFirstName)
                 .build();
 
         // Then
@@ -977,13 +977,13 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantLastNameIsNotValid_thenReturnValidationError(String mockLastName) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantLastNameIsNotValid_thenReturnValidationError(String mockApplicantLastName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
-                .withApplicantLastName(mockLastName)
+                .withApplicantLastName(mockApplicantLastName)
                 .build();
 
         // Then

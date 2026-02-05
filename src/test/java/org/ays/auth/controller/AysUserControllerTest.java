@@ -458,8 +458,8 @@ class AysUserControllerTest extends AysRestControllerTest {
             "janedoe123@yahoo.com, O'Connor",
             "michael.jordan@nba.com, ya",
             "alice.smith@company.co.uk, Ahmet -Hüseyin",
-            "info@mywebsite.org , Şahin's",
-            "support@helpdesk.net , Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+            "info@mywebsite.org, Şahin's",
+            "support@helpdesk.net, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
             "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org, Şeyma"
     })
     @ParameterizedTest
@@ -683,7 +683,7 @@ class AysUserControllerTest extends AysRestControllerTest {
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
     void givenUserCreateRequest_whenFirstNameNotValid_thenReturnValidationError(String mockFirstName) throws Exception {
 
@@ -736,7 +736,7 @@ class AysUserControllerTest extends AysRestControllerTest {
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
     void givenUserCreateRequest_whenLastNameNotValid_thenReturnValidationError(String mockLastName) throws Exception {
 
@@ -922,7 +922,7 @@ class AysUserControllerTest extends AysRestControllerTest {
             "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org, Şeyda"
     })
     @ParameterizedTest
-    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess(String mockEmailAddress,String mockValidName) throws Exception {
+    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess(String mockEmailAddress, String mockValidName) throws Exception {
 
         // Given
         String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
@@ -1233,7 +1233,7 @@ class AysUserControllerTest extends AysRestControllerTest {
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
     void givenValidIdAndInvalidUserUpdateRequest_whenFirstNameNotValid_thenReturnValidationError(String mockFirstName) throws Exception {
         // Given
@@ -1287,7 +1287,7 @@ class AysUserControllerTest extends AysRestControllerTest {
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
     void givenValidIdAndInvalidUserUpdateRequest_whenLastNameNotValid_thenReturnValidationError(String mockLastName) throws Exception {
         // Given

@@ -371,16 +371,16 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "john.doe123@example.co.uk, O'Connor",
             "admin_123@example.org, Ahmet",
             "admin-test@ays.com, Jane",
-            "johndoe@gmail.com , Ahmet-Selim",
+            "johndoe@gmail.com, Ahmet-Selim",
             "janedoe123@yahoo.com, Ahmet Can",
             "michael.jordan@nba.com, Dr.Mehmet",
             "alice.smith@company.co.uk, Mehmet - Akif",
             "info@mywebsite.org, ADA",
-            "support@helpdesk.net , Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+            "support@helpdesk.net, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
             "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org, Jane"
     })
     @ParameterizedTest
-    void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse(String mockEmailAddress,String mockValidName) throws Exception {
+    void givenValidAdminRegisterRequest_whenAdminRegistered_thenReturnSuccessResponse(String mockEmailAddress, String mockValidName) throws Exception {
 
         // Given
         String mockId = "e8de09dc-a44e-40eb-bcc7-cf0141f8733c";
@@ -563,7 +563,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidFirstNames_whenNamesAreNotValid_thenReturnValidationError(String invalidFirstName) throws Exception {
 
@@ -617,7 +617,7 @@ class AdminRegistrationApplicationControllerTest extends AysRestControllerTest {
             "  Ali",
             "Ali  ",
             "Aysel ",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
     void givenInvalidAdminRegisterApplicationCompleteRequestWithParametrizedInvalidLastNames_whenNamesAreNotValid_thenReturnValidationError(String invalidLastName) throws Exception {
 
