@@ -18,6 +18,8 @@ Before submitting your pull request, ensure the following:
 
 - [ ] **Documentation:**
     - Necessary documentation has been added or existing documentation has been updated, specifically detailing changes made in Postman.
+    - If a new error or exception type has been introduced, it has been added to the [Exception Management Analysis](https://afetyonetimsistemi.atlassian.net/wiki/x/MwDLC) document.
+    - I have verified that the error code, description, and scenario are consistent with existing standards.
 
 - [ ] **Testing:**
     - Relevant unit tests have been written and included.
@@ -31,5 +33,3 @@ Before submitting your pull request, ensure the following:
     - No specific actions are required in the Labels and Associations section for this pull request.
 
 - [ ] **Error Management Documentation:**
-  - If a new error or exception type has been introduced, it has been added to the [Exception Management Analysis](https://afetyonetimsistemi.atlassian.net/wiki/x/MwDLC) document.
-  - I have verified that the error code, description, and scenario are consistent with existing standards.
