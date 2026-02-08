@@ -32,4 +32,3 @@ Before submitting your pull request, ensure the following:
 - [ ] **Labels and Associations:**
     - No specific actions are required in the Labels and Associations section for this pull request.
 
-- [ ] **Error Management Documentation:**
