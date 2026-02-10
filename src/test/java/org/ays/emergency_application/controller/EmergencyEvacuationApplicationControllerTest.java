@@ -440,11 +440,24 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     }
 
 
-    @Test
-    void givenValidEmergencyEvacuationApplicationRequest_whenApplicationSaved_thenReturnSuccessResponse() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Su",
+            "Çağla",
+            "Robert William Floyd",
+            "Dr. Ahmet",
+            "Ahmet-Mehmet",
+            "Ahmet - Mehmet",
+            "O'Connor",
+            "ya",
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
+    })
+    void givenValidEmergencyEvacuationApplicationRequest_whenApplicationSaved_thenReturnSuccessResponse(String mockValidName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
+                .withFirstName(mockValidName)
+                .withLastName(mockValidName)
                 .build();
 
         // When
@@ -581,22 +594,35 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     @ParameterizedTest
     @ValueSource(strings = {
             "",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "J----",
-            "City--King",
-            "John  Doe",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
             "t",
-            "                                      a",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenFirstNameIsNotValid_thenReturnValidationError(String firstName) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenFirstNameIsNotValid_thenReturnValidationError(String mockFirstName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
-                .withFirstName(firstName)
+                .withFirstName(mockFirstName)
                 .build();
 
         // Then
@@ -619,22 +645,35 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     @ParameterizedTest
     @ValueSource(strings = {
             "",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "J----",
-            "City--King",
-            "John  Doe",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
             "t",
-            "                                      a",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenLastNameIsNotValid_thenReturnValidationError(String lastName) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenLastNameIsNotValid_thenReturnValidationError(String mockLastName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
-                .withLastName(lastName)
+                .withLastName(mockLastName)
                 .build();
 
         // Then
@@ -864,23 +903,36 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "    ",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
+            "",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
             "t",
-            "J----",
-            "City--King",
-            "John  Doe",
-            "                                      a",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantFirstNameIsNotValid_thenReturnValidationError(String applicantFirstName) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantFirstNameIsNotValid_thenReturnValidationError(String mockApplicantFirstName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
-                .withApplicantFirstName(applicantFirstName)
+                .withApplicantFirstName(mockApplicantFirstName)
                 .build();
 
         // Then
@@ -902,23 +954,36 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "    ",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
+            "",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
             "t",
-            "J----",
-            "City--King",
-            "John  Doe",
-            "                                      a",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
     })
-    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantLastNameIsNotValid_thenReturnValidationError(String applicantLastName) throws Exception {
+    void givenInvalidEmergencyEvacuationApplicationRequest_whenApplicantLastNameIsNotValid_thenReturnValidationError(String mockApplicantLastName) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
-                .withApplicantLastName(applicantLastName)
+                .withApplicantLastName(mockApplicantLastName)
                 .build();
 
         // Then

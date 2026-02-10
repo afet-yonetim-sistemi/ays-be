@@ -470,28 +470,29 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .findById(Mockito.anyString());
     }
 
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "a@b.co",
-            "abcdef@mail.com",
-            "abc+def@archive.com",
-            "john.doe123@example.co.uk",
-            "admin_123@example.org",
-            "admin-test@ays.com",
-            "johndoe@gmail.com",
-            "janedoe123@yahoo.com",
-            "michael.jordan@nba.com",
-            "alice.smith@company.co.uk",
-            "info@mywebsite.org",
-            "support@helpdesk.net",
-            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
+    @CsvSource({
+            "a@b.co, Su",
+            "abcdef@mail.com, Çağla",
+            "abc+def@archive.com, Robert William Floyd",
+            "john.doe123@example.co.uk, Dr.Ahmet",
+            "admin_123@example.org, Dr. Ahmet",
+            "admin-test@ays.com, Ahmet-Mehmet",
+            "johndoe@gmail.com, Ahmet - Mehmet",
+            "janedoe123@yahoo.com, O'Connor",
+            "michael.jordan@nba.com, ya",
+            "alice.smith@company.co.uk, Ahmet -Hüseyin",
+            "info@mywebsite.org, Şahin's",
+            "support@helpdesk.net, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org, Şeyma"
     })
-    void givenUserCreateRequest_whenUserCreated_thenReturnSuccess(String mockEmailAddress) throws Exception {
+    @ParameterizedTest
+    void givenUserCreateRequest_whenUserCreated_thenReturnSuccess(String mockEmailAddress, String mockValidName) throws Exception {
 
         // Given
         AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
                 .withValidValues()
+                .withFirstName(mockValidName)
+                .withLastName(mockValidName)
                 .withEmailAddress(mockEmailAddress)
                 .build();
 
@@ -680,6 +681,112 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysUserCreateRequest.class));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
+            "t",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
+    })
+    void givenUserCreateRequest_whenFirstNameNotValid_thenReturnValidationError(String mockFirstName) throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withFirstName(mockFirstName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
+            "t",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
+    })
+    void givenUserCreateRequest_whenLastNameNotValid_thenReturnValidationError(String mockLastName) throws Exception {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .withLastName(mockLastName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, mockAdminToken.getAccessToken(), mockCreateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userCreateService, Mockito.never())
+                .create(Mockito.any(AysUserCreateRequest.class));
+    }
+
     @CsvSource({
             "country code must be 90, ABC, ABC",
             "country code must be 90, 80, 1234567890",
@@ -821,28 +928,31 @@ class AysUserControllerTest extends AysRestControllerTest {
                 .create(Mockito.any(AysUserCreateRequest.class));
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "a@b.co",
-            "abcdef@mail.com",
-            "abc+def@archive.com",
-            "john.doe123@example.co.uk",
-            "admin_123@example.org",
-            "admin-test@ays.com",
-            "johndoe@gmail.com",
-            "janedoe123@yahoo.com",
-            "michael.jordan@nba.com",
-            "alice.smith@company.co.uk",
-            "info@mywebsite.org",
-            "support@helpdesk.net",
-            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org"
+
+    @CsvSource({
+            "a@b.co, Su",
+            "abcdef@mail.com, Çağla",
+            "abc+def@archive.com, Robert William Floyd",
+            "john.doe123@example.co.uk, Dr.Ahmet",
+            "admin_123@example.org, Ahmet-Mehmet",
+            "admin-test@ays.com, Ahmet - Mehmet",
+            "johndoe@gmail.com, O'Connor",
+            "janedoe123@yahoo.com, Dr. Ahmet",
+            "michael.jordan@nba.com, ya",
+            "alice.smith@company.co.uk, Hasan - Hüseyin.Turan",
+            "info@mywebsite.org, Şahin's",
+            "support@helpdesk.net, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+            "rajeshmehmetjosephanastasiyahamidjianguonalalitachunoscarmanojfelixmichaelhugoaslambeatrizsergeyemmaricardohenrymunnigaryrobertorosehungabdullahramaisaaclijunxinchonadiaqiangyuliyabrendapauljeanlyubovpablogiuseppexuanchaosimakevinminlongperez@aystest.org, Şeyda"
     })
-    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess(String mockEmailAddress) throws Exception {
+    @ParameterizedTest
+    void givenValidIdAndUserUpdateRequest_whenUserUpdated_thenReturnSuccess(String mockEmailAddress, String mockValidName) throws Exception {
 
         // Given
         String mockId = "2cb9f39b-490f-4035-97ac-9afbb87506df";
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
+                .withFirstName(mockValidName)
+                .withLastName(mockValidName)
                 .withEmailAddress(mockEmailAddress)
                 .build();
 
@@ -1101,6 +1211,114 @@ class AysUserControllerTest extends AysRestControllerTest {
         AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
                 .withValidValues()
                 .withRoleIds(mockRoleIds)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
+            "t",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
+    })
+    void givenValidIdAndInvalidUserUpdateRequest_whenFirstNameNotValid_thenReturnValidationError(String mockFirstName) throws Exception {
+        // Given
+        String mockId = "b66afcb0-3029-4968-a87b-e1d94fc75642";
+
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withFirstName(mockFirstName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/user/").concat(mockId);
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .put(endpoint, mockAdminToken.getAccessToken(), mockUpdateRequest);
+
+        AysErrorResponse mockErrorResponse = AysErrorResponseBuilder.VALIDATION_ERROR;
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isBadRequest())
+                .andExpect(AysMockResultMatchersBuilders.subErrors()
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(userUpdateService, Mockito.never())
+                .update(Mockito.anyString(), Mockito.any(AysUserUpdateRequest.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            " ",
+            ".Mehmet",
+            ".,-'",
+            "Mehmet-",
+            "-Mehmet",
+            "85263",
+            "Osman2",
+            "Ahmet&",
+            "@sman",
+            "Ahm@t",
+            "Emin3e",
+            "1lgaz",
+            "#$½#$£",
+            "Ali..Osman",
+            "Ahme!",
+            "Ayse##Nur",
+            "Ahmet  Haşim",
+            "Y',lmaz",
+            "t",
+            "  Ali",
+            "Ali  ",
+            "Aysel ",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
+    })
+    void givenValidIdAndInvalidUserUpdateRequest_whenLastNameNotValid_thenReturnValidationError(String mockLastName) throws Exception {
+        // Given
+        String mockId = "b66afcb0-3029-4968-a87b-e1d94fc75642";
+
+        AysUserUpdateRequest mockUpdateRequest = new AysUserUpdateRequestBuilder()
+                .withValidValues()
+                .withLastName(mockLastName)
                 .build();
 
         // Then

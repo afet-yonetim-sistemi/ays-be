@@ -10,7 +10,7 @@ import lombok.Setter;
 import org.ays.common.model.request.AysPhoneNumberRequest;
 import org.ays.common.util.validation.CityForm;
 import org.ays.common.util.validation.EmailAddress;
-import org.ays.common.util.validation.Name;
+import org.ays.common.util.validation.NameForm;
 import org.hibernate.validator.constraints.UUID;
 
 import java.util.Set;
@@ -27,12 +27,12 @@ import java.util.Set;
 @Setter
 public class AysUserCreateRequest {
 
-    @Name
+    @NameForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String firstName;
 
-    @Name
+    @NameForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String lastName;
