@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
-    <changeSet id="7-ays-dml" author="ays">
+    <changeSet id="7-ays-ddl" author="ays">
         <!-- ===================== -->
         <!-- DML of AYS_PERMISSION -->
         <!-- ===================== -->
