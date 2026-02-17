@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.ays.common.model.request.AysPhoneNumberRequest;
-import org.ays.common.util.validation.Name;
+import org.ays.common.util.validation.CityForm;
 import org.ays.common.util.validation.NameForm;
 import org.hibernate.validator.constraints.Range;
 
@@ -37,12 +37,12 @@ public class EmergencyEvacuationApplicationRequest {
     @NotNull
     private AysPhoneNumberRequest phoneNumber;
 
-    @Name
+    @CityForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String sourceCity;
 
-    @Name
+    @CityForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String sourceDistrict;
@@ -55,12 +55,12 @@ public class EmergencyEvacuationApplicationRequest {
     @Range(min = 1, max = 999)
     private Integer seatingCount;
 
-    @Name
+    @CityForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String targetCity;
 
-    @Name
+    @CityForm
     @NotBlank
     @Size(min = 2, max = 100)
     private String targetDistrict;

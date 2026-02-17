@@ -440,24 +440,30 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     }
 
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "Su",
-            "Çağla",
-            "Robert William Floyd",
-            "Dr. Ahmet",
-            "Ahmet-Mehmet",
-            "Ahmet - Mehmet",
-            "O'Connor",
-            "ya",
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean"
+    @CsvSource({
+            "Su, İstanbul, An.ka - ra",
+            "Çağla, Kadıköy, St. Luis",
+            "Robert William Floyd, St.Luis, An.kara",
+            "Dr. Ahmet, New York City, An-ka-ra",
+            "Ahmet-Mehmet, An , kara, Anka ra",
+            "Ahmet - Mehmet, An.ka - ra, Şanlıurfa",
+            "O'Connor, An'kara, Ço'rum",
+            "ya, One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed, Of",
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean, Of, Muş"
     })
-    void givenValidEmergencyEvacuationApplicationRequest_whenApplicationSaved_thenReturnSuccessResponse(String mockValidName) throws Exception {
+    @ParameterizedTest
+    void givenValidEmergencyEvacuationApplicationRequest_whenApplicationSaved_thenReturnSuccessResponse(String mockValidName,
+                                                                                                        String mockValidSourceCity,
+                                                                                                        String mockValidTargetCity) throws Exception {
         // Given
         EmergencyEvacuationApplicationRequest mockApplicationRequest = new EmergencyEvacuationRequestBuilder()
                 .withValidValues()
                 .withFirstName(mockValidName)
                 .withLastName(mockValidName)
+                .withTargetCity(mockValidSourceCity)
+                .withTargetDistrict(mockValidTargetCity)
+                .withTargetCity(mockValidTargetCity)
+                .withTargetDistrict(mockValidTargetCity)
                 .build();
 
         // When
@@ -695,17 +701,19 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "Mary*land",
-            "Mary$land",
-            "CityName$",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "t",
-            "                                      a",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Anka..ra",
+            "Ankara-",
+            "Ankara,",
+            "Ank@ra",
+            "12365",
+            "Ankara06",
+            "Bur#sa",
+            "26Eskisehir",
+            " ",
+            " Kastamonu",
+            "Antalya ",
+            "A",
+            "One morning, when Gregor Samsa woke from troubled dreams , he found himself transformed in his bed into"
     })
     void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceCityIsNotValid_thenReturnValidationError(String sourceCity) throws Exception {
         // Given
@@ -733,17 +741,19 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "Mary*land",
-            "Mary$land",
-            "CityName$",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "t",
-            "                                      a",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Anka..ra",
+            "Ankara-",
+            "Ankara,",
+            "Ank@ra",
+            "12365",
+            "Ankara06",
+            "Bur#sa",
+            "26Eskisehir",
+            " ",
+            " Kastamonu",
+            "Antalya ",
+            "A",
+            "One morning, when Gregor Samsa woke from troubled dreams , he found himself transformed in his bed into"
     })
     void givenInvalidEmergencyEvacuationApplicationRequest_whenSourceDistrictIsNotValid_thenReturnValidationError(String sourceDistrict) throws Exception {
         // Given
@@ -827,17 +837,19 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "Mary*land",
-            "Mary$land",
-            "CityName$",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "t",
-            "                                      a",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Anka..ra",
+            "Ankara-",
+            "Ankara,",
+            "Ank@ra",
+            "12365",
+            "Ankara06",
+            "Bur#sa",
+            "26Eskisehir",
+            " ",
+            " Kastamonu",
+            "Antalya ",
+            "A",
+            "One morning, when Gregor Samsa woke from troubled dreams , he found himself transformed in his bed into"
     })
     void givenInvalidEmergencyEvacuationApplicationRequest_whenTargetCityIsNotValid_thenReturnValidationError(String targetCity) throws Exception {
         // Given
@@ -865,17 +877,19 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "Mary*land",
-            "Mary$land",
-            "CityName$",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "t",
-            "                                      a",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices.",
+            "Anka..ra",
+            "Ankara-",
+            "Ankara,",
+            "Ank@ra",
+            "12365",
+            "Ankara06",
+            "Bur#sa",
+            "26Eskisehir",
+            " ",
+            " Kastamonu",
+            "Antalya ",
+            "A",
+            "One morning, when Gregor Samsa woke from troubled dreams , he found himself transformed in his bed into"
     })
     void givenInvalidEmergencyEvacuationApplicationRequest_whenTargetDistrictIsNotValid_thenReturnValidationError(String targetDistrict) throws Exception {
         // Given
