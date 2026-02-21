@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="8-ays-ddl" author="ays">
+        <!-- ================================ -->
+        <!-- DDL of AYS_VOLUNTEER_APPLICATION -->
+        <!-- ================================ -->
+        <createTable tableName="AYS_VOLUNTEER_APPLICATION">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="INSTITUTION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_VOLUNTEER_APPLICATION__INSTITUTION_ID"
+                             referencedTableName="AYS_INSTITUTION"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="USER_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_VOLUNTEER_APPLICATION__USER_ID"
+                             referencedTableName="AYS_USER"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="REJECT_REASON" type="VARCHAR(512)"/>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <createIndex
+                tableName="AYS_VOLUNTEER_APPLICATION"
+                indexName="I__AYS_VOLUNTEER_APPLICATION__INSTITUTION_ID"
+        >
+            <column name="INSTITUTION_ID"/>
+        </createIndex>
+
+        <createIndex
+                tableName="AYS_VOLUNTEER_APPLICATION"
+                indexName="I__AYS_VOLUNTEER_APPLICATION__STATUS"
+        >
+            <column name="STATUS"/>
+        </createIndex>
+
+        <sql>
+            ALTER TABLE `AYS_VOLUNTEER_APPLICATION`
+                ADD CONSTRAINT `U__AYS_VOLUNTEER_APPLICATION__INSTITUTION_ID__USER_ID` UNIQUE (`INSTITUTION_ID`, `USER_ID`);
+
+            ALTER TABLE `AYS_VOLUNTEER_APPLICATION`
+                ADD CONSTRAINT `C__AYS_VOLUNTEER_APPLICATION__STATUS` CHECK (`STATUS` IN ('INITIATED',
+                                                                                          'PENDING',
+                                                                                          'APPROVED',
+                                                                                          'REJECTED'));
+        </sql>
+        <!-- ================================ -->
+        <!-- DDL of AYS_VOLUNTEER_APPLICATION -->
+        <!-- ================================ -->
+
+
+        <!-- ============================ -->
+        <!-- DDL of AYS_USER_VERIFICATION -->
+        <!-- ============================ -->
+        <createTable tableName="AYS_USER_VERIFICATION">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="USER_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_USER_VERIFICATION__USER_ID"
+                             referencedTableName="AYS_USER"
+                             referencedColumnNames="ID"
+                />
+            </column>
+            <column name="CODE" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TYPE" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PURPOSE" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPIRED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_USER" type="VARCHAR(255)" defaultValue="AYS">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_USER" type="VARCHAR(255)"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+        </createTable>
+
+        <sql>
+            ALTER TABLE `AYS_USER_VERIFICATION`
+                ADD CONSTRAINT `C__AYS_USER_VERIFICATION__TYPE` CHECK (`TYPE` IN ('EMAIL_ADDRESS'));
+
+            ALTER TABLE `AYS_USER_VERIFICATION`
+                ADD CONSTRAINT `C__AYS_USER_VERIFICATION__PURPOSE` CHECK (`PURPOSE` IN ('VOLUNTEER_APPLICATION'));
+
+            ALTER TABLE `AYS_USER_VERIFICATION`
+                ADD CONSTRAINT `C__AYS_USER_VERIFICATION__STATUS` CHECK (`STATUS` IN ('UNUSED', 'USED'));
+        </sql>
+        <!-- ============================ -->
+        <!-- DDL of AYS_USER_VERIFICATION -->
+        <!-- ============================ -->
+    </changeSet>
+
+</databaseChangeLog>
