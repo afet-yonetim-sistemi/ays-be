@@ -2192,7 +2192,7 @@
 					"name": "Institution APIs",
 					"item": [
 						{
-							"name": "Admin Register Application Management Service",
+							"name": "Admin Registration Application Management Service",
 							"item": [
 								{
 									"name": "admin-registration-applications",
