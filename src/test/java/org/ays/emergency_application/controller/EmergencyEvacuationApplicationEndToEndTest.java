@@ -294,6 +294,8 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                         .value(application.getTargetCity()))
                 .andExpect(AysMockResultMatchersBuilders.response("targetDistrict")
                         .value(application.getTargetDistrict()))
+                .andExpect(AysMockResultMatchersBuilders.response("priority")
+                        .value(application.getPriority().toString()))
                 .andExpect(AysMockResultMatchersBuilders.response("status")
                         .value(application.getStatus().toString()))
                 .andExpect(AysMockResultMatchersBuilders.response("isInPerson")
