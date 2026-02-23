@@ -72,6 +72,7 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
      */
     public void pending() {
         this.referenceNumber = AysRandomUtil.generateNumber(10).toString();
+        this.priority = EmergencyEvacuationApplicationPriority.MEDIUM;
         this.status = EmergencyEvacuationApplicationStatus.PENDING;
         this.isInPerson = this.applicantPhoneNumber == null;
         this.hasObstaclePersonExist = false;
