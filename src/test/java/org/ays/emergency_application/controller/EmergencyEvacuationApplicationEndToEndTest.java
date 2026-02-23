@@ -8,6 +8,7 @@ import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationPriority;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
@@ -68,6 +69,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                                 .withoutId()
                                 .withoutInstitution()
                                 .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                                .withPriority(EmergencyEvacuationApplicationPriority.HIGH)
                                 .withoutApplicant()
                                 .build()
                 ),
@@ -82,6 +84,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                                                 .build()
                                 )
                                 .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                                .withPriority(EmergencyEvacuationApplicationPriority.LOW)
                                 .withoutApplicant()
                                 .build()
                 )
@@ -135,6 +138,8 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.contents("applicantPhoneNumber.lineNumber")
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.contents("seatingCount")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("priority")
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.contents("status")
                         .isNotEmpty())
@@ -213,6 +218,8 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.contents("applicantPhoneNumber.lineNumber")
                         .doesNotExist())
                 .andExpect(AysMockResultMatchersBuilders.contents("seatingCount")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.contents("priority")
                         .doesNotExist())
                 .andExpect(AysMockResultMatchersBuilders.contents("status")
                         .doesNotExist())
