@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.util.validation.NoSpacesAround;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationPriority;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.hibernate.validator.constraints.Range;
 
@@ -32,6 +33,9 @@ public class EmergencyEvacuationApplicationUpdateRequest {
      */
     @NotNull
     private Boolean hasObstaclePersonExist;
+
+    @NotNull
+    private EmergencyEvacuationApplicationPriority priority;
 
     /**
      * The current status of the Emergency Evacuation Application.
