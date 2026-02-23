@@ -111,6 +111,7 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
 
         emergencyEvacuationApplication.setSeatingCount(updateRequest.getSeatingCount());
         emergencyEvacuationApplication.setHasObstaclePersonExist(updateRequest.getHasObstaclePersonExist());
+        emergencyEvacuationApplication.setPriority(updateRequest.getPriority());
         emergencyEvacuationApplication.setStatus(updateRequest.getStatus());
 
         Optional.ofNullable(updateRequest.getNotes())
