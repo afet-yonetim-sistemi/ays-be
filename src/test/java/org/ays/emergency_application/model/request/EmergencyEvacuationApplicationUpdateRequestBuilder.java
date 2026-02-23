@@ -1,6 +1,7 @@
 package org.ays.emergency_application.model.request;
 
 import org.ays.common.model.TestDataBuilder;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationPriority;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 
 public class EmergencyEvacuationApplicationUpdateRequestBuilder extends TestDataBuilder<EmergencyEvacuationApplicationUpdateRequest> {
@@ -13,6 +14,7 @@ public class EmergencyEvacuationApplicationUpdateRequestBuilder extends TestData
         return this
                 .withSeatingCount(1)
                 .withHasObstaclePersonExist(true)
+                .withPriority(EmergencyEvacuationApplicationPriority.HIGH)
                 .withStatus(EmergencyEvacuationApplicationStatus.IN_REVIEW)
                 .withNotes("This is a valid note for the application update.");
     }
@@ -36,4 +38,10 @@ public class EmergencyEvacuationApplicationUpdateRequestBuilder extends TestData
         data.setNotes(notes);
         return this;
     }
+
+    private EmergencyEvacuationApplicationUpdateRequestBuilder withPriority(EmergencyEvacuationApplicationPriority priority) {
+        data.setPriority(priority);
+        return this;
+    }
+
 }

@@ -443,6 +443,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutInstitution()
                         .withoutApplicant()
                         .withSeatingCount(5)
+                        .withPriority(EmergencyEvacuationApplicationPriority.CRITICAL)
                         .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
                         .withHasObstaclePersonExist(false)
                         .withoutNotes()
@@ -476,6 +477,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(applicationFromDatabase.get().getInstitution());
         Assertions.assertEquals(applicationFromDatabase.get().getSeatingCount(), updateRequest.getSeatingCount());
         Assertions.assertEquals(applicationFromDatabase.get().getHasObstaclePersonExist(), updateRequest.getHasObstaclePersonExist());
+        Assertions.assertEquals(applicationFromDatabase.get().getPriority(), updateRequest.getPriority());
         Assertions.assertEquals(applicationFromDatabase.get().getStatus(), updateRequest.getStatus());
         Assertions.assertEquals(applicationFromDatabase.get().getNotes(), updateRequest.getNotes());
         Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedUser());

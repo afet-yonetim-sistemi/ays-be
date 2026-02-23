@@ -308,8 +308,9 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
                 .withoutApplicant()
                 .withInstitution(new InstitutionBuilder().withValidValues().withId(mockInstitutionId).build())
                 .withSeatingCount(mockUpdateRequest.getSeatingCount())
-                .withHasObstaclePersonExist(mockUpdateRequest.getHasObstaclePersonExist())
                 .withStatus(mockUpdateRequest.getStatus())
+                .withPriority(mockUpdateRequest.getPriority())
+                .withHasObstaclePersonExist(mockUpdateRequest.getHasObstaclePersonExist())
                 .withNotes(mockUpdateRequest.getNotes())
                 .build();
         Mockito.when(emergencyEvacuationApplicationSavePort.save(Mockito.any(EmergencyEvacuationApplication.class)))
@@ -320,8 +321,9 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
 
         Assertions.assertEquals(mockInstitutionId, mockUpdatedApplication.getInstitution().getId());
         Assertions.assertEquals(mockUpdateRequest.getSeatingCount(), mockUpdatedApplication.getSeatingCount());
-        Assertions.assertEquals(mockUpdateRequest.getHasObstaclePersonExist(), mockUpdatedApplication.getHasObstaclePersonExist());
+        Assertions.assertEquals(mockUpdateRequest.getPriority(), mockUpdatedApplication.getPriority());
         Assertions.assertEquals(mockUpdateRequest.getStatus(), mockUpdatedApplication.getStatus());
+        Assertions.assertEquals(mockUpdateRequest.getHasObstaclePersonExist(), mockUpdatedApplication.getHasObstaclePersonExist());
         Assertions.assertEquals(mockUpdateRequest.getNotes(), mockUpdatedApplication.getNotes());
 
         // Verify
@@ -370,8 +372,9 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
                 .withoutApplicant()
                 .withInstitution(mockInstitution)
                 .withSeatingCount(mockUpdateRequest.getSeatingCount())
-                .withHasObstaclePersonExist(mockUpdateRequest.getHasObstaclePersonExist())
+                .withPriority(mockUpdateRequest.getPriority())
                 .withStatus(mockUpdateRequest.getStatus())
+                .withHasObstaclePersonExist(mockUpdateRequest.getHasObstaclePersonExist())
                 .withNotes(mockUpdateRequest.getNotes())
                 .build();
         Mockito.when(emergencyEvacuationApplicationSavePort.save(Mockito.any(EmergencyEvacuationApplication.class)))
@@ -383,6 +386,7 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
         Assertions.assertEquals(mockInstitution.getId(), mockUpdatedApplication.getInstitution().getId());
         Assertions.assertEquals(mockUpdateRequest.getSeatingCount(), mockUpdatedApplication.getSeatingCount());
         Assertions.assertEquals(mockUpdateRequest.getHasObstaclePersonExist(), mockUpdatedApplication.getHasObstaclePersonExist());
+        Assertions.assertEquals(mockUpdateRequest.getPriority(), mockUpdatedApplication.getPriority());
         Assertions.assertEquals(mockUpdateRequest.getStatus(), mockUpdatedApplication.getStatus());
         Assertions.assertEquals(mockUpdateRequest.getNotes(), mockUpdatedApplication.getNotes());
 
