@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationPriority;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.institution.model.Institution;
 
@@ -32,6 +33,7 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
     private Integer seatingCount;
     private String targetCity;
     private String targetDistrict;
+    private EmergencyEvacuationApplicationPriority priority;
     private EmergencyEvacuationApplicationStatus status;
     private String applicantFirstName;
     private String applicantLastName;
