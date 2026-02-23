@@ -69,9 +69,17 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
 
 
     /**
-     * Marks the emergency evacuation application as pending.
-     * Generates a reference number and updates the status to pending.
-     * Sets isInPerson based on whether the applicant's phone number is provided.
+     * Sets the emergency evacuation application to the {@code PENDING} state.
+     * <p>
+     * This method initializes the application for processing by:
+     * <ul>
+     *   <li>Generating a 10-digit reference number.</li>
+     *   <li>Setting the default priority to {@link EmergencyEvacuationApplicationPriority#MEDIUM}.</li>
+     *   <li>Updating the status to {@link EmergencyEvacuationApplicationStatus#PENDING}.</li>
+     *   <li>Marking the application as in-person if {@code applicantPhoneNumber} is {@code null}.</li>
+     *   <li>Resetting {@code hasObstaclePersonExist} to {@code false}.</li>
+     * </ul>
+     * </p>
      */
     public void pending() {
         this.referenceNumber = AysRandomUtil.generateNumber(10).toString();
