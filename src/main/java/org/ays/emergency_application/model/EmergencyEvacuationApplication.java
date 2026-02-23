@@ -4,12 +4,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationPriority;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.institution.model.Institution;
+
+import java.util.Optional;
 
 /**
  * Represents an emergency evacuation application.
@@ -79,14 +82,40 @@ public class EmergencyEvacuationApplication extends BaseDomainModel {
     }
 
     /**
-     * Sets the institution ID for the application.
+     * Updates the application with the provided values.
+     * <p>
+     * If the application does not yet have an associated institution, the institution reference is initialized
+     * using the given {@code institutionId}. The {@code notes} field is updated only when the provided value is non-blank;
+     * otherwise, the existing notes are preserved.
+     * </p>
      *
-     * @param institutionId the ID of the institution to associate with the application.
+     * @param institutionId          the institution ID to associate with the application if not already set
+     * @param seatingCount           the seating count to set
+     * @param priority               the priority to set
+     * @param status                 the status to set
+     * @param hasObstaclePersonExist whether an obstacle person exists flag to set
+     * @param notes                  optional notes; applied only if non-blank
      */
-    public void setInstitutionId(final String institutionId) {
-        this.institution = Institution.builder()
-                .id(institutionId)
-                .build();
+    public void update(final String institutionId,
+                       final Integer seatingCount,
+                       final EmergencyEvacuationApplicationPriority priority,
+                       final EmergencyEvacuationApplicationStatus status,
+                       final Boolean hasObstaclePersonExist,
+                       final String notes) {
+
+        if (this.hasNotInstitution()) {
+            this.institution = Institution.builder()
+                    .id(institutionId)
+                    .build();
+        }
+
+        this.seatingCount = seatingCount;
+        this.priority = priority;
+        this.status = status;
+        this.hasObstaclePersonExist = hasObstaclePersonExist;
+        this.notes = Optional.ofNullable(notes)
+                .filter(StringUtils::isNotBlank)
+                .orElse(this.notes);
     }
 
 }

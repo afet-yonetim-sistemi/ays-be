@@ -472,7 +472,7 @@ class EmergencyEvacuationApplicationServiceImplTest extends AysUnitTest {
         Mockito.verify(emergencyEvacuationApplicationReadPort, Mockito.times(1))
                 .findById(mockId);
 
-        Mockito.verify(identity, Mockito.never())
+        Mockito.verify(identity, Mockito.times(1))
                 .getInstitutionId();
 
         Mockito.verify(emergencyEvacuationApplicationSavePort, Mockito.never())
