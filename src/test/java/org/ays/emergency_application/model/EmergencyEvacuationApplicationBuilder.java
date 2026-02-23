@@ -4,6 +4,7 @@ import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.model.TestDataBuilder;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationPriority;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.institution.model.Institution;
 
@@ -17,6 +18,7 @@ public class EmergencyEvacuationApplicationBuilder extends TestDataBuilder<Emerg
         return this
                 .withId(AysRandomUtil.generateUUID())
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
+                .withPriority(EmergencyEvacuationApplicationPriority.MEDIUM)
                 .withoutApplicant();
     }
 
@@ -37,6 +39,11 @@ public class EmergencyEvacuationApplicationBuilder extends TestDataBuilder<Emerg
 
     public EmergencyEvacuationApplicationBuilder withSeatingCount(Integer seatingCount) {
         data.setSeatingCount(seatingCount);
+        return this;
+    }
+
+    public EmergencyEvacuationApplicationBuilder withPriority(EmergencyEvacuationApplicationPriority priority) {
+        data.setPriority(priority);
         return this;
     }
 
