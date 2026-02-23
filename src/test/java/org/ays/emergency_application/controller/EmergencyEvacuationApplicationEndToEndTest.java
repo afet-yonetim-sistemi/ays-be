@@ -359,6 +359,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(application.get().getSeatingCount(), applicationRequest.getSeatingCount());
         Assertions.assertEquals(application.get().getTargetCity(), applicationRequest.getTargetCity());
         Assertions.assertEquals(application.get().getTargetDistrict(), applicationRequest.getTargetDistrict());
+        Assertions.assertEquals(EmergencyEvacuationApplicationPriority.MEDIUM, application.get().getPriority());
         Assertions.assertEquals(EmergencyEvacuationApplicationStatus.PENDING, application.get().getStatus());
         Assertions.assertEquals(application.get().getApplicantFirstName(), applicationRequest.getApplicantFirstName());
         Assertions.assertEquals(application.get().getApplicantLastName(), applicationRequest.getApplicantLastName());
@@ -417,6 +418,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(application.get().getSeatingCount(), applicationRequest.getSeatingCount());
         Assertions.assertEquals(application.get().getTargetCity(), applicationRequest.getTargetCity());
         Assertions.assertEquals(application.get().getTargetDistrict(), applicationRequest.getTargetDistrict());
+        Assertions.assertEquals(EmergencyEvacuationApplicationPriority.MEDIUM, application.get().getPriority());
         Assertions.assertEquals(EmergencyEvacuationApplicationStatus.PENDING, application.get().getStatus());
         Assertions.assertEquals(application.get().getApplicantFirstName(), applicationRequest.getApplicantFirstName());
         Assertions.assertEquals(application.get().getApplicantLastName(), applicationRequest.getApplicantLastName());
