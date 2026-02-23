@@ -3,6 +3,7 @@ package org.ays.emergency_application.model.response;
 import lombok.Getter;
 import lombok.Setter;
 import org.ays.common.model.AysPhoneNumber;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationPriority;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class EmergencyEvacuationApplicationsResponse {
     private String applicantLastName;
     private AysPhoneNumber applicantPhoneNumber;
     private Integer seatingCount;
+    private EmergencyEvacuationApplicationPriority priority;
     private EmergencyEvacuationApplicationStatus status;
     private Boolean isInPerson;
     private LocalDateTime createdAt;
