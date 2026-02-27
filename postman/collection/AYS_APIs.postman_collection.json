@@ -5199,11 +5199,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a2005b7c-a197-47f4-905e-5c08a1dd0e8a",
+								"id": "caed1ac4-a588-40f1-8cee-264a9047d0dc",
 								"type": "text/javascript",
 								"requests": {},
 								"exec": [
-									"/** @author agitrubard */",
+									"/** @author agitrubard",
 									"",
 									"pm.environment.set(\"TOKEN_GENERATED_TIME\", new Date());",
 									"",
@@ -5241,14 +5241,14 @@
 									"    return",
 									"}",
 									"    ",
-									"/** @author agitrubard */"
+									"@author agitrubard */"
 								]
 							}
 						},
 						{
 							"listen": "test",
 							"script": {
-								"id": "79a11944-5e00-4cb8-9d93-c978f406b2e5",
+								"id": "83e6a0f7-f021-407a-9e7e-b048ce123511",
 								"type": "text/javascript",
 								"requests": {},
 								"exec": [
