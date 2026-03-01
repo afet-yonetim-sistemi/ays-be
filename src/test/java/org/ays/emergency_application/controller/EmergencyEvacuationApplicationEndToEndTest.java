@@ -8,6 +8,7 @@ import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.emergency_application.model.EmergencyEvacuationApplication;
 import org.ays.emergency_application.model.EmergencyEvacuationApplicationBuilder;
+import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationPriority;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
 import org.ays.emergency_application.model.mapper.EmergencyEvacuationApplicationToApplicationResponseMapper;
 import org.ays.emergency_application.model.request.EmergencyEvacuationApplicationListRequest;
@@ -68,6 +69,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                                 .withoutId()
                                 .withoutInstitution()
                                 .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                                .withPriority(EmergencyEvacuationApplicationPriority.HIGH)
                                 .withoutApplicant()
                                 .build()
                 ),
@@ -82,6 +84,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                                                 .build()
                                 )
                                 .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
+                                .withPriority(EmergencyEvacuationApplicationPriority.LOW)
                                 .withoutApplicant()
                                 .build()
                 )
@@ -135,6 +138,8 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.contents("applicantPhoneNumber.lineNumber")
                         .exists())
                 .andExpect(AysMockResultMatchersBuilders.contents("seatingCount")
+                        .isNotEmpty())
+                .andExpect(AysMockResultMatchersBuilders.contents("priority")
                         .isNotEmpty())
                 .andExpect(AysMockResultMatchersBuilders.contents("status")
                         .isNotEmpty())
@@ -213,6 +218,8 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                 .andExpect(AysMockResultMatchersBuilders.contents("applicantPhoneNumber.lineNumber")
                         .doesNotExist())
                 .andExpect(AysMockResultMatchersBuilders.contents("seatingCount")
+                        .doesNotExist())
+                .andExpect(AysMockResultMatchersBuilders.contents("priority")
                         .doesNotExist())
                 .andExpect(AysMockResultMatchersBuilders.contents("status")
                         .doesNotExist())
@@ -294,6 +301,8 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                         .value(application.getTargetCity()))
                 .andExpect(AysMockResultMatchersBuilders.response("targetDistrict")
                         .value(application.getTargetDistrict()))
+                .andExpect(AysMockResultMatchersBuilders.response("priority")
+                        .value(application.getPriority().toString()))
                 .andExpect(AysMockResultMatchersBuilders.response("status")
                         .value(application.getStatus().toString()))
                 .andExpect(AysMockResultMatchersBuilders.response("isInPerson")
@@ -359,6 +368,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(application.get().getSeatingCount(), applicationRequest.getSeatingCount());
         Assertions.assertEquals(application.get().getTargetCity(), applicationRequest.getTargetCity());
         Assertions.assertEquals(application.get().getTargetDistrict(), applicationRequest.getTargetDistrict());
+        Assertions.assertEquals(EmergencyEvacuationApplicationPriority.MEDIUM, application.get().getPriority());
         Assertions.assertEquals(EmergencyEvacuationApplicationStatus.PENDING, application.get().getStatus());
         Assertions.assertEquals(application.get().getApplicantFirstName(), applicationRequest.getApplicantFirstName());
         Assertions.assertEquals(application.get().getApplicantLastName(), applicationRequest.getApplicantLastName());
@@ -417,6 +427,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(application.get().getSeatingCount(), applicationRequest.getSeatingCount());
         Assertions.assertEquals(application.get().getTargetCity(), applicationRequest.getTargetCity());
         Assertions.assertEquals(application.get().getTargetDistrict(), applicationRequest.getTargetDistrict());
+        Assertions.assertEquals(EmergencyEvacuationApplicationPriority.MEDIUM, application.get().getPriority());
         Assertions.assertEquals(EmergencyEvacuationApplicationStatus.PENDING, application.get().getStatus());
         Assertions.assertEquals(application.get().getApplicantFirstName(), applicationRequest.getApplicantFirstName());
         Assertions.assertEquals(application.get().getApplicantLastName(), applicationRequest.getApplicantLastName());
@@ -441,6 +452,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutInstitution()
                         .withoutApplicant()
                         .withSeatingCount(5)
+                        .withPriority(EmergencyEvacuationApplicationPriority.CRITICAL)
                         .withStatus(EmergencyEvacuationApplicationStatus.PENDING)
                         .withHasObstaclePersonExist(false)
                         .withoutNotes()
@@ -474,6 +486,7 @@ class EmergencyEvacuationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(applicationFromDatabase.get().getInstitution());
         Assertions.assertEquals(applicationFromDatabase.get().getSeatingCount(), updateRequest.getSeatingCount());
         Assertions.assertEquals(applicationFromDatabase.get().getHasObstaclePersonExist(), updateRequest.getHasObstaclePersonExist());
+        Assertions.assertEquals(applicationFromDatabase.get().getPriority(), updateRequest.getPriority());
         Assertions.assertEquals(applicationFromDatabase.get().getStatus(), updateRequest.getStatus());
         Assertions.assertEquals(applicationFromDatabase.get().getNotes(), updateRequest.getNotes());
         Assertions.assertNotNull(applicationFromDatabase.get().getUpdatedUser());

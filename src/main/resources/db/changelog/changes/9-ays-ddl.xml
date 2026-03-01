@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="9-ays-ddl" author="ays">
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+        <addColumn tableName="AYS_EMERGENCY_EVACUATION_APPLICATION">
+            <column name="PRIORITY" type="INTEGER(1)" afterColumn="TARGET_DISTRICT" defaultValue="3">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <createIndex
+                tableName="AYS_EMERGENCY_EVACUATION_APPLICATION"
+                indexName="I__AYS_EMERGENCY_EVACUATION_APPLICATION__PRIORITY"
+        >
+            <column name="PRIORITY"/>
+        </createIndex>
+
+        <sql>
+            ALTER TABLE `AYS_EMERGENCY_EVACUATION_APPLICATION`
+                ADD CONSTRAINT `C__AYS_EMERGENCY_EVACUATION_APPLICATION__PRIORITY`
+                    CHECK (`PRIORITY` IN (1, 2, 3, 4, 5, 6));
+        </sql>
+        <!-- =========================================== -->
+        <!-- DDL of AYS_EMERGENCY_EVACUATION_APPLICATION -->
+        <!-- =========================================== -->
+    </changeSet>
+
+</databaseChangeLog>

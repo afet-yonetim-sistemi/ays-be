@@ -1,7 +1,6 @@
 package org.ays.emergency_application.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.ays.auth.model.AysIdentity;
 import org.ays.common.model.AysPage;
 import org.ays.emergency_application.exception.EmergencyEvacuationApplicationNotExistException;
@@ -100,23 +99,20 @@ class EmergencyEvacuationApplicationServiceImpl implements EmergencyEvacuationAp
     public void update(final String id,
                        final EmergencyEvacuationApplicationUpdateRequest updateRequest) {
 
+        final String institutionId = identity.getInstitutionId();
         final EmergencyEvacuationApplication emergencyEvacuationApplication = emergencyEvacuationApplicationReadPort
                 .findById(id)
-                .filter(application -> application.hasNotInstitution() || application.isInstitutionOwner(identity.getInstitutionId()))
+                .filter(application -> application.hasNotInstitution() || application.isInstitutionOwner(institutionId))
                 .orElseThrow(() -> new EmergencyEvacuationApplicationNotExistException(id));
 
-        if (emergencyEvacuationApplication.hasNotInstitution()) {
-            emergencyEvacuationApplication.setInstitutionId(identity.getInstitutionId());
-        }
-
-        emergencyEvacuationApplication.setSeatingCount(updateRequest.getSeatingCount());
-        emergencyEvacuationApplication.setHasObstaclePersonExist(updateRequest.getHasObstaclePersonExist());
-        emergencyEvacuationApplication.setStatus(updateRequest.getStatus());
-
-        Optional.ofNullable(updateRequest.getNotes())
-                .filter(StringUtils::isNotBlank)
-                .ifPresent(emergencyEvacuationApplication::setNotes);
-
+        emergencyEvacuationApplication.update(
+                institutionId,
+                updateRequest.getSeatingCount(),
+                updateRequest.getPriority(),
+                updateRequest.getStatus(),
+                updateRequest.getHasObstaclePersonExist(),
+                updateRequest.getNotes()
+        );
         emergencyEvacuationApplicationSavePort.save(emergencyEvacuationApplication);
     }
 

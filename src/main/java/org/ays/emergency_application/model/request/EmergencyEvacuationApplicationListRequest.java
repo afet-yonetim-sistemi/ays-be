@@ -39,7 +39,7 @@ public class EmergencyEvacuationApplicationListRequest extends AysPagingRequest 
     @AssertTrue
     @Override
     public boolean isOrderPropertyAccepted() {
-        final Set<String> acceptedFilterFields = Set.of("createdAt");
+        final Set<String> acceptedFilterFields = Set.of("priority", "createdAt");
         return this.isPropertyAccepted(acceptedFilterFields);
     }
 
