@@ -120,7 +120,7 @@
 									],
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\n    \"application\": {\n        \"name\": \"ays-be\",\n        \"description\": \"AYS Services\",\n        \"version\": \"1.2.0\"\n    },\n    \"build\": {\n        \"number\": \"20251025.0637\"\n    }\n}"
+									"body": "{\n    \"application\": {\n        \"name\": \"ays-be\",\n        \"description\": \"AYS Services\",\n        \"version\": \"1.2.0\"\n    },\n    \"build\": {\n        \"number\": \"20260301.1617\"\n    }\n}"
 								}
 							]
 						}
