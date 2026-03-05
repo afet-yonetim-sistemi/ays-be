@@ -160,7 +160,7 @@ Page.
 
 ## Postman
 
-### [Documentation](https://documenter.getpostman.com/view/26813504/2s93kz55Jz) & [Workspace](https://www.postman.com/ays-team/api)
+### [Documentation](https://documenter.getpostman.com/view/26813504/2sBXcKAcdv) & [Workspace](https://www.postman.com/ays-team/api)
 
 ---
 
