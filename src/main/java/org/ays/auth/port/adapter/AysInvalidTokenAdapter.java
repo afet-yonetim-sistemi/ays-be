@@ -1,77 +1,71 @@
 package org.ays.auth.port.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.auth.model.AysInvalidToken;
-import org.ays.auth.model.entity.AysInvalidTokenEntity;
-import org.ays.auth.model.mapper.AysInvalidTokenEntityToDomainMapper;
-import org.ays.auth.model.mapper.AysInvalidTokenToEntityMapper;
-import org.ays.auth.port.AysInvalidTokenDeletePort;
+import org.ays.auth.model.enums.AysConfigurationParameter;
 import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysInvalidTokenSavePort;
-import org.ays.auth.repository.AysInvalidTokenRepository;
+import org.ays.common.client.AysCacheClient;
+import org.ays.parameter.model.AysParameter;
+import org.ays.parameter.port.AysParameterReadPort;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.time.Duration;
+import java.util.Map;
 
 /**
- * Adapter class that implements read, save, and delete ports for handling {@link AysInvalidToken} entities.
- * This component interacts with the {@link AysInvalidTokenRepository} to perform database operations.
+ * Adapter class implementing both {@link AysInvalidTokenReadPort} and {@link AysInvalidTokenSavePort} interfaces.
+ * Handles invalid token persistence and lookup operations through the cache layer.
  */
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidTokenSavePort, AysInvalidTokenDeletePort {
+class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidTokenSavePort {
 
-    private final AysInvalidTokenRepository invalidTokenRepository;
+    private final AysCacheClient cacheClient;
+    private final AysParameterReadPort parameterReadPort;
 
 
-    private final AysInvalidTokenEntityToDomainMapper invalidTokenEntityToDomainMapper = AysInvalidTokenEntityToDomainMapper.initialize();
-    private final AysInvalidTokenToEntityMapper invalidTokenToEntityMapper = AysInvalidTokenToEntityMapper.initialize();
+    private static final String PREFIX = "ays_invalid_token";
 
 
     /**
-     * Retrieves an {@link AysInvalidToken} by its token ID.
+     * Checks whether the given token ID exists in invalid token cache.
      *
-     * @param tokenId The token ID of the {@link AysInvalidToken} to retrieve.
-     * @return An {@link Optional} containing the found {@link AysInvalidToken}, or empty if not found.
+     * @param tokenId The token ID to check for invalidation.
+     * @return true if the token ID exists in cache, otherwise false.
      */
     @Override
-    public Optional<AysInvalidToken> findByTokenId(final String tokenId) {
-        final Optional<AysInvalidTokenEntity> invalidTokenEntity = invalidTokenRepository.findByTokenId(tokenId);
-        return invalidTokenEntity.map(invalidTokenEntityToDomainMapper::map);
+    public boolean exists(final String tokenId) {
+        return cacheClient.find(PREFIX, tokenId).isPresent();
     }
 
-    /**
-     * Persists a set of invalid tokens by mapping domain objects to entities, saving them in batch,
-     * and then mapping the saved entities back to domain objects.
-     *
-     * @param invalidTokens the set of invalid tokens to be saved
-     * @return a set of {@link AysInvalidToken} objects that have been successfully saved
-     */
-    @Override
-    @Transactional
-    public Set<AysInvalidToken> saveAll(final Set<AysInvalidToken> invalidTokens) {
-        final List<AysInvalidTokenEntity> invalidTokenEntitiesToBeSave = invalidTokenToEntityMapper.map(invalidTokens);
-        final List<AysInvalidTokenEntity> invalidTokenEntities = invalidTokenRepository.saveAll(invalidTokenEntitiesToBeSave);
-        return invalidTokenEntities.stream()
-                .map(invalidTokenEntityToDomainMapper::map)
-                .collect(Collectors.toSet());
-    }
 
     /**
-     * Deletes all {@link AysInvalidToken} entities from the database that were created before the specified expiration threshold.
+     * Stores both access and refresh token IDs as invalid entries in the cache.
+     * <p>
+     * The cache TTL is derived from the refresh token expiration parameter so that invalidation data
+     * remains valid for the token lifecycle.
+     * </p>
      *
-     * @param expirationThreshold The timestamp threshold before which {@link AysInvalidToken} entities will be deleted.
+     * @param accessTokenId  The access token ID to mark as invalid.
+     * @param refreshTokenId The refresh token ID to mark as invalid.
      */
     @Override
-    @Transactional
-    public void deleteAllByCreatedAtBefore(LocalDateTime expirationThreshold) {
-        invalidTokenRepository.deleteAllByCreatedAtBefore(expirationThreshold);
+    public void saveAll(final String accessTokenId,
+                        final String refreshTokenId) {
+
+        final AysParameter refreshTokenExpireMinuteParameter = parameterReadPort
+                .findByName(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE.name())
+                .orElse(AysParameter.from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE));
+
+        final long refreshTokenExpireMinutes = Long.parseLong(refreshTokenExpireMinuteParameter.getDefinition());
+        final Duration timeToLive = Duration
+                .ofMinutes(refreshTokenExpireMinutes);
+
+        final Map<String, String> invalidTokens = Map.of(
+                accessTokenId, "access",
+                refreshTokenId, "refresh"
+        );
+        cacheClient.putAll(PREFIX, invalidTokens, timeToLive);
     }
 
 }

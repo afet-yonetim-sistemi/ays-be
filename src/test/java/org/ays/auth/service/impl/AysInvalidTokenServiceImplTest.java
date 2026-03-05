@@ -2,20 +2,13 @@ package org.ays.auth.service.impl;
 
 import org.ays.AysUnitTest;
 import org.ays.auth.exception.AysTokenAlreadyInvalidatedException;
-import org.ays.auth.model.AysInvalidToken;
-import org.ays.auth.model.AysInvalidTokenBuilder;
 import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysInvalidTokenSavePort;
-import org.ays.common.util.AysRandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 class AysInvalidTokenServiceImplTest extends AysUnitTest {
 
@@ -29,41 +22,37 @@ class AysInvalidTokenServiceImplTest extends AysUnitTest {
     private AysInvalidTokenSavePort invalidTokenSavePort;
 
 
+    /**
+     * {@link AysInvalidTokenServiceImpl#invalidateTokens(String, String)}
+     */
     @Test
     void givenValidTokenIds_whenTokensInvalid_thenInvalidateTokens() {
 
-        // Initialize
-        Set<AysInvalidToken> mockInvalidTokens = Set.of(
-                new AysInvalidTokenBuilder().withId(1L).withValidValues().build(),
-                new AysInvalidTokenBuilder().withId(2L).withValidValues().build()
-        );
-
         // Given
-        Set<String> mockTokenIds = mockInvalidTokens.stream()
-                .map(AysInvalidToken::getTokenId)
-                .collect(Collectors.toSet());
-
-        // When
-        Mockito.when(invalidTokenSavePort.saveAll(Mockito.anySet()))
-                .thenReturn(mockInvalidTokens);
+        String mockAccessTokenId = "2420f22e-4e5f-4b18-8b73-3681e9dda072";
+        String mockRefreshTokenId = "2a496b3b-d926-4494-910e-0a53fc894598";
 
         // Then
-        invalidTokenService.invalidateTokens(mockTokenIds);
+        invalidTokenService.invalidateTokens(mockAccessTokenId, mockRefreshTokenId);
 
         // Verify
         Mockito.verify(invalidTokenSavePort, Mockito.times(1))
-                .saveAll(Mockito.anySet());
+                .saveAll(mockAccessTokenId, mockRefreshTokenId);
     }
 
+
+    /**
+     * {@link AysInvalidTokenServiceImpl#checkForInvalidityOfToken(String)}
+     */
     @Test
     void givenInvalidTokenId_whenTokenIdValidated_thenThrowTokenAlreadyInvalidatedException() {
+
         // Given
-        AysInvalidToken mockInvalidToken = new AysInvalidTokenBuilder().withValidValues().build();
-        String mockTokenId = mockInvalidToken.getTokenId();
+        String mockTokenId = "dfa53c48-4030-4f88-a4f3-fa1212552b48";
 
         // When
-        Mockito.when(invalidTokenReadPort.findByTokenId(mockTokenId))
-                .thenReturn(Optional.of(mockInvalidToken));
+        Mockito.when(invalidTokenReadPort.exists(mockTokenId))
+                .thenReturn(true);
 
         // Then
         Assertions.assertThrows(
@@ -73,24 +62,25 @@ class AysInvalidTokenServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(invalidTokenReadPort, Mockito.times(1))
-                .findByTokenId(mockTokenId);
+                .exists(mockTokenId);
     }
 
     @Test
     void givenValidTokenId_whenTokenIdValid_thenDoNothing() {
+
         // Given
-        String mockTokenId = AysRandomUtil.generateUUID();
+        String mockTokenId = "803cdf08-b7ca-4ab5-aa7d-e554f889194d";
 
         // When
-        Mockito.when(invalidTokenReadPort.findByTokenId(mockTokenId))
-                .thenReturn(Optional.empty());
+        Mockito.when(invalidTokenReadPort.exists(mockTokenId))
+                .thenReturn(false);
 
         // Then
         invalidTokenService.checkForInvalidityOfToken(mockTokenId);
 
         // Verify
         Mockito.verify(invalidTokenReadPort, Mockito.times(1))
-                .findByTokenId(mockTokenId);
+                .exists(mockTokenId);
     }
 
 }

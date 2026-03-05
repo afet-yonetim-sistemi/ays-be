@@ -1,21 +1,16 @@
 package org.ays.auth.port;
 
-import org.ays.auth.model.AysInvalidToken;
-
-import java.util.Optional;
-
 /**
- * A port interface for reading {@link AysInvalidToken}.
- * Defines methods to retrieve {@link AysInvalidToken} instances based on ID or token ID.
+ * Port interface for reading invalid token information.
  */
 public interface AysInvalidTokenReadPort {
 
     /**
-     * Retrieves an {@link AysInvalidToken} by its token ID.
+     * Checks whether the given token ID is already marked as invalid.
      *
-     * @param tokenId The token ID of the {@link AysInvalidToken} to retrieve.
-     * @return An {@link Optional} containing the found {@link AysInvalidToken}, or empty if not found.
+     * @param tokenId The token ID to check.
+     * @return true if the token is invalidated, otherwise false.
      */
-    Optional<AysInvalidToken> findByTokenId(String tokenId);
+    boolean exists(String tokenId);
 
 }

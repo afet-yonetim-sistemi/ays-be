@@ -41,7 +41,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 class AysAuthServiceImplTest extends AysUnitTest {
 
@@ -67,8 +66,12 @@ class AysAuthServiceImplTest extends AysUnitTest {
     @Mock
     private AysIdentity identity;
 
+    /**
+     * {@link AysAuthServiceImpl#authenticate(AysLoginRequest)}
+     */
     @Test
     void givenValidLoginRequest_whenUserAuthenticatedForInstitution_thenReturnAysToken() {
+
         // Given
         AysSourcePage mockSourcePage = AysSourcePage.INSTITUTION;
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
@@ -134,6 +137,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidLoginRequest_whenUserAuthenticatedForLanding_thenReturnAysToken() {
+
         // Given
         AysSourcePage mockSourcePage = AysSourcePage.LANDING;
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
@@ -199,6 +203,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenInvalidLoginRequest_whenUserNotFound_thenThrowUserEmailAddressNotFoundAuthException() {
+
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
@@ -230,6 +235,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenInvalidLoginRequest_whenUserNotAuthenticated_thenThrowPasswordNotValidException() {
+
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
@@ -269,6 +275,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidLoginRequest_whenUserNotActive_thenThrowUserNotActiveException() {
+
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
@@ -310,6 +317,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     @ParameterizedTest
     @EnumSource(value = InstitutionStatus.class, mode = EnumSource.Mode.EXCLUDE, names = {"ACTIVE"})
     void givenValidLoginRequest_whenUserInstitutionNotActive_thenThrowInstitutionNotActiveException(InstitutionStatus mockStatus) {
+
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
@@ -351,6 +359,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidLoginRequest_whenUserDoesNotAccessToPage_thenThrowUserDoesNotAccessException() {
+
         // Given
         AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
                 .withValidValues()
@@ -404,8 +413,12 @@ class AysAuthServiceImplTest extends AysUnitTest {
     }
 
 
+    /**
+     * {@link AysAuthServiceImpl#refreshAccessToken(String)}
+     */
     @Test
     void givenValidRefreshToken_whenRefreshTokenValidated_thenReturnAysToken() {
+
         // Given
         String mockRefreshToken = """
                 eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJBWVMiLCJpYXQiOjE3MTUzNTYzNzksImp0aSI6IjRiOTU5MzNm
@@ -469,6 +482,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenInvalidRefreshToken_whenTokenNotVerifiedOrValidate_thenThrowTokenNotValidException() {
+
         // Given
         String mockRefreshToken = """
                 eyJhbGciOiJSUzUxMiJ9.wRhmC0TKAqHmMPb2SlzJBwkKKWwsMH2Tqu3zCCrxUfO1qa4mqTDgNqHIsKYzUQLmMnKhAuKzBx0t
@@ -505,6 +519,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenInvalidRefreshToken_whenRefreshTokenAlreadyInvalidated_thenThrowTokenAlreadyInvalidatedException() {
+
         // Given
         String mockRefreshToken = """
                 eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzUxMiJ9.eyJqdGkiOiJiNTFhODMwMC0xMjg4LTQxYzQtOGI4Zi03MGI3OTc3OTBlMDAi
@@ -556,6 +571,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidRefreshToken_whenUsernameNotValid_thenThrowUsernameNotValidException() {
+
         // Given
         String mockRefreshToken = """
                 eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJBWVMiLCJpYXQiOjE3MTUzNTYzNzksImp0aSI6IjRiOTU5MzNm
@@ -616,6 +632,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
     @Test
     void givenValidRefreshToken_whenUserNotActive_thenThrowUserNotActiveException() {
+
         // Given
         String mockRefreshToken = """
                 eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJBWVMiLCJpYXQiOjE3MTUzNTYzNzksImp0aSI6IjRiOTU5MzNm
@@ -675,8 +692,12 @@ class AysAuthServiceImplTest extends AysUnitTest {
     }
 
 
+    /**
+     * {@link AysAuthServiceImpl#invalidateTokens(String)}
+     */
     @Test
     void givenValidRefreshToken_whenRefreshTokenAndAccessTokenValidated_thenInvalidateToken() {
+
         // Initialize
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
@@ -707,7 +728,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .thenReturn(mockAccessTokenClaims);
 
         Mockito.doNothing().when(invalidTokenService)
-                .invalidateTokens(Set.of(mockAccessTokenId, mockRefreshTokenId));
+                .invalidateTokens(mockAccessTokenId, mockRefreshTokenId);
 
         // Then
         userAuthService.invalidateTokens(mockRefreshToken);
@@ -726,17 +747,19 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .getAccessToken();
 
         Mockito.verify(invalidTokenService, Mockito.times(1))
-                .invalidateTokens(Mockito.anySet());
+                .invalidateTokens(Mockito.anyString(), Mockito.anyString());
     }
 
     @Test
     void givenInvalidRefreshToken_whenRefreshTokenNotValid_thenThrowTokenNotValidException() {
+
         // Given
         String mockRefreshToken = "invalid_refresh_token";
 
         // When
         Mockito.doThrow(AysTokenNotValidException.class)
-                .when(tokenService).verifyAndValidate(mockRefreshToken);
+                .when(tokenService)
+                .verifyAndValidate(mockRefreshToken);
 
         // Then
         Assertions.assertThrows(
@@ -758,11 +781,12 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .getAccessToken();
 
         Mockito.verify(invalidTokenService, Mockito.never())
-                .invalidateTokens(Mockito.anySet());
+                .invalidateTokens(Mockito.anyString(), Mockito.anyString());
     }
 
     @Test
     void givenInvalidatedRefreshToken_whenRefreshTokenInvalidated_thenThrowTokenAlreadyInvalidatedException() {
+
         // Initialize
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
@@ -781,7 +805,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .thenReturn(mockRefreshTokenClaims);
 
         Mockito.doThrow(AysTokenAlreadyInvalidatedException.class)
-                .when(invalidTokenService).checkForInvalidityOfToken(mockRefreshTokenId);
+                .when(invalidTokenService)
+                .checkForInvalidityOfToken(mockRefreshTokenId);
 
         // Then
         Assertions.assertThrows(
@@ -797,13 +822,13 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .getPayload(Mockito.anyString());
 
         Mockito.verify(invalidTokenService, Mockito.times(1))
-                .checkForInvalidityOfToken(Mockito.anyString());
+                .checkForInvalidityOfToken(mockRefreshTokenId);
 
         Mockito.verify(identity, Mockito.never())
                 .getAccessToken();
 
         Mockito.verify(invalidTokenService, Mockito.never())
-                .invalidateTokens(Mockito.anySet());
+                .invalidateTokens(Mockito.anyString(), Mockito.anyString());
     }
 
 }

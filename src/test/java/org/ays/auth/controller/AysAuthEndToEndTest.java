@@ -20,11 +20,13 @@ import org.ays.auth.model.request.AysTokenInvalidateRequest;
 import org.ays.auth.model.request.AysTokenRefreshRequest;
 import org.ays.auth.model.response.AysTokenResponse;
 import org.ays.auth.model.response.AysTokenResponseBuilder;
+import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysPermissionReadPort;
 import org.ays.auth.port.AysRoleReadPort;
 import org.ays.auth.port.AysRoleSavePort;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
+import org.ays.auth.service.AysTokenService;
 import org.ays.common.model.response.AysErrorResponse;
 import org.ays.common.model.response.AysErrorResponseBuilder;
 import org.ays.common.model.response.AysResponse;
@@ -65,6 +67,12 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
     @Autowired
     private AysPermissionReadPort permissionReadPort;
+
+    @Autowired
+    private AysTokenService tokenService;
+
+    @Autowired
+    private AysInvalidTokenReadPort invalidTokenReadPort;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -242,6 +250,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
 
     @Test
     void givenValidAysTokenInvalidateRequest_whenTokensInvalidated_thenReturnSuccessResponse() throws Exception {
+
         // Given
         AysTokenInvalidateRequest tokenInvalidateRequest = AysTokenInvalidateRequest.builder()
                 .refreshToken(userToken.getRefreshToken())
@@ -259,6 +268,15 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .doesNotExist());
+
+        // Verify
+        final String accessTokenId = tokenService.getPayload(userToken.getAccessToken()).getId();
+        boolean accessTokenExists = invalidTokenReadPort.exists(accessTokenId);
+        Assertions.assertTrue(accessTokenExists);
+
+        final String refreshTokenId = tokenService.getPayload(tokenInvalidateRequest.getRefreshToken()).getId();
+        boolean refreshTokenExists = invalidTokenReadPort.exists(refreshTokenId);
+        Assertions.assertTrue(refreshTokenExists);
     }
 
 

@@ -1,22 +1,20 @@
 package org.ays.auth.port.adapter;
 
 import org.ays.AysUnitTest;
-import org.ays.auth.model.AysInvalidToken;
-import org.ays.auth.model.AysInvalidTokenBuilder;
-import org.ays.auth.model.entity.AysInvalidTokenEntity;
-import org.ays.auth.model.entity.AysInvalidTokenEntityBuilder;
-import org.ays.auth.repository.AysInvalidTokenRepository;
+import org.ays.auth.model.enums.AysConfigurationParameter;
+import org.ays.common.client.AysCacheClient;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.parameter.model.AysParameter;
+import org.ays.parameter.port.AysParameterReadPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 class AysInvalidTokenAdapterTest extends AysUnitTest {
 
@@ -25,7 +23,13 @@ class AysInvalidTokenAdapterTest extends AysUnitTest {
     private AysInvalidTokenAdapter invalidTokenAdapter;
 
     @Mock
-    private AysInvalidTokenRepository invalidTokenRepository;
+    private AysCacheClient cacheClient;
+
+    @Mock
+    private AysParameterReadPort parameterReadPort;
+
+
+    private static final String MOCK_PREFIX = "ays_invalid_token:";
 
 
     @Test
@@ -34,23 +38,18 @@ class AysInvalidTokenAdapterTest extends AysUnitTest {
         String mockTokenId = AysRandomUtil.generateUUID();
 
         // When
-        AysInvalidTokenEntity mockInvalidTokenEntity = new AysInvalidTokenEntityBuilder()
-                .withValidValues()
-                .tokenId(mockTokenId)
-                .build();
-
         Mockito
-                .when(invalidTokenRepository.findByTokenId(Mockito.anyString()))
-                .thenReturn(Optional.of(mockInvalidTokenEntity));
+                .when(cacheClient.find(MOCK_PREFIX, mockTokenId))
+                .thenReturn(Optional.of("access"));
 
         // Then
-        Optional<AysInvalidToken> invalidToken = invalidTokenAdapter.findByTokenId(mockTokenId);
+        boolean exists = invalidTokenAdapter.exists(mockTokenId);
 
-        Assertions.assertTrue(invalidToken.isPresent());
+        Assertions.assertTrue(exists);
 
         // Verify
-        Mockito.verify(invalidTokenRepository, Mockito.times(1))
-                .findByTokenId(Mockito.anyString());
+        Mockito.verify(cacheClient, Mockito.times(1))
+                .find(MOCK_PREFIX, mockTokenId);
     }
 
 
@@ -61,66 +60,51 @@ class AysInvalidTokenAdapterTest extends AysUnitTest {
 
         // When
         Mockito
-                .when(invalidTokenRepository.findByTokenId(Mockito.anyString()))
+                .when(cacheClient.find(MOCK_PREFIX, mockTokenId))
                 .thenReturn(Optional.empty());
 
         // Then
-        Optional<AysInvalidToken> invalidToken = invalidTokenAdapter.findByTokenId(mockTokenId);
+        boolean exists = invalidTokenAdapter.exists(mockTokenId);
 
-        Assertions.assertTrue(invalidToken.isEmpty());
+        Assertions.assertFalse(exists);
 
         // Verify
-        Mockito.verify(invalidTokenRepository, Mockito.times(1))
-                .findByTokenId(Mockito.anyString());
+        Mockito.verify(cacheClient, Mockito.times(1))
+                .find(MOCK_PREFIX, mockTokenId);
     }
 
 
     @Test
     void givenValidInvalidTokens_whenTokensSaved_thenDoNothing() {
         // Given
-        Set<AysInvalidToken> invalidTokens = Set.of(
-                new AysInvalidTokenBuilder()
-                        .withValidValues()
-                        .build(),
-                new AysInvalidTokenBuilder()
-                        .withValidValues()
-                        .build()
-        );
+        String mockAccessTokenId = AysRandomUtil.generateUUID();
+        String mockRefreshTokenId = AysRandomUtil.generateUUID();
 
         // When
-        List<AysInvalidTokenEntity> mockInvalidTokenEntities = List.of(
-                new AysInvalidTokenEntityBuilder().withValidValues().build()
-        );
-
+        AysConfigurationParameter configurationParameter = AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE;
+        AysParameter mockParameter = AysParameter.from(configurationParameter);
         Mockito
-                .when(invalidTokenRepository.saveAll(Mockito.anyList()))
-                .thenReturn(mockInvalidTokenEntities);
+                .when(parameterReadPort.findByName(configurationParameter.name()))
+                .thenReturn(Optional.empty());
 
-        // Then
-        invalidTokenAdapter.saveAll(invalidTokens);
-
-        // Verify
-        Mockito.verify(invalidTokenRepository, Mockito.times(1))
-                .saveAll(Mockito.anyList());
-    }
-
-
-    @Test
-    void givenValidExpirationThreshold_whenTokensDeletedBeforeThresholdDate_thenDoNothing() {
-        // Given
-        LocalDateTime expirationThreshold = LocalDateTime.now().minusDays(3);
-
-        // When
+        Map<String, String> mockInvalidTokens = Map.of(
+                mockAccessTokenId, "access",
+                mockRefreshTokenId, "refresh"
+        );
+        Duration mockTimeToLive = Duration.ofMinutes(Long.parseLong(mockParameter.getDefinition()));
         Mockito.doNothing()
-                .when(invalidTokenRepository)
-                .deleteAllByCreatedAtBefore(Mockito.any(LocalDateTime.class));
+                .when(cacheClient)
+                .putAll(MOCK_PREFIX, mockInvalidTokens, mockTimeToLive);
 
         // Then
-        invalidTokenAdapter.deleteAllByCreatedAtBefore(expirationThreshold);
+        invalidTokenAdapter.saveAll(mockAccessTokenId, mockRefreshTokenId);
 
         // Verify
-        Mockito.verify(invalidTokenRepository, Mockito.times(1))
-                .deleteAllByCreatedAtBefore(Mockito.any(LocalDateTime.class));
+        Mockito.verify(parameterReadPort, Mockito.times(1))
+                .findByName(configurationParameter.name());
+
+        Mockito.verify(cacheClient, Mockito.times(1))
+                .putAll(MOCK_PREFIX, mockInvalidTokens, mockTimeToLive);
     }
 
 }
