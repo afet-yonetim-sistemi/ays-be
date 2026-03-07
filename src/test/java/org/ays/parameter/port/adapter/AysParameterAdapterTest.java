@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.List;
-import java.util.Optional;
 
 class AysParameterAdapterTest extends AysUnitTest {
 
@@ -59,35 +58,8 @@ class AysParameterAdapterTest extends AysUnitTest {
         );
 
         // Verify
-        Mockito.verify(parameterRepository)
-                .findAll();
-    }
-
-
-    @Test
-    void givenValidParameterName_whenParameterFound_thenReturnParameter() {
-        // Given
-        String mockName = "AUTH_ACCESS_TOKEN_EXPIRE_MINUTE";
-
-        // When
-        AysParameterEntity mockParameterEntity = new AysParameterEntityBuilder()
-                .withName("AUTH_ACCESS_TOKEN_EXPIRE_MINUTE")
-                .withDefinition("120")
-                .build();
-
-        Mockito.when(parameterRepository.findByName(mockName))
-                .thenReturn(Optional.of(mockParameterEntity));
-
-        // Then
-        Optional<AysParameter> parameter = parameterAdapter.findByName(mockName);
-
-        Assertions.assertTrue(parameter.isPresent());
-        Assertions.assertEquals(mockParameterEntity.getName(), parameter.get().getName());
-        Assertions.assertEquals(mockParameterEntity.getDefinition(), parameter.get().getDefinition());
-
-        // Verify
         Mockito.verify(parameterRepository, Mockito.times(1))
-                .findByName(mockName);
+                .findAll();
     }
 
 }

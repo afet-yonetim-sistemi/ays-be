@@ -2,21 +2,17 @@ package org.ays.auth.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysTokenAlreadyInvalidatedException;
-import org.ays.auth.model.AysInvalidToken;
 import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysInvalidTokenSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 /**
- * Implementation of {@link AysInvalidTokenService} interface for managing invalid tokens within the application.
+ * Implementation of {@link AysInvalidTokenService} for invalidating tokens and validating invalid token state.
  * <p>
- * This service class provides methods to invalidate tokens and check if a token has already been invalidated.
- * It uses ports to read and save invalid tokens, ensuring that token management operations are handled efficiently.
+ * This service coordinates read and save operations through invalid token ports and throws
+ * {@link AysTokenAlreadyInvalidatedException} when an already invalidated token is detected.
  * </p>
  */
 @Service
@@ -27,40 +23,28 @@ class AysInvalidTokenServiceImpl implements AysInvalidTokenService {
     private final AysInvalidTokenSavePort invalidTokenSavePort;
 
     /**
-     * Invalidates multiple tokens by saving them as invalid tokens in the system.
-     * <p>
-     * This method converts each token ID into an {@link AysInvalidToken} object and saves them using
-     * the {@link AysInvalidTokenSavePort}.
-     * </p>
+     * Invalidates both access and refresh token IDs.
      *
-     * @param tokenIds the set of token IDs to invalidate
+     * @param accessTokenId  the access token ID to invalidate
+     * @param refreshTokenId the refresh token ID to invalidate
      */
     @Override
     @Transactional
-    public void invalidateTokens(final Set<String> tokenIds) {
-        final Set<AysInvalidToken> invalidTokens = tokenIds.stream()
-                .map(tokenId -> AysInvalidToken.builder()
-                        .tokenId(tokenId)
-                        .build()
-                )
-                .collect(Collectors.toSet());
+    public void invalidateTokens(final String accessTokenId,
+                                 final String refreshTokenId) {
 
-        invalidTokenSavePort.saveAll(invalidTokens);
+        invalidTokenSavePort.saveAll(accessTokenId, refreshTokenId);
     }
 
     /**
      * Checks if a token has already been invalidated.
-     * <p>
-     * This method queries the {@link AysInvalidTokenReadPort} to determine if the specified token ID
-     * exists as an invalidated token. If it does, an {@link AysTokenAlreadyInvalidatedException} is thrown.
-     * </p>
      *
-     * @param tokenId the token ID to check for invalidity
-     * @throws AysTokenAlreadyInvalidatedException if the token has already been invalidated
+     * @param tokenId the token ID to check
+     * @throws AysTokenAlreadyInvalidatedException if the token is already invalidated
      */
     @Override
     public void checkForInvalidityOfToken(final String tokenId) {
-        final boolean isTokenInvalid = invalidTokenReadPort.findByTokenId(tokenId).isPresent();
+        final boolean isTokenInvalid = invalidTokenReadPort.exists(tokenId);
         if (isTokenInvalid) {
             throw new AysTokenAlreadyInvalidatedException(tokenId);
         }
