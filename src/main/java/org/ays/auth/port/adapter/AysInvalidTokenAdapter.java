@@ -1,12 +1,10 @@
 package org.ays.auth.port.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.ays.auth.model.enums.AysConfigurationParameter;
+import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysInvalidTokenSavePort;
 import org.ays.common.client.AysCacheClient;
-import org.ays.parameter.model.AysParameter;
-import org.ays.parameter.port.AysParameterReadPort;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -21,7 +19,7 @@ import java.util.Map;
 class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidTokenSavePort {
 
     private final AysCacheClient cacheClient;
-    private final AysParameterReadPort parameterReadPort;
+    private final AysApplicationConfigurationParameter applicationConfigurationParameter;
 
 
     private static final String PREFIX = "ays_invalid_token";
@@ -53,13 +51,8 @@ class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidToken
     public void saveAll(final String accessTokenId,
                         final String refreshTokenId) {
 
-        final AysParameter refreshTokenExpireMinuteParameter = parameterReadPort
-                .findByName(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE.name())
-                .orElse(AysParameter.from(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE));
-
-        final long refreshTokenExpireMinutes = Long.parseLong(refreshTokenExpireMinuteParameter.getDefinition());
         final Duration timeToLive = Duration
-                .ofMinutes(refreshTokenExpireMinutes);
+                .ofMinutes(applicationConfigurationParameter.getRefreshTokenExpireMinute());
 
         final Map<String, String> invalidTokens = Map.of(
                 accessTokenId, "access",
