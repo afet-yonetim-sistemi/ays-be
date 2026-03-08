@@ -58,3 +58,26 @@ jobs:
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
 #        run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.projectName='ays-be'
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Execute Remote SSH Commands
+        run: |
+          # --- SSH Setup on GitHub Runner ---
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          
+          # --- Remote Execution via SSH ---
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
+            git config --global --add safe.directory /aysapps/ays-be && \
+            cd /aysapps/ays-be && \
+            git fetch origin && \
+            git checkout origin feature/AYS-1033/deployment && \
+            git pull origin feature/AYS-1033/deployment && \
+            sudo docker compose up -d --build"
+
+      - name: Deployment successfully completed
+        run: echo "Deployment successfully completed!"
