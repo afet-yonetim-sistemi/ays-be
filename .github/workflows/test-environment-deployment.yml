@@ -83,7 +83,7 @@ jobs:
           
           # Navigate to project and pull latest code from main branch
                cd /aysapps/ays-be && \
-               git fetch origin \
+               git fetch origin && \
                git checkout origin feature/AYS-1033/deployment && \
                git pull origin feature/AYS-1033/deployment &&\
           
