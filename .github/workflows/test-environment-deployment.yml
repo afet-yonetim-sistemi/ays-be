@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    environment: Test
+    #environment: Test
     runs-on: ubuntu-latest
     steps:
       - name: Update package cache
