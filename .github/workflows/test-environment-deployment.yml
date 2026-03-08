@@ -78,7 +78,7 @@ jobs:
             git config --global --add safe.directory /aysapps/ays-be && \
             cd /aysapps/ays-be && \
             git fetch origin && \
-            git checkout origin feature/AYS-1033/deployment && \
+            git checkout feature/AYS-1033/deployment && \
             git pull origin feature/AYS-1033/deployment && \
             sudo docker compose up -d --build"
 
