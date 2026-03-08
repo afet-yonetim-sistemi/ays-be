@@ -1,60 +1,61 @@
 # Purpose: Deploy the backend to the test environment.
 
 # Name of the workflow
+# Purpose: Deploy the backend to the test environment.
 name: Deploy to Test Environment
 
 on:
   push:
     branches:
-      - feature/AYS-1033/deployment # Trigger the workflow when a push event occurs on the main branch
+      - feature/AYS-1033/deployment # Trigger on this specific branch
 
 jobs:
-  build: # Define the "build" job
-    environment: Test # Define the environment as Test
-    runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
-    steps: # List of steps to execute within the job
-      - name: Update package cache # Step to update the package cache
+  build:
+    environment: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update package cache
         run: sudo apt-get update
 
-      - name: Checkout code # Step to check out the code from the repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Java # Step to set up the Java environment
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: 17 # Specify Java 17 as the version
-          distribution: 'corretto' # Use the 'corretto' distribution of Java
+          java-version: 17
+          distribution: 'corretto'
 
-      - name: Set up Docker # Step to set up the Docker environment
+      - name: Set up Docker
         uses: actions/hello-world-docker-action@v2
 
-      - name: Install Maven # Step to install Maven
+      - name: Install Maven
         run: sudo apt-get install -y maven
 
-      - name: Copy settings.xml file from template # Step to create a new 'settings.xml' file by copying the 'template-settings.xml'
+      - name: Copy settings.xml file from template
         run: cp template-settings.xml settings.xml
 
-      - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
+      - name: Replace username in settings.xml
         run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
-      - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
+      - name: Replace access token in settings.xml
         run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
-      - name: Cache SonarQube packages # Caching packages related to SonarQube
-        uses: actions/cache@v4 # To use GitHub Actions' cache action
-        with: # The section where parameters are defined for the GitHub Actions action
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar # If the key does not match exactly, the cache will be restored with similar keys.
+          restore-keys: ${{ runner.os }}-sonar
 
-      - name: Cache Maven packages # Caching of Maven packages
+      - name: Cache Maven packages
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build and analyze # SonarQube integration and Maven execution
+      - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
@@ -66,29 +67,20 @@ jobs:
     steps:
       - name: Execute Remote SSH Commands
         run: |
-        # --- SSH Setup on GitHub Runner ---
-        # Create .ssh directory and save the private key from secrets
+          # --- SSH Setup on GitHub Runner ---
           mkdir -p ~/.ssh
           echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
-          
-        # Set restrictive permissions for the key and register the server as a known host
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
           
-        # --- Remote Execution via SSH ---
-        # Connect to VPS and execute deployment commands sequentially
+          # --- Remote Execution via SSH ---
           ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
-        # Grant permission for the directory to avoid Git ownership errors
-            git config --global --add safe.directory /aysapps/ays-fe-landing && \
-          
-        # Navigate to project and pull latest code from main branch
+            git config --global --add safe.directory /aysapps/ays-be && \
             cd /aysapps/ays-be && \
             git fetch origin && \
-            git checkout origin feature/AYS-1033/deployment && \
-            git pull origin feature/AYS-1033/deployment &&\
-          
-        # Rebuild and restart containers in detached mode using sudo
+            git checkout feature/AYS-1033/deployment && \
+            git pull origin feature/AYS-1033/deployment && \
             sudo docker compose up -d --build"
 
-      - name: Deployment successfully completed # Step to indicate that the deployment was successful
+      - name: Deployment successfully completed
         run: echo "Deployment successfully completed!"
