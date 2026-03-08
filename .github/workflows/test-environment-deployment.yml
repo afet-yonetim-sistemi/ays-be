@@ -6,7 +6,7 @@ name: Deploy to Test Environment
 on:
   push:
     branches:
-      - feature/AYS-1034/deployment # Trigger the workflow when a push event occurs on the main branch
+      - feature/AYS-1033/deployment # Trigger the workflow when a push event occurs on the main branch
 
 jobs:
   build: # Define the "build" job
@@ -84,8 +84,8 @@ jobs:
           # Navigate to project and pull latest code from main branch
                cd /aysapps/ays-be && \
                git fetch origin \
-               git checkout origin feature/AYS-1034/deployment && \
-               git pull origin feature/AYS-1034/deployment &&\
+               git checkout origin feature/AYS-1033/deployment && \
+               git pull origin feature/AYS-1033/deployment &&\
           
           # Rebuild and restart containers in detached mode using sudo
                sudo docker compose up -d --build"
