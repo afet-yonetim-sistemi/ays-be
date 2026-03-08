@@ -67,28 +67,28 @@ jobs:
       - name: Execute Remote SSH Commands
         run: |
         # --- SSH Setup on GitHub Runner ---
-          # Create .ssh directory and save the private key from secrets
-               mkdir -p ~/.ssh
-               echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
+        # Create .ssh directory and save the private key from secrets
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
           
-          # Set restrictive permissions for the key and register the server as a known host
-               chmod 600 ~/.ssh/id_ed25519
-               ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+        # Set restrictive permissions for the key and register the server as a known host
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
           
         # --- Remote Execution via SSH ---
-          # Connect to VPS and execute deployment commands sequentially
-               ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
-          # Grant permission for the directory to avoid Git ownership errors
-               git config --global --add safe.directory /aysapps/ays-fe-landing && \
+        # Connect to VPS and execute deployment commands sequentially
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
+        # Grant permission for the directory to avoid Git ownership errors
+            git config --global --add safe.directory /aysapps/ays-fe-landing && \
           
-          # Navigate to project and pull latest code from main branch
-               cd /aysapps/ays-be && \
-               git fetch origin && \
-               git checkout origin feature/AYS-1033/deployment && \
-               git pull origin feature/AYS-1033/deployment &&\
+        # Navigate to project and pull latest code from main branch
+            cd /aysapps/ays-be && \
+            git fetch origin && \
+            git checkout origin feature/AYS-1033/deployment && \
+            git pull origin feature/AYS-1033/deployment &&\
           
-          # Rebuild and restart containers in detached mode using sudo
-               sudo docker compose up -d --build"
+        # Rebuild and restart containers in detached mode using sudo
+            sudo docker compose up -d --build"
 
       - name: Deployment successfully completed # Step to indicate that the deployment was successful
         run: echo "Deployment successfully completed!"
