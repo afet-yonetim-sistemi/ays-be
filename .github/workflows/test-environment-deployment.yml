@@ -73,7 +73,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
           
-          # --- Remote Execution via SSH ---
+          # --- Remote Execution via SSH ----
           ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
             git config --global --add safe.directory /aysapps/ays-be && \
             cd /aysapps/ays-be && \
