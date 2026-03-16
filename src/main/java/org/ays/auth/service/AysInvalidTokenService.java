@@ -1,24 +1,23 @@
 package org.ays.auth.service;
 
-import java.util.Set;
-
 /**
- * AysInvalidTokenService provides an interface for managing invalid tokens.
+ * Provides services for invalidating tokens and checking invalid token state.
  */
 public interface AysInvalidTokenService {
 
     /**
-     * Invalidates the specified token IDs.
+     * Invalidates both access and refresh token IDs.
      *
-     * @param tokenIds a set of token IDs to invalidate
+     * @param accessTokenId  the access token ID to invalidate
+     * @param refreshTokenId the refresh token ID to invalidate
      */
-    void invalidateTokens(final Set<String> tokenIds);
+    void invalidateTokens(String accessTokenId, String refreshTokenId);
 
     /**
-     * Checks the validity of a token.
+     * Checks whether the given token ID is invalid.
      *
-     * @param tokenId the ID of the token to check for invalidity
+     * @param tokenId the token ID to validate
      */
-    void checkForInvalidityOfToken(final String tokenId);
+    void checkForInvalidityOfToken(String tokenId);
 
 }

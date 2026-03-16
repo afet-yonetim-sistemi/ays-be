@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Provides authentication services for users.
@@ -64,9 +63,9 @@ class AysAuthServiceImpl implements AysAuthService {
      * @param loginRequest The login request containing the user's email address, password, and source page.
      * @return {@link AysToken} representing the access token generated upon successful authentication.
      * @throws AysUserNotExistByEmailAddressAuthException If the provided email address does not exist.
-     * @throws AysPasswordNotValidException         If the provided password is not valid.
-     * @throws AysUserNotActiveAuthException        If the user's status is not active.
-     * @throws AysUserDoesNotAccessPageException    If the user does not have permission to access the requested page.
+     * @throws AysPasswordNotValidException               If the provided password is not valid.
+     * @throws AysUserNotActiveAuthException              If the user's status is not active.
+     * @throws AysUserDoesNotAccessPageException          If the user does not have permission to access the requested page.
      */
     @Override
     @Transactional
@@ -184,7 +183,7 @@ class AysAuthServiceImpl implements AysAuthService {
         invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
 
         final String accessTokenId = tokenService.getPayload(identity.getAccessToken()).getId();
-        invalidTokenService.invalidateTokens(Set.of(accessTokenId, refreshTokenId));
+        invalidTokenService.invalidateTokens(accessTokenId, refreshTokenId);
     }
 
 }

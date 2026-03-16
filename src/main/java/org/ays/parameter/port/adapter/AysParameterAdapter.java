@@ -2,7 +2,6 @@ package org.ays.parameter.port.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.parameter.model.AysParameter;
-import org.ays.parameter.model.entity.AysParameterEntity;
 import org.ays.parameter.model.mapper.AysParameterEntityToDomainMapper;
 import org.ays.parameter.port.AysParameterReadPort;
 import org.ays.parameter.repository.AysParameterRepository;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * An adapter class implementing {@link AysParameterReadPort} for accessing {@link AysParameter} entities.
@@ -42,19 +40,6 @@ class AysParameterAdapter implements AysParameterReadPort {
         return parameterRepository.findAll().stream()
                 .map(parameterEntityToParameterMapper::map)
                 .toList();
-    }
-
-
-    /**
-     * Retrieves an {@link AysParameter} entity by its name.
-     *
-     * @param name the name of the {@link AysParameter} to search for
-     * @return an {@link Optional} containing the {@link AysParameter} entity if found, otherwise empty
-     */
-    @Override
-    public Optional<AysParameter> findByName(final String name) {
-        final Optional<AysParameterEntity> parameterEntity = parameterRepository.findByName(name);
-        return parameterEntity.map(parameterEntityToParameterMapper::map);
     }
 
 }
