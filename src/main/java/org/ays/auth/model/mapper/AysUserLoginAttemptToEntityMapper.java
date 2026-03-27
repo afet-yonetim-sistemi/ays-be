@@ -13,6 +13,11 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AysUserLoginAttemptToEntityMapper extends BaseMapper<AysUser.LoginAttempt, AysUserEntity.LoginAttemptEntity> {
 
+    /**
+     * Initializes the mapper.
+     *
+     * @return the initialized mapper object.
+     */
     static AysUserLoginAttemptToEntityMapper initialize() {
         return Mappers.getMapper(AysUserLoginAttemptToEntityMapper.class);
     }
