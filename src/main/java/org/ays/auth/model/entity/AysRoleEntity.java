@@ -22,12 +22,12 @@ import lombok.experimental.SuperBuilder;
 import org.ays.auth.model.enums.AysRoleStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.Set;
 
 /**
  * Entity class representing a role within the application, extending from {@link BaseEntity}.
- * This entity maps to the database table "AYS_ROLE".
  */
 @Entity
 @Getter
@@ -65,6 +65,7 @@ public class AysRoleEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "ROLE_ID"),
             inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID")
     )
+    @BatchSize(size = 10)
     private Set<AysPermissionEntity> permissions;
 
 }
