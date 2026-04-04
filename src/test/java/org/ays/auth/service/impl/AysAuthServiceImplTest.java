@@ -24,7 +24,7 @@ import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
 import org.ays.auth.port.AysUserReadPort;
-import org.ays.auth.port.UserLoginAttemptSavePort;
+import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
 import org.ays.institution.exception.AysInstitutionNotActiveAuthException;
@@ -51,7 +51,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
     private AysUserReadPort userReadPort;
 
     @Mock
-    private UserLoginAttemptSavePort userLoginAttemptSavePort;
+    private AysUserSavePort userSavePort;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -110,9 +110,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
                             mockUser.setLoginAttempt(AysUser.LoginAttempt.builder().build());
                             mockUser.getLoginAttempt().success();
                         });
-        Mockito.doNothing()
-                .when(userLoginAttemptSavePort)
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockUser);
 
         Mockito.when(tokenService.generate(Mockito.any(Claims.class)))
                 .thenReturn(mockUserToken);
@@ -129,8 +128,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .matches(Mockito.anyString(), Mockito.anyString());
 
-        Mockito.verify(userLoginAttemptSavePort, Mockito.times(1))
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .generate(Mockito.any(Claims.class));
@@ -177,9 +176,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
                             mockUser.setLoginAttempt(AysUser.LoginAttempt.builder().build());
                             mockUser.getLoginAttempt().success();
                         });
-        Mockito.doNothing()
-                .when(userLoginAttemptSavePort)
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockUser);
 
         Mockito.when(tokenService.generate(Mockito.any(Claims.class)))
                 .thenReturn(mockUserToken);
@@ -196,8 +194,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .matches(Mockito.anyString(), Mockito.anyString());
 
-        Mockito.verify(userLoginAttemptSavePort, Mockito.times(1))
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .generate(Mockito.any(Claims.class));
@@ -228,8 +226,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
         Mockito.verify(passwordEncoder, Mockito.never())
                 .matches(Mockito.anyString(), Mockito.anyString());
 
-        Mockito.verify(userLoginAttemptSavePort, Mockito.never())
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(tokenService, Mockito.never())
                 .generate(Mockito.any(Claims.class));
@@ -268,8 +266,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .matches(Mockito.anyString(), Mockito.anyString());
 
-        Mockito.verify(userLoginAttemptSavePort, Mockito.never())
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(tokenService, Mockito.never())
                 .generate(Mockito.any(Claims.class));
@@ -309,8 +307,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .matches(Mockito.anyString(), Mockito.anyString());
 
-        Mockito.verify(userLoginAttemptSavePort, Mockito.never())
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(tokenService, Mockito.never())
                 .generate(Mockito.any(Claims.class));
@@ -351,8 +349,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .matches(Mockito.anyString(), Mockito.anyString());
 
-        Mockito.verify(userLoginAttemptSavePort, Mockito.never())
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(tokenService, Mockito.never())
                 .generate(Mockito.any(Claims.class));
@@ -407,8 +405,8 @@ class AysAuthServiceImplTest extends AysUnitTest {
         Mockito.verify(passwordEncoder, Mockito.times(1))
                 .matches(Mockito.anyString(), Mockito.anyString());
 
-        Mockito.verify(userLoginAttemptSavePort, Mockito.never())
-                .save(Mockito.anyString(), Mockito.any(AysUser.LoginAttempt.class));
+        Mockito.verify(userSavePort, Mockito.never())
+                .save(Mockito.any(AysUser.class));
 
         Mockito.verify(tokenService, Mockito.never())
                 .generate(Mockito.any(Claims.class));
