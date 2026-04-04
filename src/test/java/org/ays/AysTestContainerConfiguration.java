@@ -7,13 +7,13 @@ import org.testcontainers.containers.MySQLContainer;
 
 abstract class AysTestContainerConfiguration extends AysLogConfiguration {
 
-    private static final MySQLContainer<?> MYSQL_CONTAINER = new MySQLContainer<>("mysql:8.4.0")
+    private static final MySQLContainer<?> MYSQL_CONTAINER = new MySQLContainer<>("mysql:8.4.8")
             .withUsername("ays")
             .withPassword("ayspass")
             .withDatabaseName("test")
             .withCommand("--max-connections=1000");
 
-    private static final RedisContainer REDIS_CONTAINER = new RedisContainer("redis:8.4.0");
+    private static final RedisContainer REDIS_CONTAINER = new RedisContainer("redis:8.4.2-alpine3.22");
 
     static {
         MYSQL_CONTAINER.start();
