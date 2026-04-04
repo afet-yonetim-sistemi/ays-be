@@ -110,6 +110,20 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .doesNotHaveJsonPath())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
                         .isNotEmpty());
+
+        // Verify
+        Optional<AysUser> userFromDatabase = userReadPort.findByEmailAddress(loginRequest.getEmailAddress());
+
+        Assertions.assertTrue(userFromDatabase.isPresent());
+
+        final AysUser.LoginAttempt loginAttempt = userFromDatabase.get().getLoginAttempt();
+        Assertions.assertNotNull(loginAttempt);
+        Assertions.assertNotNull(loginAttempt.getId());
+        Assertions.assertNotNull(loginAttempt.getLastLoginAt());
+        Assertions.assertNotNull(loginAttempt.getCreatedUser());
+        Assertions.assertNotNull(loginAttempt.getCreatedAt());
+        Assertions.assertNotNull(loginAttempt.getUpdatedUser());
+        Assertions.assertNotNull(loginAttempt.getUpdatedAt());
     }
 
 
@@ -189,6 +203,20 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(expectedPermissionNames.size(), actualPermissionNames.size());
         Assertions.assertTrue(actualPermissionNames.containsAll(expectedPermissionNames));
         Assertions.assertTrue(expectedPermissionNames.containsAll(actualPermissionNames));
+
+
+        Optional<AysUser> userFromDatabase = userReadPort.findByEmailAddress(loginRequest.getEmailAddress());
+
+        Assertions.assertTrue(userFromDatabase.isPresent());
+
+        final AysUser.LoginAttempt loginAttempt = userFromDatabase.get().getLoginAttempt();
+        Assertions.assertNotNull(loginAttempt);
+        Assertions.assertNotNull(loginAttempt.getId());
+        Assertions.assertNotNull(loginAttempt.getLastLoginAt());
+        Assertions.assertNotNull(loginAttempt.getCreatedUser());
+        Assertions.assertNotNull(loginAttempt.getCreatedAt());
+        Assertions.assertNull(loginAttempt.getUpdatedUser());
+        Assertions.assertNull(loginAttempt.getUpdatedAt());
     }
 
     @Test
