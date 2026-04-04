@@ -35,12 +35,13 @@ import java.util.Set;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Table(name = "AYS_ROLE")
 public class AysRoleEntity extends BaseEntity {
 
     @Id
     @Column(name = "ID")
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 

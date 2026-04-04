@@ -162,23 +162,8 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
                     .withLastLoginAt(LocalDateTime.now());
         }
 
-        public LoginAttemptBuilder withId(String id) {
-            data.setId(id);
-            return this;
-        }
-
         public LoginAttemptBuilder withLastLoginAt(LocalDateTime lastLoginAt) {
             data.setLastLoginAt(lastLoginAt);
-            return this;
-        }
-
-        public LoginAttemptBuilder withCreatedUser(String createdUser) {
-            data.setCreatedUser(createdUser);
-            return this;
-        }
-
-        public LoginAttemptBuilder withCreatedAt(LocalDateTime createdAt) {
-            data.setCreatedAt(createdAt);
             return this;
         }
 

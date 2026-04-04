@@ -15,7 +15,7 @@ import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.port.AysUserReadPort;
-import org.ays.auth.port.UserLoginAttemptSavePort;
+import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysAuthService;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
@@ -42,7 +42,7 @@ import java.util.Optional;
 class AysAuthServiceImpl implements AysAuthService {
 
     private final AysUserReadPort userReadPort;
-    private final UserLoginAttemptSavePort userLoginAttemptSavePort;
+    private final AysUserSavePort userSavePort;
     private final PasswordEncoder passwordEncoder;
 
     private final AysTokenService tokenService;
@@ -87,7 +87,7 @@ class AysAuthServiceImpl implements AysAuthService {
                             user.setLoginAttempt(AysUser.LoginAttempt.builder().build());
                             user.getLoginAttempt().success();
                         });
-        userLoginAttemptSavePort.save(user.getId(), user.getLoginAttempt());
+        userSavePort.save(user);
 
         final Claims claimsOfUser = user.getClaims();
         return tokenService.generate(claimsOfUser);
