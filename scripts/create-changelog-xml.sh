@@ -24,15 +24,6 @@ while true; do
   fi
 done
 
-while true; do
-  echo "\033[97m"
-  read -p "➡️ GitHub Username: " GH_USERNAME
-  if [[ -n "$GH_USERNAME" ]]; then
-    break
-  fi
-  echo "\033[41m⚠️ Please enter your GitHub username.\033[0m"
-done
-
 echo "\033[0m"
 
 echo "📝 \033[44mCreating migration file...\033[0m"
@@ -49,13 +40,12 @@ FILE_PATH="${TARGET_DIR}/${FILENAME}"
 
 cat <<EOF > "$FILE_PATH"
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
-    <changeSet id="${TIMESTAMP}-ays-${MIGRATION_TYPE}" author="${GH_USERNAME}">
+    <changeSet id="${TIMESTAMP}-ays-${MIGRATION_TYPE}" author="ays">
 
     </changeSet>
 
@@ -66,5 +56,4 @@ echo ""
 echo "🎉 \033[102mFile created successfully!\033[0m"
 echo ""
 echo "🆔 \033[96mID:\033[0m  $FILENAME"
-echo "👤 \033[96mAuthor:\033[0m $GH_USERNAME"
 echo ""
