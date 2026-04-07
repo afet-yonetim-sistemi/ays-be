@@ -64,8 +64,7 @@ class AysMailServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    @SuppressWarnings({"java:S2925"})
-    void givenValidEmailAddresses_whenMailNotSentIn5Seconds_thenLogWarnAboutMailNotSentIn5Seconds() {
+    void givenValidEmailAddresses_whenAsyncSendingFails_thenLogWarnFromExceptionallyBlock() {
         // Given
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()
@@ -75,10 +74,7 @@ class AysMailServiceImplTest extends AysUnitTest {
         Mockito.when(mailSender.createMimeMessage())
                 .thenReturn(Mockito.mock(MimeMessage.class));
 
-        Mockito.doAnswer(invocationOnMock -> {
-                    Thread.sleep(10000);
-                    throw Mockito.mock(MailException.class);
-                })
+        Mockito.doThrow(Mockito.mock(MailException.class))
                 .when(mailSender)
                 .send(Mockito.any(MimeMessage.class));
 
@@ -86,7 +82,7 @@ class AysMailServiceImplTest extends AysUnitTest {
         mailService.send(mockMail);
 
         Awaitility.await()
-                .atMost(6, TimeUnit.SECONDS)
+                .atMost(3, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
                     // Verify
                     Mockito.verify(mailSender, Mockito.times(1))
@@ -97,7 +93,7 @@ class AysMailServiceImplTest extends AysUnitTest {
 
                     Optional<String> logMessage = logTracker.findMessage(
                             Level.WARN,
-                            "Mail not sent to " + mockMail.getTo() + " in 5 seconds with " + mockMail.getTemplate() + " template"
+                            "Mail not sent to " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template"
                     );
                     Assertions.assertTrue(logMessage.isPresent());
                 });
@@ -115,9 +111,6 @@ class AysMailServiceImplTest extends AysUnitTest {
         // Then
         mailService.send(mockMail);
 
-        Awaitility.await()
-                .atMost(6, TimeUnit.SECONDS)
-                .untilAsserted(() -> {
                     // Verify
                     Mockito.verify(mailSender, Mockito.never())
                             .createMimeMessage();
@@ -130,7 +123,7 @@ class AysMailServiceImplTest extends AysUnitTest {
                             "Mail sending is ignored for " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template"
                     );
                     Assertions.assertTrue(logMessage.isPresent());
-                });
+
     }
 
     @Test
