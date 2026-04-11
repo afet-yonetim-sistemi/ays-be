@@ -80,6 +80,7 @@ class AysAuthServiceImpl implements AysAuthService {
         }
 
         this.validateUserStatus(user);
+        this.validateInstitutionStatus(user);
         this.validateUserSourcePagePermission(user, loginRequest.getSourcePage());
 
         Optional.ofNullable(user.getLoginAttempt())
