@@ -66,4 +66,4 @@ jobs:
           mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} \
             -Dsonar.projectName='ays-be' \
-            -Dsonar.http.additionalHeaders="X-AYS-GH-Action-CloudFlare-Secret: ${{ secrets.SONAR_GH_ACTION_CLOUDFLARE_SECRET }}"
+            -Dsonar.http.additionalHeaders=X-AYS-GH-Action-CloudFlare-Secret:${{ secrets.SONAR_GH_ACTION_CLOUDFLARE_SECRET }}
