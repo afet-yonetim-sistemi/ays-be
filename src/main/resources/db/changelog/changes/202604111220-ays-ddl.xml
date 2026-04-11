@@ -63,7 +63,8 @@
         <!-- =============== -->
         <!-- DDL of AYS_USER -->
         <!-- =============== -->
-<!--        <dropForeignKeyConstraint baseTableName="AYS_USER" constraintName="FK__AYS_USER__INSTITUTION_ID"/>-->
+        <dropForeignKeyConstraint baseTableName="AYS_USER" constraintName="FK__AYS_USER__INSTITUTION_ID"/>
+
         <dropColumn tableName="AYS_USER" columnName="INSTITUTION_ID"/>
         <!-- =============== -->
         <!-- DDL of AYS_USER -->

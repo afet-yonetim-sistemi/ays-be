@@ -123,7 +123,7 @@ class AysUserReadServiceImplTest extends AysUnitTest {
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
         String mockId = mockUser.getId();
 

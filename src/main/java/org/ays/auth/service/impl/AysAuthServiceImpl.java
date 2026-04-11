@@ -145,6 +145,7 @@ class AysAuthServiceImpl implements AysAuthService {
                 .orElseThrow(() -> new AysUserIdNotValidException(userId));
 
         this.validateUserStatus(user);
+        this.validateInstitutionStatus(user);
 
         final Claims claimsOfUser = user.getClaims();
         return tokenService.generate(claimsOfUser, refreshToken);
@@ -158,17 +159,24 @@ class AysAuthServiceImpl implements AysAuthService {
      */
     private void validateUserStatus(final AysUser user) {
 
-        if (!user.isActive()) {
+        if (user.isNotActive()) {
             throw new AysUserNotActiveAuthException(user.getId());
         }
+    }
 
-        boolean allActive = user.getInstitutions().stream()
-                .allMatch(Institution::isActive);
+    /**
+     * Validates the status of the institutions associated with the user.
+     *
+     * @param user The {@link AysUser} object whose institutions' statuses need to be validated.
+     * @throws AysInstitutionNotActiveAuthException If any of the user's institutions is not active.
+     */
+    private void validateInstitutionStatus(final AysUser user) {
 
-        if(!allActive) {
+        boolean hasNotAnyActiveInstitutions = user.getInstitutions().stream()
+                .noneMatch(Institution::isActive);
+        if (hasNotAnyActiveInstitutions) {
             throw new AysInstitutionNotActiveAuthException(user.getId());
         }
-
     }
 
 

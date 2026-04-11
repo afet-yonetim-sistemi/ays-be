@@ -58,11 +58,11 @@ class AysUserAdapter implements AysUserReadPort, AysUserSavePort {
 
         final Specification<AysUserEntity> specification = filter.toSpecification();
 
-        final Page<AysUserEntity> userEntitysPage = userRepository.findAll(specification, pageable);
+        final Page<AysUserEntity> userEntitiesPage = userRepository.findAll(specification, pageable);
 
-        final List<AysUser> users = userEntityToDomainWithoutRelationsMapper.map(userEntitysPage.getContent());
+        final List<AysUser> users = userEntityToDomainWithoutRelationsMapper.map(userEntitiesPage.getContent());
 
-        return AysPage.of(filter, userEntitysPage, users);
+        return AysPage.of(filter, userEntitiesPage, users);
     }
 
 

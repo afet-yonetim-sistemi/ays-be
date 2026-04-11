@@ -1,5 +1,6 @@
 package org.ays.auth.port.adapter;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysUnitTest;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
@@ -47,7 +48,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void givenValidAysPageableWithoutFilter_whenApplicationsFound_thenReturnApplicationsPage() {
+    void givenValidAysPageableWithoutFilter_whenUsersFound_thenReturnUsersPage() {
 
         // Given
         AysPageable mockAysPageable = new AysPageableBuilder()
@@ -73,6 +74,13 @@ class AysUserAdapterTest extends AysUnitTest {
         AysPage<AysUser> usersPage = userAdapter.findAll(mockAysPageable, mockFilter);
 
         AysPageBuilder.assertEquals(mockUsersPage, usersPage);
+        List<AysUser> users = usersPage.getContent();
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(users));
+
+        AysUser user = users.get(0);
+        AysUser mockUser = mockUsers.get(0);
+        Assertions.assertEquals(mockUser.getId(), user.getId());
+        Assertions.assertTrue(CollectionUtils.isEmpty(user.getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
@@ -112,11 +120,19 @@ class AysUserAdapterTest extends AysUnitTest {
         AysPage<AysUser> usersPage = userAdapter.findAll(mockAysPageable, mockFilter);
 
         AysPageBuilder.assertEquals(mockUsersPage, usersPage);
+        List<AysUser> users = usersPage.getContent();
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(users));
+
+        AysUser user = users.get(0);
+        AysUser mockUser = mockUsers.get(0);
+        Assertions.assertEquals(mockUser.getId(), user.getId());
+        Assertions.assertTrue(CollectionUtils.isEmpty(user.getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
+
 
     @Test
     void givenValidId_whenUserFoundById_thenReturnOptionalUser() {
@@ -139,6 +155,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         Assertions.assertTrue(user.isPresent());
         Assertions.assertEquals(mockUser, user.get());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.get().getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
@@ -187,6 +204,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         Assertions.assertTrue(user.isPresent());
         Assertions.assertEquals(mockUser, user.get());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.get().getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
@@ -236,6 +254,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         Assertions.assertTrue(user.isPresent());
         Assertions.assertEquals(mockUser, user.get());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.get().getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
@@ -375,6 +394,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         Assertions.assertNotNull(user);
         Assertions.assertEquals(mockUser.getId(), user.getId());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
@@ -407,6 +427,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         Assertions.assertNotNull(user);
         Assertions.assertEquals(mockUser.getId(), user.getId());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
@@ -439,6 +460,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         Assertions.assertNotNull(user);
         Assertions.assertEquals(mockUser.getId(), user.getId());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
@@ -471,6 +493,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         Assertions.assertTrue(user.isPresent());
         Assertions.assertEquals(mockPasswordId, user.get().getPassword().getId());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.get().getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))
@@ -501,6 +524,7 @@ class AysUserAdapterTest extends AysUnitTest {
 
         Assertions.assertTrue(user.isPresent());
         Assertions.assertNotEquals(mockPasswordId, user.get().getId());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.get().getInstitutions()));
 
         // Verify
         Mockito.verify(userRepository, Mockito.times(1))

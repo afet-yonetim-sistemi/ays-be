@@ -83,7 +83,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
         Mockito.when(userReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
@@ -167,7 +167,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                                 .withValidValues()
                                 .build()
                 ))
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
         Mockito.when(userReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
@@ -247,7 +247,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withPhoneNumber(mockPhoneNumber)
                 .withCity(mockUpdateRequest.getCity())
                 .withRoles(mockRoles)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
         Mockito.when(userReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
@@ -382,7 +382,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withStatus(AysUserStatus.DELETED)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
         Mockito.when(userReadPort.findById(mockId))
                 .thenReturn(Optional.of(mockUser));
@@ -432,7 +432,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withStatus(AysUserStatus.ACTIVE)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
         Mockito.when(userReadPort.findById(mockId))
                 .thenReturn(Optional.of(mockUser));
@@ -501,7 +501,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withId(mockId)
                 .withPhoneNumber(mockPhoneNumber)
                 .withStatus(AysUserStatus.ACTIVE)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
         Mockito.when(userReadPort.findById(mockId))
                 .thenReturn(Optional.of(mockUser));
@@ -566,7 +566,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
                 .withEmailAddress(mockUpdateRequest.getEmailAddress())
                 .withPhoneNumber(mockPhoneNumber)
                 .withCity(mockUpdateRequest.getCity())
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
         Mockito.when(userReadPort.findById(Mockito.anyString()))
                 .thenReturn(Optional.of(mockUser));
@@ -617,7 +617,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .withStatus(AysUserStatus.PASSIVE)
                 .build();
 
@@ -676,36 +676,36 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
 
         // When
         Institution mockInstitution = new InstitutionBuilder()
-            .withValidValues()
-            .build();
+                .withValidValues()
+                .build();
         Mockito.when(identity.getInstitutionId())
-            .thenReturn(mockInstitution.getId());
+                .thenReturn(mockInstitution.getId());
 
         AysUser mockUser = new AysUserBuilder()
-            .withValidValues()
-            .withId(mockId)
-            .withInstitution(mockInstitution)
-            .withStatus(AysUserStatus.ACTIVE)
-            .build();
+                .withValidValues()
+                .withId(mockId)
+                .withInstitutions(List.of(mockInstitution))
+                .withStatus(AysUserStatus.ACTIVE)
+                .build();
 
         Mockito.when(userReadPort.findById(Mockito.anyString()))
-            .thenReturn(Optional.of(mockUser));
+                .thenReturn(Optional.of(mockUser));
 
         // Then
         Assertions.assertThrows(
-            AysUserAlreadyActiveException.class,
-            () -> userUpdateService.activate(mockId)
+                AysUserAlreadyActiveException.class,
+                () -> userUpdateService.activate(mockId)
         );
 
         // Verify
         Mockito.verify(identity, Mockito.times(1))
-            .getInstitutionId();
+                .getInstitutionId();
 
         Mockito.verify(userReadPort, Mockito.times(1))
-            .findById(Mockito.anyString());
+                .findById(Mockito.anyString());
 
         Mockito.verify(userSavePort, Mockito.never())
-            .save(Mockito.any(AysUser.class));
+                .save(Mockito.any(AysUser.class));
     }
 
 
@@ -725,7 +725,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .withStatus(AysUserStatus.NOT_VERIFIED)
                 .build();
 
@@ -757,36 +757,36 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
 
         // When
         Institution mockInstitution = new InstitutionBuilder()
-            .withValidValues()
-            .build();
+                .withValidValues()
+                .build();
         Mockito.when(identity.getInstitutionId())
-            .thenReturn(mockInstitution.getId());
+                .thenReturn(mockInstitution.getId());
 
         AysUser mockUser = new AysUserBuilder()
-            .withValidValues()
-            .withId(mockId)
-            .withInstitution(mockInstitution)
-            .withStatus(AysUserStatus.DELETED)
-            .build();
+                .withValidValues()
+                .withId(mockId)
+                .withInstitutions(List.of(mockInstitution))
+                .withStatus(AysUserStatus.DELETED)
+                .build();
 
         Mockito.when(userReadPort.findById(Mockito.anyString()))
-            .thenReturn(Optional.of(mockUser));
+                .thenReturn(Optional.of(mockUser));
 
         // Then
         Assertions.assertThrows(
-            AysUserNotPassiveException.class,
-            () -> userUpdateService.activate(mockId)
+                AysUserNotPassiveException.class,
+                () -> userUpdateService.activate(mockId)
         );
 
         // Verify
         Mockito.verify(identity, Mockito.times(1))
-            .getInstitutionId();
+                .getInstitutionId();
 
         Mockito.verify(userReadPort, Mockito.times(1))
-            .findById(Mockito.anyString());
+                .findById(Mockito.anyString());
 
         Mockito.verify(userSavePort, Mockito.never())
-            .save(Mockito.any(AysUser.class));
+                .save(Mockito.any(AysUser.class));
     }
 
     @Test
@@ -807,7 +807,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(differentInstitution)
+                .withInstitutions(List.of(differentInstitution))
                 .withStatus(AysUserStatus.PASSIVE)
                 .build();
 
@@ -849,7 +849,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
 
         Mockito.when(userReadPort.findById(Mockito.anyString()))
@@ -889,7 +889,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .withStatus(AysUserStatus.DELETED)
                 .build();
 
@@ -995,7 +995,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .withStatus(AysUserStatus.ACTIVE)
                 .build();
 
@@ -1062,7 +1062,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .withStatus(AysUserStatus.PASSIVE)
                 .build();
 
@@ -1106,7 +1106,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .withStatus(mockStatus)
                 .build();
 
@@ -1145,7 +1145,7 @@ class AysUserUpdateServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withId(mockId)
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .withStatus(AysUserStatus.ACTIVE)
                 .build();
 

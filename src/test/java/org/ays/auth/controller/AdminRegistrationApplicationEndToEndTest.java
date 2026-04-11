@@ -1,6 +1,7 @@
 package org.ays.auth.controller;
 
 import ch.qos.logback.classic.Level;
+import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationBuilder;
@@ -166,7 +167,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
@@ -391,7 +392,11 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(completeRequest.getPhoneNumber().getCountryCode(), userFromDatabase.get().getPhoneNumber().getCountryCode());
         Assertions.assertEquals(completeRequest.getPhoneNumber().getLineNumber(), userFromDatabase.get().getPhoneNumber().getLineNumber());
         Assertions.assertEquals(AysUserStatus.NOT_VERIFIED, userFromDatabase.get().getStatus());
-        Assertions.assertEquals(institution.getId(), userFromDatabase.get().getInstitution().getId());
+
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(userFromDatabase.get().getInstitutions()));
+        Institution institutionFromDatabase = userFromDatabase.get().getInstitutions().get(0);
+        Assertions.assertNotNull(institutionFromDatabase);
+        Assertions.assertEquals(institution.getId(), institutionFromDatabase.getId());
 
         Optional<AysRole> userRoleFromDatabase = userFromDatabase.get().getRoles().stream()
                 .findFirst();
@@ -520,7 +525,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
@@ -588,7 +593,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withRoles(List.of(role))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
@@ -683,7 +688,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
@@ -739,7 +744,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
@@ -806,7 +811,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()
         );
@@ -906,7 +911,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 new AysUserBuilder()
                         .withValidValues()
                         .withoutId()
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withRoles(List.of(role))
                         .withStatus(AysUserStatus.NOT_VERIFIED)
                         .build()

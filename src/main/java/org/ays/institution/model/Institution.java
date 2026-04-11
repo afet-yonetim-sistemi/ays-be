@@ -3,6 +3,7 @@ package org.ays.institution.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.enums.InstitutionStatus;
@@ -14,6 +15,7 @@ import org.ays.institution.model.enums.InstitutionStatus;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
+@FieldNameConstants
 public class Institution extends BaseDomainModel {
 
     private String id;
