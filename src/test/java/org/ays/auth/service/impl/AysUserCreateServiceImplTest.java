@@ -28,6 +28,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 class AysUserCreateServiceImplTest extends AysUnitTest {
 
@@ -94,8 +95,8 @@ class AysUserCreateServiceImplTest extends AysUnitTest {
 
         AysUser mockUser = userCreateRequestToDomainMapper.map(mockCreateRequest);
         mockUser.activate();
-        mockUser.setInstitution(mockInstitution);
         mockUser.setRoles(mockRoles);
+        mockUser.setInstitutions(Set.of(mockInstitution));
         Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
                 .thenReturn(mockUser);
 

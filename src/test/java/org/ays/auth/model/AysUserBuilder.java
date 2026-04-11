@@ -12,6 +12,7 @@ import org.ays.util.AysValidTestData;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class AysUserBuilder extends TestDataBuilder<AysUser> {
 
@@ -95,7 +96,7 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
     }
 
     public AysUserBuilder withInstitution(Institution institution) {
-        data.setInstitution(institution);
+        data.setInstitutions(Set.of(institution));
         return this;
     }
 

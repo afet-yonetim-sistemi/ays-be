@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of {@link AdminRegistrationCompleteService} that handles the completion of admin registration applications.
@@ -85,7 +86,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
                 .filter(AdminRegistrationApplication::isWaiting)
                 .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdAuthException(id));
 
-        user.setInstitution(application.getInstitution());
+        user.setInstitutions(Set.of(application.getInstitution()));
         user.notVerify();
 
         this.setAdminRole(user, application.getInstitution());

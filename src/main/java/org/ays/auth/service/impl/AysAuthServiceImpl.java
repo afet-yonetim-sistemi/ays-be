@@ -20,6 +20,7 @@ import org.ays.auth.service.AysAuthService;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
 import org.ays.institution.exception.AysInstitutionNotActiveAuthException;
+import org.ays.institution.model.Institution;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -161,9 +162,13 @@ class AysAuthServiceImpl implements AysAuthService {
             throw new AysUserNotActiveAuthException(user.getId());
         }
 
-        if (user.getInstitution().isNotActive()) {
-            throw new AysInstitutionNotActiveAuthException(user.getInstitution().getId());
+        boolean allActive = user.getInstitutions().stream()
+                .allMatch(Institution::isActive);
+
+        if(!allActive) {
+            throw new AysInstitutionNotActiveAuthException(user.getId());
         }
+
     }
 
 

@@ -42,7 +42,7 @@ public class AysUser extends BaseDomainModel {
     private LoginAttempt loginAttempt;
 
     private List<AysRole> roles;
-    private Institution institution;
+    private Set<Institution> institutions;
 
     /**
      * Checks if the user's status is active.
@@ -199,8 +199,8 @@ public class AysUser extends BaseDomainModel {
     public Claims getClaims() {
         final ClaimsBuilder claimsBuilder = Jwts.claims();
 
-        claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), this.institution.getId());
-        claimsBuilder.add(AysTokenClaims.INSTITUTION_NAME.getValue(), this.institution.getName());
+        claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), this.getInstitutionIds());
+        claimsBuilder.add(AysTokenClaims.INSTITUTION_NAME.getValue(), this.getInstitutionNames());
         claimsBuilder.add(AysTokenClaims.USER_ID.getValue(), this.id);
         claimsBuilder.add(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claimsBuilder.add(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
@@ -219,6 +219,18 @@ public class AysUser extends BaseDomainModel {
                 .map(AysRole::getPermissions)
                 .flatMap(List::stream)
                 .map(AysPermission::getName)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<String> getInstitutionIds() {
+        return this.institutions.stream()
+                .map(Institution::getId)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<String> getInstitutionNames() {
+        return this.institutions.stream()
+                .map(Institution::getName)
                 .collect(Collectors.toSet());
     }
 
