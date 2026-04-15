@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
     steps: # List of steps to execute within the job
       - name: Checkout code # Step to check out the code from the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Initialize environment
         uses: ./.github/actions/initialize-environment
@@ -29,7 +29,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout code # Step to check out the code from the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Initialize environment
         uses: ./.github/actions/initialize-environment
@@ -38,7 +38,7 @@ jobs:
           GH_USER_ACCESS_TOKEN: ${{ secrets.GH_USER_ACCESS_TOKEN }}
 
       - name: Cache SonarQube packages # Caching packages related to SonarQube
-        uses: actions/cache@v4 # To use GitHub Actions' cache action
+        uses: actions/cache@v5 # To use GitHub Actions' cache action
         with: # The section where parameters are defined for the GitHub Actions action
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
