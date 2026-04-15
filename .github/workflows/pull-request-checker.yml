@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Initialize Environment
-        uses: ./.github/actions/initialize-environment.yml
+        uses: ./.github/workflows/initialize-environment.yml
 
       - name: Build with Maven # Step to build the project with Maven
         run: mvn --settings settings.xml clean install -DskipTests=true
