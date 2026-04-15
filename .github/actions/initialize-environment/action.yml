@@ -3,8 +3,16 @@
 # Name of the workflow
 name: Initialize Environment
 
+inputs:
+  GH_USERNAME:
+    description: 'GitHub username'
+    required: true
+  GH_USER_ACCESS_TOKEN:
+    description: 'GitHub user access token'
+    required: true
+
 runs:
-  using: "composite"
+  using: composite
   runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
   steps: # List of steps to execute within the job
     - name: Update package cache # Step to update the package cache
@@ -26,10 +34,10 @@ runs:
       run: cp template-settings.xml settings.xml
 
     - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
-      run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+      run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ inputs.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
     - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
-      run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+      run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ inputs.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
 
     - name: Cache Maven packages # Caching of Maven packages
       uses: actions/cache@v4

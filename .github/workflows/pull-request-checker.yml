@@ -20,8 +20,11 @@ jobs:
       - name: Checkout code # Step to check out the code from the repository
         uses: actions/checkout@v4
 
-      - name: Initialize Environment
+      - name: Initialize environment
         uses: ./.github/actions/initialize-environment
+        with:
+          GH_USERNAME: ${{ vars.GH_USERNAME }}
+          GH_USER_ACCESS_TOKEN: ${{ secrets.GH_USER_ACCESS_TOKEN }}
 
       - name: Build with Maven # Step to build the project with Maven
         run: mvn --settings settings.xml clean install -DskipTests=true
