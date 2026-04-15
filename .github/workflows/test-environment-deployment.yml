@@ -10,103 +10,87 @@ on:
 
 jobs:
   build: # Define the "build" job
-    environment: Test # Define the environment as Test
     runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
     steps: # List of steps to execute within the job
-      - name: Update package cache # Step to update the package cache
-        run: sudo apt-get update
-
       - name: Checkout code # Step to check out the code from the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Set up Java # Step to set up the Java environment
-        uses: actions/setup-java@v4
+      - name: Initialize environment
+        uses: ./.github/actions/initialize-environment
         with:
-          java-version: 17 # Specify Java 17 as the version
-          distribution: 'corretto' # Use the 'corretto' distribution of Java
+          GH_USERNAME: ${{ vars.GH_USERNAME }}
+          GH_USER_ACCESS_TOKEN: ${{ secrets.GH_USER_ACCESS_TOKEN }}
 
-      - name: Set up Docker # Step to set up the Docker environment
-        uses: actions/hello-world-docker-action@v2
+      - name: Build with Maven # Step to build the project with Maven
+        run: mvn --settings settings.xml clean install -DskipTests=true
 
-      - name: Install Maven # Step to install Maven
-        run: sudo apt-get install -y maven
+  sonarqube:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code # Step to check out the code from the repository
+        uses: actions/checkout@v6
 
-      - name: Copy settings.xml file from template # Step to create a new 'settings.xml' file by copying the 'template-settings.xml'
-        run: cp template-settings.xml settings.xml
-
-      - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
-        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
-
-      - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
-        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+      - name: Initialize environment
+        uses: ./.github/actions/initialize-environment
+        with:
+          GH_USERNAME: ${{ vars.GH_USERNAME }}
+          GH_USER_ACCESS_TOKEN: ${{ secrets.GH_USER_ACCESS_TOKEN }}
 
       - name: Cache SonarQube packages # Caching packages related to SonarQube
-        uses: actions/cache@v4 # To use GitHub Actions' cache action
+        uses: actions/cache@v5 # To use GitHub Actions' cache action
         with: # The section where parameters are defined for the GitHub Actions action
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar # If the key does not match exactly, the cache will be restored with similar keys.
 
-      - name: Cache Maven packages # Caching of Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: Build and analyze # SonarQube integration and Maven execution
+      - name: SonarQube analyze # Step to run SonarQube analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
         run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.projectName='ays-be'
 
-      - name: Starting Deployment to ECS... # Step to start the deployment to ECS
-        run: echo "Starting Deployment to ECS..."
-
-      - name: Configure AWS credentials # Step to configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
-
-      - name: Login to Amazon ECR # Step to log in to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: 'false'
-
-      - name: Build, tag, and push image to Amazon ECR # Step to build, tag, and push the image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ays-be-test
-          IMAGE_TAG: ${{ github.sha }}
+  deploy:
+    environment: Test # Define the environment as Test
+    runs-on: ubuntu-latest
+    needs: sonarqube # If the sonarqube is successful, the deployment will proceed.
+    steps:
+      - name: Execute Remote SSH Commands
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
 
-      - name: Download task definition # Step to download the task definition
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ vars.VPS_USER }}@${{ secrets.VPS_IP }} "
+          git config --global --add safe.directory ${{ vars.VPS_DEPLOYMENT_DIRECTORY_PATH }} && \
+
+          cd ${{ vars.VPS_DEPLOYMENT_DIRECTORY_PATH }} && \
+          sudo git checkout ${{ vars.VPS_DEPLOYMENT_BRANCH }} && \
+          sudo git pull origin ${{ vars.VPS_DEPLOYMENT_BRANCH }} && \
+
+          sudo docker compose up -d --build"
+
+  health-check:
+    environment: Test # Define the environment as Test
+    runs-on: ubuntu-latest
+    needs: deploy # If the deployment is successful, the health check will proceed.
+    steps:
+      - name: Check Health Endpoint
         run: |
-          aws ecs describe-task-definition --task-definition ays-be-test \
-          --query taskDefinition > task_definition.json
+          sleep 30
 
-      - name: Fill in the new image ID in the Amazon ECS task definition # Step to fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task_definition.json
-          container-name: ays-be-test
-          image: ${{ steps.build-image.outputs.image }}
-
-      - name: Deploy Amazon ECS task definition # Step to deploy the Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ays-be-test-service
-          cluster: ays-be-test-cluster
-          wait-for-service-stability: true
-
-      - name: Deployment successfully completed # Step to indicate that the deployment was successful
-        run: echo "Deployment successfully completed!"
+          URL="${{ vars.APPLICATION_HEALTH_CHECK_URL }}"
+          
+          echo "Checking: $URL"
+          
+          STATUS=$(curl -s -L -w "%{http_code}" "$URL" -o /dev/null || echo "000")
+          
+          echo "HTTP Status: $STATUS"
+          
+          if [ "$STATUS" -eq 200 ]; then
+            exit 0
+          else
+            exit 1
+          fi
