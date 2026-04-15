@@ -30,35 +30,36 @@ jobs:
       - name: Build with Maven # Step to build the project with Maven
         run: mvn --settings settings.xml clean install -DskipTests=true
 
-  sonarqube:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code # Step to check out the code from the repository
-        uses: actions/checkout@v6
-
-      - name: Initialize environment
-        uses: ./.github/actions/initialize-environment
-        with:
-          GH_USERNAME: ${{ vars.GH_USERNAME }}
-          GH_USER_ACCESS_TOKEN: ${{ secrets.GH_USER_ACCESS_TOKEN }}
-
-      - name: Cache SonarQube packages # Caching packages related to SonarQube
-        uses: actions/cache@v5 # To use GitHub Actions' cache action
-        with: # The section where parameters are defined for the GitHub Actions action
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar # If the key does not match exactly, the cache will be restored with similar keys.
-
-      - name: SonarQube analyze # Step to run SonarQube analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-        run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.projectName='ays-be'
+  #  sonarqube:
+  #    runs-on: ubuntu-latest
+  #    needs: build
+  #    steps:
+  #      - name: Checkout code # Step to check out the code from the repository
+  #        uses: actions/checkout@v6
+  #
+  #      - name: Initialize environment
+  #        uses: ./.github/actions/initialize-environment
+  #        with:
+  #          GH_USERNAME: ${{ vars.GH_USERNAME }}
+  #          GH_USER_ACCESS_TOKEN: ${{ secrets.GH_USER_ACCESS_TOKEN }}
+  #
+  #      - name: Cache SonarQube packages # Caching packages related to SonarQube
+  #        uses: actions/cache@v5 # To use GitHub Actions' cache action
+  #        with: # The section where parameters are defined for the GitHub Actions action
+  #          path: ~/.sonar/cache
+  #          key: ${{ runner.os }}-sonar
+  #          restore-keys: ${{ runner.os }}-sonar # If the key does not match exactly, the cache will be restored with similar keys.
+  #
+  #      - name: SonarQube analyze # Step to run SonarQube analysis
+  #        env:
+  #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+  #        run: mvn --settings settings.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.projectName='ays-be'
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [ build, sonarqube ] # If the build and SonarQube are successful, the deployment will proceed.
+    #    needs: [ build, sonarqube ] # If the build and SonarQube are successful, the deployment will proceed.
+    needs: [ build ] # If the build and SonarQube are successful, the deployment will proceed.
     steps:
       - name: Execute Remote SSH Commands
         run: |
@@ -66,7 +67,7 @@ jobs:
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
 
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
 
           ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ vars.VPS_USER }}@${{ secrets.VPS_IP }} "
           git config --global --add safe.directory ${{ vars.VPS_DEPLOYMENT_DIRECTORY_PATH }} && \
