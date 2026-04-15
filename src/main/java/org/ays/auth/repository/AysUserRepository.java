@@ -3,6 +3,7 @@ package org.ays.auth.repository;
 import org.ays.auth.model.entity.AysUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
@@ -17,6 +18,15 @@ public interface AysUserRepository extends JpaRepository<AysUserEntity, String>,
      * @param emailAddress the username of the user to be found
      * @return an optional containing the UserEntity with the given username, or an empty optional if not found
      */
+    @Query("""
+            SELECT DISTINCT user FROM AysUserEntity user
+            LEFT JOIN FETCH user.institution
+            LEFT JOIN FETCH user.roles roles
+            LEFT JOIN FETCH roles.permissions
+            LEFT JOIN FETCH user.password
+            LEFT JOIN FETCH user.loginAttempt
+            WHERE user.emailAddress = :emailAddress
+            """)
     Optional<AysUserEntity> findByEmailAddress(String emailAddress);
 
     /**

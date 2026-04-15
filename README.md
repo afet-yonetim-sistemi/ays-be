@@ -85,20 +85,21 @@ sh setup/setup.sh
 
 During the setup process, you will be asked whether you already have a GitHub Personal Access Token.
 
-  - If you already have one, just paste it.
-  - If not, the script will guide you to generate a new one.
-      - Make sure to give project, read:packages, repo scopes
-      - Give it a name
-      - Then click on "Generate Token"
-  - If you prefer to create a token manually before running the setup: https://github.com/settings/tokens
+- If you already have one, just paste it.
+- If not, the script will guide you to generate a new one.
+    - Make sure to give project, read:packages, repo scopes
+    - Give it a name
+    - Then click on "Generate Token"
+- If you prefer to create a token manually before running the setup: https://github.com/settings/tokens
     - Create one classic token
     - Make sure to give project, read:packages, repo scopes
     - Give it a name
     - Then click on "Generate Token"
-  - In case of errors, please check [here](#Common Maven errors)
+- In case of errors, please check [here](#Common Maven errors)
 
 #### Don't forget to enable Lombok pre-processing in your IDE!
-## Running as Docker MySQL container
+
+## Running as a Docker MySQL container
 
 Before running the project, you need to run the following command to start the MySQL container:
 
@@ -161,6 +162,23 @@ Page.
 ## Postman
 
 ### [Documentation](https://documenter.getpostman.com/view/26813504/2sBXcKAcdv) & [Workspace](https://www.postman.com/ays-team/api)
+
+---
+
+## 🗄️ Creating Database Migration Files
+
+To create standardized, timestamped DDL or DML files for Liquibase automatically, you should use the provided bash
+script. This script prevents manual naming errors and avoids merge conflicts within the team.
+
+### Usage
+
+Open your terminal in the project root directory and run the following command:
+
+```bash
+./scripts/create-changelog-xml.sh
+```
+
+> **Note:** Works natively on Mac/Linux. Windows users must use Git Bash.
 
 ---
 
@@ -248,6 +266,7 @@ at org.eclipse.angus.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTran
 ### 5. Validation Failed Exception:
 
 #### Error:
+
 ```log
 [ERROR] Validation Failed:
     2 changesets check sum
@@ -256,11 +275,14 @@ at org.eclipse.angus.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTran
 ```
 
 #### Solution:
+
 > This problem is caused by the checksum values in the database not matching.
-> The Override configuration properties section opens. 
-> Application parameters can be overridden specifically. 
-> If the **_AYS_LIQUIBASE_ENABLE_DROP_FIRST_** parameter in application.yml is defined here and given as true, the database is cleaned and recreated in the local environment. 
-> If this is not desired to be done every time the application is run, the parameter can only be disabled without deleting it.
+> The Override configuration properties section opens.
+> Application parameters can be overridden specifically.
+> If the **_AYS_LIQUIBASE_ENABLE_DROP_FIRST_** parameter in application.yml is defined here and given as true, the
+> database is cleaned and recreated in the local environment.
+> If this is not desired to be done every time the application is run, the parameter can only be disabled without
+> deleting it.
 > details: https://www.jetbrains.com/help/idea/run-debug-configuration-spring-boot.html#spring-boot
 ---
 
