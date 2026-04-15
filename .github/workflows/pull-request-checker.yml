@@ -14,52 +14,28 @@ on:
       - unlocked # triggers the workflow when a previously locked pull request is unlocked
 
 jobs:
-  build-and-analyze: # Define the "build" job
+  build: # Define the "build" job
     runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
     steps: # List of steps to execute within the job
-      - name: Update package cache # Step to update the package cache
-        run: sudo apt-get update
-
       - name: Checkout code # Step to check out the code from the repository
         uses: actions/checkout@v4
 
-      - name: Set up Java # Step to set up the Java environment
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17 # Specify Java 17 as the version
-          distribution: 'corretto' # Use the 'corretto' distribution of Java
+      - name: Initialize Environment
+        uses: ./.github/actions/initialize-environment
 
-      - name: Set up Docker # Step to set up the Docker environment
-        uses: actions/hello-world-docker-action@v2
+      - name: Build with Maven # Step to build the project with Maven
+        run: mvn --settings settings.xml clean install -DskipTests=true
 
-      - name: Install Maven # Step to install Maven
-        run: sudo apt-get install -y maven
-
-      - name: Copy settings.xml file from template # Step to create a new 'settings.xml' file by copying the 'template-settings.xml'
-        run: cp template-settings.xml settings.xml
-
-      - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
-        run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
-
-      - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
-        run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
-
+  sonarqube:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Cache SonarQube packages # Caching packages related to SonarQube
         uses: actions/cache@v4 # To use GitHub Actions' cache action
         with: # The section where parameters are defined for the GitHub Actions action
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar # If the key does not match exactly, the cache will be restored with similar keys.
-
-      - name: Cache Maven packages # Caching of Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: Build with Maven # Step to build the project with Maven
-        run: mvn --settings settings.xml clean install -DskipTests=true
 
       - name: SonarQube analyze # Step to run SonarQube analysis
         env:

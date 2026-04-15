@@ -1,0 +1,39 @@
+# Purpose: This workflow is responsible for initializing the environment for the project.
+
+# Name of the workflow
+name: Initialize Environment
+
+runs:
+  using: "composite"
+  runs-on: ubuntu-latest # Run the job on the latest version of Ubuntu
+  steps: # List of steps to execute within the job
+    - name: Update package cache # Step to update the package cache
+      run: sudo apt-get update
+
+    - name: Set up Java # Step to set up the Java environment
+      uses: actions/setup-java@v4
+      with:
+        java-version: 17 # Specify Java 17 as the version
+        distribution: 'corretto' # Use the 'corretto' distribution of Java
+
+    - name: Set up Docker # Step to set up the Docker environment
+      uses: actions/hello-world-docker-action@v2
+
+    - name: Install Maven # Step to install Maven
+      run: sudo apt-get install -y maven
+
+    - name: Copy settings.xml file from template # Step to create a new 'settings.xml' file by copying the 'template-settings.xml'
+      run: cp template-settings.xml settings.xml
+
+    - name: Replace username in settings.xml # Step to replace the placeholder username in settings.xml
+      run: sed 's|'{YOUR_GITHUB_USERNAME}'|'${{ vars.GH_USERNAME }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+
+    - name: Replace access token in settings.xml # Step to replace the placeholder access token in settings.xml
+      run: sed 's|'{YOUR_PERSONAL_GITHUB_ACCESS_TOKEN}'|'${{ secrets.GH_USER_ACCESS_TOKEN }}'|g' settings.xml >> temp-settings.xml ; rm settings.xml ; mv temp-settings.xml settings.xml
+
+    - name: Cache Maven packages # Caching of Maven packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
