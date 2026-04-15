@@ -6,7 +6,7 @@ name: Deploy to Test Environment
 on:
   push:
     branches:
-      - main # Trigger the workflow when a push event occurs on the main branch
+      - deployment # Trigger the workflow when a push event occurs on the main branch
 
 jobs:
   build: # Define the "build" job
