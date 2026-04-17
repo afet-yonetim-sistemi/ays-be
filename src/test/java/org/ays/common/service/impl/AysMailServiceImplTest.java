@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.List;
@@ -74,7 +75,7 @@ class AysMailServiceImplTest extends AysUnitTest {
         Mockito.when(mailSender.createMimeMessage())
                 .thenReturn(Mockito.mock(MimeMessage.class));
 
-        Mockito.doThrow(Mockito.mock(MailException.class))
+        Mockito.doThrow(Mockito.mock(MailSendException.class))
                 .when(mailSender)
                 .send(Mockito.any(MimeMessage.class));
 
@@ -111,6 +112,9 @@ class AysMailServiceImplTest extends AysUnitTest {
         // Then
         mailService.send(mockMail);
 
+        Awaitility.await()
+                .atMost(6, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
                     // Verify
                     Mockito.verify(mailSender, Mockito.never())
                             .createMimeMessage();
@@ -123,7 +127,7 @@ class AysMailServiceImplTest extends AysUnitTest {
                             "Mail sending is ignored for " + mockMail.getTo() + " with " + mockMail.getTemplate() + " template"
                     );
                     Assertions.assertTrue(logMessage.isPresent());
-
+                });
     }
 
     @Test
