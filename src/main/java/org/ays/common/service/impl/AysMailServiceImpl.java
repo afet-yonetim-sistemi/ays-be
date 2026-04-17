@@ -14,7 +14,6 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -75,11 +74,7 @@ class AysMailServiceImpl implements AysMailService {
             }
         }
 
-        CompletableFuture.runAsync(() -> this.sendEmail(mail))
-                .exceptionally(throwable -> {
-                    log.warn("Mail not sent to {} with {} template. Reason: {}", mail.getTo(), mail.getTemplate(), throwable.getMessage());
-                    throw new AsyncRequestTimeoutException();
-                });
+        CompletableFuture.runAsync(() -> this.sendEmail(mail));
 
     }
 
@@ -102,9 +97,10 @@ class AysMailServiceImpl implements AysMailService {
 
             log.trace("Mail sent to {} with {} template", mail.getTo(), mail.getTemplate());
 
+        } catch (MailSendException exception) {
+            log.warn("Mail not sent to {} with {} template. Reason: {}", mail.getTo(), mail.getTemplate(),exception.getMessage());
         } catch (Exception exception) {
             log.error("Received error while sending mail to {} with {} template", mail.getTo(), mail.getTemplate(), exception);
-            throw new MailSendException("Failed to send email", exception);
         }
 
     }
