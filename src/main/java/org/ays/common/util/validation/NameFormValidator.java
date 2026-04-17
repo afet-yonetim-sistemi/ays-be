@@ -44,7 +44,6 @@ class NameFormValidator implements ConstraintValidator<NameForm, String> {
      *   <li>"" (empty)</li>
      *   <li>" "</li>
      *   <li>".Mehmet"</li>
-     *   <li>".-,'"</li>
      *   <li>"Mehmet-"</li>
      *   <li>"123456"</li>
      *   <li>"sanshi345"</li>
@@ -52,12 +51,8 @@ class NameFormValidator implements ConstraintValidator<NameForm, String> {
      *   <li>"Ali$$Veli"</li>
      *   <li>"Ahmet!"</li>
      *   <li>"Ahmet--Mehmet"</li>
-     *   <li>"        "</li>
-     *   <li>"    Mehmet"</li>
-     *   <li>"Fatma     "</li>
      *   <li>"Ali     Can"</li>
      *   <li>"A"</li>
-     *   <li>"A.repeat(101)"</li>
      * </ul>
      *
      * @param value   the name value to validate
