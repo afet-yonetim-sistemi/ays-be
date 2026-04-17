@@ -10,17 +10,16 @@ import org.ays.common.model.AysMail;
 import org.ays.common.model.enums.AysMailTemplate;
 import org.ays.common.service.AysMailService;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -75,12 +74,7 @@ class AysMailServiceImpl implements AysMailService {
             }
         }
 
-        CompletableFuture.runAsync(() -> this.sendEmail(mail))
-                .orTimeout(5, TimeUnit.SECONDS)
-                .exceptionally(throwable -> {
-                    log.warn("Mail not sent to {} in 5 seconds with {} template", mail.getTo(), mail.getTemplate());
-                    throw new AsyncRequestTimeoutException();
-                });
+        CompletableFuture.runAsync(() -> this.sendEmail(mail));
 
     }
 
@@ -103,6 +97,8 @@ class AysMailServiceImpl implements AysMailService {
 
             log.trace("Mail sent to {} with {} template", mail.getTo(), mail.getTemplate());
 
+        } catch (MailSendException exception) {
+            log.warn("Mail not sent to {} with {} template. Reason: {}", mail.getTo(), mail.getTemplate(),exception.getMessage());
         } catch (Exception exception) {
             log.error("Received error while sending mail to {} with {} template", mail.getTo(), mail.getTemplate(), exception);
         }
