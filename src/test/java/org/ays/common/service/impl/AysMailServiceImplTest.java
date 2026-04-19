@@ -65,7 +65,7 @@ class AysMailServiceImplTest extends AysUnitTest {
     }
 
     @Test
-    void givenValidEmailAddresses_whenAsyncSendingFails_thenLogWarnFromExceptionallyBlock() {
+    void givenValidEmailAddresses_whenMailSendThrowsException_thenLogWarnAboutMailNotSent() {
         // Given
         AysMail mockMail = new AysMailBuilder()
                 .withValidValues()
