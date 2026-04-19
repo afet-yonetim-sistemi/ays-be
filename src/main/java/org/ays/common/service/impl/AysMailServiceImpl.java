@@ -12,6 +12,7 @@ import org.ays.common.service.AysMailService;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
@@ -19,7 +20,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>
@@ -63,6 +63,7 @@ class AysMailServiceImpl implements AysMailService {
      *             template, and parameters. If any recipient's domain matches an ignored domain,
      *             the email will not be sent and a warning will be logged.
      */
+    @Async("mailTaskExecutor")
     @Override
     public void send(final AysMail mail) {
 
@@ -74,7 +75,7 @@ class AysMailServiceImpl implements AysMailService {
             }
         }
 
-        CompletableFuture.runAsync(() -> this.sendEmail(mail));
+        this.sendEmail(mail);
 
     }
 
