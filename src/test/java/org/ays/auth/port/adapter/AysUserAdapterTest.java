@@ -19,6 +19,8 @@ import org.ays.common.model.AysPageableBuilder;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.AysPhoneNumberBuilder;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.institution.model.entity.InstitutionEntity;
+import org.ays.institution.model.entity.InstitutionEntityBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -133,6 +135,46 @@ class AysUserAdapterTest extends AysUnitTest {
                 .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
     }
 
+    @Test
+    void givenValidUserEntityWithMultipleInstitutions_whenFindByPasswordId_thenReturnUserWithMultipleInstitutions() {
+
+        // Given
+        String mockPasswordId = AysRandomUtil.generateUUID();
+
+        Set<InstitutionEntity> mockInstitutionEntities = Set.of(
+                new InstitutionEntityBuilder()
+                        .withValidValues()
+                        .build(),
+                new InstitutionEntityBuilder()
+                        .withValidValues()
+                        .build()
+        );
+
+        AysUserEntity mockUserEntity = new AysUserEntityBuilder()
+                .withValidValues()
+                .withInstitution(mockInstitutionEntities)
+                .build();
+
+        mockUserEntity.getPassword().setId(mockPasswordId);
+
+        // When
+        Mockito.when(userRepository.findByPasswordId(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUserEntity));
+
+        AysUser mockUser = userEntityToDomainMapper.map(mockUserEntity);
+
+        // Then
+        Optional<AysUser> user = userAdapter.findByPasswordId(mockPasswordId);
+
+        Assertions.assertTrue(user.isPresent());
+        Assertions.assertEquals(mockUser.getId(), user.get().getId());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(user.get().getInstitutions()));
+        Assertions.assertEquals(2, user.get().getInstitutions().size());
+
+        // Verify
+        Mockito.verify(userRepository, Mockito.times(1))
+                .findByPasswordId(Mockito.anyString());
+    }
 
     @Test
     void givenValidId_whenUserFoundById_thenReturnOptionalUser() {

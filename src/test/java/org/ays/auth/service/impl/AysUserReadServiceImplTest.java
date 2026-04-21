@@ -146,6 +146,83 @@ class AysUserReadServiceImplTest extends AysUnitTest {
     }
 
     @Test
+    void givenValidId_whenUserFoundByIdWithMultipleInstitutions_thenReturnUserIfCurrentInstitutionMatches() {
+
+        // Given
+        Institution mockInstitution1 = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Institution mockInstitution2 = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitution1.getId());
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withInstitutions(List.of(mockInstitution1, mockInstitution2))
+                .build();
+        String mockId = mockUser.getId();
+
+        // When
+        Mockito.when(userReadPort.findById(mockId))
+                .thenReturn(Optional.of(mockUser));
+
+        // Then
+        AysUser result = userReadService.findById(mockId);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(mockUser, result);
+        Assertions.assertEquals(2, result.getInstitutions().size());
+
+        // Verify
+        Mockito.verify(identity, Mockito.times(1))
+                .getInstitutionId();
+
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+    }
+
+    @Test
+    void givenValidId_whenUserFoundByIdWithMultipleInstitutions_thenThrowAysUserNotExistByIdException() {
+
+        // Given
+        Institution mockInstitution1 = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Institution mockInstitution2 = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        String mockUserId = "71520700-d5fb-4c7d-8b14-9088136a9cd5";
+        String mockInstitutionId= AysRandomUtil.generateUUID();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withId(mockUserId)
+                .withInstitutions(List.of(mockInstitution1, mockInstitution2))
+                .build();
+
+        // When
+        Mockito.when(userReadPort.findById(mockUserId))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+
+        // Then
+        Assertions.assertThrows(
+                AysUserNotExistByIdException.class,
+                () -> userReadService.findById(mockUserId)
+        );
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findById(Mockito.anyString());
+
+    }
+
+    @Test
     void givenValidId_whenUserNotFoundById_thenThrowAysUserNotExistByIdException() {
 
         // Given

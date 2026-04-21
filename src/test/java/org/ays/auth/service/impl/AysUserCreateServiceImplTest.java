@@ -17,6 +17,7 @@ import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserMailService;
 import org.ays.common.model.AysPhoneNumber;
+import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.port.InstitutionReadPort;
@@ -126,6 +127,54 @@ class AysUserCreateServiceImplTest extends AysUnitTest {
                 .save(Mockito.any(AysUser.class));
 
         Mockito.verify(userMailService, Mockito.times(1))
+                .sendPasswordCreateEmail(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidUserCreateRequest_whenAllValidationsPass_thenCreateUserAndSendMail() {
+
+        // Given
+        AysUserCreateRequest mockCreateRequest = new AysUserCreateRequestBuilder()
+                .withValidValues()
+                .build();
+
+        String mockInstitutionId = AysRandomUtil.generateUUID();
+        Institution mockInstitution = new InstitutionBuilder()
+                .withValidValues()
+                .withId(mockInstitutionId)
+                .build();
+
+        List<AysRole> mockRoles = mockCreateRequest.getRoleIds().stream()
+                .map(id -> new AysRoleBuilder().withValidValues().withId(id).withInstitution(mockInstitution).build())
+                .toList();
+
+        // When
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        Mockito.when(userReadPort.findByPhoneNumber(Mockito.any(AysPhoneNumber.class)))
+                .thenReturn(Optional.empty());
+
+        Mockito.when(identity.getInstitutionId())
+                .thenReturn(mockInstitutionId);
+
+        Mockito.when(institutionReadPort.findById(mockInstitutionId))
+                .thenReturn(Optional.of(mockInstitution));
+
+        Mockito.when(roleReadPort.findAllByIds(Mockito.anySet()))
+                .thenReturn(mockRoles);
+
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Then
+        userCreateService.create(mockCreateRequest);
+
+        // Verify
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(userMailService)
                 .sendPasswordCreateEmail(Mockito.any(AysUser.class));
     }
 
