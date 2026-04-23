@@ -3,6 +3,7 @@ package org.ays.institution.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.enums.InstitutionStatus;
@@ -14,6 +15,7 @@ import org.ays.institution.model.enums.InstitutionStatus;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
+@FieldNameConstants
 public class Institution extends BaseDomainModel {
 
     private String id;
@@ -22,11 +24,12 @@ public class Institution extends BaseDomainModel {
     private InstitutionStatus status;
 
     /**
-     * Checks if the institution's status is not active.
+     * Checks if the institution's status is active.
      *
-     * @return {@code true} if the institution's status is not {@link InstitutionStatus#ACTIVE}, otherwise {@code false}.
+     * @return {@code true} if the institution's status is {@link InstitutionStatus#ACTIVE}, otherwise {@code false}.
      */
-    public boolean isNotActive() {
-        return this.status != InstitutionStatus.ACTIVE;
+    public boolean isActive() {
+        return this.status == InstitutionStatus.ACTIVE;
     }
+
 }

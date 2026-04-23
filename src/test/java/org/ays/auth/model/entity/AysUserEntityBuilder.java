@@ -36,7 +36,11 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
                         .build()
         );
 
-        InstitutionEntity institutionEntity = new InstitutionEntityBuilder().withValidValues().build();
+        Set<InstitutionEntity> institutionEntities = Set.of(
+                new InstitutionEntityBuilder()
+                        .withValidValues()
+                        .build()
+        );
 
         return this
                 .withId(id)
@@ -46,7 +50,7 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
                 .withLoginAttempt(loginAttemptEntity)
                 .withRoles(roleEntities)
                 .withStatus(AysUserStatus.ACTIVE)
-                .withInstitution(institutionEntity);
+                .withInstitution(institutionEntities);
     }
 
     public AysUserEntityBuilder withId(String id) {
@@ -85,8 +89,8 @@ public class AysUserEntityBuilder extends TestDataBuilder<AysUserEntity> {
         return this;
     }
 
-    public AysUserEntityBuilder withInstitution(InstitutionEntity institution) {
-        data.setInstitution(institution);
+    public AysUserEntityBuilder withInstitution(Set<InstitutionEntity> institutions) {
+        data.setInstitutions(institutions);
         return this;
     }
 
