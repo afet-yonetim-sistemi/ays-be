@@ -63,7 +63,7 @@ class AysMailServiceImpl implements AysMailService {
      *             template, and parameters. If any recipient's domain matches an ignored domain,
      *             the email will not be sent and a warning will be logged.
      */
-    @Async("mailTaskExecutor")
+    @Async
     @Override
     public void send(final AysMail mail) {
 
