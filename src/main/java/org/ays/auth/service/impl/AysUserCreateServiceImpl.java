@@ -82,7 +82,7 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
         this.validateRolesAndSet(user, createRequest.getRoleIds());
 
         user.activate();
-        user.setInstitutions(List.of(addInstitution()));
+        user.setInstitutions(List.of(this.findInstitutionById(identity.getInstitutionId())));
         user.setPassword(
                 AysUser.Password.builder()
                         .value(AysRandomUtil.generateText(15))
@@ -94,9 +94,9 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
         userMailService.sendPasswordCreateEmail(savedUser);
     }
 
-    private Institution addInstitution() {
-        return institutionReadPort.findById(identity.getInstitutionId())
-                .orElseThrow(() -> new AysInstitutionNotExistException(identity.getInstitutionId()));
+    private Institution findInstitutionById(String institutionId) {
+        return institutionReadPort.findById(institutionId)
+                .orElseThrow(() -> new AysInstitutionNotExistException(institutionId));
     }
 
     /**

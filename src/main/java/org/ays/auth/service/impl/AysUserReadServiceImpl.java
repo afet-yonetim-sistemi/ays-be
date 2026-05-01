@@ -75,9 +75,7 @@ class AysUserReadServiceImpl implements AysUserReadService {
         String currentInstitutionId = identity.getInstitutionId();
 
         return userReadPort.findById(id)
-                .filter(user -> user.getInstitutions()
-                        .stream()
-                        .anyMatch(institution -> institution.getId().equals(currentInstitutionId)))
+                .filter(user -> user.hasInstitution(currentInstitutionId))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
     }
 

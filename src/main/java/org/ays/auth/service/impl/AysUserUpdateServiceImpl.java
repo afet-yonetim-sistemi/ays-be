@@ -59,10 +59,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
         final String currentInstitutionId = identity.getInstitutionId();
-        boolean isUserInInstitution = user.getInstitutions()
-                .stream()
-                .anyMatch(inst -> inst.getId()
-                        .equals(currentInstitutionId));
+        boolean isUserInInstitution = user.hasInstitution(currentInstitutionId);
 
         if (!isUserInInstitution) {
             throw new AysUserNotExistByIdException(id);

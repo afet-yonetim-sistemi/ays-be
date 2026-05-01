@@ -90,6 +90,23 @@ public class AysUser extends BaseDomainModel {
         return this.status == AysUserStatus.DELETED;
     }
 
+    /**
+     * Checks if the user is associated with the institution identified by the given ID.
+     * <p>
+     * This method iterates through the user's assigned institutions to determine if there
+     * is a match for the provided {@code institutionId}.
+     * </p>
+     *
+     * @param institutionId the unique identifier of the institution to check.
+     * @return {@code true} if the user is associated with the institution; {@code false} otherwise.
+     */
+    public boolean hasInstitution(final String institutionId) {
+        if (this.institutions == null) {
+            return false;
+        }
+        return this.institutions.stream()
+                .anyMatch(institution -> institution.getId().equals(institutionId));
+    }
 
     /**
      * Updates the user information with the specified details.
