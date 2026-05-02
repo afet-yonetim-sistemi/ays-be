@@ -1,8 +1,11 @@
 package org.ays.institution.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.enums.InstitutionStatus;
@@ -13,6 +16,8 @@ import org.ays.institution.model.enums.InstitutionStatus;
 @Getter
 @Setter
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Institution extends BaseDomainModel {
 
@@ -26,6 +31,7 @@ public class Institution extends BaseDomainModel {
      *
      * @return {@code true} if the institution's status is not {@link InstitutionStatus#ACTIVE}, otherwise {@code false}.
      */
+    @JsonIgnore
     public boolean isNotActive() {
         return this.status != InstitutionStatus.ACTIVE;
     }
