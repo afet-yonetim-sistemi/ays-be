@@ -15,6 +15,7 @@ import org.ays.institution.model.Institution;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class AysUser extends BaseDomainModel {
     private LoginAttempt loginAttempt;
 
     private List<AysRole> roles;
-    private Institution institution;
+    private List<Institution> institutions;
 
     /**
      * Checks if the user's status is active.
@@ -89,6 +90,23 @@ public class AysUser extends BaseDomainModel {
         return this.status == AysUserStatus.DELETED;
     }
 
+    /**
+     * Checks if the user is associated with the institution identified by the given ID.
+     * <p>
+     * This method iterates through the user's assigned institutions to determine if there
+     * is a match for the provided {@code institutionId}.
+     * </p>
+     *
+     * @param institutionId the unique identifier of the institution to check.
+     * @return {@code true} if the user is associated with the institution; {@code false} otherwise.
+     */
+    public boolean hasInstitution(final String institutionId) {
+        if (this.institutions == null) {
+            return false;
+        }
+        return this.institutions.stream()
+                .anyMatch(institution -> institution.getId().equals(institutionId));
+    }
 
     /**
      * Updates the user information with the specified details.
@@ -190,22 +208,25 @@ public class AysUser extends BaseDomainModel {
 
     /**
      * Generates JWT claims based on the user's information for authentication and authorization.
-     * The claims include user-specific data such as institution ID, institution name, user ID, first name,
-     * last name, email address, and permissions associated with the user.
-     * If available, it also includes the timestamp of the user's last successful login attempt.
+     * The resulting claims encapsulate the necessary user-specific data required by the system
+     * to identify the user, their associated institutions, and their access permissions.
      *
      * @return JWT claims containing user-related information.
      */
     public Claims getClaims() {
         final ClaimsBuilder claimsBuilder = Jwts.claims();
 
-        claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), this.institution.getId());
-        claimsBuilder.add(AysTokenClaims.INSTITUTION_NAME.getValue(), this.institution.getName());
+        final Institution currentInstitution = this.getInstitution();
+        claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), currentInstitution.getId());
+        claimsBuilder.add(AysTokenClaims.INSTITUTION_NAME.getValue(), currentInstitution.getName());
+        final List<InstitutionInner> institutions = this.institutions.stream()
+                .map(institution -> new InstitutionInner(institution.getId(), institution.getName()))
+                .collect(Collectors.toList());
+        claimsBuilder.add(AysTokenClaims.INSTITUTIONS.getValue(), institutions);
         claimsBuilder.add(AysTokenClaims.USER_ID.getValue(), this.id);
         claimsBuilder.add(AysTokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
         claimsBuilder.add(AysTokenClaims.USER_LAST_NAME.getValue(), this.lastName);
         claimsBuilder.add(AysTokenClaims.USER_PERMISSIONS.getValue(), this.getPermissionNames());
-
 
         if (this.loginAttempt != null && this.loginAttempt.lastLoginAt != null) {
             claimsBuilder.add(AysTokenClaims.USER_LAST_LOGIN_AT.getValue(), this.loginAttempt.lastLoginAt.toString());
@@ -214,12 +235,33 @@ public class AysUser extends BaseDomainModel {
         return claimsBuilder.build();
     }
 
+    /**
+     * A lightweight, immutable representation of an institution, containing only its unique identifier and name.
+     * This record is used to serialize concise institution information into the user's JWT claims.
+     *
+     * @param id   The unique identifier of the institution.
+     * @param name The name of the institution.
+     */
+    private record InstitutionInner(String id, String name) {
+    }
+
     private Set<String> getPermissionNames() {
         return this.roles.stream()
                 .map(AysRole::getPermissions)
                 .flatMap(List::stream)
                 .map(AysPermission::getName)
                 .collect(Collectors.toSet());
+    }
+
+    private Institution getInstitution() {
+
+        final Optional<Institution> institution = this.institutions.stream()
+                .findFirst();
+        if (institution.isEmpty()) {
+            throw new IllegalStateException("User has no institution!");
+        }
+
+        return institution.get();
     }
 
 }
