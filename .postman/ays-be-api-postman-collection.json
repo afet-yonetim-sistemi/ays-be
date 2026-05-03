@@ -2480,7 +2480,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/admin-registration-applications"
+												"url": "{{API_URL}}/api/institution/v1/admin-registration-applications"
 											},
 											"status": "OK",
 											"code": 200,
@@ -2608,7 +2608,7 @@
 											"originalRequest": {
 												"method": "GET",
 												"header": [],
-												"url": "{{API_URL}}/api/v1/admin-registration-application/4eb44207-b6a8-4d9c-82c2-292840e4f897"
+												"url": "{{API_URL}}/api/institution/v1/admin-registration-application/4eb44207-b6a8-4d9c-82c2-292840e4f897"
 											},
 											"status": "OK",
 											"code": 200,
@@ -2826,7 +2826,7 @@
 														}
 													}
 												},
-												"url": "{{API_URL}}/api/v1/emergency-evacuation-applications"
+												"url": "{{API_URL}}/api/institution/v1/emergency-evacuation-applications"
 											},
 											"status": "OK",
 											"code": 200,
@@ -2948,19 +2948,21 @@
 												"method": "GET",
 												"header": [],
 												"url": {
-													"raw": "{{API_URL}}/api/v1/emergency-evacuation-application/:id",
+													"raw": "{{API_URL}}/api/institution/v1/emergency-evacuation-application/:id",
 													"host": [
 														"{{API_URL}}"
 													],
 													"path": [
 														"api",
+														"institution",
 														"v1",
 														"emergency-evacuation-application",
 														":id"
 													],
 													"variable": [
 														{
-															"key": "id"
+															"key": "id",
+															"value": ""
 														}
 													]
 												}
