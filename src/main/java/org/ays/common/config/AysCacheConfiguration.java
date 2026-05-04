@@ -16,6 +16,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Configuration class for setting up caching using Redis in the AYS application.
@@ -36,7 +38,7 @@ class AysCacheConfiguration {
     private int redisPort;
 
     @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
+    LettuceConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(redisHost, redisPort);
     }
 
@@ -49,11 +51,11 @@ class AysCacheConfiguration {
      * Java time module support and default typing. Caching null values is disabled, and the
      * default time-to-live (TTL) for cache entries is set to one hour.
      *
-     * @param connectionFactory the {@link RedisConnectionFactory} used to establish the connection to Redis
-     * @return the configured {@link RedisCacheManager} instance
+     * @param connectionFactory the RedisConnectionFactory used to create connections to the Redis instance
+     * @return a fully configured {@link RedisCacheManager} instance
      */
     @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+    RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -68,16 +70,36 @@ class AysCacheConfiguration {
         GenericJackson2JsonRedisSerializer serializer =
                 new GenericJackson2JsonRedisSerializer(objectMapper);
 
-        RedisCacheConfiguration cacheConfig =
-                RedisCacheConfiguration.defaultCacheConfig()
-                        .entryTtl(Duration.ofHours(1))
-                        .disableCachingNullValues()
-                        .serializeValuesWith(
-                                RedisSerializationContext.SerializationPair.fromSerializer(serializer)
-                        );
+        RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofHours(1))
+                .disableCachingNullValues()
+                .serializeValuesWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
+                );
+
+        RedisCacheConfiguration oneDayCacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofDays(1))
+                .disableCachingNullValues()
+                .serializeValuesWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
+                );
+
+        RedisCacheConfiguration tenMinutesCacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(10))
+                .disableCachingNullValues()
+                .serializeValuesWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
+                );
+
+
+        Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
+
+        cacheConfigurations.put("InstitutionAdapter_findAll", defaultCacheConfig);
+        cacheConfigurations.put("InstitutionAdapter_summary", defaultCacheConfig);
 
         return RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(cacheConfig)
+                .cacheDefaults(defaultCacheConfig)
+                .withInitialCacheConfigurations(cacheConfigurations)
                 .build();
     }
 }

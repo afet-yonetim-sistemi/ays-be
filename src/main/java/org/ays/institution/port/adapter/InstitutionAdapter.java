@@ -12,6 +12,8 @@ import org.ays.institution.model.mapper.InstitutionToEntityMapper;
 import org.ays.institution.port.InstitutionReadPort;
 import org.ays.institution.port.InstitutionSavePort;
 import org.ays.institution.repository.InstitutionRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,9 +41,9 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
 
     private final InstitutionRepository institutionRepository;
 
-
     private final InstitutionEntityToDomainMapper institutionEntityToDomainMapper = InstitutionEntityToDomainMapper.initialize();
     private final InstitutionToEntityMapper institutionToEntityMapper = InstitutionToEntityMapper.initialize();
+
 
     /**
      * Finds all institutions with pagination and optional filtering.
@@ -55,8 +57,11 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return a paginated list of institutions
      */
     @Override
+    @Cacheable(
+            value = "InstitutionAdapter_findAll",
+            key = "'findAll:' + #aysPageable.page + ':' + #aysPageable.pageSize + ':' + #filter?.name + ':' + #filter?.statuses"
+    )
     public AysPage<Institution> findAll(AysPageable aysPageable, InstitutionFilter filter) {
-
         final Pageable pageable = aysPageable.toPageable();
 
         final Specification<InstitutionEntity> specification = Optional
@@ -70,6 +75,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
 
         return AysPage.of(filter, pageOfInstitutionEntities, institutions);
     }
+
 
     /**
      * Retrieves an {@link Institution} by its ID.
@@ -94,6 +100,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return a list of institutions with the specified status, ordered by name in ascending order
      */
     @Override
+    @Cacheable(value = "InstitutionAdapter_summary", key = "'getSummaryOfActiveInstitutions'")
     public List<Institution> findAllByStatusOrderByNameAsc(final InstitutionStatus status) {
         final List<InstitutionEntity> activeInstitutions = institutionRepository.findAllByStatusOrderByNameAsc(status);
         return institutionEntityToDomainMapper.map(activeInstitutions);
@@ -121,12 +128,19 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * This method maps the domain institution object to an entity object and saves it to the database.
      * The saved entity is then mapped back to a domain object and returned.
      * </p>
+     * <p>
+     * Since the institution records have been updated, the cache is evicted.
+     * </p>
      *
      * @param institution the institution object to save
      * @return the saved institution object
      */
     @Override
     @Transactional
+    @CacheEvict(
+            value = {"InstitutionAdapter_findAll", "InstitutionAdapter_summary"},
+            allEntries = true
+    )
     public Institution save(final Institution institution) {
         final InstitutionEntity institutionEntity = institutionToEntityMapper.map(institution);
         final InstitutionEntity institutionEntityFromDatabase = institutionRepository.save(institutionEntity);

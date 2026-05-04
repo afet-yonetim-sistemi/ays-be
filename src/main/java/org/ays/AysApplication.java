@@ -2,7 +2,6 @@ package org.ays;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * The main class for the Ays Application.
@@ -12,10 +11,8 @@ import org.springframework.cache.annotation.EnableCaching;
  *
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.context.annotation.Configuration
- * @see org.springframework.cache.annotation.EnableCaching
  * @see org.springframework.boot.SpringApplication
  */
-@EnableCaching
 @SpringBootApplication
 class AysApplication {
     public static void main(String[] args) {
