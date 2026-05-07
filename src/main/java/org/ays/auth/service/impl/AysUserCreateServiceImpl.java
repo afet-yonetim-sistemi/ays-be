@@ -82,7 +82,8 @@ class AysUserCreateServiceImpl implements AysUserCreateService {
         this.validateRolesAndSet(user, createRequest.getRoleIds());
 
         user.activate();
-        user.setInstitutions(List.of(this.findInstitutionById(identity.getInstitutionId())));
+        final Institution currentInstitution = this.findInstitutionById(identity.getInstitutionId());
+        user.setInstitutions(List.of(currentInstitution));
         user.setPassword(
                 AysUser.Password.builder()
                         .value(AysRandomUtil.generateText(15))
