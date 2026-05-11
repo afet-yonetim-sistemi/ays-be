@@ -2,28 +2,21 @@ package org.ays.common.logging;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 
 /**
- * Aspect for logging cache miss events in a standardized format.
- * This aspect intercepts methods annotated with {@code @Cacheable} within classes
- * that match the specified pointcut expression, ensuring cache-related operations
- * are logged for debugging purposes.
+ * AysCacheLoggerAspect provides logging functionality for cache-related operations within
+ * methods of adapter classes. This aspect ensures that key events such as cache misses and
+ * cache evictions are logged in a consistent and structured manner.
  * <p>
- * This can help trace and debug scenarios where cache misses occur, providing insights
- * into method invocations that lead to database access due to absence of cached data.
- * <p>
- * An example of a pointcut expression used:
- * - It matches any method execution within classes ending in "Adapter" under the
- *   {@code org.ays..} package and sub-packages, annotated with {@code @Cacheable}.
- * <p>
- * Dependencies:
- * 1. Lombok's {@code @Slf4j} for logging support.
- * 2. Spring AOP's {@code @Aspect} for defining aspect-oriented behavior.
- * 3. Spring Framework's {@code @Component} to mark the aspect as a Spring-managed bean.
+ * It leverages annotations such as {@link Cacheable} and
+ * {@link CacheEvict} to identify and handle relevant cache interactions.
  */
 @Slf4j
 @Aspect
@@ -35,11 +28,35 @@ class AysCacheLoggerAspect {
      */
     @Before("execution(* org.ays..*Adapter.*(..)) && @annotation(org.springframework.cache.annotation.Cacheable)")
     public void logCacheMiss(JoinPoint joinPoint) {
-        if (log.isDebugEnabled()) {
+        if (log.isWarnEnabled()) {
             String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
             String methodName = joinPoint.getSignature().getName();
 
-            log.debug("Cache miss for [{}::{}] - Method invoked. Loading from DB.", className, methodName);
+            log.warn(
+                    "Cache miss detected for [{}::{}]. Value not found in cache, invoking method and loading data from persistence layer.",
+                    className,
+                    methodName
+            );
+        }
+    }
+
+    /**
+     * Logs cache eviction events after successful execution of methods annotated with {@link CacheEvict}.
+     * This ensures that any modification that leads to cache clearing is logged.
+     *
+     * @param joinPoint  the join point representing the intercepted method
+     */
+    @AfterReturning("execution(* org.ays..*Adapter.*(..)) && @annotation(org.springframework.cache.annotation.CacheEvict)")
+    public void logCacheEvict(JoinPoint joinPoint) {
+        if (log.isWarnEnabled()) {
+            String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
+            String methodName = joinPoint.getSignature().getName();
+
+            log.warn(
+                    "Cache invalidated for [{}::{}]. Related cache entries cleared after data modification.",
+                    className,
+                    methodName
+            );
         }
     }
 }

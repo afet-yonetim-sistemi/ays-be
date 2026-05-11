@@ -1,6 +1,7 @@
 package org.ays.institution.port.adapter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.ays.institution.model.Institution;
@@ -34,6 +35,7 @@ import java.util.Optional;
  * providing methods for finding institutions by status and saving institution data.
  * </p>
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -44,6 +46,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
     private final InstitutionEntityToDomainMapper institutionEntityToDomainMapper = InstitutionEntityToDomainMapper.initialize();
     private final InstitutionToEntityMapper institutionToEntityMapper = InstitutionToEntityMapper.initialize();
 
+    private static final String CACHE_NAME = "InstitutionAdapter";
 
     /**
      * Finds all institutions with pagination and optional filtering.
@@ -58,8 +61,8 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      */
     @Override
     @Cacheable(
-            value = "InstitutionAdapter_findAll",
-            key = "'findAll:' + #aysPageable.page + ':' + #aysPageable.pageSize + ':' + #filter?.name + ':' + #filter?.statuses"
+            value = CACHE_NAME,
+            key = "'findAll::' + #aysPageable.page + ':' + #aysPageable.pageSize + ':' + #filter?.name + ':' + #filter?.statuses"
     )
     public AysPage<Institution> findAll(AysPageable aysPageable, InstitutionFilter filter) {
         final Pageable pageable = aysPageable.toPageable();
@@ -84,6 +87,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return An optional containing the {@link Institution} if found, otherwise empty.
      */
     @Override
+    @Cacheable(value = CACHE_NAME, key = "'findById::' + #id")
     public Optional<Institution> findById(final String id) {
         return institutionRepository.findById(id).map(institutionEntityToDomainMapper::map);
     }
@@ -100,7 +104,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return a list of institutions with the specified status, ordered by name in ascending order
      */
     @Override
-    @Cacheable(value = "InstitutionAdapter_summary", key = "'getSummaryOfActiveInstitutions'")
+    @Cacheable(value = CACHE_NAME, key = "'findAllByStatusOrderByNameAsc'")
     public List<Institution> findAllByStatusOrderByNameAsc(final InstitutionStatus status) {
         final List<InstitutionEntity> activeInstitutions = institutionRepository.findAllByStatusOrderByNameAsc(status);
         return institutionEntityToDomainMapper.map(activeInstitutions);
@@ -108,7 +112,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
 
 
     /**
-     * Checks if an institution with the given ID exists and has an active status.
+     * Checks if an institution exists with the given ID and an active status.
      * <p>
      * This method queries the database to determine if an institution with the specified ID exists and is active.
      * </p>
@@ -117,6 +121,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return true if an institution with the specified ID exists and is active, false otherwise
      */
     @Override
+    @Cacheable(value = CACHE_NAME, key = "'exists::' + #id")
     public boolean existsByIdAndIsStatusActive(final String id) {
         return institutionRepository.existsByIdAndStatus(id, InstitutionStatus.ACTIVE);
     }
@@ -138,7 +143,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
     @Override
     @Transactional
     @CacheEvict(
-            value = {"InstitutionAdapter_findAll", "InstitutionAdapter_summary"},
+            value = CACHE_NAME,
             allEntries = true
     )
     public Institution save(final Institution institution) {
