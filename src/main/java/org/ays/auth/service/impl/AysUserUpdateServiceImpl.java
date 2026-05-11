@@ -58,8 +58,10 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
         final AysUser user = userReadPort.findById(id)
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
-        final String institutionId = identity.getInstitutionId();
-        if (!institutionId.equals(user.getInstitution().getId())) {
+        final String currentInstitutionId = identity.getInstitutionId();
+        boolean isUserInInstitution = user.hasInstitution(currentInstitutionId);
+
+        if (!isUserInInstitution) {
             throw new AysUserNotExistByIdException(id);
         }
 
@@ -87,7 +89,7 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
                 .collect(Collectors.toSet());
         final boolean isRoleChanged = !existingRoleIds.equals(updateRequest.getRoleIds());
         if (isRoleChanged) {
-            this.validateRoles(updateRequest.getRoleIds(), institutionId);
+            this.validateRoles(updateRequest.getRoleIds(), currentInstitutionId);
         }
 
         user.update(
@@ -116,7 +118,8 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
     public void activate(String id) {
 
         final AysUser user = userReadPort.findById(id)
-                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
+                .filter(userFromDatabase -> userFromDatabase.getInstitutions().stream()
+                        .anyMatch(institution -> institution.getId().equals(identity.getInstitutionId())))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
         if (user.isActive()) {
@@ -144,7 +147,8 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
     public void passivate(String id) {
 
         final AysUser user = userReadPort.findById(id)
-                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
+                .filter(userFromDatabase -> userFromDatabase.getInstitutions().stream()
+                        .anyMatch(institution -> institution.getId().equals(identity.getInstitutionId())))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
         if (user.isPassive()) {
@@ -177,7 +181,8 @@ class AysUserUpdateServiceImpl implements AysUserUpdateService {
     public void delete(final String id) {
 
         final AysUser user = userReadPort.findById(id)
-                .filter(userFromDatabase -> identity.getInstitutionId().equals(userFromDatabase.getInstitution().getId()))
+                .filter(userFromDatabase -> userFromDatabase.getInstitutions().stream()
+                        .anyMatch(institution -> institution.getId().equals(identity.getInstitutionId())))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
 
         if (user.isDeleted()) {

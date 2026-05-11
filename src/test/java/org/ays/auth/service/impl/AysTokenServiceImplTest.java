@@ -15,6 +15,8 @@ import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.util.AysKeyConverter;
 import org.ays.common.util.AysListUtil;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -127,6 +129,41 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPrivateKey();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPublicKey();
+        Mockito.verifyNoMoreInteractions(tokenConfiguration);
+    }
+
+    @Test
+    void givenValidUserClaimsWithMultipleInstitutions_whenTokensGenerated_thenReturnAysTokenWithAllInstitutions() {
+        // Given
+        Institution mockInstitution1 = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Institution mockInstitution2 = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withInstitutions(List.of(mockInstitution1, mockInstitution2))
+                .build();
+        Claims mockUserClaims = mockUser.getClaims();
+
+        // When
+        Mockito.when(tokenConfiguration.getTokenIssuer()).thenReturn(MOCK_ISSUER);
+        Mockito.when(tokenConfiguration.getAccessTokenExpireMinute()).thenReturn(MOCK_ACCESS_TOKEN_EXPIRE_MINUTE);
+        Mockito.when(tokenConfiguration.getTokenPrivateKey()).thenReturn(MOCK_PRIVATE_KEY);
+
+        AysToken token = tokenService.generate(mockUserClaims);
+
+        // Then
+        Assertions.assertNotNull(token);
+        Assertions.assertNotNull(token.getAccessToken());
+        Assertions.assertNotNull(token.getRefreshToken());
+
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getRefreshTokenExpireMinute();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPrivateKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 

@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.util.List;
+
 class AysUserMailServiceImplTest extends AysUnitTest {
 
     @InjectMocks
@@ -32,7 +34,7 @@ class AysUserMailServiceImplTest extends AysUnitTest {
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
                 .withPassword(new AysUserBuilder.PasswordBuilder().withValidValues().build())
-                .withInstitution(mockInstitution)
+                .withInstitutions(List.of(mockInstitution))
                 .build();
 
         // When

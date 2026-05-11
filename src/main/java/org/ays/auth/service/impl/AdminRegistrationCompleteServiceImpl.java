@@ -85,7 +85,7 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
                 .filter(AdminRegistrationApplication::isWaiting)
                 .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdAuthException(id));
 
-        user.setInstitution(application.getInstitution());
+        user.setInstitutions(List.of(application.getInstitution()));
         user.notVerify();
 
         this.setAdminRole(user, application.getInstitution());

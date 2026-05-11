@@ -328,7 +328,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
                 .withValidValues()
                 .withEmailAddress(mockLoginRequest.getEmailAddress())
                 .withValidPassword()
-                .withInstitution(new InstitutionBuilder().withValidValues().withStatus(mockStatus).build())
+                .withInstitutions(List.of(new InstitutionBuilder().withValidValues().withStatus(mockStatus).build()))
                 .build();
         Mockito.when(userReadPort.findByEmailAddress(mockLoginRequest.getEmailAddress()))
                 .thenReturn(Optional.of(mockUser));

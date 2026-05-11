@@ -19,6 +19,7 @@ public enum AysTokenClaims {
     USER_LAST_LOGIN_AT("userLastLoginAt"),
     INSTITUTION_ID("institutionId"),
     INSTITUTION_NAME("institutionName"),
+    INSTITUTIONS("institutions"),
     ALGORITHM("alg");
 
     private final String value;

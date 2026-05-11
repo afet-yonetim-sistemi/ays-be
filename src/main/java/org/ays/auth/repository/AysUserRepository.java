@@ -20,7 +20,7 @@ public interface AysUserRepository extends JpaRepository<AysUserEntity, String>,
      */
     @Query("""
             SELECT DISTINCT user FROM AysUserEntity user
-            LEFT JOIN FETCH user.institution
+            LEFT JOIN FETCH user.institutions
             LEFT JOIN FETCH user.roles roles
             LEFT JOIN FETCH roles.permissions
             LEFT JOIN FETCH user.password

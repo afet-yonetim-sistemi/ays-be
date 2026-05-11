@@ -72,8 +72,10 @@ class AysUserReadServiceImpl implements AysUserReadService {
      */
     @Override
     public AysUser findById(String id) {
+        String currentInstitutionId = identity.getInstitutionId();
+
         return userReadPort.findById(id)
-                .filter(user -> identity.getInstitutionId().equals(user.getInstitution().getId()))
+                .filter(user -> user.hasInstitution(currentInstitutionId))
                 .orElseThrow(() -> new AysUserNotExistByIdException(id));
     }
 
