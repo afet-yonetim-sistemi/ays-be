@@ -53,12 +53,29 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
     private static final String BASE_PATH_LANDING = "/api/landing/v1";
 
 
-    @Test
-    void givenValidEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "İstanbul",
+            "Kadıköy",
+            "İst",
+            "köy",
+            "St. Luis",
+            "Las Vegas",
+            "St.",
+            "St. -",
+            "S.",
+            ".S",
+            "Az"
+    })
+    void givenValidEmergencyEvacuationApplicationListRequest_whenEmergencyEvacuationApplicationsFound_thenReturnAysPageResponseOfEmergencyEvacuationApplicationsResponse(String mockLocation) throws Exception {
 
         // Given
         EmergencyEvacuationApplicationListRequest mockListRequest = new EmergencyEvacuationApplicationListRequestBuilder()
                 .withValidValues()
+                .withTargetCity(mockLocation)
+                .withSourceCity(mockLocation)
+                .withTargetDistrict(mockLocation)
+                .withSourceDistrict(mockLocation)
                 .build();
 
         // When
@@ -148,13 +165,23 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "t",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
+            "City *^%$#",
+            " Test",
+            " S",
+            "S ",
+            "#Bolu",
+            "Bur.-sa",
+            "An4ara",
+            "Adana123",
+            "369852",
+            "#$&/",
+            "? User",
+            "J",
+            "J----",
+            "Sam&sun",
+            "City--King",
+            "John  Doe",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed int"
     })
     void givenInvalidEmergencyEvacuationApplicationListRequest_whenSourceCityNotValid_thenReturnValidationError(String sourceCity) throws Exception {
 
@@ -184,13 +211,23 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "t",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
+            "City *^%$#",
+            " Test",
+            " S",
+            "S ",
+            "#Bolu",
+            "Bur.-sa",
+            "An4ara",
+            "Adana123",
+            "369852",
+            "#$&/",
+            "? User",
+            "J",
+            "J----",
+            "Sam&sun",
+            "City--King",
+            "John  Doe",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed int"
     })
     void givenInvalidEmergencyEvacuationApplicationListRequest_whenSourceDistrictNotValid_thenReturnValidationError(String sourceDistrict) throws Exception {
 
@@ -252,13 +289,23 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "t",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
+            "City *^%$#",
+            " Test",
+            " S",
+            "S ",
+            "#Bolu",
+            "Bur.-sa",
+            "An4ara",
+            "Adana123",
+            "369852",
+            "#$&/",
+            "? User",
+            "J",
+            "J----",
+            "Sam&sun",
+            "City--King",
+            "John  Doe",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed int"
     })
     void givenInvalidEmergencyEvacuationApplicationListRequest_whenTargetCityNotValid_thenReturnValidationError(String targetCity) throws Exception {
 
@@ -288,13 +335,23 @@ class EmergencyEvacuationApplicationControllerTest extends AysRestControllerTest
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "Invalid with special characters: #$%",
-            "#$½#$£#$£#$$#½#£$£#$#£½#$½#$½$£#$#£$$#½#$$½",
-            ".,..,.,.,.,.,,.,.,.,.,.,.,.,.,..,.,.,,.,.,.,",
-            "t",
-            "151201485621548562154851458614125461254125412",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam In hac habitasse platea dictumst. Nullam in turpis at nunc ultrices."
+            "City *^%$#",
+            " Test",
+            " S",
+            "S ",
+            "#Bolu",
+            "Bur.-sa",
+            "An4ara",
+            "Adana123",
+            "369852",
+            "#$&/",
+            "? User",
+            "J",
+            "J----",
+            "Sam&sun",
+            "City--King",
+            "John  Doe",
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed int"
     })
     void givenInvalidEmergencyEvacuationApplicationListRequest_whenTargetDistrictNotValid_thenReturnValidationError(String targetDistrict) throws Exception {
 

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.ays.common.model.AysFilter;
-import org.ays.common.util.validation.NoSpecialCharacters;
+import org.ays.common.util.validation.CityFilter;
 import org.ays.common.util.validation.OnlyInteger;
 import org.ays.emergency_application.model.entity.EmergencyEvacuationApplicationEntity;
 import org.ays.emergency_application.model.enums.EmergencyEvacuationApplicationStatus;
@@ -24,22 +24,22 @@ public class EmergencyEvacuationApplicationFilter implements AysFilter {
     @Size(min = 1, max = 10)
     private String referenceNumber;
 
-    @NoSpecialCharacters
+    @CityFilter
     @Size(min = 2, max = 100)
     private String sourceCity;
 
-    @NoSpecialCharacters
+    @CityFilter
     @Size(min = 2, max = 100)
     private String sourceDistrict;
 
     @Range(min = 1, max = 999)
     private Integer seatingCount;
 
-    @NoSpecialCharacters
+    @CityFilter
     @Size(min = 2, max = 100)
     private String targetCity;
 
-    @NoSpecialCharacters
+    @CityFilter
     @Size(min = 2, max = 100)
     private String targetDistrict;
 
