@@ -20,6 +20,7 @@ import org.ays.auth.service.AysAuthService;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
 import org.ays.institution.exception.AysInstitutionNotActiveAuthException;
+import org.ays.institution.model.Institution;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,6 +80,7 @@ class AysAuthServiceImpl implements AysAuthService {
         }
 
         this.validateUserStatus(user);
+        this.validateInstitutionStatus(user);
         this.validateUserSourcePagePermission(user, loginRequest.getSourcePage());
 
         Optional.ofNullable(user.getLoginAttempt())
@@ -144,6 +146,7 @@ class AysAuthServiceImpl implements AysAuthService {
                 .orElseThrow(() -> new AysUserIdNotValidException(userId));
 
         this.validateUserStatus(user);
+        this.validateInstitutionStatus(user);
 
         final Claims claimsOfUser = user.getClaims();
         return tokenService.generate(claimsOfUser, refreshToken);
@@ -157,12 +160,23 @@ class AysAuthServiceImpl implements AysAuthService {
      */
     private void validateUserStatus(final AysUser user) {
 
-        if (!user.isActive()) {
+        if (user.isNotActive()) {
             throw new AysUserNotActiveAuthException(user.getId());
         }
+    }
 
-        if (user.getInstitution().isNotActive()) {
-            throw new AysInstitutionNotActiveAuthException(user.getInstitution().getId());
+    /**
+     * Validates the status of the institutions associated with the user.
+     *
+     * @param user The {@link AysUser} object whose institutions' statuses need to be validated.
+     * @throws AysInstitutionNotActiveAuthException If any of the user's institutions is not active.
+     */
+    private void validateInstitutionStatus(final AysUser user) {
+
+        boolean hasNotAnyActiveInstitutions = user.getInstitutions().stream()
+                .noneMatch(Institution::isActive);
+        if (hasNotAnyActiveInstitutions) {
+            throw new AysInstitutionNotActiveAuthException(user.getId());
         }
     }
 

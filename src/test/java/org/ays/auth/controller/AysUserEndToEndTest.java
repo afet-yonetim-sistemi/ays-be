@@ -1,6 +1,7 @@
 package org.ays.auth.controller;
 
 import ch.qos.logback.classic.Level;
+import org.apache.commons.collections4.CollectionUtils;
 import org.ays.AysEndToEndTest;
 import org.ays.auth.model.AysRole;
 import org.ays.auth.model.AysUser;
@@ -84,7 +85,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withCity("Iğdır")
                         .withStatus(AysUserStatus.ACTIVE)
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .build()
         );
 
@@ -202,7 +203,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .build()
         );
 
@@ -289,7 +290,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertNotNull(userFromDatabase.get().getId());
-        Assertions.assertNotNull(userFromDatabase.get().getInstitution());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(userFromDatabase.get().getInstitutions()));
         Assertions.assertEquals(createRequest.getFirstName(), userFromDatabase.get().getFirstName());
         Assertions.assertEquals(createRequest.getLastName(), userFromDatabase.get().getLastName());
         Assertions.assertEquals(createRequest.getEmailAddress(), userFromDatabase.get().getEmailAddress());
@@ -408,7 +409,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .build()
         );
 
@@ -446,7 +447,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertNotNull(userFromDatabase.get().getId());
-        Assertions.assertNotNull(userFromDatabase.get().getInstitution());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(userFromDatabase.get().getInstitutions()));
         Assertions.assertEquals(updateRequest.getFirstName(), userFromDatabase.get().getFirstName());
         Assertions.assertEquals(updateRequest.getLastName(), userFromDatabase.get().getLastName());
         Assertions.assertEquals(updateRequest.getEmailAddress(), userFromDatabase.get().getEmailAddress());
@@ -484,7 +485,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withCity("İzmir")
                         .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .build()
         );
 
@@ -526,7 +527,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
 
         Assertions.assertTrue(userFromDatabase.isPresent());
         Assertions.assertNotNull(userFromDatabase.get().getId());
-        Assertions.assertNotNull(userFromDatabase.get().getInstitution());
+        Assertions.assertTrue(CollectionUtils.isNotEmpty(userFromDatabase.get().getInstitutions()));
         newRoleIds.forEach(roleId -> Assertions.assertTrue(
                         userFromDatabase.get().getRoles().stream()
                                 .anyMatch(role -> role.getId().equals(roleId))
@@ -552,7 +553,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .build()
         );
 
@@ -608,7 +609,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .build()
         );
 
@@ -665,7 +666,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.PASSIVE)
                         .build()
         );
@@ -710,7 +711,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.ACTIVE)
                         .build()
         );
@@ -761,7 +762,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(status)
                         .build()
         );
@@ -816,7 +817,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withCity("Ankara")
                         .withStatus(AysUserStatus.ACTIVE)
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .build()
         );
 
@@ -861,7 +862,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.ACTIVE)
                         .build()
         );
@@ -906,7 +907,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(AysUserStatus.PASSIVE)
                         .build()
         );
@@ -956,7 +957,7 @@ class AysUserEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withStatus(status)
                         .build()
         );

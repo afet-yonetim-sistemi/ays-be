@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
-    <changeSet id="202510091256-ays-dml.xml" author="ays">
+    <changeSet id="202510091256-ays-dml" author="ays">
         <!-- ==================== -->
         <!-- DML of AYS_PARAMETER -->
         <!-- ==================== -->

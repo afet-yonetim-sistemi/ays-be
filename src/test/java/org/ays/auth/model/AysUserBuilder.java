@@ -26,7 +26,7 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
 
         return this
                 .withId(AysRandomUtil.generateUUID())
-                .withInstitution(institution)
+                .withInstitutions(List.of(institution))
                 .withEmailAddress(RandomStringUtils.secure().nextAlphabetic(8).concat("@afetyonetimsistemi.org"))
                 .withPhoneNumber(new AysPhoneNumberBuilder().withValidValues().build())
                 .withStatus(AysUserStatus.ACTIVE)
@@ -94,8 +94,8 @@ public class AysUserBuilder extends TestDataBuilder<AysUser> {
         return this;
     }
 
-    public AysUserBuilder withInstitution(Institution institution) {
-        data.setInstitution(institution);
+    public AysUserBuilder withInstitutions(List<Institution> institutions) {
+        data.setInstitutions(institutions);
         return this;
     }
 

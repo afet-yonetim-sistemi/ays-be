@@ -19,6 +19,8 @@ import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysUserMailService;
 import org.ays.common.util.AysRandomUtil;
+import org.ays.institution.model.Institution;
+import org.ays.institution.model.InstitutionBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -144,6 +146,52 @@ class AysUserPasswordServiceImplTest extends AysUnitTest {
         Mockito.doNothing()
                 .when(userMailService)
                 .sendPasswordCreateEmail(Mockito.any(AysUser.class));
+
+        // Then
+        userPasswordService.forgotPassword(mockForgotPasswordRequest);
+
+        // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(userMailService, Mockito.times(1))
+                .sendPasswordCreateEmail(Mockito.any(AysUser.class));
+    }
+
+    @Test
+    void givenValidForgotPasswordRequest_whenUserHasMultipleInstitutions_thenSetPasswordForgotAtAndSendPasswordCreateEmail() {
+        // Given
+        AysPasswordForgotRequest mockForgotPasswordRequest = new AysForgotPasswordRequestBuilder()
+                .withValidValues()
+                .build();
+
+        AysRole mockRole = new AysRoleBuilder()
+                .withValidValues()
+                .build();
+
+        Institution mockInstitution1 = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+        Institution mockInstitution2 = new InstitutionBuilder()
+                .withValidValues()
+                .build();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockForgotPasswordRequest.getEmailAddress())
+                .withRoles(List.of(mockRole))
+                .withInstitutions(List.of(mockInstitution1, mockInstitution2))
+                .build();
+
+        // When
+        Mockito.when(userReadPort.findByEmailAddress(Mockito.anyString()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         // Then
         userPasswordService.forgotPassword(mockForgotPasswordRequest);

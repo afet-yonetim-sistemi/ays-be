@@ -156,7 +156,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         AysUser user = userSavePort.save(
                 new AysUserBuilder().withValidValues()
                         .withoutId()
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withPassword(password)
                         .withRoles(roles)
                         .build()
@@ -323,7 +323,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .build()
         );
 
@@ -408,7 +408,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(roles)
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withPassword(password)
                         .build()
         );
@@ -473,7 +473,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withPassword(password)
                         .build()
         );
@@ -519,7 +519,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                         .withValidValues()
                         .withoutId()
                         .withRoles(List.of(role))
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution))
                         .withPassword(password)
                         .build()
         );

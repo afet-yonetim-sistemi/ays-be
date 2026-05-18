@@ -1,5 +1,6 @@
 package org.ays.auth.model;
 
+import jakarta.persistence.criteria.Join;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -90,8 +91,10 @@ public class AysUserFilter implements AysFilter {
 
         Specification<AysUserEntity> specification = Specification.unrestricted();
 
-        specification = specification.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("institutionId"), this.institutionId));
+        specification = specification.and((root, query, criteriaBuilder) -> {
+            Join<Object, Object> institutionJoin = root.join("institutions");
+            return criteriaBuilder.equal(institutionJoin.get("id"), this.institutionId);
+        });
 
         if (!CollectionUtils.isEmpty(this.statuses)) {
 

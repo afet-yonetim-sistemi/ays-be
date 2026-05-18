@@ -45,9 +45,6 @@ public class AysUserEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "INSTITUTION_ID")
-    private String institutionId;
-
     @Column(name = "EMAIL_ADDRESS")
     private String emailAddress;
 
@@ -84,9 +81,13 @@ public class AysUserEntity extends BaseEntity {
     )
     private LoginAttemptEntity loginAttempt;
 
-    @OneToOne
-    @JoinColumn(name = "INSTITUTION_ID", insertable = false, updatable = false)
-    private InstitutionEntity institution;
+    @ManyToMany
+    @JoinTable(
+            name = "AYS_USER_INSTITUTION_RELATION",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "INSTITUTION_ID")
+    )
+    private Set<InstitutionEntity> institutions;
 
     @ManyToMany
     @JoinTable(
