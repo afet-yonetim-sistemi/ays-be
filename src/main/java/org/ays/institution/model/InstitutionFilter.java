@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.ays.common.model.AysFilter;
 import org.ays.common.util.validation.Name;
@@ -27,6 +29,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InstitutionFilter implements AysFilter {
 
     @Name
