@@ -1,5 +1,6 @@
 package org.ays.institution.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,10 +29,12 @@ public class Institution extends BaseDomainModel {
     private InstitutionStatus status;
 
     /**
-     * Checks if the institution's status is active.
+     * Determines if the institution is active based on its status.
      *
-     * @return {@code true} if the institution's status is {@link InstitutionStatus#ACTIVE}, otherwise {@code false}.
+     * @return {@code true} if the institution has a status of {@code InstitutionStatus.ACTIVE},
+     *         otherwise {@code false}.
      */
+    @JsonIgnore
     public boolean isActive() {
         return this.status == InstitutionStatus.ACTIVE;
     }
