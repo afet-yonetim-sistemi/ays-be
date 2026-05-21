@@ -30,7 +30,6 @@ class InstitutionServiceImpl implements InstitutionService {
      */
     @Override
     public AysPage<Institution> findAll(InstitutionListRequest listRequest) {
-
         final AysPageable aysPageable = listRequest.getPageable();
 
         return institutionReadPort.findAll(aysPageable, listRequest.getFilter());

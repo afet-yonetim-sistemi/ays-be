@@ -1,6 +1,7 @@
 package org.ays.institution.port.adapter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.ays.institution.model.Institution;
@@ -12,6 +13,8 @@ import org.ays.institution.model.mapper.InstitutionToEntityMapper;
 import org.ays.institution.port.InstitutionReadPort;
 import org.ays.institution.port.InstitutionSavePort;
 import org.ays.institution.repository.InstitutionRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,6 +35,7 @@ import java.util.Optional;
  * providing methods for finding institutions by status and saving institution data.
  * </p>
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -39,9 +43,10 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
 
     private final InstitutionRepository institutionRepository;
 
-
     private final InstitutionEntityToDomainMapper institutionEntityToDomainMapper = InstitutionEntityToDomainMapper.initialize();
     private final InstitutionToEntityMapper institutionToEntityMapper = InstitutionToEntityMapper.initialize();
+
+    private static final String CACHE_NAME = "InstitutionAdapter";
 
     /**
      * Finds all institutions with pagination and optional filtering.
@@ -55,8 +60,11 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return a paginated list of institutions
      */
     @Override
+    @Cacheable(
+            value = CACHE_NAME,
+            key = "'findAll::' + #aysPageable.page + ':' + #aysPageable.pageSize + ':' + #filter?.name + ':' + #filter?.statuses"
+    )
     public AysPage<Institution> findAll(AysPageable aysPageable, InstitutionFilter filter) {
-
         final Pageable pageable = aysPageable.toPageable();
 
         final Specification<InstitutionEntity> specification = Optional
@@ -71,6 +79,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
         return AysPage.of(filter, pageOfInstitutionEntities, institutions);
     }
 
+
     /**
      * Retrieves an {@link Institution} by its ID.
      *
@@ -78,6 +87,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return An optional containing the {@link Institution} if found, otherwise empty.
      */
     @Override
+    @Cacheable(value = CACHE_NAME, key = "'findById::' + #id")
     public Optional<Institution> findById(final String id) {
         return institutionRepository.findById(id).map(institutionEntityToDomainMapper::map);
     }
@@ -94,6 +104,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return a list of institutions with the specified status, ordered by name in ascending order
      */
     @Override
+    @Cacheable(value = CACHE_NAME, key = "'findAllByStatusOrderByNameAsc'")
     public List<Institution> findAllByStatusOrderByNameAsc(final InstitutionStatus status) {
         final List<InstitutionEntity> activeInstitutions = institutionRepository.findAllByStatusOrderByNameAsc(status);
         return institutionEntityToDomainMapper.map(activeInstitutions);
@@ -101,7 +112,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
 
 
     /**
-     * Checks if an institution with the given ID exists and has an active status.
+     * Checks if an institution exists with the given ID and an active status.
      * <p>
      * This method queries the database to determine if an institution with the specified ID exists and is active.
      * </p>
@@ -110,6 +121,7 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * @return true if an institution with the specified ID exists and is active, false otherwise
      */
     @Override
+    @Cacheable(value = CACHE_NAME, key = "'exists::' + #id")
     public boolean existsByIdAndIsStatusActive(final String id) {
         return institutionRepository.existsByIdAndStatus(id, InstitutionStatus.ACTIVE);
     }
@@ -121,12 +133,19 @@ class InstitutionAdapter implements InstitutionReadPort, InstitutionSavePort {
      * This method maps the domain institution object to an entity object and saves it to the database.
      * The saved entity is then mapped back to a domain object and returned.
      * </p>
+     * <p>
+     * Since the institution records have been updated, the cache is evicted.
+     * </p>
      *
      * @param institution the institution object to save
      * @return the saved institution object
      */
     @Override
     @Transactional
+    @CacheEvict(
+            value = CACHE_NAME,
+            allEntries = true
+    )
     public Institution save(final Institution institution) {
         final InstitutionEntity institutionEntity = institutionToEntityMapper.map(institution);
         final InstitutionEntity institutionEntityFromDatabase = institutionRepository.save(institutionEntity);

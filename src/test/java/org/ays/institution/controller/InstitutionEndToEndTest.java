@@ -1,6 +1,8 @@
 package org.ays.institution.controller;
 
+import org.assertj.core.api.Assertions;
 import org.ays.AysEndToEndTest;
+import org.ays.common.model.AysPage;
 import org.ays.common.model.response.AysPageResponse;
 import org.ays.common.model.response.AysResponse;
 import org.ays.common.model.response.AysResponseBuilder;
@@ -20,15 +22,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 class InstitutionEndToEndTest extends AysEndToEndTest {
 
     @Autowired
     private InstitutionSavePort institutionSavePort;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     private final InstitutionToInstitutionsSummaryResponseMapper institutionToInstitutionsSummaryResponseMapper = InstitutionToInstitutionsSummaryResponseMapper.initialize();
 
@@ -145,5 +153,74 @@ class InstitutionEndToEndTest extends AysEndToEndTest {
                         .isOk())
                 .andExpect(AysMockResultMatchersBuilders.response()
                         .isNotEmpty());
+    }
+
+
+    @Test
+    void givenValidRequest_whenInstitutionCalledFirstTime_thenFetchFromDbAndCacheIt_whenCalledSecondTime_thenFetchFromCache() throws Exception {
+
+        // Initialize
+        String institutionName = AysRandomUtil.generateText(10).concat(" Derneği");
+
+        institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .withName(institutionName)
+                        .withStatus(InstitutionStatus.ACTIVE)
+                        .build()
+        );
+
+        // Given
+        InstitutionListRequest listRequest = new InstitutionListRequestBuilder()
+                .withValidValues()
+                .build();
+
+        String cacheKey = "findAll::1:10:null:null";
+
+        Cache cache = Objects.requireNonNull(cacheManager.getCache("InstitutionAdapter"));
+        cache.evict(cacheKey);
+
+        // Verify
+        Assertions.assertThat(cache.get(cacheKey))
+                .as("Cache must be empty before the first request. Key: %s", cacheKey)
+                .isNull();
+
+
+        // When - First request execution
+        String endpoint = INSTITUTION_BASE_PATH.concat("/institutions");
+        MockHttpServletRequestBuilder firstRequest = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminToken.getAccessToken(), listRequest);
+
+        AysResponse<AysPageResponse<InstitutionsResponse>> mockResponse = AysResponseBuilder.successPage();
+
+        aysMockMvc.perform(firstRequest, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status().isOk());
+
+
+        // Then - First request
+        Assertions.assertThat(cache.get(cacheKey))
+                .as("Cache must be populated after the first request. Key: %s", cacheKey)
+                .isNotNull();
+
+
+        // Then — Second request
+        @SuppressWarnings("unchecked")
+        AysPage<Institution> cachedPage = (AysPage<Institution>)
+                Objects.requireNonNull(cache.get(cacheKey)).get();
+
+        String manipulatedName = "Data From Cache";
+        Assertions.assertThat(cachedPage).isNotNull();
+        cachedPage.getContent().get(0).setName(manipulatedName);
+
+        cache.put(cacheKey, cachedPage);
+
+        MockHttpServletRequestBuilder secondRequest = AysMockMvcRequestBuilders
+                .post(endpoint, superAdminToken.getAccessToken(), listRequest);
+
+        aysMockMvc.perform(secondRequest, mockResponse)
+                .andExpect(AysMockResultMatchersBuilders.status().isOk())
+                .andExpect(AysMockResultMatchersBuilders.firstContent("name")
+                        .value(manipulatedName));
     }
 }
