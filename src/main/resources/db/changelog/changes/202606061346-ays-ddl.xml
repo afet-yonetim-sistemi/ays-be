@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="202606061346-ays-ddl" author="ays">
+        <!-- ============================ -->
+        <!-- DDL of AYS_USER_VERIFICATION -->
+        <!-- ============================ -->
+        <modifyDataType tableName="AYS_USER_VERIFICATION"
+                        columnName="PURPOSE"
+                        newDataType="VARCHAR(100)"
+        />
+        <!-- ============================ -->
+        <!-- DDL of AYS_USER_VERIFICATION -->
+        <!-- ============================ -->
+    </changeSet>
+
+</databaseChangeLog>
