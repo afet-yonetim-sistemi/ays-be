@@ -89,6 +89,9 @@ public class AysUserEntity extends BaseEntity {
     )
     private Set<InstitutionEntity> institutions;
 
+    @Column(name = "LAST_SELECTED_INSTITUTION_ID")
+    private String lastSelectedInstitutionId;
+
     @ManyToMany
     @JoinTable(
             name = "AYS_USER_ROLE_RELATION",

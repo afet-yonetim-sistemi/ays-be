@@ -45,6 +45,8 @@ public class AysUser extends BaseDomainModel {
     private List<AysRole> roles;
     private List<Institution> institutions;
 
+    private String lastSelectedInstitutionId;
+
     /**
      * Checks if the user's status is active.
      *
@@ -231,6 +233,13 @@ public class AysUser extends BaseDomainModel {
         if (this.loginAttempt != null && this.loginAttempt.lastLoginAt != null) {
             claimsBuilder.add(AysTokenClaims.USER_LAST_LOGIN_AT.getValue(), this.loginAttempt.lastLoginAt.toString());
         }
+
+        if (this.lastSelectedInstitutionId != null) {
+            claimsBuilder.add(AysTokenClaims.LAST_SELECTED_INSTITUTION_ID.getValue(), this.lastSelectedInstitutionId);
+        }
+
+         claimsBuilder.add(AysTokenClaims.LAST_SELECTED_INSTITUTION_ID.getValue(), currentInstitution.getId());
+
 
         return claimsBuilder.build();
     }

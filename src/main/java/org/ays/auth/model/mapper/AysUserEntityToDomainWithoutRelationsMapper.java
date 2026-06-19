@@ -37,6 +37,7 @@ public interface AysUserEntityToDomainWithoutRelationsMapper extends BaseMapper<
     @Mapping(target = "institutions", source = "institutions", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "loginAttempt", ignore = true)
+    @Mapping(target = "lastSelectedInstitutionId", source = "lastSelectedInstitutionId")
     AysUser map(AysUserEntity userEntity);
 
     /**
