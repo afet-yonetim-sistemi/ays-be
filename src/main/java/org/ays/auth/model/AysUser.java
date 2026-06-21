@@ -45,7 +45,6 @@ public class AysUser extends BaseDomainModel {
     private List<AysRole> roles;
     private List<Institution> institutions;
 
-    private String lastSelectedInstitutionId;
 
     /**
      * Checks if the user's status is active.
@@ -201,6 +200,7 @@ public class AysUser extends BaseDomainModel {
 
         private String id;
         private LocalDateTime lastLoginAt;
+        private String lastSelectedInstitutionId;
 
         public void success() {
             this.lastLoginAt = LocalDateTime.now();
@@ -234,12 +234,11 @@ public class AysUser extends BaseDomainModel {
             claimsBuilder.add(AysTokenClaims.USER_LAST_LOGIN_AT.getValue(), this.loginAttempt.lastLoginAt.toString());
         }
 
-        if (this.lastSelectedInstitutionId != null) {
-            claimsBuilder.add(AysTokenClaims.LAST_SELECTED_INSTITUTION_ID.getValue(), this.lastSelectedInstitutionId);
+        if (this.loginAttempt != null && this.loginAttempt.lastSelectedInstitutionId != null) {
+            claimsBuilder.add(AysTokenClaims.LAST_SELECTED_INSTITUTION_ID.getValue(), this.loginAttempt.lastSelectedInstitutionId);
+        } else {
+            claimsBuilder.add(AysTokenClaims.LAST_SELECTED_INSTITUTION_ID.getValue(), currentInstitution.getId());
         }
-
-         claimsBuilder.add(AysTokenClaims.LAST_SELECTED_INSTITUTION_ID.getValue(), currentInstitution.getId());
-
 
         return claimsBuilder.build();
     }

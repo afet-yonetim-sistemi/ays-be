@@ -21,7 +21,6 @@ public interface AysUserToEntityMapper extends BaseMapper<AysUser, AysUserEntity
     @Mapping(target = "countryCode", source = "phoneNumber.countryCode")
     @Mapping(target = "lineNumber", source = "phoneNumber.lineNumber")
     @Mapping(target = "institutions", source = "institutions")
-    @Mapping(target = "lastSelectedInstitutionId", source = "lastSelectedInstitutionId")
     AysUserEntity map(AysUser user);
 
     /**

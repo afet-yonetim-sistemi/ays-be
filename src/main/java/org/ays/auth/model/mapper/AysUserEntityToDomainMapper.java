@@ -20,7 +20,6 @@ public interface AysUserEntityToDomainMapper extends BaseMapper<AysUserEntity, A
     @Override
     @Mapping(target = "phoneNumber.countryCode", source = "countryCode")
     @Mapping(target = "phoneNumber.lineNumber", source = "lineNumber")
-    @Mapping(target = "lastSelectedInstitutionId", source = "lastSelectedInstitutionId")
     AysUser map(AysUserEntity userEntity);
 
     /**
