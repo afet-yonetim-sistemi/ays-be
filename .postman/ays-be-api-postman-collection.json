@@ -6011,25 +6011,62 @@
 				{
 					"listen": "prerequest",
 					"script": {
+						"id": "b4e452f5-4cd9-4846-bbcc-00faf2b26e03",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
 						"exec": [
-							""
-						],
-						"id": "6a9f8ff6-5e2f-4a95-8c2a-e21373843e9d"
+							"/** @author agitrubard */",
+							"",
+							"pm.environment.set(\"TOKEN_GENERATED_TIME\", new Date());",
+							"",
+							"var sourcePage = pm.environment.get(\"SOURCE_PAGE\")",
+							"if (sourcePage) {",
+							"    console.log(sourcePage)",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"API_URL\") + \"/api/v1/authentication/token\",",
+							"        method: 'POST',",
+							"        header: {",
+							"            'Accept': 'application/json',",
+							"            'Content-Type': 'application/json'",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                emailAddress: pm.environment.get(\"EMAIL_ADDRESS\"),",
+							"                password: pm.environment.get(\"PASSWORD\"),",
+							"                sourcePage: sourcePage",
+							"            }),",
+							"        }",
+							"    },",
+							"    (error, result) => {",
+							"        var resultJson = result.json()",
+							"        if (resultJson.isSuccess === true) {",
+							"            pm.environment.set(\"ACCESS_TOKEN\", resultJson.response.accessToken)",
+							"            pm.environment.set(\"REFRESH_TOKEN\", resultJson.response.refreshToken)",
+							"            return",
+							"        }",
+							"",
+							"        pm.environment.unset(\"ACCESS_TOKEN\")",
+							"        console.log(resultJson)",
+							"    });",
+							"    return",
+							"}",
+							"    ",
+							"/** @author agitrubard */"
+						]
 					}
 				},
 				{
 					"listen": "test",
 					"script": {
+						"id": "7193b72c-9781-4256-a3b0-e7300113be5d",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
 						"exec": [
 							""
-						],
-						"id": "8adebb8c-3a29-41e4-8b4b-7f736ed30563"
+						]
 					}
 				}
 			]
