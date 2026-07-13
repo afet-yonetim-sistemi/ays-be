@@ -12,6 +12,7 @@ import org.ays.auth.model.AysToken;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysTokenClaims;
+import org.ays.auth.model.enums.AysTokenVariant;
 import org.ays.auth.util.AysKeyConverter;
 import org.ays.common.util.AysListUtil;
 import org.ays.common.util.AysRandomUtil;
@@ -186,7 +187,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.when(tokenConfiguration.getTokenPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
 
         // Then
-        tokenService.verifyAndValidate(mockJwt);
+        tokenService.verifyAndValidate(mockJwt, AysTokenVariant.ACCESS);
 
         // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenIssuer();
@@ -208,7 +209,7 @@ class AysTokenServiceImplTest extends AysUnitTest {
         // Then
         Assertions.assertThrows(
                 AysTokenNotValidException.class,
-                () -> tokenService.verifyAndValidate(mockJwt)
+                () -> tokenService.verifyAndValidate(mockJwt, AysTokenVariant.ACCESS)
         );
 
         // Verify
