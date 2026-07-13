@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.ays.auth.model.enums.AysTokenVariant;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
 import org.ays.common.model.request.AysHttpHeader;
@@ -55,7 +56,7 @@ public class AysBearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
             final String token = aysHttpHeader.getBearerToken();
 
-            tokenService.verifyAndValidate(token);
+            tokenService.verifyAndValidate(token, AysTokenVariant.ACCESS);
 
             final String tokenId = tokenService.getPayload(token).getId();
             invalidTokenService.checkForInvalidityOfToken(tokenId);

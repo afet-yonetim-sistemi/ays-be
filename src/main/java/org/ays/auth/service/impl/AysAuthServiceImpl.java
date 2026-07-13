@@ -3,6 +3,7 @@ package org.ays.auth.service.impl;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.exception.AysPasswordNotValidException;
+import org.ays.auth.exception.AysTokenAlreadyInvalidatedException;
 import org.ays.auth.exception.AysUserDoesNotAccessPageException;
 import org.ays.auth.exception.AysUserIdNotValidException;
 import org.ays.auth.exception.AysUserNotActiveAuthException;
@@ -13,6 +14,7 @@ import org.ays.auth.model.AysToken;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.enums.AysSourcePage;
 import org.ays.auth.model.enums.AysTokenClaims;
+import org.ays.auth.model.enums.AysTokenVariant;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.auth.port.AysUserSavePort;
@@ -132,7 +134,7 @@ class AysAuthServiceImpl implements AysAuthService {
     @Override
     public AysToken refreshAccessToken(final String refreshToken) {
 
-        tokenService.verifyAndValidate(refreshToken);
+        tokenService.verifyAndValidate(refreshToken, AysTokenVariant.REFRESH);
 
         final Claims claims = tokenService.getPayload(refreshToken);
 
@@ -184,7 +186,7 @@ class AysAuthServiceImpl implements AysAuthService {
     /**
      * Invalidates the access token and refresh token associated with the specified refresh token.
      * It verifies and validates the refresh token first before proceeding with invalidation.
-     * If either the access token or refresh token is already marked as invalid, a TokenAlreadyInvalidatedException is thrown.
+     * If either the access token or refresh token is already marked as invalid, a {@link AysTokenAlreadyInvalidatedException} is thrown.
      *
      * @param refreshToken the refresh token used to invalidate the associated access token and refresh token
      */
@@ -192,7 +194,7 @@ class AysAuthServiceImpl implements AysAuthService {
     @Transactional
     public void invalidateTokens(final String refreshToken) {
 
-        tokenService.verifyAndValidate(refreshToken);
+        tokenService.verifyAndValidate(refreshToken, AysTokenVariant.REFRESH);
         final String refreshTokenId = tokenService.getPayload(refreshToken).getId();
         invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
 

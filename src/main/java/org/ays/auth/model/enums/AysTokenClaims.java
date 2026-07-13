@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 public enum AysTokenClaims {
 
     TYPE("typ"),
+    VARIANT("variant"),
     USER_ID("userId"),
     USER_PERMISSIONS("userPermissions"),
     USER_FIRST_NAME("userFirstName"),
