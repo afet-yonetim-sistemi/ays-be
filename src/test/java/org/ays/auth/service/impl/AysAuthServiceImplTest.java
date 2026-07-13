@@ -20,6 +20,7 @@ import org.ays.auth.model.AysUser;
 import org.ays.auth.model.AysUserBuilder;
 import org.ays.auth.model.enums.AysPermissionCategory;
 import org.ays.auth.model.enums.AysSourcePage;
+import org.ays.auth.model.enums.AysTokenVariant;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.auth.model.request.AysLoginRequest;
 import org.ays.auth.model.request.AysLoginRequestBuilder;
@@ -437,7 +438,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Mockito.doNothing().when(tokenService)
-                .verifyAndValidate(mockRefreshToken);
+                .verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
@@ -465,7 +466,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
-                .verifyAndValidate(Mockito.anyString());
+                .verifyAndValidate(Mockito.anyString(), AysTokenVariant.REFRESH);
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(Mockito.anyString());
@@ -492,7 +493,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Mockito.doThrow(AysTokenNotValidException.class)
-                .when(tokenService).verifyAndValidate(mockRefreshToken);
+                .when(tokenService).verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         // Then
         Assertions.assertThrows(
@@ -502,7 +503,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
-                .verifyAndValidate(mockRefreshToken);
+                .verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         Mockito.verify(tokenService, Mockito.never())
                 .getPayload(mockRefreshToken);
@@ -532,7 +533,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Mockito.doNothing().when(tokenService)
-                .verifyAndValidate(mockRefreshToken);
+                .verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
@@ -554,7 +555,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
-                .verifyAndValidate(Mockito.anyString());
+                .verifyAndValidate(Mockito.anyString(), AysTokenVariant.REFRESH);
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(Mockito.anyString());
@@ -590,7 +591,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Mockito.doNothing().when(tokenService)
-                .verifyAndValidate(mockRefreshToken);
+                .verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
@@ -615,7 +616,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
-                .verifyAndValidate(Mockito.anyString());
+                .verifyAndValidate(Mockito.anyString(), AysTokenVariant.REFRESH);
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(Mockito.anyString());
@@ -651,7 +652,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Mockito.doNothing().when(tokenService)
-                .verifyAndValidate(mockRefreshToken);
+                .verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         AysUser mockUser = new AysUserBuilder()
                 .withValidValues()
@@ -676,7 +677,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
-                .verifyAndValidate(Mockito.anyString());
+                .verifyAndValidate(Mockito.anyString(), AysTokenVariant.REFRESH);
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(Mockito.anyString());
@@ -714,7 +715,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Mockito.doNothing().when(tokenService)
-                .verifyAndValidate(mockRefreshToken);
+                .verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockRefreshTokenClaims);
@@ -735,7 +736,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
-                .verifyAndValidate(Mockito.anyString());
+                .verifyAndValidate(Mockito.anyString(), AysTokenVariant.REFRESH);
 
         Mockito.verify(tokenService, Mockito.times(2))
                 .getPayload(Mockito.anyString());
@@ -759,7 +760,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
         // When
         Mockito.doThrow(AysTokenNotValidException.class)
                 .when(tokenService)
-                .verifyAndValidate(mockRefreshToken);
+                .verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         // Then
         Assertions.assertThrows(
@@ -769,7 +770,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
-                .verifyAndValidate(Mockito.anyString());
+                .verifyAndValidate(Mockito.anyString(), AysTokenVariant.REFRESH);
 
         Mockito.verify(tokenService, Mockito.never())
                 .getPayload(Mockito.anyString());
@@ -799,7 +800,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // When
         Mockito.doNothing().when(tokenService)
-                .verifyAndValidate(mockRefreshToken);
+                .verifyAndValidate(mockRefreshToken, AysTokenVariant.REFRESH);
 
         Mockito.when(tokenService.getPayload(mockRefreshToken))
                 .thenReturn(mockRefreshTokenClaims);
@@ -816,7 +817,7 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         // Verify
         Mockito.verify(tokenService, Mockito.times(1))
-                .verifyAndValidate(Mockito.anyString());
+                .verifyAndValidate(Mockito.anyString(), AysTokenVariant.REFRESH);
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .getPayload(Mockito.anyString());
