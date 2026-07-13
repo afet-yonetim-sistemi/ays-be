@@ -22,7 +22,6 @@ import org.ays.common.util.AysListUtil;
 import org.ays.common.util.AysRandomUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
@@ -170,10 +169,6 @@ class AysTokenServiceImpl implements AysTokenService {
             final JwsHeader header = claims.getHeader();
 
             if (!TOKEN_TYPE.equals(header.getType())) {
-                throw new RequiredTypeException(token);
-            }
-
-            if (!OAuth2AccessToken.TokenType.BEARER.getValue().equals(header.getType())) {
                 throw new RequiredTypeException(token);
             }
 
