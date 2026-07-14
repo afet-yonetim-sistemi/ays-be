@@ -3,6 +3,7 @@ package org.ays.auth.port.adapter;
 import org.ays.AysUnitTest;
 import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.model.enums.AysConfigurationParameter;
+import org.ays.auth.model.enums.AysTokenVariant;
 import org.ays.common.client.AysCacheClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ class AysInvalidTokenAdapterTest extends AysUnitTest {
         // When
         Mockito
                 .when(cacheClient.find(Mockito.eq(MOCK_PREFIX), Mockito.eq(mockTokenId)))
-                .thenReturn(Optional.of("access"));
+                .thenReturn(Optional.of(AysTokenVariant.ACCESS.name()));
 
         // Then
         boolean exists = invalidTokenAdapter.exists(mockTokenId);
@@ -92,8 +93,8 @@ class AysInvalidTokenAdapterTest extends AysUnitTest {
                 .thenReturn(mockRefreshTokenExpireMinute);
 
         Map<String, String> mockInvalidTokens = Map.of(
-                mockAccessTokenId, "access",
-                mockRefreshTokenId, "refresh"
+                mockAccessTokenId, AysTokenVariant.ACCESS.name(),
+                mockRefreshTokenId, AysTokenVariant.REFRESH.name()
         );
         Duration mockTimeToLive = Duration.ofMinutes(mockRefreshTokenExpireMinute);
         Mockito.doNothing()

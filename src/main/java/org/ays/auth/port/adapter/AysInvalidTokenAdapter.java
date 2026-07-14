@@ -2,6 +2,7 @@ package org.ays.auth.port.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.ays.auth.config.AysApplicationConfigurationParameter;
+import org.ays.auth.model.enums.AysTokenVariant;
 import org.ays.auth.port.AysInvalidTokenReadPort;
 import org.ays.auth.port.AysInvalidTokenSavePort;
 import org.ays.common.client.AysCacheClient;
@@ -55,8 +56,8 @@ class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidToken
                 .ofMinutes(applicationConfigurationParameter.getRefreshTokenExpireMinute());
 
         final Map<String, String> invalidTokens = Map.of(
-                accessTokenId, "access",
-                refreshTokenId, "refresh"
+                accessTokenId, AysTokenVariant.ACCESS.name(),
+                refreshTokenId, AysTokenVariant.REFRESH.name()
         );
         cacheClient.putAll(PREFIX, invalidTokens, timeToLive);
     }
