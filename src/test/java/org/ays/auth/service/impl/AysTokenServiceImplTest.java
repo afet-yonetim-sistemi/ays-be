@@ -25,7 +25,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.security.PrivateKey;
@@ -43,6 +42,28 @@ class AysTokenServiceImplTest extends AysUnitTest {
     @Mock
     private AysApplicationConfigurationParameter tokenConfiguration;
 
+
+    private static final String TOKEN_TYPE = "JWT";
+
+    @Test
+    void generateMockTokensForAysUnitTest() {
+        Mockito.when(tokenConfiguration.getTokenIssuer()).thenReturn(MOCK_ISSUER);
+        Mockito.when(tokenConfiguration.getAccessTokenExpireMinute()).thenReturn(MOCK_ACCESS_TOKEN_EXPIRE_MINUTE);
+        Mockito.when(tokenConfiguration.getRefreshTokenExpireMinute()).thenReturn(MOCK_REFRESH_TOKEN_EXPIRE_MINUTE);
+        Mockito.when(tokenConfiguration.getTokenPrivateKey()).thenReturn(MOCK_PRIVATE_KEY);
+
+        AysToken adminToken = tokenService.generate(new AysUserBuilder().withValidValues().build().getClaims());
+        AysToken userToken = tokenService.generate(new AysUserBuilder().withValidValues().build().getClaims());
+
+        System.out.println("ADMIN_ACCESS=" + adminToken.getAccessToken());
+        System.out.println("ADMIN_REFRESH=" + adminToken.getRefreshToken());
+        System.out.println("USER_ACCESS=" + userToken.getAccessToken());
+        System.out.println("USER_REFRESH=" + userToken.getRefreshToken());
+    }
+
+    /**
+     * {@link AysTokenServiceImpl#generate(Claims)}
+     */
     @Test
     void givenValidUserClaims_whenTokensGenerated_thenReturnAysToken() {
         // Given
@@ -65,14 +86,17 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Assertions.assertNotNull(aysToken.getRefreshToken());
 
         // Verify
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(2)).getTokenIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(2)).getTokenPrivateKey();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getRefreshTokenExpireMinute();
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPrivateKey();
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPublicKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
+    /**
+     * {@link AysTokenServiceImpl#generate(Claims, String)}
+     */
     @Test
     void givenValidAdminUserClaimsAndRefreshToken_whenAccessTokenGenerated_thenReturnAysToken() {
         // Given
@@ -133,6 +157,9 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
+    /**
+     * {@link AysTokenServiceImpl#generate(Claims)}
+     */
     @Test
     void givenValidUserClaimsWithMultipleInstitutions_whenTokensGenerated_thenReturnAysTokenWithAllInstitutions() {
         // Given
@@ -161,20 +188,25 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Assertions.assertNotNull(token.getAccessToken());
         Assertions.assertNotNull(token.getRefreshToken());
 
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(2)).getTokenIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(2)).getTokenPrivateKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPublicKey();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getAccessTokenExpireMinute();
         Mockito.verify(tokenConfiguration, Mockito.times(1)).getRefreshTokenExpireMinute();
-        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPrivateKey();
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
+    /**
+     * {@link AysTokenServiceImpl#verifyAndValidate(String, AysTokenVariant)}
+     */
     @Test
     void givenValidJwt_whenJwtVerifiedAndValidate_thenDoNothing() {
         // Given
         long currentTimeMillis = System.currentTimeMillis();
         String mockJwt = Jwts.builder()
                 .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .type(TOKEN_TYPE)
+                .add(AysTokenClaims.VARIANT.getValue(), AysTokenVariant.ACCESS)
                 .and()
                 .id(AysRandomUtil.generateUUID())
                 .issuer(MOCK_ISSUER)
@@ -188,6 +220,74 @@ class AysTokenServiceImplTest extends AysUnitTest {
 
         // Then
         tokenService.verifyAndValidate(mockJwt, AysTokenVariant.ACCESS);
+
+        // Verify
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireMinute();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPrivateKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPublicKey();
+        Mockito.verifyNoMoreInteractions(tokenConfiguration);
+    }
+
+    @Test
+    void givenJwtWithInvalidType_whenTokenTypeDoesNotMatchExpectedType_thenThrowTokenNotValidException() {
+        // Given
+        long currentTimeMillis = System.currentTimeMillis();
+        String mockJwt = Jwts.builder()
+                .header()
+                .type("Bearer")
+                .add(AysTokenClaims.VARIANT.getValue(), AysTokenVariant.ACCESS)
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(MOCK_ISSUER)
+                .issuedAt(new Date(currentTimeMillis))
+                .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_ACCESS_TOKEN_EXPIRE_MINUTE))
+                .signWith(MOCK_PRIVATE_KEY)
+                .compact();
+
+        // When
+        Mockito.when(tokenConfiguration.getTokenPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
+
+        // Then
+        Assertions.assertThrows(
+                AysTokenNotValidException.class,
+                () -> tokenService.verifyAndValidate(mockJwt, AysTokenVariant.ACCESS)
+        );
+
+        // Verify
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenIssuer();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getAccessTokenExpireMinute();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getRefreshTokenExpireMinute();
+        Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenPrivateKey();
+        Mockito.verify(tokenConfiguration, Mockito.times(1)).getTokenPublicKey();
+        Mockito.verifyNoMoreInteractions(tokenConfiguration);
+    }
+
+    @Test
+    void givenJwtWithDifferentVariant_whenTokenVariantDoesNotMatchExpectedVariant_thenThrowTokenNotValidException() {
+        // Given
+        long currentTimeMillis = System.currentTimeMillis();
+        String mockJwt = Jwts.builder()
+                .header()
+                .type(TOKEN_TYPE)
+                .add(AysTokenClaims.VARIANT.getValue(), AysTokenVariant.REFRESH)
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(MOCK_ISSUER)
+                .issuedAt(new Date(currentTimeMillis))
+                .expiration(DateUtils.addMinutes(new Date(currentTimeMillis), MOCK_REFRESH_TOKEN_EXPIRE_MINUTE))
+                .signWith(MOCK_PRIVATE_KEY)
+                .compact();
+
+        // When
+        Mockito.when(tokenConfiguration.getTokenPublicKey()).thenReturn(MOCK_PUBLIC_KEY);
+
+        // Then
+        Assertions.assertThrows(
+                AysTokenNotValidException.class,
+                () -> tokenService.verifyAndValidate(mockJwt, AysTokenVariant.ACCESS)
+        );
 
         // Verify
         Mockito.verify(tokenConfiguration, Mockito.times(0)).getTokenIssuer();
@@ -221,6 +321,9 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
+    /**
+     * {@link AysTokenServiceImpl#getPayload(String)}
+     */
     @Test
     void givenValidJwt_whenJwtParsed_thenReturnAdminUserClaims() {
         // Given
@@ -232,7 +335,8 @@ class AysTokenServiceImplTest extends AysUnitTest {
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
                 .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .type(TOKEN_TYPE)
+                .add(AysTokenClaims.VARIANT.getValue(), AysTokenVariant.ACCESS)
                 .and()
                 .id(AysRandomUtil.generateUUID())
                 .issuer(MOCK_ISSUER)
@@ -277,7 +381,8 @@ class AysTokenServiceImplTest extends AysUnitTest {
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
                 .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .type(TOKEN_TYPE)
+                .add(AysTokenClaims.VARIANT.getValue(), AysTokenVariant.ACCESS)
                 .and()
                 .id(AysRandomUtil.generateUUID())
                 .issuer(MOCK_ISSUER)
@@ -309,6 +414,9 @@ class AysTokenServiceImplTest extends AysUnitTest {
         Mockito.verifyNoMoreInteractions(tokenConfiguration);
     }
 
+    /**
+     * {@link AysTokenServiceImpl#getAuthentication(String)}
+     */
     @Test
     void givenValidToken_whenTokenParsedAndAuthoritiesAdded_thenReturnAuthenticatedUsernamePasswordAuthenticationToken() {
         // Given
@@ -320,7 +428,8 @@ class AysTokenServiceImplTest extends AysUnitTest {
         long currentTimeMillis = System.currentTimeMillis();
         String mockToken = Jwts.builder()
                 .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
+                .type(TOKEN_TYPE)
+                .add(AysTokenClaims.VARIANT.getValue(), AysTokenVariant.ACCESS)
                 .and()
                 .id(AysRandomUtil.generateUUID())
                 .issuer(MOCK_ISSUER)
