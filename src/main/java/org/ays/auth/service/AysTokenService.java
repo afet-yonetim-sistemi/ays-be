@@ -2,6 +2,7 @@ package org.ays.auth.service;
 
 import io.jsonwebtoken.Claims;
 import org.ays.auth.model.AysToken;
+import org.ays.auth.model.enums.AysTokenVariant;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 /**
@@ -34,11 +35,12 @@ public interface AysTokenService {
 
     /**
      * Verifies and validates the given JWT.
-     * This method checks the JWT's signature, expiration, and other validity criteria.
+     * This method checks the JWT's signature, expiration, and other validity criteria based on the specified token variant.
      *
      * @param jwt the JWT as a {@link String} to be verified and validated
+     * @param variant the {@link AysTokenVariant} specifying the type of token to validate
      */
-    void verifyAndValidate(String jwt);
+    void verifyAndValidate(String jwt, AysTokenVariant variant);
 
     /**
      * Extracts the payload (claims) from the given JWT.

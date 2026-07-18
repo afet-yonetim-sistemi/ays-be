@@ -8,6 +8,7 @@ import org.ays.auth.config.AysApplicationConfigurationParameter;
 import org.ays.auth.model.AysToken;
 import org.ays.auth.model.AysUser;
 import org.ays.auth.model.enums.AysTokenClaims;
+import org.ays.auth.model.enums.AysTokenVariant;
 import org.ays.auth.port.AysUserReadPort;
 import org.ays.common.util.AysRandomUtil;
 import org.ays.util.AysValidTestData;
@@ -17,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Date;
@@ -60,35 +60,21 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
     }
 
 
+    private static final String TOKEN_TYPE = "JWT";
+
     protected AysToken generate(Claims claims) {
+
         final long currentTimeMillis = System.currentTimeMillis();
 
-        final Date tokenIssuedAt = new Date(currentTimeMillis);
-
         final Date accessTokenExpiresAt = DateUtils.addMinutes(new Date(currentTimeMillis), tokenConfiguration.getAccessTokenExpireMinute());
-        final String accessToken = Jwts.builder()
-                .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .and()
-                .id(AysRandomUtil.generateUUID())
-                .issuer(tokenConfiguration.getTokenIssuer())
-                .issuedAt(tokenIssuedAt)
+        final String accessToken = this.initializeTokenBuilder(currentTimeMillis, AysTokenVariant.ACCESS)
                 .expiration(accessTokenExpiresAt)
-                .signWith(tokenConfiguration.getTokenPrivateKey())
                 .claims(claims)
                 .compact();
 
         final Date refreshTokenExpiresAt = DateUtils.addDays(new Date(currentTimeMillis), tokenConfiguration.getRefreshTokenExpireMinute());
-        final JwtBuilder refreshTokenBuilder = Jwts.builder();
-        final String refreshToken = refreshTokenBuilder
-                .header()
-                .add(AysTokenClaims.TYPE.getValue(), OAuth2AccessToken.TokenType.BEARER.getValue())
-                .and()
-                .id(AysRandomUtil.generateUUID())
-                .issuer(tokenConfiguration.getTokenIssuer())
-                .issuedAt(tokenIssuedAt)
+        final String refreshToken = this.initializeTokenBuilder(currentTimeMillis, AysTokenVariant.REFRESH)
                 .expiration(refreshTokenExpiresAt)
-                .signWith(tokenConfiguration.getTokenPrivateKey())
                 .claim(AysTokenClaims.USER_ID.getValue(), claims.get(AysTokenClaims.USER_ID.getValue()))
                 .compact();
 
@@ -96,6 +82,18 @@ public abstract class AysEndToEndTest extends AysTestContainerConfiguration {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    private JwtBuilder initializeTokenBuilder(final long currentTimeMillis, final AysTokenVariant variant) {
+        return Jwts.builder()
+                .header()
+                .type(TOKEN_TYPE)
+                .add(AysTokenClaims.VARIANT.getValue(), variant)
+                .and()
+                .id(AysRandomUtil.generateUUID())
+                .issuer(tokenConfiguration.getTokenIssuer())
+                .issuedAt(new Date(currentTimeMillis))
+                .signWith(tokenConfiguration.getTokenPrivateKey());
     }
 
     protected Claims getPayload(String token) {
