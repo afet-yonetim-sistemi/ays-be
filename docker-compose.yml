@@ -2,6 +2,14 @@ services:
   database:
     container_name: database
     image: mysql:8.4.8
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+        reservations:
+          cpus: "0.25"
+          memory: 256M
     restart: always
     environment:
       MYSQL_DATABASE: ays
@@ -21,6 +29,14 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: application
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 1G
+        reservations:
+          cpus: "0.5"
+          memory: 512M
     restart: on-failure
     ports:
       - "127.0.0.1:9790:9790"
@@ -31,6 +47,7 @@ services:
       - AYS_DB_READER_INSTANCE_PORT=3306
       - AYS_CACHE_IP=cache
       - AYS_CACHE_PORT=6379
+      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=65.0
     networks:
       - ays-network
     depends_on:
@@ -39,6 +56,17 @@ services:
   cache:
     container_name: cache
     image: redis:8.4.2-alpine3.22
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.1"
+          memory: 64M
+    command: [ "redis-server",
+               "--maxmemory", "200mb",
+               "--maxmemory-policy", "noeviction" ]
     restart: always
     volumes:
       - ./docker/redis:/data
