@@ -54,11 +54,9 @@ jobs:
     environment: Test # Define the environment as Test
     runs-on: ubuntu-latest
     needs: sonarqube # If the sonarqube is successful, the deployment will proceed.
-
     concurrency: # Queue concurrent deployments to avoid build collisions
-      group: be-test-deployment-group
-      cancel-in-progress: false
-      
+        group: test-environment-deployment-group
+        cancel-in-progress: false
     steps:
       - name: Execute Remote SSH Commands
         run: |
