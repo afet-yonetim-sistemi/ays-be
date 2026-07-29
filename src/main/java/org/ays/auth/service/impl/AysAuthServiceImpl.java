@@ -89,15 +89,10 @@ class AysAuthServiceImpl implements AysAuthService {
                             user.setLoginAttempt(AysUser.LoginAttempt.builder().build());
                             user.getLoginAttempt().success();
                         });
-        
-        if (user.getLoginAttempt().getLastSelectedInstitutionId() == null) {
-            final String firstInstitutionId = user.getInstitutions().stream()
-                    .findFirst()
-                    .map(Institution::getId)
-                    .orElse(null);
-            user.getLoginAttempt().setLastSelectedInstitutionId(firstInstitutionId);
-        }
-        
+
+        final Institution activeInstitution = user.resolveActiveInstitution();
+        user.getLoginAttempt().setLastSelectedInstitutionId(activeInstitution.getId());
+
         userSavePort.save(user);
 
         final Claims claimsOfUser = user.getClaims();

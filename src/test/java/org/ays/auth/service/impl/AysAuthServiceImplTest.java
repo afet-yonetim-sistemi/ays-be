@@ -28,6 +28,7 @@ import org.ays.auth.port.AysUserSavePort;
 import org.ays.auth.service.AysInvalidTokenService;
 import org.ays.auth.service.AysTokenService;
 import org.ays.institution.exception.AysInstitutionNotActiveAuthException;
+import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 import org.ays.institution.model.enums.InstitutionStatus;
 import org.junit.jupiter.api.Assertions;
@@ -199,6 +200,142 @@ class AysAuthServiceImplTest extends AysUnitTest {
 
         Mockito.verify(tokenService, Mockito.times(1))
                 .generate(Mockito.any(Claims.class));
+    }
+
+    @Test
+    void givenValidLoginRequest_whenUserHasValidLastSelectedInstitution_thenUseItAndPersistPreference() {
+
+        // Given
+        AysSourcePage mockSourcePage = AysSourcePage.INSTITUTION;
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
+                .withValidValues()
+                .withSourcePage(mockSourcePage)
+                .build();
+
+        // When
+        List<AysPermission> mockPermissions = List.of(
+                new AysPermissionBuilder()
+                        .withValidValues()
+                        .withName(mockSourcePage.getPermission())
+                        .build()
+        );
+        List<AysRole> mockRoles = List.of(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withPermissions(mockPermissions)
+                        .build()
+        );
+
+        Institution firstInstitution = new InstitutionBuilder().withValidValues().build();
+        Institution lastSelectedInstitution = new InstitutionBuilder().withValidValues().build();
+
+        AysUser.LoginAttempt mockLoginAttempt = AysUser.LoginAttempt.builder()
+                .lastSelectedInstitutionId(lastSelectedInstitution.getId())
+                .build();
+        mockLoginAttempt.success();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockLoginRequest.getEmailAddress())
+                .withRoles(mockRoles)
+                .withValidPassword()
+                .withInstitutions(List.of(firstInstitution, lastSelectedInstitution))
+                .withLoginAttempt(mockLoginAttempt)
+                .build();
+
+        Mockito.when(userReadPort.findByEmailAddress(mockLoginRequest.getEmailAddress()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(passwordEncoder.matches(mockLoginRequest.getPassword(), mockUser.getPassword().getValue()))
+                .thenReturn(true);
+
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockUser);
+
+        Mockito.when(tokenService.generate(Mockito.any(Claims.class)))
+                .thenReturn(mockUserToken);
+
+        // Then
+        AysToken token = userAuthService.authenticate(mockLoginRequest);
+
+        Assertions.assertEquals(mockUserToken, token);
+        Assertions.assertEquals(
+                lastSelectedInstitution.getId(),
+                mockUser.getLoginAttempt().getLastSelectedInstitutionId()
+        );
+
+        // Verify
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
+    }
+
+    /**
+     * {@link AysAuthServiceImpl#authenticate(AysLoginRequest)}
+     */
+    @Test
+    void givenValidLoginRequest_whenLastSelectedInstitutionIsNoLongerAvailable_thenFallBackToFirstActiveInstitution() {
+
+        // Given
+        AysSourcePage mockSourcePage = AysSourcePage.INSTITUTION;
+        AysLoginRequest mockLoginRequest = new AysLoginRequestBuilder()
+                .withValidValues()
+                .withSourcePage(mockSourcePage)
+                .build();
+
+        // When
+        List<AysPermission> mockPermissions = List.of(
+                new AysPermissionBuilder()
+                        .withValidValues()
+                        .withName(mockSourcePage.getPermission())
+                        .build()
+        );
+        List<AysRole> mockRoles = List.of(
+                new AysRoleBuilder()
+                        .withValidValues()
+                        .withPermissions(mockPermissions)
+                        .build()
+        );
+
+        Institution activeInstitution = new InstitutionBuilder().withValidValues().build();
+
+        AysUser.LoginAttempt mockLoginAttempt = AysUser.LoginAttempt.builder()
+                .lastSelectedInstitutionId("f47ac10b-58cc-4372-a567-0e02b2c3d999")
+                .build();
+        mockLoginAttempt.success();
+
+        AysUser mockUser = new AysUserBuilder()
+                .withValidValues()
+                .withEmailAddress(mockLoginRequest.getEmailAddress())
+                .withRoles(mockRoles)
+                .withValidPassword()
+                .withInstitutions(List.of(activeInstitution))
+                .withLoginAttempt(mockLoginAttempt)
+                .build();
+
+        Mockito.when(userReadPort.findByEmailAddress(mockLoginRequest.getEmailAddress()))
+                .thenReturn(Optional.of(mockUser));
+
+        Mockito.when(passwordEncoder.matches(mockLoginRequest.getPassword(), mockUser.getPassword().getValue()))
+                .thenReturn(true);
+
+        Mockito.when(userSavePort.save(Mockito.any(AysUser.class)))
+                .thenReturn(mockUser);
+
+        Mockito.when(tokenService.generate(Mockito.any(Claims.class)))
+                .thenReturn(mockUserToken);
+
+        // Then
+        AysToken token = userAuthService.authenticate(mockLoginRequest);
+
+        Assertions.assertEquals(mockUserToken, token);
+        Assertions.assertEquals(
+                activeInstitution.getId(),
+                mockUser.getLoginAttempt().getLastSelectedInstitutionId()
+        );
+
+        // Verify
+        Mockito.verify(userSavePort, Mockito.times(1))
+                .save(Mockito.any(AysUser.class));
     }
 
     @Test

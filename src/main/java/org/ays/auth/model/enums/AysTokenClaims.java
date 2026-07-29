@@ -17,7 +17,6 @@ public enum AysTokenClaims {
     USER_FIRST_NAME("userFirstName"),
     USER_LAST_NAME("userLastName"),
     USER_LAST_LOGIN_AT("userLastLoginAt"),
-    LAST_SELECTED_INSTITUTION_ID("lastSelectedInstitutionId"),
     INSTITUTION_ID("institutionId"),
     INSTITUTION_NAME("institutionName"),
     INSTITUTIONS("institutions"),

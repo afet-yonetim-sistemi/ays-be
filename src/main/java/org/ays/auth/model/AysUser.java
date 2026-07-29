@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.ays.auth.exception.AysUserHasNoActiveInstitutionException;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPhoneNumber;
@@ -209,6 +210,41 @@ public class AysUser extends BaseDomainModel {
     }
 
     /**
+     * Resolves the current active institution for the user.
+     * <ol>
+     *   <li>Returns the last selected institution if it exists and is active.</li>
+     *   <li>Otherwise, falls back to the user's first available active institution.</li>
+     * </ol>
+     *
+     * @return {@link Institution} active institution.
+     * @throws AysUserHasNoActiveInstitutionException if the user has no active institution available.
+     */
+    public Institution resolveActiveInstitution() {
+        if (this.institutions == null || this.institutions.isEmpty()) {
+            throw new AysUserHasNoActiveInstitutionException(this.id);
+        }
+
+        final String lastSelectedId = Optional.ofNullable(this.loginAttempt)
+                .map(LoginAttempt::getLastSelectedInstitutionId)
+                .orElse(null);
+
+        if (lastSelectedId != null) {
+            final Optional<Institution> selectedInstitution = this.institutions.stream()
+                    .filter(institution -> institution.getId().equals(lastSelectedId) && institution.isActive())
+                    .findFirst();
+
+            if (selectedInstitution.isPresent()) {
+                return selectedInstitution.get();
+            }
+        }
+
+        return this.institutions.stream()
+                .filter(Institution::isActive)
+                .findFirst()
+                .orElseThrow(() -> new AysUserHasNoActiveInstitutionException(this.id));
+    }
+
+    /**
      * Generates JWT claims based on the user's information for authentication and authorization.
      * The resulting claims encapsulate the necessary user-specific data required by the system
      * to identify the user, their associated institutions, and their access permissions.
@@ -218,7 +254,7 @@ public class AysUser extends BaseDomainModel {
     public Claims getClaims() {
         final ClaimsBuilder claimsBuilder = Jwts.claims();
 
-        final Institution currentInstitution = this.getInstitution();
+        final Institution currentInstitution = this.resolveActiveInstitution();
         claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), currentInstitution.getId());
         claimsBuilder.add(AysTokenClaims.INSTITUTION_NAME.getValue(), currentInstitution.getName());
         final List<InstitutionInner> institutions = this.institutions.stream()
@@ -232,12 +268,6 @@ public class AysUser extends BaseDomainModel {
 
         if (this.loginAttempt != null && this.loginAttempt.lastLoginAt != null) {
             claimsBuilder.add(AysTokenClaims.USER_LAST_LOGIN_AT.getValue(), this.loginAttempt.lastLoginAt.toString());
-        }
-
-        if (this.loginAttempt != null && this.loginAttempt.lastSelectedInstitutionId != null) {
-            claimsBuilder.add(AysTokenClaims.LAST_SELECTED_INSTITUTION_ID.getValue(), this.loginAttempt.lastSelectedInstitutionId);
-        } else {
-            claimsBuilder.add(AysTokenClaims.LAST_SELECTED_INSTITUTION_ID.getValue(), currentInstitution.getId());
         }
 
         return claimsBuilder.build();
@@ -259,17 +289,6 @@ public class AysUser extends BaseDomainModel {
                 .flatMap(List::stream)
                 .map(AysPermission::getName)
                 .collect(Collectors.toSet());
-    }
-
-    private Institution getInstitution() {
-
-        final Optional<Institution> institution = this.institutions.stream()
-                .findFirst();
-        if (institution.isEmpty()) {
-            throw new IllegalStateException("User has no institution!");
-        }
-
-        return institution.get();
     }
 
 }
