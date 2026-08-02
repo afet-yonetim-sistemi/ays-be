@@ -265,8 +265,17 @@ class AysAuthServiceImplTest extends AysUnitTest {
         );
 
         // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(passwordEncoder, Mockito.times(1))
+                .matches(Mockito.anyString(), Mockito.anyString());
+
         Mockito.verify(userSavePort, Mockito.times(1))
                 .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(tokenService, Mockito.times(1))
+                .generate(Mockito.any(Claims.class));
     }
 
     /**
@@ -334,8 +343,17 @@ class AysAuthServiceImplTest extends AysUnitTest {
         );
 
         // Verify
+        Mockito.verify(userReadPort, Mockito.times(1))
+                .findByEmailAddress(Mockito.anyString());
+
+        Mockito.verify(passwordEncoder, Mockito.times(1))
+                .matches(Mockito.anyString(), Mockito.anyString());
+
         Mockito.verify(userSavePort, Mockito.times(1))
                 .save(Mockito.any(AysUser.class));
+
+        Mockito.verify(tokenService, Mockito.times(1))
+                .generate(Mockito.any(Claims.class));
     }
 
     @Test
