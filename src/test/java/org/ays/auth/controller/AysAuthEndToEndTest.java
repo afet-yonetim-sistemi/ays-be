@@ -34,6 +34,7 @@ import org.ays.common.model.response.AysResponseBuilder;
 import org.ays.common.util.AysListUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
+import org.ays.institution.model.enums.InstitutionStatus;
 import org.ays.institution.port.InstitutionSavePort;
 import org.ays.util.AysMockMvcRequestBuilders;
 import org.ays.util.AysMockResultMatchersBuilders;
@@ -128,6 +129,10 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(loginAttempt.getCreatedAt());
         Assertions.assertNotNull(loginAttempt.getUpdatedUser());
         Assertions.assertNotNull(loginAttempt.getUpdatedAt());
+        Assertions.assertEquals(
+                AysValidTestData.SuperAdmin.INSTITUTION_ID,
+                loginAttempt.getLastSelectedInstitutionId()
+        );
     }
 
 
@@ -221,6 +226,10 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         Assertions.assertNotNull(loginAttempt.getCreatedAt());
         Assertions.assertNull(loginAttempt.getUpdatedUser());
         Assertions.assertNull(loginAttempt.getUpdatedAt());
+        Assertions.assertEquals(
+                institution.getId(),
+                loginAttempt.getLastSelectedInstitutionId()
+        );
     }
 
     @Test
@@ -312,7 +321,7 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
     }
 
     @Test
-    void givenValidLoginRequest_whenUserHasMultipleInstitutionsAndExistingLoginAttempt_thenPersistLastSelectedInstitutionPreference() throws Exception {
+    void givenValidLoginRequest_whenUserHasMultipleInstitutionsAndExistingLoginAttempt_thenReturnSuccess() throws Exception {
 
         // Initialize
         Institution firstInstitution = institutionSavePort.save(
@@ -404,10 +413,13 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
     }
 
     @Test
-    void givenValidLoginRequest_whenUserLastSelectedInstitutionNoLongerAssigned_thenFallBackToFirstActiveInstitutionAndPersist() throws Exception {
+    void givenValidLoginRequest_whenUserHasNoSelectedInstitution_thenSelectFirstActiveInstitution() throws Exception {
 
         // Initialize
-        Institution activeInstitution = institutionSavePort.save(
+        Institution firstActiveInstitution = institutionSavePort.save(
+                new InstitutionBuilder().withValidValues().withoutId().build()
+        );
+        Institution secondActiveInstitution = institutionSavePort.save(
                 new InstitutionBuilder().withValidValues().withoutId().build()
         );
 
@@ -416,7 +428,95 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
                 roleSavePort.save(
                         new AysRoleBuilder().withValidValues()
                                 .withoutId()
-                                .withName("Fallback Institution Role")
+                                .withName("No Selection Role 1")
+                                .withInstitution(firstActiveInstitution)
+                                .withPermissions(permissions)
+                                .build()
+                ),
+                roleSavePort.save(
+                        new AysRoleBuilder().withValidValues()
+                                .withoutId()
+                                .withName("No Selection Role 2")
+                                .withInstitution(secondActiveInstitution)
+                                .withPermissions(permissions)
+                                .build()
+                )
+        );
+
+        AysUser user = userSavePort.save(
+                new AysUserBuilder().withValidValues()
+                        .withoutId()
+                        .withInstitutions(List.of(firstActiveInstitution, secondActiveInstitution))
+                        .withPassword(AysUser.Password.builder()
+                                .value(passwordEncoder.encode(AysValidTestData.PASSWORD))
+                                .build())
+                        .withRoles(roles)
+                        .build()
+        );
+
+        // Given
+        AysLoginRequest loginRequest = new AysLoginRequestBuilder()
+                .withEmailAddress(user.getEmailAddress())
+                .withPassword(AysValidTestData.PASSWORD)
+                .withSourcePage(AysSourcePage.INSTITUTION)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH.concat("/token");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = AysMockMvcRequestBuilders
+                .post(endpoint, loginRequest);
+
+        AysResponse<AysTokenResponse> mockResponse = AysResponseBuilder
+                .successOf(new AysTokenResponseBuilder().build());
+
+        aysMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(AysMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(AysMockResultMatchersBuilders.response()
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.accessToken")
+                        .isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.refreshToken")
+                        .isNotEmpty());
+
+        // Verify
+        Optional<AysUser> userFromDatabase = userReadPort.findByEmailAddress(loginRequest.getEmailAddress());
+        Assertions.assertTrue(userFromDatabase.isPresent());
+
+        final AysUser.LoginAttempt loginAttempt = userFromDatabase.get().getLoginAttempt();
+        Assertions.assertNotNull(loginAttempt);
+        Assertions.assertNotNull(loginAttempt.getId());
+        Assertions.assertNotNull(loginAttempt.getLastLoginAt());
+        Assertions.assertNotNull(loginAttempt.getCreatedUser());
+        Assertions.assertNotNull(loginAttempt.getCreatedAt());
+        Assertions.assertNull(loginAttempt.getUpdatedUser());
+        Assertions.assertNull(loginAttempt.getUpdatedAt());
+        Assertions.assertTrue(
+                List.of(firstActiveInstitution.getId(), secondActiveInstitution.getId())
+                        .contains(loginAttempt.getLastSelectedInstitutionId())
+        );
+    }
+
+    @Test
+    void givenValidLoginRequest_whenUserLastSelectedInstitutionIsInactive_thenReturnFirstActiveInstitution() throws Exception {
+
+        // Initialize
+        Institution activeInstitution = institutionSavePort.save(
+                new InstitutionBuilder().withValidValues().withoutId().build()
+        );
+        Institution passiveInstitution = institutionSavePort.save(
+                new InstitutionBuilder().withValidValues().withoutId()
+                        .withStatus(InstitutionStatus.PASSIVE)
+                        .build()
+        );
+
+        List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
+        List<AysRole> roles = List.of(
+                roleSavePort.save(
+                        new AysRoleBuilder().withValidValues()
+                                .withoutId()
+                                .withName("Inactive Selection Role")
                                 .withInstitution(activeInstitution)
                                 .withPermissions(permissions)
                                 .build()
@@ -424,14 +524,14 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         );
 
         AysUser.LoginAttempt existingLoginAttempt = AysUser.LoginAttempt.builder()
-                .lastSelectedInstitutionId("f47ac10b-58cc-4372-a567-0e02b2c3d999")
+                .lastSelectedInstitutionId(passiveInstitution.getId())
                 .lastLoginAt(LocalDateTime.now().minusDays(1))
                 .build();
 
         AysUser user = userSavePort.save(
                 new AysUserBuilder().withValidValues()
                         .withoutId()
-                        .withInstitutions(List.of(activeInstitution))
+                        .withInstitutions(List.of(activeInstitution, passiveInstitution))
                         .withPassword(AysUser.Password.builder()
                                 .value(passwordEncoder.encode(AysValidTestData.PASSWORD))
                                 .build())
