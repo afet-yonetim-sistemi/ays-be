@@ -152,6 +152,9 @@ public class AysUserEntity extends BaseEntity {
         @Column(name = "LAST_LOGIN_AT")
         private LocalDateTime lastLoginAt;
 
+        @Column(name = "LAST_SELECTED_INSTITUTION_ID")
+        private String lastSelectedInstitutionId;
+
         @OneToOne
         @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
         private AysUserEntity user;

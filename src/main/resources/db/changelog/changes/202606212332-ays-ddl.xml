@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="202606212332-ays-ddl" author="ays">
+        <!-- =============== -->
+        <!-- DDL of AYS_USER -->
+        <!-- =============== -->
+        <addColumn tableName="AYS_USER_LOGIN_ATTEMPT">
+            <column name="LAST_SELECTED_INSTITUTION_ID" type="VARCHAR(36)"/>
+        </addColumn>
+        <!-- =============== -->
+        <!-- DDL of AYS_USER -->
+        <!-- =============== -->
+    </changeSet>
+</databaseChangeLog>

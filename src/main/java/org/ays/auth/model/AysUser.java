@@ -7,11 +7,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.ays.auth.exception.AysUserHasNoActiveInstitutionException;
 import org.ays.auth.model.enums.AysTokenClaims;
 import org.ays.auth.model.enums.AysUserStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,6 +46,7 @@ public class AysUser extends BaseDomainModel {
 
     private List<AysRole> roles;
     private List<Institution> institutions;
+
 
     /**
      * Checks if the user's status is active.
@@ -199,11 +202,40 @@ public class AysUser extends BaseDomainModel {
 
         private String id;
         private LocalDateTime lastLoginAt;
+        private String lastSelectedInstitutionId;
 
         public void success() {
             this.lastLoginAt = LocalDateTime.now();
         }
 
+    }
+
+    /**
+     * Finds the selected active institution for the user.
+     * <ol>
+     *   <li>Returns the last selected institution if it exists and is active.</li>
+     *   <li>Otherwise, falls back to the user's first available active institution.</li>
+     * </ol>
+     *
+     * @return {@link Institution} active institution.
+     * @throws AysUserHasNoActiveInstitutionException if the user has no active institution available.
+     */
+    public Institution findSelectedActiveInstitution() {
+        if (CollectionUtils.isEmpty(this.institutions)) {
+            throw new AysUserHasNoActiveInstitutionException(this.id);
+        }
+
+        final List<Institution> activeInstitutions = this.institutions.stream()
+                .filter(Institution::isActive)
+                .toList();
+
+        return Optional.ofNullable(this.loginAttempt)
+                .map(LoginAttempt::getLastSelectedInstitutionId)
+                .flatMap(lastSelectedInstitutionId -> activeInstitutions.stream()
+                        .filter(activeInstitution -> activeInstitution.getId().equals(lastSelectedInstitutionId))
+                        .findFirst())
+                .or(() -> activeInstitutions.stream().findFirst())
+                .orElseThrow(() -> new AysUserHasNoActiveInstitutionException(this.id));
     }
 
     /**
@@ -216,7 +248,7 @@ public class AysUser extends BaseDomainModel {
     public Claims getClaims() {
         final ClaimsBuilder claimsBuilder = Jwts.claims();
 
-        final Institution currentInstitution = this.getInstitution();
+        final Institution currentInstitution = this.findSelectedActiveInstitution();
         claimsBuilder.add(AysTokenClaims.INSTITUTION_ID.getValue(), currentInstitution.getId());
         claimsBuilder.add(AysTokenClaims.INSTITUTION_NAME.getValue(), currentInstitution.getName());
         final List<InstitutionInner> institutions = this.institutions.stream()
@@ -251,17 +283,6 @@ public class AysUser extends BaseDomainModel {
                 .flatMap(List::stream)
                 .map(AysPermission::getName)
                 .collect(Collectors.toSet());
-    }
-
-    private Institution getInstitution() {
-
-        final Optional<Institution> institution = this.institutions.stream()
-                .findFirst();
-        if (institution.isEmpty()) {
-            throw new IllegalStateException("User has no institution!");
-        }
-
-        return institution.get();
     }
 
 }
