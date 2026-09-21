@@ -2,6 +2,10 @@ package org.ays.auth.repository;
 
 import org.ays.auth.model.entity.AysRoleEntity;
 import org.ays.auth.model.enums.AysRoleStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +24,9 @@ import java.util.Optional;
  * @see JpaSpecificationExecutor
  */
 public interface AysRoleRepository extends JpaRepository<AysRoleEntity, String>, JpaSpecificationExecutor<AysRoleEntity> {
-
+    @Override
+    @EntityGraph(attributePaths = {"permissions", "institution"})
+    Page<AysRoleEntity> findAll(Specification<AysRoleEntity> spec, Pageable pageable);
     /**
      * Retrieves all active roles associated with a specific institution.
      *
