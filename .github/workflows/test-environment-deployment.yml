@@ -73,7 +73,9 @@ jobs:
           sudo git checkout ${{ vars.VPS_DEPLOYMENT_BRANCH }} && \
           sudo git pull origin ${{ vars.VPS_DEPLOYMENT_BRANCH }} && \
 
-          sudo docker compose up -d --build"
+          sudo docker compose up -d --build && \
+
+          (sudo docker image prune -f; sudo docker builder prune -f --filter until=72h; true)"
 
   health-check:
     environment: Test # Define the environment as Test
