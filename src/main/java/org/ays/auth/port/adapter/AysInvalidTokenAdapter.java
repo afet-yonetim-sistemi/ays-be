@@ -9,7 +9,6 @@ import org.ays.common.client.AysCacheClient;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.util.Map;
 
 /**
  * Adapter class implementing both {@link AysInvalidTokenReadPort} and {@link AysInvalidTokenSavePort} interfaces.
@@ -41,8 +40,8 @@ class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidToken
     /**
      * Stores both access and refresh token IDs as invalid entries in the cache.
      * <p>
-     * The cache TTL is derived from the refresh token expiration parameter so that invalidation data
-     * remains valid for the token lifecycle.
+     * Each entry's TTL is derived from its own token expiration parameter so that invalidation data
+     * remains valid for the lifecycle of that token.
      * </p>
      *
      * @param accessTokenId  The access token ID to mark as invalid.
@@ -52,14 +51,13 @@ class AysInvalidTokenAdapter implements AysInvalidTokenReadPort, AysInvalidToken
     public void saveAll(final String accessTokenId,
                         final String refreshTokenId) {
 
-        final Duration timeToLive = Duration
-                .ofMinutes(applicationConfigurationParameter.getRefreshTokenExpireMinute());
+        final Duration accessTokenTimeToLive = Duration
+                .ofMinutes(applicationConfigurationParameter.getAccessTokenExpireMinute());
+        cacheClient.put(PREFIX, accessTokenId, AysTokenVariant.ACCESS.name(), accessTokenTimeToLive);
 
-        final Map<String, String> invalidTokens = Map.of(
-                accessTokenId, AysTokenVariant.ACCESS.name(),
-                refreshTokenId, AysTokenVariant.REFRESH.name()
-        );
-        cacheClient.putAll(PREFIX, invalidTokens, timeToLive);
+        final Duration refreshTokenTimeToLive = Duration
+                .ofMinutes(applicationConfigurationParameter.getRefreshTokenExpireMinute());
+        cacheClient.put(PREFIX, refreshTokenId, AysTokenVariant.REFRESH.name(), refreshTokenTimeToLive);
     }
 
 }

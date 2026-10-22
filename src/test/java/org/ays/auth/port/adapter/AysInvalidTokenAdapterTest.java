@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.Optional;
 
 class AysInvalidTokenAdapterTest extends AysUnitTest {
@@ -87,29 +86,44 @@ class AysInvalidTokenAdapterTest extends AysUnitTest {
         String mockRefreshTokenId = "0cc37f36-667a-427f-ab0b-3642ede29e4c";
 
         // When
+        int mockAccessTokenExpireMinute = Integer.parseInt(AysConfigurationParameter.AUTH_ACCESS_TOKEN_EXPIRE_MINUTE.getDefaultValue());
+        Mockito
+                .when(applicationConfigurationParameter.getAccessTokenExpireMinute())
+                .thenReturn(mockAccessTokenExpireMinute);
+
         int mockRefreshTokenExpireMinute = Integer.parseInt(AysConfigurationParameter.AUTH_REFRESH_TOKEN_EXPIRE_MINUTE.getDefaultValue());
         Mockito
                 .when(applicationConfigurationParameter.getRefreshTokenExpireMinute())
                 .thenReturn(mockRefreshTokenExpireMinute);
 
-        Map<String, String> mockInvalidTokens = Map.of(
-                mockAccessTokenId, AysTokenVariant.ACCESS.name(),
-                mockRefreshTokenId, AysTokenVariant.REFRESH.name()
-        );
-        Duration mockTimeToLive = Duration.ofMinutes(mockRefreshTokenExpireMinute);
+        Duration mockAccessTokenTimeToLive = Duration.ofMinutes(mockAccessTokenExpireMinute);
         Mockito.doNothing()
                 .when(cacheClient)
-                .putAll(Mockito.eq(MOCK_PREFIX), Mockito.eq(mockInvalidTokens), Mockito.eq(mockTimeToLive));
+                .put(Mockito.eq(MOCK_PREFIX), Mockito.eq(mockAccessTokenId), Mockito.eq(AysTokenVariant.ACCESS.name()), Mockito.eq(mockAccessTokenTimeToLive));
+
+        Duration mockRefreshTokenTimeToLive = Duration.ofMinutes(mockRefreshTokenExpireMinute);
+        Mockito.doNothing()
+                .when(cacheClient)
+                .put(Mockito.eq(MOCK_PREFIX), Mockito.eq(mockRefreshTokenId), Mockito.eq(AysTokenVariant.REFRESH.name()), Mockito.eq(mockRefreshTokenTimeToLive));
 
         // Then
         invalidTokenAdapter.saveAll(mockAccessTokenId, mockRefreshTokenId);
 
         // Verify
         Mockito.verify(applicationConfigurationParameter, Mockito.times(1))
+                .getAccessTokenExpireMinute();
+
+        Mockito.verify(applicationConfigurationParameter, Mockito.times(1))
                 .getRefreshTokenExpireMinute();
 
         Mockito.verify(cacheClient, Mockito.times(1))
-                .putAll(Mockito.eq(MOCK_PREFIX), Mockito.eq(mockInvalidTokens), Mockito.eq(mockTimeToLive));
+                .put(Mockito.eq(MOCK_PREFIX), Mockito.eq(mockAccessTokenId), Mockito.eq(AysTokenVariant.ACCESS.name()), Mockito.eq(mockAccessTokenTimeToLive));
+
+        Mockito.verify(cacheClient, Mockito.times(1))
+                .put(Mockito.eq(MOCK_PREFIX), Mockito.eq(mockRefreshTokenId), Mockito.eq(AysTokenVariant.REFRESH.name()), Mockito.eq(mockRefreshTokenTimeToLive));
+
+        Mockito.verify(cacheClient, Mockito.never())
+                .putAll(Mockito.any(), Mockito.any(), Mockito.any());
     }
 
 }
