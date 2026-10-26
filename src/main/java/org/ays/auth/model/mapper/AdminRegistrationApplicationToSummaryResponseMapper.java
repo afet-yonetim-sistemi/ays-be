@@ -3,6 +3,7 @@ package org.ays.auth.model.mapper;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.response.AdminRegistrationApplicationSummaryResponse;
 import org.ays.common.model.mapper.BaseMapper;
+import org.ays.institution.model.Institution;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -15,6 +16,8 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface AdminRegistrationApplicationToSummaryResponseMapper extends BaseMapper<AdminRegistrationApplication, AdminRegistrationApplicationSummaryResponse> {
+
+    AdminRegistrationApplicationSummaryResponse.Institution map(Institution institution);
 
     /**
      * Initializes the mapper.

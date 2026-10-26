@@ -8,6 +8,8 @@ import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.AysPhoneNumber;
 import org.ays.common.model.response.BaseResponse;
 
+import java.util.List;
+
 /**
  * Response class for admin registration application.
  * <p>
@@ -26,6 +28,7 @@ public class AdminRegistrationApplicationResponse extends BaseResponse {
     private String rejectReason;
     private AdminRegistrationApplicationStatus status;
     private Institution institution;
+    private List<Institution> institutions;
     private User user;
 
     /**

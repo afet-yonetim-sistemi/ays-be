@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,8 @@ import lombok.experimental.SuperBuilder;
 import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.entity.BaseEntity;
 import org.ays.institution.model.entity.InstitutionEntity;
+
+import java.util.Set;
 
 /**
  * Entity representing an admin registration application.
@@ -59,5 +63,13 @@ public class AdminRegistrationApplicationEntity extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "INSTITUTION_ID")
     private InstitutionEntity institution;
+
+    @ManyToMany
+    @JoinTable(
+            name = "AYS_ADMIN_REGISTRATION_APPLICATION_INSTITUTION_RELATION",
+            joinColumns = @JoinColumn(name = "ADMIN_REGISTRATION_APPLICATION_ID"),
+            inverseJoinColumns = @JoinColumn(name = "INSTITUTION_ID")
+    )
+    private Set<InstitutionEntity> institutions;
 
 }

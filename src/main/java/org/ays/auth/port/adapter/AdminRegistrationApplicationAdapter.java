@@ -1,6 +1,7 @@
 package org.ays.auth.port.adapter;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.ays.auth.model.AdminRegistrationApplication;
 import org.ays.auth.model.AdminRegistrationApplicationFilter;
 import org.ays.auth.model.entity.AdminRegistrationApplicationEntity;
@@ -18,6 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +96,15 @@ class AdminRegistrationApplicationAdapter implements AdminRegistrationApplicatio
 
         final AdminRegistrationApplicationEntity applicationEntity = adminRegistrationApplicationToEntityMapper
                 .map(registrationApplication);
+
+        if (CollectionUtils.isEmpty(applicationEntity.getInstitutions())
+                && applicationEntity.getInstitution() != null) {
+            applicationEntity.setInstitutions(Set.of(applicationEntity.getInstitution()));
+        }
+        if (applicationEntity.getInstitution() == null
+                && CollectionUtils.isNotEmpty(applicationEntity.getInstitutions())) {
+            applicationEntity.setInstitution(applicationEntity.getInstitutions().iterator().next());
+        }
 
         adminRegistrationApplicationRepository.save(applicationEntity);
 

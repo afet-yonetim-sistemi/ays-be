@@ -6,6 +6,8 @@ import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.entity.InstitutionEntity;
 import org.ays.institution.model.entity.InstitutionEntityBuilder;
 
+import java.util.Set;
+
 public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<AdminRegistrationApplicationEntity> {
 
     public AdminRegistrationApplicationEntityBuilder() {
@@ -26,6 +28,7 @@ public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<A
                 .withStatus(AdminRegistrationApplicationStatus.WAITING)
                 .withUser(userEntity)
                 .withInstitution(institutionEntity)
+                .withInstitutions(Set.of(institutionEntity))
                 .withReason(AysRandomUtil.generateText(41));
     }
 
@@ -46,6 +49,11 @@ public class AdminRegistrationApplicationEntityBuilder extends TestDataBuilder<A
 
     public AdminRegistrationApplicationEntityBuilder withInstitution(InstitutionEntity institutionEntity) {
         data.setInstitution(institutionEntity);
+        return this;
+    }
+
+    public AdminRegistrationApplicationEntityBuilder withInstitutions(Set<InstitutionEntity> institutions) {
+        data.setInstitutions(institutions);
         return this;
     }
 

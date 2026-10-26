@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="202610261200-ays-ddl" author="ays">
+        <createTable tableName="AYS_ADMIN_REGISTRATION_APPLICATION_INSTITUTION_RELATION">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ADMIN_REGISTRATION_APPLICATION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_ADMIN_REG_APP_INST__APP_ID"
+                             referencedTableName="AYS_ADMIN_REGISTRATION_APPLICATION"
+                             referencedColumnNames="ID"/>
+            </column>
+            <column name="INSTITUTION_ID" type="VARCHAR(36)">
+                <constraints nullable="false"
+                             foreignKeyName="FK__AYS_ADMIN_REG_APP_INST__INST_ID"
+                             referencedTableName="AYS_INSTITUTION"
+                             referencedColumnNames="ID"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="AYS_ADMIN_REGISTRATION_APPLICATION_INSTITUTION_RELATION"
+                             columnNames="ADMIN_REGISTRATION_APPLICATION_ID, INSTITUTION_ID"
+                             constraintName="UI__AYS_ADMIN_REG_APP_INST__APP_ID__INST_ID"/>
+
+        <createIndex tableName="AYS_ADMIN_REGISTRATION_APPLICATION_INSTITUTION_RELATION"
+                     indexName="I__AYS_ADMIN_REG_APP_INST__APP_ID">
+            <column name="ADMIN_REGISTRATION_APPLICATION_ID"/>
+        </createIndex>
+
+        <createIndex tableName="AYS_ADMIN_REGISTRATION_APPLICATION_INSTITUTION_RELATION"
+                     indexName="I__AYS_ADMIN_REG_APP_INST__INST_ID">
+            <column name="INSTITUTION_ID"/>
+        </createIndex>
+
+        <sql>
+            INSERT INTO AYS_ADMIN_REGISTRATION_APPLICATION_INSTITUTION_RELATION
+                (ADMIN_REGISTRATION_APPLICATION_ID, INSTITUTION_ID)
+            SELECT ID, INSTITUTION_ID
+            FROM AYS_ADMIN_REGISTRATION_APPLICATION
+            WHERE INSTITUTION_ID IS NOT NULL
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

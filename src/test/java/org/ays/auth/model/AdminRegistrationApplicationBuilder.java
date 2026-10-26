@@ -6,6 +6,8 @@ import org.ays.common.util.AysRandomUtil;
 import org.ays.institution.model.Institution;
 import org.ays.institution.model.InstitutionBuilder;
 
+import java.util.List;
+
 public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRegistrationApplication> {
 
     public AdminRegistrationApplicationBuilder() {
@@ -42,6 +44,15 @@ public class AdminRegistrationApplicationBuilder extends TestDataBuilder<AdminRe
 
     public AdminRegistrationApplicationBuilder withInstitution(Institution institution) {
         data.setInstitution(institution);
+        data.setInstitutions(List.of(institution));
+        return this;
+    }
+
+    public AdminRegistrationApplicationBuilder withInstitutions(List<Institution> institutions) {
+        data.setInstitutions(institutions);
+        if (!institutions.isEmpty()) {
+            data.setInstitution(institutions.get(0));
+        }
         return this;
     }
 

@@ -8,6 +8,8 @@ import org.ays.auth.model.enums.AdminRegistrationApplicationStatus;
 import org.ays.common.model.BaseDomainModel;
 import org.ays.institution.model.Institution;
 
+import java.util.List;
+
 /**
  * Domain model class representing an admin user registration application.
  * <p>
@@ -29,6 +31,7 @@ public class AdminRegistrationApplication extends BaseDomainModel {
 
     private AysUser user;
     private Institution institution;
+    private List<Institution> institutions;
 
 
     /**

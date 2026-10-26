@@ -3,6 +3,8 @@ package org.ays.auth.model.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * Summary response class for an admin registration application.
  * <p>
@@ -16,6 +18,7 @@ public class AdminRegistrationApplicationSummaryResponse {
 
     private String id;
     private Institution institution;
+    private List<Institution> institutions;
 
     /**
      * Nested static class representing the institution details.

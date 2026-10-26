@@ -20,9 +20,14 @@ import org.ays.auth.service.AdminRegistrationApplicationService;
 import org.ays.common.model.AysPage;
 import org.ays.common.model.AysPageable;
 import org.ays.institution.exception.AysInstitutionNotExistException;
+import org.ays.institution.model.Institution;
 import org.ays.institution.port.InstitutionReadPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This class implements the {@link AdminRegistrationApplicationService} interface and provides verification operations for admin users.
@@ -95,17 +100,37 @@ class AdminRegistrationApplicationServiceImpl implements AdminRegistrationApplic
     @Transactional
     public AdminRegistrationApplication create(AdminRegistrationApplicationCreateRequest request) {
 
-        boolean isInstitutionExists = institutionReadPort.existsByIdAndIsStatusActive(request.getInstitutionId());
-        if (!isInstitutionExists) {
-            throw new AysInstitutionNotExistException(request.getInstitutionId());
+        final Set<String> institutionIds = new LinkedHashSet<>();
+        if (request.getInstitutionIds() != null) {
+            institutionIds.addAll(request.getInstitutionIds());
+        }
+        if (request.getInstitutionId() != null && !request.getInstitutionId().isBlank()) {
+            institutionIds.add(request.getInstitutionId());
+        }
+
+        for (String institutionId : institutionIds) {
+            if (!institutionReadPort.existsByIdAndIsStatusActive(institutionId)) {
+                throw new AysInstitutionNotExistException(institutionId);
+            }
         }
 
         final AdminRegistrationApplication registrationApplication = adminRegistrationApplicationCreateRequestToEntityMapper
                 .map(request);
+        final List<Institution> institutions = institutionIds.stream()
+                .map(this::institutionReference)
+                .toList();
+        registrationApplication.setInstitution(institutions.get(0));
+        registrationApplication.setInstitutions(institutions);
 
         registrationApplication.waiting();
 
         return adminRegistrationApplicationSavePort.save(registrationApplication);
+    }
+
+    private Institution institutionReference(final String institutionId) {
+        return Institution.builder()
+                .id(institutionId)
+                .build();
     }
 
     /**

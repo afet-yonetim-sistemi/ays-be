@@ -1,0 +1,919 @@
+{
+	"info": {
+		"_postman_id": "a9e6b412-1f3c-482d-8b01-52cfbe4a0e91",
+		"name": "AYS - Son Seçilen Kurumun DB'de Tutulması (AYS-1142)",
+		"description": "AYS-1142 kapsamında dinamik test kullanıcısı oluşturma, son seçilen kurumun DB'de (AYS_USER_LOGIN_ATTEMPT.LAST_SELECTED_INSTITUTION_ID) saklanması, login sırasında JWT claims üzerinden oturum bağlamının otomatik belirlenmesi, token yenileme ve veri kapsamı doğrulama test senaryoları.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://test-servis.afetyonetimsistemi.org",
+			"type": "string"
+		},
+		{
+			"key": "adminEmailAddress",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminPassword",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminAccessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "emailAddress",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "sourcePage",
+			"value": "INSTITUTION",
+			"type": "string"
+		},
+		{
+			"key": "institutionId",
+			"value": "c5f9f610-f1c8-48a4-b1e9-1fee95f5a51f",
+			"type": "string"
+		},
+		{
+			"key": "applicationId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "testUserEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "testUserPhone",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "testUserPassword",
+			"value": "Password123!",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "currentInstitutionId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "0. Ön Hazırlık: Dinamik Test Kullanıcısı Oluşturma Flow",
+			"item": [
+				{
+					"name": "0.1 Yetkili Girişi (Admin Token Alma)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"const res = pm.response.json();",
+									"pm.test(\"Admin token alındı\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"    pm.expect(res.response.accessToken).to.be.a(\"string\").that.is.not.empty;",
+									"    pm.collectionVariables.set(\"adminAccessToken\", res.response.accessToken);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"{{adminEmailAddress}}\",\n  \"password\": \"{{adminPassword}}\",\n  \"sourcePage\": \"INSTITUTION\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token"
+							]
+						},
+						"description": "Kullanıcı oluşturma başvurusu açabilmek için yetkili kullanıcının token'ını alır."
+					},
+					"response": []
+				},
+				{
+					"name": "0.2 Admin Kayıt Başvurusu Açma (Application Create)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"const res = pm.response.json();",
+									"pm.test(\"Kayıt başvurusu açıldı ve ID alındı\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"    pm.expect(res.response.id).to.be.a(\"string\").that.is.not.empty;",
+									"    pm.collectionVariables.set(\"applicationId\", res.response.id);",
+									"});",
+									"",
+									"// Rastgele benzersiz test e-posta ve telefon numarası üret",
+									"const rand = Math.floor(1000000 + Math.random() * 9000000);",
+									"const testEmail = \"test.automation.\" + rand + \"@afetyonetimsistemi.org\";",
+									"const testPhone = \"532\" + rand;",
+									"pm.collectionVariables.set(\"testUserEmail\", testEmail);",
+									"pm.collectionVariables.set(\"testUserPhone\", testPhone);",
+									"pm.collectionVariables.set(\"testUserPassword\", \"Password123!\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminAccessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"institutionIds\": [\n    \"{{institutionId}}\"\n  ],\n  \"reason\": \"Otomatik test senaryolari icin olusturulan gecici test kullanicisi kaydi.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/institution/v1/admin-registration-application",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"institution",
+								"v1",
+								"admin-registration-application"
+							]
+						},
+						"description": "Seçili kurum için yeni bir admin registration başvurusu oluşturur."
+					},
+					"response": []
+				},
+				{
+					"name": "0.3 Başvuruyu Tamamlama (Kullanıcı Bilgileri & Şifre)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"const res = pm.response.json();",
+									"pm.test(\"Kullanıcı bilgileri ve şifre başarıyla kaydedildi\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"{{testUserEmail}}\",\n  \"password\": \"{{testUserPassword}}\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"Automation\",\n  \"city\": \"İstanbul\",\n  \"phoneNumber\": {\n    \"countryCode\": \"90\",\n    \"lineNumber\": \"{{testUserPhone}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/institution/v1/admin-registration-application/{{applicationId}}/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"institution",
+								"v1",
+								"admin-registration-application",
+								"{{applicationId}}",
+								"complete"
+							]
+						},
+						"description": "Yeni test kullanıcısının profil bilgilerini ve şifresini belirleyerek başvuruyu tamamlar. (Public uç)"
+					},
+					"response": []
+				},
+				{
+					"name": "0.4 Başvuruyu Onaylama (Kullanıcıyı Aktifleştirme)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"const res = pm.response.json();",
+									"pm.test(\"Başvuru onaylandı ve kullanıcı aktifleştirildi\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"    // Test kullanıcısını sonraki tüm testlerin login parametresi olarak ayarla",
+									"    pm.collectionVariables.set(\"emailAddress\", pm.collectionVariables.get(\"testUserEmail\"));",
+									"    pm.collectionVariables.set(\"password\", pm.collectionVariables.get(\"testUserPassword\"));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminAccessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/institution/v1/admin-registration-application/{{applicationId}}/approve",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"institution",
+								"v1",
+								"admin-registration-application",
+								"{{applicationId}}",
+								"approve"
+							]
+						},
+						"description": "Admin tarafından başvuruyu onaylar ve yeni kullanıcıyı aktif hale getirir."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "A. Pozitif (Fonksiyonel) Senaryolar",
+			"item": [
+				{
+					"name": "S0 — Landing Aktif Kurum Listesi (Public Summary)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"",
+									"const res = pm.response.json();",
+									"pm.test(\"AYS Response formatı başarılı\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"    pm.expect(res.response).to.be.an(\"array\").that.is.not.empty;",
+									"});",
+									"",
+									"pm.test(\"Aktif kurumlar özet olarak listelendi\", () => {",
+									"    const list = res.response;",
+									"    pm.expect(list[0]).to.have.property(\"id\");",
+									"    pm.expect(list[0]).to.have.property(\"name\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/landing/v1/institutions/summary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"landing",
+								"v1",
+								"institutions",
+								"summary"
+							]
+						},
+						"description": "Landing ekranında herkese açık aktif kurum özet listesini çeker. Auth gerekmez."
+					},
+					"response": []
+				},
+				{
+					"name": "S1 — Yeni Test Kullanıcısı İle Login & Kurumun JWT Claims'e Yüklenmesi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"",
+									"const res = pm.response.json();",
+									"pm.test(\"isSuccess true ve token'lar döndü\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"    pm.expect(res.response.accessToken).to.be.a(\"string\").that.is.not.empty;",
+									"    pm.expect(res.response.refreshToken).to.be.a(\"string\").that.is.not.empty;",
+									"    pm.collectionVariables.set(\"accessToken\", res.response.accessToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", res.response.refreshToken);",
+									"});",
+									"",
+									"function parseJwt(token) {",
+									"    var base64Url = token.split('.')[1];",
+									"    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');",
+									"    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {",
+									"        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);",
+									"    }).join(''));",
+									"    return JSON.parse(jsonPayload);",
+									"}",
+									"",
+									"pm.test(\"JWT Claims: DB'deki son seçili kurum (institutionId) yüklendi\", () => {",
+									"    const claims = parseJwt(res.response.accessToken);",
+									"    pm.expect(claims.institutionId).to.be.a(\"string\").that.is.not.empty;",
+									"    pm.expect(claims.institutionName).to.be.a(\"string\").that.is.not.empty;",
+									"    pm.expect(claims.institutions).to.be.an(\"array\").that.is.not.empty;",
+									"    pm.collectionVariables.set(\"currentInstitutionId\", claims.institutionId);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"{{emailAddress}}\",\n  \"password\": \"{{password}}\",\n  \"sourcePage\": \"{{sourcePage}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token"
+							]
+						},
+						"description": "Yeni oluşturulan test kullanıcısı ile login olur. AysResponse<AysTokenResponse> döner. Token içindeki institutionId claims'i doğrulanır."
+					},
+					"response": []
+				},
+				{
+					"name": "S2 — Kurum Özet Listesi (Yetkili Kurumlar)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"",
+									"const res = pm.response.json();",
+									"pm.test(\"Yetkili kurum özet listesi döndü\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"    pm.expect(res.response).to.be.an(\"array\").that.is.not.empty;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/institution/v1/institutions/summary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"institution",
+								"v1",
+								"institutions",
+								"summary"
+							]
+						},
+						"description": "Kullanıcının erişebildiği kurumların özet listesini getirir."
+					},
+					"response": []
+				},
+				{
+					"name": "S3 — Token Yenileme (Refresh Token) İle Kurum Bağlamının Korunması",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"",
+									"const res = pm.response.json();",
+									"pm.test(\"Yeni access token üretildi\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"    pm.expect(res.response.accessToken).to.be.a(\"string\").that.is.not.empty;",
+									"    pm.collectionVariables.set(\"accessToken\", res.response.accessToken);",
+									"});",
+									"",
+									"function parseJwt(token) {",
+									"    var base64Url = token.split('.')[1];",
+									"    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');",
+									"    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {",
+									"        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);",
+									"    }).join(''));",
+									"    return JSON.parse(jsonPayload);",
+									"}",
+									"",
+									"pm.test(\"Yenilenen token'da kurum ID'si korundu\", () => {",
+									"    const claims = parseJwt(res.response.accessToken);",
+									"    pm.expect(claims.institutionId).to.eql(pm.collectionVariables.get(\"currentInstitutionId\"));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token",
+								"refresh"
+							]
+						},
+						"description": "Refresh token ile yeni access token alınır. Kurum bağlamının korunduğu doğrulanır."
+					},
+					"response": []
+				},
+				{
+					"name": "S4 — Veri Kapsamının (Data Scoping) Seçili Kuruma Göre Filtrelenmesi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"",
+									"const res = pm.response.json();",
+									"pm.test(\"Dönen veriler seçili aktif kuruma göre sınırlandı\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"    const users = (res.response && res.response.content) || [];",
+									"    pm.expect(users).to.be.an(\"array\").that.is.not.empty;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pageable\": {\n    \"page\": 1,\n    \"pageSize\": 10\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/institution/v1/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"institution",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Kullanıcı listesi sorgulanır. AysIdentity.getInstitutionId() ile seçili kuruma ait kayıtların filtrelendiği doğrulanır."
+					},
+					"response": []
+				},
+				{
+					"name": "S5 — Logout (Token Invalidate)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"const res = pm.response.json();",
+									"pm.test(\"Logout başarılı, token geçersiz kılındı\", () => {",
+									"    pm.expect(res.isSuccess).to.be.true;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token/invalidate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token",
+								"invalidate"
+							]
+						},
+						"description": "Mevcut refresh token'ı geçersiz kılarak oturumu kapatır."
+					},
+					"response": []
+				},
+				{
+					"name": "S6 — Logout Sonrası Yeniden Login & Tercihin DB'den Korunumu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+									"",
+									"function parseJwt(token) {",
+									"    var base64Url = token.split('.')[1];",
+									"    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');",
+									"    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {",
+									"        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);",
+									"    }).join(''));",
+									"    return JSON.parse(jsonPayload);",
+									"}",
+									"",
+									"const res = pm.response.json();",
+									"const claims = parseJwt(res.response.accessToken);",
+									"",
+									"pm.test(\"Logout sonrası son kurum tercihi DB'den başarıyla okundu\", () => {",
+									"    pm.expect(claims.institutionId).to.eql(pm.collectionVariables.get(\"currentInstitutionId\"));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"{{emailAddress}}\",\n  \"password\": \"{{password}}\",\n  \"sourcePage\": \"INSTITUTION\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token"
+							]
+						},
+						"description": "Oturum kapatıldıktan sonra tekrar giriş yapıldığında kurum tercihinin AYS_USER_LOGIN_ATTEMPT tablosundan korunarak geldiğini doğrular."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "B. Negatif Senaryolar",
+			"item": [
+				{
+					"name": "N1 — Auth Header Olmadan Korumalı Uca Erişim",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 401 Unauthorized\", () => pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pageable\": {\n    \"page\": 1,\n    \"pageSize\": 10\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/institution/v1/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"institution",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Bearer token bulunmadığında yetkisiz erişim kontrolünü (401) doğrular."
+					},
+					"response": []
+				},
+				{
+					"name": "N2 — Hatalı Şifre İle Login Denemesi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 401 Unauthorized veya 400 Bad Request\", () => {",
+									"    pm.expect([400, 401]).to.include(pm.response.code);",
+									"});",
+									"",
+									"const err = pm.response.json();",
+									"pm.test(\"Hata header: AUTH ERROR\", () => {",
+									"    pm.expect(err.isSuccess).to.be.false;",
+									"    pm.expect(err.header).to.eql(\"AUTH ERROR\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"{{emailAddress}}\",\n  \"password\": \"YanlisSifre123!\",\n  \"sourcePage\": \"INSTITUTION\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token"
+							]
+						},
+						"description": "Hatalı şifre girildiğinde AysPasswordNotValidException fırlatılarak AUTH ERROR döndüğünü doğrular."
+					},
+					"response": []
+				},
+				{
+					"name": "N3 — Var Olmayan Kullanıcı İle Login Denemesi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 401 Unauthorized veya 400 Bad Request\", () => {",
+									"    pm.expect([400, 401]).to.include(pm.response.code);",
+									"});",
+									"",
+									"const err = pm.response.json();",
+									"pm.test(\"Hata header: AUTH ERROR\", () => {",
+									"    pm.expect(err.isSuccess).to.be.false;",
+									"    pm.expect(err.header).to.eql(\"AUTH ERROR\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"nonexistent_test_user@ays.org\",\n  \"password\": \"{{password}}\",\n  \"sourcePage\": \"INSTITUTION\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token"
+							]
+						},
+						"description": "Sistemde kayıtlı olmayan e-posta adresiyle girişte AUTH ERROR döndüğünü doğrular."
+					},
+					"response": []
+				},
+				{
+					"name": "N4 — Eksik Parametre İle Login (Validasyon Hatası)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 400 Bad Request\", () => pm.response.to.have.status(400));",
+									"",
+									"const err = pm.response.json();",
+									"pm.test(\"Hata header: VALIDATION ERROR\", () => {",
+									"    pm.expect(err.isSuccess).to.be.false;",
+									"    pm.expect(err.header).to.eql(\"VALIDATION ERROR\");",
+									"    pm.expect(err.subErrors).to.be.an(\"array\").that.is.not.empty;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token"
+							]
+						},
+						"description": "Boş gövde gönderildiğinde Spring Validation mekanizmasının 400 VALIDATION ERROR ve subErrors döndüğünü doğrular."
+					},
+					"response": []
+				},
+				{
+					"name": "N5 — Geçersiz Refresh Token İle Yenileme Denemesi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status 400 Bad Request veya 401 Unauthorized\", () => {",
+									"    pm.expect([400, 401]).to.include(pm.response.code);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"invalid.refresh.token\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authentication/token/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"token",
+								"refresh"
+							]
+						},
+						"description": "Bozuk veya sahte refresh token ile token yenileme isteğinin reddedildiğini doğrular."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

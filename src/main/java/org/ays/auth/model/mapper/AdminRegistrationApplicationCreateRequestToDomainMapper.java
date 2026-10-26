@@ -20,6 +20,7 @@ public interface AdminRegistrationApplicationCreateRequestToDomainMapper extends
 
     @Override
     @Mapping(target = "institution.id", source = "institutionId")
+    @Mapping(target = "institutions", ignore = true)
     AdminRegistrationApplication map(AdminRegistrationApplicationCreateRequest createRequest);
 
     /**

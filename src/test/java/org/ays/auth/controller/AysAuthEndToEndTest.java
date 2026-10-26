@@ -397,6 +397,9 @@ class AysAuthEndToEndTest extends AysEndToEndTest {
         // Verify
         Optional<AysUser> userFromDatabase = userReadPort.findByEmailAddress(loginRequest.getEmailAddress());
         Assertions.assertTrue(userFromDatabase.isPresent());
+        Assertions.assertEquals(2, userFromDatabase.get().getInstitutions().size());
+        Assertions.assertTrue(userFromDatabase.get().hasInstitution(firstInstitution.getId()));
+        Assertions.assertTrue(userFromDatabase.get().hasInstitution(secondInstitution.getId()));
 
         final AysUser.LoginAttempt loginAttempt = userFromDatabase.get().getLoginAttempt();
         Assertions.assertNotNull(loginAttempt);

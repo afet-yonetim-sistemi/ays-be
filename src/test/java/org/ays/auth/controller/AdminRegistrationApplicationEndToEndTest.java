@@ -53,6 +53,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
 
@@ -239,7 +240,13 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
     void givenValidAdminRegistrationApplicationCreateRequest_whenCreatingAdminRegistrationApplication_thenReturnAdminRegistrationApplicationCreateResponse() throws Exception {
 
         // Initialize
-        Institution institution = institutionSavePort.save(
+        Institution firstInstitution = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
+        Institution secondInstitution = institutionSavePort.save(
                 new InstitutionBuilder()
                         .withValidValues()
                         .withoutId()
@@ -249,7 +256,7 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         // Given
         AdminRegistrationApplicationCreateRequest createRequest = new AdminRegistrationApplicationCreateRequestBuilder()
                 .withValidValues()
-                .withInstitutionId(institution.getId())
+                .withInstitutionIds(Set.of(firstInstitution.getId(), secondInstitution.getId()))
                 .build();
 
         // Then
@@ -280,12 +287,17 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                 .build();
         Optional<AdminRegistrationApplication> registrationApplication = adminRegistrationApplicationReadPort
                 .findAll(aysPageable, null).getContent().stream()
-                .filter(application -> application.getInstitution().getId().equals(institution.getId()))
+                .filter(application -> application.getInstitutions().stream()
+                        .anyMatch(institution -> institution.getId().equals(firstInstitution.getId())))
                 .findFirst();
 
         Assertions.assertTrue(registrationApplication.isPresent());
         Assertions.assertEquals(AdminRegistrationApplicationStatus.WAITING, registrationApplication.get().getStatus());
-        Assertions.assertEquals(institution.getId(), registrationApplication.get().getInstitution().getId());
+        Assertions.assertEquals(2, registrationApplication.get().getInstitutions().size());
+        Assertions.assertTrue(registrationApplication.get().getInstitutions().stream()
+                .anyMatch(institution -> institution.getId().equals(firstInstitution.getId())));
+        Assertions.assertTrue(registrationApplication.get().getInstitutions().stream()
+                .anyMatch(institution -> institution.getId().equals(secondInstitution.getId())));
         Assertions.assertNull(registrationApplication.get().getUser());
         Assertions.assertTrue(UUIDTestUtil.isValid(registrationApplication.get().getCreatedUser()));
     }
@@ -343,12 +355,18 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
                         .withoutId()
                         .build()
         );
+        Institution secondInstitution = institutionSavePort.save(
+                new InstitutionBuilder()
+                        .withValidValues()
+                        .withoutId()
+                        .build()
+        );
         AdminRegistrationApplication application = adminRegistrationApplicationSavePort.save(
                 new AdminRegistrationApplicationBuilder()
                         .withValidValues()
                         .withoutId()
                         .withoutUser()
-                        .withInstitution(institution)
+                        .withInstitutions(List.of(institution, secondInstitution))
                         .withStatus(AdminRegistrationApplicationStatus.WAITING)
                         .build()
         );
@@ -394,10 +412,13 @@ class AdminRegistrationApplicationEndToEndTest extends AysEndToEndTest {
         Assertions.assertEquals(AysUserStatus.NOT_VERIFIED, userFromDatabase.get().getStatus());
 
         Assertions.assertTrue(CollectionUtils.isNotEmpty(userFromDatabase.get().getInstitutions()));
+        Assertions.assertEquals(2, userFromDatabase.get().getInstitutions().size());
+        Assertions.assertTrue(userFromDatabase.get().hasInstitution(institution.getId()));
+        Assertions.assertTrue(userFromDatabase.get().hasInstitution(secondInstitution.getId()));
         Institution institutionFromDatabase = userFromDatabase.get().getInstitutions().get(0);
         Assertions.assertNotNull(institutionFromDatabase);
-        Assertions.assertEquals(institution.getId(), institutionFromDatabase.getId());
 
+        Assertions.assertEquals(2, userFromDatabase.get().getRoles().size());
         Optional<AysRole> userRoleFromDatabase = userFromDatabase.get().getRoles().stream()
                 .findFirst();
         Assertions.assertTrue(userRoleFromDatabase.isPresent());

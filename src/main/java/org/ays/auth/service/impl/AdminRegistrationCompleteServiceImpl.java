@@ -27,6 +27,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Implementation of {@link AdminRegistrationCompleteService} that handles the completion of admin registration applications.
@@ -85,10 +88,19 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
                 .filter(AdminRegistrationApplication::isWaiting)
                 .orElseThrow(() -> new AysAdminRegistrationApplicationNotExistByIdAuthException(id));
 
-        user.setInstitutions(List.of(application.getInstitution()));
+        final List<Institution> institutions = CollectionUtils.isNotEmpty(application.getInstitutions())
+                ? application.getInstitutions()
+                : List.of(application.getInstitution());
+        user.setInstitutions(institutions);
         user.notVerify();
 
-        this.setAdminRole(user, application.getInstitution());
+        final Map<String, AysRole> rolesById = new LinkedHashMap<>();
+        for (Institution institution : institutions) {
+            for (AysRole role : this.getAdminRoles(institution)) {
+                rolesById.put(role.getId(), role);
+            }
+        }
+        user.setRoles(new ArrayList<>(rolesById.values()));
 
         final String encodedPassword = passwordEncoder.encode(user.getPassword().getValue());
         user.getPassword().setValue(encodedPassword);
@@ -109,13 +121,11 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
      * @param user        The {@link AysUser} who is being registered.
      * @param institution The {@link Institution} to which the user is being registered.
      */
-    private void setAdminRole(final AysUser user,
-                              final Institution institution) {
+    private List<AysRole> getAdminRoles(final Institution institution) {
 
         final List<AysRole> rolesOfInstitution = roleReadPort.findAllActivesByInstitutionId(institution.getId());
         if (CollectionUtils.isNotEmpty(rolesOfInstitution)) {
-            user.setRoles(rolesOfInstitution);
-            return;
+            return rolesOfInstitution;
         }
 
         final List<AysPermission> permissions = permissionReadPort.findAllByIsSuperFalse();
@@ -128,9 +138,8 @@ class AdminRegistrationCompleteServiceImpl implements AdminRegistrationCompleteS
                 .build();
         final AysRole savedRole = roleSavePort.save(role);
 
-        user.setRoles(List.of(savedRole));
-
         log.trace("Admin Role created successfully!");
+        return List.of(savedRole);
     }
 
 }
