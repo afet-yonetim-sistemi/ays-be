@@ -42,7 +42,7 @@
         <bouncycastle.version>1.84</bouncycastle.version>
 
         <bucket4j_jdk17-core.version>8.17.0</bucket4j_jdk17-core.version>
-        <guava.version>33.5.0-jre</guava.version>
+        <guava.version>33.7.1-jre</guava.version>
 
         <objenesis.version>3.5</objenesis.version>
         <commons-text.version>1.15.0</commons-text.version>
