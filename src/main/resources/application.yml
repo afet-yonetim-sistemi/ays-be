@@ -80,6 +80,9 @@ management:
       exposure:
         include: info, health
       base-path: /public/actuator
+  health:
+    mail:
+      enabled: ${AYS_MAIL_HEALTH_ENABLED:true}
 
 ays:
   emergency-evacuation-application:

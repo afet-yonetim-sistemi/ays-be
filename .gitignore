@@ -64,3 +64,5 @@ build/
 .env
 
 settings.xml
+
+docker-compose.override.yml
